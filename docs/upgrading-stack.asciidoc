@@ -1,0 +1,136 @@
+[[upgrading-elastic-stack]]
+== Upgrading the Elastic Stack
+
+Before upgrading any component of the Elastic Stack, you should read through this guide to ensure
+that you upgrade in the right order and in the right way. When upgrading any component of the
+Elastic Stack, such as Beats, you should refer to the instructions for that component, including
+the breaking changes section.
+
+The Elastic Stack is made up of multiple components developed by Elastic. In no particular
+order, these are:
+
+* {beatsref}/index.html[Beats {branch}]
+* {esref}/index.html[Elasticsearch {branch}]
+* {hadoopref}/index.html[Hadoop {branch}]
+* {kibanaref}/index.html[Kibana {branch}]
+* {logstashref}/index.html[Logstash {branch}]
+* {xpackref}/index.html[X-Pack {branch}]
+
+Each component serves a particular role in the Elastic Stack. For some use cases, it is normal to
+not use every component in the Elastic Stack, for instance only using Elasticsearch, Logstash, and
+Kibana; Elasticsearch and Kibana; Elasticsearch and Beats; or just Elasticsearch. 
+
+[[upgrading-elastic-stack-audience]]
+=== Intended Audience
+
+This guide is intended for existing users of the Elastic Stack, running specific version ranges of
+each component:
+
+[cols="2", options="header"]
+|===
+| |Version
+|Beats
+|1.0 or later
+|Elasticsearch
+|2.0 or later
+|Kibana
+|4.2 or later
+|Logstash
+|2.0 or later
+|Hadoop
+|2.2 or later
+|Marvel, Shield, Watcher, Graph <1>
+|2.0 or later
+|===
+1. Marvel Agent, Shield, Watcher, and Graph have all been combined into a new, unified plugin called
+X-Pack. Unlike before, the same X-Pack distribution works for both Elasticsearch and Kibana.
+
+NOTE: Kibana 4.2 and Elasticsearch Hadoop 2.2 were the first versions that were compatible with
+Elasticsearch 2.x!
+
+The spread of version numbers in the above table is the reason that the Elastic Stack is moving to
+a unified release number: 5.0. Beginning with 5.0, all of the components above will be released at the
+same time with the same version number. As such, you can choose a version with confidence across the
+entire stack.
+
+It is critical to note that you cannot upgrade data that was written using Elasticsearch 1.x to
+Elasticsearch 2.x, then upgrade directly to Elasticsearch 5.x. Elasticsearch uses Lucene to store its
+data and Lucene is only compatible with the current version of Lucene, and one major release behind
+it. Elasticsearch 1.x uses Lucene 4.x; Elasticsearch 2.x uses Lucene 5.x; and Elasticsearch 5.x uses
+Lucene 6.x. Lucene 6.x is not compatible with Lucene 4.x, so it will require the data to be reindexed
+in order to be used in Elasticsearch 5.x. The Elasticsearch upgrade instructions do cover that path.
+
+WARNING: This includes simple indices, such as the `.kibana` index that is created by Kibana, and
+snapshots of indices from Elasticsearch 1.x!
+
+Also, when upgrading from two major releases ago, it is important to read the breaking changes from
+1.x to 2.x, as well as from 2.x to 5.x.
+
+[[upgrade-order-elastic-stack]]
+=== Upgrade Order
+
+As noted above, this only applies for users of Beats 1.x, Elasticsearch 2.x, Logstash 2.x, and
+Kibana 4.2+. For Elasticsearch in particular, it is critical to run the
+https://github.com/elastic/elasticsearch-migration/[Elasticsearch Migration Plugin] prior to
+any upgrade to verify upgrade compatibility!
+
+The order that the stack can be upgraded is not optional in order maintain the most compatibility,
+for the components that you use. It will require a full cluster shutdown for both Elasicsearch and
+Kibana because neither Elasticsearch 5.0, nor Kibana 5.0, can communicate with earlier versions of
+Elasticsearch.
+
+1. Elasticsearch Hadoop (can talk to Elasticsearch 5.0 and 2.x)
+2. Elasticsearch
+3. X-Pack for Elasticsearch (combines Marvel Agent, Shield, Watcher, and Graph)
+4. Kibana
+5. X-Pack for Kibana (combines Marvel Agent, Shield, and Graph)
+6. Logstash
+7. Beats
+
+Unlike Elasticsearch 2.0+ and Kibana 4.2+, both Logstash 2.0+ and Beats 1.0+ are compatible with
+Elasticsearch 2.0+ / Kibana 4.2+ and Elasticsearch 5.0 / Kibana 5.0. This provides some
+flexibility in when you schedule the upgrades for each Logstash instance and Beats agent.
+
+By following the above order, you should upgrade Elasticsearch Hadoop first; then Elasticsearch
+by performing a full cluster restart and upgrade; then install X-Pack; then upgrade Kibana immediately
+afterward by restarting and upgrading all instances of Kibana; then installing X-Pack there as well.
+Afterward, you can choose when it makes the most sense to upgrade Logstash and Beats for your architecture. It is worth
+upgrading Logstash and Beats as soon as possible to take advantage of performance improvements
+and other enhancements.
+
+The table below lists the upgrade instructions, per component, along side the breaking changes
+list. You should read through every component's upgrade guide and breaking changes list, which you
+use, before beginning any upgrade!
+
+[cols="3", options="header"]
+|===
+|component |Breaking Changes |Upgrade
+|Elasticsearch
+|{esref}/breaking-changes.html[Breaking Changes from 2.x]
+|{esref}/setup-upgrade.html[Upgrading to Elasticsearch 5.0]
+|X-Pack
+|{xpackref}/breaking-changes.html[Breaking Changes from 2.x]
+|{xpackref}/setup-upgrade.html[Upgrading to X-Pack 5.0]
+|Kibana
+|{kibanaref}/breaking-changes.html[Breaking Changes from 4.x]
+|{kibanaref}/upgrading-kibana.html[Upgrading to Kibana 5.0]
+|Logstash
+|{logstashref}/breaking-changes.html[Breaking Changes from 2.x]
+|{logstashref}/upgrading-logstash.html[Upgrading to Logstash 5.0]
+|Beats
+|{beatsref}/breaking-changes.html[Breaking Changes from 1.x]
+|{beatsref}/upgrading.html[Upgrading to Beats 5.0]
+|Elasticsearch Hadoop
+|{hadoopref}/breaking-changes.html[Breaking Changes from 2.x]
+|{hadoopref}/install.html[Upgrading to Elasticsearch Hadoop 5.0]
+|===
+
+[[upgrade-elastic-stack-for-elastic-cloud]]
+=== Upgrading on the Elastic Cloud
+
+The Elastic Cloud supports upgrading to Elasticsearch 5.0 and Kibana 5.0. Unlike the above
+instructions, the Elastic Cloud handles the actual upgrade process as part of its managed service,
+which means that you only need to be worried about breaking changes.
+
+You can read more about the
+{cloudref}/_upgrading_to_elasticsearch_5_0.html[Elastic Cloud upgrade process here].

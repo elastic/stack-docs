@@ -1,0 +1,76 @@
+[[installing-elastic-stack]]
+== Installing the Elastic Stack
+
+This guide is intended for users seeking to install all or part of the Elastic Stack as part of
+clean or fresh installation. If you are upgrading, then please refer to <<upgrading-elastic-stack>>. 
+
+Beginning with 5.0, installing the Elastic Stack and understanding the compatibility between products
+has been dramatically simplified. All products are now part of a unified release process, so when
+any product is released, then all products are released with it. This helps to guarantee compatibility as
+well as avoid confusion surrounding version numbers.
+
+As a result, when performing any Elastic Stack installation, you should always start with the same
+version across the entire stack. For example, if you select Elasticsearch 5.1.2, then you should also
+select Kibana 5.1.2, Logstash 5.1.2, and Beats 5.1.2. 
+
+[cols="2", options="header"]
+|===
+|Component |Version
+|Beats
+|{branch}
+|Elasticsearch
+|{branch}
+|Elasticsearch Hadoop
+|{branch}
+|Kibana
+|{branch}
+|Logstash
+|{branch}
+|X-Pack
+|{branch}
+|===
+
+[[install-order-elastic-stack]]
+=== Installation Order
+
+We recommend that you install the Elastic Stack in the following order.
+
+1. Elasticsearch
+    * X-Pack for Elasticsearch
+2. Kibana
+    *  X-Pack for Kibana
+3. Logstash
+4. Beats
+5. Elasticsearch Hadoop
+
+This helps to ensure that the right parts of your infrastructure are running before other parts
+attempt to use them (e.g., Logstash sending data to Elasticsearch).
+
+The table below lists the installation instructions, per component:
+
+[cols="2", options="header"]
+|===
+|Product |Installation
+|Elasticsearch
+|{esref}/install-elasticsearch.html[Installing Elasticsearch 5.0]
+|X-Pack
+|{xpackref}/installing-xpack[Installing X-Pack 5.0]
+|Kibana
+|{kibanaref}/setup.html[Installing Kibana 5.0]
+|Logstash
+|{logstashref}/installing-logstash.html[Installing Logstash 5.0]
+|Beats
+|{beatsref}/installing-beats.html[Installing Beats 5.0]
+|Elasticsearch Hadoop
+|{hadoopref}/float.html[Installing Elasticsearch Hadoop 5.0]
+|===
+
+[[install-elastic-stack-for-elastic-cloud]]
+=== Installing on the Elastic Cloud
+
+The Elastic Cloud supports installing Elasticsearch 5.0, Kibana 5.0, and X-Pack 5.0. Unlike the
+above instructions, the Elastic Cloud handles the actual installation process as part of its
+managed service.
+
+If you would like to trial Elasticsearch 5.0 using a fresh installation, then you can easily
+do so by {cloudref}/getting-started.html[running Elasticsearch in the Elastic Cloud].

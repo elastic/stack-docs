@@ -15,7 +15,7 @@ select Kibana 5.1.2, Logstash 5.1.2, and Beats 5.1.2.
 
 [cols="2", options="header"]
 |===
-| |Version
+|Component |Version
 |Beats
 |{branch}
 |Elasticsearch
@@ -30,11 +30,10 @@ select Kibana 5.1.2, Logstash 5.1.2, and Beats 5.1.2.
 |{branch}
 |===
 
-[[upgrade-order-elastic-stack]]
+[[install-order-elastic-stack]]
 === Installation Order
 
-The order that the Stack can be installed is far less important than when upgrading. However, the
-recommended order is the same:
+We recommend that you install the Elastic Stack in the following order.
 
 1. Elasticsearch
 2. X-Pack for Elasticsearch
@@ -49,7 +48,7 @@ attempt to use them (e.g., Logstash sending data to Elasticsearch).
 
 The table below lists the installation instructions, per product:
 
-[cols="3", options="header"]
+[cols="2", options="header"]
 |===
 |Product |Installation
 |Elasticsearch
@@ -63,14 +62,14 @@ The table below lists the installation instructions, per product:
 |Beats
 |{beatsref}/installing-beats.html[Installing Beats 5.0]
 |Elasticsearch Hadoop
-|{hadoopref}/float.html[Install Elasticsearch Hadoop 5.0]
+|{hadoopref}/float.html[Installing Elasticsearch Hadoop 5.0]
 |===
 
 [[install-elastic-stack-for-elastic-cloud]]
 === Installing on the Elastic Cloud
 
-The Elastic Cloud supports installing Elasticsearch 5.0 and Kibana 5.0. Unlike the above
-instructions, the Elastic Cloud handles the actual installation process as part of its
+The Elastic Cloud supports installing Elasticsearch 5.0, Kibana 5.0, and X-Pack 5.0. Unlike the
+above instructions, the Elastic Cloud handles the actual installation process as part of its
 managed service.
 
 If you would like to trial Elasticsearch 5.0 using a fresh installation, then you can easily

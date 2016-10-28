@@ -2,7 +2,7 @@
 == Installing the Elastic Stack
 
 This guide is intended for users seeking to install all or part of the Elastic Stack as part of
-clean or fresh installation. If you are upgrading, then please refer to <<upgrading-elastic-stack>>. 
+clean or fresh installation. If you are upgrading, then please refer to <<upgrading-elastic-stack>>.
 
 Beginning with 5.0, installing the Elastic Stack and understanding the compatibility between products
 has been dramatically simplified. All products are now part of a unified release process, so when
@@ -11,7 +11,7 @@ well as avoid confusion surrounding version numbers.
 
 As a result, when performing any Elastic Stack installation, you should always start with the same
 version across the entire stack. For example, if you select Elasticsearch 5.1.2, then you should also
-select Kibana 5.1.2, Logstash 5.1.2, and Beats 5.1.2. 
+select Kibana 5.1.2, Logstash 5.1.2, and Beats 5.1.2.
 
 [cols="2", options="header"]
 |===
@@ -66,11 +66,10 @@ The table below lists the installation instructions, per component:
 |===
 
 [[install-elastic-stack-for-elastic-cloud]]
-=== Installing on the Elastic Cloud
+=== Installing on Elastic Cloud
 
-The Elastic Cloud supports installing Elasticsearch 5.0, Kibana 5.0, and X-Pack 5.0. Unlike the
-above instructions, the Elastic Cloud handles the actual installation process as part of its
-managed service.
+Elastic Cloud is the official hosted Elasticsearch and Kibana offering from Elastic and it's designed to be easy. A single click creates an Elasticsearch cluster configured to the size you want, with or without high availability across multiple data centers. X-Pack is always installed and provides features such as security and monitoring. Kibana can be enabled on a cluster with a click, and a number of commonly requested plugins are readily available.
 
-If you would like to trial Elasticsearch 5.0 using a fresh installation, then you can easily
-do so by {cloudref}/getting-started.html[running Elasticsearch in the Elastic Cloud].
+Some Elastic Cloud features can be used only with a specific  link:https://www.elastic.co/cloud/as-a-service/subscriptions[subscription level]. For example, you can install custom plugins, dictionaries, and scripts only if you are a Gold or Platinum customer.
+
+To learn more about Elastic Cloud, see our {cloudref}/getting-started.html[getting started documentation]. Or link:https://www.elastic.co/cloud/as-a-service/signup[sign up for a free trial] and start exploring hosted Elasticsearch within minutes.

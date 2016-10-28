@@ -125,11 +125,19 @@ that you are upgrading.
 |===
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
-=== Upgrading on the Elastic Cloud
+=== Upgrading on Elastic Cloud
 
-The Elastic Cloud supports upgrading to Elasticsearch 5.0, Kibana 5.0, and X-Pack 5.0. Unlike the above
-instructions, the Elastic Cloud handles the actual upgrade process as part of its managed service,
-which means that you only need to be worried about breaking changes.
+A single click in the Elastic Cloud console can upgrade a cluster to a newer version, add more processing capacity, change plugins, and enable or disable high availability, all at the same time. During the upgrade process, Elasticsearch, Kibana, X-Pack and the officially included plugins are all upgraded to the correct version together.
 
-You can read more about the
-{cloudref}/_upgrading_to_elasticsearch_5_0.html[Elastic Cloud upgrade process here].
+Although the upgrade process on Elastic Cloud is simple, you are still subject to breaking changes in Elasticsearch, and major version upgrades require a full cluster restart. Minor version upgrades and all other cluster configuration changes are performed with no downtime.
+
+To avoid downtime on production clusters due to major version upgrades:
+
+. Provision an additional cluster with the new Elasticsearch version, reindex your data, and send index requests to both clusters temporarily.
+
+. Verify that the new cluster performs as expected, fix any problems, and then swap in the new cluster permanently.
+
+. Delete the old cluster to stop incurring additional costs. You are billed extra only for the hours that the additional cluster was running.
+
+To learn more about upgrade process on Elastic Cloud, see {cloudref}/_upgrading_to_elasticsearch_5_0.html[
+Upgrading to Elasticsearch 5.0] and {cloudref}/changing-a-cluster.html#changing-a-cluster[Changing a Cluster]

@@ -73,3 +73,19 @@ Elastic Cloud is the official hosted Elasticsearch and Kibana offering from Elas
 Some Elastic Cloud features can be used only with a specific  link:https://www.elastic.co/cloud/as-a-service/subscriptions[subscription level]. For example, you can install custom plugins, dictionaries, and scripts only if you are a Gold or Platinum customer.
 
 To learn more about Elastic Cloud, see our {cloudref}/getting-started.html[getting started documentation]. Or link:https://www.elastic.co/cloud/as-a-service/signup[sign up for a free trial] and start exploring hosted Elasticsearch within minutes.
+
+[[install-elastic-stack-for-docker]]
+=== Installing on Docker
+Elastic provides a Docker registry hosting images for Kibana, Logstash, and Elasticsearch. X-Pack is preinstalled with Elasticsearch and Kibana.
+
+[cols="2", options="header"]
+|===
+|Product |Docker Image Tag
+|Elasticsearch
+|`docker.elastic.co:elasticsearch/elasticsearch:5.0.0`
+|Kibana
+|`docker.elastic.co:kibana/kibana:5.0.0`
+|Logstash
+|`docker.elastic.co:logstash/logstash:5.0.0`
+|===
+For details on configuring and operating containers from these images, see the relevant documentation for {esref}/docker.html[Elasticsearch], {kibanaref}/docker.html[Kibana], or {logstashref}/docker.html[Logstash].

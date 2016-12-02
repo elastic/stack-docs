@@ -85,10 +85,10 @@ can communicate with earlier versions of Elasticsearch.
 5. Beats
 
 Elasticsearch Hadoop versions prior to 5.0 are not compatible with Elasticsearch {major-version}, but Elasticsearch
-Hadoop {major-version} is compatible with Elasticsearch 2.0 and Elasticsearch {major-version}.
+Hadoop {major-version} is compatible with Elasticsearch {major-version}.
 
-Logstash 2.0+ and Beats 1.0+ are compatible with both Elasticsearch 2.0+ and Elasticsearch 5.0. This
-provides flexibility in when you schedule the upgrades for each Logstash instance and Beats agent.
+Logstash 5.0+ and Beats 5.0+ are compatible with Elasticsearch 5.0+. This provides flexibility in when you schedule
+the upgrades for each Logstash instance and Beats agent.
 
 By following the above order, you should upgrade Elasticsearch Hadoop first; then Elasticsearch
 by performing a full cluster restart and upgrade; then install X-Pack; then upgrade Kibana immediately
@@ -105,22 +105,22 @@ that you are upgrading.
 |===
 |component |Breaking Changes |Upgrade
 |Elasticsearch
-|{esref}/breaking-changes.html[Breaking Changes from 2.x]
+|{esref}/breaking-changes.html[Breaking Changes from 5.x]
 |{esref}/setup-upgrade.html[Upgrading to Elasticsearch {branch}]
 |X-Pack
-|{xpackref}/migrating-to-xpack.html[Breaking Changes from 2.x]
+|{xpackref}/migrating-to-xpack.html[Breaking Changes from 5.x]
 |{xpackref}/installing-xpack.html[Upgrading to X-Pack {branch}]
 |Kibana
-|{kibanaref}/breaking-changes.html[Breaking Changes from 4.x]
+|{kibanaref}/breaking-changes.html[Breaking Changes from 5.x]
 |{kibanaref}/upgrade.html[Upgrading to Kibana {branch}]
 |Logstash
-|{logstashref}/breaking-changes.html[Breaking Changes from 2.x]
+|{logstashref}/breaking-changes.html[Breaking Changes from 5.x]
 |{logstashref}/upgrading-logstash.html[Upgrading to Logstash {branch}]
 |Beats
-|{beatsref}/breaking-changes.html[Breaking Changes from 1.x]
+|{beatsref}/breaking-changes.html[Breaking Changes from 5.x]
 |{beatsref}/upgrading.html[Upgrading to Beats {branch}]
 |Elasticsearch Hadoop
-|{hadoopref}/breaking-changes.html[Breaking Changes from 2.x]
+|{hadoopref}/breaking-changes.html[Breaking Changes from 5.x]
 |{hadoopref}/install.html[Upgrading to Elasticsearch Hadoop {branch}]
 |===
 
@@ -140,4 +140,4 @@ To avoid downtime on production clusters due to major version upgrades:
 . Delete the old cluster to stop incurring additional costs. You are billed extra only for the time that the additional cluster was running. Billing for usage is by the hour.
 
 To learn more about upgrade process on Elastic Cloud, see {cloudref}/_upgrading_to_elasticsearch_5_0.html[
-Upgrading to Elasticsearch {branch}] and {cloudref}/changing-a-cluster.html#changing-a-cluster[Changing a Cluster]
+Upgrading to Elasticsearch {branch}] and {cloudref}/changing-a-cluster.html#changing-a-cluster[Changing a Cluster]. Note that Elastic Cloud does not currently support running snapshot builds (e.g., master builds as this documentation pertains too).

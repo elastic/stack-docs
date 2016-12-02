@@ -38,7 +38,7 @@ X-Pack. Unlike before, the same X-Pack distribution works for both Elasticsearch
 NOTE: Kibana 4.2 and Elasticsearch Hadoop 2.2 were the first versions that were compatible with
 Elasticsearch 2.x!
 
-The spread of version numbers in the above table is the reason that the Elastic Stack is moving to
+The spread of version numbers in the above table is the reason that the Elastic Stack was moved to
 a unified release number: 5.0. Beginning with 5.0, all of the components above will be released at the
 same time with the same version number. As such, you can choose a version with confidence across the
 entire stack.
@@ -76,7 +76,7 @@ may skip any components that you do not use in your own system. The upgrade requ
 cluster shutdown for both Elasicsearch and Kibana because neither Elasticsearch 5.0, nor Kibana 5.0,
 can communicate with earlier versions of Elasticsearch.
 
-1. Elasticsearch Hadoop (can talk to Elasticsearch 5.0 and 2.x)
+1. Elasticsearch Hadoop (can talk to Elasticsearch {major-version} and 2.x)
 2. Elasticsearch
     * X-Pack for Elasticsearch (combines Marvel Agent, Shield, Watcher, and Graph)
 3. Kibana (now includes Timelion and Console, formerly known as Sense)
@@ -84,8 +84,8 @@ can communicate with earlier versions of Elasticsearch.
 4. Logstash
 5. Beats
 
-Elasticsearch Hadoop versions prior to 5.0 are not compatible with Elasticsearch 5.0, but Elasticsearch
-Hadoop 5.0 is compatible with Elasticsearch 2.0 and Elasticsearch 5.0.
+Elasticsearch Hadoop versions prior to 5.0 are not compatible with Elasticsearch {major-version}, but Elasticsearch
+Hadoop {major-version} is compatible with Elasticsearch 2.0 and Elasticsearch {major-version}.
 
 Logstash 2.0+ and Beats 1.0+ are compatible with both Elasticsearch 2.0+ and Elasticsearch 5.0. This
 provides flexibility in when you schedule the upgrades for each Logstash instance and Beats agent.
@@ -106,22 +106,22 @@ that you are upgrading.
 |component |Breaking Changes |Upgrade
 |Elasticsearch
 |{esref}/breaking-changes.html[Breaking Changes from 2.x]
-|{esref}/setup-upgrade.html[Upgrading to Elasticsearch 5.0]
+|{esref}/setup-upgrade.html[Upgrading to Elasticsearch {branch}]
 |X-Pack
 |{xpackref}/migrating-to-xpack.html[Breaking Changes from 2.x]
-|{xpackref}/installing-xpack.html[Upgrading to X-Pack 5.0]
+|{xpackref}/installing-xpack.html[Upgrading to X-Pack {branch}]
 |Kibana
 |{kibanaref}/breaking-changes.html[Breaking Changes from 4.x]
-|{kibanaref}/upgrade.html[Upgrading to Kibana 5.0]
+|{kibanaref}/upgrade.html[Upgrading to Kibana {branch}]
 |Logstash
 |{logstashref}/breaking-changes.html[Breaking Changes from 2.x]
-|{logstashref}/upgrading-logstash.html[Upgrading to Logstash 5.0]
+|{logstashref}/upgrading-logstash.html[Upgrading to Logstash {branch}]
 |Beats
 |{beatsref}/breaking-changes.html[Breaking Changes from 1.x]
-|{beatsref}/upgrading.html[Upgrading to Beats 5.0]
+|{beatsref}/upgrading.html[Upgrading to Beats {branch}]
 |Elasticsearch Hadoop
 |{hadoopref}/breaking-changes.html[Breaking Changes from 2.x]
-|{hadoopref}/install.html[Upgrading to Elasticsearch Hadoop 5.0]
+|{hadoopref}/install.html[Upgrading to Elasticsearch Hadoop {branch}]
 |===
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
@@ -140,4 +140,4 @@ To avoid downtime on production clusters due to major version upgrades:
 . Delete the old cluster to stop incurring additional costs. You are billed extra only for the time that the additional cluster was running. Billing for usage is by the hour.
 
 To learn more about upgrade process on Elastic Cloud, see {cloudref}/_upgrading_to_elasticsearch_5_0.html[
-Upgrading to Elasticsearch 5.0] and {cloudref}/changing-a-cluster.html#changing-a-cluster[Changing a Cluster]
+Upgrading to Elasticsearch {branch}] and {cloudref}/changing-a-cluster.html#changing-a-cluster[Changing a Cluster]

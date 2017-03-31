@@ -1,0 +1,607 @@
+
+[[xpack-release-notes]]
+= Release Notes
+
+[partintro]
+--
+Release notes for all of the {xpack} components:
+{security}, {monitoring}, {watcher}, {reporting}, and {graph}.
+--
+
+[[xpack-change-list]]
+== Change List
+
+[float]
+[[xpack-6.0.0]]
+=== 6.0.0
+TBD
+
+[float]
+[[bugs-6.0.0]]
+==== Bug Fixes
+
+Watcher::
+* The HTTP client respects timeouts now and does not get stuck leading to stuck watches
+
+[float]
+[[breaking-6.0.0]]
+==== Breaking Changes
+
+Security::
+* A new bootstrap check enforces that <<disabling-default-password, default passwords are disabled>> for the <<built-in-users, built-in users>>
+  when running in {ref}/bootstrap-checks.html#_development_vs_production_mode[production mode].
+  You must set `xpack.security.authc.accept_default_password` to `false` in your `elasticsearch.yml`
+* A new configuration setting is available to <<disabling-default-password, disable support for the default password>> (_"changeme"_).
+
+Watcher::
+* The built-in HTTP client used in webhooks, the http input and the http email attachment has been replaced.
+This results in the need to always escape all parts of an URL.
+* The new built-in HTTP client also enforces a maximum request size, which defaults to 10mb.
+
+[float]
+[[xpack-5.3.0]]
+=== 5.3.0
+TBD
+
+[float]
+[[breaking-5.3.0]]
+==== Breaking Changes
+
+Security::
+* Unauthorized bulk request is rejected on individual bulk item basis instead of being rejected as an entire operation.
+  In case of insufficient privileges, individual bulk item responses return security exception with `403` error code
+  instead of top level bulk response returning security exception with `403` error code. The top level bulk response
+  always returns with `200` status code.
+* `create`, `index` and `delete` index privileges can execute bulk action.
+
+[float]
+[[enhancements-5.3.0]]
+==== Enhancements
+
+Watcher::
+* A new dedicated action status called `ACKNOWLEDGED` has been introduced to easily find watches, that have been acknowledged by the user
+* Index Actions now support the ability to index using a dynamic `_id` field in the payload or constant `doc_id` parameter
+
+[float]
+[[xpack-5.2.2]]
+=== 5.2.2
+February 28, 2017
+
+[float]
+[[bugs-5.2.2]]
+==== Bug Fixes
+
+Monitoring::
+
+* Auto-Refresh can be set to Off without adverse effects.
+
+[float]
+[[xpack-5.2.1]]
+=== 5.2.1
+February 14, 2017
+
+[float]
+[[enhancements-5.2.1]]
+==== Enhancements
+
+Monitoring::
+* You can now specify multiple Elasticsearch hosts as an array when
+configuring the `xpack.monitoring.elasticsearch.url`.
+* The Clusters table now includes a column for Logstash.
+
+Security::
+* Added TRACE logging for LDAP traffic.
+
+[float]
+[[bugs-5.2.1]]
+==== Bug Fixes
+
+Monitoring::
+* The list of Logstash nodes can now display more than 10 nodes.
+* Fixed the cluster summary rollups for Kibana and Logstash that
+appear in the Cluster Overview and Cluster Summary.
+
+Security::
+* You no longer get a `StatusLogger` error when you run the `certgen` tool.
+* If you upgrade after reverting to a Basic license, you no longer get an
+error indicating that the realm cache could not be cleared.
+
+Watcher::
+* Ensure that no NPE is thrown on startup if a required index for Watcher
+has been manually closed.
+
+
+[float]
+[[xpack-5.2.0]]
+=== 5.2.0
+January 31, 2017
+
+[float]
+[[breaking-5.2.0]]
+==== Breaking Changes
+Security::
+* The validation of security related settings has been tightened.
+  Elasticsearch will refuse to start if it detects incorrect configuration of security realms or SSL/TLS.
+
+[float]
+[[new-5.2.0]]
+==== New Features
+Monitoring::
+* You can now <<monitoring-logstash, monitor Logstash>> nodes.
+* If you're running Elasticsearch in containers, you can now monitor a
+container’s utilization metrics that are reported from each Elasticsearch
+instance.
+
+[float]
+[[enhancements-5.2.0]]
+==== Enhancements
+Monitoring::
+
+* You can once again <<monitoring-tribe, monitor tribe nodes>>.
+
+Security::
+* Renamed the `kibana` role to `kibana_system`. A backwards compatibility
+layer is provided so that kibana access still works properly during rolling
+upgrades.
+
+Watcher::
+* Watches can now be deleted even if the license is expired.
+* A deprecation warning is logged if an executed watch contains unencoded URLs.
+Starting in 6.0, all URLs in `http` and `webhook` actions must be properly
+encoded.
+
+[float]
+[[bugs-5.2.0]]
+==== Bug Fixes
+
+Reporting::
+* Now correctly uses the dashboard state when rendering visualizations.
+Previously, if you saved a change to a dashboard and then generated a report,
+the report would not reflect the change.
+
+Security::
+* LDAP and AD realms now obey the `ssl.verification_mode setting`.
+The `hostname_verification` setting is deprecated.
+* When using a Gold license, the role management UI now identifies any
+roles that are disabled because they rely on the document or field level
+security features available during the trial period and with a Platinum
+license. You cannot modify disabled roles, but you can view and delete them.
+
+Watcher::
+* The `search` input now correctly handles the `extract` parameter.
+
+[float]
+[[xpack-5.1.2]]
+=== 5.1.2
+TBD
+
+[float]
+[[breaking-5.1.2]]
+==== Breaking Changes
+
+Security::
+* Roles with field and/or document level security enabled will be disabled when the license level does not enable these features.
+
+[float]
+[[enhancements-5.1.2]]
+==== Enhancements
+
+[float]
+[[new-5.1.2]]
+==== New Features
+
+[float]
+[[bugs-5.1.2]]
+==== Bug Fixes
+
+Security::
+* Fixed a problem where +realm_authentication_failed+ audit events were being recorded as +authentication_failed+ when auditing was
+logged to an index.
+
+Watcher::
+* Index action: Ensure that a failed index request, which is part of a bulk request via the `_doc` array is logged correctly
+as success or (partial) failure
+
+[float]
+[[xpack-5.1.1]]
+=== 5.1.1
+December 8, 2016
+
+[float]
+[[enhancements-5.1.1]]
+==== Enhancements
+Watcher::
+* You can now specify a proxy in HipChat, PagerDuty, and Slack actions.
+
+Monitoring::
+* Combined advnanced node charts.
+
+[float]
+[[new-5.1.1]]
+==== New Features
+Watcher::
+* Added a new `jira` action that allows to create Jira issues using Watcher.
+
+[float]
+[[bugs-5.1.1]]
+==== Bug Fixes
+
+Monitoring::
+* Improved behavior of the monitoring charts' crosshair.
+* Temporarily removed monitoring chart tooltip.
+* Fixed monitoring chart legend labels.
+* Properly handle 404 responses from Elasticsearch.
+
+Reporting::
+* Fixed an unhandled error when extracting the PhantomJS archive that was
+causing the Kibana server to stall on start up.
+* Updated the `phantomjs.exe` path for Windows.
+
+Security::
+* Fixed a problem where the search template endpoint threw an error when used
+against all indices or a wildcard expression.
+* Kibana no longer crashses when a basic license is installed.
+
+Watcher::
+* An invalid HTTP response is now correctly marked as a failure.
+* Ensure that watcher history does not contain secrets
+
+
+[float]
+[[xpack-5.1.0]]
+=== 5.1.0  (skipped)
+
+Version 5.1.0 doesn’t exist because, for a short period of time, the Elastic
+Yum and Apt repositories included unreleased binaries labeled 5.1.0. To avoid
+confusion and upgrade issues for the people that have installed these without
+realizing, we decided to skip the 5.1.0 version and release 5.1.1 instead.
+
+
+////
+[float]
+[[xpack-5.0.3]]
+=== 5.0.3
+TBD
+
+[float]
+[[bugs-5.0.3]]
+==== Bug Fixes
+Watcher::
+* HTTP requests now include the request's authentication type in Watch records.
+* An invalid HTTP response is now correctly marked as a failure
+* Script changes (i.e. in stored scripts) are now taken correctly into consideration in scripts/transforms
+////
+
+[float]
+[[xpack-5.0.2]]
+=== 5.0.2
+November 29, 2016
+
+[float]
+[[bugs-5.0.2]]
+==== Bug Fixes
+Monitoring::
+* Add support for custom headers in the monitoring connection and make phone
+home always return 200.
+
+Security::
+* Allow reads of native users and roles when the template version hasn't been
+updated to match the current version. This prevents failures from occurring
+during rolling upgrades.
+* Retain all user information for run as requests.
+* Prevent unknown run as users from executing any APIs. Previously, if an
+authenticated user with run as permission attempted to run as an unknown
+user, the unknown user was assigned the default and anonymous roles if
+they were enabled.
+* If an exception is thrown when resolving the index in an index request, it
+is now recorded as `access_denied` in the audit-trail. Previously, no entry
+was recorded in the audit trail.
+
+[float]
+[[xpack-5.0.1]]
+=== 5.0.1
+November 15, 2016
+
+[float]
+[[bugs-5.0.1]]
+==== Bug Fixes
+Graph::
+* Fixed the license check so Graph doesn't throw an `undefined` error
+when Security is disabled and you try to load a workspace URL.
+
+Monitoring::
+* Show Replica Count not Replication Factor in Overview.
+* A non-aliased Monitoring index can now be always be created for the current
+day when upgrading from Marvel.
+* Duplicate shards no longer appear in the shard allocation table.
+* The Kibana Cluster Summary now always shows the last-known status.
+* Kibana now makes sure Monitoring is enabled before attempting to send stats.
+
+Security::
+* Security can no longer pollute the thread context with incorrect users, which
+could cause failures during the discovery process.
+* Security now honors the `action.destructive_requires_name` setting and
+prevents users from deleting indices with wildcards if it is set to `true`.
+* Made changes to preserve the context when performing internal actions.
+This ensures subsequent actions are performed as the correct user.
+* Files generated by the `certgen` tool now have permissions set to 600
+so they aren't world-readable.
+* The Security UI no longer hangs when you configure field-level security when
+adding a role.
+* When running with a Basic License, the login dialog is no longer displayed
+and no Security elements are visible in Kibana.
+* The last sub URL of each Kibana app is no longer cached between sessions.
+This means that when a different user logs in, they are longer redirected
+to the URLs the previous user viewed last.
+
+Watcher::
+* Chain input: An exception is now thrown if the inputs in the chain are
+specified with a data structure that does not preserve the input order. The
+inputs in a chain must be specified as array elements to guarantee the order
+in which the inputs are processed. (JSON does not guarantee the order of
+arbitrary objects.)
+* Watch history template: Removed the unused Watcher plugin version.
+* Email output: Fixed an error that prevented emails from being sent when
+localhost could not be resolved.
+
+[float]
+[[xpack-5.0.0]]
+=== 5.0.0
+October 26, 2016
+
+[float]
+[[breaking-5.0.0]]
+==== Breaking Changes
+
+X-Pack::
+* All settings have been updated to use the `xpack` prefix. For more
+information, see <<migrating-to-xpack, Migrating to X-Pack>>.
+
+Licensing::
+* Licensing endpoint has been renamed from `/_license` to `/_xpack/license`.
+
+Monitoring::
+* `http` exporters no longer honor the `keep_alive` setting as this is handled
+by the low-level REST Client.
+* All `monitoring.agent.*` settings have been changed to more closely
+match other monitoring collection settings: `xpack.monitoring.collection.*`
+and `xpack.monitoring.exporters.*`.
+* The Index page's Lucene Memory chart was replaced with an Index Memory chart,
+which includes a superset of the information. Fielddata, which has become a
+significantly less common issue, has been rolled into the Index Memory chart.
+* To use an external monitoring cluster to monitor an Elasticsearch 5.0
+cluster, you must run Elasticsearch 5.0 on the monitoring cluster. For more
+information about external monitoring clusters, see <<monitoring-cluster,
+Setting up a Separate Monitoring Cluster>>.
+* All settings have been updated to use the `xpack.monitoring` prefix. For more
+information, see <<migrating-to-xpack, Migrating to X-Pack>>.
+
+Reporting::
+* Reporting encryption keys configured in `kibana.yml` must now be at least
+32 characters.
+
+Security::
+* Security encryption keys configured in `kibana.yml` must now be at least
+32 characters.
+* The <<security-tls-ssl-migrate,SSL configuration settings>> have been changed
+to use an easier to use format that also supports PEM files.
+* Removed the `files.users` and `files.users_roles` settings from the
+<<file-realm, `file` realm>>.
+* Removed the setting that allowed for a custom `roles.yml` file location
+to be specified. The `roles.yml` file must always be in the `CONF_DIR/x-pack`
+directory.
+* Removed the setting that allowed for a custom system key location to be
+defined. The `system_key` file must always be in the `CONF_DIR/x-pack`
+directory.
+* The <<audit-log-output, `logfile` output>> for auditing no longer uses the
+log level to determine which events to log. The events are now controlled
+in the same way as the `index` output.
+* Changed the syntax for <<field-level-security, field-level-security>>. Roles
+stored in the old format in native or file based realm will continue to work
+but new roles must use the new format.
+* The `esusers` realm has been renamed to `file` and the `esusers` command line
+tool has been renamed to `users`. Note that the <<managing-native-users, User
+and Role APIs>> are the preferred way to manage internal users.
+* Elasticsearch enables HTTP compression by default now. To mitigate potential
+security risks like the BREACH attack, {security} disables compression if HTTPS
+is enabled. If Elasticsearch should compress HTTPS traffic, please explicitly
+set `http.compression` to `true` in `elasticsearch.yml'.
+* You must specify all required values to override the global SSL configuration
+in a profile. If any values are omitted, the entire configuration falls back to
+the global settings,  `xpack.security.ssl.*`.
+* The `skipSslCheck` and `useUnsafeSessions` for Kibana have been replaced by
+`xpack.security.secureCookies` in `kibana.yml`. SSL is now _disabled_ by default.
+You can start Kibana without making any changes to `kibana.yml` after you install
+X-Pack. Do not deploy to production without <<encrypting-communications, enabling
+SSL/TLS encryption>>!
+* A default role is now applied to all users, including
+<<anonymous-access, anonymous users>>. The default role enables users to
+access the authenticate endpoint, change their own passwords, and get
+information about themselves.
+* All settings have been updated to use the `xpack.security` prefix. For more
+information, see <<migrating-to-xpack, Migrating to X-Pack>>.
+
+Watcher::
+* The `force` parameter of the <<watcher-api-delete-watch, Delete Watch
+Action>> has been removed.
+* The use of the `_timestamp` field for the execution time has been removed.
+The user now needs to set this explicitly in the `index` action.
+* The `_xpack/watcher/_start`, `_xpack/watcher/_restart`, and
+`_xpack/watcher/_stop` REST endpoints require `POST` actions instead of
+`PUT` actions. The _deprecated_ `_watcher/_start`, `_watcher/_restart`, and
+`_watcher/_stop` endpoints still allow `PUT`.
+* Watch history now uses a versioned template. The index names also changed
+and contain this version. So instead of `.watch_history_2016.02.03` the new
+index name is `.watcher-history-1-2016.02.03`, where `1` is the current
+version. If you are using {security}, this might require you to change
+roles/permissions because of the different index names! The old index template
+named `watch_history` can safely be deleted. However, it does not interfere
+with the new index template.
+* The setting that enables scripting only for {watcher} has been renamed from
+`script.engine.groovy.inline.elasticsearch-watcher_watch` to
+`script.engine.groovy.inline.xpack_watch`.
+* Elasticsearch has several breaking changes in the query DSL, including that
+`search_type=count` is no longer supported. Check to see if your watches use
+this search type and upgrade them to use `size: 0` in the request body as
+needed. For more information about breaking changes including search changes,
+see {ref}/breaking-changes-5.0.html[breaking changes section in Elasticsearch].
+* All account SMTP timeouts (`smtp.timeout`, `smtp.connection_timeout` and
+`smtp.write_timeout`) now require a time value instead of a number in
+milliseconds.
+* The notification settings for PagerDuty, Slack, HipChat, and email have been
+moved from `watcher.actions` to `xpack.notification`. You need to update your
+Elasticsearch configuration accordingly.
+* All watcher endpoints have been renamed from `/_watcher/XYZ` to
+`/_xpack/watcher/XYZ`. You might need to fix this in external scripts as well
+as in your watches.
+* The notification settings have been stripped of their `service` part. So
+`watcher.actions.slack.service.default_account` becomes
+`xpack.notification.slack.default_account`
+* The setting `watcher.shield.encrypt_sensitive_data` has been renamed to
+`xpack.watcher.encrypt_sensitive_data`
+
+[float]
+[[new-5.0.0]]
+==== New Features
+
+Monitoring::
+* Added new node resolver, `uuid`, to the Monitoring UI configuration and made
+it the default. Starting with Elasticsearch 5.0, instances of Elasticsearch
+create a persistent UUID that remains the same across restarts unless the data
+directory is deleted. If the data directory is deleted, the instance a new
+UUID on start up.
+* Latencies calculated against _totals_ use derivatives to get the rate of
+change. If any derivative is negative, then that time bucket is ignored and
+left blank on the latency chart. Values that are negative indicate that the
+underlying total shrank, which means that the data is skewed and showing
+the result is misleading (for example,  due to nodes restarting).
+* Added Segment Count memory chart to the Index page.
+
+Security::
+* Support for forest wide authentication in the <<active-directory-realm,
+Active Directory Realm>>.
+* The default LDAP group search filter now includes `posixGroup` groups.
+* LDAP user search can now use un-pooled connections.
+
+Watcher::
+* Added support for accessing the HTTP status code of a response in the HTTP
+input through `ctx.payload._status_code`.
+* The new REST endpoint for acknowledging certain actions of a watch is
+  `_xpack/watcher/watch/{watch_id}/_ack/{action_id}`. The old notation was
+  `watcher/watch/{watch_id}/{action_id}/_ack`, which will be removed
+  in future releases.
+
+[float]
+[[enhancements-5.0.0]]
+==== Enhancements
+
+Graph::
+* Added ability to save Graph workspaces
+* Added ability to drill-down on Graph selections using other Kibana
+visualizations
+* In the Graph UI, you can now use an index pattern such as `logstash-*` to
+select multiple time-based indices instead of a single index.
+
+Monitoring::
+* Added dots for all points on charts.
+* Added the ability to highlight points by hovering close to them. The
+highlighted point, and those from other series at the X-position, are what are
+displayed in the legend.
+* Added a monitoring ingest pipeline so that future releases will be compatible
+even if backward incompatible changes are made. This is enabled by default, but
+can be disabled by setting `use_ingest` to `false` at the exporter level
+(for example, `xpack.monitoring.exporters.my_exporter.use_ingest: false`).
+* Added the ability for HTTP exporters to send arbitrary HTTP headers along
+with requests. This allows the HTTP exporter to be used with proxies to route
+monitoring data more dynamically, if necessary. This can be used by supplying
+name-value pairs at the exporter level (for example,
+`xpack.monitoring.exporters.my_exporter.headers.X-My-Header: abc123`).
+* Rewrote the HTTP exporter to use the low-level REST Client and better pool
+connections. This reduces the resources used for both networking and parsing.
+* Added Kibana instance monitoring as part of the same Elastic Cluster.
+* Added experimental charts to be used while monitoring Kibana instances.
+* Added breadcrumbs to allow simpler navigation between monitoring pages.
+* Simplified the Indices tab to remove charts that already appeared on the
+Overview page so that indices are more accessible.
+* Simplified overall status handling so that it is clearer what the status of
+the current item is (e.g., index view gives index status).
+* Added index memory graph to the Node page so that the cost of open indices
+can be determined more accurately.
+* Added the total indexing rate alongside the primary indexing rate. Total
+includes both primaries and replicas.
+* Added color to all charts.
+* Added units to all chart titles.
+* Added the internals to support monitoring Kibana instances.
+* Improved the display of values in the legend.
+* Shortened the welcome message.
+
+Security::
+* Native users and roles can now be used on tribe nodes.
+* Added the ability to disable native and reserved users.
+* Added ability to define exclusions for fields in field level security.
+* Added <<built-in-roles,built-in roles>> for reporting users, monitoring users,
+remote monitoring agents, and users of the Kibana ingest feature.
+* Auditing supports an <<audit-event-types,`authentication_success` event>> that
+is output after authentication. This event can output the body of the request,
+so in combination with the `authentication_failed` event all request bodies can
+be audited.
+* Added a {xpack} specific transport client, <<transport-client,
+`PreBuiltXPackTransportClient`>>, that provides an easy way to use the
+transport client with {xpack} and other modules of Elasticsearch such as
+reindex.
+* Auditing now de-duplicates the names of indices when logging.
+* Document and Field Level Security can be used with realtime requests.
+* The `certgen` tool no longer generates file names that would result in hidden
+files and now offers an option to specify the validity
+time of the generated certificates.
+* Added an `ingest_admin` role that grants the permissions requried to use the
+ingest feature in Kibana.
+* New `elastic` and `kibana` built-in users.
+* New `superuser` and `transport_client` built-in roles.
+* Added a <<security-api-reset-user-password, password>> API to enable
+administrators and users to reset and change passwords.
+* Added a built-in `kibana_user` role that grants the minimum
+set of privileges needed to use Kibana.
+* Default anonymous username changed to `_anonymous` (used to be
+`_es_anonymous_user`)
+
+Watcher::
+* Allow use of `inline` attachments in emails, so that desktop clients can
+display attachments like images embedded in emails.
+* The HTTP headers of a response are now part of the payload and can be
+accessed via   `ctx.payload._headers`
+* Individual actions now support conditions. This is useful when a single watch
+contains multiple actions--specific actions can fire based on the current
+context.
+* Watches can now be modified or deleted while they are running, which is
+especially useful for long running watches
+
+
+[float]
+[[bugs-5.0.0]]
+==== Bug Fixes
+Security::
+* Updated document level security to support preventing requests that use
+scripts or `now()` from being cached.
+Watcher::
+* The watch version is now ignored when deleting a watch.
+
+
+[float]
+== X-Plugins Release Notes (Pre-5.0)
+
+* <<security-release-notes, Shield>>
+
+* <<watcher-release-notes, Watcher>>
+
+* <<monitoring-release-notes, Marvel>>
+
+* <<graph-release-notes, Graph>>
+
+
+include::shield/release-notes.asciidoc[]
+include::marvel/release-notes.asciidoc[]
+include::{xes-repo-dir}/watcher/release-notes.asciidoc[]
+include::{xkb-repo-dir}/reporting/release-notes.asciidoc[]
+include::{xkb-repo-dir}/graph/release-notes.asciidoc[]
+//include::{xes-repo-dir}/ml/release-notes.asciidoc[]

@@ -1,0 +1,469 @@
+[[migrating-to-xpack]]
+== Migrating to X-Pack
+
+[[security-migration]]
+=== Migrating from Shield
+
+With the move to X-Pack, the biggest changes to security functionality are the
+names of the security configuration options, TLS/SSL configuration, and how roles
+are defined. A few privileges have also been removed. This section describes the
+changes you need to make when upgrading from Shield.
+
+Also, all endpoints have been renamed from `/_shield/XYZ` to `/_xpack/security/XYZ`.
+
+==== Migrating Settings
+
+Most Shield settings have simply had their prefix changes from `shield.` to
+`xpack.security.`. Hare a few examples of Shield 2.x settings and their new {xpack}
+counterparts:
+
+[options="header"]
+|=====
+| Shield 2.x Setting Name              | X-Pack 5.0 Setting Name
+| `shield.authc.realms.*`              | `xpack.security.authc.realms.*`
+| `shield.audit.outputs`               | `xpack.security.audit.outputs`
+|======
+
+Persistent cluster state settings used for <<ip-filtering, IP Filtering>> are not automatically migrated to the new names. You will need to
+manually migrate these settings.
+
+[[security-tls-ssl-migrate]]
+===== TLS/SSL Settings
+
+{xpack} introduces a simpler way of configuring TLS/SSL within your cluster and
+as part of this effort, some of the settings have changed or been removed. Also,
+new options have been introduced, which includes the ability to more easily
+separate default TLS/SSL configurations from the transport configuration.
+
+There is a hierarchy to TLS/SSL settings in {xpack}, which allows for a simple
+configuration for everything or customizations to be applied to individual
+components. The {xpack} wide configuration are the settings that being with
+`xpack.ssl`. {security} adds configuration for HTTP under the settings
+that begin with `xpack.security.http.ssl.` and Transport under the settings that
+begin with `xpack.security.transport.ssl.`. Transport profiles can still have
+their own configurations with settings that begin with
+`transport.profiles.$PROFILE.xpack.security.ssl.` and they will fallback to
+the default transport configuration. Realms can also have their own
+configurations, which are available as settings that begin with
+`xpack.security.authc.realms.$REALM_NAME.ssl.`.
+
+There is also an important change in terms of how hostname verification is done
+by {Security}. Previously, a reverse DNS lookup would be made to determine the
+name of the address being connected to. This reverse DNS lookup has been removed
+and the name/address provided when connecting is used. Please make sure the
+the publish host on your nodes is one of the values in the certificate.
+
+The following settings have been replaced with new settings:
+
+[horizontal]
+`shield.ssl`::
+Use `xpack.security.transport.ssl.enabled` as a replacement to control whether ssl is enabled or disabled
+for node to node and transport client traffic.
+
+`shield.http.ssl`::
+Use `xpack.security.http.ssl.enabled` as a replacement to control whether ssl is enabled or disabled for http traffic.
+
+`shield.ssl.ciphers`::
+Use `xpack.ssl.cipher_suites` as a replacement to control the default enabled cipher suites.
+
+`shield.ssl.hostname_verification`::
+This boolean setting has been replaced by `xpack.ssl.verification_mode` that supports more options as described in the
+<<ssl-tls-settings, ssl settings>> reference section.
+
+`shield.authc.realms.$REALM_NAME.hostname_verification`::
+This boolean setting has been replaced by `xpack.authc.realms.$REALM_NAME.ssl.verification_mode` that supports more
+options as described in the <<ssl-tls-settings, ssl settings>> reference section.
+
+The following settings have been removed:
+
+[horizontal]
+`shield.ssl.hostname_verification.resolve_name`::
+This setting controlled the name resolution for SSL traffic, but was not easy to use and hard to set up. If certificates are not set with
+the proper DNS names, you should configure `xpack.security.verification_mode` as either `certificate` or `none`.
+
+`shield.ssl.session.cache_size`::
+The value for the SSL session cache size should be configured through the use of the system property `javax.net.ssl.sessionCacheSize`.
+
+`shield.ssl.session.cache_timeout`::
+The SSL session cache timeout being set incorrectly can negatively impact performance and was not widely used, so it has been removed and
+the default value of the JDK is used.
+
+include::shield/authentication/migrate-tool.asciidoc[]
+
+==== File Configuration Changes
+In Shield, the location of the `users`, `users_roles`, `roles.yml`, and `system_key`
+files could be changed using settings. In {xpack}, these files must always reside
+in the `CONFIG_DIR/x-pack` directory.
+
+==== `esusers` Realm Changes
+In Shield, `esusers` was the type for the file based realm. This realm type has been
+renamed to `file` in {xpack}.
+
+Additionally, the names of users in the `file` based realm are not allowed to conflict
+with the <<built-in-users, built-in users>>.
+
+==== Role Format Changes
+
+In {xpack}, the format for specifying <<roles, roles>> in the `roles.yml` file is much stricter:
+
+* Role names are not allowed to conflict with the <<built-in-roles, built-in roles>>.
+* Index names and expressions, such as `.kibana` or `logstash-*`, may no longer be
+used as the <<index-expression-keys, `key` for a set of indices permissions>>.
+* Support for comma-separated values and single values has been removed
+in favor of collections or arrays.
+* Syntax for field level security has changed. Instead of providing a list of allowed `fields`, the allowed fields are now inside an
+object `field_security`. The new syntax allows to also define exceptions.
+See <<field-level-security, field-level-security>> for more details.
+
+The easiest way to migrate your roles, will be by converting the roles to `native` roles
+using the <<migrate-tool, `migrate` tool>> prior to upgrading to {xpack}.
+
+The following role shows how to specify multiple cluster and index
+permissions using collections.
+
+.Using collection notation to define roles
+[source,yaml]
+---------------------------------------------------
+get_user: <1>
+  cluster: <2>
+    - monitor
+    - manage_security
+  indices:
+    - names: <3>
+        - events_index
+        - results
+      privileges:
+        - read
+        - monitor
+    - names: <4>
+        - user_index
+      privileges:
+        - monitor
+        - read
+      query:
+        term:
+          department_id: 12
+      field_security:
+        grant:
+          - name
+          - email
+          - contact.*
+        except:
+          - contact.mobile
+---------------------------------------------------
+<1> The name of the role is `get_user`
+<2> The cluster privileges are defined as a collection
+<3> The first set of indices permissions contained in this role. This permission
+    applies to the `events_index` and `results` indices and grants the `read` and
+    `monitor` privileges.
+<4> The second set of indices permissions contained in this role. This permission
+    applies to the `user_index` index, grants `monitor` and `read` privileges,
+    limits the visible documents to those matching the `query` and limits the
+    visible fields inside of the documents to `name` and `email` and all contact fields except for contact.mobile.
+
+You can also use arrays to specify multiple cluster and index permissions.
+The following role uses the array notation to define the same role as in the
+previous example.
+
+.Using array notation to define roles
+[source,yaml]
+---------------------------------------------------
+get_user:
+  cluster: [ monitor, manage_security ]
+  indices:
+    - names: [ events_index, results ]
+      privileges: [ read, monitor ]
+    - names: user_index
+      privileges: [ monitor, read ]
+      query:
+        term:
+          department_id: 12
+      field_security:
+        grant: [ name, email, contact.* ]
+        except: [ contact.mobile ]
+---------------------------------------------------
+
+Values for `cluster`, `privileges`, and the entries in `fields_security` must be specified as a collection
+or array even if there's only one value. You can specify a single value for the
+`names` field.
+
+[[index-expression-keys]]
+If you have roles that use an index name or expression as a key, you'll
+need to update them. For example, the following role definitions
+are no longer valid.
+
+[source,yaml]
+---------------------------------------------------
+# Unsupported role format: index name as key and privilege as value
+get_user:
+  indices:
+    'events_index': read
+---------------------------------------------------
+
+[source,yaml]
+---------------------------------------------------
+# Unsupported role format: index name as the key with privileges as a value within the object
+get_user:
+  indices:
+    'events_index':
+      privileges: read
+---------------------------------------------------
+
+You can rewrite this role to work with X-Pack using collection notation:
+
+[source,yaml]
+---------------------------------------------------
+# Correct role format for X-Pack
+get_user:
+  indices:
+    - names: <1>
+        - events_index
+      privileges:
+        - read
+---------------------------------------------------
+<1> This line is the start of a privilege definition for a set of indices. Note
+    that this line is indented further underneath `indices`
+
+Similarly, if you have roles that use comma-separated values to specify multiple
+values, you need to rewrite them to use the collection or array notation. For
+example, the following role definition is no longer valid.
+
+[source,yaml]
+---------------------------------------------------
+# Unsupported role format: comma-separated values
+get_user:
+  cluster: monitor, manage
+  indices:
+    'events_index,results':
+       - privileges: read, write, create_index
+       - field_security:
+         - grant: fieldA, fieldB
+---------------------------------------------------
+
+You can rewrite this role using either collections or arrays.
+
+.Specifying multiple values with a collection
+[source,yaml]
+---------------------------------------------------
+get_user:
+  cluster:
+    - monitor
+    - manage
+  indices:
+    - names :
+        - 'events_index'
+        - 'results'
+      privileges:
+        - read
+        - write
+        - create_index
+      field_security:
+        grant:
+          - fieldA
+          - fieldB
+---------------------------------------------------
+
+.Specifying multiple values with an array
+[source,yaml]
+---------------------------------------------------
+get_user:
+  cluster: [ 'monitor', 'manage' ]
+  indices:
+    - names: [ 'events_index', 'results' ]
+      privileges: [ 'read', 'write', 'create_index' ]
+      field_security:
+        grant: [ 'fieldA', 'fieldB' ]
+---------------------------------------------------
+
+If you have roles that specify single values for `cluster`, `privileges`,
+and `fields`, you need to rewrite them to use the collection or array notation.
+For example, the following role definition is no longer valid.
+
+[source,yaml]
+---------------------------------------------------
+# Unsupported role format: single values
+get_user:
+  cluster: manage
+  indices:
+    'events_index':
+       - privileges: read
+         field_security:
+           grant: fieldA
+---------------------------------------------------
+
+You can rewrite this role using collections or arrays (or a combination of
+the two). Note that the `names` field still accepts a single value.
+
+.Specifying multiple values with collections and arrays
+[source,yaml]
+---------------------------------------------------
+get_user:
+  cluster:
+    - manage
+  indices:
+    - names: 'events_index'
+      privileges:
+        - read
+      field_security:
+        grant: [ 'fieldA' ]
+---------------------------------------------------
+
+==== Removed Privileges
+
+A few of the <<security-privileges, privileges>> that were available in Shield 2.x
+are no longer available in X-Pack. The following tables list the privileges that
+have been removed and their suggested replacements.
+
+.Cluster Privileges
+[options="header"]
+|======
+| Removed Privilege | Replacement Privilege
+| `manage_shield`   | `manage_security`
+| `manage_watcher`  | `manage`
+| `monitor_watcher` | `monitor`
+|======
+
+.Indices Privileges
+[options="header"]
+|======
+| Removed Privilege | Replacement Privilege
+| `get`             | `read`
+| `search`          | `read`
+| `suggest`         | `read`
+| `crud`            | `read`,`write`
+| `data_access`     | `read`,`write`
+| `manage_aliases`  | `manage`
+|======
+
+==== Field level security and the percolator
+
+The percolator has been refactored and now requires a `percolator` field in the mapping.
+As a result, when using field level security with the percolator, access to the `percolator` field needs to be granted.
+
+==== Auditing Changes
+
+A new event type, `realm_authentication_failed`, has been added. These events were
+previously audited as `authentication_failed` events but in some cases produced confusing
+output. The `realm_authentication_failed` event indicates that the credentials provided by
+the user failed authentication for a specific realm; it does not indicate a failed login
+attempt as there could be other realms to try to authenticate against.
+
+The <<audit-log-output, `logfile`>> output no longer relies on the logger level to determine
+what events to output. The `xpack.security.audit.logfile.events.include` setting can be used
+to specify the events that should be output; you may also use the
+`xpack.security.audit.logfile.events.exclude` setting to simply exclude values from the
+defaults.
+
+Some audit events would output the content of a REST request if the log level was configured at
+the `TRACE` level; control over this output has been replaced with the settings
+`xpack.security.audit.logfile.events.emit_request_body` and
+`xpack.security.audit.index.events.emit_request_body` for the logfile and index outputs. The
+default is `false`.
+
+Finally, as part of the move to Log4j2 the `logging.yml` file has been replaced with the
+`log4j2.properties` file.
+
+==== Run As Changes
+
+In {security}, the default header name for <<run-as-privilege,submitting requests>> on behalf of other users has changed
+to `es-security-runas-user`. Applications making use of the run as functionality will need to use the new header name.
+
+=== Migrating from Marvel
+
+Prior to 5.0, monitoring functionality was provided as a separate Marvel plugin
+for Elasticsearch and Kibana. As of 5.0, all of Marvel's features have been
+rolled into {monitoring}.
+
+To migrate to {monitoring}, you simply need to install {xpack} and update your
+monitoring settings:
+
+[options="header"]
+|=====
+| Monitoring 2.x Settings          | X-Pack 5.0 Settings
+| `marvel.*`                       | `xpack.monitoring.*`
+| `marvel.agent.*`                 | `xpack.monitoring.collection.*`
+| `marvel.agent.exporters.*`       | `xpack.monitoring.exporters.*`
+|======
+
+For example `marvel.history.duration` is now `xpack.monitoring.history.duration`,
+and `marvel.agent.interval` is now `xpack.monitoring.collection.interval`.
+
+See <<xpack-settings, X-Pack Settings>> for the complete list of
+<<monitoring-settings, {monitoring} settings>> and other X-Pack configuration
+options.
+
+All of the Marvel metric indexes created by Marvel 2.3+ (named like
+`.marvel-es-1-*`) will be automatically aliased to be used by Monitoring.
+Marvel metric indexes created by 2.0 through 2.2 are not compatible with
+Monitoring so they are unused and unmodified. You can delete them by running:
+
+[source,js]
+--------------------------------------------------
+DELETE /.marvel-es-20*
+--------------------------------------------------
+// CONSOLE
+// TEST[s/^/PUT .marvel-es-2016-01-01\n/]
+
+Marvel's data index (named like `.marvel-es-data` or `.marvel-es-data-1`) is
+also unused and unmodified. Monitoring will recreate a new data index soon
+after startup so there is no real need to keep Marvel's data indexes. You can
+delete them by running:
+
+[source,js]
+--------------------------------------------------
+DELETE /.marvel-es-data*
+--------------------------------------------------
+// TEST[s/^/PUT .marvel-es-data\n/]
+
+==== Using an External Monitoring Cluster
+
+To use an external monitoring cluster to monitor an Elasticsearch 5.0 cluster,
+you must run Elasticsearch 5.0 on the monitoring cluster. For more information
+about external monitoring clusters, see <<monitoring-cluster,
+Setting up a Separate Monitoring Cluster>>.
+
+=== Migrating from Watcher
+
+Prior to 5.0 all watcher specific settings were prefixed with `watcher`. Those
+have been changed to start with `xpack.watcher` now, For example
+`watcher.execution.default_throttle_period` becomes
+`xpack.watcher.execution.default_throttle_period`.
+
+The setting to allow scripting only for watcher has been renamed from
+`script.engine.groovy.inline.elasticsearch-watcher_watch` to
+`script.engine.groovy.inline.xpack_watch`.
+
+All account specific SMTP timeouts (`smtp.timeout`, `smtp.connection_timeout` and
+`smtp.write_timeout`) now require a time value instead of a number, that
+represented milliseconds in earlier releases.
+
+Watcher history now uses a versioned template. The index names also changed and
+contain this version. So instead of `.watch_history_2016.02.03` the new index
+name is `.watcher-history-1-2016.02.03`, `1` being the current version. If are
+also migrating from Shield (to {security}).
+
+IMPORTANT:  this might require you to change roles/permissions because of the
+            different index names!
+
+The old index template named `watch_history` can be deleted now. It will not
+interfere with the newly added index template though.
+
+The notification settings for pagerduty, slack, hipchat and email have been moved and renamed. The move
+happened from `xpack.watcher.actions` to `xpack.notification`.
+For example the slack configuration needs to move from `xpack.watcher.actions.slack.service`
+to `xpack.notification.slack`. The `service` part has been removed for all notification settings.
+
+All watcher endpoints have been renamed from `/_watcher/XYZ` to `/_xpack/watcher/XYZ`.
+You might need to fix this in your clients, monitoring scripts, potential HTTP proxies/redirectors
+as well as in your watches.
+
+==== Watcher and scripts
+
+The default scripting language in Elasticsearch has been changed to be painless. This applies for Watcher too, so
+when new scripts or updating existing scripts and no script language has been explicitly specified then the painless
+language will be used.
+
+If in your watches you have scripts that don't set the scripting language specifically then upon upgrading watcher
+will set the language explicitly. By default the language will be set to groovy. If you your default language for scripts
+is different than groovy then set the `script.legacy.default_lang` setting before upgrading to what your default language
+is now.  This is important otherwise watches may not work after the upgrade and you need to update all your watches manually.

@@ -1,0 +1,93 @@
+[[monitoring-logstash]]
+== Monitoring Logstash
+
+To monitor Logstash nodes:
+
+. Install {xpack} by running `bin/logstash-plugin install` in the Logstash
+installation directory on each node you want to monitor:
++
+[source,shell]
+----------------------------------------------------------
+bin/logstash-plugin install x-pack
+----------------------------------------------------------
++
+NOTE: The plugin install script requires direct Internet access
+to download and install {xpack}. If your Logstash node doesn’t have
+Internet access, <<xpack-installing-offline, manually download and install
+{xpack}>>.
+
+. Configure your Logstash nodes to send metrics to your *production
+Elasticsearch cluster* by setting the `xpack.monitoring.elasticsearch.url`
+in `logstash.yml`. If security is enabled, you also need to specify
+the credentials for the built-in `logstash_system` user.
++
+IMPORTANT: Even if you are using a dedicated monitoring cluster,
+you must configure your Logstash nodes to send metrics to your
+_production cluster_. Metrics cannot be sent directly to the
+monitoring cluster.
++
+[source,yaml]
+--------------------------------------------------
+xpack.monitoring.elasticsearch.url: ["http://es-prod-node-1:9200", "http://es-prod-node-2:9200"] <1>
+xpack.monitoring.elasticsearch.username: "logstash_system" <2>
+xpack.monitoring.elasticsearch.password: "changeme"
+--------------------------------------------------
+<1> If SSL/TLS is enabled on the production cluster, you must
+connect through HTTPS. As of v5.2.1, you can specify multiple
+Elasticsearch hosts as an array as well as specifying a single
+host as a string. If multiple URLs are specified, Logstash
+can round-robin requests to these production nodes.
+<2> The `logstash_system` user is automatically added when you
+install {xpack}. Don't forget to change the default passwords for all of the
+<<built-in-users, built in users>>. If {security} is disabled on the production
+cluster, you can omit the `username` and `password` for the agent.
+
+. If SSL/TLS is enabled on the production Elasticsearch cluster, specify the trusted
+CA certificate(s) that will be used to verify the identity of the nodes
+in the cluster.
++
+--
+To add a CA certificate to a Logstash node's trusted certificates, you
+can specify the location of the PEM encoded certificate with the
+`ca` setting:
+
+[source,yaml]
+--------------------------------------------------
+xpack.monitoring.elasticsearch.ssl.ca: [ "/path/to/ca.crt" ]
+--------------------------------------------------
+
+Alternatively, you can configure trusted certificates using a truststore
+(a Java Keystore file that contains the certificates):
+
+[source,yaml]
+--------------------------------------------------
+xpack.monitoring.elasticsearch.ssl.truststore.path: /path/to/file
+xpack.monitoring.elasticsearch.ssl.truststore.password: password
+--------------------------------------------------
+
+Also, optionally, you can set up client certificate using a keystore
+(a Java Keystore file that contains the certificate):
+
+[source,yaml]
+--------------------------------------------------
+xpack.monitoring.elasticsearch.ssl.keystore.path: /path/to/file
+xpack.monitoring.elasticsearch.ssl.keystore.password: password
+--------------------------------------------------
+
+--
+
+. Restart your Logstash nodes.
+
+. To verify your {monitoring} configuration, point your web browser at your Kibana
+host, and select **Monitoring** from the side navigation. Metrics reported from
+your Logstash nodes should be visible in the Logstash section. When security is
+enabled, to view the monitoring dashboards you must log in to Kibana as a user
+who has the `kibana_user` and `monitoring_user` roles.
++
+image:monitoring.jpg["Monitoring",link="images/monitoring.jpg"]
+
+[float]
+=== Re-enabling Logstash Monitoring After Upgrading
+
+When upgrading from older versions of {xpack}, the built-in `logstash_system`
+user is disabled for security reasons. To resume monitoring, <<monitoring-troubleshooting, change the password and re-enable the logstash_system user>>.

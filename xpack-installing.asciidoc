@@ -1,0 +1,293 @@
+[[installing-xpack]]
+== Installing X-Pack
+
+To use X-Pack you need:
+
+* Elasticsearch {version} - {ref}/_installation.html[Installing Elasticsearch]
+* Kibana {version} -  {kibana-ref}/setup.html[Getting Kibana Up and Running]
+
+You must run the version of {xpack} that matches the version of Elasticsearch
+you are running.
+
+{xpack} also provides a monitoring UI for {logstash-ref}/introduction.html[Logstash].
+
+IMPORTANT: If you are installing {xpack} for the first time on an existing
+cluster, you must perform a full cluster restart. Installing {xpack} enables
+security and security must be enabled on ALL nodes in a cluster for the cluster
+to operate correctly. When <<xpack-upgrading, upgrading>> you can usually perform
+a {ref}/rolling-upgrades.html[rolling upgrade].
+
+To install {xpack}:
+
+. Run `bin/elasticsearch-plugin install` from `ES_HOME` on each node in your cluster:
++
+[source,shell]
+----------------------------------------------------------
+bin/elasticsearch-plugin install x-pack
+----------------------------------------------------------
++
+NOTE: If you are using a <<xpack-package-installation, DEB/RPM distribution>>
+      of Elasticsearch, run the installation with superuser permissions. To
+      perform an offline installation, <<xpack-installing-offline, download the X-Pack binaries>>.
+
+. Confirm that you want to grant {xpack} additional permissions. {xpack} needs
+these permissions to set the threat context loader during install so Watcher can
+send email notifications.
++
+[source,shell]
+----------------------------------------------------------
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@     WARNING: plugin requires additional permissions     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+* java.lang.RuntimePermission accessClassInPackage.com.sun.activation.registries
+* java.lang.RuntimePermission getClassLoader
+* java.lang.RuntimePermission setContextClassLoader
+* java.lang.RuntimePermission setFactory
+* java.security.SecurityPermission createPolicy.JavaPolicy
+* java.security.SecurityPermission getPolicy
+* java.security.SecurityPermission putProviderProperty.BC
+* java.security.SecurityPermission setPolicy
+* java.util.PropertyPermission * read,write
+* java.util.PropertyPermission sun.nio.ch.bugLevel write
+* javax.net.ssl.SSLPermission setHostnameVerifier
+See http://docs.oracle.com/javase/8/docs/technotes/guides/security/permissions.html
+for descriptions of what these permissions allow and the associated risks.
+
+Continue with installation? [y/N]y
+----------------------------------------------------------
++
+TIP:  Specify the `--batch` option when running the install command to
+      automatically grant these permissions and bypass this install prompt.
+
+. If you have disabled automatic index creation in Elasticsearch, configure
+{ref}/docs-index_.html#index-creation[`action.auto_create_index`] in
+`elasticsearch.yml` to allow X-Pack to create the following indices:
++
+[source,yaml]
+-----------------------------------------------------------
+action.auto_create_index: .security,.monitoring*,.watches,.triggered_watches,.watcher-history*
+-----------------------------------------------------------
+
+. Start Elasticsearch.
++
+[source,shell]
+----------------------------------------------------------
+bin/elasticsearch
+----------------------------------------------------------
+
+. Install {xpack} into {kibana-ref}/setup.html[Kibana] by running
+`bin/kibana-plugin` in your Kibana installation directory.
++
+[source,shell]
+----------------------------------------------------------
+bin/kibana-plugin install x-pack
+----------------------------------------------------------
+
+. Start Kibana.
++
+[source,shell]
+----------------------------------------------------------
+bin/kibana
+----------------------------------------------------------
+
+. Install {xpack} on your {logstash-ref}/installing-logstash.html[Logstash]
+nodes by running `bin/logstash-plugin` in the Logstash installation directory.
++
+[source,shell]
+----------------------------------------------------------
+bin/logstash-plugin install x-pack
+----------------------------------------------------------
+
+. {logstash-ref}/configuration.html[Configure and start Logstash].
+
+To verify {xpack} installation, point your web browser at `http://localhost:5601/`
+to open Kibana. You should be prompted to log in to Kibana. To log in, you can
+use the built-in `elastic` user and the password `changeme`.
+
+[IMPORTANT]
+=============================================================================
+SSL/TLS encryption is disabled by default, which means user credentials are
+passed in the clear. **Do not deploy to production without enabling encryption!**
+For more information, see <<encrypting-communications, Encrypting
+Communications>>.
+
+You must also **change the passwords for the built-in `elastic` user and the
+`kibana` user that enables Kibana to communicate with elasticsearch before
+deploying to production**. See <<built-in-users, Built-in
+Users>> for more information.
+=============================================================================
+
+[float]
+[[xpack-package-installation]]
+=== Installing {xpack} on a DEB/RPM Package Installation
+
+If you use the DEB/RPM packages to install Elasticsearch, by default Elasticsearch
+is installed in `/usr/share/elasticsearch` and the configuration files are stored
+in `/etc/elasticsearch`. (For the complete list of default paths, see
+{ref}/deb.html#deb-layout[Debian Directory Layout] and
+{ref}/rpm.html#rpm-layout[RPM Directory Layout] in the Elasticsearch Reference.)
+
+To install {xpack} on a DEB/RPM package installation, you need to run
+`bin/plugin install` from the `/usr/share/elasticsearch` directory with superuser
+permissions:
+
+[source,shell]
+----------------------------------------------------------
+cd /usr/share/elasticsearch
+sudo bin/elasticsearch-plugin install x-pack
+----------------------------------------------------------
+
+NOTE: If the configuration files are not in `/etc/elasticsearch` you
+      need to specify the location of the configuration files by
+      setting the system property`es.path.conf` to the config path via
+      `ES_JAVA_OPTS="-Des.path.conf=<path>"` or by setting the
+      environment variable `CONF_DIR` via `CONF_DIR=<path>`.
+
+[float]
+[[xpack-installing-offline]]
+=== Installing {xpack} on Offline Machines
+The plugin install scripts require direct Internet access
+to download and install {xpack}. If your server doesn’t have Internet access, you
+can manually download and install {xpack}.
+
+To install {xpack} on a machine that doesn't have Internet access:
+
+. Manually download the {xpack} zip file:
+https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-{version}.zip[
++https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-{version}.zip+]
+(https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-{version}.zip.sha1[sha1])
+
+. Transfer the zip file to a temporary directory on the offline machine. (Do NOT
+put the file in the Elasticsearch plugins directory.)
+
+. Run `bin/elasticsearch-plugin install` from the Elasticsearch install directory
+and specify the location of the {xpack} zip file. For example:
++
+["source","sh",subs="attributes"]
+----------------------------------------------------------
+bin/elasticsearch-plugin install file:///path/to/file/x-pack-{version}.zip
+----------------------------------------------------------
++
+NOTE:  You must specify an absolute path to the zip file after the `file://` protocol.
+
+. Run `bin/kibana-plugin install` from the Kibana install directory and
+specify the location of the {xpack} zip file. (The plugins for Elasticsearch,
+Kibana, and Logstash are included in the same zip file.) For example:
++
+["source","sh",subs="attributes"]
+----------------------------------------------------------
+bin/kibana-plugin install file:///path/to/file/x-pack-{version}.zip
+----------------------------------------------------------
+
+. Run `bin/logstash-plugin install` from the Logstash install directory and
+specify the location of the {xpack} zip file. (The plugins for Elasticsearch,
+Kibana, and Logstash are included in the same zip file.) For example:
++
+["source","sh",subs="attributes"]
+----------------------------------------------------------
+bin/logstash-plugin install file:///path/to/file/x-pack-{version}.zip
+----------------------------------------------------------
+
+[float]
+[[xpack-enabling]]
+=== Enabling and Disabling {xpack} Features
+
+By default, all {xpack} features are enabled. You can explicitly enable or
+disable {xpack} features in `elasticsearch.yml` and `kibana.yml`:
+
+[options="header"]
+|======
+| Setting                           | Description
+| `xpack.security.enabled`          | Set to `false` to disable {security}.
+Configure in both `elasticsearch.yml` and `kibana.yml`.
+| `xpack.monitoring.enabled`        | Set to `false` to disable {monitoring}.
+Configure in both `elasticsearch.yml` and `kibana.yml`.
+| `xpack.graph.enabled`             | Set to `false` to disable {graph}.
+Configure in both `elasticsearch.yml` and `kibana.yml`.
+| `xpack.watcher.enabled`           | Set to `false` to disable {watcher}.
+Configure in `elasticsearch.yml` only.
+| `xpack.reporting.enabled`         | Set to `false` to disable {reporting}.
+Configure in `kibana.yml` only.
+|======
+
+[float]
+[[xpack-upgrading]]
+=== Upgrading {xpack}
+
+To upgrade {xpack}:
+
+. Stop Elasticsearch.
+
+. Uninstall {xpack} from Elasticsearch:
++
+[source,shell]
+--------------------------------------------------
+bin/elasticsearch-plugin remove x-pack
+--------------------------------------------------
+
+. Install the new version of {xpack} into Elasticsearch.
++
+[source,shell]
+----------------------------------------------------------
+bin/elasticsearch-plugin install x-pack
+----------------------------------------------------------
+
+. Restart Elasticsearch.
++
+IMPORTANT:  If you're upgrading a production cluster, perform a
+            {ref}/rolling-upgrades.html[rolling upgrade] to ensure recovery is
+            as quick as possible. Rolling upgrades are supported when upgrading
+            to a new minor version. A full cluster restart is required when
+            upgrading to a new major version.
+
+. Uninstall {xpack} from Kibana:
++
+[source,shell]
+--------------------------------------------------
+bin/kibana-plugin remove x-pack
+--------------------------------------------------
+
+. Install the new version of {xpack} into Kibana.
++
+[source,shell]
+----------------------------------------------------------
+bin/kibana-plugin install x-pack
+----------------------------------------------------------
+
+. Restart Kibana.
+
+[float]
+[[xpack-uninstalling]]
+=== Uninstalling {xpack}
+
+To uninstall {xpack}:
+
+. Stop Elasticsearch.
+
+. Remove {xpack} from Elasticsearch:
++
+[source,shell]
+----------------------------------------------------------
+bin/elasticsearch-plugin remove x-pack
+----------------------------------------------------------
+
+. Restart Elasticsearch.
+
+. Remove {xpack} from Kibana:
++
+[source,shell]
+----------------------------------------------------------
+bin/kibana-plugin remove x-pack
+----------------------------------------------------------
+
+. Restart Kibana.
+
+. Remove {xpack} from Logstash:
++
+[source,shell]
+----------------------------------------------------------
+bin/logstash-plugin remove x-pack
+----------------------------------------------------------
+
+. Restart Logstash.
+

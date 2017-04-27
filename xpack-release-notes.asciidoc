@@ -11,6 +11,7 @@ Release notes for all of the {xpack} components:
 [[xpack-change-list]]
 == Change List
 
+
 [float]
 [[xpack-6.0.0]]
 === 6.0.0
@@ -39,9 +40,63 @@ This results in the need to always escape all parts of an URL.
 * The new built-in HTTP client also enforces a maximum request size, which defaults to 10mb.
 
 [float]
+[[xpack-5.4.0]]
+=== 5.4.0
+TBD
+
+[float]
+[[enhancements-5.4.0]]
+==== Enhancements
+Security::
+* A new configuration setting is available to <<disabling-default-password, disable support for the default password>> (_"changeme"_).
+
+[float]
+[[bugs-5.4.0]]
+==== Bug Fixes
+
+Watcher::
+* Watch ack status is correctly reset, when the condition is not met again for the first time
+
+[float]
+[[xpack-5.3.2]]
+=== 5.3.2
+April 27, 2017
+
+[float]
+[[bugs-5.3.2]]
+==== Bug Fixes
+
+Watcher::
+* Fixed resetting of acknowledgement status on unmet conditions.
+
+[float]
+[[xpack-5.3.1]]
+=== 5.3.1
+April 20, 2017
+
+[float]
+[[enhancements-5.3.1]]
+==== Enhancements
+
+Watcher::
+* Parsing of comma separated email addresses, so you can use the `{{#join}}` tag to join an array of email addresses.
+
+[float]
+[[bugs-5.3.1]]
+==== Bug Fixes
+
+Security::
+* Fixed a problem in field level security that could result in users not seeing
+all the documents that they should.
+
+Watcher::
+* HTTP JSON parsing has been fixed when a response contains only a JSON array.
+* When watcher is disabled, the start up check on automatic index creation is now disabled as well.
+
+[float]
 [[xpack-5.3.0]]
 === 5.3.0
-TBD
+March 28, 2017
 
 [float]
 [[breaking-5.3.0]]
@@ -53,6 +108,10 @@ Security::
   instead of top level bulk response returning security exception with `403` error code. The top level bulk response
   always returns with `200` status code.
 * `create`, `index` and `delete` index privileges can execute bulk action.
+* Usage of Netty 3 for transport (`transport.type=security3`) or HTTP
+  (`http.type=security3`) is deprecated and will be removed in X-Pack
+  6.0.0. Instead, rely on the default implementations which are based on
+  Netty 4.
 
 [float]
 [[enhancements-5.3.0]]

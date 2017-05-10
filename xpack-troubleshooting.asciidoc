@@ -4,9 +4,9 @@
 [partintro]
 --
 Having trouble? Here are solutions to common problems you might encounter
-while using X-Pack. If you can't find the answer you need here, give a
-shout out for help in our {forum}[Discuss forum].
+while using X-Pack.
 
+* <<xpack-help,Getting Help>>
 
 * <<security-troubleshooting, {security}>>
 
@@ -18,9 +18,28 @@ shout out for help in our {forum}[Discuss forum].
 
 * <<reporting-troubleshooting, {reporting}>>
 
-//* <<ml-troubleshooting, X-Pack machine learning>>
+* <<ml-troubleshooting, X-Pack machine learning>>
 
 --
+
+[[xpack-help]]
+== Getting Help
+
+For issues with {xpack} that you cannot fix yourself … we’re here to help.
+If you are an existing Elastic customer with a support contract, please create
+a ticket in the
+https://support.elastic.co/customers/s/login/[Elastic Support portal].
+Or post in the https://discuss.elastic.co/c/x-pack[Elastic X-Pack forum].
+
+It might also be helpful to collect the following information, since it
+indicates which {xpack} features are enabled:
+
+[source,js]
+--------------------------------------------------
+GET _xpack/usage
+--------------------------------------------------
+
+
 include::{xes-repo-dir}/security/troubleshooting.asciidoc[]
 
 include::{xes-repo-dir}/watcher/troubleshooting.asciidoc[]
@@ -31,4 +50,4 @@ include::{xkb-repo-dir}/reporting/reporting-troubleshooting.asciidoc[]
 
 include::{xkb-repo-dir}/graph/troubleshooting.asciidoc[]
 
-//include::{xes-repo-dir}/ml/troubleshooting.asciidoc[]
+include::{xes-repo-dir}/ml/troubleshooting.asciidoc[]

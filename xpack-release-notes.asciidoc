@@ -4,8 +4,14 @@
 
 [partintro]
 --
-Release notes for all of the {xpack} components:
-{security}, {monitoring}, {watcher}, {reporting}, {xpackml}, and {graph}.
+This section summarizes the changes in each release for all of the {xpack}
+components: {security}, {monitoring}, {watcher}, {reporting}, {xpackml}, and
+{graph}.
+
+As a general rule, we strive to keep backwards compatibility between minor
+versions, but there might be breaking changes between major versions. Breaking
+changes are listed at the top of the release notes for each version.
+
 --
 
 [[xpack-change-list]]
@@ -16,13 +22,6 @@ Release notes for all of the {xpack} components:
 [[xpack-6.0.0]]
 === 6.0.0-alpha1
 May 9, 2017
-
-[float]
-[[bugs-6.0.0]]
-==== Bug Fixes
-
-Watcher::
-* The HTTP client respects timeouts now and does not get stuck leading to stuck watches
 
 [float]
 [[breaking-6.0.0]]
@@ -39,3 +38,9 @@ Watcher::
 This results in the need to always escape all parts of an URL.
 * The new built-in HTTP client also enforces a maximum request size, which defaults to 10mb.
 
+[float]
+[[bugs-6.0.0]]
+==== Bug Fixes
+
+Watcher::
+* The HTTP client respects timeouts now and does not get stuck leading to stuck watches

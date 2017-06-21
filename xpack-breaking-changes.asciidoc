@@ -11,231 +11,35 @@ versions (for example, 5.x to 5.y), but there might be breaking changes between
 major versions (for example, 5.x to 6.y). Breaking changes are also listed at
 the top of the <<xpack-release-notes,release notes>> for each version.
 
-* <<xpack-breaking-5.3.0>>
-* <<xpack-breaking-5.2.0>>
-* <<xpack-breaking-5.0.0>>
-* <<xpack-breaking-2.4.2>>
-* <<xpack-breaking-2.4.1>>
-* <<xpack-breaking-2.4.0>>
-* <<xpack-breaking-2.1.0>>
-* <<xpack-breaking-2.0.1>>
-* <<xpack-breaking-2.0.0>>
-* <<xpack-breaking-1.3.0>>
+* <<xpack-breaking-6.0.0-alpha2>>
+* <<xpack-breaking-6.0.0>>
 
 --
 
-[[xpack-breaking-5.3.0]]
-== Breaking Changes in 5.3
-
-Security::
-* Unauthorized bulk request is rejected on individual bulk item basis instead of
-being rejected as an entire operation. In case of insufficient privileges,
-individual bulk item responses return security exception with `403` error code
-instead of top level bulk response returning security exception with `403` error
-code. The top level bulk response always returns with `200` status code.
-* `create`, `index` and `delete` index privileges can execute bulk action.
-* Usage of Netty 3 for transport (`transport.type=security3`) or HTTP
-(`http.type=security3`) is deprecated and will be removed in X-Pack 6.0.0.
-Instead, rely on the default implementations which are based on Netty 4.
-
-[[xpack-breaking-5.2.0]]
-== Breaking Changes in 5.2
-
-Security::
-* The validation of security related settings has been tightened. {es} will
-refuse to start if it detects incorrect configuration of security realms or SSL/TLS.
-
-[[xpack-breaking-5.0.0]]
-== Breaking Changes in 5.0
-
-X-Pack::
-* All settings have been updated to use the `xpack` prefix. For more
-information, see <<migrating-to-xpack, Migrating to X-Pack>>.
-
-Licensing::
-* Licensing endpoint has been renamed from `/_license` to `/_xpack/license`.
-
-Monitoring::
-* `http` exporters no longer honor the `keep_alive` setting as this is handled
-by the low-level REST Client.
-* All `monitoring.agent.*` settings have been changed to more closely
-match other monitoring collection settings: `xpack.monitoring.collection.*`
-and `xpack.monitoring.exporters.*`.
-* The Index page's Lucene Memory chart was replaced with an Index Memory chart,
-which includes a superset of the information. Fielddata, which has become a
-significantly less common issue, has been rolled into the Index Memory chart.
-* To use an external monitoring cluster to monitor an {es} 5.0
-cluster, you must run {es} 5.0 on the monitoring cluster. For more
-information about external monitoring clusters,
-see <<monitoring-cluster,Setting up a Separate Monitoring Cluster>>.
-* All settings have been updated to use the `xpack.monitoring` prefix. For more
-information, see <<migrating-to-xpack, Migrating to X-Pack>>.
-
-Reporting::
-* Reporting encryption keys configured in `kibana.yml` must now be at least
-32 characters.
-
-Security::
-* Security encryption keys configured in `kibana.yml` must now be at least
-32 characters.
-* The <<security-tls-ssl-migrate,SSL configuration settings>> have been changed
-to use an easier to use format that also supports PEM files.
-* Removed the `files.users` and `files.users_roles` settings from the
-<<file-realm, `file` realm>>.
-* Removed the setting that allowed for a custom `roles.yml` file location
-to be specified. The `roles.yml` file must always be in the `CONF_DIR/x-pack`
-directory.
-* Removed the setting that allowed for a custom system key location to be
-defined. The `system_key` file must always be in the `CONF_DIR/x-pack`
-directory.
-* The <<audit-log-output, `logfile` output>> for auditing no longer uses the
-log level to determine which events to log. The events are now controlled
-in the same way as the `index` output.
-* Changed the syntax for <<field-level-security, field-level-security>>. Roles
-stored in the old format in native or file based realm will continue to work
-but new roles must use the new format.
-* The `esusers` realm has been renamed to `file` and the `esusers` command line
-tool has been renamed to `users`. Note that the
-<<managing-native-users, User and Role APIs>> are the preferred way to manage
-internal users.
-* Elasticsearch enables HTTP compression by default now. To mitigate potential
-security risks like the BREACH attack, {security} disables compression if HTTPS
-is enabled. If Elasticsearch should compress HTTPS traffic, please explicitly
-set `http.compression` to `true` in `elasticsearch.yml'.
-* You must specify all required values to override the global SSL configuration
-in a profile. If any values are omitted, the entire configuration falls back to
-the global settings,  `xpack.security.ssl.*`.
-* The `skipSslCheck` and `useUnsafeSessions` for Kibana have been replaced by
-`xpack.security.secureCookies` in `kibana.yml`. SSL is now _disabled_ by default.
-You can start Kibana without making any changes to `kibana.yml` after you install
-X-Pack. Do not deploy to production without <<encrypting-communications, enabling
-SSL/TLS encryption>>!
-* A default role is now applied to all users, including
-<<anonymous-access, anonymous users>>. The default role enables users to
-access the authenticate endpoint, change their own passwords, and get
-information about themselves.
-* All settings have been updated to use the `xpack.security` prefix. For more
-information, see <<migrating-to-xpack, Migrating to X-Pack>>.
+[[xpack-breaking-6.0.0-alpha2]]
+== Breaking Changes in 6.0.0 Alpha 2
 
 Watcher::
-* The `force` parameter of the
-<<watcher-api-delete-watch, Delete Watch Action>> has been removed.
-* The use of the `_timestamp` field for the execution time has been removed.
-The user now needs to set this explicitly in the `index` action.
-* The `_xpack/watcher/_start`, `_xpack/watcher/_restart`, and
-`_xpack/watcher/_stop` REST endpoints require `POST` actions instead of
-`PUT` actions. The _deprecated_ `_watcher/_start`, `_watcher/_restart`, and
-`_watcher/_stop` endpoints still allow `PUT`.
-* Watch history now uses a versioned template. The index names also changed
-and contain this version. So instead of `.watch_history_2016.02.03` the new
-index name is `.watcher-history-1-2016.02.03`, where `1` is the current
-version. If you are using {security}, this might require you to change
-roles/permissions because of the different index names! The old index template
-named `watch_history` can safely be deleted. However, it does not interfere
-with the new index template.
-* The setting that enables scripting only for {watcher} has been renamed from
-`script.engine.groovy.inline.elasticsearch-watcher_watch` to
-`script.engine.groovy.inline.xpack_watch`.
-* Elasticsearch has several breaking changes in the query DSL, including that
-`search_type=count` is no longer supported. Check to see if your watches use
-this search type and upgrade them to use `size: 0` in the request body as
-needed. For more information about breaking changes including search changes,
-see {ref}/breaking-changes-5.0.html[breaking changes section in {es}].
-* All account SMTP timeouts (`smtp.timeout`, `smtp.connection_timeout` and
-`smtp.write_timeout`) now require a time value instead of a number in
-milliseconds.
-* The notification settings for PagerDuty, Slack, HipChat, and email have been
-moved from `watcher.actions` to `xpack.notification`. You need to update your
-Elasticsearch configuration accordingly.
-* All watcher endpoints have been renamed from `/_watcher/XYZ` to
-`/_xpack/watcher/XYZ`. You might need to fix this in external scripts as well
-as in your watches.
-* The notification settings have been stripped of their `service` part. So
-`watcher.actions.slack.service.default_account` becomes
-`xpack.notification.slack.default_account`
-* The setting `watcher.shield.encrypt_sensitive_data` has been renamed to
-`xpack.watcher.encrypt_sensitive_data`
+* The watch `_status` field has been renamed to `status`, as underscores in
+field names will not be allowed.
 
+[[xpack-breaking-6.0.0]]
+== Breaking Changes in 6.0.0 Alpha 1
 
-[[xpack-breaking-2.4.2]]
-== Breaking Changes in Shield 2.4.2
-
-* Shield on tribe nodes now requires `tribe.on_conflict` to prefer one of the clusters.
-
-
-[[xpack-breaking-2.4.1]]
-== Breaking Changes in Reporting 2.4.1
-
-* To prevent abuse, the reporting endpoints now require requests to be submitted
-as HTTP POST requests rather than GET requests.
-* Requests must include the `kbn-xsrf` header added in {kib} 4.6.1. You should
-upgrade to {kib} 4.6.1 to use Reporting 2.4.1.
-
-
-[[xpack-breaking-2.4.0]]
-== Breaking Changes in Shield 2.4.0
-
-* The `monitor` cluster privilege now grants access to the GET `/_license` API
-
-
-[[xpack-breaking-2.1.0]]
-== Breaking Changes in Shield 2.1.0
-
-* Same as 2.0.1.
-<<field-and-document-access-control, Document and Field Level Security>> is now
-disabled by default. Set `shield.dls_fls.enabled` to `true` in `elasticsearch.yml`
-to enable it. You cannot submit `_bulk` update requests when document and field
-level security is enabled.
-
-
-[[xpack-breaking-2.0.1]]
-== Breaking Changes in Shield 2.0.1
-
-* <<field-and-document-access-control, Document and Field Level Security>> is
-now disabled by default. Set `shield.dls_fls.enabled` to `true` in
-`elasticsearch.yml` to enable it. You cannot submit `_bulk` update requests when
-document and field level security is enabled.
-
-
-[[xpack-breaking-2.0.0]]
-== Breaking Changes in 2.0.0
-
-Marvel::
-* Monitoring 2.0.0 is a complete rewrite from Monitoring 1.3. If you are
-upgrading from Monitoring 1.3, note that the Monitoring agent plugin only needs
-to be installed on the {es} nodes you are monitoring. If you need to stop
-collecting data from a node, remove the plugin or set the
-`xpack.monitoring.enabled` configuration parameter to `false`. (The
-`xpack.monitoring.agent.enabled` parameter is no longer supported.)
-
-Shield::
-* All files that Shield uses must be kept in the
-<<security-files-location, configuration directory>> due to the enhanced
-security of {es} 2.0.
-* The network format has been changed from all previous versions of Shield and
-a full cluster restart is required to upgrade to Shield 2.0.
+Security::
+* A new bootstrap check enforces that
+  <<disabling-default-password, default passwords are disabled>> for the
+  <<built-in-users, built-in users>>
+  when running in
+  {ref}/bootstrap-checks.html#_development_vs_production_mode[production mode].
+  You must set `xpack.security.authc.accept_default_password` to `false` in
+  your `elasticsearch.yml`
+* A new configuration setting is available to
+  <<disabling-default-password, disable support for the default password>> (_"changeme"_).
 
 Watcher::
-* The dynamic index names support has been removed and Elasticsearch's date math
-index names support should be used instead. The only difference between Watcher's
-dynamic index names support and Elasticsearch's date math index names support is
-how timezones are expressed. In Watcher this is done via node settings, in {es}
-the timezone is part of the date math index names support. Only if you're using
-dynamic index names with timezones in Watcher then you need to upgrade your
-watches after the upgrade, otherwise your watches will work as they did before
-the upgrade. For example if `watcher.dynamic_indices.time_zone` setting was set
-to `+01:00` and a watch has the following index name `<logstash-{now/d}>` then
-after the upgrade you need to update this watch to use the following index
-name `<logstash-{now/d{YYYY.MM.dd|+01:00}}>`.
-
-
-[[xpack-breaking-1.3.0]]
-== Breaking Changes in Shield 1.3.0
-
-* The `sha2` and `apr1` hashing algorithms have been removed as options for the
-<<cache-hash-algo,`cache.hash_algo` setting>>. If your existing Shield
-installation uses either of these options, remove the setting and use the default
-`ssha256` algorithm.
-* The `users` file now only supports `bcrypt` password hashing. All existing
-passwords stored using the `esusers` tool have been hashed with `bcrypt` and are
-not affected.
+* The built-in HTTP client used in webhooks, the http input and the http email
+  attachment has been replaced. This results in the need to always escape all
+  parts of an URL.
+* The new built-in HTTP client also enforces a maximum request size, which
+  defaults to 10mb.

@@ -67,12 +67,13 @@ Use `xpack.security.http.ssl.enabled` as a replacement to control whether ssl is
 Use `xpack.ssl.cipher_suites` as a replacement to control the default enabled cipher suites.
 
 `shield.ssl.hostname_verification`::
-This boolean setting has been replaced by `xpack.ssl.verification_mode` that supports more options as described in the
-<<ssl-tls-settings, ssl settings>> reference section.
+This Boolean setting has been replaced by `xpack.ssl.verification_mode`, which
+supports more options as described in
+{ref}/security-settings.html#ssl-tls-settings[SSL/TLS settings].
 
 `shield.authc.realms.$REALM_NAME.hostname_verification`::
 This boolean setting has been replaced by `xpack.authc.realms.$REALM_NAME.ssl.verification_mode` that supports more
-options as described in the <<ssl-tls-settings, ssl settings>> reference section.
+options as described in {ref]/security-settings.html#ssl-tls-settings[SSL/TLS settings].
 
 The following settings have been removed:
 
@@ -389,7 +390,7 @@ For example `marvel.history.duration` is now `xpack.monitoring.history.duration`
 and `marvel.agent.interval` is now `xpack.monitoring.collection.interval`.
 
 See <<xpack-settings, X-Pack Settings>> for the complete list of
-<<monitoring-settings, {monitoring} settings>> and other X-Pack configuration
+{ref}/monitoring-settings.html[{monitoring} settings] and other X-Pack configuration
 options.
 
 All of the Marvel metric indexes created by Marvel 2.3+ (named like

@@ -88,31 +88,33 @@ NOTE: You need cluster admin privileges to retrieve the license.
 [[license-expiration]]
 == License Expiration
 
-License expiration should never be a surprise. If you're using Monitoring, a license expiration
-warning is displayed prominently if your license expires within 30 days. Warnings are
-also displayed on startup and written to the Elasticsearch log starting 30  days from the expiration date. These error messages tell you when the license expires and what features will be disabled if
+If you're using Monitoring, a license expiration warning is displayed prominently if your license expires
+within 30 days. Warnings are also displayed on startup and written to the Elasticsearch log starting 30  days from
+the expiration date. These error messages tell you when the license expires and what features will be disabled if
 you fail to update it.
 
-[source,sh]
---------------------------------------------
-# License [will expire] on [Friday, December 30, 2016]. If you have a new license, please update it.
-# Otherwise, please reach out to your support contact.
-#
-# Commercial plugins operate with reduced functionality on license expiration:
-# - security
-#  - Cluster health, cluster stats and indices stats operations are blocked
-#  - All data operations (read and write) continue to work
-# - watcher
-#  - PUT / GET watch APIs are disabled, DELETE watch API continues to work
-#  - Watches execute and write to the history
-#  - The actions of the watches don't execute
-# - monitoring
-#  - The agent will stop collecting cluster and indices metrics
-#  - The agent will stop automatically cleaning indices older than [xpack.monitoring.history.duration]
-# - graph
-#  - Graph explore APIs are disabled
---------------------------------------------
+=== Security
+* Cluster health, cluster stats and indices stats operations are blocked
+* All data operations (read and write) continue to work
 
+=== Watcher
+* PUT / GET watch APIs are disabled, DELETE watch API continues to work
+* Watches execute and write to the history
+* The actions of the watches don't execute
+
+=== Monitoring
+* The agent will stop collecting cluster and indices metrics
+* The agent will stop automatically cleaning indices older than [xpack.monitoring.history.duration]
+
+=== Graph
+* Graph explore APIs are disabled
+
+=== Reporting
+* Reporting will no longer be available in the Kibana UI
+* Report generation urls will stop working
+* Existing reports will no longer be accessible
+
+=== Cluster health, cluster stats, and index stats APIs
 Once the license expires, calls to the cluster health, cluster stats, and index stats APIs
 fail with a `security_exception` and return a 403 HTTP status code.
 

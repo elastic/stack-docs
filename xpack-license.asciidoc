@@ -93,10 +93,6 @@ within 30 days. Warnings are also displayed on startup and written to the Elasti
 the expiration date. These error messages tell you when the license expires and what features will be disabled if
 you fail to update it.
 
-=== Security
-* Cluster health, cluster stats and indices stats operations are blocked
-* All data operations (read and write) continue to work
-
 === Watcher
 * PUT / GET watch APIs are disabled, DELETE watch API continues to work
 * Watches execute and write to the history
@@ -114,7 +110,10 @@ you fail to update it.
 * Report generation urls will stop working
 * Existing reports will no longer be accessible
 
-=== Cluster health, cluster stats, and index stats APIs
+=== Security
+* Cluster health, cluster stats and indices stats operations are blocked
+* All data operations (read and write) continue to work
+
 Once the license expires, calls to the cluster health, cluster stats, and index stats APIs
 fail with a `security_exception` and return a 403 HTTP status code.
 

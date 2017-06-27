@@ -93,23 +93,28 @@ within 30 days. Warnings are also displayed on startup and written to the Elasti
 the expiration date. These error messages tell you when the license expires and what features will be disabled if
 you fail to update it.
 
+[float]
 === Watcher
 * PUT / GET watch APIs are disabled, DELETE watch API continues to work
 * Watches execute and write to the history
 * The actions of the watches don't execute
 
+[float]
 === Monitoring
 * The agent will stop collecting cluster and indices metrics
 * The agent will stop automatically cleaning indices older than [xpack.monitoring.history.duration]
 
+[float]
 === Graph
 * Graph explore APIs are disabled
 
+[float]
 === Reporting
 * Reporting will no longer be available in the Kibana UI
 * Report generation urls will stop working
 * Existing reports will no longer be accessible
 
+[float]
 === Security
 * Cluster health, cluster stats and indices stats operations are blocked
 * All data operations (read and write) continue to work

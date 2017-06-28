@@ -88,16 +88,17 @@ NOTE: You need cluster admin privileges to retrieve the license.
 [[license-expiration]]
 == License Expiration
 
-If you're using Monitoring, a license expiration warning is displayed prominently if your license expires
+Your X-Pack license is time based and will expire at a future date. If you're using Monitoring, a license expiration
+warning is displayed prominently if your license expires
 within 30 days. Warnings are also displayed on startup and written to the Elasticsearch log starting 30  days from
 the expiration date. These error messages tell you when the license expires and what features will be disabled if
 you fail to update it.
 
 [float]
 === Watcher
-* PUT / GET watch APIs are disabled, DELETE watch API continues to work
-* Watches execute and write to the history
-* The actions of the watches don't execute
+* PUT / GET watch APIs will be disabled, DELETE watch API will continue to work
+* Watches will execute and write to the history
+* The actions of the watches will not execute
 
 [float]
 === Monitoring
@@ -106,7 +107,7 @@ you fail to update it.
 
 [float]
 === Graph
-* Graph explore APIs are disabled
+* Graph explore APIs will be disabled
 
 [float]
 === Reporting
@@ -116,8 +117,8 @@ you fail to update it.
 
 [float]
 === Security
-* Cluster health, cluster stats and indices stats operations are blocked
-* All data operations (read and write) continue to work
+* Cluster health, cluster stats and indices stats operations will be blocked
+* All data operations (read and write) will continue to work
 
 Once the license expires, calls to the cluster health, cluster stats, and index stats APIs
 fail with a `security_exception` and return a 403 HTTP status code.

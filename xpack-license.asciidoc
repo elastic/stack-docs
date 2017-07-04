@@ -3,24 +3,30 @@
 
 [partintro]
 --
-When you initially install X-Pack, a 30 day trial license is installed that allows access to all features. At the end of the trial period, you can https://www.elastic.co/subscriptions/[purchase a subscription] to keep using the full functionality of the X-Pack components.
+When you initially install {xpack}, a 30 day trial license is installed that
+allows access to all features. At the end of the trial period, you can
+https://www.elastic.co/subscriptions/[purchase a subscription] to keep using the
+full functionality of the {xpack} components.
 
-IMPORTANT:  When your license expires, X-Pack operates in a degraded mode. For more information, see  <<license-expiration, License Expiration>>.
+IMPORTANT:  When your license expires, {xpack} operates in a degraded mode. For
+more information, see  <<license-expiration, License Expiration>>.
 --
 
 [[installing-license]]
 == Updating Your License
 
-You can update your license at runtime without shutting down your nodes. License updates take
-effect immediately. The license is provided as a _JSON_ file that you install with the `license`
-API.
+You can update your license at runtime without shutting down your nodes. License
+updates take effect immediately. The license is provided as a _JSON_ file that
+you install with the `license` API.
 
-When Security is enabled, you need cluster admin privileges to install the license.
-The <<built-in-users, built-in `elastic` user>> has the required privileges.
+When security is enabled, you need cluster admin privileges to install the
+license. The <<built-in-users, built-in `elastic` user>> has the required
+privileges.
 
 To update your license:
 
-. Send a request to the `license` API and specify the file that contains your new license:
+. Send a request to the `license` API and specify the file that contains your
+new license:
 +
 --
 [source,shell]
@@ -42,15 +48,17 @@ Where:
 * `elastic` is the built-in super user. The default password is `changeme`. If
 you haven't already, <<built-in-users, change the default password>>. Any user
 with cluster admin privileges can  install the license.
-* `<host>` is the hostname of the Elasticsearch node (`localhost` if executing locally)
+* `<host>` is the hostname of the Elasticsearch node (`localhost` if executing
+  locally)
 * `<port>` is the http port (defaults to `9200`)
 * `license.json` is the license JSON file
 --
 
-. If the license you are installing does not support all of the features available with your
-previous license, you will be notified in the response. To complete the license installation,
-you must resubmit the license update request and set the `acknowledge` parameter to `true` to
-indicate that you are aware of the changes.
+. If the license you are installing does not support all of the features
+available with your previous license, you will be notified in the response. To
+complete the license installation, you must resubmit the license update request
+and set the `acknowledge` parameter to `true` to indicate that you are aware of
+the changes.
 +
 [source,shell]
 -----------------------------------------------------------------------
@@ -88,11 +96,12 @@ NOTE: You need cluster admin privileges to retrieve the license.
 [[license-expiration]]
 == License Expiration
 
-Your X-Pack license is time based and will expire at a future date. If you're using Monitoring, a license expiration
-warning is displayed prominently if your license expires
-within 30 days. Warnings are also displayed on startup and written to the Elasticsearch log starting 30  days from
-the expiration date. These error messages tell you when the license expires and what features will be disabled if
-you fail to update it.
+Your {xpack} license is time based and will expire at a future date. If you're
+using {monitoring} and your license will expire within 30 days, a license
+expiration warning is displayed prominently. Warnings are also displayed on
+startup and written to the {es} log starting 30  days from the expiration date.
+These error messages tell you when the license expires and what features will be
+disabled if you fail to update the license.
 
 [float]
 === Watcher
@@ -111,7 +120,7 @@ you fail to update it.
 
 [float]
 === Reporting
-* Reporting will no longer be available in the Kibana UI
+* Reporting will no longer be available in {kib}
 * Report generation urls will stop working
 * Existing reports will no longer be accessible
 
@@ -120,8 +129,8 @@ you fail to update it.
 * Cluster health, cluster stats and indices stats operations will be blocked
 * All data operations (read and write) will continue to work
 
-Once the license expires, calls to the cluster health, cluster stats, and index stats APIs
-fail with a `security_exception` and return a 403 HTTP status code.
+Once the license expires, calls to the cluster health, cluster stats, and index
+stats APIs fail with a `security_exception` and return a 403 HTTP status code.
 
 [source,sh]
 --------------------------------------------
@@ -142,7 +151,10 @@ fail with a `security_exception` and return a 403 HTTP status code.
 }
 --------------------------------------------
 
-This enables  automatic monitoring systems to easily detect the license failure without immediately impacting other users.
+This message enables automatic monitoring systems to easily detect the license
+failure without immediately impacting other users.
 
-IMPORTANT: You should update your license as soon as possible. You're essentially flying blind when running with an expired license. Access to the cluster health and stats APIs is critical
-for monitoring and managing an Elasticsearch cluster.
+IMPORTANT: You should update your license as soon as possible. You are
+essentially flying blind when running with an expired license. Access to the
+cluster health and stats APIs is critical for monitoring and managing an {es}
+cluster.

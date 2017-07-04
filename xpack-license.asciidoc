@@ -99,7 +99,7 @@ NOTE: You need cluster admin privileges to retrieve the license.
 Your {xpack} license is time based and will expire at a future date. If you're
 using {monitoring} and your license will expire within 30 days, a license
 expiration warning is displayed prominently. Warnings are also displayed on
-startup and written to the {es} log starting 30  days from the expiration date.
+startup and written to the {es} log starting 30 days from the expiration date.
 These error messages tell you when the license expires and what features will be
 disabled if you fail to update the license.
 
@@ -128,6 +128,14 @@ disabled if you fail to update the license.
 === Security
 * Cluster health, cluster stats and indices stats operations will be blocked
 * All data operations (read and write) will continue to work
+
+[float]
+=== Machine learning
+* APIs to create jobs, open jobs, send data to jobs, create {dfeeds}, and start
+{dfeeds} will be disabled
+* All started {dfeeds} will be stopped. All open jobs will be closed
+* Existing job results will continue to be available by using {kib} or APIs
+
 
 Once the license expires, calls to the cluster health, cluster stats, and index
 stats APIs fail with a `security_exception` and return a 403 HTTP status code.

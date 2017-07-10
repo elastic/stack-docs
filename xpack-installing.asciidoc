@@ -17,6 +17,13 @@ To install {xpack}:
 . {kibana-ref}/installing-xpack-kb.html[Install {xpack} on {kib}]
 . {logstash-ref}/installing-xpack-log.html[Install {xpack} on Logstash]
 
+NOTE: The {xpack} installation scripts require direct internet access to
+download and install {xpack}. If your servers don’t have internet access, you
+can manually download the {xpack} zip file and transfer it to a temporary
+directory on the offline machines. The plugins for {es}, {kib} and Logstash are
+all included in a single zip file. For more information about installing {xpack}
+on offline machines, see the product-specific {xpack} installation instructions.
+
 [float]
 [[xpack-enabling]]
 === Enabling and Disabling {xpack} Features
@@ -32,7 +39,7 @@ Configure in both `elasticsearch.yml` and `kibana.yml`.
 | `xpack.ml.enabled`                | Set to `false` to disable {xpackml} features.
 Configure in both `elasticsearch.yml` and `kibana.yml`.
 | `xpack.monitoring.enabled`        | Set to `false` to disable {monitoring} features.
-Configure in both `elasticsearch.yml` and `kibana.yml`.
+Configure in `elasticsearch.yml`, `kibana.yml`, and `logstash.yml`.
 | `xpack.reporting.enabled`         | Set to `false` to disable {reporting} features.
 Configure in `kibana.yml` only.
 | `xpack.security.enabled`          | Set to `false` to disable {security} features.

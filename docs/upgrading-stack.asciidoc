@@ -1,136 +1,248 @@
 [[upgrading-elastic-stack]]
 == Upgrading the Elastic Stack
 
-Before upgrading any component of the Elastic Stack, you should read through this guide to ensure
-that you upgrade in the right order and in the right way. When upgrading any component of the
-Elastic Stack, such as Beats, you should refer to the instructions for that component, including
-the breaking changes section.
+You must upgrade all of the Elastic Stack products you are using
+when upgrading to a new major version. You can perform a rolling upgrade when
+upgrading from 5.6 to 6.x, a full cluster restart is not required.
 
-Each component serves a particular role in the Elastic Stack. For some use cases, it's normal to
-use a subset of components in the Elastic Stack. For example, you might use Elasticsearch,
-Logstash, and Kibana; Elasticsearch and Kibana; Elasticsearch and Beats; or just Elasticsearch.
+We recommend upgrading to 5.6 before upgrading to {version}.
+Upgrading from any other version than 5.6 requires a full cluster
+restart. {xpack} 5.6 also provides free migration assistance and
+upgrade tools that simplify the upgrade process.
 
-[[upgrading-elastic-stack-audience]]
-=== Intended Audience
+IMPORTANT: 2.x indices are not compatible with {version}. You must
+remove or reindex them on 5.x before upgrading to {version}. In addition,
+the internal Kibana and {xpack} indices need to be upgraded to work
+with {version}.
 
-This guide is intended for existing users of the Elastic Stack, running specific version ranges of
-each component:
+=== Preparing to upgrade
 
-[cols="2", options="header"]
-|===
-|Component |Version
-|Beats
-|5.0 or later
-|Elasticsearch
-|5.0 or later
-|Kibana
-|5.0 or later
-|Logstash
-|5.0 or later
-|Elasticsearch Hadoop
-|5.0 or later
-|X-Pack
-|5.0 or later
-|===
+Before upgrading the Elastic Stack to {version}:
 
-Beginning with 5.0, all of the components above are released at the same time with the same version number.
-As such, you can choose a version with confidence across the entire stack.
+. Back up your data. You **cannot roll back** to an earlier version unless
+you have a backup of your data. For information about creating snapshots, see
+{ref}/modules-snapshots.html[Snapshot and Restore].
 
-It is critical to note that you cannot upgrade data that was written using Elasticsearch 1.x to
-Elasticsearch 2.x, then upgrade directly to Elasticsearch 5.x. Elasticsearch uses Lucene to store its
-data and Lucene is only compatible with the current version of Lucene, and one major release behind
-it. The Elasticsearch upgrade instructions do cover that path.
+. Check the Elasticsearch {ref}/settings.html[deprecation log] to see if
+you're using any deprecated features and update your code accordingly.
+By default, deprecation log messages are enabled at the `WARN` level.
 
-WARNING: This includes system indices, such as the `.kibana` index that is created by Kibana, and
-{esref}/modules-snapshots.html#modules-snapshots[snapshots of indices from Elasticsearch 1.x]!
+. Review the breaking changes for each product you use
+and make the necessary changes so your code is compatible with {version}:
++
+--
+** {beats-ref}/breaking-changes.html[Beats {version} breaking changes]
+** {ref}/breaking-changes.html[Elasticsearch {version} breaking changes]
+** {hadoop-ref}/breaking-changes.html[Elasticsearch Hadoop {version} breaking changes]
+** {kibana-ref}/breaking-changes.html[Kibana {version} breaking changes]
+** {logstash-ref}/breaking-changes.html[Logstash {version} breaking changes]
+** {xpack-ref}/breaking-changes.html[{xpack} {version} breaking changes]
 
-[cols="3", options="header"]
-|===
-|Elasticsearch Version |Lucene Version| Path
-|5.x |6.x | {esref}/rolling-upgrades.html[Rolling Upgrade]
-|2.x |5.x | {esref}/restart-upgrade.html[Full Cluster Restart Upgrade] <1>
-|1.x |4.x | {esref}/reindex-upgrade.html[Reindexing Required]
-|===
-1. Some features require reindexing to take advantage of them, such as Lucene's new Block KD tree support.
+IMPORTANT: If you're upgrading from 2.x, make sure you
+check the breaking changes from 2.x to 5.x, as well as from 5.x to 6.x!
+--
 
-When upgrading from two major releases ago, it is important to read the breaking changes from
-1.x to 2.x, as well as from 2.x to 5.x!
+. {ref}/docs-reindex.html[Reindex] or delete all 2.x indices. We recommend
+upgrading to 5.6 and using the {xpack} Reindex Helper to reindex 2.x indices.
+
+. If Kibana and {xpack} are part of your stack, upgrade the internal Kibana
+and {xpack} indices. We recommend using the {xpack} 5.6 Reindex Helper to
+upgrade the internal indices. If you're performing a full cluster restart upgrade
+from an earlier version, you can also <<upgrade-internal-indices,use the
+ `_xpack/migration/upgrade` API>> directly to upgrade the
+internal indices after you install Elasticsearch {version}.
+
+. If you use {xpack} to secure your cluster:
+.. Make sure TLS is enabled to encrypt communications between nodes. TLS must
+be enabled to upgrade to {version}. For more information, see 
+{xpack-ref}/encrypting-communications.html[Encrypting Communications].
++
+NOTE: Enabling TLS requires a full cluster restart. Nodes that have TLS
+enabled cannot communicate with nodes that do not have TLS enabled. You must
+restart all nodes to maintain communication across the cluster.
+
+.. Make sure real passwords are configured for the built-in `elasticsearch`,
+`kibana`, and `logstash_system` users. They cannot use the 5.x default
+password (`changeme`).
+
+. Stop any Machine Learning jobs that are running before starting the upgrade
+process.
+
+IMPORTANT: Test upgrades in a dev environment before upgrading your
+production cluster.
+
 
 [[upgrade-order-elastic-stack]]
-=== Upgrade Order
+=== Upgrade order
 
-As noted above, this only applies for users of Beats 5.x, Elasticsearch 5.x, Logstash 5.x, and
-Kibana 5.x. For Elasticsearch in particular, it is critical to run the
-https://github.com/elastic/elasticsearch-migration/[Elasticsearch Migration Plugin] prior to
-any upgrade to verify upgrade compatibility!
+Upgrade the Elastic Stack products you use in the following order:
 
-To maintain the most compatibility, you must upgrade the stack in the recommended order. You
-may skip any components that you do not use in your own system. The upgrade requires a full
-cluster shutdown for both Elasicsearch and Kibana because neither Elasticsearch 5.0, nor Kibana 5.0,
-can communicate with earlier versions of Elasticsearch.
+// TODO: Add link to x-pack upgrade doc
 
-1. Elasticsearch Hadoop (can talk to Elasticsearch {major-version})
-2. Elasticsearch
-    * X-Pack for Elasticsearch
-3. Kibana
-    * X-Pack for Kibana
-4. Logstash
-5. Beats
+. Elasticsearch Hadoop: {hadoop-ref}/upgrade-elasticsearch.html[upgrade instructions]
+. Elasticsearch: {ref}/upgrade-elasticsearch.html[upgrade instructions]
+. {xpack} for Elasticsearch
+. Kibana: {kibana-ref}/upgrade-elasticsearch.html[upgrade instructions]
+. {xpack} for Kibana
+. Logstash: {logstash-ref}/upgrade-elasticsearch.html[upgrade instructions]
+. {xpack} for Logstash
+. Beats: {beats-ref}/upgrade-elasticsearch.html[upgrade instructions]
 
-Elasticsearch Hadoop versions prior to 5.0 are not compatible with Elasticsearch {major-version}, but Elasticsearch
-Hadoop {major-version} is compatible with Elasticsearch {major-version}.
-
-Logstash 5.0+ and Beats 5.0+ are compatible with Elasticsearch 5.0+. This provides flexibility in when you schedule
-the upgrades for each Logstash instance and Beats agent.
-
-By following the above order, you should upgrade Elasticsearch Hadoop first; then Elasticsearch
-by performing a full cluster restart and upgrade; then install X-Pack; then upgrade Kibana immediately
-afterward by restarting and upgrading all instances of Kibana; then installing X-Pack there as well.
-Afterward, you can choose when it makes the most sense to upgrade Logstash and Beats for your architecture. It is worth
-upgrading Logstash and Beats as soon as possible to take advantage of performance improvements
+NOTE: Logstash 6.0+ and Beats 6.0+ are compatible with all 6.x versions of
+Elasticsearch. This provides flexibility in when you schedule the upgrades
+for your Logstash instances and Beats agents. We recommend upgrading Logstash
+and Beats as soon as possible to take advantage of performance improvements
 and other enhancements.
 
-The following table lists the upgrade instructions and breaking changes for each component. Before
-upgrading, make sure you read through the upgrade guide and breaking changes list for every component
-that you are upgrading.
+[role="xpack"]
+[[xpack-stack-upgrade]]
+=== Upgrading from 5.6
 
-[cols="3", options="header"]
-|===
-|component |Breaking Changes |Upgrade
-|Elasticsearch
-|{esref}/breaking-changes.html[Breaking Changes from 5.x]
-|{esref}/setup-upgrade.html[Upgrading to Elasticsearch {branch}]
-|X-Pack
-|{xpackref}/migrating-to-xpack.html[Breaking Changes from 5.x]
-|{xpackref}/installing-xpack.html[Upgrading to X-Pack {branch}]
-|Kibana
-|{kibanaref}/breaking-changes.html[Breaking Changes from 5.x]
-|{kibanaref}/upgrade.html[Upgrading to Kibana {branch}]
-|Logstash
-|{logstashref}/breaking-changes.html[Breaking Changes from 5.x]
-|{logstashref}/upgrading-logstash.html[Upgrading to Logstash {branch}]
-|Beats
-|{beatsref}/breaking-changes.html[Breaking Changes from 5.x]
-|{beatsref}/upgrading.html[Upgrading to Beats {branch}]
-|Elasticsearch Hadoop
-|{hadoopref}/breaking-changes.html[Breaking Changes from 5.x]
-|{hadoopref}/install.html[Upgrading to Elasticsearch Hadoop {branch}]
-|===
+{xpack} 5.6 provides migration and upgrade APIs for Elasticsearch and a
+Upgrade Assistant UI for Kibana. These tools are included with the {xpack}
+trial license and the free https://register.elastic.co/[Basic license].
+
+To upgrade to {version} from 5.6:
+
+. {ref}/upgrade-elasticsearch.html[Upgrade Elasticsearch] to 5.6 and
+install {xpack} on all nodes in your cluster. If you are upgrading from an
+earlier 5.x release, you can perform a rolling upgrade. To upgrade from older
+versions you must perform a full cluster restart.
++
+If your trial license to use {xpack} expires, register for a free
+https://register.elastic.co/[Basic license]. To apply the license, upload
+the license file with the `license` API:
++
+[source,json]
+----------------------------------------------------------
+license -d @license.json
+----------------------------------------------------------
+
+. If {xpack} **IS NOT** normally a part of your Elastic Stack, disable Security
+in `elasticsearch.yml`:
++
+[source,yaml]
+----------------------------------------------------------
+xpack.security.enabled: false
+----------------------------------------------------------
+
+. Upgrade Kibana to 5.6 and install {xpack}.
+
+. If you disabled {xpack} security in `elasticsearch.yml`, also disable
+Security in `kibana.yml`:
++
+[source,yaml]
+----------------------------------------------------------
+xpack.security.enabled: false
+----------------------------------------------------------
+
+. Use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana to
+view incompatibilities that you need to fix, identify any 2.x indices that
+need to be migrated or deleted, and upgrade the internal indices to the
+{major-version} index format.
++
+You can also call the Elasticsearch migration APIs directly:
++
+`/_xpack/migration/assistance`:: Runs a series of checks on your cluster,
+nodes, and indices and returns a list of issues that need to be
+fixed before you can upgrade to {version}.
++
+`/_xpack/migration/upgrade`:: Upgrades the Watcher and Security indices to a
+single-type format compatible with Elasticsearch 6.x.
+
+. Once you've resolved all of the migration issues, perform
+a {ref}/rolling-upgrades[rolling upgrade] from Elasticsearch 5.6 to {version}.
+
+[[oss-stack-upgrade]]
+=== Upgrading from a pre-5.6 installation
+
+It is possible to upgrade directly to {major-version} from a pre-5.6 installation,
+but it requires a {ref}/restart-upgrade.html[full cluster restart] and you must
+manually reindex any 2.x indices you need to carry forward to {major-version}.
+
+IMPORTANT: If you use Kibana or {xpack}, you also need to upgrade the
+internal Kibana and X-Pack indices. For information about upgrading them
+after you install Elasticsearch {version}, see
+<<upgrade-internal-indices, Upgrading internal indices>>.
+
+To manually reindex a 2.x index:
+
+. Create an index with 6.x compatible mappings.
+. Use the {ref}/docs-reindex.html[reindex API] to copy documents from the
+2.x index into the new index. You can use a script to perform any necessary
+modifications to the document data and metadata during reindexing.
+. Use the {ref}/indices-aliases.html[_aliases] API to add the name of the 2.x
+index as alias for the new index and delete the 2.x index.
+
+[[upgrade-internal-indices]]
+==== Upgrading internal indices for {major-version}
+
+The format used for the internal indices used by Kibana and {xpack} has
+changed in {major-version}. Before you can run Kibana and {xpack} in {version},
+these indices must be upgraded to the new format. If you are upgrading from a
+version prior to 5.6, you must upgrade them after after installing
+Elasticsearch {version}.
+
+To get a list of the indices that need to be upgraded, install {xpack} and use
+the {ref}/migration-api-assistance.html[`_xpack/migration/assistance` API]:
+
+[source,json]
+----------------------------------------------------------
+GET /_xpack/migration/assistance
+----------------------------------------------------------
+// CONSOLE
+
+To upgrade the `.security` index:
+
+. On a single node, add a temporary superuser account to the `file` realm.
+. Use the {ref}/migration-api-upgrade.html[`_xpack/migration/upgrade`]
+API to upgrade the security index, submitting the request with the credentials
+for the temporary superuser:
++
+--
+[source,json]
+----------------------------------------------------------
+POST /_xpack/migration/upgrade/.security
+----------------------------------------------------------
+// CONSOLE
+--
+
+. Delete the temporary superuser account from the file realm.
+
+You can use your regular administration credentials to upgrade the other
+internal indices using the `_xpack/migration/upgrade` API.
+
+TIP: Once you upgrade the `.kibana` index, you can run Kibana and use the
+X-Pack Reindex Helper UI to upgrade the other indices.
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
 === Upgrading on Elastic Cloud
 
-A single click in the Elastic Cloud console can upgrade a cluster to a newer version, add more processing capacity, change plugins, and enable or disable high availability, all at the same time. During the upgrade process, Elasticsearch, Kibana, X-Pack and the officially included plugins are all upgraded to the correct version together.
+A single click in the Elastic Cloud console can upgrade a cluster to a newer
+version, add more processing capacity, change plugins, and enable or disable
+high availability, all at the same time. During the upgrade process,
+Elasticsearch, Kibana, {xpack} and the officially included plugins are
+upgraded simultaneously.
 
-Although the upgrade process on Elastic Cloud is simple, you are still subject to breaking changes in Elasticsearch, and major version upgrades require a full cluster restart. Minor version upgrades and all other cluster configuration changes are performed with no downtime.
+Although upgrading your Elastic Cloud clusters is easy, you still need to
+address breaking changes that affect your application. Minor version upgrades,
+upgrades from 5.6 to {major-version}, and all other cluster configuration
+changes can be performed with no downtime.
 
-To avoid downtime on production clusters due to major version upgrades:
+To avoid downtime when a full cluster restart is required:
 
-. Provision an additional cluster with the new Elasticsearch version, reindex your data, and send index requests to both clusters temporarily.
+. Provision an additional cluster with the new Elasticsearch version, reindex
+your data, and send index requests to both clusters temporarily.
 
-. Verify that the new cluster performs as expected, fix any problems, and then swap in the new cluster permanently.
+. Verify that the new cluster performs as expected, fix any problems, and then
+permanently swap in the new cluster.
 
-. Delete the old cluster to stop incurring additional costs. You are billed extra only for the time that the additional cluster was running. Billing for usage is by the hour.
+. Delete the old cluster to stop incurring additional costs. You are billed
+only for the time that the new cluster runs in parallel with your old cluster.
+Usage is billed on an hourly basis.
 
-To learn more about the upgrade process on Elastic Cloud, see {cloudref}/upgrading.html#_upgrade_to_elasticsearch_5_x[
-Upgrading to Elasticsearch {branch}] and {cloudref}/cluster-config.html[Configuring Elastic Cloud]. Note that Elastic Cloud does not currently support running snapshot builds (e.g., master builds as this documentation pertains too).
+To learn more about the upgrade process on Elastic Cloud, see {cloudref}/upgrading.html[
+Upgrade Versions] and {cloudref}/cluster-config.html[Configuring Elastic Cloud].
+
+NOTE: Elastic Cloud only supports upgrades to released versions. Preview
+releases and master snapshots are not supported.

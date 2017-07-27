@@ -1,75 +1,35 @@
 [[installing-elastic-stack]]
 == Installing the Elastic Stack
 
-This guide is intended for users seeking to install all or part of the Elastic Stack as part of
-clean or fresh installation. If you are upgrading, then please refer to <<upgrading-elastic-stack>>.
+When installing the Elastic Stack, you must use the same version
+across the entire stack. For example, if you are using Elasticsearch
+{version}, you install Beats {version}, Elasticsearch Hadoop {version},
+Kibana {version}, Logstash {version}, and {xpack} {version}.
 
-Beginning with 5.0, installing the Elastic Stack and understanding the compatibility between products
-has been dramatically simplified. All products are now part of a unified release process, so when
-any product is released, then all products are released with it. This helps to guarantee compatibility as
-well as avoid confusion surrounding version numbers.
-
-As a result, when performing any Elastic Stack installation, you should always start with the same
-version across the entire stack. For example, if you select Elasticsearch 5.1.2, then you should also
-select Kibana 5.1.2, Logstash 5.1.2, and Beats 5.1.2.
-
-[cols="2", options="header"]
-|===
-|Component |Version
-|Beats
-|{branch}
-|Elasticsearch
-|{branch}
-|Elasticsearch Hadoop
-|{branch}
-|Kibana
-|{branch}
-|Logstash
-|{branch}
-|X-Pack
-|{branch}
-|===
+If you're upgrading an existing installation, see <<upgrading-elastic-stack, Up, Upgrading the Elastic Stack>> for information about how to ensure compatibility with {version}.
 
 [[install-order-elastic-stack]]
 === Installation Order
 
-We recommend that you install the Elastic Stack in the following order.
+Install the Elastic Stack products you want to use in the following order:
 
-1. Elasticsearch
-    * X-Pack for Elasticsearch
-2. Kibana
-    * X-Pack for Kibana
-3. Logstash
-4. Beats
-5. Elasticsearch Hadoop
+. Elasticsearch ({esref}/install-elasticsearch.html[install instructions])
+. {xpack} for Elasticsearch ({esref}/install-elasticsearch.html[install instructions])
+. Kibana ({esref}/install-elasticsearch.html[install])
+. {xpack} for Kibana ({esref}/install-elasticsearch.html[install instructions])
+. Logstash ({esref}/install-elasticsearch.html[install])
+. {xpack} for Logstash ({esref}/install-elasticsearch.html[install instructions])
+. Beats ({esref}/install-elasticsearch.html[install instructions])
+. Elasticsearch Hadoop ({esref}/install-elasticsearch.html[install instructions])
 
-This helps to ensure that the right parts of your infrastructure are running before other parts
-attempt to use them (e.g., Logstash sending data to Elasticsearch).
-
-The table below lists the installation instructions, per component:
-
-[cols="2", options="header"]
-|===
-|Product |Installation
-|Elasticsearch
-|{esref}/install-elasticsearch.html[Installing Elasticsearch {branch}]
-|X-Pack
-|{xpackref}/installing-xpack.html[Installing X-Pack {branch}]
-|Kibana
-|{kibanaref}/setup.html[Installing Kibana {branch}]
-|Logstash
-|{logstashref}/installing-logstash.html[Installing Logstash {branch}]
-|Beats
-|{beatsref}/installing-beats.html[Installing Beats {branch}]
-|Elasticsearch Hadoop
-|{hadoopref}/float.html[Installing Elasticsearch Hadoop {branch}]
-|===
+Installing in this order ensures that the components each product depends
+on are in place.
 
 [[install-elastic-stack-for-elastic-cloud]]
 === Installing on Elastic Cloud
 
-Elastic Cloud is the official hosted Elasticsearch and Kibana offering from Elastic and it's designed to be easy. A single click creates an Elasticsearch cluster configured to the size you want, with or without high availability. X-Pack is always installed and provides features such as security and monitoring. Kibana can be enabled on a cluster with a click, and a number of commonly requested plugins are readily available.
+Elastic Cloud is the official hosted Elasticsearch and Kibana offering from Elastic. Installing on Elastic Cloud is easy: a single click creates an Elasticsearch cluster configured to the size you want, with or without high availability. {xpack} is always installed, so you automatically have the ability to secure and monitor your cluster. Kibana can be enabled on a cluster with a click, and a number of popular plugins are readily available.
 
-Some Elastic Cloud features can be used only with a specific  link:https://www.elastic.co/cloud/as-a-service/subscriptions[subscription level]. For example, you can install custom plugins, dictionaries, and scripts only if you are a Gold or Platinum customer.
+Some Elastic Cloud features can be used only with a specific  link:https://www.elastic.co/cloud/as-a-service/subscriptions[subscription level]. For example, installing custom plugins, dictionaries, and scripts requires a Gold or Platinum subscription.
 
-To learn more about Elastic Cloud, see our {cloudref}/getting-started.html[getting started documentation]. Or link:https://www.elastic.co/cloud/as-a-service/signup[sign up for a free trial] and start exploring hosted Elasticsearch within minutes.
+To learn more, see {cloudref}/getting-started.html[Getting Started with Elastic Cloud]. Or just link:https://www.elastic.co/cloud/as-a-service/signup[sign up for a free trial] and start exploring hosted Elasticsearch in minutes.

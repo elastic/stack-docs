@@ -1,20 +1,15 @@
 [[elastic-stack]]
 = Elastic Stack
 
-:major-version: 6.x
-:branch:        master
-:beatsref:      https://www.elastic.co/guide/en/beats/libbeat/master
-:cloudref:      https://www.elastic.co/guide/en/cloud/current
-:esref:         https://www.elastic.co/guide/en/elasticsearch/reference/master
-:hadoopref:     https://www.elastic.co/guide/en/elasticsearch/hadoop/master
-:kibanaref:     https://www.elastic.co/guide/en/kibana/master
-:logstashref:   https://www.elastic.co/guide/en/logstash/master
-:xpackref:      https://www.elastic.co/guide/en/x-pack/current
+include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
+include::{docdir}/../../elasticsearch/docs/Versions.asciidoc[]
 
 == Overview
 
-The Elastic Stack is made up of multiple components developed by Elastic. In no particular
-order, these are:
+The products in the https://www.elastic.co/products[Elastic Stack]
+are designed to be used together and releases are synchronized
+to simplify the installation and upgrade process. The full stack
+consists of:
 
 * {beatsref}/index.html[Beats {branch}]
 * {esref}/index.html[Elasticsearch {branch}]
@@ -23,7 +18,14 @@ order, these are:
 * {logstashref}/index.html[Logstash {branch}]
 * {xpackref}/index.html[X-Pack {branch}]
 
-In this guide, you learn how to install and upgrade products in the Elastic Stack.
+This guide provides information about installing and upgrading
+when you are using more than one Elastic Stack product. It specifies
+the recommended order of installation and the steps you need to take
+to prepare for a stack upgrade.
+
+For detailed information about breaking changes in {version} and install
+and upgrade instructions for specific components, see the individual
+product reference guides.
 
 include::installing-stack.asciidoc[]
 

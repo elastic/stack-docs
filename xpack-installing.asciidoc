@@ -29,26 +29,22 @@ on offline machines, see the product-specific {xpack} installation instructions.
 === Enabling and Disabling {xpack} Features
 
 By default, all {xpack} features are enabled. You can explicitly enable or
-disable {xpack} features in `elasticsearch.yml` and `kibana.yml`:
+disable {xpack} features in `elasticsearch.yml`, `kibana.yml`, and
+`logstash.yml` configuration files:
 
 [options="header"]
 |======
 | Setting                           | Description
 | `xpack.graph.enabled`             | Set to `false` to disable {graph} features.
-Configure in both `elasticsearch.yml` and `kibana.yml`.
 | `xpack.ml.enabled`                | Set to `false` to disable {xpackml} features.
-Configure in both `elasticsearch.yml` and `kibana.yml`.
 | `xpack.monitoring.enabled`        | Set to `false` to disable {monitoring} features.
-Configure in `elasticsearch.yml`, `kibana.yml`, and `logstash.yml`.
 | `xpack.reporting.enabled`         | Set to `false` to disable {reporting} features.
-Configure in `kibana.yml` only.
 | `xpack.security.enabled`          | Set to `false` to disable {security} features.
-Configure in both `elasticsearch.yml` and `kibana.yml`.
 | `xpack.watcher.enabled`           | Set to `false` to disable {watcher}.
-Configure in `elasticsearch.yml` only.
 |======
 
-For more information, see {xpack-ref}/xpack-settings.html[X-Pack Settings].
+For more information about which settings exist in each configuration file, see
+{xpack-ref}/xpack-settings.html[X-Pack Settings].
 
 [float]
 [[xpack-upgrading]]

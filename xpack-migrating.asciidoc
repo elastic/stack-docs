@@ -1,6 +1,12 @@
 [[migrating-to-xpack]]
 == Migrating to X-Pack
 
+* To migrate to {monitoring} from Marvel, see <<migrating_from_marvel>>.
+
+* To migrate to {security} from Shield, see <<security-migration>>.
+
+* To migrate to {xpack} {watcher} from {watcher}, see <<migrating_from_watcher>>.
+
 [[security-migration]]
 === Migrating from Shield
 
@@ -369,6 +375,7 @@ Finally, as part of the move to Log4j2 the `logging.yml` file has been replaced 
 In {security}, the default header name for <<run-as-privilege,submitting requests>> on behalf of other users has changed
 to `es-security-runas-user`. Applications making use of the run as functionality will need to use the new header name.
 
+[[migrating_from_marvel]]
 === Migrating from Marvel
 
 Prior to 5.0, monitoring functionality was provided as a separate Marvel plugin
@@ -423,6 +430,7 @@ you must run Elasticsearch 5.0 on the monitoring cluster. For more information
 about external monitoring clusters, see <<monitoring-cluster,
 Setting up a Separate Monitoring Cluster>>.
 
+[[migrating_from_watcher]]
 === Migrating from Watcher
 
 Prior to 5.0 all watcher specific settings were prefixed with `watcher`. Those

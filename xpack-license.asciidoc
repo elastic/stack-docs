@@ -129,14 +129,6 @@ disabled if you fail to update the license.
 * Cluster health, cluster stats and indices stats operations will be blocked
 * All data operations (read and write) will continue to work
 
-[float]
-=== Machine learning
-* APIs to create jobs, open jobs, send data to jobs, create {dfeeds}, and start
-{dfeeds} will be disabled
-* All started {dfeeds} will be stopped. All open jobs will be closed
-* Existing job results will continue to be available by using {kib} or APIs
-
-
 Once the license expires, calls to the cluster health, cluster stats, and index
 stats APIs fail with a `security_exception` and return a 403 HTTP status code.
 
@@ -161,6 +153,19 @@ stats APIs fail with a `security_exception` and return a 403 HTTP status code.
 
 This message enables automatic monitoring systems to easily detect the license
 failure without immediately impacting other users.
+
+[float]
+=== Machine learning
+* APIs to create jobs, open jobs, send data to jobs, create {dfeeds}, and start
+{dfeeds} will be disabled
+* All started {dfeeds} will be stopped. All open jobs will be closed
+* Existing job results will continue to be available by using {kib} or APIs
+
+[float]
+=== Logstash Pipeline Management
+* Will not be able to create new pipelines and edit or delete existing pipelines from the UI
+* Will be able to list and view existing pipelines from the UI
+* Will be able to run Logstash instances which are registered to listen to existing pipelines
 
 IMPORTANT: You should update your license as soon as possible. You are
 essentially flying blind when running with an expired license. Access to the

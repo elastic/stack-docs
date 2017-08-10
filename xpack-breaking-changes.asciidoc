@@ -22,8 +22,7 @@ Reporting::
 `['reporting_user']`. Users will no longer have access to the underlying {reporting}
 indices in {es} when assigned to the built-in `reporting_user` role. If using
 custom reporting roles, the privileges to the indices will need to be removed, and the
-role will need to be added to the `xpack-reporting.roles.allow` setting. See
-{ref}/security-settings.html#token-service-settings[Token Service Settings].
+role will need to be added to the `xpack-reporting.roles.allow` setting.
 
 Security::
 * A new bootstrap check enforces that TLS/SSL is required for inter-node
@@ -34,7 +33,8 @@ See <<encrypting-communications>>.
 service when running in
 {ref}/bootstrap-checks.html#_development_vs_production_mode[production mode].
 To disable the token service, set `xpack.security.authc.token.enabled`
-to `false` in your `elasticsearch.yml`.
+to `false` in your `elasticsearch.yml`. See
+{ref}/security-settings.html#token-service-settings[Token Service Settings].
 
 [[xpack-breaking-6.0.0-alpha2]]
 === Breaking Changes in 6.0.0 Alpha 2

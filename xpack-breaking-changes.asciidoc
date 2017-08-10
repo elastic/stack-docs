@@ -16,14 +16,18 @@ the top of the <<xpack-release-notes,release notes>> for each version.
 [[xpack-breaking-6.0.0-beta1]]
 === Breaking Changes in 6.0.0 Beta 1
 Reporting::
-* When Security is enabled, reports will only be accessible to the user that created them.
-* When Security is enabled, user authorization is controlled by the
-`xpack.reporting.roles.allow` setting in the `kibana.yml` which defaults to 
-`['reporting_user']`. Users will no longer have access to the underlying {reporting} 
-indices in Elasticsearch when assigned to the built-in `reporting_user` role. If using
-custom reporting roles, the privileges to the indices will need to be removed, and the 
+* When {security} is enabled, reports will only be accessible to the user that created them.
+* When {security} is enabled, user authorization is controlled by the
+`xpack.reporting.roles.allow` setting in the `kibana.yml` which defaults to
+`['reporting_user']`. Users will no longer have access to the underlying {reporting}
+indices in {es} when assigned to the built-in `reporting_user` role. If using
+custom reporting roles, the privileges to the indices will need to be removed, and the
 role will need to be added to the `xpack-reporting.roles.allow` setting.
 
+Security::
+* A new bootstrap check enforces that TLS/SSL is required for inter-node
+communication when running in
+{ref}/bootstrap-checks.html#_development_vs_production_mode[production mode]. 
 
 [[xpack-breaking-6.0.0-alpha2]]
 === Breaking Changes in 6.0.0 Alpha 2

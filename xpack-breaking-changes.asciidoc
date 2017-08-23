@@ -5,61 +5,19 @@ This section discusses the changes that you need to be aware of when migrating
 your application from one version of {xpack} to another.
 
 As a general rule, we strive to keep backwards compatibility between minor
-versions (for example, 5.x to 5.y), but there might be breaking changes between
-major versions (for example, 5.x to 6.y). Breaking changes are also listed at
+versions (for example, 7.x to 7.y), but there might be breaking changes between
+major versions (for example, 6.x to 7.y). Breaking changes are also listed at
 the top of the <<xpack-release-notes,release notes>> for each version.
 
-* <<xpack-breaking-6.0.0-beta1>>
-* <<xpack-breaking-6.0.0-alpha2>>
-* <<xpack-breaking-6.0.0-alpha1>>
+////
+* <<xpack-breaking-7.0.0-alpha1>>
+////
 
-[[xpack-breaking-6.0.0-beta1]]
-=== Breaking Changes in 6.0.0 Beta 1
-Reporting::
-* When {security} is enabled, reports will only be accessible to the user that created them.
-* When {security} is enabled, user authorization is controlled by the
-`xpack.reporting.roles.allow` setting in the `kibana.yml` which defaults to
-`['reporting_user']`. Users will no longer have access to the underlying {reporting}
-indices in {es} when assigned to the built-in `reporting_user` role. If using
-custom reporting roles, the privileges to the indices will need to be removed, and the
-role will need to be added to the `xpack-reporting.roles.allow` setting.
+[float]
+[[xpack-breaking-7.0.0-alpha1]]
+=== Breaking Changes in 7.0.0 Alpha 1
 
-Security::
-* A new bootstrap check enforces that TLS/SSL is required for inter-node
-communication when running in
-{ref}/bootstrap-checks.html#_development_vs_production_mode[production mode].
-See <<encrypting-communications>>.
-* A new bootstrap check enforces that HTTPS is used by the built-in token
-service when running in
-{ref}/bootstrap-checks.html#_development_vs_production_mode[production mode].
-To disable the token service, set `xpack.security.authc.token.enabled`
-to `false` in your `elasticsearch.yml`. See
-{ref}/security-settings.html#token-service-settings[Token Service Settings].
-
-[[xpack-breaking-6.0.0-alpha2]]
-=== Breaking Changes in 6.0.0 Alpha 2
-
-Watcher::
-* The watch `_status` field has been renamed to `status`, as underscores in
-field names will not be allowed.
-
-[[xpack-breaking-6.0.0-alpha1]]
-=== Breaking Changes in 6.0.0 Alpha 1
-
-Security::
-* A new bootstrap check enforces that
-  <<disabling-default-password, default passwords are disabled>> for the
-  <<built-in-users, built-in users>>
-  when running in
-  {ref}/bootstrap-checks.html#_development_vs_production_mode[production mode].
-  You must set `xpack.security.authc.accept_default_password` to `false` in
-  your `elasticsearch.yml`
-* A new configuration setting is available to
-  <<disabling-default-password, disable support for the default password>> (_"changeme"_).
-
-Watcher::
-* The built-in HTTP client used in webhooks, the http input and the http email
-  attachment has been replaced. This results in the need to always escape all
-  parts of an URL.
-* The new built-in HTTP client also enforces a maximum request size, which
-  defaults to 10mb.
+Machine Learning::
+* The `max_running_jobs` node property is removed in this release. Use the
+`xpack.ml.max_open_jobs` setting instead. For more information, see
+{ref}/ml-settings.html[Machine Learning Settings in {es}].

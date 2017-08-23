@@ -36,7 +36,7 @@ and make the necessary changes so your code is compatible with {version}:
 ** {hadoop-ref}/breaking-changes.html[Elasticsearch Hadoop {version} breaking changes]
 ** {kibana-ref}/breaking-changes.html[Kibana {version} breaking changes]
 ** {logstash-ref}/breaking-changes.html[Logstash {version} breaking changes]
-** {xpack-ref}/breaking-changes.html[{xpack} {version} breaking changes]
+** {xpack-ref}/xpack-breaking-changes.html.html[{xpack} {version} breaking changes]
 
 IMPORTANT: If you're upgrading from 2.x, make sure you
 check the breaking changes from 2.x to 5.x, as well as from 5.x to 6.x!
@@ -80,13 +80,13 @@ Upgrade the Elastic Stack products you use in the following order:
 // TODO: Add link to x-pack upgrade doc
 
 . Elasticsearch Hadoop: {hadoop-ref}/upgrade-elasticsearch.html[upgrade instructions]
-. Elasticsearch: {ref}/upgrade-elasticsearch.html[upgrade instructions]
+. Elasticsearch: {ref}/setup-upgrade.html[upgrade instructions]
 . {xpack} for Elasticsearch
-. Kibana: {kibana-ref}/upgrade-elasticsearch.html[upgrade instructions]
+. Kibana: {kibana-ref}/upgrade.html[upgrade instructions]
 . {xpack} for Kibana
-. Logstash: {logstash-ref}/upgrade-elasticsearch.html[upgrade instructions]
+. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
 . {xpack} for Logstash
-. Beats: {beats-ref}/upgrade-elasticsearch.html[upgrade instructions]
+. Beats: {beats-ref}/upgrading.html[upgrade instructions]
 
 NOTE: Logstash 6.0+ and Beats 6.0+ are compatible with all 6.x versions of
 Elasticsearch. This provides flexibility in when you schedule the upgrades
@@ -136,7 +136,7 @@ Security in `kibana.yml`:
 xpack.security.enabled: false
 ----------------------------------------------------------
 
-. Use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana to
+. Use the Upgrade Assistant in Kibana to
 view incompatibilities that you need to fix, identify any 2.x indices that
 need to be migrated or deleted, and upgrade the internal indices to the
 {major-version} index format.
@@ -151,7 +151,7 @@ fixed before you can upgrade to {version}.
 single-type format compatible with Elasticsearch 6.x.
 
 . Once you've resolved all of the migration issues, perform
-a {ref}/rolling-upgrades[rolling upgrade] from Elasticsearch 5.6 to {version}.
+a {ref}/rolling-upgrades.html[rolling upgrade] from Elasticsearch 5.6 to {version}.
 
 [[oss-stack-upgrade]]
 === Upgrading from a pre-5.6 installation

@@ -42,8 +42,10 @@ IMPORTANT: If you're upgrading from 2.x, make sure you
 check the breaking changes from 2.x to 5.x, as well as from 5.x to 6.x!
 --
 
-. {ref}/docs-reindex.html[Reindex] or delete all 2.x indices. We recommend
-upgrading to 5.6 and using the {xpack} Reindex Helper to reindex 2.x indices.
+. We recommend upgrading to 5.6 and using the
+{xpack-ref}/xpack-upgrade-assistant.html[Upgrade Assistant]'s Reindex Helper to
+reindex 2.x indices. Alternatively, you can manually {ref}/docs-reindex.html[reindex]
+or delete all 2.x indices.
 
 . If Kibana and {xpack} are part of your stack, upgrade the internal Kibana
 and {xpack} indices. We recommend using the {xpack} 5.6 Reindex Helper to
@@ -54,7 +56,7 @@ internal indices after you install Elasticsearch {version}.
 
 . If you use {xpack} to secure your cluster:
 .. Make sure TLS is enabled to encrypt communications between nodes. TLS must
-be enabled to upgrade to {version}. For more information, see 
+be enabled to upgrade to {version}. For more information, see
 {xpack-ref}/encrypting-communications.html[Encrypting Communications].
 +
 NOTE: Enabling TLS requires a full cluster restart. Nodes that have TLS
@@ -177,11 +179,20 @@ index as alias for the new index and delete the 2.x index.
 [[upgrade-internal-indices]]
 ==== Upgrading internal indices for {major-version}
 
+TIP: X-Pack Kibana provides an
+{xpack-ref}/xpack-upgrade-assistant.html[Upgrade Assistant UI] to aid in the
+upgrade process. You can upgrade the internal Kibana and X-Pack indices via
+this utility.
+
 The format used for the internal indices used by Kibana and {xpack} has
 changed in {major-version}. Before you can run Kibana and {xpack} in {version},
 these indices must be upgraded to the new format. If you are upgrading from a
 version prior to 5.6, you must upgrade them after after installing
 Elasticsearch {version}.
+
+Starting in 5.6 we have an Upgrade Assistant UI available in X-Pack Kibana.
+
+===== Upgrading internal X-Pack indices for {major-version}
 
 To get a list of the indices that need to be upgraded, install {xpack} and use
 the {ref}/migration-api-assistance.html[`_xpack/migration/assistance` API]:
@@ -212,8 +223,9 @@ POST /_xpack/migration/upgrade/.security
 You can use your regular administration credentials to upgrade the other
 internal indices using the `_xpack/migration/upgrade` API.
 
-TIP: Once you upgrade the `.kibana` index, you can run Kibana and use the
-X-Pack Reindex Helper UI to upgrade the other indices.
+===== Upgrading Kibana indices for {major-version}
+
+To upgrade your Kibana indices, follow {kibana-ref}/migrating-6.0-index.html[this guide].
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
 === Upgrading on Elastic Cloud
@@ -246,3 +258,4 @@ Upgrade Versions] and {cloudref}/cluster-config.html[Configuring Elastic Cloud].
 
 NOTE: Elastic Cloud only supports upgrades to released versions. Preview
 releases and master snapshots are not supported.
+

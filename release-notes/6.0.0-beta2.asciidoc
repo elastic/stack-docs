@@ -16,11 +16,6 @@ NOT CLASSIFIED::
 * Remove Deprecated Script Settings
 // https://github.com/elastic/x-pack-elasticsearch/pull/1469[#1469]
 ////
-////
-security::
-* Remove (deprecated) support for '+' in index expressions
-// https://github.com/elastic/x-pack-elasticsearch/pull/1749[#1749]
-////
 
 [float]
 [[deprecations-6.0.0-beta2]]
@@ -34,13 +29,13 @@ Machine Learning::
 API::
 * Deprecation API
 // https://github.com/elastic/x-pack-elasticsearch/pull/1833[#1833] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/1209[#1209], https://github.com/elastic/x-pack-elasticsearch/issues/1315[#1315], https://github.com/elastic/x-pack-elasticsearch/issues/1402[#1402])
-
 ////
 ////
 [[feature-6.0.0-beta2]]
 [float]
 ==== New features
-
+////
+////
 API::
 * Role Mapping API (LDAP/AD/PKI) [ISSUE]
 // https://github.com/elastic/x-pack-elasticsearch/pull/278[#278]
@@ -48,10 +43,6 @@ API::
 monitoring::
 * [Monitoring] Email actions for Cluster Alerts
 // https://github.com/elastic/x-pack-elasticsearch/pull/1879[#1879]
-
-security::
-* Upgrade security index to use only one (the default) index type
-// https://github.com/elastic/x-pack-elasticsearch/pull/1780[#1780]
 ////
 
 [float]
@@ -96,12 +87,11 @@ information, see
 {logstash-ref}/logstash-pipeline-viewer.html[Pipeline Viewer UI].
 // https://github.com/elastic/x-pack-kibana/pull/2092[#2092]
 // https://github.com/elastic/x-pack-kibana/pull/2218(issue: https://github.com/elastic/x-pack-kibana/issues/2227[#2227])
+
+// * Enabled read-only access for kibana_system user.
+// OMIT?: Duplicated in 5.6.0 release notes
+// https://github.com/elastic/x-pack-elasticsearch/pull/1851[#1851]
 ////
-
-Logstash::
-* [Pipeline Viewer] Notify users about lack of explicit plugin id
-// https://github.com/elastic/x-pack-kibana/pull/2218[#2218] (issue: https://github.com/elastic/x-pack-kibana/issues/2227[#2227])
-
 
 NOT CLASSIFIED::
 * Allow build to directly run under JDK 9
@@ -118,56 +108,23 @@ NOT CLASSIFIED::
 management::
 * [Logstash] Add new reserved role for managing LS configs
 // https://github.com/elastic/x-pack-elasticsearch/pull/1531[#1531] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/609[#609])
+////
 
-monitoring::
-* [Monitoring] Enable read-only access for kibana_system user
-// https://github.com/elastic/x-pack-elasticsearch/pull/1851[#1851]
-* [Monitoring] Remove 'node' type from time-based index
-// https://github.com/elastic/x-pack-elasticsearch/pull/1543[#1543] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] Local Exporter should update Cluster Alerts
-// https://github.com/elastic/x-pack-elasticsearch/pull/1532[#1532] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] HTTP Exporter should update Cluster Alerts
-// https://github.com/elastic/x-pack-elasticsearch/pull/1519[#1519] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] Update Cluster Alerts to new index version
-// https://github.com/elastic/x-pack-elasticsearch/pull/1503[#1503] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] Update Templates from Local Exporter
-// https://github.com/elastic/x-pack-elasticsearch/pull/1487[#1487] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] Local Exporter should create / update Pipelines
-// https://github.com/elastic/x-pack-elasticsearch/pull/1459[#1459] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] HTTP Exporter should update pipelines
-// https://github.com/elastic/x-pack-elasticsearch/pull/1448[#1448] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068])
-* [Monitoring] HTTP Exporter should check template version
-// https://github.com/elastic/x-pack-elasticsearch/pull/1405[#1405] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/1068[#1068], https://github.com/elastic/x-pack-elasticsearch/issues/1388[#1388])
-* [Logstash] New mapping for pipeline viewer
-// https://github.com/elastic/x-pack-elasticsearch/pull/573[#573]
-////
-////
 Security::
-* Fallback to `keystore.seed` as a bootstrap password if actual password is not present
+* Added the `keystore.seed` setting to create a randomly generated bootstrap
+password if an actual password is not present.
+//TBD: Is there documentation we can link to for this new setting?
 // https://github.com/elastic/x-pack-elasticsearch/pull/2295[#2295] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/26253[#26253])
-* Remove print writer wrapping for users tools
-// https://github.com/elastic/x-pack-elasticsearch/pull/2288[#2288]
-* Don't bootstrap security index on start-up but authenticate bootstrap password locally
+* The `bootstrap.password` secure setting is now managed locally on each node
+and no longer updates the security index.
 // https://github.com/elastic/x-pack-elasticsearch/pull/2272[#2272]
-* Ensure token service can boostrap itself without a pre-shared key
+* The `xpack.security.authc.token.passphrase` setting is no longer mandatory
+when using the token service. The cluster automatically generates a secure key
+on startup. See {ref}/security-settings.html[Security Settings in {es}].
 // https://github.com/elastic/x-pack-elasticsearch/pull/2240[#2240]
-* Localhost check: check if addr bound to interface
-// https://github.com/elastic/x-pack-elasticsearch/pull/1901[#1901] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/1217[#1217], https://github.com/elastic/x-pack-elasticsearch/issues/1896[#1896])
-* Settings: Add secure versions of SSL passphrases
-// https://github.com/elastic/x-pack-elasticsearch/pull/1852[#1852] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/22475[#22475])
-* Support bootstrap password when in container
-// https://github.com/elastic/x-pack-elasticsearch/pull/1832[#1832] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1217[#1217])
-* Ensure transport impls read SSLConfiguration early
-// https://github.com/elastic/x-pack-elasticsearch/pull/1797[#1797]
-* User and role names can be longer with more characters
-// https://github.com/elastic/x-pack-elasticsearch/pull/1745[#1745] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/397[#397])
-* Preserve aliases in index permissions
-// https://github.com/elastic/x-pack-elasticsearch/pull/1501[#1501]
-* Add tool to setup passwords for internal users
-// https://github.com/elastic/x-pack-elasticsearch/pull/1434[#1434] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1217[#1217])
-* Add better authorization for scroll requests and remove signing
-// https://github.com/elastic/x-pack-elasticsearch/pull/1416[#1416]
-////
+* Added reserved `kibana_dashboard_only_user` role. For more information, see
+{kibana-ref}/xpack-dashboard-only-mode.html[Kibana Dashboard Only Mode].
+// https://github.com/elastic/x-pack-elasticsearch/pull/2250[#2250]
 ////
 Watcher::
 //* The reporting email attachment now has support for HTTP proxies.
@@ -197,12 +154,6 @@ xpack::
 [float]
 ==== Bug fixes
 
-////
-Logstash::
-* [Monitoring] No Data for input and output filters in a Logstash pipeline [ISSUE]
-// https://github.com/elastic/x-pack-kibana/pull/2092[#2092]
-////
-
 Machine Learning::
 * Fixed calculation of bucket count and empty bucket count statistics.
 // KEEP already in earlier RN, but customer has noticed https://github.com/elastic/x-pack-elasticsearch/pull/2339[#2339]
@@ -220,45 +171,31 @@ Machine Learning::
 ////
 ////
 Monitoring::
-* [Monitoring] Remove Dedicated IndicesStatsCollector
+// * Removed Dedicated IndicesStatsCollector.
+// OMIT: First fixed in 5.6.0
 // https://github.com/elastic/x-pack-elasticsearch/pull/2192[#2192]
-* [Monitoring] Cluster Alert should reference cluster_stats in 5.5+
-// https://github.com/elastic/x-pack-elasticsearch/pull/1812[#1812]
-* [Monitoring] Allow Cluster Alerts to be disabled in LocalExporter
-// https://github.com/elastic/x-pack-elasticsearch/pull/1808[#1808]
 ////
-////
+
 Security::
-* Adapt to resync rename and add assertion for missing user when sending a request
-// https://github.com/elastic/x-pack-elasticsearch/pull/2345[#2345] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2335[#2335])
-* TOKEN_SERVICE_ENABLED_SETTING enabled if HTTP_SSL_ENABLED
+* The `xpack.security.authc.token.enabled` setting now defaults to true when
+HTTPS is enabled. See
+{ref}/security-settings.html#token-service-settings[Token Service Settings].
 // https://github.com/elastic/x-pack-elasticsearch/pull/2321[#2321]
-* Replace atomic move writer
+* Improved the safety of file updates in the `x-pack/users` tool.
 // https://github.com/elastic/x-pack-elasticsearch/pull/2299[#2299] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2288[#2288])
-* Create security bootstrap checks early to access secure settings safely
+* Bootstrap checks no longer fail when checking secure settings.
 // https://github.com/elastic/x-pack-elasticsearch/pull/2282[#2282]
-* Fix the building of the default URL for the setup password tool
+* The `setup-password` tool no longer fails when using a default
+`elasticsearch.yml` configuration file.
 // https://github.com/elastic/x-pack-elasticsearch/pull/2176[#2176] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2174[#2174])
-* Fix validation of username and password in CreateTokenRequest
+* Fixed validation of the input parameters in the
+{ref}/security-api-tokens.html#security-api-tokens[create token API].
 // https://github.com/elastic/x-pack-elasticsearch/pull/2145[#2145] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2127[#2127])
-* Read the token passphrase earlier in the bootstrap check
-// https://github.com/elastic/x-pack-elasticsearch/pull/2144[#2144]
-* Fix handling of exceptions for concurrent attempts to create security index
-// https://github.com/elastic/x-pack-elasticsearch/pull/2120[#2120]
-* Adds GraphExploreRequest as a remote index request
-// https://github.com/elastic/x-pack-elasticsearch/pull/1836[#1836]
-* Validate filename both before and after resolving the path
-// https://github.com/elastic/x-pack-elasticsearch/pull/1775[#1775] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1757[#1757])
-* [Security] Support anon-bind without pooling
-// https://github.com/elastic/x-pack-elasticsearch/pull/1491[#1491] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1321[#1321])
-* [Security] Include doc-type in _id for tokens
-// https://github.com/elastic/x-pack-elasticsearch/pull/1473[#1473] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1300[#1300])
-////
 
 Watcher::
 * Ensured that a watch can be activated and deactivated during execution.
 // https://github.com/elastic/x-pack-elasticsearch/pull/2204[#2204]
-* Ensured watch execution always uses the latest watch including its latest status. 
+* Ensured watch execution always uses the latest watch including its latest status.
 // https://github.com/elastic/x-pack-elasticsearch/pull/2151[#2151] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/395[#395])
 //* Resetting the acknowledgement state of an action with a condition, if the watch wide condition was true, has been fixed.
 // OMIT: Already appears in 5.5.1 release notes
@@ -287,43 +224,11 @@ License::
 // https://github.com/elastic/x-pack-elasticsearch/pull/2258[#2258]
 ////
 ////
-Monitoring::
-* [Security] Add 'read_cross_cluster' privilege for .monitoring indices
-// https://github.com/elastic/x-pack-elasticsearch/pull/2111[#2111] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2110[#2110])
-* [Monitoring] Index logstash_stats.pipelines.events.duration_in_millis
-// https://github.com/elastic/x-pack-elasticsearch/pull/1752[#1752]
-////
-////
 Operations::
 * [Upg Asst] Show kibana index in deprecation issue list [ISSUE]
 // https://github.com/elastic/x-pack-kibana/pull/2025[#2025]
 * [Upg Asst] Tweak Load Indices method [ISSUE]
 // https://github.com/elastic/x-pack-kibana/pull/2024[#2024]
-////
-////
-Security::
-* Authorize on shard requests for bulk actions
-// https://github.com/elastic/x-pack-elasticsearch/pull/2369[#2369]
-* Add reserved dashboards_only_user role
-// https://github.com/elastic/x-pack-elasticsearch/pull/2250[#2250]
-* Setup password tool builds default URL from settings
-// https://github.com/elastic/x-pack-elasticsearch/pull/2146[#2146]
-* Update the full cluster restart tests to be more generic
-// https://github.com/elastic/x-pack-elasticsearch/pull/2107[#2107]
-* Use a secure setting for the watcher encryption key
-// https://github.com/elastic/x-pack-elasticsearch/pull/1831[#1831]
-* Removing indices privileges from the reporting_user
-// https://github.com/elastic/x-pack-elasticsearch/pull/1806[#1806]
-* Remove unnecessary initialization of the system key
-// https://github.com/elastic/x-pack-elasticsearch/pull/1734[#1734]
-* Support wildcards in has_privileges API
-// https://github.com/elastic/x-pack-elasticsearch/pull/1454[#1454] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1316[#1316])
-* Move PkiRealm checks for SSL and client authentication to a bootstrap check
-// https://github.com/elastic/x-pack-elasticsearch/pull/1442[#1442] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/420[#420])
-* Remove authorization constraints for remote indices  [ISSUE]
-// https://github.com/elastic/x-pack-elasticsearch/pull/1406[#1406]
-* Template queries within roles definition will not be supported in 6.0 [ISSUE]
-// https://github.com/elastic/x-pack-elasticsearch/pull/481[#481]
 ////
 ////
 NOT CLASSIFIED::

@@ -77,24 +77,22 @@ production cluster.
 [[upgrade-order-elastic-stack]]
 === Upgrade order
 
-Upgrade the Elastic Stack products you use in the following order:
+You should upgrade the core Elastic Stack products in the following order:
 
-// TODO: Add link to x-pack upgrade doc
-
-. Elasticsearch Hadoop: {hadoop-ref}/install.html[install instructions]
 . Elasticsearch: {ref}/setup-upgrade.html[upgrade instructions]
-. {xpack} for Elasticsearch
 . Kibana: {kibana-ref}/upgrade.html[upgrade instructions]
-. {xpack} for Kibana
 . Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
-. {xpack} for Logstash
 . Beats: {beats-ref}/upgrading.html[upgrade instructions]
 
-NOTE: Logstash 6.0+ and Beats 6.0+ are compatible with all 6.x versions of
+Logstash 6.0+ and Beats 6.0+ are compatible with all 6.x versions of
 Elasticsearch. This provides flexibility in when you schedule the upgrades
 for your Logstash instances and Beats agents. We recommend upgrading Logstash
 and Beats as soon as possible to take advantage of performance improvements
 and other enhancements.
+
+If you use Elasticsearch for Hadoop, we recommend disabling ingestion while you
+upgrade the stack. For more information, see the {hadoop-ref}/install.html[
+Elasticsearch for Hadoop reference].
 
 [role="xpack"]
 [[xpack-stack-upgrade]]
@@ -186,7 +184,7 @@ version prior to 5.6, you must upgrade them after after installing
 Elasticsearch {version}.
 
 Starting in 5.6, X-Pack Kibana provides an
-{xpack-ref}/xpack-upgrade-assistant.html[Upgrade Assistant UI] to aid in the
+{kibana-ref}/xpack-upgrade-assistant.html[Upgrade Assistant UI] to aid in the
 upgrade process. Use this utility to upgrade the internal Kibana and X-Pack
 indices.
 

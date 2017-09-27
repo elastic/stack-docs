@@ -43,7 +43,7 @@ check the breaking changes from 2.x to 5.x, as well as from 5.x to 6.x!
 --
 
 . We recommend upgrading to 5.6 and using the
-{xpack-ref}/xpack-upgrade-assistant.html[Upgrade Assistant]'s Reindex Helper to
+{kibana-ref}/xpack-upgrade-assistant.html[Upgrade Assistant]'s Reindex Helper to
 reindex 2.x indices. Alternatively, you can manually {ref}/docs-reindex.html[reindex]
 or delete all 2.x indices.
 
@@ -179,52 +179,26 @@ index as alias for the new index and delete the 2.x index.
 
 The format used for the internal indices used by Kibana and {xpack} has
 changed in {major-version}. Before you can run Kibana and {xpack} in {version},
-these indices must be upgraded to the new format. If you are upgrading from a
-version prior to 5.6, you must upgrade them after after installing
-Elasticsearch {version}.
+these indices must be upgraded to the new format.
 
-Starting in 5.6, X-Pack Kibana provides an
-{kibana-ref}/xpack-upgrade-assistant.html[Upgrade Assistant UI] to aid in the
-upgrade process. Use this utility to upgrade the internal Kibana and X-Pack
-indices.
+Starting in 5.6, X-Pack provides an
+{kibana-ref}/xpack-upgrade-assistant.html[Upgrade Assistant] you can use to
+upgrade the internal indices.
 
-If you would prefer to perform the upgrade of internal indices manually,
-keep reading.
+If you are upgrading from a version prior to 5.6, you must upgrade the internal
+indices after installing Elasticsearch {version}:
 
-===== Manually upgrading X-Pack indices for {major-version}
-
-To get a list of the X-Pack indices that need to be upgraded, install {xpack}
-and use the {ref}/migration-api-assistance.html[`_xpack/migration/assistance` API]:
-
-[source,json]
-----------------------------------------------------------
-GET /_xpack/migration/assistance
-----------------------------------------------------------
-// CONSOLE
-
-To upgrade the `.security` index:
-
-. On a single node, add a temporary superuser account to the `file` realm.
-. Use the {ref}/migration-api-upgrade.html[`_xpack/migration/upgrade`]
-API to upgrade the security index, submitting the request with the credentials
-for the temporary superuser:
-+
---
-[source,json]
-----------------------------------------------------------
-POST /_xpack/migration/upgrade/.security
-----------------------------------------------------------
-// CONSOLE
---
-
-. Delete the temporary superuser account from the file realm.
-
-You can use your regular administration credentials to upgrade the other
-internal indices using the `_xpack/migration/upgrade` API.
-
-===== Manually upgrading Kibana indices for {major-version}
-
-To upgrade your Kibana indices, follow {kibana-ref}/migrating-6.0-index.html[this guide].
+. If X-Pack Security is enabled, {ref}/users-command.html[create a
+temporary super user in the `file` realm] on a single node.
+. Start Elasticsearch.
+. {kibana-ref}/migrating-6.0-index.html[Manually upgrade the `.kibana` index]
+using the temporary superuser credentials.
+. Start Kibana.
+. Log in to Kibana with the temporary superuser credentials and use the Upgrade
+Assistant to migrate the X-Pack indices. (You could also do this manually with
+the {ref}/migration-api-assistance.html[`_xpack/migration/assistance`] and
+ {ref}/migration-api-upgrade.html[`_xpack/migration/upgrade`] APIs.)
+. Delete the temporary superuser from the file realm.
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
 === Upgrading on Elastic Cloud

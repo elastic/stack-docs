@@ -20,22 +20,12 @@ but the versions cannot differ by more than one major version.
 
 The following diagram illustrates a typical monitoring architecture:
 
-////
-
-TODO: Add an image of the architecture
-                      (write)
-[ Monitoring Cluster ] <-- [ Production Cluster ]
-          |                 ^        ^
-          |(read)          /(write)  |(write)
-          \/              /          |
-[       Kibana             ] [ Logstash ]
-
-////
+image::monitoring/images/architecture1.jpg[A typical monitoring environment]
 
 If you have at least a Gold license, you can route data from multiple production
 clusters to a single monitoring cluster:
 
-// TODO: Add an image of the architecture
+image::monitoring/images/architecture2.jpg[A monitoring environment with multiple production clusters]
 
 // The default Trial license is equivalent to a Platinum license, which also
 //allows you to test this functionality.
@@ -44,7 +34,7 @@ If {kib} is a regular part of your stack, you might want to stand up a dedicated
 {kib} instance for monitoring, rather than using a single {kib} instance to
 access both your production cluster and monitoring cluster:
 
-// TODO: Add an image of the architecture
+image::monitoring/images/architecture3.jpg[A monitoring environment with separate {kib} instances]
 
 // ===	Collecting Monitoring Metrics
 // === Exporting Monitoring Metrics

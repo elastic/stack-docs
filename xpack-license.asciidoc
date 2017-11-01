@@ -3,14 +3,64 @@
 
 [partintro]
 --
-When you initially install {xpack}, a 30 day trial license is installed that
-allows access to all features. At the end of the trial period, you can
-https://www.elastic.co/subscriptions/[purchase a subscription] to keep using the
-full functionality of the {xpack} components.
+When you initially install {xpack}, a 30 day license is generated that
+allows access to x-pack features. By default, this will be a trial license that
+allows access to all features -- the equivalent of a platinum license. If you prefer,
+the cluster can be configured to generate a basic license at startup. If the basic license
+is chosen, you will be able to activate a trial license at some point in the future using
+an api. At the end of the 30 day period, you can https://www.elastic.co/subscriptions/[purchase a subscription]
+to keep using the full functionality of the {xpack} components.
 
 IMPORTANT:  When your license expires, {xpack} operates in a degraded mode. For
 more information, see  <<license-expiration, License Expiration>>.
 --
+
+[[generated-license]]
+== Generating a license
+
+At node startup a license will be generated if one is not already registered for the
+cluster. By default, this will be a 30 day trial license that gives access to all
+x-pack features.
+
+A config exists allowing you to generate a basic license instead of a trial license.
+This setting exists for users that do not want to immediately use their trial license.
+
+`xpack.license.self_generated.type`::
+Set to `trial` (default) to enable all features. +
++
+If set to `basic` in `elasticsearch.yml`, the self generated license will only
+give access to the features of a standard basic license. If this config is used,
+the cluster will still be upgradable to a trial license in the future.
+
+You can also use the `start_trial` API to start a trial license. You are only allowed to
+initiate a trial license if your cluster has not already activated a trial license for
+the current major x-pack version. So if you have already activated a trial for v6.0, you
+will not be able to start a new trial until v7.0.
+
+Using the `start_trial` api:
+
+. Check if you are eligible to start a trial:
++
+--
+[source,shell]
+-----------------------------------------------------
+curl -XGET -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/trial_status'
+--------------------------------------------
+// NOTCONSOLE
+
+--
+. If you are eligible to start a trial:
++
+[source,shell]
+-----------------------------------------------------
+curl -XGET -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/start_trial'
+--------------------------------------------
+// NOTCONSOLE
+
+When you use this api the trial license will replace your existing license. If you would
+like to revert to your existing license when the trial is complete, you will need to
+install your license again, or https://register.elastic.co/[register for a new basic license]
+if you do not already have one.
 
 [[installing-license]]
 == Updating Your License

@@ -1,19 +1,15 @@
 [[upgrading-elastic-stack]]
 == Upgrading the Elastic Stack
 
-You must upgrade all of the Elastic Stack products you are using
-when upgrading to a new major version. You can perform a rolling upgrade when
-upgrading from 5.6 to 6.x, a full cluster restart is not required.
-
-We recommend upgrading to 5.6 before upgrading to {version}.
+We recommend upgrading your stack to 5.6 and using the {xpack} Upgrade Assistant
+to prepare for your upgrade to {version}. You can perform a rolling upgrade when
+upgrading from 5.6 to 6.x, a full cluster restart is generally not required.
 Upgrading from any other version than 5.6 requires a full cluster
-restart. {xpack} 5.6 also provides free migration assistance and
-upgrade tools that simplify the upgrade process.
+restart.
 
-IMPORTANT: 2.x indices are not compatible with {version}. You must
-remove or reindex them on 5.x before upgrading to {version}. In addition,
-the internal Kibana and {xpack} indices need to be upgraded to work
-with {version}.
+TIP: Want to know which of the following steps apply to your stack? Use the
+https://register.elastic.co/guide/upgrade[interactive upgrade guide] to build
+a personal path through the upgrade docs.
 
 === Preparing to upgrade
 

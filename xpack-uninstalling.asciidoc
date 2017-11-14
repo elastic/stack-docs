@@ -1,0 +1,33 @@
+[[xpack-uninstalling]]
+=== Uninstalling {xpack}
+
+To uninstall {xpack}:
+
+. Stop {es}.
+
+. Remove {xpack} from {es}:
++
+[source,shell]
+----------------------------------------------------------
+bin/elasticsearch-plugin remove x-pack
+----------------------------------------------------------
+
+. Restart {es}.
+
+. Remove {xpack} from {kib}:
++
+[source,shell]
+----------------------------------------------------------
+bin/kibana-plugin remove x-pack
+----------------------------------------------------------
+
+. Restart {kib}.
+
+. Remove {xpack} from Logstash:
++
+[source,shell]
+----------------------------------------------------------
+bin/logstash-plugin remove x-pack
+----------------------------------------------------------
+
+. Restart Logstash.

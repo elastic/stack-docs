@@ -1,0 +1,44 @@
+[[xpack-upgrading]]
+=== Upgrading {xpack}
+
+To upgrade {xpack}:
+
+. Stop {es}.
+
+. Uninstall {xpack} from {es}:
++
+[source,shell]
+--------------------------------------------------
+bin/elasticsearch-plugin remove x-pack
+--------------------------------------------------
+
+. Install the new version of {xpack} into {es}.
++
+[source,shell]
+----------------------------------------------------------
+bin/elasticsearch-plugin install x-pack
+----------------------------------------------------------
+
+. Restart {es}.
++
+IMPORTANT:  If you're upgrading a production cluster, perform a
+            {ref}/rolling-upgrades.html[rolling upgrade] to ensure recovery is
+            as quick as possible. Rolling upgrades are supported when upgrading
+            to a new minor version. A full cluster restart is required when
+            upgrading to a new major version.
+
+. Uninstall {xpack} from {kib}:
++
+[source,shell]
+--------------------------------------------------
+bin/kibana-plugin remove x-pack
+--------------------------------------------------
+
+. Install the new version of {xpack} into {kib}.
++
+[source,shell]
+----------------------------------------------------------
+bin/kibana-plugin install x-pack
+----------------------------------------------------------
+
+. Restart {kib}.

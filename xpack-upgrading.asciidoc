@@ -27,12 +27,7 @@ To upgrade {xpack}:
 bin/elasticsearch-plugin remove x-pack
 --------------------------------------------------
 
-. Install the new version of {xpack} into {es}.
-+
-[source,shell]
-----------------------------------------------------------
-bin/elasticsearch-plugin install x-pack
-----------------------------------------------------------
+. {ref}/installing-xpack-es.html[Install the new version of {xpack} into {es}].
 
 . Restart {es}.
 +
@@ -49,11 +44,17 @@ IMPORTANT:  If you're upgrading a production cluster, perform a
 bin/kibana-plugin remove x-pack
 --------------------------------------------------
 
-. Install the new version of {xpack} into {kib}.
+. {kibana-ref}/installing-xpack-kb.html[Install the new version of {xpack} into {kib}].
+
+. Restart {kib}.
+
+. Uninstall {xpack} from Logstash:
 +
 [source,shell]
 ----------------------------------------------------------
-bin/kibana-plugin install x-pack
+bin/logstash-plugin remove x-pack
 ----------------------------------------------------------
 
-. Restart {kib}.
+. {logstash-ref}/installing-xpack-log.html[Install the new version of {xpack} into Logstash].
+
+. Restart Logstash.

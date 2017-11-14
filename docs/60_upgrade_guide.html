@@ -289,6 +289,13 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 
   /* ==================== RESTART MODAL ==================================== */
 
+  /**
+   * 1. If we leave this as the default black it looks weird inside the iframe.
+   */
+  #ui-overlay {
+    background-color: transparent !important; /* 1 */
+  }
+
   #ui-dialog {
     -webkit-box-shadow: 0 16px 16px -8px rgba(0, 0, 0, 0.1);
             box-shadow: 0 16px 16px -8px rgba(0, 0, 0, 0.1);
@@ -301,25 +308,27 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
     animation: euiModal 350ms cubic-bezier(0.34, 1.61, 0.7, 1);
   }
 
-@-webkit-keyframes euiModal {
-  0% {
-    opacity: 0;
-    -webkit-transform: translateY(32px);
-            transform: translateY(32px); }
-  100% {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-            transform: translateY(0); } }
+  @-webkit-keyframes euiModal {
+    0% {
+      opacity: 0;
+      -webkit-transform: translateY(32px);
+              transform: translateY(32px); }
+    100% {
+      opacity: 1;
+      -webkit-transform: translateY(0);
+              transform: translateY(0); }
+  }
 
-@keyframes euiModal {
-  0% {
-    opacity: 0;
-    -webkit-transform: translateY(32px);
-            transform: translateY(32px); }
-  100% {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-            transform: translateY(0); } }
+  @keyframes euiModal {
+    0% {
+      opacity: 0;
+      -webkit-transform: translateY(32px);
+              transform: translateY(32px); }
+    100% {
+      opacity: 1;
+      -webkit-transform: translateY(0);
+              transform: translateY(0); }
+  }
 
   #ui-dialog:focus {
     outline: none;

@@ -3,8 +3,6 @@
 
 * To migrate to {security} from Shield, see <<security-migration>>.
 
-* To migrate to {xpack} {watcher} from {watcher}, see <<migrating_from_watcher>>.
-
 [[security-migration]]
 === Migrating from Shield
 
@@ -372,51 +370,3 @@ Finally, as part of the move to Log4j2 the `logging.yml` file has been replaced 
 
 In {security}, the default header name for <<run-as-privilege,submitting requests>> on behalf of other users has changed
 to `es-security-runas-user`. Applications making use of the run as functionality will need to use the new header name.
-
-
-[[migrating_from_watcher]]
-=== Migrating from Watcher
-
-Prior to 5.0 all watcher specific settings were prefixed with `watcher`. Those
-have been changed to start with `xpack.watcher` now, For example
-`watcher.execution.default_throttle_period` becomes
-`xpack.watcher.execution.default_throttle_period`.
-
-The setting to allow scripting only for watcher has been renamed from
-`script.engine.groovy.inline.elasticsearch-watcher_watch` to
-`script.engine.groovy.inline.xpack_watch`.
-
-All account specific SMTP timeouts (`smtp.timeout`, `smtp.connection_timeout` and
-`smtp.write_timeout`) now require a time value instead of a number, that
-represented milliseconds in earlier releases.
-
-Watcher history now uses a versioned template. The index names also changed and
-contain this version. So instead of `.watch_history_2016.02.03` the new index
-name is `.watcher-history-1-2016.02.03`, `1` being the current version. If are
-also migrating from Shield (to {security}).
-
-IMPORTANT:  this might require you to change roles/permissions because of the
-            different index names!
-
-The old index template named `watch_history` can be deleted now. It will not
-interfere with the newly added index template though.
-
-The notification settings for pagerduty, slack, hipchat and email have been moved and renamed. The move
-happened from `xpack.watcher.actions` to `xpack.notification`.
-For example the slack configuration needs to move from `xpack.watcher.actions.slack.service`
-to `xpack.notification.slack`. The `service` part has been removed for all notification settings.
-
-All watcher endpoints have been renamed from `/_watcher/XYZ` to `/_xpack/watcher/XYZ`.
-You might need to fix this in your clients, monitoring scripts, potential HTTP proxies/redirectors
-as well as in your watches.
-
-==== Watcher and scripts
-
-The default scripting language in Elasticsearch has been changed to be painless. This applies for Watcher too, so
-when new scripts or updating existing scripts and no script language has been explicitly specified then the painless
-language will be used.
-
-If in your watches you have scripts that don't set the scripting language specifically then upon upgrading watcher
-will set the language explicitly. By default the language will be set to groovy. If you your default language for scripts
-is different than groovy then set the `script.legacy.default_lang` setting before upgrading to what your default language
-is now.  This is important otherwise watches may not work after the upgrade and you need to update all your watches manually.

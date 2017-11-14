@@ -1,8 +1,6 @@
 [[migrating-to-xpack]]
 == Migrating to X-Pack
 
-* To migrate to {monitoring} from Marvel, see <<migrating_from_marvel>>.
-
 * To migrate to {security} from Shield, see <<security-migration>>.
 
 * To migrate to {xpack} {watcher} from {watcher}, see <<migrating_from_watcher>>.
@@ -375,60 +373,6 @@ Finally, as part of the move to Log4j2 the `logging.yml` file has been replaced 
 In {security}, the default header name for <<run-as-privilege,submitting requests>> on behalf of other users has changed
 to `es-security-runas-user`. Applications making use of the run as functionality will need to use the new header name.
 
-[[migrating_from_marvel]]
-=== Migrating from Marvel
-
-Prior to 5.0, monitoring functionality was provided as a separate Marvel plugin
-for Elasticsearch and Kibana. As of 5.0, all of Marvel's features have been
-rolled into {monitoring}.
-
-To migrate to {monitoring}, you simply need to install {xpack} and update your
-monitoring settings:
-
-[options="header"]
-|=====
-| Monitoring 2.x Settings          | X-Pack 5.0 Settings
-| `marvel.*`                       | `xpack.monitoring.*`
-| `marvel.agent.*`                 | `xpack.monitoring.collection.*`
-| `marvel.agent.exporters.*`       | `xpack.monitoring.exporters.*`
-|======
-
-For example `marvel.history.duration` is now `xpack.monitoring.history.duration`,
-and `marvel.agent.interval` is now `xpack.monitoring.collection.interval`.
-
-See <<xpack-settings, X-Pack Settings>> for the complete list of
-{ref}/monitoring-settings.html[{monitoring} settings] and other X-Pack configuration
-options.
-
-All of the Marvel metric indexes created by Marvel 2.3+ (named like
-`.marvel-es-1-*`) will be automatically aliased to be used by Monitoring.
-Marvel metric indexes created by 2.0 through 2.2 are not compatible with
-Monitoring so they are unused and unmodified. You can delete them by running:
-
-[source,js]
---------------------------------------------------
-DELETE /.marvel-es-20*
---------------------------------------------------
-// CONSOLE
-// TEST[s/^/PUT .marvel-es-2016-01-01\n/]
-
-Marvel's data index (named like `.marvel-es-data` or `.marvel-es-data-1`) is
-also unused and unmodified. Monitoring will recreate a new data index soon
-after startup so there is no real need to keep Marvel's data indexes. You can
-delete them by running:
-
-[source,js]
---------------------------------------------------
-DELETE /.marvel-es-data*
---------------------------------------------------
-// TEST[s/^/PUT .marvel-es-data\n/]
-
-==== Using an External Monitoring Cluster
-
-To use an external monitoring cluster to monitor an Elasticsearch 5.0 cluster,
-you must run Elasticsearch 5.0 on the monitoring cluster. For more information
-about external monitoring clusters, see <<monitoring-cluster,
-Setting up a Separate Monitoring Cluster>>.
 
 [[migrating_from_watcher]]
 === Migrating from Watcher

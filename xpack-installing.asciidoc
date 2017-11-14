@@ -1,12 +1,12 @@
 [[installing-xpack]]
-== Installing X-Pack
+=== Installing {xpack}
 
-To use X-Pack you need:
+To use {xpack} you need:
 
-* Elasticsearch {version} - {ref}/_installation.html[Installing Elasticsearch]
-* Kibana {version} -  {kibana-ref}/setup.html[Getting Kibana Up and Running]
+* {es} {version} - {ref}/_installation.html[Installing {es}]
+* {Es} {version} -  {kibana-ref}/setup.html[Getting {kib} Up and Running]
 
-You must run the version of {xpack} that matches the version of Elasticsearch
+You must run the version of {xpack} that matches the version of {es}
 you are running.
 
 {xpack} also provides a monitoring UI for {logstash-ref}/introduction.html[Logstash].
@@ -26,7 +26,7 @@ on offline machines, see the product-specific {xpack} installation instructions.
 
 [float]
 [[xpack-enabling]]
-=== Enabling and Disabling {xpack} Features
+==== Enabling and Disabling {xpack} Features
 
 By default, all {xpack} features are enabled. You can enable or disable specific
 {xpack} features in the `elasticsearch.yml`, `kibana.yml`, and `logstash.yml`
@@ -44,85 +44,4 @@ configuration files.
 |======
 
 For more information about which settings exist in each configuration file, see
-<<xpack-settings>>.
-
-[float]
-[[xpack-upgrading]]
-=== Upgrading {xpack}
-
-To upgrade {xpack}:
-
-. Stop Elasticsearch.
-
-. Uninstall {xpack} from Elasticsearch:
-+
-[source,shell]
---------------------------------------------------
-bin/elasticsearch-plugin remove x-pack
---------------------------------------------------
-
-. Install the new version of {xpack} into Elasticsearch.
-+
-[source,shell]
-----------------------------------------------------------
-bin/elasticsearch-plugin install x-pack
-----------------------------------------------------------
-
-. Restart Elasticsearch.
-+
-IMPORTANT:  If you're upgrading a production cluster, perform a
-            {ref}/rolling-upgrades.html[rolling upgrade] to ensure recovery is
-            as quick as possible. Rolling upgrades are supported when upgrading
-            to a new minor version. A full cluster restart is required when
-            upgrading to a new major version.
-
-. Uninstall {xpack} from Kibana:
-+
-[source,shell]
---------------------------------------------------
-bin/kibana-plugin remove x-pack
---------------------------------------------------
-
-. Install the new version of {xpack} into Kibana.
-+
-[source,shell]
-----------------------------------------------------------
-bin/kibana-plugin install x-pack
-----------------------------------------------------------
-
-. Restart Kibana.
-
-[float]
-[[xpack-uninstalling]]
-=== Uninstalling {xpack}
-
-To uninstall {xpack}:
-
-. Stop Elasticsearch.
-
-. Remove {xpack} from Elasticsearch:
-+
-[source,shell]
-----------------------------------------------------------
-bin/elasticsearch-plugin remove x-pack
-----------------------------------------------------------
-
-. Restart Elasticsearch.
-
-. Remove {xpack} from Kibana:
-+
-[source,shell]
-----------------------------------------------------------
-bin/kibana-plugin remove x-pack
-----------------------------------------------------------
-
-. Restart Kibana.
-
-. Remove {xpack} from Logstash:
-+
-[source,shell]
-----------------------------------------------------------
-bin/logstash-plugin remove x-pack
-----------------------------------------------------------
-
-. Restart Logstash.
+{xpack-ref}/xpack-settings.html[X-Pack Settings].

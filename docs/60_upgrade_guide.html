@@ -449,9 +449,15 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 
   /* ==================== CODE ==================================== */
 
+  /**
+   * 1. We need to be able to break mid-word so that  a long unbroken line
+   *    of code will wrap on small screens.
+   */
   code {
     font-family: "Roboto Mono", monospace;
-    display: inline-block;
+    display: block; /* 1 */
+    word-wrap: break-word; /* 1 */
+    white-space: pre-wrap; /* 1 */
     background: #F5F5F5;
     color: #DD0A73;
     border: 1px solid #D9D9D9;

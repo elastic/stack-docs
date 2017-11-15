@@ -54,7 +54,7 @@ internal indices after you install Elasticsearch {version}.
 
 . If you use {xpack} to secure your cluster:
 .. Make sure TLS is enabled to encrypt communications between nodes. TLS must
-be enabled to upgrade to {version}. For more information, see 
+be enabled to upgrade to {version}. For more information, see
 {xpack-ref}/encrypting-communications.html[Encrypting Communications].
 +
 NOTE: Enabling TLS requires a full cluster restart. Nodes that have TLS
@@ -63,10 +63,12 @@ restart all nodes to maintain communication across the cluster.
 
 .. Make sure real passwords are configured for the built-in `elasticsearch`,
 `kibana`, and `logstash_system` users. They cannot use the 5.x default
-password (`changeme`).
+password (`changeme`). For more information, see
+{xpack-ref}/setting-up-authentication.html[Setting Up User Authentication].
 
-. Stop any Machine Learning jobs that are running before starting the upgrade
-process.
+. Stop any {xpack} machine learning jobs that are running before starting the
+upgrade process. See
+{xpack-ref}/stopping-ml.html[Stopping Machine Learning].
 
 IMPORTANT: Test upgrades in a dev environment before upgrading your
 production cluster.

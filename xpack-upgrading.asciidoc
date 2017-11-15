@@ -2,7 +2,7 @@
 === Upgrading {xpack}
 
 You must upgrade all of the Elastic Stack products you are using when upgrading
-to a new major version. See 
+to a new major version. See
 {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
 
 IMPORTANT: If you use {security} and are upgrading directly to
@@ -14,6 +14,9 @@ internal indices]. You also need to upgrade the `.security` index if
 you restore a pre-5.6 snapshot to a fresh 6.0 install.
 
 To upgrade {xpack}:
+
+. Stop any {ml} jobs that are running before starting the upgrade process. See
+<<stopping-ml>>.
 
 . Stop {es}.
 

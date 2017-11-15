@@ -1,21 +1,28 @@
 [[installing-xpack]]
 === Installing {xpack}
 
-To use {xpack} you need:
+You must install {es} and {kib} before you install {xpack}. If you plan to use
+the {xpack} features in Logstash, you must also install Logstash before you
+install {xpack}. For more information, see:
 
-* {es} {version} - {ref}/_installation.html[Installing {es}]
-* {Es} {version} -  {kibana-ref}/setup.html[Getting {kib} Up and Running]
+* {ref}/install-elasticsearch.html[Installing {es}]
+* {kibana-ref}/install.html[Installing {kib}]
+* {logstash-ref}/installing-logstash.html[Installing Logstash]
 
-You must run the version of {xpack} that matches the version of {es}
-you are running.
+You must install the version of {xpack} that matches the version of each product.
+For more information about product compatibility, see the
+https://www.elastic.co/support/matrix#matrix_compatibility[Elastic Support Matrix].
 
-{xpack} also provides a monitoring UI for {logstash-ref}/introduction.html[Logstash].
-
-To install {xpack}:
+To install {xpack} on the Elastic stack:
 
 . {ref}/installing-xpack-es.html[Install {xpack} on {es}]
 . {kibana-ref}/installing-xpack-kb.html[Install {xpack} on {kib}]
 . {logstash-ref}/installing-xpack-log.html[Install {xpack} on Logstash]
+
+The following diagram provides an overview of the steps that are required to
+set up {xpack} on each product:
+
+image::images/InstallationFlow.jpg[Installation overview on {es}, {kib}, and Logstash]
 
 NOTE: The {xpack} installation scripts require direct internet access to
 download and install {xpack}. If your servers don’t have internet access, you

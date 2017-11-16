@@ -57,10 +57,12 @@ restart all nodes to maintain communication across the cluster.
 
 .. Make sure real passwords are configured for the built-in `elasticsearch`,
 `kibana`, and `logstash_system` users. They cannot use the 5.x default
-password (`changeme`).
+password (`changeme`). For more information, see
+{xpack-ref}/setting-up-authentication.html[Setting Up User Authentication].
 
-. Stop any Machine Learning jobs that are running before starting the upgrade
-process.
+. Stop any {xpack} machine learning jobs that are running before starting the
+upgrade process. See
+{xpack-ref}/stopping-ml.html[Stopping Machine Learning].
 
 IMPORTANT: Test upgrades in a dev environment before upgrading your
 production cluster.
@@ -223,4 +225,3 @@ Upgrade Versions] and {cloudref}/cluster-config.html[Configuring Elastic Cloud].
 
 NOTE: Elastic Cloud only supports upgrades to released versions. Preview
 releases and master snapshots are not supported.
-

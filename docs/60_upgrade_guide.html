@@ -901,7 +901,6 @@ You can run Beats 5.6 with Elasticsearch 6.0 until it&#x27;s convenient to upgra
 These are the steps you need to take to upgrade to 6.0.
 On Elastic Cloud, all major configuration changes to upgrade Elasticsearch, Kibana, and X-Pack are handled for you.
 &lt;&lt;if $version != &quot;5.6&quot;&gt;&gt;\
-$version
 !!!Upgrade to 5.6
 &lt;&lt;if $v1indices&gt;&gt;\
 [[Reindex any 1.x indices that you need to carry forward.|https://www.elastic.co/guide/en/elasticsearch/reference/5.6/reindex-upgrade.html]]
@@ -991,7 +990,7 @@ If an index&#x27;s version starts with 20, you must reindex it to carry it forwa
 &lt;&lt;else&gt;&gt;
 &lt;&lt;goto &quot;Upgrade list&quot;&gt;&gt;
 &lt;&lt;endif&gt;&gt;
-&lt;&lt;/link&gt;&gt; I don&#x27;t need to carry forward any 2.x indices
+&lt;&lt;/link&gt;&gt; I don&#x27;t have 2.x indices to carry forward
 
 &lt;&lt;include debug&gt;&gt;</tw-passagedata><tw-passagedata pid="20" name="v1-indices" tags="" position="675,575">!!Do you have any indices that were created in 1.x?
 
@@ -1017,7 +1016,7 @@ If an index&#x27;s version starts with 10, you must reindex it to carry it forwa
 &lt;&lt;else&gt;&gt;
 &lt;&lt;goto &quot;Upgrade list&quot;&gt;&gt;
 &lt;&lt;endif&gt;&gt;
-&lt;&lt;/link&gt;&gt; I don&#x27;t need to carry forward any 1.x indices</tw-passagedata><tw-passagedata pid="21" name="v1-indices-cloud" tags="" position="536,576">!!Do you have any indices that were created in 1.x?
+&lt;&lt;/link&gt;&gt; I don&#x27;t have 1.x indices to carry forward</tw-passagedata><tw-passagedata pid="21" name="v1-indices-cloud" tags="" position="536,576">!!Do you have any indices that were created in 1.x?
 
 To see the version of each index, use the GET settings API:
 
@@ -1033,7 +1032,7 @@ If an index&#x27;s version starts with 10, you must reindex it to carry it forwa
 &lt;&lt;link &quot;No&quot;&gt;&gt;
 &lt;&lt;set $v1indices = false&gt;&gt;
 &lt;&lt;goto &quot;Upgrade list&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt; I don&#x27;t have any 1.x indices I need to access from my upgraded stack</tw-passagedata><tw-passagedata pid="22" name="v2-indices-cloud" tags="" position="1002,576">!!Do you have any indices that were created in 2.x?
+&lt;&lt;/link&gt;&gt; I don&#x27;t have 1.x to carry forward</tw-passagedata><tw-passagedata pid="22" name="v2-indices-cloud" tags="" position="1002,576">!!Do you have any indices that were created in 2.x?
 
 To see the version of each index, use the GET settings API:
 
@@ -1048,7 +1047,7 @@ If an index&#x27;s version starts with 20, you must reindex it to carry it forwa
 &lt;&lt;link &quot;No&quot;&gt;&gt;
 &lt;&lt;set $v2indices = false&gt;&gt;
 &lt;&lt;goto &quot;Upgrade list&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt; I don&#x27;t have any 2.x indices I need to access from my upgraded stack
+&lt;&lt;/link&gt;&gt; I don&#x27;t have 2.x to carry forward
 
 &lt;&lt;include debug&gt;&gt;</tw-passagedata><tw-passagedata pid="23" name="breaking-56" tags="" position="1525,100">&lt;span class=&quot;pseudo-link&quot;&gt;Address any 5.x breaking changes that affect your applications:&lt;/span&gt;
 &lt;span class=&quot;list-indent&quot;&gt;\

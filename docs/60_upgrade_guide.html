@@ -121,9 +121,8 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
       // for the UI to re-render before calculating the height.
       window.setTimeout(function () {
         var height = document.body.offsetHeight;
-        console.log(height)
         window.top.postMessage(height, '*');
-      }, 250);
+      }, 50);
     }
 
     // Tell the container that the Iframe height needs to be updated.

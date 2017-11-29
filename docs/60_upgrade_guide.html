@@ -116,21 +116,12 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
   <script type="text/javascript">
-    var body = document.body;
-    var html = document.documentElement;
-
     function updateIframeHeight() {
       // Wait a slight delay because user input could cause the UI to change, so we need to wait
       // for the UI to re-render before calculating the height.
       window.setTimeout(function () {
-        var height = Math.max(
-          body.scrollHeight,
-          body.offsetHeight,
-          html.clientHeight,
-          html.scrollHeight,
-          html.offsetHeight
-        );
-
+        var height = document.body.offsetHeight;
+        console.log(height)
         window.top.postMessage(height, '*');
       }, 250);
     }

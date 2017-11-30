@@ -4,6 +4,19 @@
 <meta charset="UTF-8" />
 <title>Elastic Stack 6.0 Upgrade Guide</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  #init-screen {
+    background-color: #ffffff !important;
+  }
+
+  html[data-init=loading] #init-loading {
+    border-top-color: lightgray !important;
+    border-bottom-color: lightgray !important;
+    width: 20px !important;
+    border-width: 10px !important;
+    height: 20px !important;
+  }
+</style>
 <!--
 
 SugarCube (v2.18.0): A free (gratis and libre) story format.
@@ -102,6 +115,21 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 		<div id="init-lacking">Your browser lacks required capabilities. Please upgrade it or switch to another to continue.</div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
+  <script type="text/javascript">
+    function updateIframeHeight() {
+      // Wait a slight delay because user input could cause the UI to change, so we need to wait
+      // for the UI to re-render before calculating the height.
+      window.setTimeout(function () {
+        var height = document.body.offsetHeight;
+        window.top.postMessage(height, '*');
+      }, 50);
+    }
+
+    // Tell the container that the Iframe height needs to be updated.
+    window.addEventListener('click', updateIframeHeight);
+    window.addEventListener('keypress', updateIframeHeight);
+    document.addEventListener('DOMContentLoaded', updateIframeHeight);
+  </script>
 	<div id="store-area" hidden><tw-storydata name="Elastic Stack 6.0 Upgrade Guide" startnode="1" creator="Twine" creator-version="2.1.3" ifid="749DFD70-0EC2-4CB9-9963-4ACB86A52F3D" format="SugarCube" format-version="2.18.0" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* ==================== CHROME ==================================== */
 
   #upgradeStackWizard {

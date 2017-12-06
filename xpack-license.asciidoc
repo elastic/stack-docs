@@ -98,7 +98,7 @@ Where:
 
 * `elastic` is the built-in super user. The default password is `changeme`. If
 you haven't already, <<built-in-users,change the default password>>. Any user
-with cluster admin privileges can install the license.
+with cluster manage privilege can install the license.
 * `<host>` is the hostname of the Elasticsearch node (`localhost` if executing
   locally)
 * `<port>` is the http port (defaults to `9200`)
@@ -144,7 +144,7 @@ curl -XGET -u elastic:changeme 'http://<host>:<port>/_xpack/license'
 --------------------------------------------
 // NOTCONSOLE
 
-NOTE: You need cluster admin privileges to retrieve the license.
+NOTE: You need cluster manage privilege to retrieve the license.
 
 [[license-expiration]]
 == License Expiration

@@ -3,6 +3,13 @@
 = Glossary of terms
 
 [glossary]
+[[glossary-metadata]] @metadata ::
+
+  A special field for storing content that you don't want to include in output
+  <<glossary-event,events>>. For example, the `@metadata` field is useful for
+  creating transient fields for use in <<glossary-conditional,conditional>>
+  statements.
+
 [[glossary-analysis]] analysis ::
 
   Analysis is the process of converting <<glossary-text,full text>> to
@@ -38,6 +45,22 @@
   chosen automatically by the cluster and which can be replaced if the
   current master node fails.
 
+[[glossary-codec-plugin]] codec plugin ::
+
+    A Logstash <<glossary-plugin,plugin>> that changes the data representation
+    of an <<glossary-event,event>>. Codecs are essentially stream filters that
+    can operate as part of an input or output. Codecs enable you to separate the
+    transport of messages from the serialization process. Popular codecs include
+    json, msgpack, and plain (text).
+
+[[glossary-conditional]] conditional ::
+
+    A control flow that executes certain actions based on whether a statement
+    (also called a condition) is true or false. Logstash supports `if`,
+    `else if`, and `else` statements. You can use conditional statements to
+    apply filters and send events to a specific output based on conditions that
+    you specify.
+
 [[glossary-ml-datafeed]] datafeed ::
 
   Machine learning jobs can analyze either a one-off batch of data or
@@ -66,17 +89,17 @@
   <<glossary-source_field,`_source` field>>, which is returned by default when
   getting or searching for a document.
 
-[[glossary-id]] id ::
+[[glossary-event]] event ::
 
-  The ID of a <<glossary-document,document>> identifies a document. The
-  `index/id` of a document must be unique. If no ID is provided,
-  then it will be auto-generated. (also see <<glossary-routing,routing>>)
+  A single unit of information, containing a timestamp plus additional data. An
+  event arrives via an input, and is subsequently parsed, timestamped, and
+  passed through the Logstash <<glossary-pipeline,pipeline>>.
 
 [[glossary-field]] field ::
 
   A <<glossary-document,document>> contains a list of fields, or key-value
-  pairs. The value can be a simple (scalar) value (eg a string, integer,
-  date), or a nested structure like an array or an object. A field is
+  pairs. The value can be a simple (scalar) value (for example, a string,
+  integer, date), or a nested structure like an array or an object. A field is
   similar to a column in a table in a relational database.
   +
   The <<glossary-mapping,mapping>> for each field has a field _type_ (not to
@@ -84,6 +107,48 @@
   of data that can be stored in that field, eg `integer`, `string`,
   `object`. The mapping also allows you to define (amongst other things)
   how the value for a field should be analyzed.
+  +
+  In Logstash, this term refers to an <<glossary-event,event>> property. For
+  example, each event in an apache access log has properties, such as a status
+  code (200, 404), request path ("/", "index.html"), HTTP verb (GET, POST),
+  client IP address, and so on. Logstash uses the term "fields" to refer to
+  these properties.
+
+[[glossary-field-reference]] field reference ::
+
+  A reference to an event <<glossary-field,field>>. This reference may appear in
+  an output block or filter block in the Logstash config file. Field references
+  are typically wrapped in square (`[]`) brackets, for example `[fieldname]`. If
+  you are referring to a top-level field, you can omit the `[]` and simply use
+  the field name. To refer to a nested field, you specify the full path to that
+  field: `[top-level field][nested field]`.
+
+[[glossary-filter-plugin]] filter plugin ::
+
+  A Logstash <<glossary-plugin,plugin>> that performs intermediary processing on
+  an <<glossary-event,event>>. Typically, filters act upon event data after it
+  has been ingested via inputs, by mutating, enriching, and/or modifying the
+  data according to configuration rules. Filters are often applied conditionally
+  depending on the characteristics of the event. Popular filter plugins include
+  grok, mutate, drop, clone, and geoip. Filter stages are optional.
+
+[[glossary-gem]] gem ::
+
+  A self-contained package of code that's hosted on
+  https://rubygems.org[RubyGems.org]. Logstash <<glossary-plugin,plugins>> are
+  packaged as Ruby Gems. You can use the Logstash
+  <<glossary-plugin-manager,plugin manager>> to manage Logstash gems.
+
+[[glossary-hot-thread]] hot thread ::
+
+  A Java thread that has high CPU usage and executes for a longer than normal
+  period of time.
+
+[[glossary-id]] id ::
+
+  The ID of a <<glossary-document,document>> identifies a document. The
+  `index/id` of a document must be unique. If no ID is provided,
+  then it will be auto-generated. (Also see <<glossary-routing,routing>>).
 
 [[glossary-index]] index ::
 
@@ -94,6 +159,18 @@
   An index is a logical namespace which maps to one or more
   <<glossary-primary-shard,primary shards>> and can have zero or more
   <<glossary-replica-shard,replica shards>>.
+
+[[glossary-indexer]] indexer ::
+
+  A Logstash instance that is tasked with interfacing with an {es} cluster in
+  order to index <<glossary-event,event>> data.
+
+[[glossary-input-plugin]] input plugin ::
+
+  A Logstash <<glossary-plugin,plugin>> that reads <<glossary-event,event>> data
+  from a specific source. Input plugins are the first stage in the Logstash
+  event processing <<glossary-pipeline,pipeline>>. Popular input plugins include
+  file, syslog, redis, and beats.
 
 [[glossary-ml-job]] job ::
 
@@ -119,6 +196,13 @@ machine learning node ::
   A mapping can either be defined explicitly, or it will be generated
   automatically when a document is indexed.
 
+[[glossary-message-broker]] message broker ::
+
+  Also referred to as a _message buffer_ or _message queue_, a message broker is
+  external software (such as Redis, Kafka, or RabbitMQ) that stores messages
+  from the Logstash shipper instance as an intermediate store, waiting to be
+  processed by the Logstash indexer instance.
+
 [[glossary-node]] node ::
 
   A node is a running instance of {es} which belongs to a
@@ -129,7 +213,44 @@ machine learning node ::
   At startup, a node will use unicast to discover an existing cluster with
   the same cluster name and will try to join that cluster.
 
- [[glossary-primary-shard]] primary shard ::
+[[glossary-output-plugin]] output plugin ::
+
+    A Logstash <<glossary-plugin,plugin>> that writes <<glossary-event,event>>
+    data to a specific destination. Outputs are the final stage in the event
+    <<glossary-pipeline,pipeline>>. Popular output plugins include
+    elasticsearch, file, graphite, and statsd.
+
+[[glossary-pipeline]] pipeline ::
+
+    A term used to describe the flow of <<glossary-event,events>> through the
+    Logstash workflow. A pipeline typically consists of a series of input,
+    filter, and output stages. <<glossary-input-plugin,Input>> stages get data
+    from a source and generate events, <<glossary-filter-plugin,filter>> stages,
+    which are optional, modify the event data, and
+    <<glossary-output-plugin,output>> stages write the data to a destination.
+    Inputs and outputs support <<glossary-codec-plugin,codecs>> that enable you
+    to encode or decode the data as it enters or exits the pipeline without
+    having to use a separate filter.
+
+[[glossary-plugin]] plugin ::
+    A self-contained software package that implements one of the stages in the
+    Logstash event processing <<glossary-pipeline,pipeline>>. The list of
+    available plugins includes <<glossary-input-plugin,input plugins>>,
+    <<glossary-output-plugin,output plugins>>,
+    <<glossary-codec-plugin,codec plugins>>, and
+    <<glossary-filter-plugin,filter plugins>>. The plugins are implemented as
+    Ruby <<glossary-gem,gems>> and hosted on https://rubygems.org[RubyGems.org].
+    You define the stages of an event processing <<glossary-pipeline,pipeline>>
+    by configuring plugins.
+
+[[glossary-plugin-manager]] plugin manager ::
+
+    Accessed via the `bin/logstash-plugin` script, the plugin manager enables
+    you to manage the lifecycle of <<glossary-plugin,plugins>> in your Logstash
+    deployment. You can install, remove, and upgrade plugins by using the
+    plugin manager Command Line Interface (CLI).
+
+[[glossary-primary-shard]] primary shard ::
 
   Each document is stored in a single primary <<glossary-shard,shard>>. When
   you index a document, it is indexed first on the primary shard, then
@@ -188,6 +309,10 @@ machine learning node ::
   node to another in the case of node failure, or the addition of new
   nodes.
 
+[[glossary-shipper]] shipper ::
+  	An instance of Logstash that send events to another instance of Logstash, or
+    some other application.
+
  [[glossary-source_field]] source field ::
 
   By default, the JSON document that you index will be stored in the
@@ -221,3 +346,9 @@ machine learning node ::
   A type used to represent the _type_ of document, e.g. an `email`, a `user`, or a `tweet`.
   Types are deprecated and are in the process of being removed.  See
   {ref}removal-of-types.html[Removal of mapping types].
+
+[[glossary-worker]] worker ::
+  	The filter thread model used by Logstash, where each worker receives an
+    <<glossary-event,event>> and applies all filters, in order, before emitting
+    the event to the output queue. This allows scalability across CPUs because
+    many filters are CPU intensive.

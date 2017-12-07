@@ -90,7 +90,7 @@ Or on windows machine:
 
 [source,shell]
 -----------------------------------------------------------------------
-gc .\license.json |  Invoke-WebRequest -uri http://<host>:<port>/_xpack/license -Credential elastic -Method Put
+gc .\license.json |  Invoke-WebRequest -uri http://<host>:<port>/_xpack/license -Credential elastic -Method Put -Content-Type "application/json"
 -----------------------------------------------------------------------
 // NOTCONSOLE
 

@@ -70,7 +70,7 @@ You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
 you install with the `license` API.
 
-When security is enabled, you need cluster manage privilege to install the
+When security is enabled, you need `manage` cluster privileges to install the
 license. The <<built-in-users,built-in `elastic` user>> has the required
 privileges.
 
@@ -96,13 +96,20 @@ gc .\license.json |  Invoke-WebRequest -uri http://<host>:<port>/_xpack/license 
 
 Where:
 
-* `elastic` is the built-in super user. The default password is `changeme`. If
-you haven't already, <<built-in-users,change the default password>>. Any user
-with cluster manage privilege can install the license.
+* `elastic` is the built-in super user. If you haven't already,
+<<built-in-users,set a password for this user>>. Any user
+with `manage` cluster privileges can install the license.
 * `<host>` is the hostname of the Elasticsearch node (`localhost` if executing
   locally)
 * `<port>` is the http port (defaults to `9200`)
 * `license.json` is the license JSON file
+
+NOTE:  The `@` symbol before the license file in the `curl` command is important.
+  This tells curl that the argument is a filename.
+
+NOTE:  If your {es} node has SSL enabled on the HTTP interface, you must
+  start your URL with `https://`
+
 --
 
 . If the license you are installing does not support all of the features
@@ -144,7 +151,7 @@ curl -XGET -u elastic:changeme 'http://<host>:<port>/_xpack/license'
 --------------------------------------------
 // NOTCONSOLE
 
-NOTE: You need cluster manage privilege to retrieve the license.
+NOTE: You need `monitor` cluster privileges to retrieve the license.
 
 [[license-expiration]]
 == License Expiration

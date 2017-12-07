@@ -10,6 +10,29 @@ A special field for storing content that you don't want to include in output
 creating transient fields for use in <<glossary-conditional,conditional>>
 statements.
 
+[[glossary-admin-console]] administration console ::
+
+A component of {ece} that provides the API server for the
+<<glossary-cloud-ui,Cloud UI>>. Also syncs cluster and allocator data from
+ZooKeeper to {es}.
+
+[[glossary-allocator]] allocator ::
+
+Manages hosts that contain {es} and {kib} nodes. Controls the lifecycle of these
+nodes by creating new <<glossary-container,containers>> and managing the nodes
+within these containers when requested. Used to scale the capacity of your {ece}
+installation.
+
+[[glossary-zone]] availability zone ::
+
+Contains resources available to a {ece} installation that are isolated from
+other availability zones to safeguard against failure. Could be a rack, a server
+zone or some other logical constraint that creates a failure boundary. In a
+highly available cluster, the nodes of a cluster are spread across two or three
+availability zones to ensure that the cluster can survive the failure of an
+entire availability zone. Also see
+{ece-ref}/ece-planning.html#ece-ha[high availability].
+
 [[glossary-analysis]] analysis ::
 
 Analysis is the process of converting <<glossary-text,full text>> to
@@ -27,6 +50,10 @@ that allows {es} to perform full text queries.
 +
 Also see <<glossary-text,text>> and <<glossary-term,term>>.
 
+[[glossary-beats-runner]] beats runner ::
+
+Used to send Filebeat and Metricbeat information to the logging cluster.
+
 [[glossary-ml-bucket]] bucket ::
 
 The {xpackml} features use the concept of a bucket to divide the time
@@ -37,6 +64,16 @@ and it depends on your data characteristics. When you set the bucket span,
 take into account the granularity at which you want to analyze, the frequency
 of the input data, the typical duration of the anomalies, and the frequency at
 which alerting is required.
+
+[[glossary-client-forwarder]] client forwarder ::
+
+Used for secure internal communications between various components of {ece} and
+ZooKeeper.
+
+[[glossary-cloud-ui]] Cloud UI ::
+
+Provides web-based access to manage your {ece} installation, supported by the
+<<glossary-admin-console,administration console>>.
 
 [[glossary-cluster]] cluster ::
 
@@ -52,6 +89,26 @@ of an <<glossary-event,event>>. Codecs are essentially stream filters that
 can operate as part of an input or output. Codecs enable you to separate the
 transport of messages from the serialization process. Popular codecs include
 json, msgpack, and plain (text).
+
+[[glossary-constructor]] constructor ::
+
+Directs <<glossary-allocator,allocators>> to manage containers of {es} and {kib}
+nodes and maximizes the utilization of allocators. Monitors plan change requests
+from the Cloud UI and determines how to transform the existing cluster. In a
+highly available installation, places cluster nodes within different
+availability zones to ensure that the cluster can survive the failure of an
+entire availability zone.
+
+[[glossary-container]] container ::
+
+Includes an instance of {ece} software and its dependencies. Used to provision
+similar environments, to assign a guaranteed share of host resources to nodes,
+and to simplify operational effort in {ece}.
+
+[[glossary-coordinator]] coordinator ::
+
+Consists of a logical grouping of some {ece} services and acts as a distributed
+coordination system and resource scheduler.
 
 [[glossary-conditional]] conditional ::
 
@@ -73,6 +130,12 @@ As part of the configuration information that is associated with an {xpack}
 {ml} job, detectors define the type of analysis that needs to be done. They
 also specify which fields to analyze. You can have more than one detector in a
 job, which is more efficient than running multiple jobs against the same data.
+
+[[glossary-director]] director ::
+
+Manages the <<glossary-zookeeper,ZooKeeper>> datastore. This role is often
+shared with the <<glossary-coordinator,coordinator>>, though in production
+deployments it can be separated.
 
 [[glossary-document]] document ::
 
@@ -196,6 +259,13 @@ plus a number of index-wide settings.
 A mapping can either be defined explicitly, or it will be generated
 automatically when a document is indexed.
 
+[[glossary-master-node]] master node ::
+
+Handles write requests for the cluster and publishes changes to other nodes in
+an ordered fashion. Each cluster has a single master node which is chosen
+automatically by the cluster and is replaced if the current master node fails.
+Also see <<glossary-node,node>>.
+
 [[glossary-message-broker]] message broker ::
 
 Also referred to as a _message buffer_ or _message queue_, a message broker is
@@ -205,10 +275,9 @@ processed by the Logstash indexer instance.
 
 [[glossary-node]] node ::
 
-A node is a running instance of {es} which belongs to a
-<<glossary-cluster,cluster>>. Multiple nodes can be started on a single
-server for testing purposes, but usually you should have one node per
-server.
+A node is a running instance of {es} or {kib} which belongs to a
+<<glossary-cluster,cluster>>. Multiple nodes can be started on a single server
+for testing purposes, but usually you should have one node per server.
 +
 At startup, a node will use unicast to discover an existing cluster with
 the same cluster name and will try to join that cluster.
@@ -230,6 +299,13 @@ optional, modify the event data, and <<glossary-output-plugin,output>> stages
 write the data to a destination. Inputs and outputs support
 <<glossary-codec-plugin,codecs>> that enable you to encode or decode the data as
 it enters or exits the pipeline without having to use a separate filter.
+
+[[glossary-plan]] plan ::
+
+Specifies the configuration and topology of an {es} or {kib} cluster, such as
+capacity, availability, and {es} version, for example. When changing a plan, the
+<<glossary-constructor,constructor>> determines how to transform the existing
+cluster into the pending plan.
 
 [[glossary-plugin]] plugin ::
 
@@ -265,6 +341,12 @@ index is created.
 +
 See also <<glossary-routing,routing>>
 
+[[glossary-proxy]] proxy ::
+
+A highly available, TLS-enabled proxy layer that routes user requests, mapping
+cluster IDs that are passed in request URLs for the container to the cluster
+nodes handling the user requests.
+
 [[glossary-replica-shard]] replica shard ::
 
 Each <<glossary-primary-shard,primary shard>> can have zero or more
@@ -280,6 +362,13 @@ By default, each primary shard has one replica, but the number of
 replicas can be changed dynamically on an existing index. A replica
 shard will never be started on the same node as its primary shard.
 
+[[glossary-roles-token]] roles token ::
+
+Enables a host to join an existing {ece} installation and grants permission to
+hosts to hold certain roles, such as the <<glossary-allocator,allocator>> role.
+Used when installing {ece} on additional hosts, a roles token helps secure {ece}
+by making sure that only authorized hosts become part of the installation.
+
 [[glossary-routing]] routing ::
 
 When you index a document, it is stored on a single
@@ -292,6 +381,16 @@ parent documents are stored on the same shard).
 This value can be overridden by specifying a `routing` value at index
 time, or a {ref}/mapping-routing-field.html[routing field] in the
 <<glossary-mapping,mapping>>.
+
+[[glossary-runner]] runner ::
+
+A local control agent that runs on all hosts, used to deploy local containers
+based on role definitions. Ensures that containers assigned to it exist and are
+able to run, and creates or recreates the containers if necessary.
+
+[[glossary-services-forwarder]] services forwarder ::
+
+Routes data internally in an {ece} installation.
 
 [[glossary-shard]] shard ::
 
@@ -321,6 +420,10 @@ By default, the JSON document that you index will be stored in the
 This allows you access to the original object directly from search
 results, rather than requiring a second step to retrieve the object
 from an ID.
+
+[[glossary-stunnel]] stunnel ::
+
+Securely tunnels all traffic in an {ece} installation.
 
 [[glossary-term]] term ::
 
@@ -354,3 +457,9 @@ The filter thread model used by Logstash, where each worker receives an
 <<glossary-event,event>> and applies all filters, in order, before emitting
 the event to the output queue. This allows scalability across CPUs because
 many filters are CPU intensive.
+
+[[glossary-zookeeper]] ZooKeeper ::
+
+A coordination service for distributed systems used by {n} to store the state of
+the installation. Responsible for discovery of hosts, resource allocation,
+leader election after failure and high priority notifications.

@@ -1,8 +1,8 @@
-[glossary]
 [[terms]]
 == Terminology
 
-[glossary]
+ifdef::logstash-terms[]
+
 [[glossary-metadata]] @metadata ::
 
 A special field for storing content that you don't want to include in output
@@ -11,6 +11,8 @@ creating transient fields for use in <<glossary-conditional,conditional>>
 statements.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-admin-console]] administration console ::
 
@@ -19,6 +21,8 @@ A component of {ece} that provides the API server for the
 ZooKeeper to {es}.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-allocator]] allocator ::
 
@@ -28,6 +32,8 @@ within these containers when requested. Used to scale the capacity of your {ece}
 installation.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-analysis]] analysis ::
 
@@ -47,6 +53,8 @@ that allows {es} to perform full text queries.
 Also see <<glossary-text,text>> and <<glossary-term,term>>.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-zone]] availability zone ::
 
@@ -59,12 +67,16 @@ entire availability zone. Also see
 {ece-ref}/ece-planning.html#ece-ha[high availability].
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-beats-runner]] beats runner ::
 
 Used to send Filebeat and Metricbeat information to the logging cluster.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::xpack-terms[]
 
 [[glossary-ml-bucket]] bucket ::
 
@@ -78,6 +90,8 @@ of the input data, the typical duration of the anomalies, and the frequency at
 which alerting is required.
 +
 //Source: X-Pack
+endif::xpack-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-client-forwarder]] client forwarder ::
 
@@ -85,6 +99,8 @@ Used for secure internal communications between various components of {ece} and
 ZooKeeper.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-cloud-ui]] Cloud UI ::
 
@@ -92,6 +108,8 @@ Provides web-based access to manage your {ece} installation, supported by the
 <<glossary-admin-console,administration console>>.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms,cloud-terms[]
 
 [[glossary-cluster]] cluster ::
 
@@ -101,6 +119,8 @@ chosen automatically by the cluster and which can be replaced if the
 current master node fails.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms,cloud-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-codec-plugin]] codec plugin ::
 
@@ -111,6 +131,8 @@ transport of messages from the serialization process. Popular codecs include
 json, msgpack, and plain (text).
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-conditional]] conditional ::
 
@@ -121,6 +143,8 @@ apply filters and send events to a specific output based on conditions that
 you specify.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-constructor]] constructor ::
 
@@ -132,6 +156,8 @@ availability zones to ensure that the cluster can survive the failure of an
 entire availability zone.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-container]] container ::
 
@@ -140,6 +166,8 @@ similar environments, to assign a guaranteed share of host resources to nodes,
 and to simplify operational effort in {ece}.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-coordinator]] coordinator ::
 
@@ -147,6 +175,8 @@ Consists of a logical grouping of some {ece} services and acts as a distributed
 coordination system and resource scheduler.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::xpack-terms[]
 
 [[glossary-ml-datafeed]] datafeed ::
 
@@ -155,6 +185,9 @@ continuously in real time. {dfeeds-cap} retrieve data from {es} for analysis.
 Alternatively you can post data from any source directly to a {ml} API.
 +
 //Source: X-Pack
+endif::xpack-terms[]
+
+ifdef::xpack-terms[]
 
 [[glossary-ml-detector]] detector ::
 
@@ -164,6 +197,9 @@ also specify which fields to analyze. You can have more than one detector in a
 job, which is more efficient than running multiple jobs against the same data.
 +
 //Source: X-Pack
+endif::xpack-terms[]
+
+ifdef::cloud-terms[]
 
 [[glossary-director]] director ::
 
@@ -172,6 +208,8 @@ shared with the <<glossary-coordinator,coordinator>>, though in production
 deployments it can be separated.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-document]] document ::
 
@@ -189,6 +227,8 @@ The original JSON document that is indexed will be stored in the
 getting or searching for a document.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-event]] event ::
 
@@ -197,9 +237,12 @@ event arrives via an input, and is subsequently parsed, timestamped, and
 passed through the Logstash <<glossary-pipeline,pipeline>>.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::elasticsearch-terms,logstash-terms[]
 
 [[glossary-field]] field ::
-
+endif::elasticsearch-terms,logstash-terms[]
+ifdef::elasticsearch-terms[]
 A <<glossary-document,document>> contains a list of fields, or key-value
 pairs. The value can be a simple (scalar) value (for example, a string,
 integer, date), or a nested structure like an array or an object. A field is
@@ -213,13 +256,17 @@ how the value for a field should be analyzed.
 +
 //Source: Elasticsearch
 +
+endif::elasticsearch-terms[]
+ifdef::logstash-terms[]
 In Logstash, this term refers to an <<glossary-event,event>> property. For
 example, each event in an apache access log has properties, such as a status
-code (200, 404), request path ("/", "index.html"), HTTP verb (GET, POST),
-client IP address, and so on. Logstash uses the term "fields" to refer to
-these properties.
+code (200, 404), request path ("/", "index.html"), HTTP verb (GET, POST), client
+IP address, and so on. Logstash uses the term "fields" to refer to these
+properties.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-field-reference]] field reference ::
 
@@ -231,6 +278,8 @@ the field name. To refer to a nested field, you specify the full path to that
 field: `[top-level field][nested field]`.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-filter-plugin]] filter plugin ::
 
@@ -242,6 +291,8 @@ depending on the characteristics of the event. Popular filter plugins include
 grok, mutate, drop, clone, and geoip. Filter stages are optional.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-gem]] gem ::
 
@@ -251,6 +302,8 @@ packaged as Ruby Gems. You can use the Logstash
 <<glossary-plugin-manager,plugin manager>> to manage Logstash gems.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-hot-thread]] hot thread ::
 
@@ -258,6 +311,8 @@ A Java thread that has high CPU usage and executes for a longer than normal
 period of time.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-id]] id ::
 
@@ -266,6 +321,8 @@ The ID of a <<glossary-document,document>> identifies a document. The
 then it will be auto-generated. (Also see <<glossary-routing,routing>>).
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-index]] index ::
 
@@ -278,6 +335,8 @@ An index is a logical namespace which maps to one or more
 <<glossary-replica-shard,replica shards>>.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-indexer]] indexer ::
 
@@ -285,6 +344,8 @@ A Logstash instance that is tasked with interfacing with an {es} cluster in
 order to index <<glossary-event,event>> data.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-input-plugin]] input plugin ::
 
@@ -294,6 +355,8 @@ event processing <<glossary-pipeline,pipeline>>. Popular input plugins include
 file, syslog, redis, and beats.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::xpack-terms[]
 
 [[glossary-ml-job]] job ::
 
@@ -301,6 +364,8 @@ Machine learning jobs contain the configuration information and metadata
 necessary to perform an analytics task.
 +
 //Source: X-Pack
+endif::xpack-terms[]
+ifdef::xpack-terms[]
 
 [[glossary-ml-nodes]]
 machine learning node ::
@@ -310,9 +375,9 @@ which is the default behavior. If you set `node.ml` to `false`, the node can
 service API requests but it cannot run jobs. If you want to use {xpackml}
 features, there must be at least one {ml} node in your cluster.
 +
-See also <<glossary-node,node>>.
-+
 //Source: X-Pack
+endif::xpack-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-mapping]] mapping ::
 
@@ -324,6 +389,8 @@ A mapping can either be defined explicitly, or it will be generated
 automatically when a document is indexed.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-master-node]] master node ::
 
@@ -333,6 +400,8 @@ automatically by the cluster and is replaced if the current master node fails.
 Also see <<glossary-node,node>>.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-message-broker]] message broker ::
 
@@ -342,6 +411,8 @@ from the Logstash shipper instance as an intermediate store, waiting to be
 processed by the Logstash indexer instance.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::elasticsearch-terms,cloud-terms[]
 
 [[glossary-node]] node ::
 
@@ -353,6 +424,8 @@ At startup, a node will use unicast to discover an existing cluster with
 the same cluster name and will try to join that cluster.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms,cloud-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-output-plugin]] output plugin ::
 
@@ -362,6 +435,8 @@ to a specific destination. Outputs are the final stage in the event
 file, graphite, and statsd.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-pipeline]] pipeline ::
 
@@ -375,6 +450,8 @@ write the data to a destination. Inputs and outputs support
 it enters or exits the pipeline without having to use a separate filter.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-plan]] plan ::
 
@@ -384,6 +461,8 @@ capacity, availability, and {es} version, for example. When changing a plan, the
 cluster into the pending plan.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-plugin]] plugin ::
 
@@ -398,6 +477,8 @@ define the stages of an event processing <<glossary-pipeline,pipeline>>
 by configuring plugins.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-plugin-manager]] plugin manager ::
 
@@ -407,6 +488,8 @@ deployment. You can install, remove, and upgrade plugins by using the
 plugin manager Command Line Interface (CLI).
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-primary-shard]] primary shard ::
 
@@ -424,6 +507,8 @@ index is created.
 See also <<glossary-routing,routing>>.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-proxy]] proxy ::
 
@@ -432,6 +517,8 @@ cluster IDs that are passed in request URLs for the container to the cluster
 nodes handling the user requests.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-replica-shard]] replica shard ::
 
@@ -449,6 +536,8 @@ replicas can be changed dynamically on an existing index. A replica
 shard will never be started on the same node as its primary shard.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-roles-token]] roles token ::
 
@@ -458,6 +547,8 @@ Used when installing {ece} on additional hosts, a roles token helps secure {ece}
 by making sure that only authorized hosts become part of the installation.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-routing]] routing ::
 
@@ -473,6 +564,8 @@ time, or a {ref}/mapping-routing-field.html[routing field] in the
 <<glossary-mapping,mapping>>.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-runner]] runner ::
 
@@ -481,12 +574,16 @@ based on role definitions. Ensures that containers assigned to it exist and are
 able to run, and creates or recreates the containers if necessary.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-services-forwarder]] services forwarder ::
 
 Routes data internally in an {ece} installation.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-shard]] shard ::
 
@@ -505,6 +602,8 @@ node to another in the case of node failure, or the addition of new
 nodes.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-shipper]] shipper ::
 
@@ -512,6 +611,8 @@ An instance of Logstash that send events to another instance of Logstash, or
 some other application.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-source_field]] source field ::
 
@@ -522,12 +623,16 @@ results, rather than requiring a second step to retrieve the object
 from an ID.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-stunnel]] stunnel ::
 
 Securely tunnels all traffic in an {ece} installation.
 +
 //Source: Cloud
+endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-term]] term ::
 
@@ -537,6 +642,8 @@ be searched for using _term_ queries. +
 See also <<glossary-text,text>> and <<glossary-analysis,analysis>>.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-text]] text ::
 
@@ -552,6 +659,8 @@ that were generated at index time.
 See also <<glossary-term,term>> and <<glossary-analysis,analysis>>.
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
 
 [[glossary-type]] type ::
 
@@ -560,6 +669,8 @@ Types are deprecated and are in the process of being removed.  See
 {ref}removal-of-types.html[Removal of mapping types].
 +
 //Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::logstash-terms[]
 
 [[glossary-worker]] worker ::
 
@@ -569,6 +680,8 @@ the event to the output queue. This allows scalability across CPUs because
 many filters are CPU intensive.
 +
 //Source: Logstash
+endif::logstash-terms[]
+ifdef::cloud-terms[]
 
 [[glossary-zookeeper]] ZooKeeper ::
 
@@ -577,3 +690,4 @@ of the installation. Responsible for discovery of hosts, resource allocation,
 leader election after failure and high priority notifications.
 +
 //Source: Cloud
+endif::cloud-terms[]

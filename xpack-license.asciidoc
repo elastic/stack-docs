@@ -147,7 +147,7 @@ curl -XGET -u elastic:changeme 'http://<host>:<port>/_xpack/license'
     "issuer" : "elasticsearch"
   }
 }
---------------------------------------------
+-----------------------------------------------------
 // NOTCONSOLE
 
 NOTE: You need `monitor` cluster privileges to retrieve the license.
@@ -193,7 +193,7 @@ Once the license expires, calls to the cluster health, cluster stats, and index
 stats APIs fail with a `security_exception` and return a 403 HTTP status code.
 
 [source,sh]
---------------------------------------------
+-----------------------------------------------------
 {
   "error": {
     "root_cause": [
@@ -209,7 +209,7 @@ stats APIs fail with a `security_exception` and return a 403 HTTP status code.
   },
   "status": 403
 }
---------------------------------------------
+-----------------------------------------------------
 
 This message enables automatic monitoring systems to easily detect the license
 failure without immediately impacting other users.

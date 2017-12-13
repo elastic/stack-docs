@@ -23,50 +23,10 @@ cluster is not absolutely required, it is strongly recommended.
 
 --
 
-. {kibana-ref}/installing-xpack-kb.html[Install {xpack} into {kib}].
+. {kibana-ref}/installing-xpack-kb.html[Install {xpack}] and
+{kibana-ref}/monitoring-xpack-kibana.html[configure {monitoring}] in {kib}.
 
-. Configure {kib} to retrieve data from your monitoring cluster
-by setting the `elasticsearch.url` property in `kibana.yml` to point
-to the monitoring cluster.
-+
---
-[source,yaml]
-----------------------------------------------------------
-elasticsearch.url: "http://es-mon-1:9200"
-----------------------------------------------------------
-
---
-
-. If {security} is enabled on the monitoring cluster:
-
-.. Configure the `server.ssl` properties in the `kibana.yml` file to encrypt
-communications between the browser and the {kib} server.
-+
---
-[source,yaml]
-----------------------------------------------------------
-server.ssl.key: /path/to/your/server.key
-server.ssl.cert: /path/to/your/server.crt
-----------------------------------------------------------
-//TBD: Should this be sever.ssl.certificate?
---
-
-.. If SSL/TLS is enabled on the monitoring cluster, specify the trusted
-CA certificates that will be used to verify the identity of the nodes
-in the monitoring cluster.
-+
---
-[source,yaml]
-----------------------------------------------------------
-elasticsearch.ssl.ca: "/path/to/ca/file"
-----------------------------------------------------------
-//TBD: Should this be changed to elasticsearch.ssl.certificateAuthorities?
-
-For more information, see
-{kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
---
-
-.. Create a user on the monitoring cluster that has the
+. Create a user on the monitoring cluster that has the
 `remote_monitoring_agent` role. These credentials will be used when
 data is shipped from the {es} cluster you are monitoring to
 your dedicated monitoring cluster. For example, the following request
@@ -84,8 +44,6 @@ POST /_xpack/security/user/remote_monitor
 ---------------------------------------------------------------
 // CONSOLE
 --
-
-. Start {kib} by running `bin/kibana`.
 
 . Install {xpack} on the {es} nodes in your production cluster.
 

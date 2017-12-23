@@ -70,9 +70,15 @@ You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
 you install with the `license` API.
 
-When security is enabled, you need cluster manage privilege to install the
+[IMPORTANT]
+--
+* If {security} is enabled, you need `manage` cluster privileges to install the
 license. The <<built-in-users,built-in `elastic` user>> has the required
 privileges.
+
+* If {security} is enabled, you must enable TLS on the transport networking
+layer before you install a gold or platinum license. See <<ssl-tls>>. 
+--
 
 To update your license:
 

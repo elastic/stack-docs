@@ -10,25 +10,14 @@ visualize the data from {kib}. From the {kib} Monitoring UI, you can spot issues
 at a glance and delve into the system behavior over time to diagnose operational
 issues. In addition to the built-in status warnings, you can set up custom alerts
 based on the data in the monitoring indices.
-////
-OLD:
-The {monitoring} components enable you to easily monitor the Elastic Stack
-from {kibana-ref}/introduction.html[Kibana].
-You can view health and performance data for {es}, Logstash, and
-{kib} in real time, as well as analyze past performance.
 
-When you install {xpack}, a monitoring agent runs on each {kib},
-{kib}, and Logstash instance to collect and index metrics.
+For more information, see:
 
-By default, metrics are indexed within the cluster you are monitoring.
-Setting up a <<monitoring-cluster, dedicated monitoring cluster>> ensures
-you can access historical monitoring data even if the cluster you're
-monitoring goes down. It also enables you to monitor multiple clusters
-from a central location.
+* <<how-monitoring-works>>
+* <<monitoring-production>>
+* {ref}/es-monitoring.html[Monitoring {es}]
+* {kibana-ref}/xpack-monitoring.html[Monitoring {kib}]
+* {logstash-ref}/monitoring-logstash.html[Monitoring Logstash]
 
-When you use a dedicated monitoring cluster, the metrics collected by the
-Logstash and {kib} monitoring agents are shipped to the {es}
-cluster you're monitoring, which then forwards all of the metrics to
-the monitoring cluster.
-////
+
 --

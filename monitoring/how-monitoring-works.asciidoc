@@ -15,9 +15,6 @@ monitor production clusters running newer versions of the stack. If necessary,
 the monitoring cluster can monitor production clusters running older versions,
 but the versions cannot differ by more than one major version.
 
-// If you are monitoring pre-5.5 clusters with a version 5.5 or greater monitoring cluster,
-// see Monitoring across versions for more information.
-
 The following diagram illustrates a typical monitoring architecture with
 separate production and monitoring clusters:
 
@@ -31,12 +28,5 @@ image::monitoring/images/architecture2.jpg[A monitoring environment with multipl
 If {kib} is a regular part of your stack, you might want to create a dedicated
 {kib} instance for monitoring, rather than using a single {kib} instance to
 access both your production cluster and monitoring cluster:
-//TBD: It is a bit unclear why you'd do this.  Is it a performance issue, or
-//a security issue or something else?
 
 image::monitoring/images/architecture3.jpg[A monitoring environment with separate {kib} instances]
-
-// ===	Collecting Monitoring Metrics
-// === Exporting Monitoring Metrics
-// === Accessing and Visualizing Monitoring Data
-// ==== Monitoring Across Versions

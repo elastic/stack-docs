@@ -34,6 +34,14 @@ bin/elasticsearch-plugin remove x-pack
 
 . If you have not already done so,
 {ref}/setup-upgrade.html[upgrade {es}].
++
+--
+IMPORTANT: If you use {monitoring}, re-use the data directory when you upgrade
+{es}. Monitoring identifies unique {es} nodes by using the persistent UUID, which
+is stored in the data directory. For more information about the location of the
+data directory, see {ref}/path-settings.html[path.data and path.logs].
+
+--
 
 . {ref}/installing-xpack-es.html[Install the new version of {xpack} into {es}].
 
@@ -59,6 +67,13 @@ bin/kibana-plugin remove x-pack
 
 . If you have not already done so,
 {kibana-ref}/upgrade.html[upgrade {kib}].
++
+--
+IMPORTANT: If you use {monitoring}, you must re-use the data directory when you
+upgrade {kib}. Otherwise, the {kib} instance is assigned a new persistent UUID
+and becomes a new instance in the monitoring data.
+
+--
 
 . {kibana-ref}/installing-xpack-kb.html[Install the new version of {xpack} into {kib}].
 
@@ -75,6 +90,13 @@ bin/logstash-plugin remove x-pack
 
 . If you have not already done so,
 {logstash-ref}/upgrading-logstash.html[upgrade Logstash].
++
+--
+IMPORTANT: If you use {monitoring}, you must re-use the data directory when you
+upgrade Logstash. Otherwise, the Logstash node is assigned a new persistent UUID
+and becomes a new node in the monitoring data.
+
+--
 
 . {logstash-ref}/installing-xpack-log.html[Install the new version of {xpack} into Logstash].
 

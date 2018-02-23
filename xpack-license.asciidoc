@@ -26,138 +26,32 @@ all {xpack} features.
 NOTE: You are allowed to initiate a trial license only if your cluster has not
 already activated a trial license for the current major {xpack} version. For
 example, if you have already activated a trial for v6.0, you cannot start a new
-trial until v7.0.
+trial until v7.0. To check whether you can initiate a trial in your cluster,
+use the {ref}/get-trial-status.html[get trial status API].
 
 If you do not want to immediately use your trial license, you can set the
 `xpack.license.self_generated.type` to `basic` in your `elasticsearch.yml` file.
 This setting generates a basic license instead of a trial license. In this case,
 the self-generated license gives access only to the features of a standard basic
-license.  For more information, see
+license. If you want to subsequently use your trial license, you can use the
+{ref}/start-trial.html[start trial API] to make that change.
+
+For more information, see
 {ref}/license-settings.html[{xpack} License Settings].
 
-You can also use the `start_trial` API to start a trial license:
-
-. Check if you are eligible to start a trial:
-+
---
-[source,shell]
------------------------------------------------------
-curl -XGET -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/trial_status'
------------------------------------------------------
-// NOTCONSOLE
-
---
-
-. If you are eligible, start a trial:
-+
---
-[source,shell]
------------------------------------------------------
-curl -XPOST -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/start_trial'
------------------------------------------------------
-// NOTCONSOLE
---
-
-When you use this API, the trial license replaces your existing license. If you
-want to revert to your existing license when the trial is complete, you must
-install your license again. If you do not already have a license, you must
-https://register.elastic.co/[register for a new basic license].
 
 [[installing-license]]
 == Updating Your License
 
 You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
-you install with the `license` API.
-
-[IMPORTANT]
---
-* If {security} is enabled, you need `manage` cluster privileges to install the
-license. The <<built-in-users,built-in `elastic` user>> has the required
-privileges.
-
-* If {security} is enabled, you must enable TLS on the transport networking
-layer before you install a gold or platinum license. See <<ssl-tls>>.
---
-
-To update your license:
-
-. Send a request to the `license` API and specify the file that contains your
-new license:
-+
---
-[source,shell]
------------------------------------------------------------------------
-curl -XPUT -u elastic 'http://<host>:<port>/_xpack/license' -H "Content-Type: application/json" -d @license.json
------------------------------------------------------------------------
-// NOTCONSOLE
-
-Or on windows machine:
-
-[source,shell]
------------------------------------------------------------------------
-gc .\license.json |  Invoke-WebRequest -uri http://<host>:<port>/_xpack/license -Credential elastic -Method Put -ContentType "application/json"
------------------------------------------------------------------------
-// NOTCONSOLE
-
-Where:
-
-* `elastic` is the built-in super user. If you haven't already,
-<<built-in-users,set a password for this user>>.
-* `<host>` is the hostname of the Elasticsearch node (`localhost` if executing
-  locally)
-* `<port>` is the http port (defaults to `9200`)
-* `license.json` is the license JSON file
-
-NOTE:  The `@` symbol before the license file in the `curl` command is important.
-  This tells curl that the argument is a filename.
-
-NOTE:  If your {es} node has SSL enabled on the HTTP interface, you must
-  start your URL with `https://`
-
---
-
-. If the license you are installing does not support all of the features
-available with your previous license, you are notified in the response. To
-complete the license installation, you must resubmit the license update request
-and set the `acknowledge` parameter to `true` to indicate that you are aware of
-the changes.
-+
---
-[source,shell]
------------------------------------------------------------------------
-curl -XPUT -u elastic 'http://<host>:<port>/_xpack/license?acknowledge=true' -H "Content-Type: application/json" -d @license.json
------------------------------------------------------------------------
-// NOTCONSOLE
---
+you install with the {ref}/update-license.html[update license API].
 
 [[listing-licenses]]
 == Viewing the Installed License
 
-You can also use the `license` API to retrieve the currently installed license:
-
-[source,shell]
------------------------------------------------------
-curl -XGET -u elastic:changeme 'http://<host>:<port>/_xpack/license'
-{
-  "license" : {
-    "status" : "active",
-    "uid" : "0a98411f-73f4-4c67-954c-724874ed5488",
-    "type" : "trial",
-    "issue_date" : "2015-10-13T18:18:20.709Z",
-    "issue_date_in_millis" : 1444760300709,
-    "expiry_date" : "2015-11-12T18:18:20.709Z",
-    "expiry_date_in_millis" : 1447352300709,
-    "max_nodes" : 1000,
-    "issued_to" : "elasticsearch",
-    "issuer" : "elasticsearch"
-  }
-}
------------------------------------------------------
-// NOTCONSOLE
-
-NOTE: You need `monitor` cluster privileges to retrieve the license.
-Users with `manage` cluster privileges can retrieve and install the license.
+You can use the {ref}/get-license.html[get license API] to retrieve the
+currently installed license.
 
 [[license-expiration]]
 == License Expiration

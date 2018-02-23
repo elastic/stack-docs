@@ -48,12 +48,12 @@ curl -XGET -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/tria
 
 --
 
-. If you are eligible to start a trial:
+. If you are eligible, start a trial:
 +
 --
 [source,shell]
 -----------------------------------------------------
-curl -XGET -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/start_trial'
+curl -XPOST -u elastic:elastic_password 'http://<host>:<port>/_xpack/license/start_trial'
 -----------------------------------------------------
 // NOTCONSOLE
 --
@@ -77,7 +77,7 @@ license. The <<built-in-users,built-in `elastic` user>> has the required
 privileges.
 
 * If {security} is enabled, you must enable TLS on the transport networking
-layer before you install a gold or platinum license. See <<ssl-tls>>. 
+layer before you install a gold or platinum license. See <<ssl-tls>>.
 --
 
 To update your license:

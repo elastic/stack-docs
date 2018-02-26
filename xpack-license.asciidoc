@@ -3,43 +3,32 @@
 
 [partintro]
 --
-When you initially install {xpack}, a 30 day license is generated that
-allows access to {xpack} features. By default, this is a trial license that
-allows access to all features -- the equivalent of a platinum license. If you
-prefer, you can configure the cluster to generate a basic license at startup. If
-you choose the basic license, you can later activate a trial license by using an
-API. At the end of the 30 day period, you can
+If a license is not already registered for the cluster, when you install {xpack}
+and start the cluster, it generates a basic license.
+
+If you want to try all of the {xpack} features, you can start a 30-day
+trial. At the end of the trial period, you can
 https://www.elastic.co/subscriptions/[purchase a subscription]
 to keep using the full functionality of the {xpack} components.
 
 IMPORTANT:  When your license expires, {xpack} operates in a degraded mode. For
 more information, see  <<license-expiration, License Expiration>>.
---
 
+[float]
 [[generated-license]]
-== Generating a license
+== Generating a Trial License
 
-If a license is not already registered for the cluster, one is generated when
-the nodes start. By default, this is a 30 day trial license that gives access to
-all {xpack} features.
+You can initiate a trial license only if your cluster has not already activated
+a trial license for the current major {xpack} version. For example, if you have
+already activated a trial for v6.0, you cannot start a new trial until v7.0. To
+check whether you can initiate a trial in your cluster, use the {ref}/get-trial-status.html[get trial status API].
 
-NOTE: You are allowed to initiate a trial license only if your cluster has not
-already activated a trial license for the current major {xpack} version. For
-example, if you have already activated a trial for v6.0, you cannot start a new
-trial until v7.0. To check whether you can initiate a trial in your cluster,
-use the {ref}/get-trial-status.html[get trial status API].
-
-If you do not want to immediately use your trial license, you can set the
-`xpack.license.self_generated.type` to `basic` in your `elasticsearch.yml` file.
-This setting generates a basic license instead of a trial license. In this case,
-the self-generated license gives access only to the features of a standard basic
-license. If you want to subsequently use your trial license, you can use the
-{ref}/start-trial.html[start trial API] to make that change.
+To start a trial, use the {ref}/start-trial.html[start trial API].
 
 For more information, see
 {ref}/license-settings.html[{xpack} License Settings].
 
-
+[float]
 [[installing-license]]
 == Updating Your License
 
@@ -47,11 +36,14 @@ You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
 you install with the {ref}/update-license.html[update license API].
 
+[float]
 [[listing-licenses]]
 == Viewing the Installed License
 
 You can use the {ref}/get-license.html[get license API] to retrieve the
 currently installed license.
+
+--
 
 [[license-expiration]]
 == License Expiration

@@ -1,43 +1,20 @@
 [[installing-xpack]]
 === Installing {xpack}
 
-You must install {es} and {kib} before you install {xpack}. If you plan to use
-the {xpack} features in Logstash, you must also install Logstash before you
-install {xpack}. For more information, see:
+By default, when you install {es}, {kib}, and Logstash, {xpack} is installed.
+For more information, see:
 
 * {ref}/install-elasticsearch.html[Installing {es}]
 * {kibana-ref}/install.html[Installing {kib}]
 * {logstash-ref}/installing-logstash.html[Installing Logstash]
 
-You must install the version of {xpack} that matches the version of each product.
-For more information about product compatibility, see the
-https://www.elastic.co/support/matrix#matrix_compatibility[Elastic Support Matrix].
-
-To install {xpack} on the Elastic stack:
-
-. {ref}/installing-xpack-es.html[Install {xpack} on {es}]
-. {kibana-ref}/installing-xpack-kb.html[Install {xpack} on {kib}]
-. {logstash-ref}/installing-xpack-log.html[Install {xpack} on Logstash]
-
-The following diagram provides an overview of the steps that are required to
-set up {xpack} on each product:
-
-image::images/InstallationFlow.jpg[Installation overview on {es}, {kib}, and Logstash]
-
-NOTE: The {xpack} installation scripts require direct internet access to
-download and install {xpack}. If your servers don’t have internet access, you
-can manually download the {xpack} zip file and transfer it to a temporary
-directory on the offline machines. The plugins for {es}, {kib} and Logstash are
-all included in a single zip file. For more information about installing {xpack}
-on offline machines, see the product-specific {xpack} installation instructions.
-
 [float]
 [[xpack-enabling]]
 ==== Enabling and Disabling {xpack} Features
 
-By default, all {xpack} features are enabled. You can enable or disable specific
-{xpack} features in the `elasticsearch.yml`, `kibana.yml`, and `logstash.yml`
-configuration files.
+By default, all basic {xpack} features are enabled. You can enable or disable
+specific {xpack} features in the `elasticsearch.yml`, `kibana.yml`, and
+`logstash.yml` configuration files.
 
 [options="header"]
 |======

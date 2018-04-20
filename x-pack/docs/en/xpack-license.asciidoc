@@ -1,0 +1,125 @@
+[[license-management]]
+= License Management
+
+[partintro]
+--
+If a license is not already registered for the cluster, when you start the 
+cluster, it generates a basic license.
+
+If you want to try all of the {xpack} features, you can start a 30-day
+trial. At the end of the trial period, you can
+https://www.elastic.co/subscriptions/[purchase a subscription]
+to keep using the full functionality of the {xpack} components.
+
+IMPORTANT:  When your license expires, {xpack} operates in a degraded mode. For
+more information, see  <<license-expiration, License Expiration>>.
+
+[float]
+[[generated-license]]
+== Generating a Trial License
+
+You can initiate a trial license only if your cluster has not already activated
+a trial license for the current major {xpack} version. For example, if you have
+already activated a trial for v6.0, you cannot start a new trial until v7.0. To
+check whether you can initiate a trial in your cluster, use the {ref}/get-trial-status.html[get trial status API].
+
+To start a trial, use the {ref}/start-trial.html[start trial API].
+
+For more information, see
+{ref}/license-settings.html[{xpack} License Settings].
+
+[float]
+[[installing-license]]
+== Updating Your License
+
+You can update your license at runtime without shutting down your nodes. License
+updates take effect immediately. The license is provided as a _JSON_ file that
+you install with the {ref}/update-license.html[update license API].
+
+[float]
+[[listing-licenses]]
+== Viewing the Installed License
+
+You can use the {ref}/get-license.html[get license API] to retrieve the
+currently installed license.
+
+--
+
+[[license-expiration]]
+== License Expiration
+
+Your {xpack} license is time based and expires at a future date. If you're
+using {monitoring} and your license will expire within 30 days, a license
+expiration warning is displayed prominently. Warnings are also displayed on
+startup and written to the {es} log starting 30 days from the expiration date.
+These error messages tell you when the license expires and what features will be
+disabled if you fail to update the license.
+
+[float]
+=== Watcher
+* PUT / GET watch APIs will be disabled, DELETE watch API will continue to work
+* Watches will execute and write to the history
+* The actions of the watches will not execute
+
+[float]
+=== Monitoring
+* The agent will stop collecting cluster and indices metrics
+* The agent will stop automatically cleaning indices older than `xpack.monitoring.history.duration`
+
+[float]
+=== Graph
+* Graph explore APIs will be disabled
+
+[float]
+=== Reporting
+* Reporting will no longer be available in {kib}
+* Report generation urls will stop working
+* Existing reports will no longer be accessible
+
+[float]
+=== Security
+* Cluster health, cluster stats and indices stats operations will be blocked
+* All data operations (read and write) will continue to work
+
+Once the license expires, calls to the cluster health, cluster stats, and index
+stats APIs fail with a `security_exception` and return a 403 HTTP status code.
+
+[source,sh]
+-----------------------------------------------------
+{
+  "error": {
+    "root_cause": [
+      {
+        "type": "security_exception",
+        "reason": "current license is non-compliant for [security]",
+        "license.expired.feature": "security"
+      }
+    ],
+    "type": "security_exception",
+    "reason": "current license is non-compliant for [security]",
+    "license.expired.feature": "security"
+  },
+  "status": 403
+}
+-----------------------------------------------------
+
+This message enables automatic monitoring systems to easily detect the license
+failure without immediately impacting other users.
+
+[float]
+=== Machine learning
+* APIs to create jobs, open jobs, send data to jobs, create {dfeeds}, and start
+{dfeeds} will be disabled
+* All started {dfeeds} will be stopped. All open jobs will be closed
+* Existing job results will continue to be available by using {kib} or APIs
+
+[float]
+=== Logstash Pipeline Management
+* Will not be able to create new pipelines and edit or delete existing pipelines from the UI
+* Will be able to list and view existing pipelines from the UI
+* Will be able to run Logstash instances which are registered to listen to existing pipelines
+
+IMPORTANT: You should update your license as soon as possible. You are
+essentially flying blind when running with an expired license. Access to the
+cluster health and stats APIs is critical for monitoring and managing an {es}
+cluster.

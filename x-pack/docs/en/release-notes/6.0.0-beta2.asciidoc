@@ -1,0 +1,270 @@
+[float]
+[[xpack-6.0.0-beta2]]
+=== 6.0.0-beta2
+
+August 31, 2017
+
+////
+[[breaking-6.0.0-beta2]]
+[float]
+==== Breaking changes
+////
+////
+NOT CLASSIFIED::
+* Remove path.conf setting
+// https://github.com/elastic/x-pack-elasticsearch/pull/1844[#1844] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25392[#25392])
+* Remove Deprecated Script Settings
+// https://github.com/elastic/x-pack-elasticsearch/pull/1469[#1469]
+////
+
+[float]
+[[deprecations-6.0.0-beta2]]
+==== Deprecations
+
+Machine Learning::
+* The `max_running_jobs` node property is deprecated and is replaced by `xpack.ml.max_open_jobs`. See
+{ref}/ml-settings.html[Machine Learning Settings in {es}].
+
+////
+API::
+* Deprecation API
+// https://github.com/elastic/x-pack-elasticsearch/pull/1833[#1833] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/1209[#1209], https://github.com/elastic/x-pack-elasticsearch/issues/1315[#1315], https://github.com/elastic/x-pack-elasticsearch/issues/1402[#1402])
+////
+////
+[[feature-6.0.0-beta2]]
+[float]
+==== New features
+////
+////
+API::
+* Role Mapping API (LDAP/AD/PKI) [ISSUE]
+// https://github.com/elastic/x-pack-elasticsearch/pull/278[#278]
+
+monitoring::
+* [Monitoring] Email actions for Cluster Alerts
+// https://github.com/elastic/x-pack-elasticsearch/pull/1879[#1879]
+////
+
+[float]
+[[enhancements-6.0.0-beta2]]
+==== Enhancements
+
+Dashboard::
+*  If you had a chance to check out the new Dashboard Only Mode in 6.0.0-beta1,
+we've changed things up a bit for 6.0.0-beta2. Previously we required you to
+flag every role a user belonged to as being in the View dashboards only mode
+in order for that user to be flagged as a Dashboard only mode user. In this
+new set up, we created a reserved role, `kibana_dashboard_only_user`, that is
+already pre-configured with read only access to the .kibana index, and set up
+to be in Dashboard Only Mode. All you have to add is this one role to any user
+and they will now be a Dashboard Only Mode user. We also got rid of this new
+setting in the Roles UI, as this one role should suffice for most user's setups.
+If you have a more complicated setup, such as multi-tenancy with multiple
+`.kibana` indexes, you can create more dashboard only mode roles by adding
+role names to the `xpackDashboardMode:roles` advanced setting. For more
+information, see
+{kibana-ref}/xpack-dashboard-only-mode.html[Kibana Dashboard Only Mode].
+// https://github.com/elastic/x-pack-kibana/pull/2262[#2262] (issue: https://github.com/elastic/x-pack-kibana/issues/2106[#2106])
+// https://github.com/elastic/x-pack-kibana/pull/2246[#2246] (issue: https://github.com/elastic/x-pack-kibana/issues/2245[#2245])
+
+Machine Learning::
+* Added `xpack.ml.max_open_jobs` as a node attribute. See
+{ref}/ml-settings.html[Machine Learning Settings in {es}]
+// https://github.com/elastic/x-pack-elasticsearch/pull/2203[#2203] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2185[#2185])
+// * Added the ability to force close and force delete jobs in the "closing" state.
+// HIDE already mentioned in 5.5 RN: https://github.com/elastic/x-pack-elasticsearch/pull/1534[#1534]
+
+////
+Management::
+* [Logstash] Add new reserved role for managing LS configs
+// https://github.com/elastic/x-pack-elasticsearch/pull/1531[#1531] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/609[#609])
+////
+Monitoring::
+* Added a tip in the pipeline viewer in {kib} when a pipeline contains a plugin
+that does not have an id explicitly set in its configuration options. If you
+specify an ID, you can track differences across pipeline changes. For more
+information, see
+{logstash-ref}/logstash-pipeline-viewer.html[Pipeline Viewer UI].
+// https://github.com/elastic/x-pack-kibana/pull/2092[#2092]
+// https://github.com/elastic/x-pack-kibana/pull/2218(issue: https://github.com/elastic/x-pack-kibana/issues/2227[#2227])
+
+// * Enabled read-only access for kibana_system user.
+// OMIT?: Duplicated in 5.6.0 release notes
+// https://github.com/elastic/x-pack-elasticsearch/pull/1851[#1851]
+////
+
+NOT CLASSIFIED::
+* Allow build to directly run under JDK 9
+// https://github.com/elastic/x-pack-elasticsearch/pull/2320[#2320] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25859[#25859])
+* Move tribe to a module
+// https://github.com/elastic/x-pack-elasticsearch/pull/2088[#2088] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25778[#25778])
+* Use explicit settings for simple bool settings
+// https://github.com/elastic/x-pack-elasticsearch/pull/1871[#1871]
+* [Logstash] Change config management license to Standard
+// https://github.com/elastic/x-pack-elasticsearch/pull/1843[#1843] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1841[#1841])
+* Move ReindexAction class to core
+// https://github.com/elastic/x-pack-elasticsearch/pull/1426[#1426] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/24578[#24578], https://github.com/elastic/x-pack-elasticsearch/issues/24684[#24684])
+
+management::
+* [Logstash] Add new reserved role for managing LS configs
+// https://github.com/elastic/x-pack-elasticsearch/pull/1531[#1531] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/609[#609])
+////
+
+Security::
+* Added the `keystore.seed` setting to create a randomly generated bootstrap
+password if an actual password is not present.
+//TBD: Is there documentation we can link to for this new setting?
+// https://github.com/elastic/x-pack-elasticsearch/pull/2295[#2295] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/26253[#26253])
+* The `bootstrap.password` secure setting is now managed locally on each node
+and no longer updates the security index.
+// https://github.com/elastic/x-pack-elasticsearch/pull/2272[#2272]
+* The `xpack.security.authc.token.passphrase` setting is no longer mandatory
+when using the token service. The cluster automatically generates a secure key
+on startup. See {ref}/security-settings.html[Security Settings in {es}].
+// https://github.com/elastic/x-pack-elasticsearch/pull/2240[#2240]
+* Added reserved `kibana_dashboard_only_user` role. For more information, see
+{kibana-ref}/xpack-dashboard-only-mode.html[Kibana Dashboard Only Mode].
+// https://github.com/elastic/x-pack-elasticsearch/pull/2250[#2250]
+////
+Watcher::
+//* The reporting email attachment now has support for HTTP proxies.
+//OMIT: Already appears in 5.5.1 release notes
+// https://github.com/elastic/x-pack-elasticsearch/pull/1781[#1781]
+////
+////
+NOT CLASSIFIED::
+* Allow build to directly run under JDK 9
+// https://github.com/elastic/x-pack-elasticsearch/pull/2320[#2320] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25859[#25859])
+* Move tribe to a module
+// https://github.com/elastic/x-pack-elasticsearch/pull/2088[#2088] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25778[#25778])
+* Use explicit settings for simple bool settings
+// https://github.com/elastic/x-pack-elasticsearch/pull/1871[#1871]
+* [Logstash] Change config management license to Standard
+// https://github.com/elastic/x-pack-elasticsearch/pull/1843[#1843] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1841[#1841])
+* Move ReindexAction class to core
+// https://github.com/elastic/x-pack-elasticsearch/pull/1426[#1426] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/24578[#24578], https://github.com/elastic/x-pack-elasticsearch/issues/24684[#24684])
+////
+////
+xpack::
+* Rename upgrade.* client methods to migration.*
+// https://github.com/elastic/x-pack-elasticsearch/pull/1881[#1881]
+////
+
+[[bug-6.0.0-beta2]]
+[float]
+==== Bug fixes
+
+Machine Learning::
+* Fixed calculation of bucket count and empty bucket count statistics.
+// KEEP already in earlier RN, but customer has noticed https://github.com/elastic/x-pack-elasticsearch/pull/2339[#2339]
+////
+// * Fix for incorrect bucket counts handling of incomplete buckets in data stream diagnostics.
+// HIDE duplicate: https://github.com/elastic/x-pack-elasticsearch/pull/2351[#2351] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2366[#2366])
+// * Avoided repeated updates of results index mappings for `_meta` field.
+// HIDE already in earlier RN: https://github.com/elastic/x-pack-elasticsearch/pull/2274[#2274] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2265[#2265])
+// * Fixed handling of simultaneous calls to forcefully stop and delete datafeeds.
+// HIDE already in earlier RN https://github.com/elastic/x-pack-elasticsearch/pull/2243[#2243] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2083[#2083])
+// * Fixed error handling when you try to create a job and the results or state index is closed.
+// HIDE not important for 6: https://github.com/elastic/x-pack-elasticsearch/pull/2186[#2186] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2170[#2170])
+// * Reverted validation checks for empty strings in analysis config.
+// HIDE not relevant to 6.0 https://github.com/elastic/x-pack-elasticsearch/pull/2103[#2103] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/2082[#2082], https://github.com/elastic/x-pack-elasticsearch/issues/2083[#2083])
+////
+////
+Monitoring::
+// * Removed Dedicated IndicesStatsCollector.
+// OMIT: First fixed in 5.6.0
+// https://github.com/elastic/x-pack-elasticsearch/pull/2192[#2192]
+////
+
+Security::
+* The `xpack.security.authc.token.enabled` setting now defaults to true when
+HTTPS is enabled. See
+{ref}/security-settings.html#token-service-settings[Token Service Settings].
+// https://github.com/elastic/x-pack-elasticsearch/pull/2321[#2321]
+* Improved the safety of file updates in the `x-pack/users` tool.
+// https://github.com/elastic/x-pack-elasticsearch/pull/2299[#2299] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2288[#2288])
+* Bootstrap checks no longer fail when checking secure settings.
+// https://github.com/elastic/x-pack-elasticsearch/pull/2282[#2282]
+* The `setup-password` tool no longer fails when using a default
+`elasticsearch.yml` configuration file.
+// https://github.com/elastic/x-pack-elasticsearch/pull/2176[#2176] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2174[#2174])
+* Fixed validation of the input parameters in the
+{ref}/security-api-tokens.html#security-api-tokens[create token API].
+// https://github.com/elastic/x-pack-elasticsearch/pull/2145[#2145] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2127[#2127])
+
+Watcher::
+* Ensured that a watch can be activated and deactivated during execution.
+// https://github.com/elastic/x-pack-elasticsearch/pull/2204[#2204]
+* Ensured watch execution always uses the latest watch including its latest status.
+// https://github.com/elastic/x-pack-elasticsearch/pull/2151[#2151] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/395[#395])
+//* Resetting the acknowledgement state of an action with a condition, if the watch wide condition was true, has been fixed.
+// OMIT: Already appears in 5.5.1 release notes
+// https://github.com/elastic/x-pack-elasticsearch/pull/1859[#1859] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/1857[#1857])
+//* The search input now works with an empty body field.
+//OMIT: Already appears in 5.5.0 release notes?
+// https://github.com/elastic/x-pack-elasticsearch/pull/1736[#1736]
+////
+xpack::
+* Exit Windows scripts promptly on failure
+// https://github.com/elastic/x-pack-elasticsearch/pull/2126[#2126] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25959[#25959])
+////
+
+////
+[[other-6.0.0-beta2]]
+[float]
+==== NOT CLASSIFIED
+
+API::
+* Adapting to merging GetField and SearchHitField to DocumentField
+// https://github.com/elastic/x-pack-elasticsearch/pull/1860[#1860]
+////
+////
+License::
+* Gracefully handle no content(-type) in Put License
+// https://github.com/elastic/x-pack-elasticsearch/pull/2258[#2258]
+////
+////
+Operations::
+* [Upg Asst] Show kibana index in deprecation issue list [ISSUE]
+// https://github.com/elastic/x-pack-kibana/pull/2025[#2025]
+* [Upg Asst] Tweak Load Indices method [ISSUE]
+// https://github.com/elastic/x-pack-kibana/pull/2024[#2024]
+////
+////
+NOT CLASSIFIED::
+* Enable command extensions
+// https://github.com/elastic/x-pack-elasticsearch/pull/2307[#2307] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/26268[#26268])
+* correct deprecation doc links from Deprecation API
+// https://github.com/elastic/x-pack-elasticsearch/pull/2294[#2294] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/2289[#2289])
+* Rename CONF_DIR to ES_PATH_CONF
+// https://github.com/elastic/x-pack-elasticsearch/pull/2261[#2261] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/26197[#26197])
+* Expose timeout of acknowledged requests in REST layer
+// https://github.com/elastic/x-pack-elasticsearch/pull/2259[#2259] (issues: https://github.com/elastic/x-pack-elasticsearch/issues/2269[#2269], https://github.com/elastic/x-pack-elasticsearch/issues/26189[#26189])
+* Pass config path as a system property
+// https://github.com/elastic/x-pack-elasticsearch/pull/2113[#2113] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/25943[#25943])
+* Remove QueryParseContext
+// https://github.com/elastic/x-pack-elasticsearch/pull/1895[#1895]
+* Update uses of script factory types to new names
+// https://github.com/elastic/x-pack-elasticsearch/pull/1560[#1560]
+* Use new context constants for SearchScript and ExecutableScript
+// https://github.com/elastic/x-pack-elasticsearch/pull/1550[#1550]
+* Refactor script context generic types
+// https://github.com/elastic/x-pack-elasticsearch/pull/1547[#1547]
+* Update test script engines to use generic compile method
+// https://github.com/elastic/x-pack-elasticsearch/pull/1546[#1546]
+* Scripting: Use type aware script contexts
+// https://github.com/elastic/x-pack-elasticsearch/pull/1538[#1538] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/24868[#24868])
+* Use simplified ScriptContext
+// https://github.com/elastic/x-pack-elasticsearch/pull/1502[#1502] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/24818[#24818])
+* Remove overrides of isInlineScriptEnabled
+// https://github.com/elastic/x-pack-elasticsearch/pull/1500[#1500] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/24815[#24815])
+* Convert native script uses to mock scripts
+// https://github.com/elastic/x-pack-elasticsearch/pull/1465[#1465] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/24726[#24726])
+* Remove file scripts
+// https://github.com/elastic/x-pack-elasticsearch/pull/1399[#1399] (issue: https://github.com/elastic/x-pack-elasticsearch/issues/24627[#24627])
+* [6.0] Prevent dashboard only mode from crashing the server if security is disabled
+// https://github.com/elastic/x-pack-kibana/pull/2259[#2259] (issue: https://github.com/elastic/x-pack-kibana/issues/2246[#2246])
+* [5.6] [Upgrade UI] Factor out orchestrator step wrapper
+// https://github.com/elastic/x-pack-kibana/pull/2236[#2236] (issue: https://github.com/elastic/x-pack-kibana/issues/1973[#1973])
+
+////

@@ -11,20 +11,17 @@ clusters from a central location.
 
 To store monitoring data in a separate cluster:
 
-. Set up the {es} cluster you want to use for monitoring, install {xpack}, and 
-start {es}. For
-example, you might set up a two host cluster with the nodes `es-mon-1`
-and `es-mon-2`.
+. {ref}/configuring-monitoring.html[Set up the {es} cluster you want to use for monitoring]. 
+For example, you might set up a two host cluster with the nodes `es-mon-1` and 
+`es-mon-2`.
 +
 --
 NOTE: To monitor an {es} 7.x cluster, you must run {es}
-7.x on the monitoring cluster. While installing {xpack} on the monitoring
-cluster is not absolutely required, it is strongly recommended.
+7.x on the monitoring cluster.
 
 --
 
-. Install {xpack} and
-{kibana-ref}/monitoring-xpack-kibana.html[configure {monitoring}] in {kib}.
+. {kibana-ref}/monitoring-xpack-kibana.html[Configure {monitoring}] in {kib}.
 +
 --
 NOTE: {kib} makes requests to the monitoring cluster as the logged in user.
@@ -51,8 +48,6 @@ POST /_xpack/security/user/remote_monitor
 ---------------------------------------------------------------
 // CONSOLE
 --
-
-. Install {xpack} on the {es} nodes in your production cluster.
 
 . Configure each {es} node in the cluster you are
 monitoring to send metrics to your monitoring cluster by

@@ -1,7 +1,7 @@
 [[get-started-elastic-stack]]
 == Getting started with the {stack}
 
-Looking for an {stack} ("ELK tutorial") that shows how to set up the {stack}? In
+Looking for an {stack} ("ELK" tutorial) that shows how to set up the {stack}? In
 this tutorial, you learn how to get up and running quickly. First you install
 the core open source products:
 
@@ -20,13 +20,9 @@ laptop.
  
 IMPORTANT: Implementing security is a critical step in setting up the {stack}.
 To get up and running quickly with a sample installation, you skip those steps
-right now, but keep in mind that security is a critical component of your
-deployment.
-
-// REVIEWERS: I haven't discussed security because it really complicates the learning
-// experience. I think there's a value to teaching users how to set up a basic
-// installation (and get the various components talking to each other) before
-// adding security.
+right now. Before sending sensitive data across the network, make sure you
+{xpack-ref}/xpack-security.html[secure the stack] and enable
+{xpack-ref}/encrypting-communications.html[encrypted communications].
 
 [float]
 [[install-prereqs]]
@@ -60,8 +56,6 @@ To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
 Redhat/Centos/Fedora, <<mac, mac>> for OS X, and <<win, win>> for Windows):
 
-// REVIEWERS: Should we add Linux to this list? If so, how do the commands differ
-// from mac OS?
 
 [[deb]]*deb:*
 
@@ -113,8 +107,8 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.zip
-unzip elasticsearch-{elasticsearch_version}.zip
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.tar.gz
+tar -xzvf elasticsearch-{elasticsearch_version}.tar.gz
 cd elasticsearch-{elasticsearch_version}
 ./bin/elasticsearch
 ----------------------------------------------------------------------
@@ -179,17 +173,17 @@ You should see a response similar to this:
 ["source","sh",subs="attributes"]
 ----------------------------------------------------------------------
 {
-  "name" : "yTlRWwX",
+  "name" : "QtI5dUu",
   "cluster_name" : "elasticsearch",
-  "cluster_uuid" : "C6WovRosQBq65ZxUHvbYOQ",
+  "cluster_uuid" : "DMXhqzzjTGqEtDlkaMOzlA",
   "version" : {
     "number" : "{elasticsearch_version}",
     "build_flavor" : "default",
-    "build_type" : "zip",
-    "build_hash" : "a0ac115",
-    "build_date" : "2018-05-16T03:14:57.689722Z",
+    "build_type" : "tar",
+    "build_hash" : "00d8bc1",
+    "build_date" : "2018-06-06T16:48:02.249996Z",
     "build_snapshot" : false,
-    "lucene_version" : "7.3.0",
+    "lucene_version" : "7.3.1",
     "minimum_wire_compatibility_version" : "5.6.0",
     "minimum_index_compatibility_version" : "5.0.0"
   },
@@ -436,14 +430,17 @@ and deploy a system monitoring solution, complete with sample dashboards and
 data visualizations, in about 5 minutes. 
 
 In this section, you learn how to run the `system` module to collect metrics
-from the operating system and services running on your server.
+from the operating system and services running on your server. The system module
+collects system-level metrics, such as CPU usage, memory, file system, disk IO,
+and network IO statistics, as well as top-like statistics for every process
+running on your system.
 
 *Before you begin*: Verify that {es} and {kib} are running and that {es} is
 ready to receive data from {metricbeat}.
 
 To set up the `system` module and start collecting system metrics:
 
-. In the {metricbeat} install directory, enable the `system` module:
+. From the {metricbeat} install directory, enable the `system` module:
 +
 *deb and rpm:*
 +
@@ -603,8 +600,8 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.zip
-unzip logstash-{logstash_version}.zip
+curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.tar.gz
+tar -xzvf logstash-{logstash_version}.tar.gz
 ----------------------------------------------------------------------
 
 endif::[]
@@ -623,7 +620,8 @@ ifeval::["{release-state}"!="unreleased"]
 https://www.elastic.co/downloads/logstash[{ls} download] page.
 
 . Extract the contents of the zip file to a directory on your computer, for
-example, `C:\Program Files`.
+example, `C:\Program Files`. Use a short path (fewer than 30 characters) to
+avoid running into file path length limitations on Windows. 
 
 endif::[]
 
@@ -633,51 +631,17 @@ https://www.elastic.co/downloads/logstash[{ls} download] page.
 To learn more about installing, configuring, and running {ls}, read the
 {logstash-ref}/index.html[{ls} Reference].
 
-// REVIEWERS: I've removed the info about updating the beats input plugin for
-// Logstah because this tutorial tells people to download the latest version
-// and in most cases the input plugin version will be recent...so I'm not sure
-// we need to cover that here.
-
-[float]
-==== Configure {metricbeat} to send events to {ls}
-
-{metricbeat} sends events to {es} by default. To send events to {ls}, modify the
-{metricbeat} configuration file, `metricbeat.yml`. You'll find this file under
-the {metricbeat} install directory, or `/etc/metricbeat` for rpm and deb.
-
-Disable the `output.elasticsearch` section by commenting it out, then enable
-the `output.logstash` section by uncommenting it: 
-
-[source,yaml]
-----
-#-------------------------- Elasticsearch output ------------------------------
-#output.elasticsearch:
-  # Array of hosts to connect to.
-  #hosts: ["localhost:9200"]
-.
-.
-.
-#----------------------------- Logstash output --------------------------------
-output.logstash:
-  # The Logstash hosts
-  hosts: ["localhost:5044"]
-----
-
-
-Save the file, then restart {metricbeat} to apply the changes.
-
-
 [float]
 [[logstash-setup]]
-==== Configure {ls} to read from the {beats} input
+==== Configure {ls} to listen for {beats} input
 
 {ls} provides {logstash-ref}/input-plugins.html[input plugins] for reading from
 a variety of inputs. In this tutorial, you create a {ls} pipeline configuration
-that reads from the {beats} input and sends events to the {es} output.
+that listens for {beats} input and sends the received events to the {es} output.
 
 To configure {ls}:
 
-. Create a new {ls} pipeline configuration file called `logstash.conf` that
+. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf` that
 contains:
 +
 --
@@ -707,15 +671,14 @@ output {
   elasticsearch {
     hosts => "localhost:9200"
     manage_template => false
-    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}" <1>
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
   }
 }
 ----
 +
-This configuration allows you to route events to {ls}, where you have full
-access the {ls} capabilities for collecting, enriching, and transforming
-data.
-
+When you start {ls} with this pipeline configuration, {beats} events are routed
+through {ls}, where you have full access to {ls} capabilities for collecting,
+enriching, and transforming data. 
 
 [float]
 ==== Start {ls}
@@ -741,18 +704,47 @@ sudo service logstash start
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-./bin/logstash -f logstash.conf
+./bin/logstash -f demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
 *win:*
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-bin\logstash.bat -f logstash.conf
+bin\logstash.bat -f demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
-NOTE: The default configuration for {beats} and {ls} uses plain TCP. For
-encryption you must explicitly enable SSL when you configure {beats} and {ls}.
+
+{ls} starts listening for events from the {beats} input. Next you need to 
+configure {metricbeat} to send events to {ls}.
+
+[float]
+==== Configure {metricbeat} to send events to {ls}
+
+{metricbeat} sends events to {es} by default. To send events to {ls}, modify the
+{metricbeat} configuration file, `metricbeat.yml`. You'll find this file under
+the {metricbeat} install directory, or `/etc/metricbeat` for rpm and deb.
+
+Disable the `output.elasticsearch` section by commenting it out, then enable
+the `output.logstash` section by uncommenting it: 
+
+[source,yaml]
+----
+#-------------------------- Elasticsearch output ------------------------------
+#output.elasticsearch:
+  # Array of hosts to connect to.
+  #hosts: ["localhost:9200"]
+.
+.
+.
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
+----
+
+
+Save the file, then restart {metricbeat} to apply the configuration changes.
 
 {ls} reads from the {beats} input and indexes events into {es}. You haven't
 defined a filter section yet, so {ls} simply forwards events to {es} without
@@ -763,8 +755,8 @@ additional processing. Next, you learn how to define the filter stage.
 ==== Define a filter to extract data from a field
 
 The system metrics collected by {metricbeat} include a field called `cmdline`
-that contains the full command-line argument used to start the process. For
-example:
+that contains the full command-line arguments used to start system processes.
+For example:
 
 [source,json]
 ----
@@ -778,36 +770,34 @@ example:
 ----
 
 
-You might decide that you don't want to send the whole command-line argument to
-{es}. You can write a grok filter that matches the first part of the command
-and saves it to a new field. You can also remove the original field, `cmdline`,
-from the event. For example:
+Rather than sending the whole command-line argument to {es}, you might want to
+send just the command's path. One way to do that is by using a Grok filter.
+Learning Grok is beyond the scope of this tutorial, but if you want to learn
+more, see the {logstash-ref}/plugins-filters-grok.html[Grok filter plugin]
+documentation.
 
-// REVIEWERS: I took a stab at this, but I'm not very good at grok or
-// regex. In fact, I sort of hate it...a lot. Can someone review and suggest
-// something better based on the format you would expect in this field?
-
+To extract the path, add the following Grok filter between the input and output
+sections in the {ls} config file that you created earlier:
+ 
 [source,ruby]
 ----
 filter {
   if [system][process] {
     if [system][process][cmdline] {
       grok {
-        match => { "[system][process][cmdline]" => ["%{CMD:[system][process][short_cmdline]}"] }
-        pattern_definitions => {
-          "CMD" => "(?:/[A-Za-z0-9$.+!*'(){},~:;=@#%&_\-]*)+\s*-*[A-Za-z0-9$.+!*'(){},~:;=@#%&_\-]*"
+        match => { <1>
+          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
         }
-        remove_field => "[system][process][cmdline]"
+        remove_field => "[system][process][cmdline]" <2>
       }
     }
   }
 }
 ----
+<1> Uses a pattern to match the path, then stores the path in a field called
+`cmdline_path`.
+<2> Removes the original field, `cmdline`, so it's not indexed in {es}.
 
-
-Learning grok is beyond the scope of this tutorial, but if you want to learn
-more, see the {logstash-ref}/plugins-filters-grok.html[Grok filter plugin]
-documentation.
 
 When you're done, the full configuration file should look like this:
 
@@ -823,9 +813,8 @@ filter {
   if [system][process] {
     if [system][process][cmdline] {
       grok {
-        match => { "[system][process][cmdline]" => ["%{CMD:[system][process][short_cmdline]}"] }
-        pattern_definitions => {
-          "CMD" => "(?:/[A-Za-z0-9$.+!*'(){},~:;=@#%&_\-]*)+\s*-*[A-Za-z0-9$.+!*'(){},~:;=@#%&_\-]*"
+        match => {
+          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
         }
         remove_field => "[system][process][cmdline]"
       }
@@ -844,11 +833,11 @@ output {
 
 
 Restart {ls} to pick up the changes. The event now includes a field called
-`short_cmdline` that contains a shortened form of the full command:
+`cmdline_path` that contains the command path:
 
 [source,ruby]
 ----
-"short_cmdline": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container -childID"
+"cmdline_path": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container"
 ----
 
 
@@ -859,7 +848,7 @@ Congratulations! You've successfully set up the {stack}. You learned how to
 stream system metrics to {es} and visualize the data in {kib}. You also learned
 how to use {ls} to filter events collected by {metricbeat}.
 
-Next, you'll want to set up {security} and activate your 30-day trial so
+Next, you'll want to set up {security} and activate your trial license so
 you can unlock the full capabilities of the {stack}. To learn how, read:
 
 * {xpack-ref}/xpack-security.html[Securing the {stack}]

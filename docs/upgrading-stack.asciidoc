@@ -3,7 +3,7 @@
 
 When upgrading to a new version of Elasticsearch, you need to upgrade
 each of the products in your Elastic Stack. Beats and Logstash 5.6 are
-compatible with Elasticsearch 6.0 to give you flexibility in scheduling the
+compatible with Elasticsearch {version} to give you flexibility in scheduling the
 upgrade.
 
 ****
@@ -12,20 +12,19 @@ are using. Want a list that's tailored to your stack? Try out our
 {upgrade_guide}[Interactive Upgrade Guide].
 ****
 
-We recommend upgrading to the most recent 5.6 before upgrading to {version}. {xpack} 5.6
+If you are running a pre-6.0 version, we recommend upgrading to the most
+recent 5.6 before upgrading to {version}. {xpack} 5.6
 provides a free Upgrade Assistant that identifies issues you need to address
 before upgrading and simplifies migrating indices that need to be reindexed
 before you upgrade. The Upgrade Assistant is enabled with both Trial and
-Basic licenses. You can install {xpack} solely for the purpose of upgrading. In 
-6.3 and later, {xpack} is automatically installed when you install {es}, {kib}, 
-and Logstash. 
+Basic licenses. You can install {xpack} solely for the purpose of upgrading.
 
-Rolling upgrades are supported when upgrading from Elasticsearch 5.6 to
-{version}, a full cluster restart is not always required. Upgrading from any
-other version than 5.6 requires a full cluster restart.
+Rolling upgrades are supported when upgrading from Elasticsearch 5.6 and
+Elasticsearch 6.0-6.2 to {version}. Upgrading from any
+version prior to 5.6 requires a full cluster restart.
 
 IMPORTANT: 2.x indices are not compatible with {version}. You must
-remove or reindex them on 5.x before upgrading to {version}. The internal
+remove or reindex them on your 5.n cluster before upgrading to {version}. The internal
 Kibana and {xpack} indices and the default Beats and Logstash mapping templates
 also need to be updated to work with {version}.
 
@@ -54,8 +53,8 @@ and make the necessary changes so your code is compatible with {version}:
 [IMPORTANT]
 ===============================
 
-* If you're upgrading from 2.x, make sure you check the breaking changes from
-2.x to 5.x, as well as from 5.x to 6.x!
+* If you're upgrading from 2.n, make sure you check the breaking changes from
+2.n to 5.n, as well as from 5.n to 6.n!
 * If you are using {ml} {dfeeds} that contain discontinued search or query
 domain specific language (DSL), the upgrade will fail. In 5.6.5 and later, the
 Upgrade Assistant provides information about which {dfeeds} need to be updated.
@@ -63,8 +62,8 @@ Upgrade Assistant provides information about which {dfeeds} need to be updated.
 ===============================
 --
 
-. {ref}/docs-reindex.html[Reindex] or delete all 2.x indices. We recommend
-upgrading to the most recent 5.6 and using the {xpack} Reindex Helper to reindex 2.x indices.
+. {ref}/docs-reindex.html[Reindex] or delete any indices created on 2.n. We recommend
+upgrading to the most recent 5.6 and using the {xpack} Reindex Helper to reindex 2.n indices.
 
 . If Kibana and {xpack} are part of your stack, upgrade the internal Kibana
 and {xpack} indices. We recommend using the {xpack} 5.6 Reindex Helper to
@@ -83,7 +82,7 @@ enabled cannot communicate with nodes that do not have TLS enabled. You must
 restart all nodes to maintain communication across the cluster.
 
 .. Make sure real passwords are configured for the built-in `elasticsearch`,
-`kibana`, and `logstash_system` users. They cannot use the 5.x default
+`kibana`, and `logstash_system` users. They cannot use the 5.n default
 password (`changeme`). For more information, see
 {stack-ov}/built-in-users.html[Built-in users].
 
@@ -93,7 +92,6 @@ upgrade process. See
 
 IMPORTANT: Test upgrades in a dev environment before upgrading your
 production cluster.
-
 
 [[upgrade-order-elastic-stack]]
 === Upgrade order
@@ -106,11 +104,48 @@ Upgrade the Elastic Stack products you use in the following order:
 . Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
 . Beats: {beats-ref}/upgrading.html[upgrade instructions]
 
-NOTE: Logstash 6.0+ and Beats 6.0+ are compatible with all 6.x versions of
+NOTE: Logstash 5.6 and 6.n and Beats 5.6 and 6.n are compatible with all 6.n versions of
 Elasticsearch. This provides flexibility in when you schedule the upgrades
 for your Logstash instances and Beats agents. We recommend upgrading Logstash
 and Beats as soon as possible to take advantage of performance improvements
 and other enhancements.
+
+=== Upgrading to 6.3
+Starting in 6.3, the default distributions of Elasticsearch, Logstash, and Kibana
+include {xpack} and a free Basic license that never expires.
+
+You can perform rolling upgrades to 6.3 from OSS-only clusters running 5.6
+or 6.0-6.2. {xpack} Basic features will be operational once the cluster is fully
+upgraded. If you are already using {xpack}, your settings are preserved when
+you upgrade.
+
+If you are using {xpack} for the first time, you must explicitly enable data
+collection after the upgrade to use monitoring. Set
+`xpack.monitoring.collection.enabled` to `true` with the `_cluster/settings`
+API:
+
+[source,json]
+----------------------------------------------------------
+PUT /_cluster/settings
+{
+    "persistent" : {
+        "xpack.monitoring.collection.enabled" : "true"
+    }
+}
+----------------------------------------------------------
+// CONSOLE
+
+To take all of the {xpack} features for a spin, you can start a 30-day trial
+from Kibana, or with the Start Trial API:
+
+[source,json]
+----------------------------------------------------------
+POST _xpack/license/start_trial
+----------------------------------------------------------
+// CONSOLE
+
+The 30-day trial enables you to try out the full set of Platinum features,
+including security, machine learning, alerting, graph capabilities, and more.
 
 [role="xpack"]
 [[xpack-stack-upgrade]]

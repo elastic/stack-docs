@@ -21,8 +21,8 @@ laptop.
 IMPORTANT: Implementing security is a critical step in setting up the {stack}.
 To get up and running quickly with a sample installation, you skip those steps
 right now. Before sending sensitive data across the network, make sure you
-{xpack-ref}/xpack-security.html[secure the stack] and enable
-{xpack-ref}/encrypting-communications.html[encrypted communications].
+<<xpack-security,secure the stack>> and enable
+<<encrypting-communications,encrypted communications>>.
 
 [float]
 [[install-prereqs]]
@@ -35,13 +35,6 @@ compatibility.
 * Verify that your system meets the
 https://www.elastic.co/support/matrix#matrix_jvm[minimum JVM requirements] for
 {ls} and {es}.
-
-// REVIEWERS: In the old version of this doc, we mentioned specific versions and
-// pointed users to the download pages, but I think that might be too much hand
-// holding. IMO, the support matrix should be the place where users go to
-// make sure they meet system requirements. Is there anything else we need to
-// say here about Java requirements here that aren't covered in the matrix?
-
 
 [float]
 [[install-elasticsearch]]
@@ -80,7 +73,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {es} has not yet been released.
+Version {version} of {es} has not yet been released.
 
 endif::[]
 
@@ -99,7 +92,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {es} has not yet been released.
+Version {version} of {es} has not yet been released.
 
 endif::[]
 
@@ -119,7 +112,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {es} has not yet been released.
+Version {version} of {es} has not yet been released.
 
 endif::[]
 
@@ -214,7 +207,7 @@ work with your system:
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {kib} has not yet been released.
+Version {version} of {kib} has not yet been released.
 
 endif::[]
 
@@ -234,7 +227,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {kib} has not yet been released.
+Version {version} of {kib} has not yet been released.
 
 endif::[]
 
@@ -254,7 +247,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {kib} has not yet been released.
+Version {version} of {kib} has not yet been released.
 
 endif::[]
 
@@ -556,7 +549,7 @@ work with your system:
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {ls} has not yet been released.
+Version {version} of {ls} has not yet been released.
 
 endif::[]
 
@@ -574,7 +567,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {ls} has not yet been released.
+Version {version} of {ls} has not yet been released.
 
 endif::[]
 
@@ -592,7 +585,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {ls} has not yet been released.
+Version {version} of {ls} has not yet been released.
 
 endif::[]
 
@@ -610,7 +603,7 @@ endif::[]
 
 ifeval::["{release-state}"=="unreleased"]
 
-Version {stack-version} of {ls} has not yet been released.
+Version {version} of {ls} has not yet been released.
 
 endif::[]
 
@@ -851,8 +844,8 @@ how to use {ls} to filter events collected by {metricbeat}.
 Next, you'll want to set up {security} and activate your trial license so
 you can unlock the full capabilities of the {stack}. To learn how, read:
 
-* {xpack-ref}/xpack-security.html[Securing the {stack}]
-* {xpack-ref}/license-management.html[License Management]
+* <<xpack-security,Securing the {stack}>>
+* <<license-management,License Management>>
 
 Later, when you're ready to set up a production environment, also see the
 {stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade

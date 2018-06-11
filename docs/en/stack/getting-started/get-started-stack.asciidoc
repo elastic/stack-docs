@@ -1,0 +1,853 @@
+[[get-started-elastic-stack]]
+== Getting started with the {stack}
+
+Looking for an {stack} ("ELK" tutorial) that shows how to set up the {stack}? In
+this tutorial, you learn how to get up and running quickly. First you install
+the core open source products:
+
+* <<install-elasticsearch,{es}>>
+* <<install-kibana,{kib}>>
+* <<install-beats,{beats}>>
+* <<install-logstash,{ls}>>
+
+Then you learn how to implement a system monitoring solution that uses
+{metricbeat} to collect server metrics and ship the data to {es}, where you can
+search and visualize the data by using {kib}. After you get the basic setup
+working, you add {ls} for additional parsing.
+
+To get started, you can install the {stack} on a single VM or even on your
+laptop. 
+ 
+IMPORTANT: Implementing security is a critical step in setting up the {stack}.
+To get up and running quickly with a sample installation, you skip those steps
+right now. Before sending sensitive data across the network, make sure you
+<<xpack-security,secure the stack>> and enable
+<<encrypting-communications,encrypted communications>>.
+
+[float]
+[[install-prereqs]]
+=== Before you begin
+
+* See the https://www.elastic.co/support/matrix[Elastic Support
+Matrix] for information about supported operating systems and product
+compatibility.
+
+* Verify that your system meets the
+https://www.elastic.co/support/matrix#matrix_jvm[minimum JVM requirements] for
+{ls} and {es}.
+
+[float]
+[[install-elasticsearch]]
+=== Install {es}
+
+https://www.elastic.co/products/elasticsearch[{es}] is a real-time,
+distributed storage, search, and analytics engine. It can be used for many
+purposes, but one context where it excels is indexing streams of semi-structured
+data, such as logs or decoded network packets.
+
+To download and install {es}, open a terminal window and use the commands that
+work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
+Redhat/Centos/Fedora, <<mac, mac>> for OS X, and <<win, win>> for Windows):
+
+
+[[deb]]*deb:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {elasticsearch_version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.deb
+sudo dpkg -i elasticsearch-{elasticsearch_version}.deb
+sudo /etc/init.d/elasticsearch start
+----
+
+endif::[]
+
+[[rpm]]*rpm:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.rpm
+sudo rpm -i elasticsearch-{elasticsearch_version}.rpm
+sudo service elasticsearch start
+----------------------------------------------------------------------
+
+endif::[]
+
+[[mac]]*mac:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.tar.gz
+tar -xzvf elasticsearch-{elasticsearch_version}.tar.gz
+cd elasticsearch-{elasticsearch_version}
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+endif::[]
+
+[[win]]*win:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+. Download the {es} {elasticsearch_version} Windows zip file from the
+https://www.elastic.co/downloads/elasticsearch[{es} download] page.
+
+. Extract the contents of the zip file to a directory on your computer, for
+example, `C:\Program Files`.
+
+. Open a command prompt as an Administrator and navigate to the directory that
+contains the extracted files, for example:
++
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+cd C:\Program Files\elasticsearch-{elasticsearch_version}
+----------------------------------------------------------------------
+
+. Start {es}:
++
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin\elasticsearch.bat
+----------------------------------------------------------------------
+
+endif::[]
+
+For other operating systems, go to the
+https://www.elastic.co/downloads/elasticsearch[{es} download] page.
+
+To learn more about installing, configuring, and running {es}, read the
+https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html[{es} Reference].
+
+[float]
+==== Make sure {es} is up and running
+
+
+To test that the {es} daemon is up and running, try sending an HTTP GET
+request on port 9200.
+
+[source,shell]
+----------------------------------------------------------------------
+curl http://127.0.0.1:9200
+----------------------------------------------------------------------
+
+On Windows, if you don't have cURL installed, point your browser to the URL.
+
+You should see a response similar to this:
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+{
+  "name" : "QtI5dUu",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "DMXhqzzjTGqEtDlkaMOzlA",
+  "version" : {
+    "number" : "{elasticsearch_version}",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "00d8bc1",
+    "build_date" : "2018-06-06T16:48:02.249996Z",
+    "build_snapshot" : false,
+    "lucene_version" : "7.3.1",
+    "minimum_wire_compatibility_version" : "5.6.0",
+    "minimum_index_compatibility_version" : "5.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+----------------------------------------------------------------------
+
+
+[float]
+[[install-kibana]]
+=== Install {kib}
+
+https://www.elastic.co/products/kibana[{kib}] is an open source analytics and
+visualization platform designed to work with {es}. You use {kib} to search,
+view, and interact with data stored in {es} indices. You can easily perform
+advanced data analysis and visualize your data in a variety of charts, tables,
+and maps.
+
+To get started, we recommend that you install {kib} on the same server as {es},
+but it is not required. If you install the products on different servers, you'll
+need to change the URL (IP:PORT) of the {es} server in the {kib} configuration
+file, `config/kibana.yml`, before starting {kib}.
+
+To download and install {kib}, open a terminal window and use the commands that
+work with your system:
+
+*deb or rpm:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {kib} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/kibana/kibana-{kibana_version}-linux-x86_64.tar.gz
+tar xzvf kibana-{kibana_version}-linux-x86_64.tar.gz
+cd kibana-{kibana_version}-linux-x86_64/
+./bin/kibana
+----------------------------------------------------------------------
+
+endif::[]
+
+*mac:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {kib} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/kibana/kibana-{kibana_version}-darwin-x86_64.tar.gz
+tar xzvf kibana-{kibana_version}-darwin-x86_64.tar.gz
+cd kibana-{kibana_version}-darwin-x86_64/
+./bin/kibana
+----------------------------------------------------------------------
+
+endif::[]
+
+*win:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {kib} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+. Download the {kib} {kibana_version} Windows zip file from the
+https://www.elastic.co/downloads/kibana[{kib} download] page.
+
+. Extract the contents of the zip file to a directory on your computer, for
+example, `C:\Program Files`.
+
+. Open a command prompt as an Administrator and navigate to the directory that
+contains the extracted files, for example:
++
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+cd C:\Program Files\kibana-{kibana_version}-windows
+----------------------------------------------------------------------
+
+. Start {kib}:
++
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin\kibana.bat
+----------------------------------------------------------------------
+
+endif::[]
+
+For other operating systems, go to the
+https://www.elastic.co/downloads/kibana[{kib} download] page.
+
+To learn more about installing, configuring, and running {kib}, read the
+https://www.elastic.co/guide/en/kibana/current/index.html[{kib} Reference].
+
+[float]
+==== Launch the {kib} web interface
+
+To launch the {kib} web interface, point your browser to port 5601. For example,
+http://127.0.0.1:5601[http://127.0.0.1:5601].
+
+[float]
+[[install-beats]]
+=== Install {beats}
+
+The {beats} are open source data shippers that you install as agents on your
+servers to send operational data to {es}. {beats} can send data directly to {es}
+or via {ls}, where you can further process and enhance the data.
+
+Each Beat is a separately installable product. In this tutorial, you learn how
+to install and run {metricbeat} with the `system` module enabled to collect system
+metrics.
+
+To learn more about installing and configuring other {beats}, see the Getting
+Started documentation:
+
+[options="header"]
+|=======================
+|Elastic {beats} | To capture
+|{packetbeat-ref}/packetbeat-getting-started.html[{packetbeat}] |Network traffic
+|{filebeat-ref}/filebeat-getting-started.html[{filebeat}] |Log files
+|{metricbeat-ref}/metricbeat-getting-started.html[{metricbeat}] |Metrics
+|{winlogbeat-ref}/winlogbeat-getting-started.html[{winlogbeat}] |Windows event logs
+|{auditbeat-ref}/auditbeat-getting-started.html[{auditbeat}] |Audit data
+|{heartbeat-ref}/heartbeat-getting-started.html[{heartbeat}] |Uptime monitoring
+|=======================
+
+
+[float]
+[[install-metricbeat]]
+==== Install {metricbeat}
+
+To download and install {metricbeat}, open a terminal window and use the commands
+that work with your system:
+
+*deb:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-amd64.deb
+sudo dpkg -i metricbeat-{version}-amd64.deb
+------------------------------------------------
+
+endif::[]
+
+*rpm:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-x86_64.rpm
+sudo rpm -vi metricbeat-{version}-x86_64.rpm
+------------------------------------------------
+
+endif::[]
+
+*mac:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-darwin-x86_64.tar.gz
+tar xzvf metricbeat-{version}-darwin-x86_64.tar.gz
+------------------------------------------------
+
+endif::[]
+
+*win:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+. Download the {metricbeat} Windows zip file from the
+https://www.elastic.co/downloads/beats/metricbeat[{metricbeat} download] page.
+
+. Extract the contents of the zip file into `C:\Program Files`.
+
+. Rename the ++metricbeat-{version}-windows++ directory to ++{metricbeat}++.
+
+. Open a PowerShell prompt as an Administrator (right-click the PowerShell icon
+and select *Run As Administrator*).
+
+. From the PowerShell prompt, run the following commands to install {metricbeat}
+as a Windows service:
++
+[source,shell]
+----------------------------------------------------------------------
+PS > cd 'C:\Program Files\Metricbeat'
+PS C:\Program Files\Metricbeat> .\install-service-metricbeat.ps1
+----------------------------------------------------------------------
++
+NOTE: If script execution is disabled on your system, set the execution policy
+for the current session to allow the script to run. For example: `PowerShell.exe
+-ExecutionPolicy UnRestricted -File .\install-service-metricbeat.ps1`.
+
+endif::[]
+
+For other operating systems, go to the
+https://www.elastic.co/downloads/beats[{beats} download] page.
+
+[float]
+[[ship-system-logs]]
+==== Ship system metrics to {es}
+
+{metricbeat} provides pre-built modules that you can use to rapidly implement
+and deploy a system monitoring solution, complete with sample dashboards and
+data visualizations, in about 5 minutes. 
+
+In this section, you learn how to run the `system` module to collect metrics
+from the operating system and services running on your server. The system module
+collects system-level metrics, such as CPU usage, memory, file system, disk IO,
+and network IO statistics, as well as top-like statistics for every process
+running on your system.
+
+*Before you begin*: Verify that {es} and {kib} are running and that {es} is
+ready to receive data from {metricbeat}.
+
+To set up the `system` module and start collecting system metrics:
+
+. From the {metricbeat} install directory, enable the `system` module:
++
+*deb and rpm:*
++
+[source,yaml]
+----
+sudo metricbeat modules enable system
+----
++
+*mac:*
++
+[source,yaml]
+----
+./metricbeat modules enable system
+----
++
+*win:*
++
+[source,yaml]
+----
+PS C:\Program Files\Metricbeat> metricbeat.exe modules enable system
+----
+
+. Set up the initial environment:
++
+*deb and rpm:*
++
+[source,yaml]
+----
+sudo metricbeat setup -e
+----
++
+*mac:*
++
+[source,yaml]
+----
+./metricbeat setup -e
+----
++
+*win:*
++
+[source,yaml]
+----
+PS C:\Program Files\Metricbeat> metricbeat.exe setup -e
+----
++
+The `setup` command loads the {kib} dashboards. If the dashboards are already
+set up, omit this command. The `-e` flag is optional and sends output to
+standard error instead of syslog.
+
+. Start {metricbeat}:
++
+*deb and rpm:*
++
+[source,yaml]
+----
+sudo service metricbeat start
+----
++
+*mac:*
++
+[source,yaml]
+----
+./metricbeat -e
+----
++
+*win:*
++
+[source,yaml]
+----
+PS C:\Program Files\Metricbeat> Start-Service metricbeat
+----
+
+
+{metricbeat} runs and starts sending system metrics to {es}. 
+
+[float]
+[[visualize-system-metrics]]
+==== Visualize system metrics in {kib}
+
+To visualize system metrics, open your browser and navigate to the {metricbeat}
+system overview dashboard: http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview
+
+TIP: If you don’t see data in {kib}, try changing the date range to a larger
+range. By default, {kib} shows the last 15 minutes. If you see errors, make
+sure {metricbeat} is running, then refresh the page.
+
+[role="screenshot"]
+image::images/metricbeat-system-overview.png[{metricbeat} system overview]
+
+Click *Host Overview* to see detailed metrics about the selected host.
+
+[role="screenshot"]
+image::images/metricbeat-system-host-details.png[{metricbeat} host overview]
+
+Now that you know how to set up the simplest architecture for the {stack}--one
+or more {beats} sending event data directly to an {es} instance running on the
+same server--let's add {ls}.
+
+[float]
+[[install-logstash]]
+
+=== Install {ls}
+
+https://www.elastic.co/products/logstash[{ls}] is a powerful tool that
+integrates with a wide variety of deployments. It offers a large selection of
+plugins to help you parse, enrich, transform, and buffer data from a variety of
+sources.
+
+To download and install {ls}, open a terminal window and use the commands that
+work with your system:
+
+*deb:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {ls} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.deb
+sudo dpkg -i logstash-{logstash_version}.deb
+----------------------------------------------------------------------
+
+endif::[]
+
+*rpm:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {ls} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.rpm
+sudo rpm -i logstash-{logstash_version}.rpm
+----------------------------------------------------------------------
+
+endif::[]
+
+*mac:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {ls} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.tar.gz
+tar -xzvf logstash-{logstash_version}.tar.gz
+----------------------------------------------------------------------
+
+endif::[]
+
+*win:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {ls} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+. Download the {ls} {logstash_version} Windows zip file from the
+https://www.elastic.co/downloads/logstash[{ls} download] page.
+
+. Extract the contents of the zip file to a directory on your computer, for
+example, `C:\Program Files`. Use a short path (fewer than 30 characters) to
+avoid running into file path length limitations on Windows. 
+
+endif::[]
+
+For other operating systems, go to the
+https://www.elastic.co/downloads/logstash[{ls} download] page.
+
+To learn more about installing, configuring, and running {ls}, read the
+{logstash-ref}/index.html[{ls} Reference].
+
+[float]
+[[logstash-setup]]
+==== Configure {ls} to listen for {beats} input
+
+{ls} provides {logstash-ref}/input-plugins.html[input plugins] for reading from
+a variety of inputs. In this tutorial, you create a {ls} pipeline configuration
+that listens for {beats} input and sends the received events to the {es} output.
+
+To configure {ls}:
+
+. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf` that
+contains:
++
+--
+* An input stage that configures {ls} to listen on port 5044 for incoming {beats}
+connections.
+* An output stage that indexes events into {es}. The output stage also
+configures {ls} to write to the {metricbeat} index.
+--
++
+For example:
++
+[source,ruby]
+----
+input {
+  beats {
+    port => 5044
+  }
+}
+
+# The filter part of this file is commented out to indicate that it
+# is optional.
+# filter {
+#
+# }
+
+output {
+  elasticsearch {
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+  }
+}
+----
++
+When you start {ls} with this pipeline configuration, {beats} events are routed
+through {ls}, where you have full access to {ls} capabilities for collecting,
+enriching, and transforming data. 
+
+[float]
+==== Start {ls}
+
+Use the command that works with your system. If you installed {ls} as a deb or
+rpm package, make sure the config file is in the `config` directory.
+
+*deb:*
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+sudo /etc/init.d/logstash start
+----------------------------------------------------------------------
+
+*rpm:*
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+sudo service logstash start
+----------------------------------------------------------------------
+
+*mac:*
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/logstash -f demo-metrics-pipeline.conf
+----------------------------------------------------------------------
+
+*win:*
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin\logstash.bat -f demo-metrics-pipeline.conf
+----------------------------------------------------------------------
+
+
+{ls} starts listening for events from the {beats} input. Next you need to 
+configure {metricbeat} to send events to {ls}.
+
+[float]
+==== Configure {metricbeat} to send events to {ls}
+
+{metricbeat} sends events to {es} by default. To send events to {ls}, modify the
+{metricbeat} configuration file, `metricbeat.yml`. You'll find this file under
+the {metricbeat} install directory, or `/etc/metricbeat` for rpm and deb.
+
+Disable the `output.elasticsearch` section by commenting it out, then enable
+the `output.logstash` section by uncommenting it: 
+
+[source,yaml]
+----
+#-------------------------- Elasticsearch output ------------------------------
+#output.elasticsearch:
+  # Array of hosts to connect to.
+  #hosts: ["localhost:9200"]
+.
+.
+.
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
+----
+
+
+Save the file, then restart {metricbeat} to apply the configuration changes.
+
+{ls} reads from the {beats} input and indexes events into {es}. You haven't
+defined a filter section yet, so {ls} simply forwards events to {es} without
+additional processing. Next, you learn how to define the filter stage.
+
+[float]
+[[logstash-filter]]
+==== Define a filter to extract data from a field
+
+The system metrics collected by {metricbeat} include a field called `cmdline`
+that contains the full command-line arguments used to start system processes.
+For example:
+
+[source,json]
+----
+"cmdline": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container -childID 3
+-isForBrowser -boolPrefs 36:1|299:0| -stringPrefs 285:38;{b77ae304-9f53-a248-8bd4-a243dbf2cab1}| -schedulerPrefs
+0001,2 -greomni /Applications/Firefox.app/Contents/Resources/omni.ja -appomni
+/Applications/Firefox.app/Contents/Resources/browser/omni.ja -appdir
+/Applications/Firefox.app/Contents/Resources/browser -profile
+/Users/dedemorton/Library/Application Support/Firefox/Profiles/mftvzeod.default-1468353066634
+99468 gecko-crash-server-pipe.99468 org.mozilla.machname.1911848630 tab"
+----
+
+
+Rather than sending the whole command-line argument to {es}, you might want to
+send just the command's path. One way to do that is by using a Grok filter.
+Learning Grok is beyond the scope of this tutorial, but if you want to learn
+more, see the {logstash-ref}/plugins-filters-grok.html[Grok filter plugin]
+documentation.
+
+To extract the path, add the following Grok filter between the input and output
+sections in the {ls} config file that you created earlier:
+ 
+[source,ruby]
+----
+filter {
+  if [system][process] {
+    if [system][process][cmdline] {
+      grok {
+        match => { <1>
+          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
+        }
+        remove_field => "[system][process][cmdline]" <2>
+      }
+    }
+  }
+}
+----
+<1> Uses a pattern to match the path, then stores the path in a field called
+`cmdline_path`.
+<2> Removes the original field, `cmdline`, so it's not indexed in {es}.
+
+
+When you're done, the full configuration file should look like this:
+
+[source,ruby]
+----
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  if [system][process] {
+    if [system][process][cmdline] {
+      grok {
+        match => {
+          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
+        }
+        remove_field => "[system][process][cmdline]"
+      }
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+  }
+}
+----
+
+
+Restart {ls} to pick up the changes. The event now includes a field called
+`cmdline_path` that contains the command path:
+
+[source,ruby]
+----
+"cmdline_path": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container"
+----
+
+
+[float]
+==== What's next?
+
+Congratulations! You've successfully set up the {stack}. You learned how to
+stream system metrics to {es} and visualize the data in {kib}. You also learned
+how to use {ls} to filter events collected by {metricbeat}.
+
+Next, you'll want to set up {security} and activate your trial license so
+you can unlock the full capabilities of the {stack}. To learn how, read:
+
+* <<xpack-security,Securing the {stack}>>
+* <<license-management,License Management>>
+
+Later, when you're ready to set up a production environment, also see the
+{stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade
+Guide].
+

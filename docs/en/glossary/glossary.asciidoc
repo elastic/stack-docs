@@ -401,6 +401,14 @@ Also see <<glossary-node,node>>.
 +
 //Source: Cloud
 endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
+
+[[glossary-merge]] merge ::
+
+The combining of Lucene segments, either automatically in the background or initiated using force merge.
++
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-message-broker]] message broker ::
@@ -520,6 +528,13 @@ nodes handling the user requests.
 endif::cloud-terms[]
 ifdef::elasticsearch-terms[]
 
+[[glossary-reindex]] reindex ::
+
+To cycle through some or all documents in one or more indices, re-writing them into the same or new index in a local or remote cluster. This is most commonly done to update mappings, or to upgrade Elasticsearch between two incompatible index versions.
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+
 [[glossary-replica-shard]] replica shard ::
 
 Each <<glossary-primary-shard,primary shard>> can have zero or more
@@ -614,6 +629,14 @@ some other application.
 endif::logstash-terms[]
 ifdef::elasticsearch-terms[]
 
+[[glossary-shrink]] shrink ::
+
+To reduce the amount of shards in an index. See the {es-ref}/current/indices-shrink-index.html[shrink index API].
++
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+
 [[glossary-source_field]] source field ::
 
 By default, the JSON document that you index will be stored in the
@@ -622,6 +645,13 @@ This allows you access to the original object directly from search
 results, rather than requiring a second step to retrieve the object
 from an ID.
 +
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+
+[[glossary-split]] split ::
+
+To grow the amount of shards in an index. See the {es-ref}/current/indices-split-index.html[split index API].
 //Source: Elasticsearch
 endif::elasticsearch-terms[]
 ifdef::cloud-terms[]

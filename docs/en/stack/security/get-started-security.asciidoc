@@ -1,0 +1,85 @@
+[[get-started-elastic-stack-security]]
+== Getting started with security
+
+In this tutorial, you learn how to secure a cluster by encrypting communications 
+between {es}, {kib}, {ls}, and {metricbeat}. You also set up users and roles in 
+a native realm. 
+
+[float]
+[[gs-security-prereqs]]
+=== Before you begin
+
+Install and start {es}, {kib}, {ls}, and {metricbeat} as described in 
+<<get-started-elastic-stack>>. 
+
+Launch the {kib} web interface by pointing your browser to port 5601. For 
+example, http://127.0.0.1:5601[http://127.0.0.1:5601].
+
+[float]
+[[gs-security-license]]
+=== Install a trial license
+
+When you installed the products, they applied Basic licenses with no expiration 
+dates. To view your license in {kib}, go to **Management** and click 
+**License Management**.
+
+[role="screenshot"]
+image::images/management-license.png[]
+
+To secure your cluster, you must obtain a license that includes the {security} 
+features. For more information about Elastic license levels, see 
+https://www.elastic.co/subscriptions.
+
+You can start a 30-day trial to try out all of the Platinum features, including 
+{security}. Click **Start trial**.
+
+IMPORTANT: If your cluster has already activated a trial license for the current 
+major version, you cannot start a new trial. For example, if you have already 
+activated a trial for v6.0, you cannot start a new trial until v7.0.
+
+At the end of the trial period, your license reverts to a Basic license. If you 
+want to keep using the extra features, you can purchase a subscription. 
+
+[float]
+[[gs-security-enabled]]
+=== Enable security in {es}
+
+When you use the trial license, {security} is disabled by default. You must 
+stop {kib}, stop {es}, set the `xpack.security.enabled` setting to `true` on 
+each node in your {es} cluster, then restart {es}. 
+
+For example, add the setting to the `config/elasticsearch.yml` file in your {es} 
+directory:
+[source,yaml]
+----
+xpack.security.enabled: true
+----
+
+////
+2. Configure security in {es}. Encrypt inter-node communications, set passwords for the built-in users, and manage your users and roles.
+2.1. Check xpack.security.enabled setting
+2.2. Configure TLS
+2.2.1 Generate node certificates.
+2.2.2 Enable TLS on each node.
+2.3. Start {es}
+2.4. Set up built-in users.
+2.5. Configure native realm
+2.6. Create roles. 
+2.7. Optional: Enable auditing
+3. Configure security in {kib}. Set the authentication credentials in Kibana and encrypt communications between the browser and the Kibana server.
+3.1. Update kibana.yml with the built-in user
+3.2. Set xpack.security.encryptionKey.
+3.3. Configure TLS
+3.4. Grant users access to the indices that they will be working with. 
+3.5. Verify login.
+4. Configure security in {ls}. Set the authentication credentials for Logstash and encrypt communications between Logstash and Elasticsearch.
+4.1. Create logstash_writer role and logstash_internal user.
+4.2. Configure {ls} to use the logstash_internal user. 
+4.3. Configure TLS.
+4.4. Grant access to {ls} indices
+5. Configure security in {metricbeat}. Configure authentication credentials and encrypt connections to Elasticsearch.
+5.1. Configure permissions for XXX user
+5.2. Grant access to {metricbeat} indices
+5.3. Enable HTTPS in the {metricbeat} configuration
+5.4. Create and assign metricbeat_writer and metricbeat_reader roles.  
+////

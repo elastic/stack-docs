@@ -634,8 +634,9 @@ that listens for {beats} input and sends the received events to the {es} output.
 
 To configure {ls}:
 
-. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf` that
-contains:
+. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf`. 
+If you installed {ls} as a deb or rpm package, create the file in the {ls} 
+`config` directory. The file must contain:
 +
 --
 * An input stage that configures {ls} to listen on port 5044 for incoming {beats}
@@ -707,6 +708,8 @@ sudo service logstash start
 bin\logstash.bat -f demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
+TIP: If you receive JVM error messages, check your Java version as shown in 
+{logstash-ref}/installing-logstash.html[Installing {ls}].
 
 {ls} starts listening for events from the {beats} input. Next you need to 
 configure {metricbeat} to send events to {ls}.

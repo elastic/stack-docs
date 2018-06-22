@@ -1,9 +1,8 @@
 [[get-started-elastic-stack-security]]
 == Getting started with security
 
-In this tutorial, you learn how to secure a cluster by encrypting communications 
-between {es}, {kib}, {ls}, and {metricbeat}. You also set up users and roles in 
-a native realm. 
+In this tutorial, you learn how to secure a cluster by configuring users and 
+roles for use in {es}, {kib}, {ls}, and {metricbeat}. 
 
 [float]
 [[gs-security-prereqs]]
@@ -45,24 +44,39 @@ want to keep using the extra features, you can purchase a subscription.
 === Enable security in {es}
 
 When you use the trial license, {security} is disabled by default. You must 
-stop {kib}, stop {es}, set the `xpack.security.enabled` setting to `true` on 
-each node in your {es} cluster, then restart {es}. 
+stop {kib}, stop {es}, then add the `xpack.security.enabled` setting to the 
+`config/elasticsearch.yml` file in your {es} directory. For example:
 
-For example, add the setting to the `config/elasticsearch.yml` file in your {es} 
-directory:
 [source,yaml]
 ----
 xpack.security.enabled: true
 ----
 
+[float]
+[[gs-built-in-users]]
+=== Configure built-in users
+
+There are built-in users that you can use for specific administrative purposes:
+`elastic`, `kibana`, `logstash_system`, and `beats_system`. 
+
+Before you can use them, you must set their passwords. Restart {es}, then run 
+the following command from the {es} directory:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin/elasticsearch-setup-passwords interactive
+----------------------------------------------------------------------
+
+You will use these users in subsequent steps, so choose passwords that you can 
+remember!
+
+
 ////
 2. Configure security in {es}. Encrypt inter-node communications, set passwords for the built-in users, and manage your users and roles.
-2.1. Check xpack.security.enabled setting
 2.2. Configure TLS
 2.2.1 Generate node certificates.
 2.2.2 Enable TLS on each node.
 2.3. Start {es}
-2.4. Set up built-in users.
 2.5. Configure native realm
 2.6. Create roles. 
 2.7. Optional: Enable auditing

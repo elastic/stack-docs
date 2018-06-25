@@ -78,8 +78,8 @@ the following command from the {es} directory:
 bin/elasticsearch-setup-passwords interactive
 ----------------------------------------------------------------------
 
-You will use these users in subsequent steps, so choose passwords that you can 
-remember!
+You need these built-in users in subsequent steps, so choose passwords that you 
+can remember!
 
 [float]
 [[gs-kibana-security]]
@@ -108,7 +108,7 @@ Save your changes to the file and restart {kib}.
 === Configure authentication
 
 Now that you've set up the built-in users, you need to decide how you want to 
-manage all of the other users. 
+manage all the other users. 
 
 The {stack} _authenticates_ users to ensure that they are valid. The 
 authentication process is handled by _realms_. You can use one or more built-in 
@@ -120,7 +120,7 @@ In general, you configure realms by adding `xpack.security.authc.realms`
 settings in the `elasticsearch.yml` file. However, the native realm is available 
 by default when no other realms are configured. Therefore, you don't need to do 
 any extra configuration steps in this tutorial. You can jump straight to 
-creating users. 
+creating users!
 
 If you want to learn more about authentication and realms, see 
 <<setting-up-authentication>>.
@@ -144,7 +144,7 @@ Click *Create user* to make a new user. For example, create a user for yourself:
 image::security/images/create-user.jpg["Creating a user in Kibana"]
 
 In <<get-started-elastic-stack>>, you configured {ls} to listen for {metricbeat} 
-input and to send send the events to {es}.  You therefore need to create a user 
+input and to send the events to {es}.  You therefore need to create a user 
 that {ls} and {metricbeat} can use to communicate with {es}. Click *Create user* 
 and create a `metricbeat_internal` user, for example:
 
@@ -211,9 +211,7 @@ image::security/images/management-users.jpg["User management screenshot in Kiban
 
 In order for {ls} to send data successfully to {es}, you must configure its 
 authentication credentials. You must configure credentials separately for each 
-of the {es} plugins in your {ls} configuration file.  For example, add the 
-`logstash_internal` user and its password in the `demo-metrics-pipeline.conf` 
-file in your {ls} directory:
+of the {es} plugins in your {ls} configuration file.  For example, update the `demo-metrics-pipeline.conf` file in your {ls} directory:
 
 [source,ruby]
 ----
@@ -241,13 +239,15 @@ output {
     hosts => "localhost:9200"
     manage_template => false
     index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-    user => metricbeat_internal
-    password => your_password
+    user => metricbeat_internal <1>
+    password => your_password <2>
   }
 }
 ----
+<1> Specify the `metricbeat_internal` user that you created earlier in this tutorial. 
+<2> Specify the password that you chose for this user ID.
 
-Start {logstash}. (See <<gs-start-logstash>>). 
+<<gs-start-logstash,Start {ls}>>. 
 
 [float]
 [[gs-metricbeat-security]]
@@ -261,7 +261,7 @@ In <<get-started-elastic-stack>>, however, you configured {metricbeat} to send
 the data to {ls} for additional parsing, so no extra settings are required in 
 {metricbeat}. 
 
-Start {metricbeat}. (See <<gs-start-metricbeat>>). 
+<<gs-start-metricbeat,Start {metricbeat}>>. 
 
 [float]
 [[gs-view-security]]
@@ -282,7 +282,7 @@ using the native realm. You learned how to create user IDs and roles that
 prevent unauthorized access to the {stack}. 
 
 Next, you'll want to try other features that are unlocked by your trial license, 
-such as {ml}. See <<ml-getting-started>>. 
+such as {ml}. See <<ml-getting-started,Getting started with {ml}>>. 
 
 Later, when you're ready to increase the number of nodes in your cluster or set 
 up an production environment, you'll want to encrypt communications across the 

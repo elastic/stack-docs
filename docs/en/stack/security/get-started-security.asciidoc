@@ -1,4 +1,5 @@
-[[get-started-elastic-stack-security]]
+[role="xpack"]
+[[security-getting-started]]
 == Getting started with security
 
 In this tutorial, you learn how to secure a cluster by configuring users and 
@@ -51,6 +52,16 @@ stop {kib}, stop {es}, then add the `xpack.security.enabled` setting to the
 ----
 xpack.security.enabled: true
 ----
+
+NOTE: This tutorial involves a single node cluster, but if you had multiple 
+nodes, you would enable {security} on every node in the cluster. If you have a 
+multi-node cluster, you must also configure Transport Layer Security (TLS) for 
+internode-communication, which is beyond the scope of this tutorial. 
+
+When you enable {security}, basic authentication is enabled by default. To 
+communicate with the cluster, you must specify a username and password.
+Unless you <<anonymous-access,enable anonymous access>>, all requests that don't 
+include a user name and password are rejected.
 
 [float]
 [[gs-built-in-users]]
@@ -130,7 +141,15 @@ In this example, you can see all of the built-in users.
 Click *Create user* to make a new user. For example, create a user for yourself:
 
 [role="screenshot"]
-image::security/images/management-create-user.jpg["Creating a user in Kibana"]
+image::security/images/create-user.jpg["Creating a user in Kibana"]
+
+In <<get-started-elastic-stack>>, you configured {ls} to listen for {metricbeat} 
+input and to send send the events to {es}.  You therefore need to create a user 
+that {ls} and {metricbeat} can use to communicate with {es}. Click *Create user* 
+and create a `metricbeat_internal` user, for example:
+
+[role="screenshot"]
+image::security/images/create-metricbeat-user.jpg["Creating a {metricbeat} user in {kib}"]
 
 You'll notice that when you create a user, you can assign it a _role_, such as 
 `kibana_user`. The {stack} uses roles to _authorize_ users. For example, you can 
@@ -155,49 +174,138 @@ If you want to learn more about authorization and roles, see <<authorization>>.
 === Create roles in {kib}
 
 If you completed all of the steps in <<get-started-elastic-stack>>, you should 
-have {metricbeat} data stored in {es}. Let's create a role that grants access to 
-that data. 
+have {metricbeat} data stored in {es}. Let's create two roles that grant 
+different levels of access to that data. 
 
 Go to the *Management / Security / Roles* page and click *Create role*. 
 
-[role="screenshot"]
-image::security/images/management-create-role.jpg["Creating a role in Kibana"]
-
 Create a `metricbeat_reader` role that has `read` and `view_index_metadata` 
-privileges on the `metricbeat-*` indices. 
+privileges on the `metricbeat-*` indices:
 
-Now go back to the *Management / Security / Users* page, select your user, and 
-add the new `metricbeat_reader` role to your user. 
+[role="screenshot"]
+image::security/images/create-reader-role.jpg["Creating a role in Kibana"]
+
+Create a `metricbeat_writer` role that has `manage_index_templates` and `monitor` 
+cluster privileges, as well as `write`, `delete`, and `create_index` privileges
+on the `metricbeat-*` indices:
+
+// TBD: The Beats docs don't mention the need for the delete privilege, whereas 
+// the Logstash docs do. Which should be used in this case?
+
+[role="screenshot"]
+image::security/images/create-writer-role.jpg["Creating another role in Kibana"]
+
+Now go back to the *Management / Security / Users* page and assign these roles 
+to the appropriate users. Assign the `metricbeat_reader` role to your personal 
+user.  Assign the `metricbeat_writer` role to the `metricbeat_internal` user.
 
 The list of users should now contain all of the built-in users as well as the 
-one you created. It should also show that your user has two roles:
+two you created. It should also show the appropriate roles for your users:
 
 [role="screenshot"]
 image::security/images/management-users.jpg["User management screenshot in Kibana"]
 
-////
-2. Configure security in {es}. Encrypt inter-node communications, set passwords for the built-in users, and manage your users and roles.
-2.2. Configure TLS
-2.2.1 Generate node certificates.
-2.2.2 Enable TLS on each node.
-2.5. Configure native realm
-2.6. Create roles. 
-2.7. Optional: Enable auditing
-3. Configure security in {kib}. Set the authentication credentials in Kibana and encrypt communications between the browser and the Kibana server.
-3.1. Update kibana.yml with the built-in user
-3.2. Set xpack.security.encryptionKey.
-3.3. Configure TLS
-3.4. Grant users access to the indices that they will be working with. 
-3.5. Verify login.
-4. Configure security in {ls}. Set the authentication credentials for Logstash and encrypt communications between Logstash and Elasticsearch.
-4.1. Create logstash_writer role and logstash_internal user.
-4.2. Configure {ls} to use the logstash_internal user. 
-4.3. Configure TLS.
-4.4. Grant access to {ls} indices
-5. Configure security in {metricbeat}. Configure authentication credentials and encrypt connections to Elasticsearch.
-5.1. Configure permissions for XXX user
-5.2. Grant access to {metricbeat} indices
-5.3. Enable HTTPS in the {metricbeat} configuration
-5.4. Create and assign metricbeat_writer and metricbeat_reader roles.  
-6.1. Note additional options for configuring security in Kibana (e.g. xpack.security.* settings)
-////
+[float]
+[[gs-logstash-security]]
+=== Add users in {ls}
+
+In order for {ls} to send data successfully to {es}, you must configure its 
+authentication credentials. You must configure credentials separately for each 
+of the {es} plugins in your {ls} configuration file.  For example, add the 
+`logstash_internal` user and its password in the `demo-metrics-pipeline.conf` 
+file in your {ls} directory:
+
+[source,ruby]
+----
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  if [system][process] {
+    if [system][process][cmdline] {
+      grok {
+        match => {
+          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
+        }
+        remove_field => "[system][process][cmdline]"
+      }
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+    user => metricbeat_internal
+    password => your_password
+  }
+}
+----
+
+Start {logstash}. (See <<gs-start-logstash>>). 
+
+[float]
+[[gs-metricbeat-security]]
+=== Add users in {metricbeat}
+
+If you were connecting directly from {metricbeat} to {es}, you would need to 
+configure authentication credentials for the {es} output in the {metricbeat} 
+configuration file. 
+
+In <<get-started-elastic-stack>>, however, you configured {metricbeat} to send 
+the data to {ls} for additional parsing, so no extra settings are required in 
+{metricbeat}. 
+
+Start {metricbeat}. (See <<gs-start-metricbeat>>). 
+
+[float]
+[[gs-view-security]]
+=== View system metrics in {kib}
+
+Log in to {kib} with the user ID that has `metricbeat_reader` role (for example, 
+`jdoe`). 
+
+This user should have authority to visualize the system metrics (for example, on 
+the *Discover* page or in the http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview[{metricbeat} system overview dashboard]). 
+
+[float]
+[[gs-security-nextsteps]]
+==== What's next?
+
+Congratulations! You've successfully set up authentication and authorization by 
+using the native realm. You learned how to create user IDs and roles that 
+prevent unauthorized access to the {stack}. 
+
+Next, you'll want to try other features that are unlocked by your trial license, 
+such as {ml}. See <<ml-getting-started>>. 
+
+Later, when you're ready to increase the number of nodes in your cluster or set 
+up an production environment, you'll want to encrypt communications across the 
+{stack}. To learn how, read <<encrypting-communications>>. 
+
+For more detailed information about securing the {stack}, see:
+
+* {ref}/configuring-security.html[Configuring security in {es}]. Encrypt 
+inter-node communications, set passwords for the built-in users, and manage your 
+users and roles.  
+
+* {kibana-ref}/using-kibana-with-security.html[Configuring security in {kib}]. 
+Set the authentication credentials in {kib} and encrypt communications between 
+the browser and the {kib} server.
+
+* {logstash-ref}/ls-security.html[Configuring security in Logstash]. Set the 
+authentication credentials for Logstash and encrypt communications between 
+Logstash and {es}. 
+
+* <<beats,Configuring security in the Beats>>. Configure authentication 
+credentials and encrypt connections to {es}. 
+
+* <<java-clients,Configuring the Java transport client to use encrypted communications>>.
+
+* {hadoop-ref}/security.html[Configuring {es} for Apache Hadoop to use secured transport]. 
+

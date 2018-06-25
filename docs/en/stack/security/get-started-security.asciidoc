@@ -23,7 +23,7 @@ dates. To view your license in {kib}, go to **Management** and click
 **License Management**.
 
 [role="screenshot"]
-image::images/management-license.png[]
+image::images/management-license.png["License management screenshot in Kibana"]
 
 To secure your cluster, you must obtain a license that includes the {security} 
 features. For more information about Elastic license levels, see 
@@ -54,7 +54,7 @@ xpack.security.enabled: true
 
 [float]
 [[gs-built-in-users]]
-=== Configure built-in users
+=== Create passwords for built-in users
 
 There are built-in users that you can use for specific administrative purposes:
 `elastic`, `kibana`, `logstash_system`, and `beats_system`. 
@@ -70,13 +70,116 @@ bin/elasticsearch-setup-passwords interactive
 You will use these users in subsequent steps, so choose passwords that you can 
 remember!
 
+[float]
+[[gs-kibana-security]]
+=== Add the built-in user to {kib}
+
+When {security} is enabled, users must log in to {kib} with a valid user ID and 
+password. 
+
+{kib} also performs some tasks under the covers, which require use of the 
+built-in `kibana` user. Uncomment and update the following settings in the 
+`config/kibana.yml` file in your {kib} directory:
+
+[source,yaml]
+----
+elasticsearch.username: "kibana"
+elasticsearch.password: "your_password"
+----
+
+Specify the password that you set with the `elasticsearch-setup-passwords` 
+command. 
+
+Save your changes to the file and restart {kib}.
+
+[float]
+[[gs-realms]]
+=== Configure authentication
+
+Now that you've set up the built-in users, you need to decide how you want to 
+manage all of the other users. 
+
+The {stack} _authenticates_ users to ensure that they are valid. The 
+authentication process is handled by _realms_. You can use one or more built-in 
+realms, such as the native, file, LDAP, PKI, Active Directory, or SAML realms. 
+Alternatively, you can create your own custom realms. In this tutorial, we'll  
+use a native realm. 
+
+In general, you configure realms by adding `xpack.security.authc.realms` 
+settings in the `elasticsearch.yml` file. However, the native realm is available 
+by default when no other realms are configured. Therefore, you don't need to do 
+any extra configuration steps in this tutorial. You can jump straight to 
+creating users. 
+
+If you want to learn more about authentication and realms, see 
+<<setting-up-authentication>>.
+
+[float]
+[[gs-users]]
+=== Create users in {kib}
+
+Log in to {kib} with the `elastic` built-in user. 
+
+Go to the *Management / Security / Users* page:
+
+[role="screenshot"]
+image::security/images/management-builtin-users.jpg["User management screenshot in Kibana"]
+
+In this example, you can see all of the built-in users. 
+
+Click *Create user* to make a new user. For example, create a user for yourself:
+
+[role="screenshot"]
+image::security/images/management-create-user.jpg["Creating a user in Kibana"]
+
+You'll notice that when you create a user, you can assign it a _role_, such as 
+`kibana_user`. The {stack} uses roles to _authorize_ users. For example, you can 
+authorize a user to perform specific actions (such as read, create, or manage) 
+on specific secured resources (such as indices, aliases, documents, fields, or 
+clusters). 
+
+To help you get up and running, there are built-in roles. Go to the 
+*Management / Security / Roles* page to see them:
+
+[role="screenshot"]
+image::security/images/management-roles.jpg["Role management screenshot in Kibana"]
+
+Select a role to see more information about what privileges it provides. For 
+example, if you select the `kibana_user` role, you will see that it grants 
+`manage`, `read`, `index`, and `delete` privileges on the `.kibana*` indices. 
+
+If you want to learn more about authorization and roles, see <<authorization>>.
+
+[float]
+[[gs-roles]]
+=== Create roles in {kib}
+
+If you completed all of the steps in <<get-started-elastic-stack>>, you should 
+have {metricbeat} data stored in {es}. Let's create a role that grants access to 
+that data. 
+
+Go to the *Management / Security / Roles* page and click *Create role*. 
+
+[role="screenshot"]
+image::security/images/management-create-role.jpg["Creating a role in Kibana"]
+
+Create a `metricbeat_reader` role that has `read` and `view_index_metadata` 
+privileges on the `metricbeat-*` indices. 
+
+Now go back to the *Management / Security / Users* page, select your user, and 
+add the new `metricbeat_reader` role to your user. 
+
+The list of users should now contain all of the built-in users as well as the 
+one you created. It should also show that your user has two roles:
+
+[role="screenshot"]
+image::security/images/management-users.jpg["User management screenshot in Kibana"]
 
 ////
 2. Configure security in {es}. Encrypt inter-node communications, set passwords for the built-in users, and manage your users and roles.
 2.2. Configure TLS
 2.2.1 Generate node certificates.
 2.2.2 Enable TLS on each node.
-2.3. Start {es}
 2.5. Configure native realm
 2.6. Create roles. 
 2.7. Optional: Enable auditing
@@ -96,4 +199,5 @@ remember!
 5.2. Grant access to {metricbeat} indices
 5.3. Enable HTTPS in the {metricbeat} configuration
 5.4. Create and assign metricbeat_writer and metricbeat_reader roles.  
+6.1. Note additional options for configuring security in Kibana (e.g. xpack.security.* settings)
 ////

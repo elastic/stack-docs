@@ -46,7 +46,15 @@ want to keep using the extra features, you can purchase a subscription.
 
 When you use the trial license, {security} is disabled by default. You must 
 stop {kib}, stop {es}, then add the `xpack.security.enabled` setting to the 
-`config/elasticsearch.yml` file in your {es} directory. For example:
+`ES_PATH_CONF/elasticsearch.yml` file. 
+
+TIP: The `ES_PATH_CONF` environment variable contains the path for the {es} 
+configuration files. If you installed {es} using archive distributions (`zip` or 
+`tar.gz`), it defaults to `ES_HOME/config`. If you used package distributions 
+(Debian or RPM), it defaults to `/etc/elasticsearch`. For more information, see 
+{ref}/settings.html[Configuring {es}].  
+
+For example, add the following setting:
 
 [source,yaml]
 ----
@@ -90,7 +98,14 @@ password.
 
 {kib} also performs some tasks under the covers, which require use of the 
 built-in `kibana` user. Uncomment and update the following settings in the 
-`config/kibana.yml` file in your {kib} directory:
+`kibana.yml` file in your {kib} directory:
+
+TIP: If you installed {kib} using archive distributions (`zip` or 
+`tar.gz`), the `kibana.yml` configuration file is in `KIBANA_HOME/config`. If 
+you used package distributions (Debian or RPM), it's in `/etc/kibana`. For more 
+information, see {kibana-ref}/settings.html[Configuring {kib}].  
+
+For example, add the following settings:
 
 [source,yaml]
 ----

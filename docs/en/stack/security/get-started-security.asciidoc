@@ -142,7 +142,7 @@ If you want to learn more about authentication and realms, see
 
 [float]
 [[gs-users]]
-=== Create users in {kib}
+=== Create users
 
 Log in to {kib} with the `elastic` built-in user. 
 
@@ -158,6 +158,9 @@ Click *Create user* to make a new user. For example, create a user for yourself:
 [role="screenshot"]
 image::security/images/create-user.jpg["Creating a user in Kibana"]
 
+You'll notice that when you create a user, you can assign it a role. Don't 
+choose a role yet--we'll come back to that in subsequent steps.  
+
 In <<get-started-elastic-stack>>, you configured {ls} to listen for {metricbeat} 
 input and to send the events to {es}.  You therefore need to create a user 
 that {ls} and {metricbeat} can use to communicate with {es}. Click *Create user* 
@@ -166,27 +169,37 @@ and create a `metricbeat_internal` user, for example:
 [role="screenshot"]
 image::security/images/create-metricbeat-user.jpg["Creating a {metricbeat} user in {kib}"]
 
-You'll notice that when you create a user, you can assign it a _role_, such as 
-`kibana_user`. The {stack} uses roles to _authorize_ users. For example, you can 
-authorize a user to perform specific actions (such as read, create, or manage) 
-on specific secured resources (such as indices, aliases, documents, fields, or 
-clusters). 
+[float]
+[[gs-roles]]
+=== Assign roles
 
-To help you get up and running, there are built-in roles. Go to the 
-*Management / Security / Roles* page to see them:
+By default, all users can change their own passwords, get information about 
+themselves, and run the `authenticate` API. If you want them to do more than 
+that, you need to give them one or more _roles_. 
+
+Each role defines a specific set of actions (such as read, create, or delete) 
+that can be performed on specific secured resources (such as indices, aliases, 
+documents, fields, or clusters). To help you get up and running, there are 
+built-in roles. 
+
+Go to the *Management / Security / Roles* page to see them:
 
 [role="screenshot"]
 image::security/images/management-roles.jpg["Role management screenshot in Kibana"]
 
-Select a role to see more information about what privileges it provides. For 
-example, if you select the `kibana_user` role, you will see that it grants 
-`manage`, `read`, `index`, and `delete` privileges on the `.kibana*` indices. 
+Select a role to see more information about its privileges. For example, if you 
+select the `kibana_user` role, you will see that it grants `manage`, `read`, 
+`index`, and `delete` privileges on the `.kibana*` indices. To learn more about 
+these privileges, see <<privileges-list-indices>>. 
 
-If you want to learn more about authorization and roles, see <<authorization>>.
+Let's assign the `kibana_user` role to your user. Go back to the 
+*Management / Security / Users* page and select your user. Add the `kibana_user` 
+role and save the change. For example:
 
-[float]
-[[gs-roles]]
-=== Create roles in {kib}
+[role="screenshot"]
+image::security/images/assign-role.jpg["Assigning a role to a user in Kibana"]
+
+This user now has the minimum privileges required to use {kib}. 
 
 If you completed all of the steps in <<get-started-elastic-stack>>, you should 
 have {metricbeat} data stored in {es}. Let's create two roles that grant 
@@ -219,6 +232,8 @@ two you created. It should also show the appropriate roles for your users:
 
 [role="screenshot"]
 image::security/images/management-users.jpg["User management screenshot in Kibana"]
+
+If you want to learn more about authorization and roles, see <<authorization>>.
 
 [float]
 [[gs-logstash-security]]

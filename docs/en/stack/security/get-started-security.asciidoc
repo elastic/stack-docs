@@ -90,6 +90,12 @@ bin/elasticsearch-setup-passwords interactive
 You need these built-in users in subsequent steps, so choose passwords that you 
 can remember!
 
+NOTE: This tutorial does not use the built-in `logstash_system` and 
+`beats_system` users, which are typically associated with monitoring. For more 
+information, see 
+{logstash-ref}/ls-security.html#ls-monitoring-user[Configuring credentials for {ls} monitoring]
+and {metricbeat-ref}/monitoring.html[Monitoring {metricbeat}].  
+  
 [float]
 [[gs-kibana-security]]
 === Add the built-in user to {kib}
@@ -278,7 +284,7 @@ output {
 <1> Specify the `metricbeat_internal` user that you created earlier in this tutorial. 
 <2> Specify the password that you chose for this user ID.
 
-<<gs-start-logstash,Start {ls}>>. 
+<<gs-start-logstash,Start {ls}>>.  
 
 [float]
 [[gs-metricbeat-security]]

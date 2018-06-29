@@ -45,10 +45,19 @@ the trial, or purchase a subscription.
 [[gs-security-enabled]]
 === Enable security in {es}
 
-When you use the trial license, {security} is disabled by default. You must 
-stop {kib}, stop {es}, then add the `xpack.security.enabled` setting to the 
-`ES_PATH_CONF/elasticsearch.yml` file. 
+When you use the trial license, {security} is disabled by default. To enable it:
 
+. Stop {kib}. The method for starting and stopping products varies depending on 
+how you installed them. For example, if you installed {kib} with a `.tar.gz` package, 
+you can stop it by entering `Ctrl-C` on the command line where it is running.
+
+. Stop {es}. For example, if you installed {es} with a `.tar.gz` package, stop 
+it by entering `Ctrl-C` on the command line where it is running.
+
+. Add the `xpack.security.enabled` setting to the 
+`ES_PATH_CONF/elasticsearch.yml` file. 
++
+--
 TIP: The `ES_PATH_CONF` environment variable contains the path for the {es} 
 configuration files. If you installed {es} using archive distributions (`zip` or 
 `tar.gz`), it defaults to `ES_HOME/config`. If you used package distributions 
@@ -61,6 +70,8 @@ For example, add the following setting:
 ----
 xpack.security.enabled: true
 ----
+
+--
 
 NOTE: This tutorial involves a single node cluster, but if you had multiple 
 nodes, you would enable {security} on every node in the cluster and configure 
@@ -79,13 +90,27 @@ include a user name and password are rejected.
 There are built-in users that you can use for specific administrative purposes:
 `elastic`, `kibana`, `logstash_system`, and `beats_system`. 
 
-Before you can use them, you must set their passwords. Restart {es}, then run 
-the following command from the {es} directory:
+Before you can use them, you must set their passwords:
 
+. Restart {es}. For example, if you installed {es} with a `.tar.gz` package, run 
+the following command from the {es} directory:
++
+--
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-bin/elasticsearch-setup-passwords interactive
+./bin/elasticsearch
 ----------------------------------------------------------------------
+--
+
+. Set the built-in users' passwords. Run the following command from the {es} 
+directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch-setup-passwords interactive
+----------------------------------------------------------------------
+--
 
 You need these built-in users in subsequent steps, so choose passwords that you 
 can remember!
@@ -123,7 +148,14 @@ elasticsearch.password: "your_password"
 Specify the password that you set with the `elasticsearch-setup-passwords` 
 command. 
 
-Save your changes to the file and restart {kib}.
+Save your changes to the file and restart {kib}. For example, if you installed 
+{kib} with a `.tar.gz` package, run the following command from the {kib} 
+directory:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/kibana
+----------------------------------------------------------------------
 
 [float]
 [[gs-realms]]
@@ -284,7 +316,16 @@ output {
 <1> Specify the `metricbeat_internal` user that you created earlier in this tutorial. 
 <2> Specify the password that you chose for this user ID.
 
-<<gs-start-logstash,Start {ls}>>.  
+Start {ls} by using the appropriate method for your environment. For example, if 
+you installed {ls} with a `.tar.gz` package, run the following command from the 
+{ls} directory:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/logstash -f demo-metrics-pipeline.conf
+----------------------------------------------------------------------
+
+For more methods to start {ls}, see <<gs-start-logstash>>.   
 
 [float]
 [[gs-metricbeat-security]]
@@ -298,7 +339,15 @@ In <<get-started-elastic-stack>>, however, you configured {metricbeat} to send
 the data to {ls} for additional parsing, so no extra settings are required in 
 {metricbeat}. 
 
-<<gs-start-metricbeat,Start {metricbeat}>>. 
+Start {metricbeat} by using the appropriate method for your environment. For 
+example, on macOS, run the following command from the {metricbeat} directory:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./metricbeat -e
+----------------------------------------------------------------------
+
+For more methods, see <<gs-start-metricbeat,start {metricbeat}>>. 
 
 [float]
 [[gs-view-security]]
@@ -312,7 +361,7 @@ the *Discover* page or in the http://localhost:5601/app/kibana#/dashboard/Metric
 
 [float]
 [[gs-security-nextsteps]]
-==== What's next?
+=== What's next?
 
 Congratulations! You've successfully set up authentication and authorization by 
 using the native realm. You learned how to create user IDs and roles that 

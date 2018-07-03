@@ -146,9 +146,24 @@ elasticsearch.password: "your_password"
 ----
 
 Specify the password that you set with the `elasticsearch-setup-passwords` 
-command. 
+command then save your changes to the file. 
 
-Save your changes to the file and restart {kib}. For example, if you installed 
+If you prefer not to put your password in the `kibana.yml` file, remove those 
+settings and store them in a keystore instead. Run the following commands to 
+create the {kib} keystore and add the secure settings:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/kibana-keystore create
+./bin/kibana-keystore add elasticsearch.username
+./bin/kibana-keystore add elasticsearch.password
+----------------------------------------------------------------------
+
+When prompted, specify the `kibana` built-in user and its password for these 
+setting values.  The settings are automatically applied when you start {kib}.   
+To learn more, see {kibana-ref}/secure-settings.html[Secure settings].
+
+Restart {kib}. For example, if you installed 
 {kib} with a `.tar.gz` package, run the following command from the {kib} 
 directory:
 

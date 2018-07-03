@@ -129,9 +129,13 @@ When {security} is enabled, users must log in to {kib} with a valid user ID and
 password. 
 
 {kib} also performs some tasks under the covers, which require use of the 
-built-in `kibana` user. Uncomment and update the following settings in the 
-`kibana.yml` file in your {kib} directory:
+built-in `kibana` user. 
 
+. If you don't mind having passwords visible in your configuration file, 
+uncomment and update the following settings in the `kibana.yml` file in your 
+{kib} directory:
++
+--
 TIP: If you installed {kib} using archive distributions (`zip` or 
 `tar.gz`), the `kibana.yml` configuration file is in `KIBANA_HOME/config`. If 
 you used package distributions (Debian or RPM), it's in `/etc/kibana`. For more 
@@ -147,11 +151,13 @@ elasticsearch.password: "your_password"
 
 Specify the password that you set with the `elasticsearch-setup-passwords` 
 command then save your changes to the file. 
+--
 
-If you prefer not to put your password in the `kibana.yml` file, remove those 
-settings and store them in a keystore instead. Run the following commands to 
-create the {kib} keystore and add the secure settings:
-
+. If you prefer not to put your user ID and password in the `kibana.yml` file, 
+store them in a keystore instead. Run the following commands to create the {kib} 
+keystore and add the secure settings:
++
+--
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/kibana-keystore create
@@ -162,15 +168,18 @@ create the {kib} keystore and add the secure settings:
 When prompted, specify the `kibana` built-in user and its password for these 
 setting values.  The settings are automatically applied when you start {kib}.   
 To learn more, see {kibana-ref}/secure-settings.html[Secure settings].
+--
 
-Restart {kib}. For example, if you installed 
+. Restart {kib}. For example, if you installed 
 {kib} with a `.tar.gz` package, run the following command from the {kib} 
 directory:
-
++
+--
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/kibana
 ----------------------------------------------------------------------
+--
 
 [float]
 [[gs-realms]]
@@ -295,7 +304,8 @@ If you want to learn more about authorization and roles, see <<authorization>>.
 
 In order for {ls} to send data successfully to {es}, you must configure its 
 authentication credentials. You must configure credentials separately for each 
-of the {es} plugins in your {ls} configuration file.  For example, update the `demo-metrics-pipeline.conf` file in your {ls} directory:
+of the {es} plugins in your {ls} configuration file.  For example, update the 
+`demo-metrics-pipeline.conf` file in your {ls} directory:
 
 [source,ruby]
 ----
@@ -330,6 +340,49 @@ output {
 ----
 <1> Specify the `metricbeat_internal` user that you created earlier in this tutorial. 
 <2> Specify the password that you chose for this user ID.
+
+If you prefer not to put your user ID and password in the configuration file, 
+store them in a keystore instead. Run the following commands to create the {ls} 
+keystore and add the secure settings:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+set +o history 
+export LOGSTASH_KEYSTORE_PASS=mypassword <1>
+set -o history
+./bin/logstash-keystore create
+./bin/logstash-keystore add ES_USER
+./bin/logstash-keystore add ES_PWD
+----------------------------------------------------------------------
+<1> You can optionally protect access to the {ls} keystore by storing a password 
+in an environment variable called `LOGSTASH_KEYSTORE_PASS`. For more information, 
+see {logstash-ref}/keystore.html#keystore-password[Keystore password]. 
+
+When prompted, specify the `metricbeat_internal` user and its password for the 
+`ES_USER` and `ES_PWD` values. You can now use these keys in your configuration 
+file.  For example, update the output section of the `demo-metrics-pipeline.conf` 
+file as follows:
+
+[source,ruby]
+----
+...
+
+output {
+  elasticsearch {
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+    user => "${ES_USER}" 
+    password => "${ES_PWD}" 
+  }
+}
+----
+
+Note that the {ls} keystore differs from the {kib} keystore. Whereas the {kib} 
+keystore enables you to store `kibana.yml` settings by name, the {ls} keystore 
+enables you to create arbitrary names that you can reference in the {ls} 
+configuration. To learn more, see 
+{logstash-ref}/keystore.html[Secrets keystore for secure settings].
 
 Start {ls} by using the appropriate method for your environment. For example, if 
 you installed {ls} with a `.tar.gz` package, run the following command from the 

@@ -308,8 +308,8 @@ output {
     hosts => "localhost:9200"
     manage_template => false
     index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-    user => metricbeat_internal <1>
-    password => your_password <2>
+    user => "metricbeat_internal" <1>
+    password => "your_password" <2>
   }
 }
 ----
@@ -356,8 +356,9 @@ For more methods, see <<gs-start-metricbeat,start {metricbeat}>>.
 Log in to {kib} with the user ID that has `metricbeat_reader` role (for example, 
 `jdoe`). 
 
-This user should have authority to visualize the system metrics (for example, on 
-the *Discover* page or in the http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview[{metricbeat} system overview dashboard]). 
+You should be able to see the system metrics (for example, on 
+the *Discover* page or in the 
+http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview[{metricbeat} system overview dashboard]). 
 
 [float]
 [[gs-security-nextsteps]]

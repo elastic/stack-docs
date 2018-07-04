@@ -3,16 +3,24 @@
 == Getting started with security
 
 In this tutorial, you learn how to secure a cluster by configuring users and 
-roles for use in {es}, {kib}, {ls}, and {metricbeat}. 
+roles in {es}, {kib}, {ls}, and {metricbeat}. 
 
 [float]
 [[gs-security-prereqs]]
 === Before you begin
 
-Install and start {es}, {kib}, {ls}, and {metricbeat} as described in 
+. Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
 <<get-started-elastic-stack>>. 
 
-Launch the {kib} web interface by pointing your browser to port 5601. For 
+. Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
+you are running it from the command line or running it as a service. For example, 
+if you are running {ls} from the command line, you can stop it by entering 
+`Ctrl-C`. See {logstash-ref}/shutdown.html[Shutting down {ls}]. 
+
+. Stop {metricbeat}. For example, enter `Ctrl-C` on the command line where it is 
+running.
+
+. Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
 [float]
@@ -47,12 +55,14 @@ the trial, or purchase a subscription.
 
 When you use the trial license, {security} is disabled by default. To enable it:
 
-. Stop {kib}. The method for starting and stopping products varies depending on 
-how you installed them. For example, if you installed {kib} with a `.tar.gz` package, 
-you can stop it by entering `Ctrl-C` on the command line where it is running.
+. Stop {kib}. The method for starting and stopping {kib} varies depending on 
+how you installed it. For example, if you installed {kib} from an archive 
+distribution (`.tar.gz` or `.zip`), stop it by entering `Ctrl-C` on the command 
+line. See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
 
-. Stop {es}. For example, if you installed {es} with a `.tar.gz` package, stop 
-it by entering `Ctrl-C` on the command line where it is running.
+. Stop {es}. For example, if you installed {es} from an archive distribution, 
+enter `Ctrl-C` on the command line. See 
+{ref}/stopping-elasticsearch.html[Stopping {es}].
 
 . Add the `xpack.security.enabled` setting to the 
 `ES_PATH_CONF/elasticsearch.yml` file. 
@@ -100,6 +110,8 @@ the following command from the {es} directory:
 ----------------------------------------------------------------------
 ./bin/elasticsearch
 ----------------------------------------------------------------------
+
+See {ref}/starting-elasticsearch.html[Starting {es}].
 --
 
 . Set the built-in users' passwords. Run the following command from the {es} 
@@ -128,7 +140,7 @@ and {metricbeat-ref}/monitoring.html[Monitoring {metricbeat}].
 When {security} is enabled, users must log in to {kib} with a valid user ID and 
 password. 
 
-{kib} also performs some tasks under the covers, which require use of the 
+{kib} also performs some tasks under the covers that require use of the 
 built-in `kibana` user. 
 
 . If you don't mind having passwords visible in your configuration file, 
@@ -179,6 +191,8 @@ directory:
 ----------------------------------------------------------------------
 ./bin/kibana
 ----------------------------------------------------------------------
+
+See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
 --
 
 [float]
@@ -303,8 +317,8 @@ If you want to learn more about authorization and roles, see <<authorization>>.
 === Add users in {ls}
 
 In order for {ls} to send data successfully to {es}, you must configure its 
-authentication credentials. You must configure credentials separately for each 
-of the {es} plugins in your {ls} configuration file.  For example, update the 
+authentication credentials. You must configure credentials for each of the {es} 
+plugins in your {ls} configuration file.  For example, update the 
 `demo-metrics-pipeline.conf` file in your {ls} directory:
 
 [source,ruby]
@@ -359,7 +373,15 @@ in an environment variable called `LOGSTASH_KEYSTORE_PASS`. For more information
 see {logstash-ref}/keystore.html#keystore-password[Keystore password]. 
 
 When prompted, specify the `metricbeat_internal` user and its password for the 
-`ES_USER` and `ES_PWD` values. You can now use these keys in your configuration 
+`ES_USER` and `ES_PWD` values. 
+
+NOTE: The {ls} keystore differs from the {kib} keystore. Whereas the {kib} 
+keystore enables you to store `kibana.yml` settings by name, the {ls} keystore 
+enables you to create arbitrary names that you can reference in the {ls} 
+configuration. To learn more, see 
+{logstash-ref}/keystore.html[Secrets keystore for secure settings].
+
+You can now use these `ES_USER` and `ES_PWD` keys in your configuration 
 file.  For example, update the output section of the `demo-metrics-pipeline.conf` 
 file as follows:
 
@@ -378,22 +400,17 @@ output {
 }
 ----
 
-Note that the {ls} keystore differs from the {kib} keystore. Whereas the {kib} 
-keystore enables you to store `kibana.yml` settings by name, the {ls} keystore 
-enables you to create arbitrary names that you can reference in the {ls} 
-configuration. To learn more, see 
-{logstash-ref}/keystore.html[Secrets keystore for secure settings].
-
-Start {ls} by using the appropriate method for your environment. For example, if 
-you installed {ls} with a `.tar.gz` package, run the following command from the 
-{ls} directory:
+Start {ls} by using the appropriate method for your environment. For example, to 
+run {ls} from a command line, go to the {ls} directory and enter the following 
+command:
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/logstash -f demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
-For more methods to start {ls}, see <<gs-start-logstash>>.   
+To start {ls} as a service, see 
+{logstash-ref}/running-logstash.html[Running {ls} as a service on Debian or RPM].  
 
 [float]
 [[gs-metricbeat-security]]
@@ -415,16 +432,18 @@ example, on macOS, run the following command from the {metricbeat} directory:
 ./metricbeat -e
 ----------------------------------------------------------------------
 
-For more methods, see <<gs-start-metricbeat,start {metricbeat}>>. 
+For more methods, see {metricbeat-ref}/metricbeat-starting.html[Starting {metricbeat}].
+
+Wait a few minutes for new data to be sent from {metricbeat} to {ls} and {es}. 
 
 [float]
 [[gs-view-security]]
 === View system metrics in {kib}
 
-Log in to {kib} with the user ID that has `metricbeat_reader` role (for example, 
-`jdoe`). 
+Log in to {kib} with the user ID that has `metricbeat_reader` and `kibana_user` 
+roles (for example, `jdoe`). 
 
-You should be able to see the system metrics (for example, on 
+These roles enable the user to see the system metrics in {kib} (for example, on 
 the *Discover* page or in the 
 http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview[{metricbeat} system overview dashboard]). 
 

@@ -21,32 +21,29 @@ data:
 * https://www.elastic.co/videos/machine-learning-tutorial-creating-a-single-metric-job[Machine Learning for the Elastic Stack: Creating a single metric job]
 * https://www.elastic.co/videos/machine-learning-tutorial-creating-a-multi-metric-job[Machine Learning for the Elastic Stack: Creating a multi-metric job]
 
-
 [float]
 [[ml-gs-sysoverview]]
-=== System Overview
+=== Before you begin
 
-To follow the steps in this tutorial, you will need the following
-components of the Elastic Stack:
-
-* {es} {version}, which stores the data and the analysis results
-* {kib} {version}, which provides a helpful user interface for creating and
-viewing jobs
-
-See the https://www.elastic.co/support/matrix[Elastic Support Matrix] for
-information about supported operating systems.
-
-See {stack-ref}/installing-elastic-stack.html[Installing the Elastic Stack] for
-information about installing each of the components.
-
-NOTE: To get started, you can install {es} and {kib} on a
-single VM or even on your laptop (requires 64-bit OS).
-As you add more data and your traffic grows,
+. Install {es} and {kib} as described in <<get-started-elastic-stack>>. 
+{es} stores the data and the analysis results. {kib} provides a helpful user 
+interface for creating and viewing jobs. 
++
+--
+NOTE: To get started, you can install {es} and {kib} on a single VM or even on 
+your laptop (requires 64-bit OS). As you add more data and your traffic grows,
 you'll want to replace the single {es} instance with a cluster.
 
-By default, when you install {es} and {kib}, {xpack} is installed and the 
-{ml} features are enabled. You cannot use {ml} with the free basic license, but 
-you can try all of the {xpack} features with a <<license-management,trial license>>. 
+--
+
+. Launch the {kib} web interface by pointing your browser to port 5601. For 
+example, http://127.0.0.1:5601[http://127.0.0.1:5601].
+
+. Obtain a license that includes the {ml} features. 
++
+--
+include::{docdir}/getting-started/get-started-trial.asciidoc[]
+--
 
 If you have multiple nodes in your cluster, you can optionally dedicate nodes to
 specific purposes. If you want to control which nodes are
@@ -56,10 +53,11 @@ activity related to jobs, see
 
 [float]
 [[ml-gs-users]]
-==== Users, Roles, and Privileges
+==== Users, roles, and privileges
 
-The {xpackml} features implement cluster privileges and built-in roles to
-make it easier to control which users have authority to view and manage the jobs,
+
+The {xpackml} features use cluster privileges and built-in roles to make it 
+easier to control which users have authority to view and manage the jobs,
 {dfeeds}, and results.
 
 By default, you can perform all of the steps in this tutorial by using the

@@ -240,11 +240,11 @@ choose a role yet--we'll come back to that in subsequent steps.
 
 In <<get-started-elastic-stack>>, you configured {ls} to listen for {metricbeat} 
 input and to send the events to {es}.  You therefore need to create a user 
-that {ls} and {metricbeat} can use to communicate with {es}. Click *Create user* 
-and create a `metricbeat_internal` user, for example:
+that {ls} can use to communicate with {es}. Click *Create user* and create a 
+`logstash_internal` user, for example:
 
 [role="screenshot"]
-image::security/images/create-metricbeat-user.jpg["Creating a {metricbeat} user in {kib}"]
+image::security/images/create-logstash-user.jpg["Creating a {ls} user in {kib}"]
 
 [float]
 [[gs-roles]]
@@ -294,15 +294,12 @@ Create a `metricbeat_writer` role that has `manage_index_templates` and `monitor
 cluster privileges, as well as `write`, `delete`, and `create_index` privileges
 on the `metricbeat-*` indices:
 
-// TBD: The Beats docs don't mention the need for the delete privilege, whereas 
-// the Logstash docs do. Which should be used in this case?
-
 [role="screenshot"]
 image::security/images/create-writer-role.jpg["Creating another role in Kibana"]
 
 Now go back to the *Management / Security / Users* page and assign these roles 
 to the appropriate users. Assign the `metricbeat_reader` role to your personal 
-user.  Assign the `metricbeat_writer` role to the `metricbeat_internal` user.
+user.  Assign the `metricbeat_writer` role to the `logstash_internal` user.
 
 The list of users should now contain all of the built-in users as well as the 
 two you created. It should also show the appropriate roles for your users:
@@ -314,12 +311,11 @@ If you want to learn more about authorization and roles, see <<authorization>>.
 
 [float]
 [[gs-logstash-security]]
-=== Add users in {ls}
+=== Add user information in {ls}
 
 In order for {ls} to send data successfully to {es}, you must configure its 
-authentication credentials. You must configure credentials for each of the {es} 
-plugins in your {ls} configuration file.  For example, update the 
-`demo-metrics-pipeline.conf` file in your {ls} directory:
+authentication credentials in the {ls} configuration file.  For example, update 
+the `demo-metrics-pipeline.conf` file in your {ls} directory:
 
 [source,ruby]
 ----
@@ -347,12 +343,12 @@ output {
     hosts => "localhost:9200"
     manage_template => false
     index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-    user => "metricbeat_internal" <1>
+    user => "logstash_internal" <1>
     password => "your_password" <2>
   }
 }
 ----
-<1> Specify the `metricbeat_internal` user that you created earlier in this tutorial. 
+<1> Specify the `logstash_internal` user that you created earlier in this tutorial. 
 <2> Specify the password that you chose for this user ID.
 
 If you prefer not to put your user ID and password in the configuration file, 
@@ -372,7 +368,7 @@ set -o history
 in an environment variable called `LOGSTASH_KEYSTORE_PASS`. For more information, 
 see {logstash-ref}/keystore.html#keystore-password[Keystore password]. 
 
-When prompted, specify the `metricbeat_internal` user and its password for the 
+When prompted, specify the `logstash_internal` user and its password for the 
 `ES_USER` and `ES_PWD` values. 
 
 NOTE: The {ls} keystore differs from the {kib} keystore. Whereas the {kib} 
@@ -412,17 +408,12 @@ command:
 To start {ls} as a service, see 
 {logstash-ref}/running-logstash.html[Running {ls} as a service on Debian or RPM].  
 
-[float]
-[[gs-metricbeat-security]]
-=== Add users in {metricbeat}
-
-If you were connecting directly from {metricbeat} to {es}, you would need to 
-configure authentication credentials for the {es} output in the {metricbeat} 
-configuration file. 
-
-In <<get-started-elastic-stack>>, however, you configured {metricbeat} to send 
-the data to {ls} for additional parsing, so no extra settings are required in 
-{metricbeat}. 
+TIP: If you were connecting directly from {metricbeat} to {es}, you would need 
+to configure authentication credentials for the {es} output in the {metricbeat} 
+configuration file. In <<get-started-elastic-stack>>, however, you configured 
+{metricbeat} to send the data to {ls} for additional parsing, so no extra 
+settings are required in {metricbeat}. For more information, see 
+{metricbeat-ref}/securing-metricbeat.html[Securing {metricbeat}]. 
 
 Start {metricbeat} by using the appropriate method for your environment. For 
 example, on macOS, run the following command from the {metricbeat} directory:

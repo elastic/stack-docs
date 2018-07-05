@@ -25,7 +25,7 @@ data:
 [[ml-gs-sysoverview]]
 === Before you begin
 
-. Install {es} and {kib} as described in <<get-started-elastic-stack>>. 
+. Install {es} and {kib}. You can follow the steps in <<get-started-elastic-stack>>. 
 {es} stores the data and the analysis results. {kib} provides a helpful user 
 interface for creating and viewing jobs. 
 +
@@ -45,17 +45,11 @@ example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 include::{docdir}/getting-started/get-started-trial.asciidoc[]
 --
 
-If you have multiple nodes in your cluster, you can optionally dedicate nodes to
-specific purposes. If you want to control which nodes are
-_machine learning nodes_ or limit which nodes run resource-intensive
-activity related to jobs, see 
-{ref}/modules-node.html#modules-node-xpack[{ml} node settings].
-
-[float]
+. If {security} is enabled in your cluster, you need a user that has appropriate 
+authority to perform the steps in this tutorial. 
++
+--
 [[ml-gs-users]]
-==== Users, roles, and privileges
-
-
 The {xpackml} features use cluster privileges and built-in roles to make it 
 easier to control which users have authority to view and manage the jobs,
 {dfeeds}, and results.
@@ -71,6 +65,14 @@ significant changes to the system. You can alternatively assign the
 `machine_learning_admin` and `kibana_user` roles to a user ID of your choice.
 
 For more information, see <<built-in-roles>> and <<privileges-list-cluster>>.
+
+--
+
+. Optional: If you have multiple nodes in your cluster, you can optionally 
+dedicate nodes to specific purposes. If you want to control which nodes are
+_machine learning nodes_ or limit which nodes run resource-intensive
+activity related to jobs, see 
+{ref}/modules-node.html#modules-node-xpack[{ml} node settings]. 
 
 :edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/x-pack/docs/en/ml/getting-started-data.asciidoc
 include::getting-started-data.asciidoc[]

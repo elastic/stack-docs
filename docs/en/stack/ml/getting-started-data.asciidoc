@@ -96,64 +96,59 @@ for the fields. Mappings divide the documents in the index into logical groups
 and specify a field's characteristics, such as the field's searchability or
 whether or not it's _tokenized_, or broken up into separate words.
 
-The sample data includes an `upload_server_metrics.sh` script, which you can use
-to create the mappings and load the data set. You can download it by clicking
-here: https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics.sh[upload_server_metrics.sh]
+You can use scripts to create the mappings and load the data set. Download  https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics.sh[upload_server_metrics.sh] to the directory where you extracted the sample data. 
 Before you run it, however, you must edit the USERNAME and PASSWORD variables
-with your actual user ID and password.
-If you do not have {security} enabled, use the 
+with your actual user ID and password. If {security} is not enabled, use the 
 https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics_noauth.sh[upload_server_metrics_noauth.sh] 
 script instead. 
 
-The script runs a command similar to the following example, which sets up a
-mapping for the data set:
+The script runs a `curl` command that makes the following create index API 
+request:
 
 [source,sh]
 ----------------------------------
-curl -u elastic:x-pack-test-password -X PUT -H 'Content-Type: application/json'
-http://localhost:9200/server-metrics -d '{
-   "settings":{
-      "number_of_shards":1,
-      "number_of_replicas":0
-   },
-   "mappings":{
-      "metric":{
-         "properties":{
-            "@timestamp":{
-               "type":"date"
-            },
-            "accept":{
-               "type":"long"
-            },
-            "deny":{
-               "type":"long"
-            },
-            "host":{
-               "type":"keyword"
-            },
-            "response":{
-               "type":"float"
-            },
-            "service":{
-               "type":"keyword"
-            },
-            "total":{
-               "type":"long"
-            }
-         }
+PUT server-metrics
+{
+  "settings": {
+    "number_of_shards":1,
+    "number_of_replicas":0
+  },
+  "mappings": {  
+    "metric": {  
+      "properties":{  
+        "@timestamp": {  
+          "type":"date"
+        },
+        "accept": {  
+          "type":"long"
+        },
+        "deny": {  
+          "type":"long"
+        },
+        "host": {  
+          "type":"keyword"
+        },
+        "response": {  
+          "type":"float"
+        },
+        "service": { 
+          "type":"keyword"
+        },
+        "total": {  
+          "type":"long"
+        }
       }
-   }
-}'
+    }
+  }  
+}
 ----------------------------------
-// NOTCONSOLE
+// CONSOLE
 
-NOTE: If you run this command (or similar commands in subsequent examples), you 
-must replace `x-pack-test-password` with your actual password. If {security} is 
-not enabled, you can omit the `-u` parameter. 
+To learn more about mappings and data types, see {ref}/mapping.html[Mapping].
 
-You can then use the {es} `bulk` API to load the data set. The
-`upload_server_metrics.sh` script runs commands similar to the following
-example, which loads the four JSON files:
+You can then use the bulk API to load the sample data set. The 
+`upload_server_metrics.sh` script runs commands similar to the following example, 
+which loads the four JSON files:
 
 [source,sh]
 ----------------------------------
@@ -171,19 +166,21 @@ http://localhost:9200/server-metrics/_bulk --data-binary "@server-metrics_4.json
 ----------------------------------
 // NOTCONSOLE
 
-TIP: This will upload 200MB of data. This is split into 4 files as there is a
-maximum 100MB limit when using the `_bulk` API.
+NOTE: If you want to try running these commands, you must specify a valid user 
+ID and password in the `-u` parameter. If {security} is not enabled, you can 
+omit the `-u` parameter.
 
-These commands might take some time to run, depending on the computing resources
-available.
+These commands upload 200MB of data and might take some time to run, depending 
+on the computing resources available.
 
-You can verify that the data was loaded successfully with the following command:
+You can verify that the data was loaded successfully by running the cat indices 
+API:
 
 [source,sh]
 ----------------------------------
-curl 'http://localhost:9200/_cat/indices?v' -u elastic:x-pack-test-password
+GET _cat/indices?v
 ----------------------------------
-// NOTCONSOLE
+// CONSOLE
 
 You should see output similar to the following:
 

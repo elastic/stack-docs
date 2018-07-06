@@ -4,7 +4,7 @@
 == Getting started with security
 
 In this tutorial, you learn how to secure a cluster by configuring users and 
-roles in {es}, {kib}, {ls}, and {metricbeat}. 
+roles and securing communications in {es}, {kib}, {ls}, and {metricbeat}.
 
 [float]
 [[get-started-security-prerequisites]]
@@ -356,3 +356,112 @@ credentials and encrypt connections to {es}.
 
 * {hadoop-ref}/security.html[Configuring {es} for Apache Hadoop to use secured transport]. 
 
+[tls-getting-started]
+=== Secure communications in the cluster
+
+{security} enables you to encrypt traffic to, from, and within your cluster. 
+Connections are secured using Transport Layer Security (TLS), which is
+commonly referred to as "SSL".
+
+[float]
+[[tls-getting-started-prerequisites]]
+=== Before you begin
+
+. Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
+<<get-started-elastic-stack>>.  
+
+. Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
+you are running it from the command line or running it as a service. For example, 
+if you are running {ls} from the command line, you can stop it by entering 
+`Ctrl-C`. See {logstash-ref}/shutdown.html[Shutting down {ls}]. 
+
+. Stop {metricbeat}. For example, enter `Ctrl-C` on the command line where it is 
+running.
+
+. Launch the {kib} web interface by pointing your browser to port 5601. For 
+example, http://127.0.0.1:5601[http://127.0.0.1:5601].
+
+. <<gs-security-license,Install a trial license>>.
+
+. <<gs-security-enabled,Enable security in {es}>>.
+
+. <<gs-built-in-users,Create passwords for built-in users>>.
++
+--
+NOTE: This section of the tutorial does not use the built-in `kibana`, 
+`logstash_system`, and `beats_system` users. To learn more about those users, 
+see <<built-in-users>>.
+
+--
+
+[float]
+[[gs-tls-certificates]]
+=== Generate certificates
+
+Generate a private key and X.509 certificate for each of your {es} nodes. See
+{ref}/configuring-tls.html#node-certificates[Generating Node Certificates].
+
+[float]
+[[gs-tls-elasticsearch]]
+=== Encrypt internode communications  
+
+Configure each node in the cluster to identify itself using its signed
+certificate and enable TLS on the transport layer. You can also optionally
+enable TLS on the HTTP layer. See
+{ref}/configuring-tls.html#tls-transport[Encrypting Communications Between Nodes in a Cluster] and
+{ref}/configuring-tls.html#tls-http[Encrypting HTTP Client Communications].
+
+[float]
+[[gs-tls-kibana]]
+=== Configure TLS in {kib}
+
+Configure {kib} to encrypt communications between the browser and
+the {kib} server and to connect to {es} via HTTPS. See
+{kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
+
+[float]
+[[gs-tls-logstash]]
+=== Configure TLS in {ls}
+
+Configure Logstash to use TLS encryption. See
+{logstash-ref}/ls-security.html[Configuring Security in Logstash].
+
+[float]
+[[gs-tls-beats]]
+=== Configure TLS in {metricbeat}
+
+Configure Beats to use encrypted connections. See <<beats>>.
+
+[float]
+[[gs-tls-nextsteps]]
+=== What's next?
+
+Congratulations! You've successfully encrypted communications in the {stack}.  
+
+Next, you'll want to try other features that are unlocked by your trial license, 
+such as {ml}. See <<ml-getting-started,Getting started with {ml}>>. 
+
+//. Configure {monitoring} to use encrypted connections. See <<secure-monitoring>>.
+//. Configure the Java transport client to use encrypted communications. See <<java-clients>>.
+//. Configure {es} for Apache Hadoop to use secured transport. See {hadoop-ref}/security.html[{es} for Apache Hadoop Security].
+
+For more detailed information about securing the {stack}, see:
+
+* {ref}/configuring-security.html[Configuring security in {es}]. Encrypt 
+inter-node communications, set passwords for the built-in users, and manage your 
+users and roles.  
+
+* {kibana-ref}/using-kibana-with-security.html[Configuring security in {kib}]. 
+Set the authentication credentials in {kib} and encrypt communications between 
+the browser and the {kib} server.
+
+* {logstash-ref}/ls-security.html[Configuring security in Logstash]. Set the 
+authentication credentials for Logstash and encrypt communications between 
+Logstash and {es}. 
+
+* <<beats,Configuring security in the Beats>>. Configure authentication 
+credentials and encrypt connections to {es}. 
+
+* <<java-clients,Configuring the Java transport client to use encrypted communications>>.
+
+* {hadoop-ref}/security.html[Configuring {es} for Apache Hadoop to use secured transport]. 

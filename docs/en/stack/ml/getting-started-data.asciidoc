@@ -96,11 +96,14 @@ for the fields. Mappings divide the documents in the index into logical groups
 and specify a field's characteristics, such as the field's searchability or
 whether or not it's _tokenized_, or broken up into separate words.
 
-The sample data includes an `upload_server-metrics.sh` script, which you can use
+The sample data includes an `upload_server_metrics.sh` script, which you can use
 to create the mappings and load the data set. You can download it by clicking
-here: https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server-metrics.sh[upload_server-metrics.sh]
+here: https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics.sh[upload_server_metrics.sh]
 Before you run it, however, you must edit the USERNAME and PASSWORD variables
 with your actual user ID and password.
+If you do not have {security} enabled, use the 
+https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics_noauth.sh[upload_server_metrics_noauth.sh] 
+script instead. 
 
 The script runs a command similar to the following example, which sets up a
 mapping for the data set:
@@ -144,11 +147,12 @@ http://localhost:9200/server-metrics -d '{
 ----------------------------------
 // NOTCONSOLE
 
-NOTE: If you run this command, you must replace `x-pack-test-password` with your
-actual password.
+NOTE: If you run this command (or similar commands in subsequent examples), you 
+must replace `x-pack-test-password` with your actual password. If {security} is 
+not enabled, you can omit the `-u` parameter. 
 
 You can then use the {es} `bulk` API to load the data set. The
-`upload_server-metrics.sh` script runs commands similar to the following
+`upload_server_metrics.sh` script runs commands similar to the following
 example, which loads the four JSON files:
 
 [source,sh]

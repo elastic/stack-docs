@@ -65,7 +65,10 @@ password.
 {kib} also performs some tasks under the covers that require use of the 
 built-in `kibana` user. 
 
-. If you don't mind having passwords visible in your configuration file, 
+. Configure {kib} to use the built-in `kibana` user and the password that you 
+created:
+
+** If you don't mind having passwords visible in your configuration file, 
 uncomment and update the following settings in the `kibana.yml` file in your 
 {kib} directory:
 +
@@ -87,7 +90,7 @@ Specify the password that you set with the `elasticsearch-setup-passwords`
 command then save your changes to the file. 
 --
 
-. If you prefer not to put your user ID and password in the `kibana.yml` file, 
+** If you prefer not to put your user ID and password in the `kibana.yml` file, 
 store them in a keystore instead. Run the following commands to create the {kib} 
 keystore and add the secure settings:
 +
@@ -236,29 +239,19 @@ If you want to learn more about authorization and roles, see <<authorization>>.
 === Add user information in {ls}
 
 In order for {ls} to send data successfully to {es}, you must configure its 
-authentication credentials in the {ls} configuration file.  For example, update 
-the `demo-metrics-pipeline.conf` file in your {ls} directory:
+authentication credentials in the {ls} configuration file.  
 
+. Configure {ls} to use the `logstash_internal` user and the password that you 
+created:
+
+** If you don't mind having passwords visible in your configuration file, add 
+the following `user` and `password` settings in the `demo-metrics-pipeline.conf` 
+file in your {ls} directory:
++
+--
 [source,ruby]
 ----
-input {
-  beats {
-    port => 5044
-  }
-}
-
-filter {
-  if [system][process] {
-    if [system][process][cmdline] {
-      grok {
-        match => {
-          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
-        }
-        remove_field => "[system][process][cmdline]"
-      }
-    }
-  }
-}
+...
 
 output {
   elasticsearch {
@@ -272,9 +265,13 @@ output {
 ----
 <1> Specify the `logstash_internal` user that you created earlier in this tutorial. 
 <2> Specify the password that you chose for this user ID.
+--
 
-If you prefer not to put your user ID and password in the configuration file, 
-store them in a keystore instead. Run the following commands to create the {ls} 
+** If you prefer not to put your user ID and password in the configuration file, 
+store them in a keystore instead. 
++
+--
+Run the following commands to create the {ls} 
 keystore and add the secure settings:
 
 ["source","sh",subs="attributes,callouts"]
@@ -300,8 +297,8 @@ configuration. To learn more, see
 {logstash-ref}/keystore.html[Secrets keystore for secure settings].
 
 You can now use these `ES_USER` and `ES_PWD` keys in your configuration 
-file.  For example, update the output section of the `demo-metrics-pipeline.conf` 
-file as follows:
+file.  For example, add the `user` and `password` settings in the 
+`demo-metrics-pipeline.conf` file as follows:
 
 [source,ruby]
 ----
@@ -317,8 +314,12 @@ output {
   }
 }
 ----
+--
 
-Start {ls} by using the appropriate method for your environment. For example, to 
+. Start {ls} by using the appropriate method for your environment. 
++
+--
+For example, to 
 run {ls} from a command line, go to the {ls} directory and enter the following 
 command:
 
@@ -329,16 +330,19 @@ command:
 
 To start {ls} as a service, see 
 {logstash-ref}/running-logstash.html[Running {ls} as a service on Debian or RPM].  
+-- 
 
-TIP: If you were connecting directly from {metricbeat} to {es}, you would need 
+. If you were connecting directly from {metricbeat} to {es}, you would need 
 to configure authentication credentials for the {es} output in the {metricbeat} 
 configuration file. In <<get-started-elastic-stack>>, however, you configured 
 {metricbeat} to send the data to {ls} for additional parsing, so no extra 
 settings are required in {metricbeat}. For more information, see 
 {metricbeat-ref}/securing-metricbeat.html[Securing {metricbeat}]. 
 
-Start {metricbeat} by using the appropriate method for your environment. For 
-example, on macOS, run the following command from the {metricbeat} directory:
+. Start {metricbeat} by using the appropriate method for your environment. 
++
+--
+For example, on macOS, run the following command from the {metricbeat} directory:
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
@@ -346,6 +350,7 @@ example, on macOS, run the following command from the {metricbeat} directory:
 ----------------------------------------------------------------------
 
 For more methods, see {metricbeat-ref}/metricbeat-starting.html[Starting {metricbeat}].
+--
 
 Wait a few minutes for new data to be sent from {metricbeat} to {ls} and {es}. 
 

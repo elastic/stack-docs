@@ -30,7 +30,7 @@ services have unusual patterns.
 
 To create a multi-metric job in {kib}:
 
-. Open {kib} in your web browser and log in. If you are running {kib} locally,
+. Open {kib} in your web browser. If you are running {kib} locally,
 go to `http://localhost:5601/`.
 
 . Click **Machine Learning** in the side navigation, then click **Create new job**.
@@ -102,9 +102,6 @@ do not need more than three. If you pick many influencers, the results can be
 overwhelming and there is a small overhead to the analysis.
 
 ========================
-//TBD: Is this something you can determine later from looking at results and
-//update your job with if necessary? Is it all post-processing or does it affect
-//the ongoing modeling?
 --
 
 . Click **Use full server-metrics* data**. Two graphs are generated for each
@@ -126,10 +123,12 @@ When the job is created, you can choose to view the results, continue the job in
 real-time, and create a watch. In this tutorial, we will proceed to view the
 results.
 
-TIP: The `create_multi_metic.sh` script creates a similar job and {dfeed} by
+TIP: The `create_multi_metric.sh` script creates a similar job and {dfeed} by
 using the {ml} APIs. You can download that script by clicking
-here: https://download.elastic.co/demos/machine_learning/gettingstarted/create_multi_metric.sh[create_multi_metric.sh]
-For API reference information, see {ref}/ml-apis.html[Machine Learning APIs].
+here: https://download.elastic.co/demos/machine_learning/gettingstarted/create_multi_metric.sh[create_multi_metric.sh] Before you run it, you must edit the USERNAME and PASSWORD variables
+with your actual user ID and password. If {security} is not enabled, use the 
+https://download.elastic.co/demos/machine_learning/gettingstarted/create_multi_metric_noauth.sh[create_multi_metric_noauth.sh] 
+script instead. For API reference information, see {ref}/ml-apis.html[Machine Learning APIs].
 
 [[ml-gs-job2-analyze]]
 === Exploring Multi-metric Job Results

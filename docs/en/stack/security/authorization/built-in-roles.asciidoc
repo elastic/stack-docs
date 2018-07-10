@@ -15,7 +15,8 @@ Grants access necessary for the APM system user to send system-level data
 (such as monitoring) to {es}.
 
 [[built-in-roles-beats-admin]] `beats_admin` ::
-Grants access to the `.management-beats` index for managing configurations.
+Grants access to the `.management-beats` index, which contains configuration 
+information for the Beats.
 
 [[built-in-roles-beats-system]] `beats_system` ::
 Grants access necessary for the Beats system user to send system-level data
@@ -73,7 +74,6 @@ change between releases.
 * This role does not provide access to the logstash indices and is not
 suitable for use within a Logstash pipeline.
 ===============================
---
 
 [[built-in-roles-ml-admin]] `machine_learning_admin`::
 Grants `manage_ml` cluster privileges and read access to the `.ml-*` indices.

@@ -14,6 +14,9 @@ to users. These roles have a fixed set of privileges and cannot be updated.
 Grants access necessary for the APM system user to send system-level data
 (such as monitoring) to {es}.
 
+[[built-in-roles-beats-admin]] `beats_admin` ::
+Grants access to the `.management-beats` index for managing configurations.
+
 [[built-in-roles-beats-system]] `beats_system` ::
 Grants access necessary for the Beats system user to send system-level data
 (such as monitoring) to {es}.
@@ -26,7 +29,6 @@ change between releases.
 * This role does not provide access to the beats indices and is not
 suitable for writing beats output to {es}.
 ===============================
-
 --
 
 [[built-in-roles-ingest-user]] `ingest_admin` ::

@@ -16,8 +16,8 @@ search and visualize the data by using {kib}. After you get the basic setup
 working, you add {ls} for additional parsing.
 
 To get started, you can install the {stack} on a single VM or even on your
-laptop. 
- 
+laptop.
+
 IMPORTANT: Implementing security is a critical step in setting up the {stack}.
 To get up and running quickly with a sample installation, you skip those steps
 right now. Before sending sensitive data across the network, make sure you
@@ -44,6 +44,11 @@ https://www.elastic.co/products/elasticsearch[{es}] is a real-time,
 distributed storage, search, and analytics engine. It can be used for many
 purposes, but one context where it excels is indexing streams of semi-structured
 data, such as logs or decoded network packets.
+
+Elasticsearch can be run on your own hardware or using our hosted
+Elasticsearch Service on https://www.elastic.co/cloud[Elastic Cloud], which is
+available on AWS and GCP. You can
+https://www.elastic.co/cloud/elasticsearch-service/signup[try out the hosted service] for free.
 
 To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
@@ -195,7 +200,10 @@ view, and interact with data stored in {es} indices. You can easily perform
 advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
 
-To get started, we recommend that you install {kib} on the same server as {es},
+If you are running our hosted Elasticsearch Service on https://www.elastic.co/cloud[Elastic Cloud],
+then Kibana can be enabled with the https://www.elastic.co/guide/en/cloud/current/ec-enable-kibana.html[flick of a switch].
+
+Otherwise, we recommend that you install {kib} on the same server as {es},
 but it is not required. If you install the products on different servers, you'll
 need to change the URL (IP:PORT) of the {es} server in the {kib} configuration
 file, `config/kibana.yml`, before starting {kib}.
@@ -420,7 +428,7 @@ https://www.elastic.co/downloads/beats[{beats} download] page.
 
 {metricbeat} provides pre-built modules that you can use to rapidly implement
 and deploy a system monitoring solution, complete with sample dashboards and
-data visualizations, in about 5 minutes. 
+data visualizations, in about 5 minutes.
 
 In this section, you learn how to run the `system` module to collect metrics
 from the operating system and services running on your server. The system module
@@ -507,7 +515,7 @@ PS C:\Program Files\Metricbeat> Start-Service metricbeat
 ----
 
 
-{metricbeat} runs and starts sending system metrics to {es}. 
+{metricbeat} runs and starts sending system metrics to {es}.
 
 [float]
 [[visualize-system-metrics]]
@@ -614,7 +622,7 @@ https://www.elastic.co/downloads/logstash[{ls} download] page.
 
 . Extract the contents of the zip file to a directory on your computer, for
 example, `C:\Program Files`. Use a short path (fewer than 30 characters) to
-avoid running into file path length limitations on Windows. 
+avoid running into file path length limitations on Windows.
 
 endif::[]
 
@@ -634,8 +642,8 @@ that listens for {beats} input and sends the received events to the {es} output.
 
 To configure {ls}:
 
-. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf`. 
-If you installed {ls} as a deb or rpm package, create the file in the {ls} 
+. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf`.
+If you installed {ls} as a deb or rpm package, create the file in the {ls}
 `config` directory. The file must contain:
 +
 --
@@ -672,7 +680,7 @@ output {
 +
 When you start {ls} with this pipeline configuration, {beats} events are routed
 through {ls}, where you have full access to {ls} capabilities for collecting,
-enriching, and transforming data. 
+enriching, and transforming data.
 
 [float]
 ==== Start {ls}
@@ -708,10 +716,10 @@ sudo service logstash start
 bin\logstash.bat -f demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
-TIP: If you receive JVM error messages, check your Java version as shown in 
+TIP: If you receive JVM error messages, check your Java version as shown in
 {logstash-ref}/installing-logstash.html[Installing {ls}].
 
-{ls} starts listening for events from the {beats} input. Next you need to 
+{ls} starts listening for events from the {beats} input. Next you need to
 configure {metricbeat} to send events to {ls}.
 
 [float]
@@ -722,7 +730,7 @@ configure {metricbeat} to send events to {ls}.
 the {metricbeat} install directory, or `/etc/metricbeat` for rpm and deb.
 
 Disable the `output.elasticsearch` section by commenting it out, then enable
-the `output.logstash` section by uncommenting it: 
+the `output.logstash` section by uncommenting it:
 
 [source,yaml]
 ----
@@ -774,7 +782,7 @@ documentation.
 
 To extract the path, add the following Grok filter between the input and output
 sections in the {ls} config file that you created earlier:
- 
+
 [source,ruby]
 ----
 filter {

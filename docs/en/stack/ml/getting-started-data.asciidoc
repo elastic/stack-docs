@@ -46,10 +46,10 @@ is a problem or that resources need to be redistributed. By using the {xpack}
 {ml} features to model the behavior of this data, it is easier to identify
 anomalies and take appropriate action.
 
-Download this sample data by clicking here:
+Download the sample data and scripts by clicking here:
 https://download.elastic.co/demos/machine_learning/gettingstarted/server_metrics.tar.gz[server_metrics.tar.gz]
 
-Use the following commands to extract the files:
+Use the following command to extract the files:
 
 [source,sh]
 ----------------------------------
@@ -96,13 +96,13 @@ for the fields. Mappings divide the documents in the index into logical groups
 and specify a field's characteristics, such as the field's searchability or
 whether or not it's _tokenized_, or broken up into separate words.
 
-You can use scripts to create the mappings and load the data set. Download  https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics.sh[upload_server_metrics.sh] to the directory where you extracted the sample data. 
-Before you run it, however, you must edit the USERNAME and PASSWORD variables
-with your actual user ID and password. If {security} is not enabled, use the 
-https://download.elastic.co/demos/machine_learning/gettingstarted/upload_server_metrics_noauth.sh[upload_server_metrics_noauth.sh] 
-script instead. 
+You can use scripts to create the mappings and load the data set. If {security} 
+is enabled, use the `upload_server_metrics.sh` script. Before you run it, 
+however, you must edit the USERNAME and PASSWORD variables with your actual user 
+ID and password. If {security} is not enabled, use the 
+`upload_server_metrics_noauth.sh` script instead. 
 
-The script runs a `curl` command that makes the following create index API 
+The scripts run a `curl` command that makes the following create index API 
 request:
 
 [source,sh]
@@ -146,31 +146,17 @@ PUT server-metrics
 
 To learn more about mappings and data types, see {ref}/mapping.html[Mapping].
 
-You can then use the bulk API to load the sample data set. The 
-`upload_server_metrics.sh` script runs commands similar to the following example, 
-which loads the four JSON files:
+You can then use the bulk API to load the sample data set. The scripts run 
+commands similar to the following example:
 
 [source,sh]
 ----------------------------------
-curl -u elastic:x-pack-test-password -X POST -H "Content-Type: application/json"
+curl -X POST -H "Content-Type: application/json"
 http://localhost:9200/server-metrics/_bulk --data-binary "@server-metrics_1.json"
-
-curl -u elastic:x-pack-test-password -X POST -H "Content-Type: application/json"
-http://localhost:9200/server-metrics/_bulk --data-binary "@server-metrics_2.json"
-
-curl -u elastic:x-pack-test-password -X POST -H "Content-Type: application/json"
-http://localhost:9200/server-metrics/_bulk --data-binary "@server-metrics_3.json"
-
-curl -u elastic:x-pack-test-password -X POST -H "Content-Type: application/json"
-http://localhost:9200/server-metrics/_bulk --data-binary "@server-metrics_4.json"
 ----------------------------------
 // NOTCONSOLE
 
-NOTE: If you want to try running these commands, you must specify a valid user 
-ID and password in the `-u` parameter. If {security} is not enabled, you can 
-omit the `-u` parameter.
-
-These commands upload 200MB of data and might take some time to run, depending 
+There are twenty data files. The commands might take some time to run, depending 
 on the computing resources available.
 
 You can verify that the data was loaded successfully by running the cat indices 

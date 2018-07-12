@@ -119,9 +119,12 @@ or 6.0-6.2. {xpack} Basic features are operational once the cluster is fully
 upgraded. If you are already using {xpack}, your settings are preserved when
 you upgrade.
 
-If you are using {xpack} for the first time, you must explicitly enable data
-collection after the upgrade to use monitoring. Set
-`xpack.monitoring.collection.enabled` to `true` with the `_cluster/settings`
+IMPORTANT: If you use {xpack} you must explicitly remove the old {xpack} plugin
+before restarting: `bin/elasticsearch-plugin remove x-pack`. The node will fail
+to start if the {xpack} plugin is present.
+
+You must explicitly enable data collection after the upgrade to use monitoring.
+Set `xpack.monitoring.collection.enabled` to `true` with the `_cluster/settings`
 API:
 
 [source,json]

@@ -584,6 +584,7 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 
 
 
+
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">postrender['radiobutton-reveal'] = function (content) {
 	var reveal = content.querySelector('#reveal');
 
@@ -603,6 +604,7 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 			});
 	}
 };
+
 
 
 
@@ -829,14 +831,12 @@ Do you have TLS enabled?
 &lt;span class=&quot;pseudo-link&quot;&gt;Stop sending data to your cluster.&lt;/span&gt;
 [[Shut down your cluster and install Elasticsearch 6.3 on all nodes.|https://www.elastic.co/guide/en/elasticsearch/reference/6.3/restart-upgrade.html]]
 &lt;&lt;if $xpack&gt;&gt;\
-&lt;span class=&quot;pseudo-link&quot;&gt;Use bin/elasticsearch-plugin remove to uninstall the old X-Pack plugin before restarting Elasticsearch.&lt;/span&gt;
-&lt;span class=&quot;list-indent&quot;&gt;X-Pack is installed automatically with the default Elasticsearch 6.3 distribution.&lt;/span&gt;
+&lt;span class=&quot;pseudo-link&quot;&gt;Remove the X-Pack plugin before restarting Elasticsearch.&lt;/span&gt;
+&lt;span class=&quot;list-indent&quot;&gt;Run bin/elasticsearch-plugin remove x-pack.&lt;/span&gt;\
 &lt;&lt;endif&gt;&gt;\
 &lt;&lt;if $xpack_monitoring&gt;&gt;\
-&lt;span class=&quot;pseudo-link&quot;&gt;Explicitly enable data collection to use monitoring.&lt;/span&gt;
-&lt;span class=&quot;list-indent&quot;&gt;Set xpack.monitoring.collection.enabled to true with the _cluster/settings API.&lt;/span&gt;
-&lt;&lt;endif&gt;&gt;\
-&lt;span class=&quot;list-indent&quot;&gt;X-Pack is installed automatically with the default Elasticsearch 6.3 distribution.&lt;/span&gt;
+&lt;span class=&quot;pseudo-link&quot;&gt;Explicitly enable data collection to use monitoring.&lt;/span&gt;\
+&lt;span class=&quot;list-indent&quot;&gt;Set xpack.monitoring.collection.enabled to true with the _cluster/settings API.&lt;/span&gt;\
 &lt;&lt;endif&gt;&gt;\
 &lt;&lt;include enable-tls&gt;&gt;\
 &lt;span class=&quot;pseudo-link&quot;&gt;Restart your Elasticsearch cluster&lt;/span&gt;.

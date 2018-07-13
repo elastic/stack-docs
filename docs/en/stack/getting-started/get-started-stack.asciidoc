@@ -45,10 +45,13 @@ distributed storage, search, and analytics engine. It can be used for many
 purposes, but one context where it excels is indexing streams of semi-structured
 data, such as logs or decoded network packets.
 
+[TIP]
+==========
 Elasticsearch can be run on your own hardware or using our hosted
 Elasticsearch Service on https://www.elastic.co/cloud[Elastic Cloud], which is
 available on AWS and GCP. You can
 https://www.elastic.co/cloud/elasticsearch-service/signup[try out the hosted service] for free.
+==========
 
 To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
@@ -200,10 +203,13 @@ view, and interact with data stored in {es} indices. You can easily perform
 advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
 
+[TIP]
+==========
 If you are running our hosted Elasticsearch Service on https://www.elastic.co/cloud[Elastic Cloud],
-then Kibana can be enabled with the https://www.elastic.co/guide/en/cloud/current/ec-enable-kibana.html[flick of a switch].
+then {cloud}/ec-enable-kibana.html[Kibana can be enabled] with the flick of a switch.
+==========
 
-Otherwise, we recommend that you install {kib} on the same server as {es},
+We recommend that you install {kib} on the same server as {es},
 but it is not required. If you install the products on different servers, you'll
 need to change the URL (IP:PORT) of the {es} server in the {kib} configuration
 file, `config/kibana.yml`, before starting {kib}.

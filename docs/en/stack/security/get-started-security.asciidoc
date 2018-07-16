@@ -360,8 +360,13 @@ credentials and encrypt connections to {es}.
 === Secure communications in the cluster
 
 {security} enables you to encrypt traffic to, from, and within your cluster. 
-Connections are secured using Transport Layer Security (TLS), which is
-commonly referred to as "SSL".
+The {stack} uses Transport Layer Security (TLS/SSL) to:
+. Ensure only authorized nodes can join an {es} cluster.
+. Secure encrypted communications between:
+** {es} nodes
+** Clients and the {es} cluster
+** User web browsers and {kib}
+** Beats and {ls}
 
 [float]
 [[tls-getting-started-prerequisites]]
@@ -394,45 +399,187 @@ see <<built-in-users>>.
 
 --
 
-[float]
-[[gs-tls-certificates]]
-=== Generate certificates
+In a secured cluster, {es} nodes, {kib} instances, {ls} hosts, and Beats use 
+certificates to identify themselves when accepting incoming connections and 
+connecting to other services. 
 
-Generate a private key and X.509 certificate for each of your {es} nodes. See
+The cluster must validate the authenticity of these certificates. The 
+recommended approach is to trust a specific certificate authority (CA). Thus 
+when nodes are added to your cluster they just need to use a certificate signed 
+by the same CA and the node is automatically allowed to join the cluster. 
+
+. Pick a verification mode for the certificates. By default, {es} verifies that 
+the certificate is signed by a trusted CA and also verifies that the server's 
+hostname or IP address matches the names specified within the certificate. If 
+you don't want the hostname verification to occur, add the following setting to 
+the `ES_PATH_CONF/elasticsearch.yml` file:
++
+--
+[source,yaml]
+----
+xpack.ssl.verification_mode: certificate
+----
+
+For more information about this setting, see 
+{ref}/security-settings.html[Security settings in {es}]. 
+--
+
+. Generate a certificate authority. For example, use the `elasticsearch-certutil` 
+tool by running the following command from the {es} directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin/elasticsearch-certutil ca
+----------------------------------------------------------------------
+// NOTCONSOLE
+
+By default, the command outputs a single file with the name 
+`elastic-stack-ca.p12`. This file is a PKCS#12 keystore that contains the public
+certificate for your CA and the private key that is used to sign the node 
+certificates.
+
+The `elasticsearch-certutil` command also prompts you for a password to protect 
+the file and key. If you plan to add more nodes to your cluster in the future, 
+retain a copy of the file and remember its password.
+
+Alternatively, you can use a commercial or organization-specific CA, though that 
+scenario is not covered in this tutorial. See the `csr` option in the {ref}/certutil.html[elasticsearch-certutil] command. 
+--
+
+. Generate a certificate and private key for each node in your cluster. In this 
+tutorial, we are only using a single node cluster, 
+// TBD: Is this step even need in a single-node cluster?
+so run the following command once from your {es} directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 \
+--dns <domain_name> <1> --ip <ip_addresses> <2> --name <file_name> <3>
+----------------------------------------------------------------------
+// NOTCONSOLE
+<1> A comma-separated list of DNS names for your {es} node.
+<2> A comma-separated list of IP addresses for your {es} node.
+<3> A unique name for the certificate.
+
+If you chose not to do hostname verification, you can omit the `--dns`, `--ip`, 
+and `--name` parameters. In that case, the certificate does not have hostname 
+information in it and you can use the same certificate for every node in your 
+cluster.
+
+This command prompts you for a password. You can enter a password for your 
+certificate and key, or you can leave the password blank by pressing *Enter*.
+
+The output from this command is a single PKCS#12 keystore that includes a node certificate, node key, and CA certificate. You can alternatively generate 
+Privacy Enhanced Mail (PEM) formatted certificates and keys, though that option 
+is not covered in this tutorial. 
+--
+
+. Copy the node certificate to the {es} configuration directory. For example, 
+copy the `.p12` file that you created in the previous step into a `certs` folder 
+in the {es} `config` directory. 
+
+For more information, see 
 {ref}/configuring-tls.html#node-certificates[Generating Node Certificates].
 
-[float]
+In subsequent steps, we will copy these certificates to the appropriate location 
+for each product in the {stack} and specify the location of the certificates and 
+private keys in the {es}, {kib}, {ls}, and Beats configuration files. The 
+passphrases for the private keys are stored in each product’s secure keystore.
+
 [[gs-tls-elasticsearch]]
 === Encrypt internode communications  
 
-Configure each node in the cluster to identify itself using its signed
-certificate and enable TLS on the transport layer. You can also optionally
-enable TLS on the HTTP layer. See
-{ref}/configuring-tls.html#tls-transport[Encrypting Communications Between Nodes in a Cluster] and
-{ref}/configuring-tls.html#tls-http[Encrypting HTTP Client Communications].
+In this tutorial, we are only using a single node cluster, but if you plan to 
+add more nodes, you must ensure that communication between those nodes will be 
+encrypted. 
 
-[float]
+Perform the following steps on each node in the cluster:
+
+. Stop {es}. For example, if you installed {es} from an archive distribution, 
+enter `Ctrl-C` on the command line. See 
+{ref}/stopping-elasticsearch.html[Stopping {es}].
+
+. Enable TLS in the {es} configuration file. For example, add the following 
+setting in the `ES_PATH_CONF/elasticsearch.yml` file:
++
+--
+[source,yaml]
+----
+xpack.security.transport.ssl.enabled: true  
+----
+--    
+
+. Configure each node in the cluster to identify itself using its signed
+certificate. For example, add the following 
+settings in the `ES_PATH_CONF/elasticsearch.yml` file, using the file and path 
+names that you created in previous steps:
++
+--
+[source,yaml]
+----
+xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12 
+xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12 
+----
+
+NOTE: The PKCS#12 keystore that is output by the `elasticsearch-certutil` 
+command includes a CA certificate as a trusted certificate entry, thus the 
+keystore can also be used as a truststore. If you use other tools to manage and 
+generate your certificates, you might have different values for these settings. 
+
+--    
+
+. If you specified a password when you ran the `elasticsearch-certutil cert` 
+command, add that password to the {es} keystore.  For example: 
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
+----------------------------------------------------------------------
+--
+
+. Restart {es}. For example, if you installed {es} with a `.tar.gz` package, run 
+the following command from the {es} directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+See {ref}/starting-elasticsearch.html[Starting {es}].  
+--
+
+When TLS is enabled on an {es} cluster, {kib}, {ls}, and Beats must communicate 
+with the cluster over HTTPS and provide authentication credentials. 
+
+////
+You can also optionally enable TLS on the HTTP layer to ensure that 
+communication between the HTTP clients and the cluster is encrypted. See 
+{ref}/configuring-tls.html#tls-http[Encrypting HTTP client communications].
+////
+
 [[gs-tls-kibana]]
 === Configure TLS in {kib}
 
-Configure {kib} to encrypt communications between the browser and
-the {kib} server and to connect to {es} via HTTPS. See
+Configure {kib} to encrypt communications between the browser and the {kib} 
+server and to connect to {es} via HTTPS. See
 {kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
 
-[float]
 [[gs-tls-logstash]]
 === Configure TLS in {ls}
 
 Configure Logstash to use TLS encryption. See
 {logstash-ref}/ls-security.html[Configuring Security in Logstash].
 
-[float]
 [[gs-tls-beats]]
 === Configure TLS in {metricbeat}
 
 Configure Beats to use encrypted connections. See <<beats>>.
 
-[float]
 [[gs-tls-nextsteps]]
 === What's next?
 

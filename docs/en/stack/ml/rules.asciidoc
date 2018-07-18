@@ -1,0 +1,38 @@
+[role="xpack"]
+[[ml-rules]]
+=== Machine learning rules and filters
+++++
+<titleabbrev>Rules and filters</titleabbrev>
+++++
+
+By default, as described in <<ml-analyzing>>, anomaly detection is unsupervised 
+and the {ml} models have no awareness of the domain or your data. As a result, 
+{ml} jobs might identify events that are statistically significant but are 
+uninteresting when you know the larger context. Machine learning rules and 
+filters enable you to customize anomaly detection. 
+
+//TBD: Describe ml filters
+
+_Rules_ instruct anomaly detectors to change their behavior based on domain-specific 
+knowledge that you provide. As a result, the {ml} results are more closely 
+aligned with your use case.  
+
+For example, an anomaly detector that is analyzing the median values for CPU 
+usage might identify anomalies where the CPU usage is very small and 
+statistically anomalous for a specific machine. If you're only interested in 
+high CPU usage, you could add a rule that instructs the detector to skip results 
+related to low CPU usage.
+
+////
+Another use case might be in a {ml} job where you are analyzing website traffic. 
+If you were aware that traffic from certain IP addresses was safe, you could 
+create a rule that skips 
+
+If you were analyzing traffic by IP address, you  IP addresses that are known to be safe. Similarly, a rule can
+instruct the detector to skip results when the IP is in a safe list. Such safe
+lists can be created using `filters` and they can be shared among rules for different jobs.
+////
+
+WARNING: Careless use of rules may result in degrading the quality of the results.
+
+//TO-DO: Describe how ml filtering differs from search filters.

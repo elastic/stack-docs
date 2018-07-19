@@ -17,8 +17,8 @@ NOTE: This role does *not* provide the ability to create indices; those privileg
 must be defined in a separate role.
 
 [[built-in-roles-kibana-dashboard]] `kibana_dashboard_only_user` ::
-Grants access to the {kib} Dashboard and read-only permissions on the `.kibana`
-index. This role does not have access to editing tools in {kib}. For more
+Grants access to the {kib} Dashboard and the `read` {kibana-ref}/kibana-privileges.html[Kibana privilege].
+This role does not have access to editing tools in {kib}. For more
 information, see
 {kibana-ref}/xpack-dashboard-only-mode.html[{kib} Dashboard Only Mode].
 
@@ -33,8 +33,8 @@ NOTE: This role should not be assigned to users as the granted permissions may
 change between releases.
 
 [[built-in-roles-kibana-user]] `kibana_user`::
-Grants the minimum privileges required for any user of {kib}. This role grants
-access to the {kib} indices and grants  monitoring privileges for the cluster.
+Grants the privileges required for users of {kib}. This role grants the `all` 
+{kibana-ref}/kibana-privileges.html[Kibana privilege] and grants monitoring privileges for the cluster.
 
 [[built-in-roles-logstash-admin]] `logstash_admin` ::
 Grants access to the `.logstash*` indices for managing configurations.

@@ -6,33 +6,34 @@
 ++++
 
 By default, as described in <<ml-analyzing>>, anomaly detection is unsupervised 
-and the {ml} models have no awareness of the domain or your data. As a result, 
+and the {ml} models have no awareness of the domain of your data. As a result, 
 {ml} jobs might identify events that are statistically significant but are 
-uninteresting when you know the larger context. Machine learning rules and 
-filters enable you to customize anomaly detection. 
+uninteresting when you know the larger context. Machine learning rules enable 
+you to customize anomaly detection. 
 
-//TBD: Describe ml filters
+_Rules_ instruct anomaly detectors to change their behavior based on 
+domain-specific knowledge that you provide. When you create a rule, you can  
+specify conditions, scope, and actions. By default, the scope of a rule is 
+unlimited and you must specify at least one condition. When the conditions of a 
+rule are satisfied, its action is triggered. 
 
-_Rules_ instruct anomaly detectors to change their behavior based on domain-specific 
-knowledge that you provide. As a result, the {ml} results are more closely 
-aligned with your use case.  
+For example, if you have an anomaly detector that is analyzing CPU usage, you 
+might decide you are only interested in abnormally high usage. You can define a 
+rule with conditions and actions that instruct the detector to refrain from 
+generating {ml} results when there are anomalous events related to low CPU 
+usage. You might also decide to add a scope for the rule, such that it applies 
+only to certain machines. The scope is defined by using {ml} filters. 
 
-For example, an anomaly detector that is analyzing the median values for CPU 
-usage might identify anomalies where the CPU usage is very small and 
-statistically anomalous for a specific machine. If you're only interested in 
-high CPU usage, you could add a rule that instructs the detector to skip results 
-related to low CPU usage.
+_Filters_ contain a list of values that you can use to include or exclude events 
+from the {ml} analysis. You can use the same filter in multiple jobs. 
 
-////
-Another use case might be in a {ml} job where you are analyzing website traffic. 
-If you were aware that traffic from certain IP addresses was safe, you could 
-create a rule that skips 
+If you are analyzing web traffic, you might create a filter that contains a list 
+of IP addresses. For example, maybe they are IP addresses that you trust to 
+upload data to your website or to send large amounts of data from behind your 
+firewall. You can define the scope of a rule such that it triggers only when a 
+specific field in your data matches one of the values in the filter. 
+Alternatively, you can make it trigger only when the field value does not match 
+one of the filter values. You therefore have much greater control over which 
+anomalous events affect the {ml} model and appear in the {ml} results. 
 
-If you were analyzing traffic by IP address, you  IP addresses that are known to be safe. Similarly, a rule can
-instruct the detector to skip results when the IP is in a safe list. Such safe
-lists can be created using `filters` and they can be shared among rules for different jobs.
-////
-
-WARNING: Careless use of rules may result in degrading the quality of the results.
-
-//TO-DO: Describe how ml filtering differs from search filters.
+//TO-DO: Add link to more information about defining rules.

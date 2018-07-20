@@ -583,6 +583,8 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 
 
 
+
+
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">postrender['radiobutton-reveal'] = function (content) {
 	var reveal = content.querySelector('#reveal');
 
@@ -602,6 +604,8 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 			});
 	}
 };
+
+
 
 
 
@@ -820,13 +824,20 @@ Do you have TLS enabled?
 &lt;&lt;endif&gt;&gt;\
 &lt;span class=&quot;pseudo-link&quot;&gt;Restart the node.&lt;/span&gt;
 &lt;/span&gt;\
-&lt;&lt;include components-56&gt;&gt;\</tw-passagedata><tw-passagedata pid="10" name="fcr-upgrade-60" tags="" position="1401,647">!!!Perform a Full Cluster Restart Upgrade to 6.3
+&lt;&lt;include components-56&gt;&gt;\</tw-passagedata><tw-passagedata pid="10" name="fcr-upgrade-60" tags="" position="1400,647">!!!Perform a Full Cluster Restart Upgrade to 6.3
 &lt;&lt;if $xpack_ml&gt;&gt;\
 [[Stop any running Machine Learning jobs.|https://www.elastic.co/guide/en/x-pack/current/stopping-ml.html]]
 &lt;&lt;endif&gt;&gt;\
 &lt;span class=&quot;pseudo-link&quot;&gt;Stop sending data to your cluster.&lt;/span&gt;
 [[Shut down your cluster and install Elasticsearch 6.3 on all nodes.|https://www.elastic.co/guide/en/elasticsearch/reference/6.3/restart-upgrade.html]]
-&lt;span class=&quot;list-indent&quot;&gt;X-Pack is installed automatically with the default Elasticsearch 6.3 distribution.&lt;/span&gt;
+&lt;&lt;if $xpack&gt;&gt;\
+&lt;span class=&quot;pseudo-link&quot;&gt;Remove the X-Pack plugin before restarting Elasticsearch.&lt;/span&gt;
+&lt;span class=&quot;list-indent&quot;&gt;Run bin/elasticsearch-plugin remove x-pack.&lt;/span&gt;\
+&lt;&lt;endif&gt;&gt;\
+&lt;&lt;if $xpack_monitoring&gt;&gt;\
+&lt;span class=&quot;pseudo-link&quot;&gt;Explicitly enable data collection to use monitoring.&lt;/span&gt;\
+&lt;span class=&quot;list-indent&quot;&gt;Set xpack.monitoring.collection.enabled to true with the _cluster/settings API.&lt;/span&gt;\
+&lt;&lt;endif&gt;&gt;\
 &lt;&lt;include enable-tls&gt;&gt;\
 &lt;span class=&quot;pseudo-link&quot;&gt;Restart your Elasticsearch cluster&lt;/span&gt;.
 &lt;&lt;include components-60&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="components-56" tags="" position="1533,221">&lt;&lt;if $kibana&gt;&gt;\
@@ -848,7 +859,7 @@ Do you have TLS enabled?
 &lt;&lt;endif&gt;&gt;\
 &lt;&lt;if $hadoop &amp;&amp; $upgrade_56 == &quot;rolling&quot;&gt;&gt;\
 [[Upgrade Elasticsearch for Hadoop to 5.6.|https://www.elastic.co/guide/en/elasticsearch/hadoop/5.6/install.html]]\
-&lt;&lt;endif&gt;&gt;\</tw-passagedata><tw-passagedata pid="12" name="rolling-upgrade-60" tags="" position="1400,476">!!!Upgrade to 6.3
+&lt;&lt;endif&gt;&gt;\</tw-passagedata><tw-passagedata pid="12" name="rolling-upgrade-60" tags="" position="1401,476">!!!Upgrade to 6.3
 &lt;&lt;if $xpack_ml&gt;&gt;\
 [[Stop any running Machine Learning jobs.|https://www.elastic.co/guide/en/elastic-stack-overview/6.3/stopping-ml.html]]
 &lt;&lt;endif&gt;&gt;\
@@ -858,6 +869,14 @@ Do you have TLS enabled?
 &lt;&lt;endif&gt;&gt;\
 [[Upgrade Elasticsearch to 6.3.|https://www.elastic.co/guide/en/elasticsearch/reference/6.3/rolling-upgrades.html]]
 &lt;span class=&quot;list-indent&quot;&gt;You can perform a rolling upgrade to Elasticsearch 6.3.&lt;/span&gt;\
+&lt;&lt;if $xpack&gt;&gt;\
+&lt;span class=&quot;pseudo-link&quot;&gt;Remove the X-Pack plugin before restarting Elasticsearch.&lt;/span&gt;
+&lt;span class=&quot;list-indent&quot;&gt;Run bin/elasticsearch-plugin remove x-pack.&lt;/span&gt;\
+&lt;&lt;endif&gt;&gt;\
+&lt;&lt;if $xpack_monitoring&gt;&gt;\
+&lt;span class=&quot;pseudo-link&quot;&gt;Explicitly enable data collection to use monitoring.&lt;/span&gt;\
+&lt;span class=&quot;list-indent&quot;&gt;Set xpack.monitoring.collection.enabled to true with the _cluster/settings API.&lt;/span&gt;\
+&lt;&lt;endif&gt;&gt;\
 &lt;&lt;if $upgrade_63 == &quot;rolling&quot;&gt;&gt;\
 &lt;&lt;include &quot;components-63&quot;&gt;&gt;\
 &lt;&lt;else&gt;&gt;\
@@ -909,9 +928,6 @@ Do you have TLS enabled?
 &lt;&lt;if $logstash&gt;&gt;\
 [[Upgrade Logstash to 6.3.|https://www.elastic.co/guide/en/logstash/5.6/upgrading-logstash.html]]
 &lt;span class=&quot;list-indent&quot;&gt;You can run Logstash 5.6 with Elasticsearch 6.3 until it&#x27;s convenient to upgrade.&lt;/span&gt;\
-&lt;&lt;if $xpack&gt;&gt;\
-[[Install X-Pack into Logstash.|https://www.elastic.co/guide/en/logstash/5.6/installing-xpack-log.html]]
-&lt;&lt;endif&gt;&gt;\
 &lt;&lt;endif&gt;&gt;\
 &lt;&lt;if $beats&gt;&gt;\
 [[Upgrade each beat to 6.3.|https://www.elastic.co/guide/en/beats/libbeat/6.3/upgrading-5-to-6.html#upgrading-to-5.6]]

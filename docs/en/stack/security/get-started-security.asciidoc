@@ -399,6 +399,10 @@ see <<built-in-users>>.
 
 --
 
+[float]
+[[gs-tls-certificates]]
+=== Generate certificates
+
 In a secured cluster, {es} nodes, {kib} instances, {ls} hosts, and Beats use 
 certificates to identify themselves when accepting incoming connections and 
 connecting to other services. 
@@ -488,6 +492,7 @@ for each product in the {stack} and specify the location of the certificates and
 private keys in the {es}, {kib}, {ls}, and Beats configuration files. The 
 passphrases for the private keys are stored in each product’s secure keystore.
 
+[float]
 [[gs-tls-elasticsearch]]
 === Encrypt internode communications  
 
@@ -562,6 +567,7 @@ communication between the HTTP clients and the cluster is encrypted. See
 {ref}/configuring-tls.html#tls-http[Encrypting HTTP client communications].
 ////
 
+[float]
 [[gs-tls-kibana]]
 === Configure TLS in {kib}
 
@@ -569,17 +575,20 @@ Configure {kib} to encrypt communications between the browser and the {kib}
 server and to connect to {es} via HTTPS. See
 {kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
 
+[float]
 [[gs-tls-logstash]]
 === Configure TLS in {ls}
 
 Configure Logstash to use TLS encryption. See
 {logstash-ref}/ls-security.html[Configuring Security in Logstash].
 
+[float]
 [[gs-tls-beats]]
 === Configure TLS in {metricbeat}
 
 Configure Beats to use encrypted connections. See <<beats>>.
 
+[float]
 [[gs-tls-nextsteps]]
 === What's next?
 

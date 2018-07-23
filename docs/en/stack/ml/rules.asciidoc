@@ -13,16 +13,16 @@ you to customize anomaly detection.
 
 _Rules_ instruct anomaly detectors to change their behavior based on 
 domain-specific knowledge that you provide. When you create a rule, you can  
-specify conditions, scope, and actions. By default, the scope of a rule is 
-unlimited and you must specify at least one condition. When the conditions of a 
-rule are satisfied, its action is triggered. 
+specify conditions, scope, and actions. When the conditions of a rule are 
+satisfied, its actions are triggered. 
 
 For example, if you have an anomaly detector that is analyzing CPU usage, you 
-might decide you are only interested in abnormally high usage. You can define a 
-rule with conditions and actions that instruct the detector to refrain from 
-generating {ml} results when there are anomalous events related to low CPU 
-usage. You might also decide to add a scope for the rule, such that it applies 
-only to certain machines. The scope is defined by using {ml} filters. 
+might decide you are only interested in anomalies where the CPU usage is greater 
+than a certain threshold. You can define a rule with conditions and actions that 
+instruct the detector to refrain from generating {ml} results when there are 
+anomalous events related to low CPU usage. You might also decide to add a scope 
+for the rule, such that it applies only to certain machines. The scope is 
+defined by using {ml} filters. 
 
 _Filters_ contain a list of values that you can use to include or exclude events 
 from the {ml} analysis. You can use the same filter in multiple jobs. 

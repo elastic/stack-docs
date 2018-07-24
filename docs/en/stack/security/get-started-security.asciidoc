@@ -399,6 +399,8 @@ see <<built-in-users>>.
 
 --
 
+. <<gs-kibana-security,Add the built-in user to {kib}>>.
+
 [float]
 [[gs-tls-certificates]]
 === Generate certificates
@@ -424,6 +426,8 @@ the `ES_PATH_CONF/elasticsearch.yml` file:
 xpack.ssl.verification_mode: certificate
 ----
 
+In this tutorial, we will use the default value of `full`.
+
 For more information about this setting, see 
 {ref}/security-settings.html[Security settings in {es}]. 
 --
@@ -434,7 +438,7 @@ tool by running the following command from the {es} directory:
 --
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-bin/elasticsearch-certutil ca
+./bin/elasticsearch-certutil ca
 ----------------------------------------------------------------------
 // NOTCONSOLE
 
@@ -451,12 +455,18 @@ Alternatively, you can use a commercial or organization-specific CA, though that
 scenario is not covered in this tutorial. See the `csr` option in the {ref}/certutil.html[elasticsearch-certutil] command. 
 --
 
-. Generate a certificate and private key for each node in your cluster. In this 
-tutorial, we are only using a single node cluster, 
-// TBD: Is this step even need in a single-node cluster?
-so run the following command once from your {es} directory:
+. Generate a certificate and private key for each node in your cluster. 
 +
 --
+If you had a multi-node cluster and you chose to do hostname verification, you 
+would need to create a separate certificate for each node. You can generate 
+certificates and keys for multiple nodes at once by specifying the `--multiple` 
+parameter, which prompts you for details about each node or instance.
+
+In this tutorial, however, we are only using a single node cluster, 
+// TBD: Is this step even need in a single-node cluster?
+so run the following command once from your {es} directory:
+
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12 \
@@ -475,14 +485,34 @@ cluster.
 This command prompts you for a password. You can enter a password for your 
 certificate and key, or you can leave the password blank by pressing *Enter*.
 
-The output from this command is a single PKCS#12 keystore that includes a node certificate, node key, and CA certificate. You can alternatively generate 
+The output from this command is a single PKCS#12 keystore that includes a node 
+certificate, node key, and CA certificate. You can alternatively generate 
 Privacy Enhanced Mail (PEM) formatted certificates and keys, though that option 
 is not covered in this tutorial. 
 --
 
 . Copy the node certificate to the {es} configuration directory. For example, 
 copy the `.p12` file that you created in the previous step into a `certs` folder 
-in the {es} `config` directory. 
+in the {es} `config` directory. If you had a multi-node cluster, you would 
+create the `certs` folder on each node and copy the appropriate node certificate 
+to each node. 
+
+. Create a certificate for use by {kib}. 
++
+--
+{kib} doesn't currently support PKCS#12 keystores, so we must create a PEM 
+formatted certificate for it. For example:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+openssl pkcs12 -in elastic-certificates.p12 -cacerts -nokeys -out elastic-ca.pem
+----------------------------------------------------------------------
+
+... where `elastic-certificates.p12` is the PKCS#12 keystore that you generated 
+for the node where {kib} is running.
+--
+
+. Copy the `elastic-ca.pem` file to your {kib} directory.
 
 For more information, see 
 {ref}/configuring-tls.html#node-certificates[Generating Node Certificates].
@@ -506,20 +536,20 @@ Perform the following steps on each node in the cluster:
 enter `Ctrl-C` on the command line. See 
 {ref}/stopping-elasticsearch.html[Stopping {es}].
 
-. Enable TLS in the {es} configuration file. For example, add the following 
-setting in the `ES_PATH_CONF/elasticsearch.yml` file:
+. Enable TLS for transport communications between nodes within the cluster. For 
+example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml` file:
 +
 --
 [source,yaml]
 ----
 xpack.security.transport.ssl.enabled: true  
 ----
---    
+--
 
 . Configure each node in the cluster to identify itself using its signed
-certificate. For example, add the following 
-settings in the `ES_PATH_CONF/elasticsearch.yml` file, using the file and path 
-names that you created in previous steps:
+certificate. For example, add the following settings in the 
+`ES_PATH_CONF/elasticsearch.yml` file, using the file and path names that you 
+created in previous steps:
 +
 --
 [source,yaml]
@@ -528,21 +558,25 @@ xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12
 xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12 
 ----
 
+If you had a multi-node cluster and you created a separate certificate for each 
+node, you must customize this path on each node. If the filename matches the 
+node name, you can simply use the value `certs/${node.name}.p12`.
+
 NOTE: The PKCS#12 keystore that is output by the `elasticsearch-certutil` 
 command includes a CA certificate as a trusted certificate entry, thus the 
 keystore can also be used as a truststore. If you use other tools to manage and 
-generate your certificates, you might have different values for these settings. 
+generate your certificates, you might have different values for these settings.
 
---    
+--
 
-. If you specified a password when you ran the `elasticsearch-certutil cert` 
-command, add that password to the {es} keystore.  For example: 
+. If you specified a password for the certificates, add that password to the 
+{es} keystore.  For example: 
 +
 --
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
-bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
 ----------------------------------------------------------------------
 --
 
@@ -561,19 +595,121 @@ See {ref}/starting-elasticsearch.html[Starting {es}].
 When TLS is enabled on an {es} cluster, {kib}, {ls}, and Beats must communicate 
 with the cluster over HTTPS and provide authentication credentials. 
 
-////
+[float]
+[[gs-tls-http-elasticsearch]]
+=== Encrypt HTTP client communications 
+
 You can also optionally enable TLS on the HTTP layer to ensure that 
 communication between the HTTP clients and the cluster is encrypted. See 
 {ref}/configuring-tls.html#tls-http[Encrypting HTTP client communications].
-////
+
+NOTE: Enabling TLS on the HTTP layer is strongly recommended but is not required. 
+If you enable TLS on the HTTP layer in {es}, you might need to make 
+configuration changes in other parts of the {stack} and in any {es} clients that 
+you use.
+
+Perform the following steps on each node in the cluster:
+
+. Stop {es}. For example, if you installed {es} from an archive distribution, 
+enter `Ctrl-C` on the command line. See {ref}/stopping-elasticsearch.html[Stopping {es}].
+
+. Enable TLS for HTTP communications. For example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml` file:
++
+--
+[source,yaml]
+----
+xpack.security.http.ssl.enabled: true  
+----
+--
+ 
+. Configure each node in the cluster to identify itself using its signed
+certificate. For example, add the following settings in the 
+`ES_PATH_CONF/elasticsearch.yml` file, using the file and path names that you 
+created in previous steps:
++
+--
+[source,yaml]
+----
+xpack.security.http.ssl.keystore.path: certs/elastic-certificates.p12 
+xpack.security.http.ssl.truststore.path: certs/elastic-certificates.p12 
+----
+
+If you had a multi-node cluster and you created a separate certificate for each 
+node, you must customize this path on each node. If the filename matches the 
+node name, you can simply use the value `certs/${node.name}.p12`.
+--
+
+. If you specified a password for the certificates, add that password to the 
+{es} keystore.  For example: 
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+./bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
+----------------------------------------------------------------------
+--
+
+. Restart {es}. For example, if you installed {es} with a `.tar.gz` package, run 
+the following command from the {es} directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+See {ref}/starting-elasticsearch.html[Starting {es}].  
+--
 
 [float]
 [[gs-tls-kibana]]
 === Configure TLS in {kib}
 
-Configure {kib} to encrypt communications between the browser and the {kib} 
-server and to connect to {es} via HTTPS. See
+To encrypt communications between {kib} and {es}, configure {kib} to access {es} 
+by using HTTPS:
+
+. Specify the HTTPS protocol in the `elasticsearch.url` setting in the 
+`kibana.yml` file in your {kib} directory:
++
+--
+[source,yaml]
+----
+elasticsearch.url: "https://<your_elasticsearch_host>.com:9200"
+----
+--
+
+. Specify the location of the PEM formatted certificate that you created for 
+{kib}. Add the following setting in the `kibana.yml` file in your {kib} directory:
++
+--
+[source,yaml]
+----
+elasticsearch.ssl.certificateAuthorities: ["/path/to/your/elastic-ca.pem"]
+----
+--
+
+. Restart {kib}. For example, if you installed 
+{kib} with a `.tar.gz` package, run the following command from the {kib} 
+directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/kibana
+----------------------------------------------------------------------
+
+See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
+--
+
+. Launch the {kib} web interface by pointing your browser to port 5601. For 
+example, https://127.0.0.1:5601[https://127.0.0.1:5601].
+
+////
+. Optional: Configure {kib} to encrypt communications between the browser the 
+{kib} server. See
 {kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
+////
 
 [float]
 [[gs-tls-logstash]]

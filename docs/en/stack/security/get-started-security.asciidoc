@@ -23,13 +23,11 @@ running.
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
-[float]
 [[gs-security-license]]
 === Install a trial license
 
 include::{docdir}/getting-started/get-started-trial.asciidoc[]
 
-[float]
 [[gs-security-enabled]]
 === Enable security in {es}
 
@@ -40,7 +38,6 @@ nodes, you would enable {security} on every node in the cluster and configure
 Transport Layer Security (TLS) for internode-communication, which is beyond the 
 scope of this tutorial. 
 
-[float]
 [[gs-built-in-users]]
 === Create passwords for built-in users
 
@@ -55,13 +52,11 @@ information, see
 {logstash-ref}/ls-security.html#ls-monitoring-user[Configuring credentials for {ls} monitoring]
 and {metricbeat-ref}/monitoring.html[Monitoring {metricbeat}].  
   
-[float]
 [[gs-kibana-security]]
 === Add the built-in user to {kib}
 
 include::get-started-kibana-users.asciidoc[]
 
-[float]
 [[gs-realms]]
 === Configure authentication
 
@@ -83,7 +78,6 @@ creating users!
 If you want to learn more about authentication and realms, see 
 <<setting-up-authentication>>.
 
-[float]
 [[gs-users]]
 === Create users
 
@@ -112,7 +106,6 @@ that {ls} can use to communicate with {es}. Click *Create user* and create a
 [role="screenshot"]
 image::security/images/create-logstash-user.jpg["Creating a {ls} user in {kib}"]
 
-[float]
 [[gs-roles]]
 === Assign roles
 
@@ -175,7 +168,6 @@ image::security/images/management-users.jpg["User management screenshot in Kiban
 
 If you want to learn more about authorization and roles, see <<authorization>>.
 
-[float]
 [[gs-logstash-security]]
 === Add user information in {ls}
 
@@ -295,7 +287,6 @@ For more methods, see {metricbeat-ref}/metricbeat-starting.html[Starting {metric
 
 Wait a few minutes for new data to be sent from {metricbeat} to {ls} and {es}. 
 
-[float]
 [[gs-view-security]]
 === View system metrics in {kib}
 
@@ -306,7 +297,6 @@ These roles enable the user to see the system metrics in {kib} (for example, on
 the *Discover* page or in the 
 http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview[{metricbeat} system overview dashboard]). 
 
-[float]
 [[gs-security-nextsteps]]
 === What's next?
 

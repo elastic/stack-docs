@@ -213,7 +213,7 @@ then {cloud}/ec-enable-kibana.html[Kibana can be enabled] with the flick of a sw
 We recommend that you install {kib} on the same server as {es},
 but it is not required. If you install the products on different servers, you'll
 need to change the URL (IP:PORT) of the {es} server in the {kib} configuration
-file, `config/kibana.yml`, before starting {kib}.
+file, `kibana.yml`, before starting {kib}.
 
 To download and install {kib}, open a terminal window and use the commands that
 work with your system:
@@ -498,6 +498,7 @@ The `setup` command loads the {kib} dashboards. If the dashboards are already
 set up, omit this command. The `-e` flag is optional and sends output to
 standard error instead of syslog.
 
+[[gs-start-metricbeat]]
 . Start {metricbeat}:
 +
 *deb and rpm:*
@@ -690,6 +691,7 @@ through {ls}, where you have full access to {ls} capabilities for collecting,
 enriching, and transforming data.
 
 [float]
+[[gs-start-logstash]]
 ==== Start {ls}
 
 Use the command that works with your system. If you installed {ls} as a deb or

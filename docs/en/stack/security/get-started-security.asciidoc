@@ -1,4 +1,5 @@
 [role="xpack"]
+[testenv="trial"]
 [[security-getting-started]]
 == Getting started with security
 
@@ -23,11 +24,13 @@ running.
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
+[role="xpack"]
 [[get-started-license]]
 === Install a trial license
 
 include::{docdir}/getting-started/get-started-trial.asciidoc[]
 
+[role="xpack"]
 [[get-started-enable-security]]
 === Enable security in {es}
 
@@ -38,6 +41,7 @@ nodes, you would enable {security} on every node in the cluster and configure
 Transport Layer Security (TLS) for internode-communication, which is beyond the 
 scope of this tutorial. 
 
+[role="xpack"]
 [[get-started-built-in-users]]
 === Create passwords for built-in users
 
@@ -52,11 +56,13 @@ information, see
 {logstash-ref}/ls-security.html#ls-monitoring-user[Configuring credentials for {ls} monitoring]
 and {metricbeat-ref}/monitoring.html[Monitoring {metricbeat}].  
   
+[role="xpack"]
 [[get-started-kibana-user]]
 === Add the built-in user to {kib}
 
 include::get-started-kibana-users.asciidoc[]
 
+[role="xpack"]
 [[get-started-authentication]]
 === Configure authentication
 
@@ -78,34 +84,45 @@ creating users!
 If you want to learn more about authentication and realms, see 
 <<setting-up-authentication>>.
 
+[role="xpack"]
 [[get-started-users]]
 === Create users
 
-Log in to {kib} with the `elastic` built-in user. 
+Let's create two users in the native realm. 
 
-Go to the *Management / Security / Users* page:
+. Log in to {kib} with the `elastic` built-in user. 
 
+. Go to the *Management / Security / Users* page:
++
+--
 [role="screenshot"]
 image::security/images/management-builtin-users.jpg["User management screenshot in Kibana"]
 
 In this example, you can see all of the built-in users. 
+--
 
-Click *Create user* to make a new user. For example, create a user for yourself:
-
+. Click *Create user* to make a new user. For example, create a user for yourself:
++
+--
 [role="screenshot"]
 image::security/images/create-user.jpg["Creating a user in Kibana"]
 
 You'll notice that when you create a user, you can assign it a role. Don't 
-choose a role yet--we'll come back to that in subsequent steps.  
+choose a role yet--we'll come back to that in subsequent steps.
+--
 
+. Click *Create user* and create a `logstash_internal` user.
++
+--
 In <<get-started-elastic-stack>>, you configured {ls} to listen for {metricbeat} 
 input and to send the events to {es}.  You therefore need to create a user 
-that {ls} can use to communicate with {es}. Click *Create user* and create a 
-`logstash_internal` user, for example:
+that {ls} can use to communicate with {es}. For example:
 
 [role="screenshot"]
 image::security/images/create-logstash-user.jpg["Creating a {ls} user in {kib}"]
+--
 
+[role="xpack"]
 [[get-started-roles]]
 === Assign roles
 
@@ -168,6 +185,7 @@ image::security/images/management-users.jpg["User management screenshot in Kiban
 
 If you want to learn more about authorization and roles, see <<authorization>>.
 
+[role="xpack"]
 [[get-started-logstash-user]]
 === Add user information in {ls}
 
@@ -287,6 +305,7 @@ For more methods, see {metricbeat-ref}/metricbeat-starting.html[Starting {metric
 
 Wait a few minutes for new data to be sent from {metricbeat} to {ls} and {es}. 
 
+[role="xpack"]
 [[get-started-verify-users]]
 === View system metrics in {kib}
 

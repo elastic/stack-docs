@@ -1,5 +1,5 @@
 [role="xpack"]
-[[tls-getting-started]]
+[[get-started-tls]]
 === Secure communications in the cluster
 
 {security} enables you to encrypt traffic to, from, and within your cluster. 
@@ -12,7 +12,7 @@ The {stack} uses Transport Layer Security (TLS/SSL) to:
 ** Beats and {ls}
 
 [float]
-[[tls-getting-started-prerequisites]]
+[[get-started-tls-prerequisites]]
 ==== Before you begin
 
 . Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
@@ -29,11 +29,11 @@ running.
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
-. <<gs-security-license,Install a trial license>>.
+. <<get-started-license,Install a trial license>>.
 
-. <<gs-security-enabled,Enable security in {es}>>.
+. <<get-started-enable-security,Enable security in {es}>>.
 
-. <<gs-built-in-users,Create passwords for built-in users>>.
+. <<get-started-built-in-users,Create passwords for built-in users>>.
 +
 --
 NOTE: This section of the tutorial does not use the built-in `kibana`, 
@@ -42,9 +42,10 @@ see <<built-in-users>>.
 
 --
 
-. <<gs-kibana-security,Add the built-in user to {kib}>>.
+. <<get-started-kibana-user,Add the built-in user to {kib}>>.
 
-[[gs-tls-certificates]]
+[role="xpack"]
+[[get-started-certificates]]
 === Generate certificates
 
 In a secured cluster, {es} nodes, {kib} instances, {ls} hosts, and Beats use 
@@ -164,7 +165,8 @@ for each product in the {stack} and specify the location of the certificates and
 private keys in the {es}, {kib}, {ls}, and Beats configuration files. The 
 passphrases for the private keys are stored in each product’s secure keystore.
 
-[[gs-tls-elasticsearch]]
+[role="xpack"]
+[[get-started-internode]]
 === Encrypt internode communications  
 
 In this tutorial, we are only using a single node cluster, but if you plan to 
@@ -236,7 +238,8 @@ See {ref}/starting-elasticsearch.html[Starting {es}].
 When TLS is enabled on an {es} cluster, {kib}, {ls}, and Beats must communicate 
 with the cluster over HTTPS and provide authentication credentials. 
 
-[[gs-tls-http-elasticsearch]]
+[role="xpack"]
+[[get-started-http-elasticsearch]]
 === Encrypt HTTP client communications 
 
 You can also optionally enable TLS on the HTTP layer to ensure that 
@@ -302,7 +305,8 @@ the following command from the {es} directory:
 See {ref}/starting-elasticsearch.html[Starting {es}].  
 --
 
-[[gs-tls-kibana]]
+[role="xpack"]
+[[get-started-tls-kibana]]
 === Configure TLS in {kib}
 
 To encrypt communications between {kib} and {es}, configure {kib} to access {es} 
@@ -350,18 +354,20 @@ example, https://127.0.0.1:5601[https://127.0.0.1:5601].
 {kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
 ////
 
-[[gs-tls-logstash]]
+[role="xpack"]
+[[get-started-tls-logstash]]
 === Configure TLS in {ls}
 
 Configure Logstash to use TLS encryption. See
 {logstash-ref}/ls-security.html[Configuring Security in Logstash].
 
-[[gs-tls-beats]]
+[role="xpack"]
+[[get-started-tls-beats]]
 === Configure TLS in {metricbeat}
 
 Configure Beats to use encrypted connections. See <<beats>>.
 
-[[gs-tls-nextsteps]]
+[[get-started-nextsteps]]
 === What's next?
 
 Congratulations! You've successfully encrypted communications in the {stack}.  

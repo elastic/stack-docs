@@ -6,7 +6,7 @@ In this tutorial, you learn how to secure a cluster by configuring users and
 roles in {es}, {kib}, {ls}, and {metricbeat}. 
 
 [float]
-[[gs-security-prereqs]]
+[[get-started-security-prerequisites]]
 === Before you begin
 
 . Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
@@ -23,12 +23,12 @@ running.
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
-[[gs-security-license]]
+[[get-started-license]]
 === Install a trial license
 
 include::{docdir}/getting-started/get-started-trial.asciidoc[]
 
-[[gs-security-enabled]]
+[[get-started-enable-security]]
 === Enable security in {es}
 
 include::get-started-enable-security.asciidoc[]
@@ -38,7 +38,7 @@ nodes, you would enable {security} on every node in the cluster and configure
 Transport Layer Security (TLS) for internode-communication, which is beyond the 
 scope of this tutorial. 
 
-[[gs-built-in-users]]
+[[get-started-built-in-users]]
 === Create passwords for built-in users
 
 include::get-started-builtin-users.asciidoc[]
@@ -52,12 +52,12 @@ information, see
 {logstash-ref}/ls-security.html#ls-monitoring-user[Configuring credentials for {ls} monitoring]
 and {metricbeat-ref}/monitoring.html[Monitoring {metricbeat}].  
   
-[[gs-kibana-security]]
+[[get-started-kibana-user]]
 === Add the built-in user to {kib}
 
 include::get-started-kibana-users.asciidoc[]
 
-[[gs-realms]]
+[[get-started-authentication]]
 === Configure authentication
 
 Now that you've set up the built-in users, you need to decide how you want to 
@@ -78,7 +78,7 @@ creating users!
 If you want to learn more about authentication and realms, see 
 <<setting-up-authentication>>.
 
-[[gs-users]]
+[[get-started-users]]
 === Create users
 
 Log in to {kib} with the `elastic` built-in user. 
@@ -106,7 +106,7 @@ that {ls} can use to communicate with {es}. Click *Create user* and create a
 [role="screenshot"]
 image::security/images/create-logstash-user.jpg["Creating a {ls} user in {kib}"]
 
-[[gs-roles]]
+[[get-started-roles]]
 === Assign roles
 
 By default, all users can change their own passwords, get information about 
@@ -168,7 +168,7 @@ image::security/images/management-users.jpg["User management screenshot in Kiban
 
 If you want to learn more about authorization and roles, see <<authorization>>.
 
-[[gs-logstash-security]]
+[[get-started-logstash-user]]
 === Add user information in {ls}
 
 In order for {ls} to send data successfully to {es}, you must configure its 
@@ -287,7 +287,7 @@ For more methods, see {metricbeat-ref}/metricbeat-starting.html[Starting {metric
 
 Wait a few minutes for new data to be sent from {metricbeat} to {ls} and {es}. 
 
-[[gs-view-security]]
+[[get-started-verify-users]]
 === View system metrics in {kib}
 
 Log in to {kib} with the user ID that has `metricbeat_reader` and `kibana_user` 
@@ -297,6 +297,7 @@ These roles enable the user to see the system metrics in {kib} (for example, on
 the *Discover* page or in the 
 http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview[{metricbeat} system overview dashboard]). 
 
+[float]
 [[gs-security-nextsteps]]
 === What's next?
 

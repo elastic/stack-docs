@@ -25,10 +25,19 @@ Rolling upgrades are supported when upgrading from Elasticsearch 5.6 and
 Elasticsearch 6.0-6.2 to {version}. Upgrading from any
 version prior to 5.6 requires a full cluster restart.
 
-IMPORTANT: 2.x indices are not compatible with {version}. You must
-remove or reindex them on your 5.n cluster before upgrading to {version}. The internal
-Kibana and {xpack} indices and the default Beats and Logstash mapping templates
-also need to be updated to work with {version}.
+[IMPORTANT]
+===============================
+
+* 6.3.0 and 6.3.1 might disable security for trial licenses. If you have a 6.2.x 
+or earlier cluster with a trial license, {security} is disabled when you upgrade 
+to 6.3.0 or 6.3.1. See https://www.elastic.co/blog/elastic-stack-6-3-0-and-6-3-1-may-disable-security-for-trial-licenses
+* 2.x indices are not compatible with {version}. You must remove or reindex them 
+on your 5.n cluster before upgrading to {version}. The internal Kibana and 
+{xpack} indices and the default Beats and Logstash mapping templates also need 
+to be updated to work with {version}.
+
+===============================
+
 
 === Preparing to upgrade
 

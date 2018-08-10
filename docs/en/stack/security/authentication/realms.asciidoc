@@ -43,6 +43,8 @@ intended for use in the REST API.  See <<saml-realm>>.
 authentication system, you can build a custom realm plugin. For more information,
 see <<custom-realms, Integrating with Other Authentication Systems>>.
 
+==== The realm chain
+
 Realms live within a _realm chain_. It is essentially a prioritized list of
 configured realms (typically of various types). The order of the list determines
 the order in which the realms will be consulted. You should make sure each
@@ -107,6 +109,38 @@ As can be seen above, each realm has a unique name that identifies it and each
 realm type dictates its own set of required and optional settings. That said,
 there are 
 {ref}/security-settings.html#ref-realm-settings[settings that are common to all realms]. 
+
+[[authorization_realms]]
+==== Delegating authorization to another realm
+
+Some realms have the ability perform _authentication_ internally, but delegate the
+lookup and assignment of roles (that is, _authorization_) to another realm.
+
+For example, you may wish to use a PKI realm to authenticate your users with
+TLS client certificates, but then lookup that user in an LDAP realm, and use
+their LDAP group assignments to determine their roles in Elasticsearch.
+
+For realms that support this feature, it can be enabled by configuring the
+`authorization_realms` setting on the authenticating realm. Check the list of
+supported settings for each realm to see if they support the
+`authorization_realms` setting.
+
+Any realm that supports retrieving users (without needing their credentials)
+may be used as an _authorization realm_ (that is, its name may appear as one of
+the values in the list of `authorizing_realms`). See <<run-as-privilege>> for
+further explanation on which realms support this.
+
+If delegated authorization is enabled for a realm, then it will authenticate
+the user in its standard manner (including relevant caching) and then look for
+that user in the configured list of authorization realms, trying each realm in
+order. The user is retrieved by principal - the user must have identical
+usernames in the _authentication_ and _authorization realms_. If the user cannot
+be found in any of the authorization realms, then authentication will fail.
+
+NOTE: Delegated authorization requires a
+https://www.elastic.co/subscriptions[Platinum or Trial license].
+
+==== Internal and external realms
 
 Realm types can roughly be classified in two categories:
 

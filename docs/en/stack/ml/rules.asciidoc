@@ -1,17 +1,14 @@
 [role="xpack"]
 [[ml-rules]]
-=== Machine learning rules and filters
-++++
-<titleabbrev>Rules and filters</titleabbrev>
-++++
+=== Custom rules
 
 By default, as described in <<ml-analyzing>>, anomaly detection is unsupervised 
 and the {ml} models have no awareness of the domain of your data. As a result, 
 {ml} jobs might identify events that are statistically significant but are 
-uninteresting when you know the larger context. Machine learning rules enable 
-you to customize anomaly detection. 
+uninteresting when you know the larger context. Machine learning custom rules
+enable you to customize anomaly detection. 
 
-_Rules_ instruct anomaly detectors to change their behavior based on 
+_Custom rules_ instruct anomaly detectors to change their behavior based on 
 domain-specific knowledge that you provide. When you create a rule, you can  
 specify conditions, scope, and actions. When the conditions of a rule are 
 satisfied, its actions are triggered. 

@@ -133,3 +133,18 @@ behalf of another user. The value can be a user name or a comma-separated list
 of user names. (You can also specify users as an array of strings or a YAML
 sequence.) For more information, see
 <<run-as-privilege, Submitting Requests on Behalf of Other Users>>.
+
+[[application-privileges]]
+==== Application privileges
+
+Application privileges are managed within {es} and can be retrieved with the 
+{ref}/security-api-has-privileges.html[has privileges API] and the 
+{ref}/security-api-get-privileges.html[get application privileges API]. They do 
+not, however, grant access to any actions or resources within {es}. Their 
+purpose is to enable applications to represent and store their own privilege 
+models within {es} roles. 
+
+To create application privileges, use the 
+{ref}/security-api-put-privileges.html[add application privileges API]. You can 
+then associate these application privileges with roles, as described in 
+<<defining-roles>>. 

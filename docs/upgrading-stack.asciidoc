@@ -129,7 +129,7 @@ You must explicitly enable data collection after the upgrade to use monitoring.
 Set `xpack.monitoring.collection.enabled` to `true` with the `_cluster/settings`
 API:
 
-[source,json]
+[source,js]
 ----------------------------------------------------------
 PUT /_cluster/settings
 {
@@ -143,7 +143,7 @@ PUT /_cluster/settings
 To take all of the {xpack} features for a spin, you can start a 30-day trial
 from Kibana, or with the Start Trial API:
 
-[source,json]
+[source,js]
 ----------------------------------------------------------
 POST _xpack/license/start_trial
 ----------------------------------------------------------
@@ -171,7 +171,7 @@ If your trial license to use {xpack} expires,
 https://register.elastic.co/[register for a free Basic license]. To apply the
 license, upload the license file with the `license` API:
 +
-[source,json]
+[source,sh]
 ----------------------------------------------------------
 license -d @license.json
 ----------------------------------------------------------
@@ -244,7 +244,7 @@ Elasticsearch {version}.
 To get a list of the indices that need to be upgraded, install {xpack} and use
 the {ref}/migration-api-assistance.html[`_xpack/migration/assistance` API]:
 
-[source,json]
+[source,js]
 ----------------------------------------------------------
 GET /_xpack/migration/assistance
 ----------------------------------------------------------
@@ -258,7 +258,7 @@ API to upgrade the security index, submitting the request with the credentials
 for the temporary superuser:
 +
 --
-[source,json]
+[source,js]
 ----------------------------------------------------------
 POST /_xpack/migration/upgrade/.security
 ----------------------------------------------------------

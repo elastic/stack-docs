@@ -29,3 +29,9 @@ apply plugin: 'elasticsearch.docs-test'
 integTestCluster {
   distribution = 'zip'
 }
+
+/* List of files that have snippets that probably should be converted to
+ * `// CONSOLE` and `// TESTRESPONSE` but have yet to be converted. */
+buildRestTests.expectedUnconvertedCandidates = [
+        'docs/en/stack/getting-started/get-started-stack.asciidoc',
+]

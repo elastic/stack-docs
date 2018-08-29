@@ -1,3 +1,7 @@
+import org.elasticsearch.gradle.test.NodeInfo
+
+import java.nio.charset.StandardCharsets
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -20,18 +24,81 @@
 plugins {
   id 'eclipse'
   id 'idea'
-  // TODO set version to 6.3.0 and the tests should pass!
-  id 'elasticsearch.docs-test' version '6.2.4' apply false
+  id 'elasticsearch.docs-test' version '6.4.0' apply false
 }
 
 apply plugin: 'elasticsearch.docs-test'
-
-integTestCluster {
-  distribution = 'zip'
-}
 
 /* List of files that have snippets that probably should be converted to
  * `// CONSOLE` and `// TESTRESPONSE` but have yet to be converted. */
 buildRestTests.expectedUnconvertedCandidates = [
         'docs/en/stack/getting-started/get-started-stack.asciidoc',
 ]
+
+dependencies {
+    testCompile project(path: xpackModule('core'), configuration: 'default')
+    testCompile project(path: xpackModule('core'), configuration: 'testArtifacts')
+    testCompile project(path: xpackProject('plugin').path, configuration: 'testArtifacts')
+}
+
+Closure waitWithAuth = { NodeInfo node, AntBuilder ant ->
+    File tmpFile = new File(node.cwd, 'wait.success')
+    // wait up to twenty seconds
+    final long stopTime = System.currentTimeMillis() + 20000L;
+    Exception lastException = null;
+    while (System.currentTimeMillis() < stopTime) {
+        lastException = null;
+        // we use custom wait logic here as the elastic user is not available immediately and ant.get will fail when a 401 is returned
+        HttpURLConnection httpURLConnection = null;
+        try {
+            httpURLConnection = (HttpURLConnection) new URL("http://${node.httpUri()}/_cluster/health").openConnection();
+            httpURLConnection.setRequestProperty("Authorization", "Basic " +
+                    Base64.getEncoder().encodeToString("test_admin:x-pack-test-password".getBytes(StandardCharsets.UTF_8)));
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.setConnectTimeout(1000);
+            httpURLConnection.setReadTimeout(30000);
+            httpURLConnection.connect();
+            if (httpURLConnection.getResponseCode() == 200) {
+                tmpFile.withWriter StandardCharsets.UTF_8.name(), {
+                    it.write(httpURLConnection.getInputStream().getText(StandardCharsets.UTF_8.name()))
+                }
+                break;
+            }
+        } catch (Exception e) {
+            logger.debug("failed to call cluster health", e)
+            lastException = e
+        } finally {
+            if (httpURLConnection != null) {
+                httpURLConnection.disconnect();
+            }
+        }
+
+        // did not start, so wait a bit before trying again
+        Thread.sleep(500L);
+    }
+    if (tmpFile.exists() == false && lastException != null) {
+        logger.error("final attempt of calling cluster health failed", lastException)
+    }
+    return tmpFile.exists()
+}
+
+integTestCluster {
+  distribution = 'zip'
+  setting 'xpack.security.enabled', 'true'
+  setting 'xpack.security.authc.token.enabled', 'true'
+  // Disable monitoring exporters for the docs tests
+  setting 'xpack.monitoring.exporters._local.type', 'local'
+  setting 'xpack.monitoring.exporters._local.enabled', 'false'
+  setting 'xpack.license.self_generated.type', 'trial'
+  setupCommand 'setupTestAdmin',
+        'bin/elasticsearch-users', 'useradd', 'test_admin', '-p', 'x-pack-test-password', '-r', 'superuser'
+  waitCondition = waitWithAuth
+}
+
+buildRestTests.docs = fileTree(projectDir) {
+    // No snippets in here!
+    exclude 'build.gradle'
+    // That is where the snippets go, not where they come from!
+    exclude 'build'
+    // These file simply doesn't pass yet. We should figure out how to fix them.
+}

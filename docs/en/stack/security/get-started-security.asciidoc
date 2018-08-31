@@ -11,7 +11,7 @@ roles in {es}, {kib}, {ls}, and {metricbeat}.
 === Before you begin
 
 . Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
-<<get-started-elastic-stack>>. 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}]. 
 
 . Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
 you are running it from the command line or running it as a service. For example, 
@@ -28,7 +28,7 @@ example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 [[get-started-license]]
 === Install a trial license
 
-include::{docdir}/getting-started/get-started-trial.asciidoc[]
+include::{docdir}/get-started-trial.asciidoc[]
 
 [role="xpack"]
 [[get-started-enable-security]]
@@ -114,7 +114,8 @@ choose a role yet--we'll come back to that in subsequent steps.
 . Click *Create user* and create a `logstash_internal` user.
 +
 --
-In <<get-started-elastic-stack>>, you configured {ls} to listen for {metricbeat} 
+In {stack-gs}/get-started-elastic-stack.html[Geting started with the {stack}], 
+you configured {ls} to listen for {metricbeat} 
 input and to send the events to {es}.  You therefore need to create a user 
 that {ls} can use to communicate with {es}. For example:
 
@@ -154,7 +155,8 @@ image::security/images/assign-role.jpg["Assigning a role to a user in Kibana"]
 
 This user now has the minimum privileges required to use {kib}. 
 
-If you completed all of the steps in <<get-started-elastic-stack>>, you should 
+If you completed all of the steps in 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}], you should 
 have {metricbeat} data stored in {es}. Let's create two roles that grant 
 different levels of access to that data. 
 
@@ -285,7 +287,9 @@ To start {ls} as a service, see
 
 . If you were connecting directly from {metricbeat} to {es}, you would need 
 to configure authentication credentials for the {es} output in the {metricbeat} 
-configuration file. In <<get-started-elastic-stack>>, however, you configured 
+configuration file. In 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}], 
+however, you configured 
 {metricbeat} to send the data to {ls} for additional parsing, so no extra 
 settings are required in {metricbeat}. For more information, see 
 {metricbeat-ref}/securing-metricbeat.html[Securing {metricbeat}]. 

@@ -11,6 +11,7 @@ passwords have been set. The `elastic` user can be used to
 `kibana`:: The user Kibana uses to connect and communicate with Elasticsearch.
 `logstash_system`:: The user Logstash uses when storing monitoring information in Elasticsearch.
 `beats_system`:: The user the Beats use when storing monitoring information in Elasticsearch.
+`apm_system`:: The user APM uses when storing monitoring information in {es}.
 
 
 [float]
@@ -58,7 +59,8 @@ The +elasticsearch-setup-passwords+ tool is the simplest method to set the
 built-in users' passwords for the first time. It uses the `elastic` user's
 bootstrap password to run user management API requests. For example, you can run
 the command in an "interactive" mode, which prompts you to enter new passwords
-for the `elastic`, `kibana`, `logstash_system`, and `beats_system` users:
+for the `elastic`, `kibana`, `logstash_system`, `beats_system`, and `apm_system` 
+users:
 
 [source,shell]
 --------------------------------------------------

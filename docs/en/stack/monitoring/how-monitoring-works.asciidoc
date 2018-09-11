@@ -10,14 +10,16 @@ metrics for the stack are stored. By default, they are stored in local indices.
 In production, we strongly recommend using a separate monitoring cluster. Using 
 a separate monitoring cluster prevents production cluster outages from impacting
 your ability to access your monitoring data. It also prevents monitoring
-activities from impacting the performance of your production cluster. 
+activities from impacting the performance of your production cluster. The 
+following diagram illustrates a typical monitoring architecture with separate 
+production and monitoring clusters:
+
+image::monitoring/images/architecture1.jpg[A typical monitoring environment]
 
 beta[] In 6.5 and later, you can use {metricbeat} to collect and ship data about 
-{kib}, rather than routing it through {es}. The following diagram illustrates a 
-typical monitoring architecture with separate production and monitoring clusters:
+{kib}, rather than routing it through {es}. For example:
 
-image::monitoring/images/architecture4.png[A typical monitoring environment]
-
+image::monitoring/images/architecture4.png[A typical monitoring environment that includes {metricbeat}]
 
 If you have at least a gold license, you can route data from multiple production
 clusters to a single monitoring cluster. For more information about the 
@@ -29,9 +31,9 @@ monitor production clusters running newer versions of the stack. If necessary,
 the monitoring cluster can monitor production clusters running older versions,
 but the versions cannot differ by more than one major version.
 
-If you are not using {metricbeat} to collect the {kib} data, you might want to 
-create a dedicated {kib} instance for monitoring, rather than using a single 
-{kib} instance to access both your production cluster and monitoring cluster:
+If {kib} is a regular part of your stack, you might want to create a dedicated 
+{kib} instance for monitoring, rather than using a single {kib} instance to 
+access both your production cluster and monitoring cluster:
 
 image::monitoring/images/architecture3.jpg[A monitoring environment with separate {kib} instances]
 

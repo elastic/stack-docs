@@ -47,6 +47,19 @@ see <<built-in-users>>.
 
 . <<get-started-kibana-user,Add the built-in user to {kib}>>.
 
+. To verify that security is enabled, run the cat health API. For example:
++
+--
+[source,sh]
+----------------------------------
+curl -s -u elastic:<password> -X GET "http://localhost:9200/_cat/health?v"
+----------------------------------
+
+Supply a valid user ID (such as `elastic`) and password, such as the one you 
+created in <<get-started-users>>. 
+
+--
+
 [role="xpack"]
 [[get-started-certificates]]
 === Generate certificates
@@ -154,8 +167,8 @@ formatted certificate for it. For example:
 openssl pkcs12 -in elastic-certificates.p12 -cacerts -nokeys -out elastic-ca.pem
 ----------------------------------------------------------------------
 
-... where `elastic-certificates.p12` is the PKCS#12 keystore that you generated 
-for the node where {kib} is running.
+In this example, `elastic-certificates.p12` is the PKCS#12 keystore that you 
+generated for the node where {kib} is running.
 --
 
 . Copy the `elastic-ca.pem` file to your {kib} directory.
@@ -168,6 +181,78 @@ for each product in the {stack} and specify the location of the certificates and
 private keys in the {es}, {kib}, {ls}, and Beats configuration files. The 
 passphrases for the private keys are stored in each product’s secure keystore.
 
+[role="xpack"]
+[[get-started-internode]]
+=== Encrypt internode communications  
+
+In this tutorial, we are only using a single node cluster, but if you plan to 
+add more nodes, you must ensure that communication between those nodes will be 
+encrypted. 
+
+Perform the following steps on each node in the cluster:
+
+. Stop {es}. For example, if you installed {es} from an archive distribution, 
+enter `Ctrl-C` on the command line. See 
+{ref}/stopping-elasticsearch.html[Stopping {es}].
+
+. Enable TLS for transport communications between nodes within the cluster. For 
+example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml` file:
++
+--
+[source,yaml]
+----
+xpack.security.transport.ssl.enabled: true  
+----
+--
+
+. Configure each node in the cluster to identify itself using its signed
+certificate. For example, add the following settings in the 
+`ES_PATH_CONF/elasticsearch.yml` file, using the file and path names that you 
+created in previous steps:
++
+--
+[source,yaml]
+----
+xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12 
+xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12 
+----
+
+If you had a multi-node cluster and you created a separate certificate for each 
+node, you must customize this path on each node. If the filename matches the 
+node name, you can simply use the value `certs/${node.name}.p12`.
+
+NOTE: The PKCS#12 keystore that is output by the `elasticsearch-certutil` 
+command includes a CA certificate as a trusted certificate entry, thus the 
+keystore can also be used as a truststore. If you use other tools to manage and 
+generate your certificates, you might have different values for these settings.
+
+--
+
+. If you specified a password for the certificates, add that password to the 
+{es} keystore.  For example: 
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+----------------------------------------------------------------------
+--
+
+. Restart {es}. For example, if you installed {es} with a `.tar.gz` package, run 
+the following command from the {es} directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+See {ref}/starting-elasticsearch.html[Starting {es}].  
+--
+
+When TLS is enabled on an {es} cluster, {kib}, {ls}, and Beats must communicate 
+with the cluster over HTTPS and provide authentication credentials. 
 
 [role="xpack"]
 [[get-started-http-elasticsearch]]
@@ -236,6 +321,17 @@ the following command from the {es} directory:
 See {ref}/starting-elasticsearch.html[Starting {es}].  
 --
 
+. When you run `curl` commands, you must now use the HTTPS protocol and specify 
+a valid certificate in the `--cacert` parameter. For example:
++
+--
+[source,sh]
+----------------------------------
+curl -s -u elastic:<password> -X GET "https://localhost:9200/_cat/health?v" --cacert /path/to/your/elastic-ca.pem 
+----------------------------------
+--
+
+////
 [role="xpack"]
 [[get-started-tls-kibana]]
 === Configure TLS in {kib}
@@ -279,11 +375,9 @@ See {kibana-ref}/start-stop.html[Starting and stopping {kib}].
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, https://127.0.0.1:5601[https://127.0.0.1:5601].
 
-////
 . Optional: Configure {kib} to encrypt communications between the browser the 
 {kib} server. See
 {kibana-ref}/using-kibana-with-security.html[Configuring Security in {kib}].
-////
 
 [role="xpack"]
 [[get-started-tls-logstash]]
@@ -332,3 +426,4 @@ credentials and encrypt connections to {es}.
 
 * {hadoop-ref}/security.html[Configuring {es} for Apache Hadoop to use secured transport]. 
 
+////

@@ -97,7 +97,7 @@ since at that point the bootstrap password is no longer required.
 
 [float]
 [[add-built-in-user-passwords]]
-==== Adding Built-in User Passwords To {kib}, Logstash, and Beats
+==== Adding built-in user passwords to {kib}, Logstash, Beats, and APM
 
 After the `kibana` user password is set, you need to update the {kib} server
 with the new password by setting `elasticsearch.password` in the `kibana.yml`
@@ -142,11 +142,23 @@ xpack.monitoring.elasticsearch.username: beats_system
 xpack.monitoring.elasticsearch.password: beatspassword
 ----------------------------------------------------------
 
+The `apm_system` user is used internally within APM when monitoring is enabled.
+
+To enable this feature in APM, you need to update the 
+{apm-server-ref}/configuring-howto-apm-server.html[APM configuration file] to 
+reference the correct username and password. For example:
+
+[source,yaml]
+----------------------------------------------------------
+xpack.monitoring.elasticsearch.username: apm_system
+xpack.monitoring.elasticsearch.password: apmserverpassword
+----------------------------------------------------------
+
 If you have upgraded from an older version of {es}, then you may not have set a
-password for the `beats_system` user. If this is the case, then you should use
-the *Management > Users* page in {kib} or the
+password for the `apm_system` or `beats_system` users. If this is the case, 
+then you should use the *Management > Users* page in {kib} or the
 {ref}/security-api-change-password.html[Change Password API] to set a password
-for this user.
+for these users.
 
 [float]
 [[disabling-default-password]]

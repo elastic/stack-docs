@@ -11,6 +11,7 @@ passwords have been set. The `elastic` user can be used to
 `kibana`:: The user Kibana uses to connect and communicate with Elasticsearch.
 `logstash_system`:: The user Logstash uses when storing monitoring information in Elasticsearch.
 `beats_system`:: The user the Beats use when storing monitoring information in Elasticsearch.
+`apm_system`:: The user the APM server uses when storing monitoring information in {es}.
 
 
 [float]
@@ -58,7 +59,8 @@ The +elasticsearch-setup-passwords+ tool is the simplest method to set the
 built-in users' passwords for the first time. It uses the `elastic` user's
 bootstrap password to run user management API requests. For example, you can run
 the command in an "interactive" mode, which prompts you to enter new passwords
-for the `elastic`, `kibana`, `logstash_system`, and `beats_system` users:
+for the `elastic`, `kibana`, `logstash_system`, `beats_system`, and `apm_system` 
+users:
 
 [source,shell]
 --------------------------------------------------
@@ -95,7 +97,7 @@ since at that point the bootstrap password is no longer required.
 
 [float]
 [[add-built-in-user-passwords]]
-==== Adding Built-in User Passwords To {kib}, Logstash, and Beats
+==== Adding built-in user passwords to {kib}, Logstash, Beats, and APM
 
 After the `kibana` user password is set, you need to update the {kib} server
 with the new password by setting `elasticsearch.password` in the `kibana.yml`
@@ -140,11 +142,23 @@ xpack.monitoring.elasticsearch.username: beats_system
 xpack.monitoring.elasticsearch.password: beatspassword
 ----------------------------------------------------------
 
+The `apm_system` user is used internally within APM when monitoring is enabled.
+
+To enable this feature in APM, you need to update the 
+{apm-server-ref}/configuring-howto-apm-server.html[APM configuration file] to 
+reference the correct username and password. For example:
+
+[source,yaml]
+----------------------------------------------------------
+xpack.monitoring.elasticsearch.username: apm_system
+xpack.monitoring.elasticsearch.password: apmserverpassword
+----------------------------------------------------------
+
 If you have upgraded from an older version of {es}, then you may not have set a
-password for the `beats_system` user. If this is the case, then you should use
-the *Management > Users* page in {kib} or the
+password for the `apm_system` or `beats_system` users. If this is the case, 
+then you should use the *Management > Users* page in {kib} or the
 {ref}/security-api-change-password.html[Change Password API] to set a password
-for this user.
+for these users.
 
 [float]
 [[disabling-default-password]]

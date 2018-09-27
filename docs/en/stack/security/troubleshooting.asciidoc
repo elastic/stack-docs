@@ -18,6 +18,7 @@ answers for frequently asked questions.
 * <<trb-security-kerberos>>
 * <<trb-security-internalserver>>
 * <<trb-security-setup>>
+* <<trb-security-path>>
 
 
 To get help, see <<help>>.
@@ -488,3 +489,34 @@ Alternatively, set the `xpack.security.http.ssl.enabled` setting to `true`.
 
 For more information about these settings, see
 {ref}/security-settings.html[Security Settings in {es}].
+
+[[trb-security-path]]
+=== Failures due to relocation of the configuration files
+
+*Symptoms:*
+
+* Active Directory or LDAP realms might stop working after upgrading to {es} 6.3 
+or later releases. 
+
+*Resolution:*
+
+By default, in 6.2 and earlier releases, the 
+<<security-files,security configuration files>> are located in the 
+`ES_PATH_CONF/x-pack` directory, where `ES_PATH_CONF` is an environment 
+variable that defines the location of the 
+{ref}/settings.html#config-files-location[config directory]. 
+
+In 6.3 and later releases, the config directory no longer contains an `x-pack` 
+directory. The files that were stored in this folder, such as the 
+`log4js.properties`, `role_mapping.yml`, `roles.yml`, `users`, and `users_roles` 
+files, now exist directly in the config directory. 
+
+IMPORTANT: If you upgraded to 6.3 or later releases, your old security 
+configuration files still exist in an `x-pack` folder. That file path is 
+deprecated, however, and you should move your files out of that folder.  
+
+In 6.3 and later releases, settings such as `files.role_mapping` default to 
+`ES_PATH_CONF/role_mapping.yml`. If you do not want to use the default locations, 
+you must update the settings appropriately. See 
+{ref}/security-settings.html[Security settings in {es}]. 
+

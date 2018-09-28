@@ -496,7 +496,8 @@ For more information about these settings, see
 *Symptoms:*
 
 * Active Directory or LDAP realms might stop working after upgrading to {es} 6.3 
-or later releases. 
+or later releases. In 6.4 or later releases, you might see messages in the {es} 
+log that indicate a config file is in a deprecated location. 
 
 *Resolution:*
 
@@ -513,7 +514,7 @@ files, now exist directly in the config directory.
 
 IMPORTANT: If you upgraded to 6.3 or later releases, your old security 
 configuration files still exist in an `x-pack` folder. That file path is 
-deprecated, however, and you should move your files out of that folder.  
+deprecated, however, and you should move your files out of that folder. 
 
 In 6.3 and later releases, settings such as `files.role_mapping` default to 
 `ES_PATH_CONF/role_mapping.yml`. If you do not want to use the default locations, 

@@ -72,25 +72,7 @@ The cluster must validate the authenticity of these certificates. The
 recommended approach is to trust a specific certificate authority (CA). Thus 
 when nodes are added to your cluster they just need to use a certificate signed 
 by the same CA and the node is automatically allowed to join the cluster. 
-
-. Pick a verification mode for the certificates. By default, {es} verifies that 
-the certificate is signed by a trusted CA and also verifies that the server's 
-hostname or IP address matches the names specified within the certificate. If 
-you don't want the hostname verification to occur, add the following setting to 
-the `ES_PATH_CONF/elasticsearch.yml` file:
-+
---
-[source,yaml]
-----
-xpack.ssl.verification_mode: certificate
-----
-
-In this tutorial, we will use the default value of `full`.
-
-For more information about this setting, see 
-{ref}/security-settings.html[Security settings in {es}]. 
---
-
+ 
 . Generate a certificate authority. For example, use the `elasticsearch-certutil` 
 tool by running the following command from the {es} directory:
 +
@@ -111,14 +93,17 @@ the file and key. If you plan to add more nodes to your cluster in the future,
 retain a copy of the file and remember its password.
 
 Alternatively, you can use a commercial or organization-specific CA, though that 
-scenario is not covered in this tutorial. See the `csr` option in the {ref}/certutil.html[elasticsearch-certutil] command. 
+scenario is not covered in this tutorial. See the `csr` option in the 
+{ref}/certutil.html[elasticsearch-certutil] command. 
 --
 
 . Generate a certificate and private key for each node in your cluster. 
 +
 --
-If you had a multi-node cluster and you chose to do hostname verification, you 
-would need to create a separate certificate for each node. You can generate 
+By default, {es} verifies that the certificate is signed by a trusted CA and 
+also verifies that the server's hostname or IP address matches the names 
+specified within the certificate. If you have a multi-node cluster, you must 
+therefore create a separate certificate for each node. You can generate 
 certificates and keys for multiple nodes at once by specifying the `--multiple` 
 parameter, which prompts you for details about each node or instance.
 
@@ -135,11 +120,6 @@ so run the following command once from your {es} directory:
 <1> A comma-separated list of DNS names for your {es} node.
 <2> A comma-separated list of IP addresses for your {es} node.
 <3> A unique name for the certificate.
-
-If you chose not to do hostname verification, you can omit the `--dns`, `--ip`, 
-and `--name` parameters. In that case, the certificate does not have hostname 
-information in it and you can use the same certificate for every node in your 
-cluster.
 
 This command prompts you for a password. You can enter a password for your 
 certificate and key, or you can leave the password blank by pressing *Enter*.

@@ -17,9 +17,10 @@ production and monitoring clusters:
 image::monitoring/images/architecture1.jpg[A typical monitoring environment]
 
 beta[] In 6.4 and later, you can use {metricbeat} to collect and ship data about 
-{kib}, rather than routing it through {es}. For example:
+{kib}, rather than routing it through {es}. In 6.5 and later, you can also use 
+{metricbeat} to collect and ship data about {es}. For example:
 
-image::monitoring/images/architecture4.png[A typical monitoring environment that includes {metricbeat}]
+image::monitoring/images/architecture5.png[A typical monitoring environment that includes {metricbeat}]
 
 If you have at least a gold license, you can route data from multiple production
 clusters to a single monitoring cluster. For more information about the 
@@ -35,6 +36,6 @@ If you use {kib} to visualize data and administer the cluster, you might want to
 create a dedicated {kib} instance for monitoring, rather than using a single 
 {kib} instance to access both your production cluster and monitoring cluster:
 
-image::monitoring/images/architecture3.jpg[A monitoring environment with separate {kib} instances]
+image::monitoring/images/kibana-monitoring-cluster.png["A separate {kib} instance accesses the monitoring cluster",scale=50]
 
 

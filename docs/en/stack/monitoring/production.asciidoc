@@ -6,12 +6,12 @@ By default, {metricbeat} and the {xpack} monitoring agents on {es} index data
 into the cluster where they're running. In production, you should
 send data to a separate monitoring cluster so that historical monitoring
 data is available even if the nodes you are monitoring are not. Using
-a dedicated monitoring cluster also enables you to monitor multiple
+a dedicated _monitoring cluster_ also enables you to monitor multiple
 clusters from a central location.
 
 To store monitoring data in a separate cluster:
 
-. {ref}/configuring-monitoring.html[Set up the {es} cluster you want to use for monitoring]. 
+. Set up the {es} cluster you want to use as the monitoring cluster. 
 For example, you might set up a two host cluster with the nodes `es-mon-1` and 
 `es-mon-2`.
 +
@@ -20,6 +20,9 @@ NOTE: To monitor an {es} 7.x cluster, you must run {es}
 7.x on the monitoring cluster.
 
 --
+
+. Configure {monitoring} in {es}, such that it sends its data to the monitoring 
+cluster. 
 
 . {kibana-ref}/monitoring-xpack-kibana.html[Configure {monitoring}] in {kib}.
 +

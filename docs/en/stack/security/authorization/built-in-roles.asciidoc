@@ -103,6 +103,10 @@ user has access to only their own reports. Reporting users should also be
 assigned the `kibana_user` role and a role that grants them access to the data 
 that will be used to generate reports.
 
+[[built-in-roles-stack-monitoring-agent]] `stack_monitoring_agent`::
+Grants the minimum privileges required for {metricbeat} to collect monitoring 
+data for the {stack} and write it into the monitoring indices (`.monitoring-*`). 
+
 [[built-in-roles-superuser]] `superuser`::
 Grants full access to the cluster, including all indices and data. A user with
 the `superuser` role can also manage users and roles and

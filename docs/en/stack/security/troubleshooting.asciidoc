@@ -473,13 +473,13 @@ file (`metadata.xml`) that has been configured. Either the value of `idp.entity_
 in the {es} SAML realm configuration is wrong/misspelled, or the wrong metadata file has been
 configured in `idp.metadata.path`.
 
-. This error indicates that {es} failed to process the incoming saml authentication message.
+. This error indicates that {es} failed to process the incoming SAML authentication message.
 Since the message can't be processed, {es} is not aware of who the to-be authenticated
 user is and the `<unauthenticated-saml-user>` placeholder is used instead. To diagnose the
-_actual_ problem one needs to check the Elasticsearch logs for further details.
+_actual_ problem one needs to check the {es} logs for further details.
 
 . This means that the SAML Identity Provider failed to authenticate the user and sent a
-SAML Response to the Service Provider (Elastic Stack) indicating this failure. The `code`
+SAML Response to the Service Provider (Elastic Stack) indicating this failure. The `Code`
 can be a different error identifier than the one above and might offer an indication about
 the cause of the failure, but `Message` and `Detail` will be `null`. In order to further
 diagnose the problem please consult the logs and documentation of the Identity Provider.
@@ -491,12 +491,12 @@ using its corresponding private key. Failure to do so, can have a number of caus
 .. As the error message indicates, the most common cause is that the wrong metadata file
 is used and as such the public key it contains, doesn't correspond to the private key the
 Identity Provider uses.
-.. The configuration in the Identity Provider has changed or the key has been rotated and
+.. The configuration of the Identity Provider has changed or the key has been rotated and
 the metadata file that {es} is using has not been updated.
 .. The SAML Response has been altered in transit and the signature cannot be validated even
 if the correct key is used.
 
-. If you want your users to be able to use local credentials to authenticate to Kibana in
+. If you want your users to be able to use local credentials to authenticate to {kib} in
 addition to using the SAML realm for Single Sign-On, you need to enable the `basic`
 `authProvider` in {kib}. The process is documented in the <<saml-kibana-basic, SAML Guide>>
 

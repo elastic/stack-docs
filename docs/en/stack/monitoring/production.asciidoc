@@ -4,10 +4,11 @@
 
 By default, {metricbeat} and the {monitoring} agents on {es} index data
 into the cluster where they're running. In production, you should
-send data to a separate monitoring cluster so that historical monitoring
-data is available even if the nodes you are monitoring are not. Using
-a dedicated _monitoring cluster_ also enables you to monitor multiple
-clusters from a central location.
+send data to a separate _monitoring cluster_ so that historical monitoring
+data is available even if the nodes you are monitoring are not. 
+
+If you have at least a gold license, using a dedicated monitoring cluster also 
+enables you to monitor multiple clusters from a central location.
 
 To store monitoring data in a separate cluster:
 
@@ -21,18 +22,32 @@ NOTE: To monitor an {es} 7.x cluster, you must run {es}
 
 --
 
-. If you want to collect monitoring data about your production cluster, 
-configure it to send its data to the monitoring cluster. 
+. Configure your production cluster to collect data and send it to the 
+monitoring cluster. 
 
-** To use {metricbeat} to collect and send the data, see 
-{ref}/configuring-metricbeat.html[Monitoring {es} with {metricbeat}].
+** beta[] To use {metricbeat}, see 
+{ref}/configuring-metricbeat.html[Monitoring {es} with {metricbeat}]. This option 
+is available in 6.5 and later versions. 
 
-** To use exporters, see {ref}/configuring-monitoring.html[Configuring monitoring in {es}].
+** To use HTTP exporters, see {ref}/configuring-monitoring.html[Configuring monitoring in {es}].
 
-. (Optional) {logstash-ref}/configuring-logstash.html[Configure monitoring in {ls}]. 
+. (Optional)
+{logstash-ref}/configuring-logstash.html[Configure {ls} to collect data and send it to the monitoring cluster]. 
++
+--
+NOTE: You must configure HTTP exporters in the production cluster to route this 
+data to the monitoring cluster. It cannot be accomplished by using {metricbeat}. 
 
-. (Optional) {kibana-ref}/monitoring-xpack-kibana.html[Configure {kib} to collect and send 
-monitoring data].
+--
+
+. (Optional) Configure {kib} to collect data and send it to the monitoring cluster:
+
+** beta[] To use {metricbeat}, see 
+{kibana-ref}/monitoring-metricbeat.html[Monitoring {kib} with {metricbeat}]. This 
+option is available in 6.4 and later versions. 
+
+** To use HTTP exporters, see 
+{kibana-ref}/monitoring-xpack-kibana.html[Configuring monitoring in {kib}].
 
 . {kibana-ref}/monitoring-data.html[View the monitoring data in {kib}]. 
 +

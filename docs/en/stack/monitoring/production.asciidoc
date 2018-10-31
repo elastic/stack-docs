@@ -2,7 +2,7 @@
 [[monitoring-production]]
 == Monitoring in a production environment
 
-By default, {metricbeat} and the {xpack} monitoring agents on {es} index data
+By default, {metricbeat} and the {monitoring} agents on {es} index data
 into the cluster where they're running. In production, you should
 send data to a separate monitoring cluster so that historical monitoring
 data is available even if the nodes you are monitoring are not. Using
@@ -24,82 +24,17 @@ NOTE: To monitor an {es} 7.x cluster, you must run {es}
 . If you want to collect monitoring data about your production cluster, 
 configure it to send its data to the monitoring cluster. 
 
-.. To use {metricbeat} to collect and send the data, see 
+** To use {metricbeat} to collect and send the data, see 
 {ref}/configuring-metricbeat.html[Monitoring {es} with {metricbeat}].
 
-.. To use exporters, see {ref}/configuring-monitoring.html[Configuring monitoring in {es}].
-... Configure each {es} node in the cluster you are monitoring to send metrics 
-to your monitoring cluster by configuring an HTTP exporter in the
-`xpack.monitoring.exporters` settings in `elasticsearch.yml`.
-+
---
-[source,yaml]
---------------------------------------------------
-xpack.monitoring.exporters:
-  id1:
-    type: http
-    host: ["http://es-mon-1:9200", "http://es-mon2:9200"] <1>
-    auth.username: remote_monitor <2>
-    auth.password: changeme
---------------------------------------------------
-<1> If SSL/TLS is enabled on the monitoring cluster, you must
-connect through HTTPS.
-<2> If {security} is disabled on the monitoring cluster, you can
-omit `auth.username` and `auth.password`.
---
+** To use exporters, see {ref}/configuring-monitoring.html[Configuring monitoring in {es}].
 
-... If SSL/TLS is enabled on the monitoring cluster, specify the trusted
-CA certificates that will be used to verify the identity of the nodes
-in the monitoring cluster.
-+
---
-To add a CA certificate to an {es} node's trusted certificates, you
-can specify the location of the PEM encoded certificate with the
-`certificate_authorities` setting:
+. (Optional) {logstash-ref}/configuring-logstash.html[Configure monitoring in {ls}]. 
 
-[source,yaml]
---------------------------------------------------
-xpack.monitoring.exporters:
-  id1:
-    type: http
-    host: ["https://es-mon1:9200", "https://es-mon2:9200"]
-    auth:
-      username: agent-user
-      password: password
-    ssl:
-      certificate_authorities: [ "/path/to/ca.crt" ]
---------------------------------------------------
-
-Alternatively, you can configure trusted certificates using a truststore
-(a Java Keystore file that contains the certificates):
-
-[source,yaml]
---------------------------------------------------
-xpack.monitoring.exporters:
-  id1:
-    type: http
-    host: ["https://es-mon1:9200", "https://es-mon2:9200"]
-    auth:
-      username: remote_monitor
-      password: changeme
-    ssl:
-      truststore.path: /path/to/file
-      truststore.password: password
---------------------------------------------------
-
---
-
-... Restart {es} on the nodes in your production cluster.
-+
---
-TIP: You may want to temporarily {ref}/modules-cluster.html[disable shard
-allocation] before you restart your nodes to avoid unnecessary shard
-reallocation during the install process.
-
---
-
-. {kibana-ref}/monitoring-xpack-kibana.html[Configure {kib} to collect and send 
+. (Optional) {kibana-ref}/monitoring-xpack-kibana.html[Configure {kib} to collect and send 
 monitoring data].
+
+. {kibana-ref}/monitoring-data.html[View the monitoring data in {kib}]. 
 +
 --
 NOTE: {kib} makes requests to the monitoring cluster as the logged in user.
@@ -107,60 +42,3 @@ The username and password credentials must therefore be valid on both the {kib}
 server and the monitoring cluster.
 
 --
-
-. Create a user on the monitoring cluster that has the
-`remote_monitoring_agent` role. These credentials will be used when
-data is shipped from the {es} cluster you are monitoring to
-your dedicated monitoring cluster. For example, the following request
-creates a `remote_monitor` user that has the `remote_monitoring_agent` role:
-+
---
-[source, sh]
----------------------------------------------------------------
-POST /_xpack/security/user/remote_monitor
-{
-  "password" : "changeme",
-  "roles" : [ "remote_monitoring_agent"],
-  "full_name" : "Internal Agent For Remote Monitoring"
-}
----------------------------------------------------------------
-// CONSOLE
---
-
-. To verify your {monitoring} installation, point your web browser at your {kib}
-host, and select **Monitoring** from the side navigation. When security is enabled,
-to view the monitoring dashboards you must log in to {kib} as a user who has
-both the `kibana_user` and `monitoring_user` roles. For example:
-+
---
-[source,js]
---------------------------------------------------
-POST /_xpack/security/user/stack-monitor
-{
-  "password" : "changeme",
-  "roles" : [ "kibana_user", "monitoring_user" ]
-}
---------------------------------------------------
-// CONSOLE
-
-//image:images/monitoring.jpg["Monitoring",link="images/monitoring.jpg"]
---
-////
-. If you are using {metricbeat} to monitor the {stack} and {security} is enabled, 
-you must provide a user ID and password in your configuration files so that 
-{metricbeat} collect metrics successfully. You must also add this information to 
-your `metricbeat.yml` file so that {metricbeat} can send the metrics to your 
-monitoring cluster. 
-+
---
-TIP: There is a `stack_monitoring_agent` built-in role that grants the privileges 
-necessary for {metricbeat} to monitor {stack} products. See <<built-in-roles>>.
- 
---
-
-.. Create or identify a user that you want to use in the {metricbeat} configuration 
-files. Give this user the `stack_monitoring_agent` role. 
-
-.. Add the `username` and `password` settings to the {kib} module configuration 
-file. 
- ////

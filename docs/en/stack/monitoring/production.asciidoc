@@ -22,6 +22,40 @@ NOTE: To monitor an {es} 7.x cluster, you must run {es}
 
 --
 
+.. (Optional) Verify that the collection of monitoring data is disabled on the 
+monitoring cluster. By default, the `xpack.monitoring.collection.enabled` setting 
+is `false`. 
++ 
+--
+For example, you can use the following APIs to review and change this setting:
+
+[source,js]
+----------------------------------
+GET _cluster/settings
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "xpack.monitoring.collection.enabled": false
+  }
+}
+----------------------------------
+// CONSOLE
+--
+
+. (Optional) Create a dedicated {kib} instance for monitoring, rather than using 
+a single {kib} instance to access both your production cluster and monitoring 
+cluster. 
+
+.. Set the `elasticsearch.url` setting in the `kibana.yml` file such that it 
+contains the appropriate URL for your monitoring cluster. For more information 
+about this setting, see {kibana-ref}/settings.html[Configuring {kib}]. 
+
+.. (Optional) Disable the collection of monitoring data in this {kib} instance. 
+Set the `xpack.monitoring.kibana.collection.enabled` setting to `false` in the 
+`kibana.yml` file. For more information about this setting, see 
+{kibana-ref}/monitoring-settings-kb.html[Monitoring settings in {kib}]. 
+
 . Configure your production cluster to collect data and send it to the 
 monitoring cluster. 
 

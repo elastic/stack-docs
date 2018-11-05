@@ -204,3 +204,14 @@ information about any of these functions, see <<ml-functions>>.
 You must stop any {ml} jobs that are running before you start the upgrade
 process. For more information, see <<stopping-ml>> and
 {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
+
+[float]
+=== Rollup indices and index patterns are not supported
+
+Rollup indices and index patterns cannot be used in machine learning jobs or 
+{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
+{kib} or by using APIs. In {kib}, if you select an index, saved search, or index 
+pattern that uses the Rollup feature, the {ml} job creation wizards fail. 
+
+See {ref}/xpack-rollup.html[Rolling up historical data].
+

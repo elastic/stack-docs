@@ -15,27 +15,28 @@ resolve infrastructure issues quickly.
 [float]
 === Infrastructure monitoring components
 
-Infrastructure monitoring requires the following {stack} components:
-
-* {es}
-* {beats}
-* {kib} {infra-ui} UI
-* {kib} {logs-ui}
-
-// TODO: REPLACE THIS PLACEHOLDER IMAGE WITH A PRETTIER IMAGE THAT USES ICONS AND
-// COLOR. 
+Infrastructure monitoring requires the following {stack} components.
 
 image::monitoring-architecture.png[]
 
-*{es}* is a real-time, distributed storage, search, and analytics engine. {es}
-excels is indexing streams of semi-structured data, such as logs or metrics.
+*https://www.elastic.co/products/beats[{beats}]* are open source data
+shippers that you install as agents on your servers to send operational data to
+{es}.
 
-*Beats* are open source data shippers that you install as agents on your servers
-to send operational data to {es}.
+*https://www.elastic.co/products/elasticsearch[{es}]* is a real-time,
+distributed storage, search, and analytics engine. {es} excels is indexing
+streams of semi-structured data, such as logs or metrics.
 
-*{kib} {infra-ui} UI* provides a dedicated user interface for visualizing the
-health of your servers, containers, and services.
+*https://www.elastic.co/products/kibana[{kib}]* is an open source analytics and
+visualization platform designed to work with {es}. You use {kib} to search,
+view, and interact with data stored in {es} indices. You can easily perform
+advanced data analysis and visualize your data in a variety of charts, tables,
+and maps.
 
-*{kib} {logs-ui}* provides a compact, customizable display for the real-time
-log tailing.
+*https://www.elastic.co/products/kibana[{kib} {infra-ui} UI]* provides a
+dedicated user interface for visualizing the health of your servers,
+containers, and services.
+
+*https://www.elastic.co/products/kibana[{kib} {logs-ui}]* provides a compact,
+customizable display for the real-time log tailing.
 

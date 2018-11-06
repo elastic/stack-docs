@@ -1,0 +1,68 @@
+[[install-infrastructure-monitoring]]
+[role="xpack"]
+== Get up and running
+
+beta[]
+
+To get up and running with infrastructure monitoring, you need:
+
+* An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic
+license. To learn how to get up and running quickly, see
+{stack-gs}/get-started-elastic-stack.html[Getting started with the
+{stack}].
++
+[TIP]
+==============
+You can skip having to install {es} and {kib} by using our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
+Elastic Cloud. The {es} Service is available on both AWS and GCP.
+https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {es}
+Service for free].
+==============
+
+* {beats} shippers installed on each system you want to monitor
+
+[float]
+[[install-beats-for-infra-UI]]
+=== Install {beats} shippers
+
+To populate the {infra-ui} UI with metrics and log data, you need to install and
+configure the following shippers:
+
+* {metricbeat} for metrics
+* {filebeat} for log data
+
+To learn how to install and configure the shippers, do one of the following:
+
+* Follow the instructions in the Add Data section of the {kib} home page.
++
+[role="screenshot"]
+image::add-data.png[]
++
+** Click *Add log data* and follow the link for the logs you want to collect.
+
+** Click *Add metrics* and follow the link for the metrics you want to collect.
+
+* If your data source isn't in the list, or you want to install {beats} the old
+fashioned way:
+
+** Follow the 
+{metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started]
+and enable modules for the metrics you want to collect.
+
+** Follow the
+{filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start]
+and enable modules for the metrics you want to collect.
+
+For either approach, you need to enable the following modules to populate the
+{infra-ui} UI with data:
+
+* {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module]
+* {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
+* {metricbeat-ref}/metricbeat-module-docker.html[{metricbeat} `docker` module]
+* {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes` module]
+
+// REVIEWERS: Have I missed anything? Is there more detail required, or is it
+// OK (for beta, at least) to direct users to the Add data tutorials and
+// docs for install/config info? I'm concerned that the container monitoring
+// info might be incomplete.

@@ -1,0 +1,73 @@
+[[infrastructure-ui-overview]]
+[role="x-pack"]
+== {infra-ui} UI
+
+beta[]
+
+After you have infrastructure monitoring <<install-infrastructure-monitoring,up and running>>
+and data is streaming to {es}, use the infrastructure monitoring UI in {kib} to monitor your
+infrastructure and identify problems in real time.
+
+// REVIEWERS: I'm not trying to describe how the UI works;
+// I want to provide enough info to generate interest in the UI and help users
+// understand what is possible. The Kibana docs will describe how to do stuff
+// in the UI, but I think users need to see image here to understand the value
+// and power of the UI. Screen captures with realisitc data (to be added) will
+// help users understand the value.
+
+[float]
+=== Monitor your hosts and containers
+
+You start with an overview of the hosts and containers running in your
+infrastructure. The overview provides a summary of high-level metrics, like CPU
+usage, system load, memory usage, and network traffic, to help you assess the
+overall health of your systems and services.
+
+//TODO: ADD SCREEN HERE
+
+You can search for specific hosts to filter the overview, or enter
+{kibana-ref}/kuery-query.html[Kibana Query Language] for more sophisticated
+searches. To see data about related hosts, you can group by important
+characteristics, such as availability zones for cloud infrastructure, and
+identify problems in specific regions.
+
+When you see a potential problem, you can drill down into individual nodes to
+view related metrics, logs, and APM traces.
+
+[float]
+=== View detailed metrics
+
+After drilling down into the metrics for a specific node, you see details about
+metrics like CPU usage, system load, memory usage, and network traffic over
+time. You place your cursor over a point in the timeline to see detailed metrics
+captured at that moment in the timeline.
+
+//TODO: ADD SCREEN HERE
+
+[float]
+=== View related logs
+
+In the {logs-ui}, you can tail logs for the selected node. The log data is
+correlated with the metrics selected in the {infra-ui} UI, making it easier for
+you to diagnose problems. You can stream the logs in real time, or load the new
+data manually. Logs are streamed from top to bottom, making it easier for you to
+explore the logs in real time and see a historical view of your log data. The
+search bar in the log viewer also supports {kibana-ref}/kuery-query.html[Kibana
+Query Language].
+
+//TODO: ADD SCREEN HERE
+
+// REVIEWERS: I started to create a separate page to cover the log viewer, but
+// I think that might be overkill since the Kibana docs will describe how to
+// use the log viewer. In these docs, I just want to highlight capabilities,
+// not document the UI.
+
+[float]
+
+=== View related APM traces
+
+If Elastic APM is installed and configured, you can drill down to see related
+APM traces for processes that are instrumented. For more information about
+installing and using APM, see the
+{apm-get-started-ref}/index.html[APM overview].
+

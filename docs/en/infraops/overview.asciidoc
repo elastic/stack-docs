@@ -1,0 +1,41 @@
+[[infrastructure-monitoring-overview]]
+[role="xpack"]
+== Overview
+
+beta[]
+
+You can use the infrastructure monitoring capabilities of the {stack} to monitor your
+infrastructure in real time and check the health of your servers, containers,
+and services.
+
+The {infra-ui} UI in {kib} brings together data from a variety of sources,
+including logs, metrics, and traces, making it easier for you to identify and
+resolve infrastructure issues quickly.
+
+[float]
+=== Infrastructure monitoring components
+
+Infrastructure monitoring requires the following {stack} components:
+
+* {es}
+* {beats}
+* {kib} {infra-ui} UI
+* {kib} {logs-ui}
+
+// TODO: REPLACE THIS PLACEHOLDER IMAGE WITH A PRETTIER IMAGE THAT USES ICONS AND
+// COLOR. 
+
+image::monitoring-architecture.png[]
+
+*{es}* is a real-time, distributed storage, search, and analytics engine. {es}
+excels is indexing streams of semi-structured data, such as logs or metrics.
+
+*Beats* are open source data shippers that you install as agents on your servers
+to send operational data to {es}.
+
+*{kib} {infra-ui} UI* provides a dedicated user interface for visualizing the
+health of your servers, containers, and services.
+
+*{kib} {logs-ui}* provides a compact, customizable display for the real-time
+log tailing.
+

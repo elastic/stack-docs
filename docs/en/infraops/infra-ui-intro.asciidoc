@@ -23,26 +23,28 @@ infrastructure. The overview provides a summary of high-level metrics, like CPU
 usage, system load, memory usage, and network traffic, to help you assess the
 overall health of your systems and services.
 
-//TODO: ADD SCREEN HERE
-
 You can search for specific hosts to filter the overview, or enter
 {kibana-ref}/kuery-query.html[Kibana Query Language] for more sophisticated
-searches. To see data about related hosts, you can group by important
-characteristics, such as availability zones for cloud infrastructure, and
-identify problems in specific regions.
+searches. To see data about related hosts or containers, you can group by important
+characteristics, such as availability zones for cloud infrastructure, or
+namespaces for containers.
 
 When you see a potential problem, you can drill down into individual nodes to
-view related metrics, logs, and APM traces.
+view related metrics and logs.
+
+[role="screenshot"]
+image::screenshot-systems-monitoring.jpg[]
 
 [float]
 === View detailed metrics
 
-After drilling down into the metrics for a specific node, you see details about
-metrics like CPU usage, system load, memory usage, and network traffic over
-time. You place your cursor over a point in the timeline to see detailed metrics
-captured at that moment in the timeline.
+After drilling down into the metrics for a specific node, you see details like
+CPU usage, system load, memory usage, and network traffic over time. You can
+place your cursor over a point in the timeline to see detailed metrics captured
+at that moment in the timeline.
 
-//TODO: ADD SCREEN HERE
+[role="screenshot"]
+image::screenshot-metrics-infrastructure-monitoring.jpg[]
 
 [float]
 === View related logs
@@ -55,7 +57,8 @@ explore the logs in real time and see a historical view of your log data. The
 search bar in the log viewer also supports {kibana-ref}/kuery-query.html[Kibana
 Query Language].
 
-//TODO: ADD SCREEN HERE
+[role="screenshot"]
+image::screenshot-logs-ui.jpg[]
 
 // REVIEWERS: I started to create a separate page to cover the log viewer, but
 // I think that might be overkill since the Kibana docs will describe how to
@@ -66,8 +69,12 @@ Query Language].
 
 === View related APM traces
 
-If Elastic APM is installed and configured, you can drill down to see related
-APM traces for processes that are instrumented. For more information about
-installing and using APM, see the
-{apm-get-started-ref}/index.html[APM overview].
+// REVIEWERS: Should we leave this in given that the option to view traces
+// has been removed? Are the traces in APM correlated with the
+// the Infrastructure UI?
+
+If Elastic APM is installed and configured, you can go to the APM app to see
+related APM traces for processes that are instrumented. For more information
+about installing and using APM, see the {apm-get-started-ref}/index.html[APM
+overview].
 

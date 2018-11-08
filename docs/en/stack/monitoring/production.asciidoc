@@ -2,10 +2,14 @@
 [[monitoring-production]]
 == Monitoring in a production environment
 
-By default, {metricbeat} and the {monitoring} agents on {es} index data
+By default, the {monitoring} agents on {es} index data
 into the cluster where they're running. In production, you should
 send data to a separate _monitoring cluster_ so that historical monitoring
 data is available even if the nodes you are monitoring are not. 
+
+beta[] In 6.4 and later, you can use {metricbeat} to ship monitoring data about 
+{kib} to a separate monitoring cluster. In 6.5 and later, you can do the same 
+for {es}. 
 
 If you have at least a gold license, using a dedicated monitoring cluster also 
 enables you to monitor multiple clusters from a central location.
@@ -43,18 +47,44 @@ PUT _cluster/settings
 // CONSOLE
 --
 
-. (Optional) Create a dedicated {kib} instance for monitoring, rather than using 
-a single {kib} instance to access both your production cluster and monitoring 
-cluster. 
+.. If the {es} {security-features} are enabled on the monitoring cluster, create 
+users that can send and retrieve monitoring data. 
++
+--
+NOTE: If you plan to use {kib} to view monitoring data, username and password 
+credentials must be valid on both the {kib} server and the monitoring cluster. 
 
-.. Set the `elasticsearch.url` setting in the `kibana.yml` file such that it 
-contains the appropriate URL for your monitoring cluster. For more information 
-about this setting, see {kibana-ref}/settings.html[Configuring {kib}]. 
+--
 
-.. (Optional) Disable the collection of monitoring data in this {kib} instance. 
-Set the `xpack.monitoring.kibana.collection.enabled` setting to `false` in the 
-`kibana.yml` file. For more information about this setting, see 
-{kibana-ref}/monitoring-settings-kb.html[Monitoring settings in {kib}]. 
+*** beta[] If you plan to use {metricbeat} to collect data about {es} or {kib}, 
+create a user that has the `remote_monitoring_collector` built-in role and a 
+user that has the `remote_monitoring_agent` 
+<<built-in-roles-remote-monitoring-agent,built-in role>>. Alternatively, use the 
+`remote_monitoring_user` <<built-in-users,built-in user>>. 
+
+*** If you plan to use HTTP exporters to route data through your production 
+cluster, create a user that has the `remote_monitoring_agent` 
+<<built-in-roles-remote-monitoring-agent,built-in role>>. 
++
+--
+For example, the 
+following request creates a `remote_monitor` user that has the 
+`remote_monitoring_agent` role:
+
+[source, sh]
+---------------------------------------------------------------
+POST /_xpack/security/user/remote_monitor
+{
+  "password" : "changeme",
+  "roles" : [ "remote_monitoring_agent"],
+  "full_name" : "Internal Agent For Remote Monitoring"
+}
+---------------------------------------------------------------
+// CONSOLE
+// TEST[skip:needs-gold+-license]
+
+Alternatively, use the `remote_monitoring_user` <<built-in-users,built-in user>>. 
+--
 
 . Configure your production cluster to collect data and send it to the 
 monitoring cluster. 
@@ -83,11 +113,13 @@ option is available in 6.4 and later versions.
 ** To use HTTP exporters, see 
 {kibana-ref}/monitoring-xpack-kibana.html[Configuring monitoring in {kib}].
 
-. {kibana-ref}/monitoring-data.html[View the monitoring data in {kib}]. 
-+
---
-NOTE: {kib} makes requests to the monitoring cluster as the logged in user.
-The username and password credentials must therefore be valid on both the {kib}
-server and the monitoring cluster.
+. (Optional) Create a dedicated {kib} instance for monitoring, rather than using 
+a single {kib} instance to access both your production cluster and monitoring 
+cluster.
 
---
+.. (Optional) Disable the collection of monitoring data in this {kib} instance. 
+Set the `xpack.monitoring.kibana.collection.enabled` setting to `false` in the 
+`kibana.yml` file. For more information about this setting, see 
+{kibana-ref}/monitoring-settings-kb.html[Monitoring settings in {kib}]. 
+
+. {kibana-ref}/monitoring-data.html[Configure {kib} to retrieve and display the monitoring data]. 

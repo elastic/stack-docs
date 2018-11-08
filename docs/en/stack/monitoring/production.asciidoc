@@ -89,11 +89,10 @@ Alternatively, use the `remote_monitoring_user` <<built-in-users,built-in user>>
 . Configure your production cluster to collect data and send it to the 
 monitoring cluster. 
 
-** beta[] To use {metricbeat}, see 
-{ref}/configuring-metricbeat.html[Monitoring {es} with {metricbeat}]. This option 
+** beta[] {ref}/configuring-metricbeat.html[Use {metricbeat}]. This option 
 is available in 6.5 and later versions. 
 
-** To use HTTP exporters, see {ref}/configuring-monitoring.html[Configuring monitoring in {es}].
+** {ref}/configuring-monitoring.html[Use HTTP exporters].
 
 . (Optional)
 {logstash-ref}/configuring-logstash.html[Configure {ls} to collect data and send it to the monitoring cluster]. 
@@ -106,12 +105,10 @@ data to the monitoring cluster. It cannot be accomplished by using {metricbeat}.
 
 . (Optional) Configure {kib} to collect data and send it to the monitoring cluster:
 
-** beta[] To use {metricbeat}, see 
-{kibana-ref}/monitoring-metricbeat.html[Monitoring {kib} with {metricbeat}]. This 
+** beta[] {kibana-ref}/monitoring-metricbeat.html[Use {metricbeat}]. This 
 option is available in 6.4 and later versions. 
 
-** To use HTTP exporters, see 
-{kibana-ref}/monitoring-xpack-kibana.html[Configuring monitoring in {kib}].
+** {kibana-ref}/monitoring-kibana.html[Use HTTP exporters].
 
 . (Optional) Create a dedicated {kib} instance for monitoring, rather than using 
 a single {kib} instance to access both your production cluster and monitoring 

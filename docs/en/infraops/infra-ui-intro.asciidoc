@@ -5,15 +5,8 @@
 beta[]
 
 After you have infrastructure monitoring <<install-infrastructure-monitoring,up and running>>
-and data is streaming to {es}, use the infrastructure monitoring UI in {kib} to monitor your
+and data is streaming to {es}, use the {infra-ui} UI in {kib} to monitor your
 infrastructure and identify problems in real time.
-
-// REVIEWERS: I'm not trying to describe how the UI works;
-// I want to provide enough info to generate interest in the UI and help users
-// understand what is possible. The Kibana docs will describe how to do stuff
-// in the UI, but I think users need to see image here to understand the value
-// and power of the UI. Screen captures with realisitc data (to be added) will
-// help users understand the value.
 
 [float]
 === Monitor your hosts and containers
@@ -59,22 +52,3 @@ Query Language].
 
 [role="screenshot"]
 image::screenshot-logs-ui.jpg[]
-
-// REVIEWERS: I started to create a separate page to cover the log viewer, but
-// I think that might be overkill since the Kibana docs will describe how to
-// use the log viewer. In these docs, I just want to highlight capabilities,
-// not document the UI.
-
-[float]
-
-=== View related APM traces
-
-// REVIEWERS: Should we leave this in given that the option to view traces
-// has been removed? Are the traces in APM correlated with the
-// the Infrastructure UI?
-
-If Elastic APM is installed and configured, you can go to the APM app to see
-related APM traces for processes that are instrumented. For more information
-about installing and using APM, see the {apm-get-started-ref}/index.html[APM
-overview].
-

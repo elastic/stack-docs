@@ -29,19 +29,17 @@ Service for free].
 To populate the {infra-ui} UI with metrics and log data, you need to install and
 configure the following shippers:
 
-* {metricbeat} for metrics
-* {filebeat} for log data
+* https://www.elastic.co/products/beats/metricbeat[{metricbeat}] for metrics
+* https://www.elastic.co/products/beats/filebeat[{filebeat}] for log data
 
 To learn how to install and configure the shippers, do one of the following:
 
-* Follow the instructions in the Add Data section of the {kib} home page.
+* Follow the instructions in the Add Data section of the {kib} home page. Click
+*Add log data* or *Add metrics*, and follow the links for the types of data you
+want to collect.
 +
 [role="screenshot"]
 image::add-data.png[]
-+
-** Click *Add log data* and follow the link for the logs you want to collect.
-
-** Click *Add metrics* and follow the link for the metrics you want to collect.
 
 * If your data source isn't in the list, or you want to install {beats} the old
 fashioned way:
@@ -52,17 +50,61 @@ and enable modules for the metrics you want to collect.
 
 ** Follow the
 {filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start]
-and enable modules for the metrics you want to collect.
+and enable modules for the logs you want to collect. If there is no module
+for the logs you want to collect, see the
+{filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to
+learn how to configure inputs.
 
-For either approach, you need to enable the following modules to populate the
-{infra-ui} UI with data:
+For either approach, you need to enable modules in {filebeat} and {metricbeat}
+to populate the {infra-ui} UI with data. 
+
+To collect metrics, enable:
 
 * {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module]
-* {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
 * {metricbeat-ref}/metricbeat-module-docker.html[{metricbeat} `docker` module]
 * {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes` module]
 
-// REVIEWERS: Have I missed anything? Is there more detail required, or is it
-// OK (for beta, at least) to direct users to the Add data tutorials and
-// docs for install/config info? I'm concerned that the container monitoring
-// info might be incomplete.
+To collect logs, enable: 
+
+* {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
+* Any other {filebeat-ref}/filebeat-modules.html[{filebeat} modules] needed for
+your environment, such as `apache2`, `redis`, and so on
+* The {filebeat-ref}/filebeat-input-docker.html[docker input in {filebeat}]
+
+
+// REVIEWERS: This language is too wishy washy. Can you help me come up with
+// better language to help users understand when this is required?
+
+You may also need to add processors to your configuration to collect metadata
+about containers or hosts where your services are running:
+
+[horizontal]
+*Processor*:: *Collects*
+`add_cloud_metadata`::
+Instance metadata about the machine’s hosting provider. 
+`add_kubernetes_metadata`::
+The pod name, namespace, and labels of the container.
+`add_docker_metadata`::
+The container ID, name, image, and labels of the Docker container.
+`add_host_metadata`::
+Details about the host architecture, name, id, OS, IP address, and mac
+address.
+
+To learn how to define processors, see:
+
+* {metricbeat-ref}/defining-processors.html[Define processors in {metricbeat}]
+* {metricbeat-ref}/defining-processors.html[Define processors in {filebeat}]
+
+
+[float]
+==== More about monitoring containers
+
+If you're monitoring containers, you can use autodiscover to automatically apply
+configuration changes in response to changes in your containers. To learn how,
+see:
+
+* {filebeat-ref}/configuration-autodiscover.html[{filebeat} autodiscover
+configuration]
+* {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover
+configuration]
+

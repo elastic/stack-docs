@@ -26,8 +26,8 @@ Service for free].
 [[install-beats-for-infra-UI]]
 === Install {beats} shippers
 
-To populate the {infra-ui} UI with metrics and log data, you need to install and
-configure the following shippers:
+To populate the <<infrastructure-ui-overview,{infra-ui} UI>> with metrics and
+log data, you need to install and configure the following shippers:
 
 * https://www.elastic.co/products/beats/metricbeat[{metricbeat}] for metrics
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for log data
@@ -81,14 +81,14 @@ about containers or hosts where your services are running:
 [horizontal]
 *Processor*:: *Collects*
 `add_cloud_metadata`::
-Instance metadata about the machine’s hosting provider. 
+Instance metadata about the machine’s hosting provider 
 `add_kubernetes_metadata`::
-The pod name, namespace, and labels of the container.
+The pod name, namespace, and labels of the container
 `add_docker_metadata`::
-The container ID, name, image, and labels of the Docker container.
+The container ID, name, image, and labels of the Docker container
 `add_host_metadata`::
 Details about the host architecture, name, id, OS, IP address, and mac
-address.
+address
 
 To learn how to define processors, see:
 

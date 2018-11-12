@@ -2,8 +2,8 @@
 [[ml-limitations]]
 == Machine learning limitations
 
-The following limitations and known problems apply to the {version} release of
-{xpack}:
+The following limitations and known problems apply to the {version} release of 
+the Elastic {ml-features}:
 
 [float]
 === Categorization uses English dictionary words
@@ -208,3 +208,33 @@ pattern that uses the Rollup feature, the {ml} job creation wizards fail.
 
 See {ref}/xpack-rollup.html[Rolling up historical data].
 
+[float]
+[[ml-space-limitations]]
+=== Machine learning objects do not belong to {kib} spaces
+
+If you create {kibana-ref}/xpack-spaces.html[spaces] in {kib}, you see only the  
+saved objects that belong to that space. This limited scope does not apply to 
+{ml} objects; they are visible in all of your spaces.  
+
+However, the {kib} {ml-features} interact with some saved objects (such as 
+index patterns, dashboards, and visualizations) that might not be available in 
+all spaces. For example:
+
+* experimental[] If you upload a file on the *Machine Learning* page in {kib}, 
+the {ml-features} identify the file format and field mappings. You can then 
+optionally import that data into an {es} index and create an index pattern. This 
+index pattern belongs to the space that is active when you import the file. If 
+you want to use the index pattern in other spaces, you must create it as needed.  
+* Likewise, if you use the single-metric, multi-metric, or population job 
+wizards to create a job in {kib}, you can encounter problems if you subsequently 
+try to clone the job in a different space. In particular, problems occur when 
+you try to clone the job in a space that does not contain appropriate index 
+patterns. 
+* If you used a supplied configuration to create jobs (for example, for Apache 
+or NGINX web access logs), visualizations and dashboards are automatically 
+generated. These objects belong to the space that was active when you created 
+the job. If you change your active space, custom URLs from the {ml} results to 
+the dashboards or visualizations might fail. 
+
+ 
+ 

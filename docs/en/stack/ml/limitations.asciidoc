@@ -225,8 +225,11 @@ the {ml-features} identify the file format and field mappings. You can then
 optionally import that data into an {es} index and create an index pattern. This 
 index pattern belongs to the space that is active when you import the file. If 
 you want to use the index pattern in other spaces, you must create it as needed.  
-* Likewise, if you clone a {ml} job in a space that does not contain the 
-necessary index pattern, the cloned job fails. 
+* Likewise, if you use the single-metric, multi-metric, or population job 
+wizards to create a job in {kib}, you can encounter problems if you subsequently 
+try to clone the job in a different space. In particular, problems occur when 
+you try to clone the job in a space that does not contain appropriate index 
+patterns. 
 * If you used a supplied configuration to create jobs (for example, for Apache 
 or NGINX web access logs), visualizations and dashboards are automatically 
 generated. These objects belong to the space that was active when you created 

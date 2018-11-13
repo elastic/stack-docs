@@ -30,7 +30,9 @@ obtaining snapshot and restore status. This privilege does not include the
 ability to manage security.
 
 `manage_ccr`::
-TBD
+All {ccr} operations related to managing follower indices and auto-follow 
+patterns. It also includes the authority to grant the privileges necessary to 
+manage follower indices and auto-follow patterns.
 
 `manage_index_templates`::
 All operations on index templates.
@@ -66,7 +68,9 @@ who created or updated them.
 --
 
 `read_ccr`::
-TBD
+All read only {ccr} operations, such as getting information about indices and 
+metadata for leader indices in the cluster. It also includes the authority to 
+check whether users have the appropriate privileges to follow leader indices. 
 
 `transport_client`::
 All privileges necessary for a transport client to connect.  Required by the remote
@@ -89,7 +93,8 @@ close, delete, exists, flush, mapping, open, force merge, refresh, settings,
 search shards, templates, validate).
 
 `manage_follow_index`::
-TBD
+All actions that are required to manage a follower index, which includes pausing
+and resuming {ccr}. 
 
 `view_index_metadata`::
 Read-only access to index metadata (aliases, aliases exists, get index, exists, field mappings,

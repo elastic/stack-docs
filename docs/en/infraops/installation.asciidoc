@@ -56,45 +56,32 @@ for the logs you want to collect, see the
 learn how to configure inputs.
 
 For either approach, you need to enable modules in {filebeat} and {metricbeat}
-to populate the {infra-ui} UI with data. 
+to populate the {infra-ui} UI with data.
 
-To collect metrics, enable:
+[float]
+==== Which modules and configuration options do I enable?
+
+To populate the *Hosts* view and add logs, enable: 
 
 * {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module]
-* {metricbeat-ref}/metricbeat-module-docker.html[{metricbeat} `docker` module]
-* {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes` module]
-
-To collect logs, enable: 
-
 * {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
-* Any other {filebeat-ref}/filebeat-modules.html[{filebeat} modules] needed for
+* {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for
 your environment, such as `apache2`, `redis`, and so on
-* The {filebeat-ref}/filebeat-input-docker.html[docker input in {filebeat}]
 
+To populate the *Docker* view and add logs, enable:
 
-// REVIEWERS: This language is too wishy washy. Can you help me come up with
-// better language to help users understand when this is required?
+* {metricbeat-ref}/metricbeat-module-docker.html[{metricbeat} `docker` module]
+* {metricbeat-ref}/add-docker-metadata.html[{metricbeat} `add_docker_metadata` processor]
+* {filebeat-ref}/filebeat-input-docker.html[{filebeat} `docker` input]
+* {filebeat-ref}/add-docker-metadata.html[{filebeat} `add_docker_metadata` processor]
 
-You may also need to add processors to your configuration to collect metadata
-about containers or hosts where your services are running:
+To populate the *Kubernetes* view and add logs, enable:
 
-[horizontal]
-*Processor*:: *Collects*
-`add_cloud_metadata`::
-Instance metadata about the machine’s hosting provider 
-`add_kubernetes_metadata`::
-The pod name, namespace, and labels of the container
-`add_docker_metadata`::
-The container ID, name, image, and labels of the Docker container
-`add_host_metadata`::
-Details about the host architecture, name, id, OS, IP address, and mac
-address
-
-To learn how to define processors, see:
-
-* {metricbeat-ref}/defining-processors.html[Define processors in {metricbeat}]
-* {metricbeat-ref}/defining-processors.html[Define processors in {filebeat}]
-
+* {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes`
+module]
+* {metricbeat-ref}/add-kubernetes-metadata.html[{metricbeat} `add_kubernetes_metadata` processor]
+* {filebeat-ref}/filebeat-input-docker.html[{filebeat} `docker` input]
+* {filebeat-ref}/add-kubernetes-metadata.html[{filebeat} `add_kubernetes_metadata` processor]
 
 [float]
 ==== More about monitoring containers

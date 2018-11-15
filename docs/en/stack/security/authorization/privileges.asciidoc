@@ -12,17 +12,6 @@ This section lists the privileges that you can assign to a role.
 All cluster administration operations, like snapshotting, node shutdown/restart,
 settings update, rerouting, or managing users and roles.
 
-`monitor`::
-All cluster read-only operations, like cluster health and state, hot threads, 
-node info, node and cluster stats, and pending cluster tasks.
-
-`monitor_ml`::
-All read only {ml} operations, such as getting information about {dfeeds}, jobs,
-model snapshots, or results.
-
-`monitor_watcher`::
-All read only watcher operations, such as getting a watch and watcher stats.
-
 `manage`::
 Builds on `monitor` and adds cluster operations that change values in the cluster.
 This includes snapshotting, updating settings, and rerouting. It also includes 
@@ -68,6 +57,17 @@ who created or updated them.
 
 --
 
+`monitor`::
+All cluster read-only operations, like cluster health and state, hot threads, 
+node info, node and cluster stats, and pending cluster tasks.
+
+`monitor_ml`::
+All read only {ml} operations, such as getting information about {dfeeds}, jobs,
+model snapshots, or results.
+
+`monitor_watcher`::
+All read only watcher operations, such as getting a watch and watcher stats.
+
 `read_ccr`::
 All read only {ccr} operations, such as getting information about indices and 
 metadata for leader indices in the cluster. It also includes the authority to 
@@ -85,37 +85,6 @@ cluster to enable <<cross-cluster-configuring,Cross Cluster Search>>.
 `all`::
 Any action on an index
 
-`monitor`::
-All actions that are required for monitoring (recovery, segments info, index 
-stats and status).
-
-`manage`::
-All `monitor` privileges plus index administration (aliases, analyze, cache clear,
-close, delete, exists, flush, mapping, open, force merge, refresh, settings,
-search shards, templates, validate).
-
-`manage_follow_index`::
-All actions that are required to manage the lifecycle of a follower index, which
-includes creating a follower index, closing it, and converting it to a regular 
-index. This privilege is necessary only on clusters that contain follower indices. 
-
-`view_index_metadata`::
-Read-only access to index metadata (aliases, aliases exists, get index, exists, field mappings,
-mappings, search shards, type exists, validate, warmers, settings). This
-privilege is primarily available for use by {kib} users.
-
-`read`::
-Read only access to actions (count, explain, get, mget, get indexed scripts,
-more like this, multi percolate/search/termvector, percolate, scroll,
-clear_scroll, search, suggest, tv).
-
-`read_cross_cluster`::
-Read only access to the search action from a <<cross-cluster-configuring,remote cluster>>.
-
-`index`::
-Privilege to index and update documents. Also grants access to the update
-mapping action.
-
 `create`::
 Privilege to index documents. Also grants access to the update mapping
 action.
@@ -127,21 +96,53 @@ to overwrite a previously indexed document.
 
 --
 
+`create_index`::
+Privilege to create an index. A create index request may contain aliases to be
+added to the index once created. In that case the request requires the `manage`
+privilege as well, on both the index and the aliases names.
+
 `delete`::
 Privilege to delete documents.
+
+`delete_index`::
+Privilege to delete an index.
+
+`index`::
+Privilege to index and update documents. Also grants access to the update
+mapping action.
+
+`manage`::
+All `monitor` privileges plus index administration (aliases, analyze, cache clear,
+close, delete, exists, flush, mapping, open, force merge, refresh, settings,
+search shards, templates, validate).
+
+`manage_follow_index`::
+All actions that are required to manage the lifecycle of a follower index, which
+includes creating a follower index, closing it, and converting it to a regular 
+index. This privilege is necessary only on clusters that contain follower indices. 
+
+`monitor`::
+All actions that are required for monitoring (recovery, segments info, index 
+stats and status).
+
+`read`::
+Read only access to actions (count, explain, get, mget, get indexed scripts,
+more like this, multi percolate/search/termvector, percolate, scroll,
+clear_scroll, search, suggest, tv).
+
+`read_cross_cluster`::
+Read only access to the search action from a <<cross-cluster-configuring,remote cluster>>.
+
+`view_index_metadata`::
+Read-only access to index metadata (aliases, aliases exists, get index, exists, field mappings,
+mappings, search shards, type exists, validate, warmers, settings). This
+privilege is primarily available for use by {kib} users.
 
 `write`::
 Privilege to perform all write operations to documents, which includes the
 permission to index, update, and delete documents as well as performing bulk
 operations. Also grants access to the update mapping action.
 
-`delete_index`::
-Privilege to delete an index.
-
-`create_index`::
-Privilege to create an index. A create index request may contain aliases to be
-added to the index once created. In that case the request requires the `manage`
-privilege as well, on both the index and the aliases names.
 
 ==== Run as privilege
 

@@ -392,6 +392,30 @@ Kerberos/SPNEGO debug logging on JVM, add following JVM system properties:
 
 For more information about JVM system properties, see {ref}/jvm-options.html[configuring JVM options].
 
+`gss_init_sec_context() failed: An unsupported mechanism was requested`::
+
+`No credential found for: 1.2.840.113554.1.2.2 usage: Accept`::
++
+--
+
+You would usually see this error message on the client side when using `curl` to test {es} Kerberos
+setup, as the support for Kerberos Spnego is missing on the client due to an old version of curl.
+Kerberos realm in {es} only supports Spengo mechanism (Oid 1.3.6.1.5.5.2) and does not yet support
+Kerberos mechanism (Oid 1.2.840.113554.1.2.2).
+
+Make sure that:
+
+* you have installed curl version 7.49 or above as older versions of curl
+have known Kerberos bugs.
+
+* the curl installed on your machine has `GSS-API`, `Kerberos` and
+`SPNEGO` features listed when you invoke command `curl -V`. If not you will need to
+compile `curl` version with this support.
+
+To download latest curl version visit https://curl.haxx.se/download.html
+
+--
+
 [[trb-security-internalserver]]
 === Internal Server Error in Kibana
 

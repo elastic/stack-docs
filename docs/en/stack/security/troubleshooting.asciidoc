@@ -374,11 +374,11 @@ the time on the machines within the domain is in sync.
 +
 --
 
-You would usually see this error message on the client side when using `curl` to
-test {es} Kerberos setup, as the support for Kerberos Spnego is missing on the
-client due to an old version of curl. The Kerberos realm in {es} only supports
-Spengo mechanism (Oid 1.3.6.1.5.5.2); it does not yet support Kerberos mechanism
-(Oid 1.2.840.113554.1.2.2).
+You would usually see this error message on the client side when using `curl` to 
+test {es} Kerberos setup. For example, these messages occur when you are using 
+an old version of curl on the client and therefore Kerberos Spnego support is missing.
+The Kerberos realm in {es} only supports Spengo mechanism (Oid 1.3.6.1.5.5.2); 
+it does not yet support Kerberos mechanism (Oid 1.2.840.113554.1.2.2).
 
 Make sure that:
 

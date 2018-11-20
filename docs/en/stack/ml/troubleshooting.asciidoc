@@ -1,8 +1,8 @@
 [role="xpack"]
 [[ml-troubleshooting]]
-== {xpackml} Troubleshooting
+== Troubleshooting {ml}
 ++++
-<titleabbrev>{xpackml}</titleabbrev>
+<titleabbrev>Machine learning</titleabbrev>
 ++++
 
 Use the information in this section to troubleshoot common problems and find
@@ -17,7 +17,7 @@ To get help, see <<help>>.
 === Machine learning features unavailable after rolling upgrade
 
 This problem occurs after you upgrade all of the nodes in your cluster to
-{version} by using rolling upgrades. When you try to use {xpackml} features for
+{version} by using rolling upgrades. When you try to use {ml-features} for
 the first time, all attempts fail, though `GET _xpack` and `GET _xpack/usage`
 indicate that {xpack} is enabled.
 
@@ -32,9 +32,8 @@ For example: `unable to install ml metadata upon startup`
 
 *Resolution:*
 
-After you upgrade all master-eligible nodes to {es} {version} and {xpack}
-{version}, restart the current master node, which triggers the {xpackml}
-features to re-initialize.
+After you upgrade all master-eligible nodes to {es} {version}, restart the
+current master node, which triggers the {ml-features} to re-initialize.
 
 For more information, see {ref}/rolling-upgrades.html[Rolling upgrades].
 

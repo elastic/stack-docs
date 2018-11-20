@@ -64,7 +64,7 @@ NOTE: Some functions such as `count` and `rare` do not require fields.
 interval that the analysis is aggregated into.
 +
 --
-The {xpackml} features use the concept of a bucket to divide up the time series
+The {ml-features} use the concept of a bucket to divide up the time series
 into batches for processing. For example, if you are monitoring
 the total number of requests in the system,
 using a bucket span of 1 hour would mean that at the end of each hour, it
@@ -201,7 +201,7 @@ the job or {dfeed}, and clone or delete the job, for example.
 
 [float]
 [[ml-gs-job1-datafeed]]
-==== Managing {dfeeds-cap}
+==== Managing {dfeeds}
 
 A {dfeed} can be started and stopped multiple times throughout its lifecycle.
 If you want to retrieve more data from {es} and the {dfeed} is stopped, you must
@@ -238,9 +238,9 @@ button: image:ml/images/ml-stop-feed.jpg["Stop {dfeed}"]
 Now that you have processed all the data, let's start exploring the job results.
 
 [[ml-gs-job1-analyze]]
-=== Exploring Single Metric Job Results
+=== Exploring single metric job results
 
-The {xpackml} features analyze the input stream of data, model its behavior,
+The {ml-features} analyze the input stream of data, model its behavior,
 and perform analysis based on the detectors you defined in your job. When an
 event occurs outside of the model, that event is identified as an anomaly.
 

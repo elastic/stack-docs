@@ -23,7 +23,7 @@ future release.
 === Pop-ups must be enabled in browsers
 //See x-pack-elasticsearch/#844
 
-The {xpackml} features in {kib} use pop-ups. You must configure your
+The {ml-features} in {kib} use pop-ups. You must configure your
 web browser so that it does not block pop-up windows or create an
 exception for your {kib} URL.
 
@@ -108,7 +108,7 @@ analyzed.
 === Time-based index patterns are not supported
 //See x-pack-elasticsearch/#1910
 
-It is not possible to create an {xpackml} analysis job that uses time-based
+It is not possible to create a {ml} analysis job that uses time-based
 index patterns, for example `[logstash-]YYYY.MM.DD`.
 This applies to the single metric or multi metric job creation wizards in {kib}.
 
@@ -148,7 +148,7 @@ Likewise, when you create a single or multi-metric job in {kib}, in some cases
 it uses aggregations on the data that it retrieves from {es}. One of the
 benefits of summarizing data this way is that {es} automatically distributes
 these calculations across your cluster. This summarized data is then fed into
-{xpackml} instead of raw results, which reduces the volume of data that must
+{ml} instead of raw results, which reduces the volume of data that must
 be considered while detecting anomalies.  However, if you have two jobs, one of
 which uses pre-aggregated data and another that does not, their results might
 differ. This difference is due to the difference in precision of the input data.

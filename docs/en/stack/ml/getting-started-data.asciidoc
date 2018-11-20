@@ -4,7 +4,7 @@
 
 For the purposes of this tutorial, we provide sample data that you can play with
 and search in {es}. When you consider your own data, however, it's important to
-take a moment and think about where the {xpackml} features will be most
+take a moment and think about where the {ml-features} will be most
 impactful.
 
 The first consideration is that it must be time series data. The {ml} features
@@ -32,7 +32,7 @@ for you under the covers.
 
 [float]
 [[ml-gs-sampledata]]
-==== Obtaining a Sample Data Set
+==== Obtaining a sample data set
 
 In this step we will upload some sample data to {es}. This is standard
 {es} functionality, and is needed to set the stage for using {ml}.
@@ -86,7 +86,7 @@ particular time. If your data is stored in {es}, you can generate
 this type of sum or average by using aggregations. One of the benefits of
 summarizing data this way is that {es} automatically distributes
 these calculations across your cluster. You can then feed this summarized data
-into {xpackml} instead of raw results, which reduces the volume
+into {ml} instead of raw results, which reduces the volume
 of data that must be considered while detecting anomalies. For the purposes of
 this tutorial, however, these summary values are stored in {es}. For more
 information, see <<ml-configuring-aggregation>>.

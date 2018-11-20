@@ -1,5 +1,5 @@
 [[license-management]]
-= License Management
+= License management
 
 [partintro]
 --
@@ -23,24 +23,24 @@ the trial, or https://www.elastic.co/subscriptions/[purchase a subscription].
 
 [float]
 [[installing-license]]
-== Updating Your License
+== Updating Your license
 
 You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
 you install in {kib} or by using the {ref}/update-license.html[update license API].
 
-TIP: If you are using a basic or trial license, {security} is disabled by 
-default. In all other licenses, {security} is enabled by default; you must 
-{xpack-ref}/security-getting-started.html[secure the Elastic Stack] or disable 
-{security}. 
+TIP: If you are using a basic or trial license, {security-features} are disabled
+by default. In all other licenses, {security-features} are enabled by default;
+you must {stack-ov}/security-getting-started.html[secure the {stack}] or disable
+the {security-features}. 
 
 --
 
 [[license-expiration]]
-== License Expiration
+== License expiration
 
 Your {xpack} license is time based and expires at a future date. If you're
-using {monitoring} and your license will expire within 30 days, a license
+using {monitor-features} and your license will expire within 30 days, a license
 expiration warning is displayed prominently. Warnings are also displayed on
 startup and written to the {es} log starting 30 days from the expiration date.
 These error messages tell you when the license expires and what features will be

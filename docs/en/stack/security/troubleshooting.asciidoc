@@ -369,6 +369,31 @@ the time on the machines within the domain is in sync.
 
 --
 
+`gss_init_sec_context() failed: An unsupported mechanism was requested`::
+
+`No credential found for: 1.2.840.113554.1.2.2 usage: Accept`::
++
+--
+
+You would usually see this error message on the client side when using `curl` to 
+test {es} Kerberos setup. For example, these messages occur when you are using 
+an old version of curl on the client and therefore Kerberos Spnego support is missing.
+The Kerberos realm in {es} only supports Spengo mechanism (Oid 1.3.6.1.5.5.2); 
+it does not yet support Kerberos mechanism (Oid 1.2.840.113554.1.2.2).
+
+Make sure that:
+
+* You have installed curl version 7.49 or above as older versions of curl have
+known Kerberos bugs.
+
+* The curl installed on your machine has `GSS-API`, `Kerberos` and `SPNEGO`
+features listed when you invoke command `curl -V`. If not, you will need to
+compile `curl` version with this support.
+
+To download latest curl version visit https://curl.haxx.se/download.html
+
+--
+
 As Kerberos logs are often cryptic in nature and many things can go wrong 
 as it depends on external services like DNS and NTP. You might 
 have to enable additional debug logs to determine the root cause of the issue.

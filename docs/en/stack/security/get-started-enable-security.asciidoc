@@ -1,4 +1,5 @@
-When you use the trial license, {security} is disabled by default. To enable it:
+When you use the trial license, the {es} {security-features} are disabled by
+default. To enable them:
 
 . Stop {kib}. The method for starting and stopping {kib} varies depending on 
 how you installed it. For example, if you installed {kib} from an archive 
@@ -29,11 +30,11 @@ xpack.security.enabled: true
 TIP: If you have a basic or trial license, the default value for this setting is 
 `false`. If you have a gold or higher license, the default value is `true`. 
 Therefore, it is a good idea to explicitly add this setting to avoid confusion 
-about whether {security} is enabled.  
+about whether {security-features} are enabled.  
 
 --
 
-When you enable {security}, basic authentication is enabled by default. To 
-communicate with the cluster, you must specify a username and password.
-Unless you <<anonymous-access,enable anonymous access>>, all requests that don't 
-include a user name and password are rejected.
+When you enable {es} {security-features}, basic authentication is enabled by
+default. To communicate with the cluster, you must specify a username and
+password. Unless you <<anonymous-access,enable anonymous access>>, all requests
+that don't include a user name and password are rejected.

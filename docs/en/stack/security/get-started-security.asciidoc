@@ -71,9 +71,9 @@ manage all the other users.
 
 The {stack} _authenticates_ users to ensure that they are valid. The 
 authentication process is handled by _realms_. You can use one or more built-in 
-realms, such as the native, file, LDAP, PKI, Active Directory, or SAML realms. 
-Alternatively, you can create your own custom realms. In this tutorial, we'll  
-use a native realm. 
+realms, such as the native, file, LDAP, PKI, Active Directory, SAML, or Kerberos
+realms. Alternatively, you can create your own custom realms. In this tutorial,
+we'll use a native realm. 
 
 In general, you configure realms by adding `xpack.security.authc.realms` 
 settings in the `elasticsearch.yml` file. However, the native realm is available 
@@ -98,10 +98,10 @@ Let's create two users in the native realm.
 [role="screenshot"]
 image::security/images/management-builtin-users.jpg["User management screenshot in Kibana"]
 
-In this example, you can see all of the built-in users. 
+In this example, you can see a list of built-in users. 
 --
 
-. Click *Create user* to make a new user. For example, create a user for yourself:
+. Click *Create new user*. For example, create a user for yourself:
 +
 --
 [role="screenshot"]
@@ -111,7 +111,7 @@ You'll notice that when you create a user, you can assign it a role. Don't
 choose a role yet--we'll come back to that in subsequent steps.
 --
 
-. Click *Create user* and create a `logstash_internal` user.
+. Click *Create new user* and create a `logstash_internal` user.
 +
 --
 In {stack-gs}/get-started-elastic-stack.html[Geting started with the {stack}], 

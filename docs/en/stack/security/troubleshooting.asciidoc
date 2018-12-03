@@ -505,16 +505,18 @@ do not match required audience [https://my.kibana.url]])
 
 *Resolution:*
 
-We received a SAML response that is addressed to another SAML Service Provider. This
-usually means that the configured SAML Service Provider Entity ID in`elasticsearch.yml`
-(`sp.entity_id`) does not match what has been configured as SAML Service Provider Entity ID
-in the SAML Identity Provider documentation. To resolve this issue:
+We received a SAML response that is addressed to another SAML Service Provider.
+This usually means that the configured SAML Service Provider Entity ID in
+`elasticsearch.yml` (`sp.entity_id`) does not match what has been configured as
+the SAML Service Provider Entity ID in the SAML Identity Provider documentation.
 
-.. Ensure that both the saml realm in {es} and the IdP are configured with the same string
-for the SAML Entity ID of the Service Provider.
-.. Note that these are also compared as case-sensitive strings and not as
-canonicalized URLs even when the values are URL-like. Be mindful of trailing slashes, port
-numbers etc.
+To resolve this issue, ensure that both the saml realm in {es} and the IdP are
+configured with the same string for the SAML Entity ID of the Service Provider.
+
+TIP: These strings are compared as case-sensitive strings and not as
+canonicalized URLs even when the values are URL-like. Be mindful of trailing
+slashes, port numbers, etc.
+
 --
 
 . *Symptoms:*

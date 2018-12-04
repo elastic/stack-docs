@@ -96,11 +96,11 @@ for the fields. Mappings divide the documents in the index into logical groups
 and specify a field's characteristics, such as the field's searchability or
 whether or not it's _tokenized_, or broken up into separate words.
 
-You can use scripts to create the mappings and load the data set. If {security} 
-is enabled, use the `upload_server_metrics.sh` script. Before you run it, 
-however, you must edit the USERNAME and PASSWORD variables with your actual user 
-ID and password. If {security} is not enabled, use the 
-`upload_server_metrics_noauth.sh` script instead. 
+You can use scripts to create the mappings and load the data set. If the {es}
+{security-features} are enabled, use the `upload_server_metrics.sh` script.
+Before you run it, however, you must edit the USERNAME and PASSWORD variables
+with your actual user ID and password. If the {es} {security-features} are not
+enabled, use the `upload_server_metrics_noauth.sh` script instead. 
 
 The scripts run a `curl` command that makes the following create index API 
 request:

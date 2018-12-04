@@ -11,16 +11,17 @@ additional functionality, when it comes to security, this high extensibility lev
 comes at a cost. We have no control over the third-party plugins' code (open
 source or not) and therefore we cannot guarantee their compliance with {security}.
 For this reason, third-party plugins are not officially supported on clusters
-with {security} enabled.
+with {security-features} enabled.
 
 [float]
 === Changes in index wildcard behavior
 
-Elasticsearch clusters with {security} enabled apply the `/_all` wildcard, and
-all other wildcards, to the indices that the current user has privileges for, not
-the set of all indices on the cluster.
-While creating or retrieving aliases by providing wildcard expressions for alias names, if there are no existing authorized aliases
-that match the wildcard expression provided an IndexNotFoundException is returned.
+Elasticsearch clusters with {security-features} enabled apply the `/_all`
+wildcard, and all other wildcards, to the indices that the current user has
+privileges for, not the set of all indices on the cluster. While creating or
+retrieving aliases by providing wildcard expressions for alias names, if there
+are no existing authorized aliases that match the wildcard expression provided
+an IndexNotFoundException is returned.
 
 [float]
 === Multi document APIs

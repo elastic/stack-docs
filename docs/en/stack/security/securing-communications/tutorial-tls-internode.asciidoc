@@ -3,11 +3,11 @@
 [[encrypting-internode-communications]]
 == Tutorial: Encrypting communications
 
-In this tutorial, you learn how to encrypt traffic within an {es} cluster.
-
 In 6.0 and later releases, if you have a gold or higher license and the {es}
-{security-features} are enabled, you must configure SSL/TLS for
-internode-communication.
+{security-features} are enabled, you must use Transport Layer Security (TLS) to
+encrypt internode communication. In this tutorial, you learn how to meet the
+minimum requirements to pass the 
+{ref}/bootstrap-checks-xpack.html#bootstrap-checks-tls[TLS bootstrap check].
 
 NOTE: Single-node clusters that use a loopback interface do not have this
 requirement.
@@ -36,16 +36,9 @@ example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
 . <<get-started-license,Install a trial license>>.
 
-. <<get-started-enable-security,Enable security in {es}>>.
+. <<get-started-enable-security,Enable the {es} {security-features}>>.
 
 . <<get-started-built-in-users,Create passwords for built-in users>>.
-+
---
-NOTE: This section of the tutorial does not use the built-in `kibana`, 
-`logstash_system`, and `beats_system` users. To learn more about those users, 
-see <<built-in-users>>.
-
---
 
 . <<get-started-kibana-user,Add the built-in user to {kib}>>.
 
@@ -54,7 +47,7 @@ see <<built-in-users>>.
 --
 [source,sh]
 ----------------------------------
-curl -s -u elastic:<password> -X GET "http://localhost:9200/_cat/health?v"
+curl -s -u elastic:YOUR_PASSWORD -X GET "http://localhost:9200/_cat/health?v"
 ----------------------------------
 
 Supply a valid user ID (such as `elastic`) and password, such as the one you 

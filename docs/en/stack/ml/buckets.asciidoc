@@ -17,11 +17,27 @@ anomalies, and the frequency at which alerting is required.
 
 When you view your {ml} results, each bucket has an anomaly score. This score is
 a statistically aggregated and normalized view of the combined anomalousness of
-all the record results in the bucket. If you have more than one job, you can
-also obtain overall bucket results, which combine and correlate anomalies from
-multiple jobs into an overall score. When you view the results for jobs groups
-in {kib}, it provides the overall bucket scores.
+all the record results in the bucket. 
 
-For more information, see
-{ref}/ml-results-resource.html[Results Resources] and
-{ref}/ml-get-overall-buckets.html[Get Overall Buckets API].
+In 6.5 and later releases, the {ml} analytics enhance the anomaly score for each
+bucket by considering contiguous buckets. This extra _multi-bucket analysis_
+effectively uses a sliding window to evaluate the events in each bucket relative
+to the larger context of recent events. When you review your {ml} results, there
+is a `multi_bucket_impact` property that indicates how strongly the final anomaly
+score is influenced by multi-bucket analysis. In {kib}, anomalies with medium or
+high multi-bucket impact are depicted in the *Anomaly Explorer* and the
+*Single Metric Viewer* with a cross symbol instead of a dot. For example:
+
+[role="screenshot"]
+image::ml/images/multibucketanalysis.jpg["Examples of anomalies with multi-bucket impact in {kib}"]
+
+In this example, you can see that some of the anomalies fall within the shaded
+blue area, which represents the bounds for the expected values. The bounds are
+calculated per bucket, but multi-bucket analysis is not limited by that scope.
+
+If you have more than one job, you can
+also obtain overall bucket results, which combine and correlate anomalies from
+multiple jobs into an overall score. When you view the results for job groups
+in {kib}, it provides the overall bucket scores. For more information, see
+{ref}/ml-results-resource.html[Results resources] and
+{ref}/ml-get-overall-buckets.html[Get overall buckets API].

@@ -24,9 +24,6 @@ minimum, you must:
 . Install and configure {es} and {kib} as described in
 {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].  
 
-. Launch the {kib} web interface by pointing your browser to port 5601. For 
-example, http://127.0.0.1:5601[http://127.0.0.1:5601].
-
 . <<get-started-license,Install a trial license>>.
 
 . <<get-started-enable-security,Enable the {es} {security-features}>>.
@@ -34,18 +31,6 @@ example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 . <<get-started-built-in-users,Create passwords for built-in users>>.
 
 . <<get-started-kibana-user,Add the built-in user to {kib}>>.
-
-. To verify that security is enabled, run the cat health API. For example:
-+
---
-[source,sh]
-----------------------------------
-curl -s -u elastic:YOUR_PASSWORD -X GET "http://localhost:9200/_cat/health?v"
-----------------------------------
-
-Supply a valid user ID (such as `elastic`) and password, such as the one you 
-created in <<get-started-users>>. 
---
 
 . Stop {kib}. The method for starting and stopping {kib} varies depending on 
 how you installed it. For example, if you installed {kib} from an archive 

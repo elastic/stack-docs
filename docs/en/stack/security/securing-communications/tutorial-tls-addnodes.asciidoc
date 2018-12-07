@@ -22,7 +22,7 @@ encrypted.
 
 NOTE: In this tutorial, we add more nodes by installing more copies of {es} on
 the same machine. By default, {es} binds to loopback addresses for HTTP and
-transport communication. This is fine for the purposes of this tutorial and for
+transport communication. That is fine for the purposes of this tutorial and for
 downloading and playing with {es} in a test or development environment. When you
 are deploying a production environment, however, you are generally adding nodes
 on different machines so that your cluster is resilient to outages and avoids
@@ -53,9 +53,9 @@ must have a proper DNS set up.
 
 --
 
-. <<get-started-enable-security,Enable the {es} {security-features}>>. For
-example, add the following setting to the `ES_PATH_CONF/elasticsearch.yml`
-file for each node:
+. <<get-started-enable-security,Enable the {es} {security-features}>> on each
+node. For example, add the following setting to the
+`ES_PATH_CONF/elasticsearch.yml` file on each node:
 +
 --
 [source,yaml]
@@ -64,13 +64,11 @@ xpack.security.enabled: true
 ----
 --
 
-. Ensure that the nodes share the same `cluster.name` in their `elasticsearch.yml`
-files. When you run multiple nodes on the same machine, each node automatically
-discovers and joins the cluster as long as it has the same `cluster.name` as the
-first node. For more information, see {ref}/cluster.name.html[cluster.name].
+. Ensure that the nodes share the same {ref}/cluster.name.html[`cluster.name`]
+in their `elasticsearch.yml` files. For example, `test-cluster`.
 
-. Give each node a unique `node.name` in its `elasticsearch.yml` file. For
-example, `node-1`, `node-2`, and `node-3`.
+. Give each node a unique {ref}/node.name.html[`node.name`] in its
+`elasticsearch.yml` file. For example, `node-1`, `node-2`, and `node-3`.
 
 . If you want to use specific hostnames or port numbers for communication
 between nodes in the cluster, add 

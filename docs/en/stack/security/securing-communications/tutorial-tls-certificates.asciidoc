@@ -33,7 +33,7 @@ instances:
       - "node3.local"
 ----
 <1> If these `name` values match the values you specified for `node.name` in
-each `elasticsearch.yml` file, you can take use a shortcut in subsequent steps. 
+each `elasticsearch.yml` file, you can use a shortcut in a subsequent step. 
 
 For information about all of the possible fields in this file, see 
 {ref}/certutil.html#certutil-silent[Using elasticsearch-certutil in silent mode].
@@ -46,20 +46,18 @@ Then run the following command:
 ----------------------------------------------------------------------
 // NOTCONSOLE
 
-The command prompts you for passwords to secure each output file. You can leave
-the passwords blank by pressing *Enter*. However, it is wise to store these files
+It prompts you for passwords to secure each output file. You can leave the
+passwords blank by pressing *Enter*. However, it is wise to store these files
 securely, especially the CA, since it holds the key to your cluster. 
 
-It is also possible to use a commercial or organization-specific CA. However,
+Alternatively, you can use a commercial or organization-specific CA. However,
 that scenario is not covered in this tutorial. See the `csr` option in
 the {ref}/certutil.html[elasticsearch-certutil] command. 
 --
 
-. Decompress the `certificate-bundle.zip` file.
+. Decompress the `certificate-bundle.zip` file. For example:
 +
 --
-For example:
-
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 unzip certificate-bundle.zip 

@@ -1,0 +1,69 @@
+[role="xpack"]
+[testenv="trial"]
+[[encrypting-internode-communications]]
+== Tutorial: Encrypting communications
+
+In 6.0 and later releases, if you have a gold or higher license and the {es}
+{security-features} are enabled, you must use Transport Layer Security (TLS) to
+encrypt internode communication. In this tutorial, you learn how to meet the
+minimum requirements to pass the 
+{ref}/bootstrap-checks-xpack.html#bootstrap-checks-tls[TLS bootstrap check].
+
+NOTE: Single-node clusters that use a loopback interface do not have this
+requirement.
+
+[float]
+[[encrypting-internode-prerequisites]]
+=== Before you begin
+
+Ideally, you should do this tutorial only after you complete the 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}] and
+<<security-getting-started,Getting started with security>> tutorials. At a
+minimum, you must:
+
+. Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].  
+
+. Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
+you are running it from the command line or running it as a service. For example, 
+if you are running {ls} from the command line, you can stop it by entering 
+`Ctrl-C`. See {logstash-ref}/shutdown.html[Shutting down {ls}]. 
+
+. Stop {metricbeat}. For example, enter `Ctrl-C` on the command line where it is 
+running.
+
+. Launch the {kib} web interface by pointing your browser to port 5601. For 
+example, http://127.0.0.1:5601[http://127.0.0.1:5601].
+
+. <<get-started-license,Install a trial license>>.
+
+. <<get-started-enable-security,Enable the {es} {security-features}>>.
+
+. <<get-started-built-in-users,Create passwords for built-in users>>.
+
+. <<get-started-kibana-user,Add the built-in user to {kib}>>.
+
+. To verify that security is enabled, run the cat health API. For example:
++
+--
+[source,sh]
+----------------------------------
+curl -s -u elastic:YOUR_PASSWORD -X GET "http://localhost:9200/_cat/health?v"
+----------------------------------
+
+Supply a valid user ID (such as `elastic`) and password, such as the one you 
+created in <<get-started-users>>. 
+--
+
+. Stop {kib}. The method for starting and stopping {kib} varies depending on 
+how you installed it. For example, if you installed {kib} from an archive 
+distribution (`.tar.gz` or `.zip`), stop it by entering `Ctrl-C` on the command 
+line. See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
+
+. Stop {es}. For example, if you installed {es} from an archive distribution, 
+enter `Ctrl-C` on the command line. See 
+{ref}/stopping-elasticsearch.html[Stopping {es}].
+
+include::tutorial-tls-addnodes.asciidoc[]
+include::tutorial-tls-certificates.asciidoc[]
+//include::tutorial-tls-internode.asciidoc[]

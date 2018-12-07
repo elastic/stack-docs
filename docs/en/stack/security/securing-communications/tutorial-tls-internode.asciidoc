@@ -1,57 +1,76 @@
 [role="xpack"]
 [testenv="trial"]
-[[encrypting-internode-communications]]
-== Tutorial: Encrypting communications
+[[encrypting-internode]]
+=== Encrypt internode communications  
 
-In 6.0 and later releases, if you have a gold or higher license and the {es}
-{security-features} are enabled, you must use Transport Layer Security (TLS) to
-encrypt internode communication. In this tutorial, you learn how to meet the
-minimum requirements to pass the 
-{ref}/bootstrap-checks-xpack.html#bootstrap-checks-tls[TLS bootstrap check].
+In this tutorial, we are only using a single node cluster, but if you plan to 
+add more nodes, you must ensure that communication between those nodes will be 
+encrypted. 
 
-NOTE: Single-node clusters that use a loopback interface do not have this
-requirement.
+Perform the following steps on each node in the cluster:
 
-[float]
-[[encrypting-internode-prerequisites]]
-=== Before you begin
+. Stop {es}. For example, if you installed {es} from an archive distribution, 
+enter `Ctrl-C` on the command line. See 
+{ref}/stopping-elasticsearch.html[Stopping {es}].
 
-Ideally, you should do this tutorial only after you complete the 
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}] and
-<<security-getting-started>> tutorials. At a minimum, you must:
-
-. Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].  
-
-. Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
-you are running it from the command line or running it as a service. For example, 
-if you are running {ls} from the command line, you can stop it by entering 
-`Ctrl-C`. See {logstash-ref}/shutdown.html[Shutting down {ls}]. 
-
-. Stop {metricbeat}. For example, enter `Ctrl-C` on the command line where it is 
-running.
-
-. Launch the {kib} web interface by pointing your browser to port 5601. For 
-example, http://127.0.0.1:5601[http://127.0.0.1:5601].
-
-. <<get-started-license,Install a trial license>>.
-
-. <<get-started-enable-security,Enable the {es} {security-features}>>.
-
-. <<get-started-built-in-users,Create passwords for built-in users>>.
-
-. <<get-started-kibana-user,Add the built-in user to {kib}>>.
-
-. To verify that security is enabled, run the cat health API. For example:
+. Enable TLS for transport communications between nodes within the cluster. For 
+example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml` file:
 +
 --
-[source,sh]
-----------------------------------
-curl -s -u elastic:YOUR_PASSWORD -X GET "http://localhost:9200/_cat/health?v"
-----------------------------------
+[source,yaml]
+----
+xpack.security.transport.ssl.enabled: true  
+----
+--
 
-Supply a valid user ID (such as `elastic`) and password, such as the one you 
-created in <<get-started-users>>. 
+. Configure each node in the cluster to identify itself using its signed
+certificate. For example, add the following settings in the 
+`ES_PATH_CONF/elasticsearch.yml` file, using the file and path names that you 
+created in previous steps:
++
+--
+[source,yaml]
+----
+xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12 
+xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12 
+----
+
+If you had a multi-node cluster and you created a separate certificate for each 
+node, you must customize this path on each node. If the filename matches the 
+node name, you can simply use the value `certs/${node.name}.p12`.
+
+NOTE: The PKCS#12 keystore that is output by the `elasticsearch-certutil` 
+command includes a CA certificate as a trusted certificate entry, thus the 
+keystore can also be used as a truststore. If you use other tools to manage and 
+generate your certificates, you might have different values for these settings.
 
 --
 
+. If you specified a password for the certificates, add that password to the 
+{es} keystore.  For example: 
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+./bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+----------------------------------------------------------------------
+--
+
+. Restart {es}. For example, if you installed {es} with a `.tar.gz` package, run 
+the following command from the {es} directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+See {ref}/starting-elasticsearch.html[Starting {es}].  
+--
+
+//TBD: What impact should users see now that this is enabled? If a new node is 
+//added that does not have TLS enabled, does it fail to join the cluster?
+
+At this point, you have met the requirements to pass the 
+{ref}/bootstrap-checks-xpack.html#_ssl_tls_check[TLS bootstrap check].

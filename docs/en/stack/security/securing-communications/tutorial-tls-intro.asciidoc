@@ -21,16 +21,8 @@ Ideally, you should do this tutorial only after you complete the
 <<security-getting-started,Getting started with security>> tutorials. At a
 minimum, you must:
 
-. Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
+. Install and configure {es} and {kib} as described in
 {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].  
-
-. Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
-you are running it from the command line or running it as a service. For example, 
-if you are running {ls} from the command line, you can stop it by entering 
-`Ctrl-C`. See {logstash-ref}/shutdown.html[Shutting down {ls}]. 
-
-. Stop {metricbeat}. For example, enter `Ctrl-C` on the command line where it is 
-running.
 
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
@@ -66,4 +58,4 @@ enter `Ctrl-C` on the command line. See
 
 include::tutorial-tls-addnodes.asciidoc[]
 include::tutorial-tls-certificates.asciidoc[]
-//include::tutorial-tls-internode.asciidoc[]
+include::tutorial-tls-internode.asciidoc[]

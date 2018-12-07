@@ -22,16 +22,19 @@ or you can supply that information in an input file. For example, create a
 [source,yaml]
 ----
 instances:
-  - name: "node1" 
+  - name: "node-1" <1>
     dns: 
       - "node1.local"
-  - name: "node2"
+  - name: "node-2"
     dns:
       - "node2.local"
-  - name: "node3"
+  - name: "node-3"
     dns:
       - "node3.local"
 ----
+<1> If these `name` values match the values you specified for `node.name` in
+each `elasticsearch.yml` file, you can take use a shortcut in subsequent steps. 
+
 For information about all of the possible fields in this file, see 
 {ref}/certutil.html#certutil-silent[Using elasticsearch-certutil in silent mode].
 
@@ -55,6 +58,8 @@ the {ref}/certutil.html[elasticsearch-certutil] command.
 . Decompress the `certificate-bundle.zip` file.
 +
 --
+For example:
+
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 unzip certificate-bundle.zip 
@@ -62,19 +67,20 @@ unzip certificate-bundle.zip
 Archive:  certificate-bundle.zip
    creating: ca/
   inflating: ca/ca.p12               
-   creating: node1/
-  inflating: node1/node1.p12         
-   creating: node2/
-  inflating: node2/node2.p12         
-   creating: node3/
-  inflating: node3/node3.p12     
+   creating: node-1/
+  inflating: node-1/node-1.p12       
+   creating: node-2/
+  inflating: node-2/node-2.p12       
+   creating: node-3/
+  inflating: node-3/node-3.p12  
 ----------------------------------------------------------------------
 // NOTCONSOLE
   
 The `certificate-bundle.zip` file contains a folder for each of your nodes and a
 `ca` folder.
 
-The `ca` folder contains a `ca.p12` file, which is a PKCS#12 keystore. This file contains the public certificate for your certificate authority and the private
+The `ca` folder contains a `ca.p12` file, which is a PKCS#12 keystore. This file
+contains the public certificate for your certificate authority and the private
 key that is used to sign the node certificates.
 
 Each node folder contains a single PKCS#12 keystore that includes a node 
@@ -88,9 +94,9 @@ directory on each {es} node. For example, create a `certs` folder in the `config
 directory on each node.
 
 . Copy the appropriate certificate to the configuration directory on each {es} 
-node. For example, copy the `node1.p12` file into the `config/certs` directory
-on the first node. Copy the `node2.p12` file to the second node and the
-`node3.p12` to the third.
+node. For example, copy the `node-1.p12` file into the `config/certs` directory
+on the first node. Copy the `node-2.p12` file to the second node and the
+`node-3.p12` to the third.
 
 If you later add more nodes, they just need to use a certificate signed by the
 same CA. For example: 

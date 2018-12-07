@@ -3,62 +3,61 @@
 [[encrypting-internode]]
 === Encrypt internode communications  
 
-In this tutorial, we are only using a single node cluster, but if you plan to 
-add more nodes, you must ensure that communication between those nodes will be 
-encrypted. 
+Now that you've generated a certificate authority and certificates for each node,
+you must update {es} to use these files. 
 
-Perform the following steps on each node in the cluster:
-
-. Stop {es}. For example, if you installed {es} from an archive distribution, 
-enter `Ctrl-C` on the command line. See 
+. Stop each {es} node. For example, if you installed {es} from an archive
+distribution, enter `Ctrl-C` on the command line. See 
 {ref}/stopping-elasticsearch.html[Stopping {es}].
 
-. Enable TLS for transport communications between nodes within the cluster. For 
-example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml` file:
+. On each node, enable TLS for transport (internode) communications. You must
+also configure each node to identify itself using its signed certificate.
 +
 --
+For example, add the following settings in the `ES_PATH_CONF/elasticsearch.yml`
+files:
+
 [source,yaml]
 ----
 xpack.security.transport.ssl.enabled: true  
+xpack.security.transport.ssl.keystore.path: certs/${node.name}.p12 <1>
+xpack.security.transport.ssl.truststore.path: certs/${node.name}.p12
 ----
+<1> If the file name for your certificate does not match the `node.name` value,
+you must put the appropriate file name in each `elasticsearch.yml` file. 
+
+NOTE: The PKCS#12 keystore that is output by the `elasticsearch-certutil` can be
+used as both a keystore and a truststore. If you use other tools to manage and 
+generate your certificates, you might have different values for these settings,
+but that scenario is not covered in this tutorial.
+
+For more information about these settings, see
+{ref}/security-settings.html#transport-tls-ssl-settings[Transport TLS settings].
 --
 
-. Configure each node in the cluster to identify itself using its signed
-certificate. For example, add the following settings in the 
-`ES_PATH_CONF/elasticsearch.yml` file, using the file and path names that you 
-created in previous steps:
+. If you created passwords for the certificates when you ran the
+`elasticsearch-certutil` command, secure those passwords in the {es} keystore.
 +
 --
-[source,yaml]
-----
-xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12 
-xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12 
-----
+For example, run the following command on each node: 
 
-If you had a multi-node cluster and you created a separate certificate for each 
-node, you must customize this path on each node. If the filename matches the 
-node name, you can simply use the value `certs/${node.name}.p12`.
-
-NOTE: The PKCS#12 keystore that is output by the `elasticsearch-certutil` 
-command includes a CA certificate as a trusted certificate entry, thus the 
-keystore can also be used as a truststore. If you use other tools to manage and 
-generate your certificates, you might have different values for these settings.
-
---
-
-. If you specified a password for the certificates, add that password to the 
-{es} keystore.  For example: 
-+
---
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
+./bin/elasticsearch-keystore create <1>
 ./bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
 ./bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
 ----------------------------------------------------------------------
+<1> If the {es} keystore already exists, this command asks whether you want to
+overwrite it. You do not need to overwrite it; you can simply add settings to
+your existing keystore.
+
+You are prompted to supply the password value. As you saw in the previous step,
+we are using the same file for both the keystore and truststore, therefore you
+supply the same password for both of these settings.
 --
 
-. Restart {es}. For example, if you installed {es} with a `.tar.gz` package, run 
-the following command from the {es} directory:
+. Start each {es} node. For example, if you installed {es} with a `.tar.gz`
+package, run the following command from each {es} directory:
 +
 --
 ["source","sh",subs="attributes,callouts"]
@@ -66,11 +65,34 @@ the following command from the {es} directory:
 ./bin/elasticsearch
 ----------------------------------------------------------------------
 
-See {ref}/starting-elasticsearch.html[Starting {es}].  
+See {ref}/starting-elasticsearch.html[Starting {es}].
 --
 
-//TBD: What impact should users see now that this is enabled? If a new node is 
-//added that does not have TLS enabled, does it fail to join the cluster?
+. (Optional) Restart {kib}. For example, if you installed 
+{kib} with a `.tar.gz` package, run the following command from the {kib} 
+directory:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/kibana
+----------------------------------------------------------------------
+
+See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
+--
+
+. Verify that your cluster is healthy. For example, use the
+{ref}/cluster-health.html[cluster health API]:
++
+--
+[source,js]
+----------------------------------
+GET _cluster/health
+----------------------------------
+// CONSOLE 
+
+Confirm the `status` of your cluster is `green` in the response from this API.
+--
 
 At this point, you have met the requirements to pass the 
 {ref}/bootstrap-checks-xpack.html#_ssl_tls_check[TLS bootstrap check].

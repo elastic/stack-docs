@@ -49,10 +49,6 @@ Then run the following command:
 It prompts you for passwords to secure each output file. You can leave the
 passwords blank by pressing *Enter*. However, it is wise to store these files
 securely, especially the CA, since it holds the key to your cluster. 
-
-Alternatively, you can use a commercial or organization-specific CA. However,
-that scenario is not covered in this tutorial. See the `csr` option in
-the {ref}/certutil.html[elasticsearch-certutil] command. 
 --
 
 . Decompress the `certificate-bundle.zip` file. For example:
@@ -82,12 +78,10 @@ contains the public certificate for your certificate authority and the private
 key that is used to sign the node certificates.
 
 Each node folder contains a single PKCS#12 keystore that includes a node 
-certificate, node key, and CA certificate. You can alternatively generate 
-Privacy Enhanced Mail (PEM) formatted certificates and keys, though that option 
-is not covered in this tutorial.
+certificate, node key, and CA certificate.
 --
 
-. (Optional) Create a folder to contain certificates in the configuration
+. Create a folder to contain certificates in the configuration
 directory on each {es} node. For example, create a `certs` folder in the `config`
 directory on each node.
 
@@ -108,4 +102,10 @@ same CA. For example:
 <1> The certificate authority that you generated for this cluster.
 <2> A comma-separated list of DNS names for the new {es} node.
 <3> A comma-separated list of IP addresses for the new {es} node.
- 
+
+TIP: The {ref}/certutil.html[elasticsearch-certutil] command has a lot more
+options. For example, it can generate Privacy Enhanced Mail (PEM) formatted
+certificates and keys. It can also generate certificate signing requests (CSRs)
+that you can use to obtain signed certificates from a commercial or
+organization-specific certificate authority. However, those options are not
+covered in this tutorial. 

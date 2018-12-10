@@ -699,7 +699,7 @@ Cannot connect to elasticsearch node.
 java.net.SocketException: Unexpected end of file from server
 ...
 ERROR: Failed to connect to elasticsearch at
-http://127.0.0.1:9200/_xpack/security/_authenticate?pretty.
+http://127.0.0.1:9200/_security/_authenticate?pretty.
 Is the URL correct and elasticsearch running?
 ------------------------------------------
 --
@@ -711,7 +711,7 @@ the following errors:
 [source, shell]
 ------------------------------------------
 SSL connection to
-https://127.0.0.1:9200/_xpack/security/_authenticate?pretty
+https://127.0.0.1:9200/_security/_authenticate?pretty
 failed: sun.security.validator.ValidatorException:
 PKIX path building failed:
 sun.security.provider.certpath.SunCertPathBuilderException:
@@ -720,7 +720,7 @@ Please check the elasticsearch SSL settings under
 xpack.security.http.ssl.
 ...
 ERROR: Failed to establish SSL connection to elasticsearch at
-https://127.0.0.1:9200/_xpack/security/_authenticate?pretty.
+https://127.0.0.1:9200/_security/_authenticate?pretty.
 ------------------------------------------
 --
 
@@ -731,7 +731,7 @@ following errors:
 [source, shell]
 ------------------------------------------
 SSL connection to
-https://idp.localhost.test:9200/_xpack/security/_authenticate?pretty
+https://idp.localhost.test:9200/_security/_authenticate?pretty
 failed: java.security.cert.CertificateException:
 No subject alternative DNS name matching
 elasticsearch.example.com found.
@@ -739,7 +739,7 @@ Please check the elasticsearch SSL settings under
 xpack.security.http.ssl.
 ...
 ERROR: Failed to establish SSL connection to elasticsearch at
-https://elasticsearch.example.com:9200/_xpack/security/_authenticate?pretty.
+https://elasticsearch.example.com:9200/_security/_authenticate?pretty.
 ------------------------------------------
 --
 

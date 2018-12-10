@@ -16,7 +16,7 @@ The following role definition grants read access only to the `category`,
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role1
+POST /_security/role/test_role1
 {
   "indices": [
     {
@@ -42,7 +42,7 @@ example grants read access to all fields that start with an `event_` prefix:
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role2
+POST /_security/role/test_role2
 {
   "indices" : [
     {
@@ -77,7 +77,7 @@ field:
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role3
+POST /_security/role/test_role3
 {
   "indices" : [
     {
@@ -97,7 +97,7 @@ only read access to the `customer` data:
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role4
+POST /_security/role/test_role4
 {
   "indices" : [
     {
@@ -116,7 +116,7 @@ You can deny permission to access fields with the following syntax:
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role5
+POST /_security/role/test_role5
 {
   "indices" : [
     {
@@ -145,7 +145,7 @@ For example:
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role6
+POST /_security/role/test_role6
 {
   "indices" : [
     {
@@ -173,7 +173,7 @@ permissions. For example, if these two roles are merged:
 
 [source,js]
 --------------------------------------------------
-POST /_xpack/security/role/test_role7
+POST /_security/role/test_role7
 {
   "indices" : [
     {
@@ -187,7 +187,7 @@ POST /_xpack/security/role/test_role7
   ]
 }
 
-POST /_xpack/security/role/test_role8
+POST /_security/role/test_role8
 {
   "indices" : [
     {

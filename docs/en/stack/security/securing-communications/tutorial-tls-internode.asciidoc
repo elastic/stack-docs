@@ -36,11 +36,10 @@ For more information about these settings, see
 {ref}/security-settings.html#transport-tls-ssl-settings[Transport TLS settings].
 --
 
-. If you created passwords for the certificates when you ran the
-`elasticsearch-certutil` command, secure those passwords in the {es} keystore.
+. On each node, store the password for its certificate in the {es} keystore.
 +
 --
-For example, run the following command on each node: 
+For example, run the following commands on each node: 
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
@@ -50,11 +49,11 @@ For example, run the following command on each node:
 ----------------------------------------------------------------------
 <1> If the {es} keystore already exists, this command asks whether you want to
 overwrite it. You do not need to overwrite it; you can simply add settings to
-your existing keystore.
+your existing {es} keystore.
 
 You are prompted to supply the password value. As you saw in the previous step,
-we are using the same file for both the keystore and truststore, therefore you
-supply the same password for both of these settings.
+we are using the same file for both the transport TLS keystore and truststore,
+therefore you supply the same password for both of these settings.
 --
 
 . Start each {es} node. For example, if you installed {es} with a `.tar.gz`

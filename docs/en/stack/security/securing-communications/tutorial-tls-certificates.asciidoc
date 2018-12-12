@@ -24,16 +24,26 @@ or you can supply that information in an input file. For example, create a
 instances:
   - name: "node-1" <1>
     dns: 
-      - "node1.local"
+      - "localhost"
+    ip:
+      - "127.0.0.1"
   - name: "node-2"
     dns:
-      - "node2.local"
+      - "localhost"
+    ip:
+      - "127.0.0.1"
   - name: "node-3"
     dns:
-      - "node3.local"
+      - "localhost"
+    ip:
+      - "127.0.0.1"
 ----
 <1> If these `name` values match the values you specified for `node.name` in
 each `elasticsearch.yml` file, you can use a shortcut in a subsequent step. 
+
+TIP: In this tutorial, all three nodes exist on the same machine and share the
+same IP address and hostname. In general, clusters are more resilient when they
+contain nodes from multiple servers and this list would reflect that diversity.
 
 For information about all of the possible fields in this file, see 
 {ref}/certutil.html#certutil-silent[Using elasticsearch-certutil in silent mode].
@@ -46,9 +56,11 @@ Then run the following command:
 ----------------------------------------------------------------------
 // NOTCONSOLE
 
-It prompts you for passwords to secure each output file. You can leave the
-passwords blank by pressing *Enter*. However, it is wise to store these files
-securely, especially the CA, since it holds the key to your cluster. 
+It prompts you for passwords to secure each output file. 
+
+TIP: Ideally, you should use a different password for each file and store the
+files securely--especially the CA, since it holds the key to your cluster.
+
 --
 
 . Decompress the `certificate-bundle.zip` file. For example:

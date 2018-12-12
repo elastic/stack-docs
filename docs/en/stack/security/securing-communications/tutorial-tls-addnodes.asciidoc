@@ -39,20 +39,6 @@ install {es} in the
 {stack-gs}/get-started-elastic-stack.html#install-elasticsearch[Getting started with the {stack}]
 tutorial.
 
-. Verify that hostname resolution works in your cluster. For example, add the
-following node names to your `/etc/hosts` file:
-+
---
-[source,sh]
-----------------------------------
-127.0.0.1 localhost node1.local node2.local node3.local
-----------------------------------
-
-IMPORTANT: We can modify `etc/hosts` for testing purposes, but in production you
-must have a proper DNS set up.
-
---
-
 . Update the `ES_PATH_CONF/elasticsearch.yml` file on each node:
 +
 --
@@ -73,9 +59,8 @@ file on the first node:
 xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-1
-transport.host: node1.local
 transport.tcp.port: 9301
-discovery.zen.ping.unicast.hosts: ["node2.local:9302", "node3.local:9303"]
+discovery.zen.ping.unicast.hosts: ["localhost:9302", "localhost:9303"]
 ----
 
 Add the following settings to the `ES_PATH_CONF/elasticsearch.yml`
@@ -86,9 +71,8 @@ file on the second node:
 xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-2
-transport.host: node2.local
 transport.tcp.port: 9302
-discovery.zen.ping.unicast.hosts: ["node1.local:9301", "node3.local:9303"]
+discovery.zen.ping.unicast.hosts: ["localhost:9301", "localhost:9303"]
 ----
 
 Add the following settings to the `ES_PATH_CONF/elasticsearch.yml`
@@ -99,10 +83,14 @@ file on the third node:
 xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-3
-transport.host: node3.local
 transport.tcp.port: 9303
-discovery.zen.ping.unicast.hosts: ["node1.local:9301", "node2.local:9302"]
+discovery.zen.ping.unicast.hosts: ["localhost:9301", "localhost:9302"]
 ----
+
+TIP: In these examples, we have not specified the `transport.host`,
+`transport.bind_host`, or `transport.publish_host` settings, so they default to
+the `network.host` value. If you have not specified the `network.host` setting,
+it defaults to `_local_`, which represents the loopback addresses for the system. 
 
 If you choose different cluster names, node names, host names, or ports, you
 must substitute the appropriate values in subsequent steps as well. 
@@ -118,6 +106,7 @@ package, run the following command from each {es} directory:
 ----------------------------------------------------------------------
 
 See {ref}/starting-elasticsearch.html[Starting {es}].
+
 --
 
 . (Optional) Restart {kib}. For example, if you installed 

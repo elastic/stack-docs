@@ -1,10 +1,10 @@
 [[monitoring-production]]
 == Monitoring in a production environment
 
-By default, the {monitoring} agents on {es} index data
-into the cluster where they're running. In production, you should
+By default, monitoring agents store data in the cluster where they're running.
+In production, you should
 send data to a separate _monitoring cluster_ so that historical monitoring
-data is available even if the nodes you are monitoring are not. 
+data is available even when the nodes you are monitoring are not. 
 
 beta[] In 6.4 and later, you can use {metricbeat} to ship monitoring data about 
 {kib} to a separate monitoring cluster. In 6.5 and later, you can do the same 
@@ -20,9 +20,13 @@ For example, you might set up a two host cluster with the nodes `es-mon-1` and
 `es-mon-2`.
 +
 --
-NOTE: To monitor an {es} 6.x cluster, you must run {es}
+[IMPORTANT]
+===============================
+* To monitor an {es} 6.x cluster, you must run {es}
 6.x on the monitoring cluster.
-
+* There must be at least one {ref}/ingest.html[ingest node] in the monitoring
+cluster; it does not need to be a dedicated ingest node.
+===============================
 --
 
 .. (Optional) Verify that the collection of monitoring data is disabled on the 

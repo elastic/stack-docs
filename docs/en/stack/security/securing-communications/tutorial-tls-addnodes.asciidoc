@@ -23,19 +23,20 @@ encrypted.
 NOTE: In this tutorial, we add more nodes by installing more copies of {es} on
 the same machine. By default, {es} binds to loopback addresses for HTTP and
 transport communication. That is fine for the purposes of this tutorial and for
-downloading and playing with {es} in a test or development environment. When you
-are deploying a production environment, however, you are generally adding nodes
-on different machines so that your cluster is resilient to outages and avoids
-data loss.  In a production scenario, there are additional requirements that are
-not covered in this tutorial. See
+downloading and experimenting with {es} in a test or development environment.
+When you are deploying a production environment, however, you are generally
+adding nodes on different machines so that your cluster is resilient to outages
+and avoids data loss.  In a production scenario, there are additional
+requirements that are not covered in this tutorial. See
 {ref}/bootstrap-checks.html#_development_vs_production_mode[Development vs production mode].
 
 Let's add two nodes to our cluster!
 
-. Install two additional copies of {es}. Multiple nodes can share the same
-directory. In this tutorial, however, let's keep things clear by putting each
-copy in a separate folder. You can simply repeat the steps that you used to
-install {es} in the 
+. Install two additional copies of {es}. It's possible to run multiple {es}
+nodes using a shared installation. In this tutorial, however, we're keeping
+things simple by using the `zip` or `tar.gz` packages and by putting each copy
+in a separate folder. You can simply repeat the steps that you used to install
+{es} in the 
 {stack-gs}/get-started-elastic-stack.html#install-elasticsearch[Getting started with the {stack}]
 tutorial.
 
@@ -45,10 +46,17 @@ tutorial.
 .. Enable the {es} {security-features}. 
 .. Ensure that the nodes share the same {ref}/cluster.name.html[`cluster.name`].
 .. Give each node a unique {ref}/node.name.html[`node.name`].
-.. If you want to use specific hostnames or port numbers for communication
-between nodes in the cluster, add
-{ref}/modules-transport.html[TCP transport settings]. You can then provide a
-list of these {ref}/modules-discovery-zen.html#discovery-seed-nodes[seed nodes],
+.. Specify the minimum number of master-eligible nodes that must be available to
+form a cluster. By default, each node is eligible to be elected as the
+{ref}/modules-node.html#master-node[master node] and control the cluster. To
+avoid a _split brain_ scenario where multiple nodes elect themselves as the
+master, use the `discovery.zen.minimum_master_nodes` setting.
+
+By default, if you run multiple {es} nodes on the same machine, it
+automatically uses free ports in the range 9200-9300 for HTTP and 9300-9400 for
+transport. If you want to assign specific port numbers to each node, however,
+you can add {ref}/modules-transport.html[TCP transport settings]. You can then
+provide a list of these {ref}/modules-discovery-zen.html#discovery-seed-nodes[seed nodes],
 which is used to discover the nodes in your cluster.
 
 For example, add the following settings to the `ES_PATH_CONF/elasticsearch.yml`
@@ -59,6 +67,7 @@ file on the first node:
 xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-1
+discovery.zen.minimum_master_nodes: 2
 transport.tcp.port: 9301
 discovery.zen.ping.unicast.hosts: ["localhost:9302", "localhost:9303"]
 ----
@@ -71,6 +80,7 @@ file on the second node:
 xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-2
+discovery.zen.minimum_master_nodes: 2
 transport.tcp.port: 9302
 discovery.zen.ping.unicast.hosts: ["localhost:9301", "localhost:9303"]
 ----
@@ -83,6 +93,7 @@ file on the third node:
 xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-3
+discovery.zen.minimum_master_nodes: 2
 transport.tcp.port: 9303
 discovery.zen.ping.unicast.hosts: ["localhost:9301", "localhost:9302"]
 ----
@@ -120,39 +131,6 @@ directory:
 ----------------------------------------------------------------------
 
 See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
---
-
-. Specify the minimum number of master-eligible nodes that must be available to
-form a cluster. 
-+ 
---
-By default, each node is eligible to be elected as the
-{ref}/modules-node.html#master-node[master node] and control the cluster. To
-avoid a _split brain_ scenario where multiple nodes elect themselves as the
-master, set the `discovery.zen.minimum_master_nodes` on each node in the cluster.
-
-For example, use the following API to change the
-`discovery.zen.minimum_master_nodes` setting:
-
-[source,js]
-----------------------------------
-PUT _cluster/settings
-{
-  "persistent": {
-    "discovery.zen.minimum_master_nodes": 2
-  }
-}
-----------------------------------
-// CONSOLE 
-
-NOTE: You can specify this setting in either the `elasticsearch.yml` on each 
-node or across the cluster as a dynamic cluster setting. When {es} 
-{security-features} are enabled, you must have `monitor` cluster privileges to 
-view the cluster settings and `manage` cluster privileges to change them.
-
-For more information, see
-{ref}/cluster-update-settings.htmlp[Cluster update settings] and
-{ref}/modules-node.html#split-brain[Avoiding split brain].
 --
 
 . Verify that your cluster now contains three nodes. For example, use the

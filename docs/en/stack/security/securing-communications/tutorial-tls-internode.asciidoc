@@ -36,7 +36,7 @@ For more information about these settings, see
 {ref}/security-settings.html#transport-tls-ssl-settings[Transport TLS settings].
 --
 
-. On each node, store the password for its certificate in the {es} keystore.
+. On each node, store the password for PKCS#12 file in the {es} keystore.
 +
 --
 For example, run the following commands on each node: 
@@ -92,6 +92,9 @@ GET _cluster/health
 // CONSOLE 
 
 Confirm the `status` of your cluster is `green` in the response from this API.
+
+If you encounter errors, you can see some common problems and solutions in
+<<trb-security-ssl>>.  
 --
 
 [float]

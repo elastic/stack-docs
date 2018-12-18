@@ -103,17 +103,21 @@ on the first node. Copy the `node-2.p12` file to the second node and the
 `node-3.p12` to the third.
 
 If you later add more nodes, they just need to use a certificate signed by the
-same CA. For example: 
+same CA. For this reason, make sure you store your CA in a safe place and don't
+forget its password!
 
+For example: 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/elasticsearch-certutil cert --ca ca/ca.p12 \ <1>
---dns <domain_name> <2> --ip <ip_addresses> <3>
+--name <node-name> <2> --dns <domain_name> <3> --ip <ip_addresses> <4>
 ----------------------------------------------------------------------
 // NOTCONSOLE
 <1> The certificate authority that you generated for this cluster.
-<2> A comma-separated list of DNS names for the new {es} node.
-<3> A comma-separated list of IP addresses for the new {es} node.
+<2> The name of the generated certificate. Ideally this value matches the new
+node's `node.name` value in its `elasticsearch.yml` file.
+<3> A comma-separated list of DNS names for the new node.
+<4> A comma-separated list of IP addresses for the new node.
 
 TIP: The {ref}/certutil.html[elasticsearch-certutil] command has a lot more
 options. For example, it can generate Privacy Enhanced Mail (PEM) formatted

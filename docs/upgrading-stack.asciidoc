@@ -73,7 +73,7 @@ from an earlier version, you can also
 <<upgrade-internal-indices,use the `_migration/upgrade` API>> directly to
 upgrade the internal indices after you install Elasticsearch {version}.
 
-. If you use {xpack} to secure your cluster:
+. If you use {stack} {security-features} to secure your cluster:
 .. Make sure TLS is enabled to encrypt communications between nodes. TLS must
 be enabled to upgrade to {version}. For more information, see
 {stack-ov}/encrypting-communications.html[Encrypting communications].
@@ -117,7 +117,7 @@ Starting in 6.3, the default distributions of {es}, {ls}, and {kib}
 include {xpack} and a free Basic license that never expires.
 
 You can perform rolling upgrades to 6.3 from OSS-only clusters running 5.6
-or 6.0-6.2. {xpack} Basic features are operational once the cluster is fully
+or 6.0-6.2. Basic features are operational once the cluster is fully
 upgraded. If you are already using {xpack}, your settings are preserved when
 you upgrade.
 
@@ -140,8 +140,8 @@ PUT /_cluster/settings
 ----------------------------------------------------------
 // CONSOLE
 
-To take all of the {xpack} features for a spin, you can start a 30-day trial
-from Kibana, or with the Start Trial API:
+To take more of the {stack} features for a spin, you can start a 30-day trial
+from Kibana or with the Start Trial API:
 
 [source,json]
 ----------------------------------------------------------
@@ -149,7 +149,7 @@ POST _license/start_trial
 ----------------------------------------------------------
 // CONSOLE
 
-The 30-day trial enables you to try out the full set of Platinum features,
+The 30-day trial enables you to try out the full set of platinum features,
 including security, machine learning, alerting, graph capabilities, and more.
 
 [role="xpack"]
@@ -157,8 +157,8 @@ including security, machine learning, alerting, graph capabilities, and more.
 === Upgrading from 5.6
 
 {xpack} 5.6 provides migration and upgrade APIs for Elasticsearch and a
-Upgrade Assistant UI for Kibana. These tools are included with the {xpack}
-trial license and the free Basic license.
+Upgrade Assistant UI for Kibana. These tools are included with the trial
+license and the free basic license.
 
 To upgrade to {version} from 5.6:
 
@@ -167,7 +167,7 @@ install {xpack} on all nodes in your cluster. If you are upgrading from an
 earlier 5.x release, you can perform a rolling upgrade. To upgrade from older
 versions you must perform a full cluster restart.
 +
-If your trial license to use {xpack} expires,
+If your trial license expires,
 https://register.elastic.co/[register for a free Basic license]. To apply the
 license, upload the license file with the `license` API:
 +
@@ -176,8 +176,8 @@ license, upload the license file with the `license` API:
 license -d @license.json
 ----------------------------------------------------------
 
-. If {xpack} **IS NOT** normally a part of your {stack}, disable {security}
-in `elasticsearch.yml`:
+. If {xpack} **IS NOT** normally a part of your {stack}, disable the
+{es} {security-features} in `elasticsearch.yml`:
 +
 [source,yaml]
 ----------------------------------------------------------
@@ -186,8 +186,8 @@ xpack.security.enabled: false
 
 . Upgrade {kib} to the most recent 5.6 and install {xpack}.
 
-. If you disabled {security} in `elasticsearch.yml`, also disable
-{security} in `kibana.yml`:
+. If you disabled the {es} {security-features}, also disable the {kib}
+{security-features} in `kibana.yml`:
 +
 [source,yaml]
 ----------------------------------------------------------

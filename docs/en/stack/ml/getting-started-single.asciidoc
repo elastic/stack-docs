@@ -136,7 +136,7 @@ are not enabled, use the `create_single_metric_noauth.sh` script instead. For
 API reference information, see {ref}/ml-apis.html[Machine Learning APIs].
 
 [[ml-gs-job1-manage]]
-=== Managing Jobs
+=== Managing jobs
 
 After you create a job, you can see its status in the **Job Management** tab: +
 
@@ -210,9 +210,12 @@ restart it.
 For example, if you did not use the full data when you created the job, you can
 now process the remaining data by restarting the {dfeed}:
 
-. In the **Machine Learning** / **Job Management** tab, click the following
-button to start the {dfeed}: image:ml/images/ml-start-feed.jpg["Start {dfeed}"]
-
+. In the **Machine Learning** / **Job Management** tab, click *Start datafeed* in the actions column.
++
+--
+[role="screenshot"]
+image:ml/images/ml-gs-start-feed.jpg["Start {dfeed}"]
+--
 
 . Choose a start time and end time. For example,
 click **Continue from 2017-04-01 23:59:00** and select **2017-04-30** as the
@@ -230,10 +233,7 @@ and the number of processed records increases as the new data is analyzed. The
 latest timestamp information also increases.
 
 TIP: If your data is being loaded continuously, you can continue running the job
-in real time. For this, start your {dfeed} and select **No end time**.
-
-If you want to stop the {dfeed} at this point, you can click the following
-button: image:ml/images/ml-stop-feed.jpg["Stop {dfeed}"]
+in real time. For this, start your {dfeed} and select **No end time**. To stop a {dfeed}, click *Stop {dfeed}* in the actions column.
 
 Now that you have processed all the data, let's start exploring the job results.
 

@@ -63,10 +63,12 @@ to populate the {infra-ui} UI with data.
 
 To populate the *Hosts* view and add logs, enable: 
 
-* {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module]
+* {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module] (enabled by default)
 * {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
 * {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for
 your environment, such as `apache2`, `redis`, and so on
+* {metricbeat-ref}/add-host-metadata.html[{metricbeat} `add_host_metadata` processor] (enabled by default)
+* {metricbeat-ref}/add-cloud-metadata.html[{metricbeat} `add_cloud_metadata` processor] (enabled by default)
 
 To populate the *Docker* view and add logs, enable:
 

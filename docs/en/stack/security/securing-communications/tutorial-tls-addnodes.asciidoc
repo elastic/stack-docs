@@ -28,7 +28,7 @@ When you are deploying a production environment, however, you are generally
 adding nodes on different machines so that your cluster is resilient to outages
 and avoids data loss.  In a production scenario, there are additional
 requirements that are not covered in this tutorial. See
-{ref}/bootstrap-checks.html#_development_vs_production_mode[Development vs production mode].
+{ref}/bootstrap-checks.html#dev-vs-prod-mode[Development vs production mode].
 
 Let's add two nodes to our cluster!
 
@@ -56,7 +56,7 @@ By default, if you run multiple {es} nodes on the same machine, it
 automatically uses free ports in the range 9200-9300 for HTTP and 9300-9400 for
 transport. If you want to assign specific port numbers to each node, however,
 you can add {ref}/modules-transport.html[TCP transport settings]. You can then
-provide a list of these {ref}/modules-discovery-zen.html#discovery-seed-nodes[seed nodes],
+provide a list of these seed nodes,
 which is used to discover the nodes in your cluster.
 
 For example, add the following settings to the `ES_PATH_CONF/elasticsearch.yml`

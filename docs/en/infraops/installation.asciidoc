@@ -7,9 +7,8 @@ beta[]
 To get up and running with infrastructure monitoring, you need:
 
 * An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic
-license. To learn how to get up and running quickly, see
-{stack-gs}/get-started-elastic-stack.html[Getting started with the
-{stack}].
+license. To learn how to get started quickly, see
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
 +
 [TIP]
 ==============
@@ -20,7 +19,14 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {es}
 Service for free].
 ==============
 
-* {beats} shippers installed on each system you want to monitor
+* {beats} shippers (version 6.5 or later) installed on each system you want to
+monitor
+
+You might also need to modify UI settings in {kib} to change default behaviors,
+such as the index pattern used to query the data, and the timestamp field used
+for sorting. For more information, see
+{kibana-ref}/infrastructure-ui-settings-kb.html[{infra-ui} UI Settings] and
+{kibana-ref}/logs-ui-settings-kb.html[{logs-ui} UI Settings].
 
 [float]
 [[install-beats-for-infra-UI]]
@@ -86,7 +92,7 @@ module]
 * {filebeat-ref}/add-kubernetes-metadata.html[{filebeat} `add_kubernetes_metadata` processor]
 
 [float]
-==== More about monitoring containers
+==== More about container monitoring
 
 If you're monitoring containers, you can use autodiscover to automatically apply
 configuration changes in response to changes in your containers. To learn how,

@@ -236,5 +236,14 @@ generated. These objects belong to the space that was active when you created
 the job. If you change your active space, custom URLs from the {ml} results to 
 the dashboards or visualizations might fail. 
 
- 
+[float]
+[[ml-result-size-limitations]]
+=== Job and {dfeed} APIs have a maximum search size
+//https://github.com/elastic/elasticsearch/issues/34864
+
+In 6.6 and later releases, the {ref}/ml-get-job.html[get jobs API] and the
+{ref}/ml-get-job-stats.html[get job statistics API] return a maximum of 10,000
+jobs. Likewise, the {ref}/ml-get-datafeed.html[get {dfeeds} API] and the
+{ref}/ml-get-datafeed-stats.html[get {dfeed} statistics API] return a maximum of
+10,000 {dfeeds}.
  

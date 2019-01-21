@@ -7,8 +7,6 @@ Up to this point, we have used a cluster with a single {es} node to get up and
 running with the {stack}. An {es} _node_ is a single server that is part of your
 cluster and stores pieces of your data called _shards_. 
 
-image::security/images/elas_0202.png["A cluster with one node and three primary shards"]
-
 You can add more nodes to your cluster and optionally designate specific purposes
 for each node. For example, you can allocate master nodes, data nodes, ingest
 nodes, machine learning nodes, and dedicated coordinating nodes. For details
@@ -28,7 +26,8 @@ When you are deploying a production environment, however, you are generally
 adding nodes on different machines so that your cluster is resilient to outages
 and avoids data loss.  In a production scenario, there are additional
 requirements that are not covered in this tutorial. See
-{ref}/bootstrap-checks.html#dev-vs-prod-mode[Development vs production mode].
+{ref}/bootstrap-checks.html#dev-vs-prod-mode[Development vs production mode] and
+{ref}/add-elasticsearch-nodes.html[Adding nodes to your cluster].
 
 Let's add two nodes to our cluster!
 
@@ -162,6 +161,3 @@ Now that you have multiple nodes, your data can be distributed across the
 cluster in multiple primary and replica shards. For more information about the
 concepts of clusters, nodes, and shards, see
 {ref}/getting-started.html[Getting started with {es}].
-
-image::security/images/elas_0204.png["A cluster with three nodes"]
-

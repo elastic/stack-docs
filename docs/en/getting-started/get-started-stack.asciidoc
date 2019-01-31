@@ -71,8 +71,8 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes"]
 ----
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.deb
-sudo dpkg -i elasticsearch-{elasticsearch_version}.deb
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-amd64.deb
+sudo dpkg -i elasticsearch-{elasticsearch_version}-amd64.deb
 sudo /etc/init.d/elasticsearch start
 ----
 
@@ -90,8 +90,8 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.rpm
-sudo rpm -i elasticsearch-{elasticsearch_version}.rpm
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-x86_64.rpm
+sudo rpm -i elasticsearch-{elasticsearch_version}-x86_64.rpm
 sudo service elasticsearch start
 ----------------------------------------------------------------------
 
@@ -109,9 +109,30 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.tar.gz
-tar -xzvf elasticsearch-{elasticsearch_version}.tar.gz
-cd elasticsearch-{elasticsearch_version}
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
+tar -xzvf elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
+cd elasticsearch-{elasticsearch_version}-darwin-x86_64
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+endif::[]
+
+
+[[linux]]*linux:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-linux-x86_64.tar.gz
+tar -xzvf elasticsearch-{elasticsearch_version}-linux-x86_64.tar.gz
+cd elasticsearch-{elasticsearch_version}-linux-x86_64
 ./bin/elasticsearch
 ----------------------------------------------------------------------
 
@@ -138,7 +159,7 @@ contains the extracted files, for example:
 +
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-cd C:\Program Files\elasticsearch-{elasticsearch_version}
+cd C:\Program Files\elasticsearch-{elasticsearch_version}-windows-x86_64
 ----------------------------------------------------------------------
 
 . Start {es}:

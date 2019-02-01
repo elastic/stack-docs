@@ -111,7 +111,7 @@ ifeval::["{release-state}"!="unreleased"]
 ----------------------------------------------------------------------
 curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
 tar -xzvf elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
-cd elasticsearch-{elasticsearch_version}-darwin-x86_64
+cd elasticsearch-{elasticsearch_version}
 ./bin/elasticsearch
 ----------------------------------------------------------------------
 
@@ -132,7 +132,7 @@ ifeval::["{release-state}"!="unreleased"]
 ----------------------------------------------------------------------
 curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-linux-x86_64.tar.gz
 tar -xzvf elasticsearch-{elasticsearch_version}-linux-x86_64.tar.gz
-cd elasticsearch-{elasticsearch_version}-linux-x86_64
+cd elasticsearch-{elasticsearch_version}
 ./bin/elasticsearch
 ----------------------------------------------------------------------
 
@@ -159,7 +159,7 @@ contains the extracted files, for example:
 +
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-cd C:\Program Files\elasticsearch-{elasticsearch_version}-windows-x86_64
+cd C:\Program Files\elasticsearch-{elasticsearch_version}
 ----------------------------------------------------------------------
 
 . Start {es}:

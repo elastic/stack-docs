@@ -10,7 +10,7 @@ be used as credentials attached to the request sent to {es}.
 services listed by order in which they are consulted for authentication:
 
 _token-service_::
-The bearer tokens are generated based on the OAuth2 specification using
+The Token Service generates access tokens and refresh tokens based on the OAuth2 specification using the
 {ref}/security-api-get-token.html[get token API].
 The access token is a short-lived token (defaults to 20 minutes and configurable
 to maximum 1 hour) and can be refreshed using a refresh token.

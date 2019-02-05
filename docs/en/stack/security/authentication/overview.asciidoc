@@ -15,16 +15,17 @@ You can use the native support for managing and authenticating users, or
 integrate with external user management systems such as LDAP and Active
 Directory.
 
-{security} provides built-in realms such as `native`,`ldap`, `active_directory`,
-`pki`, `file`, and `saml`. If none of the built-in realms meet your needs, you
-can also build your own custom realm and plug it into the {stack}.
+The {stack-security-features} provide built-in realms such as `native`,`ldap`,
+`active_directory`, `pki`, `file`, and `saml`. If none of the built-in realms
+meet your needs, you can also build your own custom realm and plug it in.
 
 When {security-features} are enabled, depending on the realms you've configured,
 you must attach your user credentials to the requests sent to {es}. For example,
 when using realms that support usernames and passwords you can simply attach
 {wikipedia}/Basic_access_authentication[basic auth] header to the requests.
 
-{security} provides two services, the token service and the api key service,
-which allow the exchange of the current authentication for a token/key to be
-used for authentication without providing other means of authentication.
-These are enabled by default when TLS/SSL is enabled for http.
+The {security-features} provide two services: the token service and the api key
+service. You can use these services to exchange the current authentication for a
+token or key, which is used for authentication without providing other means of
+authentication. These services are enabled by default when TLS/SSL is enabled
+for HTTP.

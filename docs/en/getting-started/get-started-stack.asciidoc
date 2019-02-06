@@ -56,7 +56,8 @@ Elasticsearch Service for free].
 
 To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
-Redhat/Centos/Fedora, <<mac, mac>> for OS X, and <<win, win>> for Windows):
+Redhat/Centos/Fedora, <<mac, mac>> for OS X, <<linux, linux>> for Linux, and
+<<win, win>> for Windows):
 
 
 [[deb]]*deb:*
@@ -239,7 +240,7 @@ file, `kibana.yml`, before starting {kib}.
 To download and install {kib}, open a terminal window and use the commands that
 work with your system:
 
-*deb or rpm:*
+*deb, rpm, or linux:*
 
 ifeval::["{release-state}"=="unreleased"]
 
@@ -414,6 +415,24 @@ tar xzvf metricbeat-{version}-darwin-x86_64.tar.gz
 
 endif::[]
 
+*linux:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-linux-x86_64.tar.gz
+tar xzvf metricbeat-{version}-linux-x86_64.tar.gz
+------------------------------------------------
+
+endif::[]
+
 *win:*
 
 ifeval::["{release-state}"=="unreleased"]
@@ -480,7 +499,7 @@ To set up the `system` module and start collecting system metrics:
 sudo metricbeat modules enable system
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
@@ -503,7 +522,7 @@ PS C:\Program Files\Metricbeat> .\metricbeat.exe modules enable system
 sudo metricbeat setup -e
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
@@ -531,7 +550,7 @@ standard error instead of syslog.
 sudo service metricbeat start
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
@@ -620,7 +639,7 @@ sudo rpm -i logstash-{logstash_version}.rpm
 
 endif::[]
 
-*mac:*
+*mac and linux:*
 
 ifeval::["{release-state}"=="unreleased"]
 
@@ -734,7 +753,7 @@ sudo /etc/init.d/logstash start
 sudo service logstash start
 ----------------------------------------------------------------------
 
-*mac:*
+*mac and linux:*
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------

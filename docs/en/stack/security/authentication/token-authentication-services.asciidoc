@@ -3,10 +3,11 @@
 === Token-based authentication services
 
 The {stack-security-features} authenticate users by using realms and one or more token-based
-authentication services followed by the <<realms,realms>>. The
-token-based authentication services are used for authentication and for the
-management of tokens. These tokens can be used as credentials attached to
-requests that are sent to {es}.
+authentication services. The token-based authentication services are used for
+authentication and for the management of tokens. These tokens can be used as
+credentials attached to requests that are sent to {es}. When {es} receives a request
+that must be authenticated, it consults first the token-based authentication
+services then the realm chain.
 
 The {security-features} provide the following built-in token-based authentication
 services, which are listed in the order they are consulted:

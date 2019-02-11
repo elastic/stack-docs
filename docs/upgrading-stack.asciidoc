@@ -41,27 +41,8 @@ you're using any deprecated features and update your code accordingly.
 By default, deprecation log messages are enabled at the `WARN` level.
 
 . Review the breaking changes for each product you use
-and make the necessary changes so your code is compatible with {version}:
-+
---
-** {beats-ref}/breaking-changes.html[Beats {version} breaking changes]
-** {apm-server-ref}/breaking-changes.html[APM Server {version} breaking changes]
-** {ref}/breaking-changes.html[Elasticsearch {version} breaking changes]
-** {hadoop-ref}/breaking-changes.html[Elasticsearch Hadoop {version} breaking changes]
-** {kibana-ref}/breaking-changes.html[Kibana {version} breaking changes]
-** {logstash-ref}/breaking-changes.html[Logstash {version} breaking changes]
-
-[IMPORTANT]
-===============================
-
-* If you're upgrading from 2.n, make sure you check the breaking changes from
-2.n to 5.n, as well as from 5.n to 6.n!
-* If you are using {ml} {dfeeds} that contain discontinued search or query
-domain specific language (DSL), the upgrade will fail. In 5.6.5 and later, the
-Upgrade Assistant provides information about which {dfeeds} need to be updated.
-
-===============================
---
+and make the necessary changes so your code is compatible with {version}. See
+<<elastic-stack-breaking-changes>>.
 
 . {ref}/docs-reindex.html[Reindex] or delete any indices created on 2.n. We recommend
 upgrading to the most recent 5.6 and using the {xpack} Reindex Helper to reindex 2.n indices.

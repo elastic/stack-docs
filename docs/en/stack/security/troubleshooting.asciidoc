@@ -575,17 +575,37 @@ Authentication in {kib} fails and the following error is printed in the
 Authentication to realm my-saml-realm failed -
 Provided SAML response is not valid for realm saml/my-saml-realm
 (Caused by ElasticsearchSecurityException[SAML Response is not a 'success' response:
-Code=urn:oasis:names:tc:SAML:2.0:status:AuthnFailed Message=null Detail=null])
+ The SAML IdP did not grant the request. It indicated that the Elastic Stack side sent
+ something invalid (urn:oasis:names:tc:SAML:2.0:status:Requester). Specific status code which might
+ indicate what the issue is: [urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy]]
+)
 ....
 
 *Resolution:*
 
 This means that the SAML Identity Provider failed to authenticate the user and
 sent a SAML Response to the Service Provider ({stack}) indicating this failure.
-The `Code`, `Message` and `Detail` can convey different error identifiers and
-additional information that might offer an indication about the cause of the
-failure. In case `Message` and `Detail` are null, please consult the logs and
-documentation of the Identity Provider in order to further diagnose the problem.
+The message will convey whether the SAML Identity Provider thinks that the problem
+is with the Service Provider ({stack}) or with the Identity Provider itself and
+the specific status code that follows is extremely useful as it usually indicates
+the underlying issue. The list of specific error codes is defined in the
+https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf[SAML 2.0 Core specification - Section 3.2.2.2]
+and the most commonly encountered ones are:
+
+. `urn:oasis:names:tc:SAML:2.0:status:AuthnFailed`: The SAML Identity Provider failed to
+  authenticate the user. There is not much to troubleshoot on the {stack} side for this status, the logs of
+  the SAML Identity Provider will hopefully offer much more information.
+. `urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy`: The SAML Identity Provider cannot support
+  releasing a NameID with the requested format. When creating SAML Authentication Requests, {es} sets
+  the NameIDPolicy element of the Authentication request with the appropriate value. This is controlled
+  by the {ref}/security-settings.html#ref-saml-settings[`nameid_format`] configuration parameter in
+  `elasticsearch.yml`, which if not set defaults to `urn:oasis:names:tc:SAML:2.0:nameid-format:transient`.
+   This instructs the Identity Provider to return a NameID with that specific format in the SAML Response. If
+  the SAML Identity Provider cannot grant that request, for example because it is configured to release a
+  NameID format with `urn:oasis:names:tc:SAML:2.0:nameid-format:persistent` format instead, it returns this error
+  indicating an invalid NameID policy. This issue can be resolved by adjusting `nameid_format` to match the format
+  the SAML Identity Provider can return or by setting it to `urn:oasis:names:tc:SAML:2.0:nameid-format:unspecified`
+  so that the Identity Provider is allowed to return any format it wants.
 --
 
 . *Symptoms:*

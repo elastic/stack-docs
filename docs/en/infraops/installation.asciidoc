@@ -95,7 +95,7 @@ module]
 [float]
 ==== Which fields are used for the metrics on the Infrastructue home page?
 
-The metrics listed below are provided by the Beat Shippers above. Each system type also requires their coresponding identy field to be in the same event document..
+The metrics listed below are provided by the Beats Shippers. Each system type requires their corresponding identity field to be in the same event document:
 
 * Hosts require `host.name`
 * Docker containers require `container.id`
@@ -115,7 +115,8 @@ The metrics listed below are provided by the Beat Shippers above. Each system ty
 
 *Outbound Traffic*:: Derivative of the max of `system.netowrk.out.bytes` scaled to a 1 second rate
 
-*Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate, this metric relies on the same indices as the logs.
+*Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate.
+This metric relies on the same indices as the logs.
 
 
 [float]

@@ -139,3 +139,15 @@ the triggered watches index and allows to execute all watcher actions.
 +
 Grants read access to the `.watches` index, the get watch action and the watcher
 stats.
+
+[[built-in-roles-snapshot-user]] `snapshot_user`::
++
+Grants the necessary privileges to create snapshots of **all** the indices and
+to view their metadata. It does not permit to change index settings or to view
+or change their contents. It permits to view the configuration of existing
+snapshot repositories and of the snapshot details, but does not allow to change
+or restore any of them.
+The privileges granted by this role are less than the _read index_ over all the
+indices because it does not permit installing new repositories or restoring
+any snapshots.
+

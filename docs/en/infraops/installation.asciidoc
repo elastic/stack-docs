@@ -96,7 +96,6 @@ module]
 ==== Which fields are used for the metrics on the map?
 
 
-
 ===== Host Metrics
 
 *CPU Usage*:: Average of `system.cpu.user.pct` added to the average of `system.cpu.system.pct` divided by `system.cpu.cores`
@@ -112,7 +111,6 @@ module]
 *Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate, this metric relies on the same indices as the logs.
 
 
-[float]
 ===== Docker Container Metrics
 
 *CPU Usage*:: Average of `docker.cpu.total.pct`
@@ -124,8 +122,6 @@ module]
 *Outbound Traffic*:: Derivative of the max of `docker.network.out.bytes` scaled to a 1 second rate
 
 
-
-[float]
 ===== Kubernetes Pod Metrics
 
 *CPU Usage*:: Average of `kubernetes.pod.cpu.usage.node.pct`

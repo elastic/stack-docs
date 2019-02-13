@@ -93,9 +93,16 @@ module]
 * {filebeat-ref}/add-kubernetes-metadata.html[{filebeat} `add_kubernetes_metadata` processor]
 
 [float]
-==== Which fields are used for the metrics on the map?
+==== Which fields are used for the metrics on the Infrastructue home page?
+
+The metrics listed below are provided by the Beat Shippers above. Each system type also requires their coresponding identy field to be in the same event document..
+
+* Hosts require `host.name`
+* Docker containers require `container.id`
+* Kibernetes pods require `kibernetes.pod.uid`
 
 
+[float]
 ===== Host Metrics
 
 *CPU Usage*:: Average of `system.cpu.user.pct` added to the average of `system.cpu.system.pct` divided by `system.cpu.cores`
@@ -111,6 +118,7 @@ module]
 *Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate, this metric relies on the same indices as the logs.
 
 
+[float]
 ===== Docker Container Metrics
 
 *CPU Usage*:: Average of `docker.cpu.total.pct`
@@ -122,6 +130,7 @@ module]
 *Outbound Traffic*:: Derivative of the max of `docker.network.out.bytes` scaled to a 1 second rate
 
 
+[float]
 ===== Kubernetes Pod Metrics
 
 *CPU Usage*:: Average of `kubernetes.pod.cpu.usage.node.pct`

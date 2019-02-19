@@ -88,9 +88,10 @@ restart all nodes to maintain communication across the cluster.
 password (`changeme`). For more information, see
 {stack-ov}/built-in-users.html[Built-in users].
 
-. Stop any {xpack} machine learning jobs that are running before starting the
-upgrade process. See
-{stack-ov}/stopping-ml.html[Stopping machine learning].
+. Consider closing {ml} jobs before you start the upgrade process. It is not
+required, but there are pros and cons to leaving the jobs running. These
+considerations are described in the steps related to 
+{ref}/setup-upgrade.html[upgrading {es}].
 
 IMPORTANT: Test upgrades in a dev environment before upgrading your
 production cluster.

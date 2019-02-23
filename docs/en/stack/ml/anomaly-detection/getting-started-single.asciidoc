@@ -2,6 +2,8 @@
 [[ml-gs-jobs]]
 === Creating single metric jobs
 
+////
+TBD
 At this point in the tutorial, the goal is to detect anomalies in the
 total requests received by your applications and services. The sample data
 contains a single key performance indicator(KPI) to track this, which is the total
@@ -13,6 +15,7 @@ and configure it to use a `summary_count_field_name`. The {ml} algorithms will
 make the best possible use of summarized data in this case. For simplicity, in
 this tutorial we will not make use of that advanced functionality. For more
 information, see <<ml-configuring-aggregation>>.
+////
 
 A single metric job contains a single _detector_. A detector defines the type of
 analysis that will occur (for example, `max`, `average`, or `rare` analytical
@@ -28,7 +31,7 @@ go to `http://localhost:5601/`.
 . Click **Create new job**.
 
 . Select the index pattern that you created for the sample data.  For example,
-`server-metrics*`.
+`kibana_sample_data_ecommerce`.
 
 . In the **Use a wizard** section, click **Single metric**.
 
@@ -39,7 +42,7 @@ go to `http://localhost:5601/`.
 image::ml/images/ml-gs-single-job.jpg["Create a new job from the server-metrics index"]
 --
 
-.. For the **Aggregation**, select `Sum`. This value specifies the analysis
+.. For the **Aggregation**, select `Mean`. This value specifies the analysis
 function that is used.
 +
 --
@@ -48,19 +51,18 @@ example, `max` identifies the maximum value that is seen within a bucket.
 Others perform some aggregation over the length of the bucket. For example,
 `mean` calculates the mean of all the data points seen within the bucket.
 Similarly, `count` calculates the total number of data points within the bucket.
-In this tutorial, you are using the `sum` function, which calculates the sum of
-the specified field's values within the bucket. For descriptions of all the
+For descriptions of all the
 functions, see <<ml-functions>>.
 --
 
-.. For the **Field**, select `total`. This value specifies the field that
+.. For the **Field**, select `taxful_total_price`. This value specifies the field that
 the detector uses in the function.
 +
 --
 NOTE: Some functions such as `count` and `rare` do not require fields.
 --
 
-.. For the **Bucket span**, enter `10m`. This value specifies the size of the
+.. For the **Bucket span**, enter `1h`. This value specifies the size of the
 interval that the analysis is aggregated into.
 +
 --
@@ -90,12 +92,15 @@ typical anomalies, and the frequency at which alerting is required.
 you want to analyze all of the existing data, click
 **Use full server-metrics* data**. If you want to see what happens when you
 stop and start {dfeeds} and process additional data over time, click the time
-picker in the {kib} toolbar. Since the sample data spans a period of time
-between March 23, 2017 and April 22, 2017, click **Absolute**. Set the start
-time to March 23, 2017 and the end time to April 1, 2017, for example. Once
-you've got the time range set up, click the **Go** button. +
+picker in the {kib} toolbar.
 +
 --
+The data spans a period of time relative to the date that you downloaded
+the sample. For example, if the earliest order dates is February 6, 2019 and the
+latest is March 9, 2019, you can choose to initially analyze data up to the end
+of February. Click **Absolute** and set the start and end dates. Once
+you've got the time range set up, click the **Go** button. +
+
 [role="screenshot"]
 image::ml/images/ml-gs-job1-time.jpg["Setting the time range for the {dfeed}"]
 --
@@ -104,12 +109,11 @@ image::ml/images/ml-gs-job1-time.jpg["Setting the time range for the {dfeed}"]
 A graph is generated, which represents the total number of requests over time.
 
 Note that the **Estimate bucket span** option is no longer greyed out in the
-**Buck span** field. This is an experimental feature that you can use to help
-determine an appropriate bucket span for your data. For the purposes of this
-tutorial, we will leave the bucket span at 10 minutes.
+**Bucket span** field. This is an experimental feature that you can use to help
+determine an appropriate bucket span for your data. 
 --
 
-. Provide a name for the job, for example `total-requests`. The job name must
+. Provide a name for the job, for example `mean-prices`. The job name must
 be unique in your cluster. You can also optionally provide a description of the
 job and create a job group.
 
@@ -117,23 +121,16 @@ job and create a job group.
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job1.jpg["A graph of the total number of requests over time"]
+image::ml/images/ml-gs-job1.jpg["A graph of the mean total prices over time"]
 --
 
 As the job is created, the graph is updated to give a visual representation of
-the progress of {ml} as the data is processed. This view is only available whilst the
-job is running.
+the progress of {ml} as the data is processed. This view is only available
+whilst the job is running.
 
 When the job is created, you can choose to view the results, continue the job
 in real-time, and create a watch. In this tutorial, we will look at how to
 manage jobs and {dfeeds} before we view the results.
-
-TIP: The `create_single_metric.sh` script, which is included with the   
-<<ml-gs-sampledata,sample data>>, creates a similar job and {dfeed} by
-using the {ml} APIs. Before you run it, you must edit the USERNAME and PASSWORD 
-variables with your actual user ID and password. If the {es} {security-features}
-are not enabled, use the `create_single_metric_noauth.sh` script instead. For
-API reference information, see {ref}/ml-apis.html[Machine Learning APIs].
 
 [[ml-gs-job1-manage]]
 === Managing jobs
@@ -216,8 +213,9 @@ image:ml/images/ml-gs-start-feed.jpg["Start {dfeed}"]
 --
 
 . Choose a start time and end time. For example,
-click **Continue from 2017-04-01 23:59:00** and select **2017-04-30** as the
-search end time. Then click **Start**. The date picker defaults to the latest
+click **Continue from ...**, where the date varies depending on when you stopped
+your {dfeed}. Specify a search end time that aligns with the end of your sample
+data set, then click **Start**. The date picker defaults to the latest
 timestamp of processed data. Be careful not to leave any gaps in the analysis,
 otherwise you might miss anomalies. +
 +
@@ -273,11 +271,14 @@ area represents the bounds for the expected values. The area between the upper
 and lower bounds are the most likely values for the model. If a value is outside
 of this area then it can be said to be anomalous.
 
+////
+TBD
 If you slide the time selector from the beginning of the data to the end of the
 data, you can see how the model improves as it processes more data. At the
 beginning, the expected range of values is pretty broad and the model is not
 capturing the periodicity in the data. But it quickly learns and begins to
 reflect the daily variation.
+////
 
 Any data points outside the range that was predicted by the model are marked
 as anomalies. When you have high volumes of real-life data, many anomalies
@@ -328,5 +329,5 @@ image::ml/images/ml-gs-job1-explorer-anomaly.jpg["Anomaly Explorer details for t
 After you have identified anomalies, often the next step is to try to determine
 the context of those situations. For example, are there other factors that are
 contributing to the problem? Are the anomalies confined to particular
-applications or servers? You can begin to troubleshoot these situations by
+products or locations? You can begin to troubleshoot these situations by
 layering additional jobs or creating multi-metric jobs.

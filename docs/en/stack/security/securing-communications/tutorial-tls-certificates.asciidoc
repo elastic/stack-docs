@@ -113,7 +113,9 @@ For example:
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/elasticsearch-certutil cert --ca ca/ca.p12 \ <1>
---name <node-name> <2> --dns <domain_name> <3> --ip <ip_addresses> <4>
+--name <node-name> \ <2>
+--dns <domain_name> \ <3>
+--ip <ip_addresses> <4>
 ----------------------------------------------------------------------
 // NOTCONSOLE
 <1> The certificate authority that you generated for this cluster.

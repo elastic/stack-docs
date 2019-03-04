@@ -28,8 +28,11 @@ patterns. It also includes the authority to grant the privileges necessary to
 manage follower indices and auto-follow patterns. This privilege is necessary 
 only on clusters that contain follower indices. 
 
+`manage_data_frame_transforms`::
+All {ml} operations related to managing data frames.
+
 `manage_ilm`::
-All {Ilm} operations related to managing policies
+All {Ilm} operations related to managing policies.
 
 `manage_index_templates`::
 All operations on index templates.
@@ -83,25 +86,28 @@ security roles of the user who created or updated them.
 All cluster read-only operations, like cluster health and state, hot threads, 
 node info, node and cluster stats, and pending cluster tasks.
 
+`monitor_data_frame_transforms`::
+All read-only {ml} operations related to data frames.
+
 `monitor_ml`::
-All read only {ml} operations, such as getting information about {dfeeds}, jobs,
+All read-only {ml} operations, such as getting information about {dfeeds}, jobs,
 model snapshots, or results.
 
 `monitor_rollup`::
-All read only rollup operations, such as viewing the list of historical and
+All read-only rollup operations, such as viewing the list of historical and
 currently running rollup jobs and their capabilities. 
 
 `monitor_watcher`::
-All read only watcher operations, such as getting a watch and watcher stats.
+All read-only watcher operations, such as getting a watch and watcher stats.
 
 `read_ccr`::
-All read only {ccr} operations, such as getting information about indices and 
+All read-only {ccr} operations, such as getting information about indices and 
 metadata for leader indices in the cluster. It also includes the authority to 
 check whether users have the appropriate privileges to follow leader indices. 
 This privilege is necessary only on clusters that contain leader indices. 
 
 `read_ilm`::
-All read only {Ilm} operations, such as getting policies and checking the
+All read-only {Ilm} operations, such as getting policies and checking the
 status of {Ilm}
 
 `transport_client`::
@@ -161,12 +167,12 @@ All actions that are required for monitoring (recovery, segments info, index
 stats and status).
 
 `read`::
-Read only access to actions (count, explain, get, mget, get indexed scripts,
+Read-only access to actions (count, explain, get, mget, get indexed scripts,
 more like this, multi percolate/search/termvector, percolate, scroll,
 clear_scroll, search, suggest, tv).
 
 `read_cross_cluster`::
-Read only access to the search action from a <<cross-cluster-configuring,remote cluster>>.
+Read-only access to the search action from a <<cross-cluster-configuring,remote cluster>>.
 
 `view_index_metadata`::
 Read-only access to index metadata (aliases, aliases exists, get index, exists, field mappings,

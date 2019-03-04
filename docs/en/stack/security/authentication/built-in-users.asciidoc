@@ -2,10 +2,10 @@
 [[built-in-users]]
 === Built-in users
 
-{security} provides built-in user credentials to help you get up and running.
-These users have a fixed set of privileges and cannot be authenticated until their
-passwords have been set. The `elastic` user can be used to
-<<set-built-in-user-passwords,set all of the built-in user passwords>>.
+The {stack-security-features} provide built-in user credentials to help you get
+up and running. These users have a fixed set of privileges and cannot be
+authenticated until their passwords have been set. The `elastic` user can be
+used to <<set-built-in-user-passwords,set all of the built-in user passwords>>.
 
 `elastic`:: A built-in _superuser_. See <<built-in-roles>>.
 `kibana`:: The user Kibana uses to connect and communicate with Elasticsearch.
@@ -20,12 +20,11 @@ storing monitoring information in {es}. It has the `remote_monitoring_agent` and
 [float]
 [[built-in-user-explanation]]
 ==== How the built-in users work
-These built-in users are stored within a special `.security` index managed by
-{security}.
-This means that, if the password is changed, or a user is disabled, then that
-change is automatically reflected on each node in the cluster. It also means
-that if your `.security` index is deleted, or restored from a snapshot, then
-any changes you have applied will be lost.
+These built-in users are stored in a special `.security` index, which is managed
+by {es}. If a built-in user is disabled or its password
+changes, the change is automatically reflected on each node in the cluster. If
+your `.security` index is deleted or restored from a snapshot, however, any
+changes you have applied are lost.
 
 Although they share the same API, the built-in users are separate and distinct
 from users managed by the <<native-realm, native realm>>. Disabling the native

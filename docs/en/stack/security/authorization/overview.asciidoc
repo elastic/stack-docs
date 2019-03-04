@@ -2,9 +2,8 @@
 [[authorization]]
 == User authorization
 
-{security} introduces the concept of _authorization_ to the {stack}.
-Authorization is the process of determining whether the user behind an incoming
-request is allowed to execute the request. 
+The {stack-security-features} add _authorization_, which is the process of determining whether the user behind an incoming request is allowed to execute
+the request. 
 
 This process takes place after the user is successfully identified and 
 <<setting-up-authentication,authenticated>>. 
@@ -13,9 +12,9 @@ This process takes place after the user is successfully identified and
 [float]
 === Role-based access control
 
-{security} provides a role-based access control (RBAC) mechanism, which enables 
-you to authorize users by assigning privileges to roles and assigning roles to 
-users or groups. 
+The {security-features} provide a role-based access control (RBAC) mechanism,
+which enables you to authorize users by assigning privileges to roles and
+assigning roles to users or groups. 
 
 image::security/authorization/images/authorization.png[This image illustrates role-based access control]
 
@@ -65,13 +64,12 @@ to authenticate users. For more information, see <<mapping-roles>>.
 [float]
 === Attribute-based access control
 
-{security} also provides an attribute-based access control (ABAC) mechanism, 
-which enables you to use attributes to restrict access to documents in search 
-queries and aggregations. For example, you can assign attributes to users and 
-documents, then implement an access policy in a role definition. Users with that 
-role can read a specific document only if they have all the required attributes. 
+The {security-features} also provide an attribute-based access control (ABAC)
+mechanism, which enables you to use attributes to restrict access to documents
+in search queries and aggregations. For example, you can assign attributes to
+users and documents, then implement an access policy in a role definition. Users
+with that role can read a specific document only if they have all the required
+attributes. 
 
 For more information, see 
 https://www.elastic.co/blog/attribute-based-access-control-with-xpack[Document-level attribute-based access control with X-Pack 6.1].
-
-//TO-DO: Add task related to configuring ABAC.

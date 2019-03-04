@@ -9,9 +9,9 @@ Elasticsearch's plugin infrastructure is extremely flexible in terms of what can
 be extended. While it opens up Elasticsearch to a wide variety of (often custom)
 additional functionality, when it comes to security, this high extensibility level
 comes at a cost. We have no control over the third-party plugins' code (open
-source or not) and therefore we cannot guarantee their compliance with {security}.
-For this reason, third-party plugins are not officially supported on clusters
-with {security-features} enabled.
+source or not) and therefore we cannot guarantee their compliance with
+{stack-security-features}. For this reason, third-party plugins are not
+officially supported on clusters with {security-features} enabled.
 
 [float]
 === Changes in index wildcard behavior
@@ -34,8 +34,10 @@ authorized to know anything about those indices.
 === Filtered index aliases
 
 Aliases containing filters are not a secure way to restrict access to individual
-documents, due to the limitations described in <<alias-limitations, Index and Field Names Can Be Leaked When Using Aliases>>.
-{security} provides a secure way to restrict access to documents through the
+documents, due to the limitations described in
+<<alias-limitations, Index and field names can be leaked when using aliases>>.
+The {stack-security-features} provide a secure way to restrict access to
+documents through the 
 <<field-and-document-access-control, document-level security>> feature.
 
 [float]

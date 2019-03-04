@@ -4,8 +4,8 @@
 
 [partintro]
 --
-{security} enables you to easily secure a cluster. With {security},
-you can password-protect your data as well as implement more advanced security
+The {stack-security-features} enable you to easily secure a cluster. You can
+password-protect your data as well as implement more advanced security
 measures such as encrypting communications, role-based access control,
 IP filtering, and auditing. This guide describes how to configure the security
 features you need, and interact with your secured cluster.
@@ -21,53 +21,53 @@ Security protects Elasticsearch clusters by:
 
 [float]
 [[preventing-unauthorized-access]]
-=== Preventing Unauthorized Access
+=== Preventing unauthorized access
 
 To prevent unauthorized access to your Elasticsearch cluster, you must have a
 way to _authenticate_ users. This simply means that you need a way to validate
 that a user is who they claim to be. For example, you have to make sure only
-the person named _Kelsey Andorra_ can sign in as the user `kandorra`. {security} 
-provides a standalone authentication mechanism that enables you to
-quickly password-protect your cluster. If you're already using <<ldap-realm, LDAP>>,
-<<active-directory-realm, Active Directory>>, or <<pki-realm, PKI>> to manage
-users in your organization, {security} is able to integrate with those
-systems to perform user authentication.
+the person named _Kelsey Andorra_ can sign in as the user `kandorra`. The
+{es-security-features} provide a standalone authentication mechanism that enables
+you to quickly password-protect your cluster. If you're already using
+<<ldap-realm, LDAP>>, <<active-directory-realm, Active Directory>>, or
+<<pki-realm, PKI>> to manage users in your organization, the {security-features}
+are able to integrate with those systems to perform user authentication.
 
 In many cases, simply authenticating users isn't enough. You also need a way to
-control what data users have access to and what tasks they can perform. {security}
-enables you to _authorize_ users by assigning access _privileges_ to _roles_,
-and assigning those roles to users. For example, this
+control what data users have access to and what tasks they can perform. The
+{es-security-features} enable you to _authorize_ users by assigning access
+_privileges_ to _roles_ and assigning those roles to users. For example, this
 <<authorization,role-based access control>> mechanism (a.k.a RBAC) enables
 you to specify that the user `kandorra` can only perform read operations on the
 `events` index and can't do anything at all with other indices.
 
-{security} also supports <<ip-filtering, IP-based authorization>>. You can
-whitelist and blacklist specific IP addresses or subnets to control network-level
-access to a server.
+The {security-features} also support <<ip-filtering, IP-based authorization>>.
+You can whitelist and blacklist specific IP addresses or subnets to control
+network-level access to a server.
 
 [float]
 [[preserving-data-integrity]]
-=== Preserving Data Integrity
+=== Preserving data integrity
 
 A critical part of security is keeping confidential data confidential.
 Elasticsearch has built-in protections against accidental data loss and
 corruption. However, there's nothing to stop deliberate tampering or data
-interception. {security} preserves the integrity of your data by
-<<ssl-tls, encrypting communications>> to and from nodes.
-For even greater protection, you can increase the <<ciphers, encryption strength>> and
+interception. The {stack-security-features} preserve the integrity of your
+data by <<ssl-tls, encrypting communications>> to and from nodes. For even
+greater protection, you can increase the <<ciphers, encryption strength>> and
 <<separating-node-client-traffic, separate client traffic from node-to-node communications>>.
 
 
 [float]
 [[maintaining-audit-trail]]
-=== Maintaining an Audit Trail
+=== Maintaining an audit trail
 
-Keeping a system secure takes vigilance. By using {security} to maintain
-an audit trail, you can easily see who is accessing your cluster and what they're
-doing. By analyzing access patterns and failed attempts to access your cluster,
-you can gain insights into attempted attacks and data breaches. Keeping an
-auditable log of the activity in your cluster can also help diagnose operational
-issues.
+Keeping a system secure takes vigilance. By using {stack-security-features} to
+maintain an audit trail, you can easily see who is accessing your cluster and
+what they're doing. By analyzing access patterns and failed attempts to access
+your cluster, you can gain insights into attempted attacks and data breaches.
+Keeping an auditable log of the activity in your cluster can also help diagnose
+operational issues.
 
 [float]
 === Where to Go Next
@@ -80,8 +80,8 @@ issues.
   authorization, and encryption.
 
 * <<ccs-clients-integrations>>
-  shows you how to interact with an Elasticsearch cluster protected by
-  {security}.
+  shows you how to interact with an Elasticsearch cluster protected by the
+  {stack-security-features}.
 
 [float]
 === Have Comments, Questions, or Feedback?

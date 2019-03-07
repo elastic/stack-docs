@@ -223,37 +223,49 @@ indices created in {es} {prev-major-version}, but not those created in earlier
 versions. This restriction also applies to the internal indices that are used by
 Kibana and the {xpack} features. Therefore, before you can use Kibana and
 {xpack} features in {version}, you must upgrade the internal indices to a
-compatible index structure. If you are upgrading from a version prior to
-{prev-major-version}, you must upgrade to the most recent version of
-{prev-major-version} first. Then you can use the {kib} Upgrade Assistant or
-equivalent {ref}/migration-api-assistance.html[`_migration/assistance` API] to
-check whether you need to upgrade the internal indices. 
+compatible index structure.
 
-////
-//TBD
-To upgrade the `.security` index:
+If you are upgrading from a version prior to {prev-major-version}, you must
+upgrade to the most recent version of {prev-major-version} first. Then you can
+use the {kib} Upgrade Assistant or the
+{ref}/migration-api-assistance.html[`_migration/assistance` API] to check
+whether you need to upgrade the internal indices. 
 
-. On a single node, add a temporary superuser account to the `file` realm.
-. Use the {ref}/migration-api-upgrade.html[`_migration/upgrade`]
-API to upgrade the security index, submitting the request with the credentials
-for the temporary superuser:
+[TIP]
+====
+If you use {stack} {security-features}, before you upgrade `.security*` internal
+indices it is a good idea to create a temporary superuser account in the `file`
+realm.
+
+. On a single node, add a temporary superuser account to the `file` realm. For
+example, run the {ref}/users-command.html[elasticsearch-users useradd] command:
 +
 --
-[source,json]
+[source,sh]
 ----------------------------------------------------------
-POST /_migration/upgrade/.security
+bin/elasticsearch-users useradd <user_name> \
+-p <password> -r superuser
 ----------------------------------------------------------
-// CONSOLE
 --
 
-. Delete the temporary superuser account from the file realm.
+. Use these credentials when you upgrade the `.security*` index. That is to say,
+use them to log into {kib} and run the Upgrade Assistant or to call the
+migration upgrade API. You can use your regular administration credentials to
+upgrade the other internal indices.
 
-You can use your regular administration credentials to upgrade the other
-internal indices using the `_migration/upgrade` API.
+. Delete the temporary superuser account from the file realm. For
+example, run the {ref}/users-command.html[elasticsearch-users userdel] command:
++
+--
+[source,sh]
+----------------------------------------------------------
+bin/elasticsearch-users userdel <user_name>
+----------------------------------------------------------
+--
 
-TIP: Once you upgrade the `.kibana` index, you can run Kibana and use the
-{xpack} Reindex Helper UI to upgrade the other indices.
-////
+For more information, see
+{ref}/configuring-file-realm.html[Configuring a file realm].
+====
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
 === Upgrading on Elastic Cloud

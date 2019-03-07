@@ -217,21 +217,20 @@ index as alias for the new index and delete the 2.x index.
 [[upgrade-internal-indices]]
 ==== Upgrading internal indices for {major-version}
 
-The format used for the internal indices used by Kibana and {xpack} has
-changed in {major-version}. Before you can run Kibana and {xpack} in {version},
-these indices must be upgraded to the new format. If you are upgrading from a
-version prior to 5.6, you must upgrade them after after installing
-Elasticsearch {version}.
+{es} can read indices that were created in the *previous major version*. Older
+indices must be reindexed or deleted. For example, {es} {major-version} can use
+indices created in {es} {prev-major-version}, but not those created in earlier
+versions. This restriction also applies to the internal indices that are used by
+Kibana and the {xpack} features. Therefore, before you can use Kibana and
+{xpack} features in {version}, you must upgrade the internal indices to a
+compatible index structure. If you are upgrading from a version prior to
+{prev-major-version}, you must upgrade to the most recent version of
+{prev-major-version} first. Then you can use the {kib} Upgrade Assistant or
+equivalent {ref}/migration-api-assistance.html[`_migration/assistance` API] to
+check whether you need to upgrade the internal indices. 
 
-To get a list of the indices that need to be upgraded, install {xpack} and use
-the {ref}/migration-api-assistance.html[`_migration/assistance` API]:
-
-[source,json]
-----------------------------------------------------------
-GET /_migration/assistance
-----------------------------------------------------------
-// CONSOLE
-
+////
+//TBD
 To upgrade the `.security` index:
 
 . On a single node, add a temporary superuser account to the `file` realm.
@@ -254,6 +253,7 @@ internal indices using the `_migration/upgrade` API.
 
 TIP: Once you upgrade the `.kibana` index, you can run Kibana and use the
 {xpack} Reindex Helper UI to upgrade the other indices.
+////
 
 [[upgrade-elastic-stack-for-elastic-cloud]]
 === Upgrading on Elastic Cloud

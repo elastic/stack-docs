@@ -54,8 +54,15 @@ Also see <<glossary-text,text>> and <<glossary-term,term>>.
 +
 //Source: Elasticsearch
 endif::elasticsearch-terms[]
-ifdef::cloud-terms[]
+ifdef::xpack-terms[]
+[[glossary-anomaly-detection-job]] {anomaly-job} ::
 
+{anomaly-jobs-cap} contain the configuration information and metadata
+necessary to perform an analytics task.
++
+//Source: X-Pack
+endif::xpack-terms[]
+ifdef::cloud-terms[]
 [[glossary-zone]] availability zone ::
 
 Contains resources available to a {ece} installation that are isolated from
@@ -69,7 +76,6 @@ entire availability zone. Also see
 //Source: Cloud
 endif::cloud-terms[]
 ifdef::cloud-terms[]
-
 [[glossary-beats-runner]] beats runner ::
 
 Used to send Filebeat and Metricbeat information to the logging cluster.
@@ -82,7 +88,7 @@ ifdef::xpack-terms[]
 
 The {ml-features} use the concept of a bucket to divide the time
 series into batches for processing. The _bucket span_ is part of the
-configuration information for a job. It defines the time interval that is used
+configuration information for {anomaly-jobs}. It defines the time interval that is used
 to summarize and model the data. This is typically between 5 minutes to 1 hour
 and it depends on your data characteristics. When you set the bucket span,
 take into account the granularity at which you want to analyze, the frequency
@@ -207,8 +213,8 @@ ifdef::xpack-terms[]
 
 [[glossary-ml-detector]] detector ::
 
-As part of the configuration information that is associated with an
-{anomaly-job}, detectors define the type of analysis that needs to be done. They
+As part of the configuration information that is associated with {anomaly-jobs},
+detectors define the type of analysis that needs to be done. They
 also specify which fields to analyze. You can have more than one detector in a
 job, which is more efficient than running multiple jobs against the same data.
 +

@@ -409,7 +409,7 @@ file, syslog, redis, and beats.
 endif::logstash-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-ml-job]] job ::
+[[glossary-ml-job]][[glossary-job]] job ::
 
 Machine learning jobs contain the configuration information and metadata
 necessary to perform an analytics task. There are two types: {anomaly-jobs} and
@@ -649,6 +649,14 @@ by making sure that only authorized hosts become part of the installation.
 +
 //Source: Cloud
 endif::cloud-terms[]
+ifdef::xpack-terms[]
+
+[[glossary-rollup-job]] rollup job::
+
+Rollup jobs contain the configuration information and metadata necessary to roll
+up specific indices. See {ref}/xpack-rollup.html[Rolling up historical data].
+//Source: X-Pack
+endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
 
 [[glossary-routing]] routing ::

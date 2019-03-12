@@ -178,6 +178,15 @@ coordination system and resource scheduler.
 endif::cloud-terms[]
 ifdef::xpack-terms[]
 
+[[glossary-ccr]] {ccr} (CCR)::
+
+The {ccr} feature enables you to replicate indices in remote clusters to your
+local cluster. For more information, see {stack-ov}/xpack-ccr.html[{ccr-cap}].  
++
+//Source: X-Pack
+endif::xpack-terms[]
+ifdef::xpack-terms[]
+
 [[glossary-ml-datafeed]] datafeed ::
 
 Machine learning jobs can analyze either a one-off batch of data or
@@ -186,7 +195,6 @@ Alternatively you can post data from any source directly to a {ml} API.
 +
 //Source: X-Pack
 endif::xpack-terms[]
-
 ifdef::xpack-terms[]
 
 [[glossary-ml-detector]] detector ::
@@ -198,7 +206,6 @@ job, which is more efficient than running multiple jobs against the same data.
 +
 //Source: X-Pack
 endif::xpack-terms[]
-
 ifdef::cloud-terms[]
 
 [[glossary-director]] director ::
@@ -292,6 +299,14 @@ grok, mutate, drop, clone, and geoip. Filter stages are optional.
 +
 //Source: Logstash
 endif::logstash-terms[]
+ifdef::xpack-terms[]
+[[glossary-follower-index]] follower index ::  
+  
+Follower indices are the target indices for <<glossary-ccr,{ccr}>>. They exist
+in your local cluster and replicate <<glossary-leader-index,leader indices>>.
++
+//Source: X-Pack
+endif::xpack-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-gem]] gem ::
@@ -363,6 +378,14 @@ ifdef::xpack-terms[]
 Machine learning jobs contain the configuration information and metadata
 necessary to perform an analytics task.
 +
+//Source: X-Pack
+endif::xpack-terms[]
+ifdef::xpack-terms[]
+[[glossary-leader-index]] leader index ::  
+    
+Leader indices are the source indices for <<glossary-ccr,{ccr}>>. They exist
+on remote clusters and are replicated to 
+<<glossary-follower-index,follower indices>>.
 //Source: X-Pack
 endif::xpack-terms[]
 ifdef::xpack-terms[]

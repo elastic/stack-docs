@@ -162,6 +162,11 @@ All {Ilm} operations relating to managing the execution of policies of an index
 This includes operations like retrying policies, and removing a policy
 from an index.
 
+`manage_leader_index`::
+All actions that are required to manage the lifecycle of a leader index, which
+includes {ref}/ccr-post-forget-follower.html[forgetting a follower]. This
+privilege is necessary only on clusters that contain leader indices.
+
 `monitor`::
 All actions that are required for monitoring (recovery, segments info, index 
 stats and status).

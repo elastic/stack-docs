@@ -222,18 +222,17 @@ indices must be reindexed or deleted. For example, {es} {major-version} can use
 indices created in {es} {prev-major-version}, but not those created in earlier
 versions. This restriction also applies to the internal indices that are used by
 Kibana and the {xpack} features. Therefore, before you can use Kibana and
-{xpack} features in {version}, you must upgrade the internal indices to a
+{xpack} features in {version}, you must ensure the internal indices have a
 compatible index structure.
 
 If you are upgrading from a version prior to {prev-major-version}, you must
 upgrade to the most recent version of {prev-major-version} first. Then you can
 use the {kib} Upgrade Assistant or the
-{ref}/migration-api-assistance.html[`_migration/assistance` API] to check
-whether you need to upgrade the internal indices. 
+{ref}/docs-reindex.html[reindex API] to reindex the internal indices. 
 
 [TIP]
 ====
-If you use {stack} {security-features}, before you upgrade `.security*` internal
+If you use {stack} {security-features}, before you reindex `.security*` internal
 indices it is a good idea to create a temporary superuser account in the `file`
 realm.
 
@@ -248,10 +247,10 @@ bin/elasticsearch-users useradd <user_name> \
 ----------------------------------------------------------
 --
 
-. Use these credentials when you upgrade the `.security*` index. That is to say,
+. Use these credentials when you reindex the `.security*` index. That is to say,
 use them to log into {kib} and run the Upgrade Assistant or to call the
-migration upgrade API. You can use your regular administration credentials to
-upgrade the other internal indices.
+reindex API. You can use your regular administration credentials to
+reindex the other internal indices.
 
 . Delete the temporary superuser account from the file realm. For
 example, run the {ref}/users-command.html[elasticsearch-users userdel] command:

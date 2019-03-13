@@ -75,9 +75,28 @@ and other enhancements.
 [[oss-stack-upgrade]]
 === Upgrading from 6.6 or earlier
 
-To upgrade directly to {version} from 6.6 or earlier, you must
+To upgrade directly to {es} {version} from versions 6.0-6.6, you must
 {ref}/reindex-upgrade.html[manually reindex] any 5.x indices you need to
-carry forward and perform a {ref}/restart-upgrade.html[full cluster restart].
+carry forward, and perform a {ref}/restart-upgrade.html[full cluster restart].
+This includes any internal indices created in 5.x, such as the `.kibana` and
+`.security*` indices.
+
+[TIP]
+====
+Add a temporary superuser account in the `file` realm before reindexing the
+internal `.security*` indices by running the
+{ref}/users-command.html[elasticsearch-users useradd] command on a single node.
+This provides a backup authentication method if there is a problem during
+reindexing.
+====
+
+Make sure all 5.x indices have been deleted before upgrading to {version}. {es}
+{version} will fail to start if any 5.x indices are present.
+
+If you are running a version prior to 6.0,
+https://www.elastic.co/guide/en/elastic-stack/6.7/upgrading-elastic-stack.html[upgrade to 6.7]
+and reindex your old indices or bring up a new {version} cluster and
+<<reindex-upgrade-remote, reindex from remote>>.
 
 The recommended path is to upgrade to 6.7 before upgrading to {version}. This
 makes it easier to identify the changes you need to make to upgrade and enables

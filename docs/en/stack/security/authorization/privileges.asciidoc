@@ -157,6 +157,11 @@ All actions that are required to manage the lifecycle of a follower index, which
 includes creating a follower index, closing it, and converting it to a regular 
 index. This privilege is necessary only on clusters that contain follower indices. 
 
+`manage_leader_index`::
+All actions that are required to manage the lifecycle of a leader index, which
+includes {ref}/ccr-post-forget-follower.html[forgetting a follower]. This
+privilege is necessary only on clusters that contain leader indices.
+
 `manage_ilm`::
 All {Ilm} operations relating to managing the execution of policies of an index
 This includes operations like retrying policies, and removing a policy

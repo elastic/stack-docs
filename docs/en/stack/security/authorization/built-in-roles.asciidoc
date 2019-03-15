@@ -90,13 +90,15 @@ suitable for use within a Logstash pipeline.
 --
 
 [[built-in-roles-ml-admin]] `machine_learning_admin`::
-Grants `manage_ml` cluster privileges and read access to the `.ml-*` indices.
+Grants `manage_ml` cluster privileges, read access to `.ml-anomalies*`,
+`.ml-notifications*`, `.ml-state*`, `.ml-meta*` indices and write access to
+`.ml-annotations*` indices.
 
 [[built-in-roles-ml-user]] `machine_learning_user`::
 Grants the minimum privileges required to view {ml} configuration,
-status, and results. This role grants `monitor_ml` cluster privileges and
-read access to the `.ml-notifications` and `.ml-anomalies*` indices,
-which store {ml} results.
+status, and work with results. This role grants `monitor_ml` cluster privileges,
+read access to the `.ml-notifications` and `.ml-anomalies*` indices
+(which store {ml} results), and write access to `.ml-annotations*` indices.
 
 [[built-in-roles-monitoring-user]] `monitoring_user`::
 Grants the minimum privileges required for any user of {monitoring} other than those

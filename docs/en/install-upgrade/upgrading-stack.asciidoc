@@ -183,12 +183,15 @@ need to be migrated or deleted, and upgrade the internal indices to the
 +
 You can also call the Elasticsearch migration APIs directly:
 +
-`/_migration/assistance`:: Runs a series of checks on your cluster,
-nodes, and indices and returns a list of issues that need to be
-fixed before you can upgrade to {version}.
+`/_xpack/migration/deprecations`:: Retrieves information about cluster-, node-,
+and index-level settings that use deprecated features.
 +
-`/_migration/upgrade`:: Upgrades the indices for the {watcher} and 
-{security-features} to a single-type format compatible with Elasticsearch 6.x.
+`/_xpack/migration/assistance`:: deprecated[6.7.0] Returns a list of indices
+that need to be reindexed before you can upgrade to {version}.
++
+`/_xpack/migration/upgrade`:: deprecated[6.7.0] Upgrades the indices for the
+{watcher} and {security-features} to a single-type format compatible with
+Elasticsearch 6.x.
 
 . Once you've resolved all of the migration issues, perform
 a {ref}/rolling-upgrades.html[rolling upgrade] from Elasticsearch 5.6 to {version}.
@@ -223,34 +226,26 @@ these indices must be upgraded to the new format. If you are upgrading from a
 version prior to 5.6, you must upgrade them after after installing
 Elasticsearch {version}.
 
-To get a list of the indices that need to be upgraded, install {xpack} and use
-the {ref}/migration-api-assistance.html[`_migration/assistance` API]:
+To get a list of the indices that need to be upgraded, use the
+{ref}/migration-api-deprecation.html[deprecation info API]:
 
 [source,json]
 ----------------------------------------------------------
-GET /_migration/assistance
+GET /_xpack/migration/deprecations
 ----------------------------------------------------------
 // CONSOLE
 
 To upgrade the `.security` index:
 
 . On a single node, add a temporary superuser account to the `file` realm.
-. Use the {ref}/migration-api-upgrade.html[`_migration/upgrade`]
-API to upgrade the security index, submitting the request with the credentials
-for the temporary superuser:
-+
---
-[source,json]
-----------------------------------------------------------
-POST /_migration/upgrade/.security
-----------------------------------------------------------
-// CONSOLE
---
+. Use the {kib} Upgrade Assistant to upgrade the security index, submitting the
+request with the credentials for the temporary superuser. Alternatively, you can
+{ref}/reindex-upgrade.html[reindex manually].
 
 . Delete the temporary superuser account from the file realm.
 
 You can use your regular administration credentials to upgrade the other
-internal indices using the `_migration/upgrade` API.
+internal indices.
 
 TIP: Once you upgrade the `.kibana` index, you can run Kibana and use the
 {xpack} Reindex Helper UI to upgrade the other indices.

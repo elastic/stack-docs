@@ -1,20 +1,36 @@
-[[sec-monitoring-overview]]
+[[network-monitoring-overview]]
 [role="xpack"]
 == Overview
 
 beta[]
 
-{sec} gives you a comprehensive view into your security operations.
+Network monitoring gives you a comprehensive view into your network security
+operations.
 
-The UI in {kib} UI to brings together data
-from a variety of sources, making it easier for you
-to identify and resolve security issues.
+The Network UI in {kib} brings together data from a variety of sources, making
+it easier for you to identify and resolve security issues.
 
 [float]
-[[secops-components]]
-=== Security monitoring components
+[[network-sec-components]]
+=== Network monitoring components
 
-Security monitoring requires the following {stack} components.
+Network monitoring requires the following {stack} components.
 
-image::images/secops-architecture.png[]
+image::images/network-security-architecture.png[]
+
+*https://www.elastic.co/products/beats[{beats}]* are open source data
+shippers that you install as agents on your servers to send operational data to
+{es}.
+
+*https://www.elastic.co/products/elasticsearch[{es}]* is a real-time,
+distributed storage, search, and analytics engine. {es} excels is indexing
+streams of semi-structured data, such as logs or metrics.
+
+*https://www.elastic.co/products/kibana[{kib}]* is an open source analytics and
+visualization platform designed to work with {es}. You use {kib} to search,
+view, and interact with data stored in {es} indices. You can easily perform
+advanced data analysis and visualize your data in a variety of charts, tables,
+and maps.
+
+{kib} Network UI provides a dedicated user interface for visualizing host security.
 

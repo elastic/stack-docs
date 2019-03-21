@@ -160,4 +160,4 @@ configuration]
 [float]
 ==== Known Workarounds
 
-*Running Metricbeat <=6.5 with Kibana 6.7*:: For Kubernetes, you will need to change the "Pod ID" field in the "Configure Source" panel to `kubernetes.pod.name`. There is a caveat for this workaround; if you have two pods with the same name, only one will be visible in the UI.
+*Running Metricbeat <=6.5 with Kibana 6.6+*:: For Kubernetes, you will need to change the "Pod ID" field in the "Configure Source" panel (`xpack.infra.sources.default.fields.pod` in `config/kibana.yml` for Kibana 6.6) to `kubernetes.pod.name`. There is a caveat for this workaround; if you have two pods with the same name, only one will be visible in the UI.

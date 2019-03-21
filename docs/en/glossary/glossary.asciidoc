@@ -551,6 +551,20 @@ nodes handling the user requests.
 endif::cloud-terms[]
 ifdef::elasticsearch-terms[]
 
+[[glossary-recovery]] recovery ::
+The process of syncing a shard copy from a source shard. Upon completion, the recovery process makes the shard copy available for queries.
++
+Recovery automatically occurs anytime a shard moves to a different node in the same cluster, including:
+
+* Node startup
+* Node failure
+* Index shard replication
+* Snapshot restoration
++
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+
 [[glossary-reindex]] reindex ::
 
 To cycle through some or all documents in one or more indices, re-writing them into the same or new index in a local or remote cluster. This is most commonly done to update mappings, or to upgrade Elasticsearch between two incompatible index versions.

@@ -156,3 +156,8 @@ configuration]
 * {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover
 configuration]
 
+
+[float]
+==== Known Workarounds
+
+*Running Metricbeat <=6.5 with Kibana 6.7*:: For Kubernetes, you will need to change the "Pod ID" field in the "Configure Source" panel to `kubernetes.pod.name`. There is a caveat for this workaround; if you have two pods with the same name, only one will be visible in the UI.

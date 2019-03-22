@@ -4,11 +4,11 @@
 Before you upgrade, you must review the breaking changes for each product you
 use and make the necessary changes so your code is compatible with {version}. 
 
-** {beats-ref}/breaking-changes.html[Beats {version} breaking changes]
 ** {apm-server-ref-70}/breaking-changes.html[APM Server {version} breaking changes]
-** {ref}/breaking-changes.html[Elasticsearch {version} breaking changes]
+** {beats-ref}/breaking-changes.html[Beats {version} breaking changes]
+** <<elasticsearch-breaking-changes,{es} {version} breaking changes>>
 ** {hadoop-ref}/breaking-changes.html[Elasticsearch Hadoop {version} breaking changes]
-** {kibana-ref}/breaking-changes.html[Kibana {version} breaking changes]
+** <<kibana-breaking-changes,Kibana {version} breaking changes>>
 ** {logstash-ref}/breaking-changes.html[Logstash {version} breaking changes]
 
 [IMPORTANT]
@@ -22,18 +22,26 @@ Upgrade Assistant provides information about which {dfeeds} need to be updated.
 
 ===============================
 
+The following sections summarize the most important breaking changes in {version}:
+
 [float]
 [[elasticsearch-breaking-changes]]
-=== Notable {es} breaking changes
+=== {es}
 
-include::{es-repo-dir}/reference/migration/migrate_7_0.asciidoc[tag=notable-breaking-changes]
+coming[7.1.0]
+
+For the complete list, go to {ref}/breaking-changes.html[{es} breaking changes].
+
+include::{es-repo-dir}/reference/migration/migrate_7_1.asciidoc[tag=notable-breaking-changes]
 
 
 [float]
 [[kibana-breaking-changes]]
-=== Notable {kib} breaking changes
+=== {kib}
 
 coming[7.1.0]
 
-include::{kib-repo-dir}/migration/migrate_7_0.asciidoc[tag=notable-breaking-changes]
+For the complete list, go to {kibana-ref}/breaking-changes.html[{kib} breaking changes].
+
+include::{kib-repo-dir}/migration/migrate_7_1.asciidoc[tag=notable-breaking-changes]
 

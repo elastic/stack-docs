@@ -185,6 +185,14 @@ local cluster. For more information, see {stack-ov}/xpack-ccr.html[{ccr-cap}].
 +
 //Source: X-Pack
 endif::xpack-terms[]
+ifdef::elasticsearch-terms[]
+[[glossary-ccs]] {ccs} (CCS)::
+
+The {ccs} feature enables any node to act as a federated client across
+multiple clusters. See {ref}/modules-cross-cluster-search.html[{ccs-cap}].   
+
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
 ifdef::xpack-terms[]
 
 [[glossary-ml-datafeed]] datafeed ::
@@ -294,6 +302,20 @@ field: `[top-level field][nested field]`.
 +
 //Source: Logstash
 endif::logstash-terms[]
+ifdef::elasticsearch-terms[]
+
+[[glossary-filter]] filter ::
+
+A filter is a non-scoring <<glossary-query,query>>, meaning that it does not
+score documents. It is only concerned about answering the question - "Does this
+document match?". The answer is always a simple, binary yes or no. This kind of
+query is said to be made in a {ref}/query-filter-context.html[filter context], hence it
+is called a filter. Filters are simple checks for set inclusion or exclusion. In
+most cases, the goal of filtering is to reduce the number of documents that have
+to be examined.
+
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-filter-plugin]] filter plugin ::
@@ -557,6 +579,21 @@ nodes handling the user requests.
 +
 //Source: Cloud
 endif::cloud-terms[]
+ifdef::elasticsearch-terms[]
+[[glossary-query]] query ::
+
+A query is the basic component of a search. A search can be defined by one or
+more queries which can be mixed and matched in endless combinations. While
+<<glossary-filter,filters>> are queries that only determine if a document
+matches, those queries that also calculate how well the document matches are
+known as "scoring queries". Those queries assign it a score, which is later used
+to sort matched documents. Scoring queries take more resources than
+<<glossary-filter,non scoring queries>> and their query results are not
+cacheable. As a general rule, use query clauses for full-text search or for any
+condition that requires scoring, and use filters for everything else.
+
+//Source: Elasticsearch
+endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
 
 [[glossary-recovery]] recovery ::

@@ -1,0 +1,127 @@
+[[upgrading-elastic-stack]]
+== Upgrading the Elastic Stack
+
+When upgrading to a new version of {es}, you need to upgrade
+each of the products in your Elastic Stack. Beats and Logstash 7.n are
+compatible with {es} {version} to give you flexibility in scheduling
+the upgrade.
+
+{es} supports rolling upgrades between minor versions, from {es} 5.6 to 6.7,
+from 6.7 to 7.x, and from 7.n to {version}.
+
+IMPORTANT: 6.x and older indices are not compatible with {version}. You must
+remove or reindex them on your 7.x cluster before upgrading to {version}. The internal
+Kibana and {xpack} indices and the default Beats and Logstash mapping templates
+also need to be updated to work with {version}.
+
+=== Preparing to upgrade
+
+Before upgrading the Elastic Stack to {version}:
+
+. Check the {es} {ref}/logging.html#deprecation-logging[deprecation log]
+to see if you're using any deprecated features and update your code accordingly.
+By default, deprecation warnings are logged when the log level is set to `WARN`.
+
+. Review the <<elastic-stack-breaking-changes>> and upgrade your code to work
+with {version}.
+
+. Upgrade to 6.7 and use the {kibana-ref}/upgrade-assistant.html[{kib} Upgrade Assistant] to {ref}/docs-reindex.html[reindex]
+any indices that are not compatible with {version}.
++
+[role="xpack"]
+.Upgrade Assistant
+******
+The Upgrade Assistant and migration APIs are enabled with both the Basic and
+Trial licenses. You can install the default distribution of 6.7 to use the
+Upgrade Assistant to prepare to upgrade even if you are upgrading to the OSS
+distribution of {version}.
+******
+
+. Use the Upgrade Assistant to identify any changes you need to make to your
+cluster configuration.
+
+[[upgrade-order-elastic-stack]]
+=== Upgrade process
+
+When you've made the necessary changes and are ready to upgrade from 6.7 to
+{version}:
+
+. Test the upgrade in a dev environment *before* upgrading your
+production cluster.
+
+. Back up your data. You **cannot roll back** to an earlier version unless
+you have a snapshot of your data. For information about creating snapshots, see
+{ref}/modules-snapshots.html[Snapshot and Restore].
+
+. Consider closing {ml} jobs before you start the upgrade process. While {ml}
+jobs can continue to run during a rolling upgrade, it increases the overhead
+on the cluster during the upgrade process. For more information, see
+{ref}/rolling-upgrades.html[Rolling upgrades].
+
+. Upgrade the components of your Elastic Stack in the following order:
+
+.. {es} Hadoop: {hadoop-ref}/install.html[install instructions]
+.. {es}: {ref}/setup-upgrade.html[upgrade instructions]
+.. Kibana: {kibana-ref}/upgrade.html[upgrade instructions]
+.. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
+.. Beats: {beats-ref}/upgrading.html[upgrade instructions]
+.. APM Server: {apm-server-ref}/upgrading.html[upgrade instructions]
+
+NOTE: Logstash 6.7 and Beats 6.7 are compatible with all 7.x versions of
+{es}. This provides flexibility in when you schedule the upgrades
+for your Logstash instances and Beats agents, but we recommend upgrading as
+soon as possible to take advantage of performance improvements
+and other enhancements.
+
+[[oss-stack-upgrade]]
+=== Upgrading from 6.6 or earlier
+
+To upgrade directly to {es} {version} from versions 6.0-6.6, you must
+{ref}/reindex-upgrade.html[manually reindex] any 5.x indices you need to
+carry forward, and perform a {ref}/restart-upgrade.html[full cluster restart].
+This includes any internal indices created in 5.x, such as the `.kibana` and
+`.security*` indices.
+
+Make sure all 5.x indices have been deleted before upgrading to {version}. {es}
+{version} will fail to start if any 5.x indices are present.
+
+If you are running a version prior to 6.0,
+https://www.elastic.co/guide/en/elastic-stack/6.7/upgrading-elastic-stack.html[upgrade to 6.7]
+and reindex your old indices or bring up a new {version} cluster and
+{ref}/reindex-upgrade-remote.html[reindex from remote].
+
+The recommended path is to upgrade to 6.7 before upgrading to {version}. This
+makes it easier to identify the changes you need to make to upgrade and enables
+you to perform a rolling upgrade with no downtime.
+
+[[upgrade-elastic-stack-for-elastic-cloud]]
+=== Upgrading on Elastic Cloud
+
+A single click in the Elastic Cloud console can upgrade a cluster to a newer
+version, add more processing capacity, change plugins, and enable or disable
+high availability, all at the same time. During the upgrade process,
+{es}, Kibana, {xpack} and the officially included plugins are
+upgraded simultaneously.
+
+Although upgrading your Elastic Cloud clusters is easy, you still need to
+address breaking changes that affect your application. Minor version upgrades,
+upgrades from 6.7 to {version}, and all other cluster configuration
+changes can be performed with no downtime.
+
+To avoid downtime when a full cluster restart is required:
+
+. Provision an additional cluster with the new {es} version, reindex
+your data, and send index requests to both clusters temporarily.
+
+. Verify that the new cluster performs as expected, fix any problems, and then
+permanently swap in the new cluster.
+
+. Delete the old cluster to stop incurring additional costs. You are billed
+only for the time that the new cluster runs in parallel with your old cluster.
+Usage is billed on an hourly basis.
+
+To learn more about the upgrade process on Elastic Cloud, see
+{cloud}/ec-upgrade-cluster.html[Upgrade versions].
+
+NOTE: Elastic Cloud only supports upgrades to released versions. Preview
+releases and master snapshots are not supported.

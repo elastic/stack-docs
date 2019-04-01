@@ -8,7 +8,7 @@ the core open source products:
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
 * <<install-beats,{beats}>>
-* <<install-logstash,{ls}>>
+* <<install-logstash,{ls} (optional)>>
 
 Then you learn how to implement a system monitoring solution that uses
 {metricbeat} to collect server metrics and ship the data to {es}, where you can
@@ -56,7 +56,8 @@ Elasticsearch Service for free].
 
 To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
-Redhat/Centos/Fedora, <<mac, mac>> for OS X, and <<win, win>> for Windows):
+Redhat/Centos/Fedora, <<mac, mac>> for OS X, <<linux, linux>> for Linux, and
+<<win, win>> for Windows):
 
 
 [[deb]]*deb:*
@@ -71,8 +72,8 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes"]
 ----
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.deb
-sudo dpkg -i elasticsearch-{elasticsearch_version}.deb
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-amd64.deb
+sudo dpkg -i elasticsearch-{elasticsearch_version}-amd64.deb
 sudo /etc/init.d/elasticsearch start
 ----
 
@@ -90,8 +91,8 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.rpm
-sudo rpm -i elasticsearch-{elasticsearch_version}.rpm
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-x86_64.rpm
+sudo rpm -i elasticsearch-{elasticsearch_version}-x86_64.rpm
 sudo service elasticsearch start
 ----------------------------------------------------------------------
 
@@ -109,8 +110,29 @@ ifeval::["{release-state}"!="unreleased"]
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}.tar.gz
-tar -xzvf elasticsearch-{elasticsearch_version}.tar.gz
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
+tar -xzvf elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
+cd elasticsearch-{elasticsearch_version}
+./bin/elasticsearch
+----------------------------------------------------------------------
+
+endif::[]
+
+
+[[linux]]*linux:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{elasticsearch_version}-linux-x86_64.tar.gz
+tar -xzvf elasticsearch-{elasticsearch_version}-linux-x86_64.tar.gz
 cd elasticsearch-{elasticsearch_version}
 ./bin/elasticsearch
 ----------------------------------------------------------------------
@@ -218,7 +240,7 @@ file, `kibana.yml`, before starting {kib}.
 To download and install {kib}, open a terminal window and use the commands that
 work with your system:
 
-*deb or rpm:*
+*deb, rpm, or linux:*
 
 ifeval::["{release-state}"=="unreleased"]
 
@@ -393,6 +415,24 @@ tar xzvf metricbeat-{version}-darwin-x86_64.tar.gz
 
 endif::[]
 
+*linux:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-linux-x86_64.tar.gz
+tar xzvf metricbeat-{version}-linux-x86_64.tar.gz
+------------------------------------------------
+
+endif::[]
+
 *win:*
 
 ifeval::["{release-state}"=="unreleased"]
@@ -459,7 +499,7 @@ To set up the `system` module and start collecting system metrics:
 sudo metricbeat modules enable system
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
@@ -482,7 +522,7 @@ PS C:\Program Files\Metricbeat> .\metricbeat.exe modules enable system
 sudo metricbeat setup -e
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
@@ -500,8 +540,7 @@ The `setup` command loads the {kib} dashboards. If the dashboards are already
 set up, omit this command. The `-e` flag is optional and sends output to
 standard error instead of syslog.
 
-[[gs-start-metricbeat]]
-. Start {metricbeat}:
+. [[gs-start-metricbeat]]Start {metricbeat}:
 +
 *deb and rpm:*
 +
@@ -510,7 +549,7 @@ standard error instead of syslog.
 sudo service metricbeat start
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
@@ -553,12 +592,13 @@ same server--let's add {ls}.
 [float]
 [[install-logstash]]
 
-=== Install {ls}
+=== Install {ls} (optional)
 
 https://www.elastic.co/products/logstash[{ls}] is a powerful tool that
 integrates with a wide variety of deployments. It offers a large selection of
 plugins to help you parse, enrich, transform, and buffer data from a variety of
-sources.
+sources. If your data requires additional processing that is not available in
+{beats}, then you need to add {ls} to your deployment.
 
 To download and install {ls}, open a terminal window and use the commands that
 work with your system:
@@ -599,7 +639,7 @@ sudo rpm -i logstash-{logstash_version}.rpm
 
 endif::[]
 
-*mac:*
+*mac and linux:*
 
 ifeval::["{release-state}"=="unreleased"]
 
@@ -713,7 +753,7 @@ sudo /etc/init.d/logstash start
 sudo service logstash start
 ----------------------------------------------------------------------
 
-*mac:*
+*mac and linux:*
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
@@ -857,6 +897,7 @@ Restart {ls} to pick up the changes. The event now includes a field called
 
 
 [float]
+[[whats_next]]
 ==== What's next?
 
 Congratulations! You've successfully set up the {stack}. You learned how to
@@ -869,6 +910,13 @@ how, read:
 
 * {stack-ov}/elasticsearch-security.html[Securing the {stack}]
 * {stack-ov}/license-management.html[License Management]
+
+Want to get up and running quickly with infrastructure metrics monitoring and
+centralized log analytics? Try out the
+{infra-guide}/infrastructure-ui-overview.html[Infrastructure] and
+{infra-guide}/logs-ui-overview.html[Logs] UIs
+in {kib}. For setup details, see the {infra-guide}/index.html[Infrastructure
+Monitoring Guide].
 
 Later, when you're ready to set up a production environment, also see the
 {stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade

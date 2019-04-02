@@ -1,0 +1,42 @@
+[[install-hosts-monitoring]]
+[role="xpack"]
+== Get up and running
+
+beta[]
+
+To get up and running with security monitoring, you need:
+
+* An Elasticsearch cluster and Kibana (version 6.x or later) with a basic
+license. To learn how to get started quickly, see
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
++
+[TIP]
+==============
+You can skip installing {es} and {kib} by using our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
+Elastic Cloud. The {es} Service is available on both AWS and GCP.
+https://www.elastic.co/cloud/elasticsearch-service/signup[Try the {es}
+Service for free].
+==============
+
+* {beats} shippers (version 6.x or later) installed on each system you want to
+monitor
+
+You might need to modify UI settings in {kib} to change default behaviors,
+such as the index pattern used to query the data, and the timestamp field used
+for sorting. For more information, see {kib}.
+
+[float]
+[[install-beats-for-host-sec]]
+=== Install {beats} shippers
+
+To populate the security UI with metrics and
+log data, you need to install and configure the following shippers:
+
+* https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
+network packets 
+* https://www.elastic.co/products/beats/filebeat[{filebeat}] for forwarding and
+centralizing logs and files
+* https://www.elastic.co/products/beats/auditbeat[{auditbeat}] for monitoring
+directories for file changes
+

@@ -30,6 +30,7 @@ remove or reindex them on your 5.n cluster before upgrading to {version}. The in
 Kibana and {xpack} indices and the default Beats and Logstash mapping templates
 also need to be updated to work with {version}.
 
+[discrete]
 === Preparing to upgrade
 
 Before upgrading the Elastic Stack to {version}:
@@ -96,6 +97,7 @@ considerations are described in the steps related to
 IMPORTANT: Test upgrades in a dev environment before upgrading your
 production cluster.
 
+[discrete]
 [[upgrade-order-elastic-stack]]
 === Upgrade order
 
@@ -113,6 +115,7 @@ for your Logstash instances and Beats agents. We recommend upgrading Logstash
 and Beats as soon as possible to take advantage of performance improvements
 and other enhancements.
 
+[discrete]
 === Upgrading to 6.3
 Starting in 6.3, the default distributions of Elasticsearch, Logstash, and Kibana
 include {xpack} and a free Basic license that never expires.
@@ -150,9 +153,9 @@ POST _xpack/license/start_trial
 The 30-day trial enables you to try out the full set of platinum features,
 including security, machine learning, alerting, graph capabilities, and more.
 
-[role="xpack"]
+[discrete]
 [[xpack-stack-upgrade]]
-=== Upgrading from 5.6
+=== [xpack]#Upgrading from 5.6#
 
 {xpack} 5.6 provides migration and upgrade APIs for Elasticsearch and a
 Upgrade Assistant UI for Kibana. These tools are included with the trial
@@ -212,6 +215,7 @@ Elasticsearch 6.x.
 . Once you've resolved all of the migration issues, perform
 a {ref}/rolling-upgrades.html[rolling upgrade] from Elasticsearch 5.6 to {version}.
 
+[discrete]
 [[oss-stack-upgrade]]
 === Upgrading from a pre-5.6 installation
 
@@ -233,6 +237,7 @@ modifications to the document data and metadata during reindexing.
 . Use the {ref}/indices-aliases.html[_aliases] API to add the name of the 2.x
 index as alias for the new index and delete the 2.x index.
 
+[discrete]
 [[upgrade-internal-indices]]
 ==== Upgrading internal indices for {major-version}
 
@@ -266,6 +271,7 @@ internal indices.
 TIP: Once you upgrade the `.kibana` index, you can run Kibana and use the
 {xpack} Reindex Helper UI to upgrade the other indices.
 
+[discrete]
 [[upgrade-elastic-stack-for-elastic-cloud]]
 === Upgrading on Elastic Cloud
 

@@ -1,0 +1,23 @@
+:gke: https://cloud.google.com/gke-on-prem/
+:elasticgetstarted: https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-elastic-stack.html
+:ece: https://www.elastic.co/products/ece
+:daemonsetdocs: https://cloud.google.com/kubernetes-engine/docs/concepts/daemonset
+:beatsdocs: https://www.elastic.co/products/beats
+
+[[gke-on-prem-architecture]]
+
+== GKE On-Prem and Elastic Stack Architecture
+This example GKE On-Prem Kubernetes cluster has three nodes.  Within each node are application pods and Beats pods.  The Beats collect logs and metrics from their associated Kubernetes node, as well as from the containers deployed on their associated Kubernetes node.
+
+image:images/nodes.png[]
+
+Let’s focus on a single three node GKE On-Prem cluster and the connections from that to the Elasticsearch cluster.  Elasticsearch nodes and Kibana are running outside of GKE On-Prem.  Within GKE On-Prem are your applications and Elastic Beats.  Beats are {beatsdocs}[lightweight shippers], and are deployed as Kubernetes {daemonsetdocs}[DaemonSets].  By deploying as DaemonSets, Kubernetes guarantees that there will be one instance of each Beat deployed on each Kubernetes node.  This facilitates efficient processing of the logs and metrics from each node, and from each pod deployed on that node.  As your GKE On-Prem clusters grow in node count, Beats are deployed along with those nodes.
+
+Within each GKE On-Prem node there are one or more application pods and the Beats (plus the standard Kubernetes pods, e.g., kube-dns). 
+
+
+== Considerations specific to On-Prem deployments of GKE
+
+image:images/loadbalancer.png[]
+
+Depending on your deployment of GKE On-Prem in your datacenter, you may have to consider the network topology when exposing services to your network.  The sample application referenced in "Example Application", below, exposes a port to the external network.  The manifest file specifies an IP address that is provisioned on the on-premises load balancer.  Your configuration will likely be different, but make sure to take this into consideration when setting up your environment.

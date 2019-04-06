@@ -4,18 +4,21 @@
 :filebeatmodules: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-modules.html
 :metricbeatmodules: https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-modules.html
 :kube-state-metrics: https://github.com/kubernetes/kube-state-metrics
+:filebeat-getting-started-view-the-sample-dashboards: https://www.elastic.co/guide/en/beats/filebeat/current/view-kibana-dashboards.html#view-kibana-dashboards
+:k8s-rbac: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+:guestbook-app: https://cloud.google.com/kubernetes-engine/docs/tutorials/guestbook
+:k8s-metadata-labels: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 
 
 [[gke-on-prem-deploy]]
-== Deploy Elasticsearch and Kibana
+== Prepare the Kubernetes environment and deploy Beats
 
-See {gettingstartedwithelasticstack}[Getting started with the Elastic Stack] and deploy Elasticsearch and Kibana, then come back to this page to deploy Beats.
+Tip: If you do not have an Elasticsearch cluster with Kibana available, see {gettingstartedwithelasticstack}[Getting started with the Elastic Stack] and deploy Elasticsearch and Kibana, then come back to this page to deploy Beats.
 
 [[assign-kubernetes-roles]]
-== Assign Kubernetes roles
+=== Assign Kubernetes roles
 
-Set the cluster-admin-binding
-Logging and metrics tools like Filebeat, Fluentd, Metricbeat, Prometheus, etc. run as Kubernetes DameonSets. Create the cluster wide role binding to facilitate the DaemonSets using the Role Based Access Control (RBAC) api:
+Logging and metrics tools like Filebeat, Fluentd, Metricbeat, Prometheus, etc. get deployed as Kubernetes DameonSets. Create the cluster wide role binding to facilitate the DaemonSets using the Role Based Access Control {k8s-rbac}[(RBAC) api]:
 
 [source,sh]
 ----
@@ -23,7 +26,7 @@ kubectl create clusterrolebinding cluster-admin-binding  \
   --clusterrole=cluster-admin --user=$(gcloud config get-value account)
 ----
 
-== Clone the Elastic examples Github repo
+=== Clone the Elastic examples Github repo
 [source,sh]
 ----
 git clone https://github.com/elastic/examples.git
@@ -31,8 +34,8 @@ git clone https://github.com/elastic/examples.git
 
 The remainder of the steps will refer to files from this repo, change directory into examples/GKE-on-Prem-logging-and-metrics.
 
-== Example application
-If you are just getting started with GKE On-Prem and do not have anything running you can use this sample application from the Kubernetes engine documentation. The YAML has been concatenated into a single manifest, and some changes have been made to serve as an example for enabling Beats to autodiscover the components of the application.
+=== Example application
+If you are just getting started with GKE On-Prem and do not have anything running you can use a sample {guestbook-app}[guestbook application] from the Kubernetes engine documentation. The YAML has been concatenated into a single manifest, and some changes have been made to serve as an example for enabling Beats to autodiscover the components of the application.
 Whether or not you deploy the example application, this documentation will refer to specific parts of the guestbook.yaml manifest file.
 
 === Network considerations
@@ -62,7 +65,7 @@ spec:
 IMPORTANT: Edit the guestbook.yaml manifest as appropriate to integrate with your network.
 
 === Label your application pods
-The Beats autodiscover functionality is facilitated by Kubernetes metadata.  In the example manifest there are metadata labels assigned to the deployments, and the Filebeat and Metricbeat configurations are updated to expect this metadata.
+The Beats autodiscover functionality is facilitated by Kubernetes metadata.  In the example manifest there are {k8s-metadata-labels}[metadata labels] assigned to the deployments, and the Filebeat and Metricbeat configurations are updated to expect this metadata.
  These lines from the guestbook.yaml manifest file add the app: redis label to the Redis deployments:
 
 [source,sh]
@@ -121,7 +124,6 @@ kubectl create -f kube-state-metrics/kubernetes
 kubectl get pods --namespace=kube-system | grep kube-state
 ----
 
-== Deploy Beats
 === Kubernetes secrets
 Rather than putting the Elasticsearch and Kibana endpoints into the manifest files they are provided to the Filebeat pods as k8s secrets.  Edit the files elasticsearch-hosts-ports and kibana-host-port.  The files provided in the example contain details regarding the file format.  You should have two files resembling:
 elasticsearch-hosts-ports:
@@ -185,7 +187,7 @@ kubectl get pods -n kube-system | grep beat
 
 == View your logs and metrics in Kibana
 You should be able to visualize your logs and metrics in the Kibana Discover app and in dashboards provided by the Beats modules that you are using.
-See the Filebeat getting started guide for details.  If you deployed the sample Guestbook application, then you will have data in the Apache and Redis dashboards along with the Kubernetes and System dashboards.  If you are collecting logs and metrics from your own application, then see the dashboards for the modules related to your application.
+See the {filebeat-getting-started-view-the-sample-dashboards}[getting started guide] for details.  If you deployed the sample Guestbook application, then you will have data in the Apache and Redis dashboards along with the Kubernetes and System dashboards.  If you are collecting logs and metrics from your own application, then see the dashboards for the modules related to your application.
 
 image:images/redis-dashboard.png[]
 Sample Filebeat Redis dashboard

@@ -3,20 +3,39 @@
 :ece: https://www.elastic.co/products/ece
 :daemonsetdocs: https://cloud.google.com/kubernetes-engine/docs/concepts/daemonset
 :beatsdocs: https://www.elastic.co/products/beats
+:filebeatmodules: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-modules.html
+:metricbeatmodules: https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-modules.html
+
+
+[[gke-on-prem-overview]]
+=== Assumptions
+It is assumed that you have an existing Elasticsearch and Kibana deployment in your data center and that there is network connectivity between your GKE On-Prem systems and both Elasticsearch and Kibana. 
+
+== Architecture
+
+Within each of your GKE On-Prem Kubernetes clusters you will deploy DaemonSets containing Beats, the lightweight shippers for logs, metrics, network data, etc.  These Beats will autodiscover your applications and GKE On-Prem infrastructure by synchronizing with the Kubernetes API.  Your containers will be managed based on the process running in them; if you are running NGINX, then Filebeat will configure itself to collect NGINX logs and Metricbeat will configure itself to collect NGINX metrics.  These pre-packaged collections of configuration details are called "modules".  You can see the list of available modules in the documentation for {filebeatmodules}[Filebeat] and {metricbeatmodules}[Metricbeat].
+
+image:images/overview.png[]
+
+A single Elasticsearch cluster with Kibana can be receiving, indexing, storing, and analyzing logs and metrics from multiple environments.  These environments might be:
+
+. Servers, network devices, virtual machines, etc. in your data centers
+. One or more GKE On-Prem environments in your data centers
+. Other data sources
 
 [[gke-on-prem-architecture]]
 
-== GKE On-Prem and Elastic Stack Architecture
+=== GKE On-Prem and Elastic Stack Architecture
 This example GKE On-Prem Kubernetes cluster has three nodes.  Within each node are application pods and Beats pods.  The Beats collect logs and metrics from their associated Kubernetes node, as well as from the containers deployed on their associated Kubernetes node.
 
-image:images/nodes.png[]
 
 Let’s focus on a single three node GKE On-Prem cluster and the connections from that to the Elasticsearch cluster.  Elasticsearch nodes and Kibana are running outside of GKE On-Prem.  Within GKE On-Prem are your applications and Elastic Beats.  Beats are {beatsdocs}[lightweight shippers], and are deployed as Kubernetes {daemonsetdocs}[DaemonSets].  By deploying as DaemonSets, Kubernetes guarantees that there will be one instance of each Beat deployed on each Kubernetes node.  This facilitates efficient processing of the logs and metrics from each node, and from each pod deployed on that node.  As your GKE On-Prem clusters grow in node count, Beats are deployed along with those nodes.
+image:images/nodes.png[]
 
 Within each GKE On-Prem node there are one or more application pods and the Beats (plus the standard Kubernetes pods, e.g., kube-dns). 
 
 
-== Considerations specific to On-Prem deployments of GKE
+=== Considerations specific to On-Prem deployments of GKE
 
 image:images/loadbalancer.png[]
 

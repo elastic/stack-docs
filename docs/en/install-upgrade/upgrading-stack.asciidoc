@@ -1,6 +1,25 @@
 [[upgrading-elastic-stack]]
 == Upgrading the Elastic Stack
 
+Every major and minor release of the Elastic Stack introduces new and powerful
+features, as well as important bug fixes and enhancements to existing features.
+At the same time, the Elastic team is constantly striving to improve performance,
+stability, and security.
+
+While upgrading requires an investment of your time and resources, it enables
+you to benefit from these improvements and opens the door to using the stack
+in new and better ways. You can minimize the impacts of upgrading by scheduling
+regular upgrades to ensure that you are running actively supported versions of
+Elasticsearch, Kibana, Logstash, and Beats.
+
+The longer you wait between upgrades, the more difficult the upgrade process
+becomes. If you lag behind more than one major release, when you do upgrade
+you’ll face full cluster restarts or reindexing, as well as a more significant
+development effort to migrate your applications.
+
+[discrete]
+=== Stack version compatibility
+
 When upgrading to a new version of {es}, you need to upgrade
 each of the products in your Elastic Stack. Beats and Logstash 6.7 are
 compatible with {es} {version} to give you flexibility in scheduling

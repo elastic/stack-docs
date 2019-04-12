@@ -1,7 +1,4 @@
-[[gke-on-prem-overview]]
-=== Assumptions
-It is assumed that you have an existing Elasticsearch and Kibana deployment in your data center and that there is network connectivity between your GKE On-Prem systems and both Elasticsearch and Kibana. 
-
+[[architecture]]
 == Architecture
 
 Within each of your GKE On-Prem Kubernetes clusters you will deploy DaemonSets containing Beats, the lightweight shippers for logs, metrics, network data, etc.  These Beats will autodiscover your applications and GKE On-Prem infrastructure by synchronizing with the Kubernetes API.  Your containers will be managed based on the process running in them; if you are running NGINX, then Filebeat will configure itself to collect NGINX logs and Metricbeat will configure itself to collect NGINX metrics.  These pre-packaged collections of configuration details are called "modules".  You can see the list of available modules in the documentation for {filebeatmodules}[Filebeat] and {metricbeatmodules}[Metricbeat].
@@ -14,8 +11,8 @@ A single Elasticsearch cluster with Kibana can be receiving, indexing, storing, 
 . One or more GKE On-Prem environments in your data centers
 . Other data sources
 
+[discrete]
 [[gke-on-prem-architecture]]
-
 === GKE On-Prem and Elastic Stack Architecture
 This example GKE On-Prem Kubernetes cluster has three nodes.  Within each node are application pods and Beats pods.  The Beats collect logs and metrics from their associated Kubernetes node, as well as from the containers deployed on their associated Kubernetes node.
 
@@ -25,7 +22,8 @@ image:images/nodes.png[]
 
 Within each GKE On-Prem node there are one or more application pods and the Beats (plus the standard Kubernetes pods, e.g., kube-dns). 
 
-
+[discrete]
+[[gke-on-prem-considerations]]
 === Considerations specific to On-Prem deployments of GKE
 
 image:images/loadbalancer.png[]

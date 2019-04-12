@@ -1,0 +1,81 @@
+[[gke-on-prem-deploy-beats]]
+== Deploy Beats
+
+TIP: If you do not have an Elasticsearch cluster with Kibana available, see {gettingstartedwithelasticstack}[Getting started with the Elastic Stack] and
+deploy Elasticsearch and Kibana, then come back to this page to deploy Beats.
+
+[discrete]
+[[kubernetes-secrets]]
+=== Kubernetes secrets
+Rather than putting the Elasticsearch and Kibana endpoints into the manifest files they are provided to the Filebeat pods as k8s secrets.  Edit the files elasticsearch-hosts-ports and kibana-host-port.  The files provided in the example contain details regarding the file format.  You should have two files resembling:
+
+`elasticsearch-hosts-ports`:
+[source,sh]
+----
+["http://10.1.1.4:9200", "http://10.1.1.5:9200"]
+----
+
+`kibana.host.port`:
+[source,sh]
+----
+"http://10.1.1.6:5601"
+----
+
+[discrete]
+[[kubernetes-create-secret]]
+=== Create the secret:
+
+[source,sh]
+----
+kubectl create secret generic elastic-stack \
+  --from-file=./elasticsearch-hosts-ports \
+  --from-file=./kibana-host-port --namespace=kube-system
+----
+
+[discrete]
+[[deploy-configuration]]
+=== Deploy index patterns, visualizations, dashboards, and machine learning jobs
+Filebeat and Metricbeat provide the configuration for things like web servers, caches, proxies, operating systems, container environments, databases, etc. These are referred to as Beats modules. By deploying these configurations you will be populating Elasticsearch and Kibana with index patterns, visualizations, dashboards, machine learning jobs, etc.
+
+[source,sh]
+----
+kubectl create -f filebeat-setup.yaml
+kubectl create -f metricbeat-setup.yaml
+----
+
+NOTE: These setup jobs are short lived, you will see them transition to the completed state in the output of `kubectl get pods -n kube-system`
+
+[discrete]
+[[verify-pods]]
+=== Verify
+kubectl get pods -n kube-system | grep beat
+Verify that the setup pods complete Check the logs for the setup pods to ensure that they connected to Elasticsearch and Kibana (the setup pod connects to both)
+
+[discrete]
+[[deploy-daemonsets]]
+=== Deploy the Beat DaemonSets
+
+[source,sh]
+----
+kubectl create -f filebeat-kubernetes.yaml
+kubectl create -f metricbeat-kubernetes.yaml
+----
+
+NOTE: Depending on your k8s node configuration, you may not need to deploy Journalbeat. If your Nodes use journald for logging, then deploy Journalbeat, otherwise Filebeat will get the logs.
+
+[source,sh]
+----
+kubectl create -f journalbeat-kubernetes.yaml
+----
+
+[discrete]
+[[verify-beats]]
+=== Verify
+Check for the running DaemonSets
+Verify that there is one filebeat, metricbeat, and journalbeat pod per k8s Node running.
+
+[source,sh]
+----
+kubectl get pods -n kube-system | grep beat
+----
+

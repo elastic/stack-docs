@@ -5,7 +5,11 @@
 [[assign-kubernetes-roles]]
 === Assign Kubernetes roles
 
-Logging and metrics tools like kube-state-metrics, Filebeat, Fluentd, Metricbeat, Prometheus, etc. get deployed in the kube-system namespace and have access to all namespaces. Create the cluster wide role binding to allow the deployment of kube-state-metrics and the Beats DaemonSets using the Role Based Access Control {k8s-rbac}[(RBAC) api]:
+Logging and metrics tools like kube-state-metrics, {filebeat}, Fluentd,
+{metricbeat}, Prometheus, etc. get deployed in the kube-system namespace and
+have access to all namespaces. Create the cluster wide role binding to allow the
+deployment of kube-state-metrics and the Beats DaemonSets using the Role Based
+Access Control {k8s-rbac}[(RBAC) api]:
 
 [source,sh]
 ----
@@ -17,15 +21,17 @@ kubectl create clusterrolebinding cluster-admin-binding  \
 [[deploy-kube-state-metrics]]
 === Deploy kube-state-metrics
 
-{kube-state-metrics}[Kube-state-metrics] is a service that exposes metrics and events about the state of the nodes, pods, containers, etc.  Metricbeat’s kubernetes module will connect to kube-state-metrics.
-Check to see if kube-state-metrics is running
+{kube-state-metrics}[Kube-state-metrics] is a service that exposes metrics and
+events about the state of the nodes, pods, containers, etc. The {metricbeat}
+kubernetes module will connect to kube-state-metrics. Check to see if
+kube-state-metrics is running:
 
 [source,sh]
 ----
 kubectl get pods --namespace=kube-system | grep kube-state
 ----
 
-and create it if needed (by default it will not be there)
+Create it if needed (by default it will not be there).
 
 [source,sh]
 ----
@@ -37,24 +43,38 @@ kubectl get pods --namespace=kube-system | grep kube-state
 [discrete]
 [[clone-examples-repo]]
 === Clone the Elastic examples Github repo
+
 [source,sh]
 ----
 git clone https://github.com/elastic/examples.git
 ----
 
-The remainder of the steps will refer to files from this repo, change directory into `examples/GKE-on-Prem-logging-and-metrics`.
+The remainder of the steps will refer to files from this repo. Change directory
+into `examples/GKE-on-Prem-logging-and-metrics`.
 
 [discrete]
 [[gke-on-prem-example]]
 === Example application
-If you are just getting started with GKE On-Prem and do not have anything running you can use a sample {guestbook-app}[guestbook application] from the Kubernetes engine documentation. The YAML has been concatenated into a single manifest, and some changes have been made to serve as an example for enabling Beats to autodiscover the components of the application.
-Whether or not you deploy the example application, this documentation will refer to specific parts of the `guestbook.yaml` manifest file.
+
+If you are just getting started with GKE On-Prem and do not have anything
+running you can use a sample {guestbook-app}[guestbook application] from the
+Kubernetes engine documentation. The YAML has been concatenated into a single
+manifest and some changes have been made to serve as an example for enabling
+Beats to autodiscover the components of the application. Whether or not you
+deploy the example application, this documentation will refer to specific parts
+of the `guestbook.yaml` manifest file.
 
 [discrete]
 [[gke-on-prem-network-considerations]]
 === Network considerations
-Before you deploy the sample application manifest have a look at the frontend service in `GKE-on-Prem-logging-and-metrics/guestbook.yaml`  You may need to edit this service so that the service is exposed to your internal network. The network topology of the lab where this example was developed has a load balancer in front of the GKE On-Prem environment, and so the service specifies an IP Address associated with the load balancer. Your configuration will likely be different.
 
+Before you deploy the sample application manifest, have a look at the frontend
+service in `GKE-on-Prem-logging-and-metrics/guestbook.yaml`. You may need to
+edit this service so that the service is exposed to your internal network. The
+network topology of the lab where this example was developed has a load balancer
+in front of the GKE On-Prem environment. Therefore the service specifies an IP
+address associated with the load balancer. Your configuration will likely be
+different.
 
 [source,sh]
 ----
@@ -81,9 +101,14 @@ spec:
 [discrete]
 [[gke-on-prem-label-pods]]
 === Label your application pods
-The Beats autodiscover functionality is facilitated by Kubernetes metadata.  In the example manifest there are {k8s-metadata-labels}[metadata labels] assigned to the deployments, and the Filebeat and Metricbeat configurations are updated to expect this metadata.
 
-These lines from the `guestbook.yaml` manifest file add the `app: redis` label to the Redis deployments:
+The Beats autodiscover functionality is facilitated by Kubernetes metadata. In
+the example manifest there are {k8s-metadata-labels}[metadata labels] assigned
+to the deployments and the {filebeat} and {metricbeat} configurations are
+updated to expect this metadata.
+
+These lines from the `guestbook.yaml` manifest file add the `app: redis` label
+to the Redis deployments:
 
 [source,sh]
 ----
@@ -99,10 +124,13 @@ spec:
         app: redis <1> <2>
 ----
 
-<1> This label is added to the metadata for the k8s deployment and is applied to each pod in the deployment.
-<2> You should create labels that are appropriate for your use case, `app: redis` is only an example.
+<1> This label is added to the metadata for the k8s deployment and is applied to
+each pod in the deployment.
+<2> You should create labels that are appropriate for your use case, `app: redis`
+is only an example.
 
-These lines from the `filebeat-kubernetes.yaml` manifest file configure Filebeat to autodiscover Redis pods that have the appropriate label:
+These lines from the `filebeat-kubernetes.yaml` manifest file configure
+{filebeat} to autodiscover Redis pods that have the appropriate label:
 
 [source,sh]
 ----
@@ -118,13 +146,21 @@ These lines from the `filebeat-kubernetes.yaml` manifest file configure Filebeat
 
 <1> Specifies that the condition is looking for a substring and not an exact match
 <2> The label to inspect, and the substring to look for 
-<3> The module to use when collecting, parsing, indexing, and visualizing logs from pods that meet the condition
+<3> The module to use when collecting, parsing, indexing, and visualizing logs
+from pods that meet the condition
 
-If you are using the example application to get started with GKE On-Prem and the Elastic Stack, then deploy the sample application
+If you are using the example application to get started with GKE On-Prem and the
+{stack}, deploy the sample application.
 
 [source,sh]
 ----
 kubectl create -f guestbook.yaml
 ----
 
-If you are ready to manage logs and metrics from your own application, then examine your pods for existing labels and update the Filebeat and Metricbeat autodiscover configuration within `filebeat-kubernetes.yaml` and `metricbeat-kubernetes.yaml` respectively.  See the documentation for configuring {filebeatautodiscoverdocs}[Filebeat autodiscover] and {metricbeatautodiscoverdocs}[Metricbeat autodiscover], you will also need the list of {filebeatmodules}[Filebeat modules] and {metricbeatmodules}[Metricbeat modules]. 
+If you are ready to manage logs and metrics from your own application, examine
+your pods for existing labels and update the {filebeat} and {metricbeat}
+autodiscover configuration within `filebeat-kubernetes.yaml` and
+`metricbeat-kubernetes.yaml` respectively. See the documentation for configuring {filebeatautodiscoverdocs}[{filebeat} autodiscover] and
+{metricbeatautodiscoverdocs}[{metricbeat} autodiscover]. You will also need the
+list of {filebeatmodules}[{filebeat} modules] and
+{metricbeatmodules}[{metricbeat} modules]. 

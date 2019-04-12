@@ -48,7 +48,12 @@ NOTE: These setup jobs are short lived, you will see them transition to the comp
 [discrete]
 [[verify-pods]]
 === Verify
+
+[source,sh]
+----
 kubectl get pods -n kube-system | grep beat
+----
+
 Verify that the setup pods complete Check the logs for the setup pods to ensure that they connected to Elasticsearch and Kibana (the setup pod connects to both)
 
 [discrete]

@@ -1,0 +1,47 @@
+[role="xpack"]
+[[esms]]
+== {stack} Monitoring Service
+
+The {stack} Monitoring Service (ESMS) is an additional service that deploys
+a monitoring cluster running {es} and {kib}. 
+
+In 6.4 and later, you can use {metricbeat} to ship monitoring data about 
+{kib} to ESMS. In 6.5 and later, you can do the same for {es}.
+
+To store monitoring data in ESMS:
+
+. Obtain your ESMS cluster URLs and credentials from the Elastic support team.
+
+. Configure your production cluster to collect data and send it to the 
+monitoring cluster. 
+
+** {ref}/configuring-metricbeat.html[Use {metricbeat}]. This option 
+is available in 6.5 and later versions. 
+
+** {ref}/configuring-monitoring.html[Use HTTP exporters]. For example, on
+each node in the production cluster, configure the following settings:
++
+--
+[source,js]
+----------------------------------
+PUT _cluster/settings
+{
+  "persistent": {
+    "xpack.monitoring.collection.enabled": true
+    "xpack.monitoring.exporters.cloud_monitoring.type": "http",
+    "xpack.monitoring.exporters.cloud_monitoring.host": "MONITORING_ELASTICSEARCH_URL", <1>
+    "xpack.monitoring.exporters.cloud_monitoring.auth.username": "cloud_monitoring_agent",
+    "xpack.monitoring.exporters.cloud_monitoring.auth.password": "MONITORING_AGENT_PASSWORD" <2>
+  }
+}
+----------------------------------
+// CONSOLE
+<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
+<2> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the Elastic support team.
+
+Alternatively, you can put those settings in the `elasticsearch.yml` file on
+each node. This method, however, requires you to restart each node.
+--
+
+. View the monitoring data by logging into {kib} on ESMS. For more information,
+see {kibana-ref}/xpack-monitoring.html[Monitoring]. 

@@ -93,13 +93,15 @@ module]
 * {filebeat-ref}/add-kubernetes-metadata.html[{filebeat} `add_kubernetes_metadata` processor]
 
 [float]
-==== Which fields are used for the metrics on the Infrastructue home page?
+==== Which fields are used for the metrics on the Infrastructure home page?
 
 The metrics listed below are provided by the Beats Shippers. Each system type requires their corresponding identity field to be in the same event document:
 
 * Hosts require `host.name`
 * Docker containers require `container.id`
-* Kibernetes pods require `kibernetes.pod.uid`
+* Kubernetes pods require `kubernetes.pod.uid`
+
+For the metrics detail page, `event.dataset` is a required field. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the sub module name.
 
 
 [float]

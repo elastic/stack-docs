@@ -8,7 +8,7 @@ the core open source products:
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
 * <<install-beats,{beats}>>
-* <<install-logstash,{ls}>>
+* <<install-logstash,{ls} (optional)>>
 
 Then you learn how to implement a system monitoring solution that uses
 {metricbeat} to collect server metrics and ship the data to {es}, where you can
@@ -551,12 +551,13 @@ same server--let's add {ls}.
 [float]
 [[install-logstash]]
 
-=== Install {ls}
+=== Install {ls} (optional)
 
 https://www.elastic.co/products/logstash[{ls}] is a powerful tool that
 integrates with a wide variety of deployments. It offers a large selection of
 plugins to help you parse, enrich, transform, and buffer data from a variety of
-sources.
+sources. If your data requires additional processing that is not available in
+{beats}, then you need to add {ls} to your deployment.
 
 To download and install {ls}, open a terminal window and use the commands that
 work with your system:
@@ -868,6 +869,13 @@ how, read:
 
 * {stack-ov}/elasticsearch-security.html[Securing the {stack}]
 * {stack-ov}/license-management.html[License Management]
+
+Want to get up and running quickly with infrastructure metrics monitoring and
+centralized log analytics? Try out the
+{infra-guide}/infrastructure-ui-overview.html[Infrastructure] and
+{infra-guide}/logs-ui-overview.html[Logs] UIs
+in {kib}. For setup details, see the {infra-guide}/index.html[Infrastructure
+Monitoring Guide].
 
 Later, when you're ready to set up a production environment, also see the
 {stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade

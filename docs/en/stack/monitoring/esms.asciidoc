@@ -13,13 +13,10 @@ To store monitoring data in ESMS:
 . Obtain your ESMS cluster URLs and credentials from the Elastic support team.
 
 . Configure your production cluster to collect data and send it to the 
-monitoring cluster. 
-
+monitoring cluster.
 ** {ref}/configuring-metricbeat.html[Use {metricbeat}]. This option 
-is available in 6.5 and later versions. 
-
-** {ref}/configuring-monitoring.html[Use HTTP exporters]. For example, on
-each node in the production cluster, configure the following settings:
+is available in 6.5 and later versions.
+... Configure the following settings on each node in the production cluster:
 +
 --
 [source,js]
@@ -27,21 +24,122 @@ each node in the production cluster, configure the following settings:
 PUT _cluster/settings
 {
   "persistent": {
-    "xpack.monitoring.collection.enabled": true
+    "xpack.monitoring.enabled": true,
+    "xpack.monitoring.collection.enabled": true,
+    "xpack.monitoring.elasticsearch.collection.enabled": false
+  }
+}
+----------------------------------
+// CONSOLE
+
+Alternatively, you can put those settings in the `elasticsearch.yml` file on
+each node. This method, however, requires you to restart each node.
+--
+... {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}].
+... Enable the {es} module in {metricbeat}.
++
+--
+For example, to enable the default configuration in the `modules.d` directory, 
+run the following command:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+metricbeat modules enable elasticsearch-xpack
+----------------------------------------------------------------------
+
+For more information, see 
+{metricbeat-ref}/configuration-metricbeat.html[Specify which modules to run] and 
+{metricbeat-ref}/metricbeat-module-elasticsearch.html[{es} module]. 
+--
+... By default, the module collects {es} monitoring metrics from `http://localhost:9200`.
+If your local {es} node has a different address, you must specify it via the
+`hosts` setting in the `modules.d/elasticsearch-xpack.yml` file. If your cluster
+uses {ref}/configuring-tls.html[encrypted communications], you must access it
+via HTTPS. For example, use a `hosts` setting like `https://localhost:9200`.
+... If {es} {security-features} are enabled in your production cluster,
+{metricbeat} must use a valid user ID and password to collect metrics
+successfully. 
++
+--
+Create a user on the production cluster that has the
+{stack-ov}/built-in-roles.html[`remote_monitoring_collector` built-in role]. 
+Alternatively, use the
+{stack-ov}/built-in-users.html[`remote_monitoring_user` built-in user].
+
+Add the `username` and `password` settings to the {es} module configuration
+file. For example, add the following settings in the `modules.d/elasticsearch-xpack.yml` file:
+
+[source,yaml]
+----------------------------------
+- module: elasticsearch
+  ...
+  username: remote_monitoring_user
+  password: YOUR_PASSWORD
+----------------------------------
+--
+... Identify where to send the {es} monitoring data and supply the necessary
+security information. Add the following settings in the {metricbeat}
+configuration file (`metricbeat.yml`):
++
+--
+[source,yaml]
+----------------------------------
+output.elasticsearch:
+  hosts: ["MONITORING_ELASTICSEARCH_URL"] <1>
+  username: cloud_monitoring_agent
+  password: MONITORING_AGENT_PASSWORD <2>
+----------------------------------
+<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
+<2> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
+Elastic support team.
+--
+... {ref}/starting-elasticsearch.html[Start {es}].
+... {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}].
+** {ref}/configuring-monitoring.html[Use HTTP exporters]. For example:
+... Copy the certificates that you obtained from the Elastic support team to the
+{es} configuration directory (`ES_PATH_CONF`) on each node. These certificates
+enable your production cluster to verify the identity of the ESMS and communicate securely.
+... Configure the following settings on each node in the production cluster:
++
+--
+[source,js]
+----------------------------------
+PUT _cluster/settings
+{
+  "persistent": {
+    "xpack.monitoring.enabled": true,
+    "xpack.monitoring.collection.enabled": true,
+    "xpack.monitoring.elasticsearch.collection.enabled": true,
     "xpack.monitoring.exporters.cloud_monitoring.type": "http",
     "xpack.monitoring.exporters.cloud_monitoring.host": "MONITORING_ELASTICSEARCH_URL", <1>
     "xpack.monitoring.exporters.cloud_monitoring.auth.username": "cloud_monitoring_agent",
     "xpack.monitoring.exporters.cloud_monitoring.auth.password": "MONITORING_AGENT_PASSWORD" <2>
+    "xpack.monitoring.exporters.cloud_monitoring.ssl.certificate_authorities": "ES_PATH_CONF/ca.crt" <3>
   }
 }
 ----------------------------------
 // CONSOLE
 <1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
 <2> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the Elastic support team.
+<3> Replace the path and file name with the appropriate information for the file
+provided by the Elastic support team.
 
 Alternatively, you can put those settings in the `elasticsearch.yml` file on
 each node. This method, however, requires you to restart each node.
 --
+. (Optional)
+{logstash-ref}/configuring-logstash.html[Configure {ls} to collect data and send it to the monitoring cluster]. 
++
+--
+NOTE: You must configure HTTP exporters in the production cluster to route this 
+data to ESMS. It cannot be accomplished by using {metricbeat}. 
+
+--
+
+. (Optional) Configure {kib} to collect data and send it to the monitoring cluster:
+** {kibana-ref}/monitoring-metricbeat.html[Use {metricbeat}]. This 
+option is available in 6.4 and later versions. 
+** {kibana-ref}/monitoring-kibana.html[Use HTTP exporters].
 
 . View the monitoring data by logging into {kib} on ESMS. For more information,
 see {kibana-ref}/xpack-monitoring.html[Monitoring]. 

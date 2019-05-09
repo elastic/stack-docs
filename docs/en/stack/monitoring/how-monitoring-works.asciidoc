@@ -4,11 +4,12 @@
 
 Monitoring collects data from {es} nodes, Logstash nodes, and {kib} instances.
 The {es} cluster you are monitoring controls where the monitoring metrics for
-the entire stack are stored. By default, they are stored in local indices. In
-production, we strongly recommend using a separate monitoring cluster. Using a
-separate monitoring cluster prevents production cluster outages from impacting
+the entire stack are stored. By default, they are stored in local indices.
+
+TIP: In production, we strongly recommend using a separate monitoring Elasticsearch cluster. Using a
+separate monitoring Elasticsearch cluster prevents production cluster outages from impacting
 your ability to access your monitoring data. It also prevents monitoring
-activities from impacting the performance of your production cluster.
+activities from impacting the performance of your production cluster. For the same reason, we also recommend to use a separate Kibana instance that is connected to the separate monitoring Elasticsearch cluster.
 
 IMPORTANT: In general, the monitoring cluster and the clusters being monitored
 should be running the same version of the stack. A monitoring cluster cannot

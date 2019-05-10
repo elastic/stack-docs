@@ -2,28 +2,32 @@
 [[how-monitoring-works]]
 == How monitoring works
 
-Monitoring collects data from {es} nodes, Logstash nodes, and {kib} instances. 
+Monitoring collects data from {es} nodes, Logstash nodes, and {kib} instances.
 
-In general, the {es} cluster you are monitoring controls where the monitoring 
-metrics for the stack are stored. By default, they are stored in local indices. 
+In general, the {es} cluster you are monitoring controls where the monitoring
+metrics for the stack are stored. By default, they are stored in local indices.
 
-In production, we strongly recommend using a separate monitoring cluster. Using 
-a separate monitoring cluster prevents production cluster outages from impacting
-your ability to access your monitoring data. It also prevents monitoring
-activities from impacting the performance of your production cluster. The 
-following diagram illustrates a typical monitoring architecture with separate 
+TIP: In production, we strongly recommend using a separate monitoring
+Elasticsearch cluster. Using a separate monitoring cluster
+prevents production cluster outages from impacting your ability to access your
+monitoring data. It also prevents monitoring activities from impacting the
+performance of your production cluster. For the same reason, we also
+recommend to use a separate Kibana instance that is connected to the separate
+monitoring cluster.
+
+The following diagram illustrates a typical monitoring architecture with separate
 production and monitoring clusters:
 
 image::monitoring/images/architecture1.jpg[A typical monitoring environment]
 
-beta[] In 6.4 and later, you can use {metricbeat} to collect and ship data about 
+beta[] In 6.4 and later, you can use {metricbeat} to collect and ship data about
 {kib}, rather than routing it through {es}. For example:
 
 image::monitoring/images/architecture4.png[A typical monitoring environment that includes {metricbeat}]
 
 If you have at least a gold license, you can route data from multiple production
-clusters to a single monitoring cluster. For more information about the 
-differences between various subscription levels, see: https://www.elastic.co/subscriptions 
+clusters to a single monitoring cluster. For more information about the
+differences between various subscription levels, see: https://www.elastic.co/subscriptions
 
 IMPORTANT: In general, the monitoring cluster and the clusters being monitored
 should be running the same version of the stack. A monitoring cluster cannot
@@ -31,10 +35,8 @@ monitor production clusters running newer versions of the stack. If necessary,
 the monitoring cluster can monitor production clusters running older versions,
 but the versions cannot differ by more than one major version.
 
-If you use {kib} to visualize data and administer the cluster, you might want to 
-create a dedicated {kib} instance for monitoring, rather than using a single 
+If you use {kib} to visualize data and administer the cluster, you might want to
+create a dedicated {kib} instance for monitoring, rather than using a single
 {kib} instance to access both your production cluster and monitoring cluster:
 
 image::monitoring/images/architecture3.jpg[A monitoring environment with separate {kib} instances]
-
-

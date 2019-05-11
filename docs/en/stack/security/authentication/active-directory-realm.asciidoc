@@ -2,26 +2,26 @@
 [[active-directory-realm]]
 === Active Directory user authentication
 
-You can configure {security} to communicate with Active Directory to authenticate
-users. To integrate with Active Directory, you configure an `active_directory`
-realm and map Active Directory users and groups to {security} roles in the
-<<mapping-roles, role mapping file>>.
+You can configure {stack} {security-features} to communicate with Active
+Directory to authenticate users. To integrate with Active Directory, you
+configure an `active_directory` realm and map Active Directory users and groups
+to roles in the <<mapping-roles, role mapping file>>.
 
-See {ref}/configuring-ad-realm.html[Configuring an Active Directory Realm].
+See {ref}/configuring-ad-realm.html[Configuring an active directory realm].
 
-{security} uses LDAP to communicate with Active Directory, so `active_directory`
-realms are similar to <<ldap-realm, `ldap` realms>>. Like LDAP directories,
-Active Directory stores users and groups hierarchically. The directory's
-hierarchy is built from containers such as the _organizational unit_ (`ou`),
-_organization_ (`o`), and _domain controller_ (`dc`).
+The {security-features} use LDAP to communicate with Active Directory, so
+`active_directory` realms are similar to <<ldap-realm, `ldap` realms>>. Like
+LDAP directories, Active Directory stores users and groups hierarchically. The
+directory's hierarchy is built from containers such as the _organizational unit_
+(`ou`), _organization_ (`o`), and _domain controller_ (`dc`).
 
 The path to an entry is a _Distinguished Name_ (DN) that uniquely identifies a
 user or group. User and group names typically have attributes such as a
 _common name_ (`cn`) or _unique ID_ (`uid`). A DN is specified as a string, for
 example `"cn=admin,dc=example,dc=com"` (white spaces are ignored).
 
-{security} only supports Active Directory security groups. You cannot map
-distribution groups to roles.
+The {security-features} supports only Active Directory security groups. You
+cannot map distribution groups to roles.
 
 NOTE: When you use Active Directory for authentication, the username entered by
       the user is expected to match the `sAMAccountName` or `userPrincipalName`,
@@ -36,15 +36,17 @@ user's entry in Active Directory.
 [[ad-load-balancing]]
 ==== Load balancing and failover
 The `load_balance.type` setting can be used at the realm level to configure how
-{security} should interact with multiple Active Directory servers. Two modes of
-operation are supported: failover and load balancing.
+the {security-features} should interact with multiple Active Directory servers.
+Two modes of operation are supported: failover and load balancing.
 
-See {ref}/security-settings.html#load-balancing[Load Balancing and Failover Settings].
+See
+{ref}/security-settings.html#load-balancing[Load balancing and failover settings].
 
 [[ad-settings]]
 ==== Active Directory realm settings
 
-See {ref}/security-settings.html#ref-ad-settings[Active Directory Realm Settings].
+See
+{ref}/security-settings.html#ref-ad-settings[Active Directory realm settings].
 
 [[mapping-roles-ad]]
 ==== Mapping Active Directory users and groups to roles

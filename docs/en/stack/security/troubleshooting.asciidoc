@@ -244,6 +244,14 @@ found in the `keystore` or `truststore` and needs to be added to trust this
 certificate.
 --
 
+`javax.net.ssl.SSLHandshakeException: Invalid ECDH ServerKeyExchange signature``::
++
+--
+The `Invalid ECDH ServerKeyExchange signature` can indicate that a key and a corresponding certificate don't match and are
+causing the handshake to fail.
+Verify that any configured certificate, CA certificate and key are the correct ones and are matching.
+--
+
 [[trb-security-ssl]]
 === Common SSL/TLS exceptions
 

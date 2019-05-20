@@ -3,10 +3,9 @@
 [[encrypting-internode-communications]]
 == Tutorial: Encrypting communications
 
-In 6.0 and later releases, if you have a gold or higher license and the {es}
-{security-features} are enabled, you must use Transport Layer Security (TLS) to
-encrypt internode communication. In this tutorial, you learn how to meet the
-minimum requirements to pass the 
+When you enable {es} {security-features}, unless you have a trial license, you
+must use Transport Layer Security (TLS) to encrypt internode communication.
+In this tutorial, you learn how to meet the minimum requirements to pass the 
 {ref}/bootstrap-checks-xpack.html#bootstrap-checks-tls[TLS bootstrap check].
 
 NOTE: Single-node clusters that use a loopback interface do not have this
@@ -27,7 +26,16 @@ described in
 particular, this tutorial provides instructions that work with the `zip` and
 `tar.gz` packages.
 
-. <<get-started-license,Install a trial license>>.
+. Verify that you are using a license that includes the encrypted communications
+{security-features}. To view your license in {kib}, go to *Management* and click
+*License Management*. 
++
+--
+By default, when you install {stack} products, they apply basic licenses with no
+expiration dates. To complete this tutorial, you must have a basic or trial
+license at a minimum. For more information, see {subscriptions} and
+<<license-management>>.
+--
 
 . <<get-started-enable-security,Enable the {es} {security-features}>>.
 

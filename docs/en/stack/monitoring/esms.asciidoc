@@ -23,6 +23,8 @@ route data from the production cluster to ESMS. Otherwise, it is simplest to use
 
 To use {metricbeat}:
 
+. If your production cluster is stopped, {ref}/starting-elasticsearch.html[start it].
+
 . Configure the following settings on each node in the production cluster:
 +
 --
@@ -31,7 +33,6 @@ To use {metricbeat}:
 PUT _cluster/settings
 {
   "persistent": {
-    "xpack.monitoring.enabled": true,
     "xpack.monitoring.collection.enabled": true,
     "xpack.monitoring.elasticsearch.collection.enabled": false
   }
@@ -41,6 +42,13 @@ PUT _cluster/settings
 
 Alternatively, you can put those settings in the `elasticsearch.yml` file on
 each node. This method, however, requires you to restart each node.
+
+The `xpack.monitoring.enabled` setting must also have a value of `true`, which
+is its default value. If you have set it to `false` in the `elasticsearch.yml`
+file on any node, you must change or remove it.
+
+For more information about these settings, see
+{ref}/monitoring-settings.html[Monitoring settings in {es}].
 --
 
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}].
@@ -99,18 +107,19 @@ configuration file (`metricbeat.yml`):
 ----------------------------------
 output.elasticsearch:
   hosts: ["MONITORING_ELASTICSEARCH_URL"] <1>
-  username: cloud_monitoring_agent
-  password: MONITORING_AGENT_PASSWORD <2>
+  username: cloud_monitoring_agent <2>
+  password: MONITORING_AGENT_PASSWORD <3>
 ----------------------------------
 <1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
-<2> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
+<2> The Elastic support team creates this user in ESMS and grants it the
+{stack-ov}/built-in-roles.html[`remote_monitoring_agent` built-in role]. 
+<3> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
 Elastic support team.
 --
 
-. {ref}/starting-elasticsearch.html[Start {es}].
-
 . {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}].
 
+////
 To use collectors and exporters:
 
 . Copy the certificates that you obtained from the Elastic support team to the
@@ -131,23 +140,26 @@ PUT _cluster/settings
     "xpack.monitoring.elasticsearch.collection.enabled": true,
     "xpack.monitoring.exporters.cloud_monitoring.type": "http",
     "xpack.monitoring.exporters.cloud_monitoring.host": "MONITORING_ELASTICSEARCH_URL", <1>
-    "xpack.monitoring.exporters.cloud_monitoring.auth.username": "cloud_monitoring_agent",
-    "xpack.monitoring.exporters.cloud_monitoring.auth.password": "MONITORING_AGENT_PASSWORD" <2>
-    "xpack.monitoring.exporters.cloud_monitoring.ssl.certificate_authorities": "ES_PATH_CONF/ca.crt" <3>
+    "xpack.monitoring.exporters.cloud_monitoring.auth.username": "cloud_monitoring_agent", <2>
+    "xpack.monitoring.exporters.cloud_monitoring.auth.password": "MONITORING_AGENT_PASSWORD" <3>
+    "xpack.monitoring.exporters.cloud_monitoring.ssl.certificate_authorities": "ES_PATH_CONF/ca.crt" <4>
   }
 }
 ----------------------------------
 // CONSOLE
 <1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
-<2> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
+<2> The Elastic support team creates this user in ESMS and grants it the
+{stack-ov}/built-in-roles.html[`remote_monitoring_agent` built-in role]. 
+<3> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
 Elastic support team.
-<3> Replace the path and file name with the appropriate information for the file
+<4> Replace the path and file name with the appropriate information for the file
 provided by the Elastic support team.
 
 Alternatively, you can put those settings in the `elasticsearch.yml` file on
 each node. This method, however, requires you to restart each node.
 --
-
+////
+////
 [discrete]
 [[esms-kibana]]
 === Collecting monitoring data about {kib}
@@ -257,16 +269,19 @@ configuration file (`metricbeat.yml`):
 ----------------------------------
   output.elasticsearch:
     hosts: ["MONITORING_ELASTICSEARCH_URL"] <1>
-    username: cloud_monitoring_agent
-    password: MONITORING_AGENT_PASSWORD <2>
+    username: cloud_monitoring_agent <2>
+    password: MONITORING_AGENT_PASSWORD <3>
 ----------------------------------
 <1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
-<2> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
+<2> The Elastic support team creates this user in ESMS and grants it the
+{stack-ov}/built-in-roles.html[`remote_monitoring_agent` built-in role]. 
+<3> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
   Elastic support team.
 --
 
 . {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}]. 
 
+////
 ////
 To use HTTP exporters:
 TBD

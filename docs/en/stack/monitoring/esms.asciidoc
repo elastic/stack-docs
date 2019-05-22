@@ -119,6 +119,14 @@ Elastic support team.
 
 . {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}].
 
+. Verify that your monitoring data exists in ESMS.
++
+--
+Open {kib} in your web browser. Use the {kib} URL and the administrator user ID
+that was provided to you by the Elastic support team. Add an
+{kibana-ref}/index-patterns.html[index pattern] and
+{kibana-ref}/discover.html[explore] your monitoring data.
+--
 ////
 To use collectors and exporters:
 
@@ -159,7 +167,7 @@ Alternatively, you can put those settings in the `elasticsearch.yml` file on
 each node. This method, however, requires you to restart each node.
 --
 ////
-////
+
 [discrete]
 [[esms-kibana]]
 === Collecting monitoring data about {kib}
@@ -223,10 +231,11 @@ You must specify the following settings in the `modules.d/kibana.yml` file:
   metricsets:
     - stats
   period: 10s
-  hosts: ["http://localhost:5601"] <1>
+  hosts: ["KIBANA_URL"] <1>
   xpack.enabled: true <2>
 ----------------------------------
-<1> This setting identifies the host and port number that are used to access {kib}. 
+<1> This setting identifies the host and port number that you use to access
+{kib}. For example, `http://localhost:5601`.
 <2> This setting ensures that {kib} can read the monitoring data successfully. 
 That is to say, it's stored in the same location and format as monitoring data 
 that is sent by {ref}/es-monitoring-exporters.html[exporters].  
@@ -261,8 +270,8 @@ via HTTPS. For example, use a `hosts` setting like
 `https://localhost:5601` in the `modules.d/kibana.yml` file. 
 
 . Identify where to send the {kib} monitoring data and supply the necessary
-security information. Add the following settings in the {metricbeat} 
-configuration file (`metricbeat.yml`):
+security information. If you have not already done so, add the following
+settings in the {metricbeat} configuration file (`metricbeat.yml`):
 +
 --
 [source,yaml]
@@ -281,7 +290,14 @@ configuration file (`metricbeat.yml`):
 
 . {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}]. 
 
-////
+. Verify that your monitoring data exists in ESMS.
++
+--
+Open {kib} in your web browser. Use the {kib} URL and the administrator user ID
+that was provided to you by the Elastic support team. If it doesn't already
+exist, add an {kibana-ref}/index-patterns.html[index pattern] and
+{kibana-ref}/discover.html[explore] your monitoring data.
+--
 ////
 To use HTTP exporters:
 TBD

@@ -191,7 +191,7 @@ For more information, see
 
 . {kibana-ref}/start-stop.html[Start {kib}].
 
-. Ensure that the `xpack.monitoring.collection.enabled` setting to `true` on 
+. Ensure that the `xpack.monitoring.collection.enabled` setting is `true` on 
 each node in the production cluster.
 
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on the 
@@ -209,10 +209,12 @@ include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=enable-kib
 include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=configure-kibana-module]
 --
 
-. If the {stack} {security-features} are enabled, you must also provide a user 
+. If the {stack} {security-features} are enabled, you must also provide a user
 ID and password so that {metricbeat} can collect metrics successfully. 
-
++
+--
 include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
+--
 
 . If you configured {kib} to use
 {kibana-ref}/configuring-tls.html[encrypted communications], you must access it
@@ -220,8 +222,8 @@ via HTTPS. For example, use a `hosts` setting like
 `https://localhost:5601` in the `modules.d/kibana-xpack.yml` file. 
 
 . Identify where to send the {kib} monitoring data and supply the necessary
-security information. If you have not already done so, add the following
-settings in the {metricbeat} configuration file (`metricbeat.yml`):
+security information. Add the following settings in the {metricbeat}
+configuration file (`metricbeat.yml`):
 +
 --
 [source,yaml]

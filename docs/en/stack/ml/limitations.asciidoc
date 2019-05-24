@@ -6,6 +6,16 @@ The following limitations and known problems apply to the {version} release of
 the Elastic {ml-features}:
 
 [float]
+[[ml-limitations-sse]]
+=== CPUs must support SSE4.2
+
+{ml-cap} uses Streaming SIMD Extensions (SSE) 4.2 instructions, so it works only
+on machines whose CPUs https://en.wikipedia.org/wiki/SSE4#Supporting_CPUs[support]
+SSE4.2. If you run {es} on older hardware you must disable {ml} by setting
+`xpack.ml.enabled` to `false`. See
+{ref}/ml-settings.html[{ml-cap} settings in {es}].
+
+[float]
 === Categorization uses English dictionary words
 //See x-pack-elasticsearch/#3021
 Categorization identifies static parts of unstructured logs and groups similar

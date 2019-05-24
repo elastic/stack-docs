@@ -183,14 +183,7 @@ To use {metricbeat}:
 . Disable the default collection of {kib} monitoring metrics. +
 +
 --
-Add the following setting in the {kib} configuration file (`kibana.yml`): 
-
-[source,yaml]
-----------------------------------
-xpack.monitoring.kibana.collection.enabled: false
-----------------------------------
-
-Leave the `xpack.monitoring.enabled` set to its default value (`true`). 
+include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=disable-kibana-collection]
 
 For more information, see 
 {kibana-ref}/monitoring-settings-kb.html[Monitoring settings in {kib}].
@@ -204,70 +197,27 @@ each node in the production cluster.
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on the 
 same server as {kib}.
 
-. Enable the {kib} module in {metricbeat}. +
+. Enable the {kib} {xpack} module in {metricbeat}. +
 +
 --
-For example, to enable the default configuration in the `modules.d` directory, 
-run the following command:
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-metricbeat modules enable kibana
-----------------------------------------------------------------------
-
-For more information, see 
-{metricbeat-ref}/configuration-metricbeat.html[Specify which modules to run] and 
-{metricbeat-ref}/metricbeat-module-kibana.html[{kib} module]. 
+include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=enable-kibana-module]
 --
 
-. Configure the {kib} module in {metricbeat}. +
+. Configure the {kib} {xpack} module in {metricbeat}. +
 +
 --
-You must specify the following settings in the `modules.d/kibana.yml` file:
-
-[source,yaml]
-----------------------------------
-- module: kibana
-  metricsets:
-    - stats
-  period: 10s
-  hosts: ["KIBANA_URL"] <1>
-  xpack.enabled: true <2>
-----------------------------------
-<1> This setting identifies the host and port number that you use to access
-{kib}. For example, `http://localhost:5601`.
-<2> This setting ensures that {kib} can read the monitoring data successfully. 
-That is to say, it's stored in the same location and format as monitoring data 
-that is sent by {ref}/es-monitoring-exporters.html[exporters].  
+include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=configure-kibana-module]
 --
 
 . If the {stack} {security-features} are enabled, you must also provide a user 
 ID and password so that {metricbeat} can collect metrics successfully. 
 
-.. Create a user on the production cluster that has the 
-`remote_monitoring_collector` {stack-ov}/built-in-roles.html[built-in role]. 
-Alternatively, use the `remote_monitoring_user` 
-{stack-ov}/built-in-users.html[built-in user].
-
-.. Add the `username` and `password` settings to the {kib} module configuration 
-file.
-+
---
-For example, add the following settings in the `modules.d/kibana.yml` file:
-
-[source,yaml]
-----------------------------------
-- module: kibana
-  ...
-  username: remote_monitoring_user
-  password: YOUR_PASSWORD
-----------------------------------
---
+include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
 
 . If you configured {kib} to use
 {kibana-ref}/configuring-tls.html[encrypted communications], you must access it
 via HTTPS. For example, use a `hosts` setting like 
-`https://localhost:5601` in the `modules.d/kibana.yml` file. 
+`https://localhost:5601` in the `modules.d/kibana-xpack.yml` file. 
 
 . Identify where to send the {kib} monitoring data and supply the necessary
 security information. If you have not already done so, add the following
@@ -294,9 +244,10 @@ settings in the {metricbeat} configuration file (`metricbeat.yml`):
 +
 --
 Open {kib} in your web browser. Use the {kib} URL and the administrator user ID
-that was provided to you by the Elastic support team. If it doesn't already
-exist, add an {kibana-ref}/index-patterns.html[index pattern] and
-{kibana-ref}/discover.html[explore] your monitoring data.
+that was provided to you by the Elastic support team.
+{kibana-ref}/kibana-page.html[View the {kib} metrics] on the *Monitoring* page.
+
+If you do not see your metrics yet, see <<monitoring-troubleshooting>>.
 --
 ////
 To use HTTP exporters:

@@ -54,6 +54,22 @@ For more information about these settings, see
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on each
 node.
 
+. Optional: Disable the system module in {metricbeat}. +
++
+--
+Run the following command:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+metricbeat modules disable system
+----------------------------------------------------------------------
+
+For more information, see 
+{metricbeat-ref}/configuration-metricbeat.html[Specify which modules to run] and
+{metricbeat-ref}/metricbeat-module-system.html[System module].
+--
+
+
 . Enable the {es} {xpack} module in {metricbeat} on each node. +
 +
 --
@@ -129,6 +145,21 @@ each node in the production cluster.
 
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on the 
 same server as {kib}.
+
+. Optional: Disable the system module in {metricbeat}. +
++
+--
+Run the following command:
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+metricbeat modules disable system
+----------------------------------------------------------------------
+
+For more information, see 
+{metricbeat-ref}/configuration-metricbeat.html[Specify which modules to run] and
+{metricbeat-ref}/metricbeat-module-system.html[System module].
+--
 
 . Enable the {kib} {xpack} module in {metricbeat}. +
 +

@@ -1,29 +1,30 @@
 [role="xpack"]
 [[esms]]
-== {stack} Monitoring Service
+== {esms}
 
-The {stack} Monitoring Service (ESMS) is a monitoring cluster on Cloud that
-Elastic provides to self-managed commercial customers. If you send your
-monitoring data to the ESMS, it can also be used by Elastic support to provide
-better and faster incident resolution. 
+The {esms} ({esms-init}) is a monitoring cluster on {ecloud}. Elastic provides
+and maintains {esms-init} for self-managed commercial customers. If you send
+your monitoring data to {esms-init}, it can also be used by Elastic support to
+provide better and faster incident resolution.
 
-NOTE: You must obtain your ESMS cluster URLs and credentials from the Elastic
-support team.
+NOTE: You must obtain your {esms-init} cluster URLs and credentials from the
+Elastic support team.
 
 [discrete]
 [[esms-elasticsearch]]
 === Collecting monitoring data about {es}
 
 There are two methods for collecting and sending data about the health of your
-production cluster to ESMS: {metricbeat} or collectors and exporters.
+production cluster to {esms-init}: {metricbeat} or collectors and exporters.
 
-TIP: If you want to monitor {ls}, you must use collectors and exporters to
-route data from the production cluster to ESMS. Otherwise, it is simplest to use
-{metricbeat}. 
+TIP: If you want to monitor {ls}, you must use collectors and exporters to route
+data from the production cluster to {esms-init}. Otherwise, it is simplest to
+use {metricbeat}. 
 
 To use {metricbeat}:
 
-. If your production cluster is stopped, {ref}/starting-elasticsearch.html[start it].
+. If your production cluster is stopped,
+{ref}/starting-elasticsearch.html[start it].
 
 . Configure the following settings on each node in the production cluster:
 +
@@ -69,7 +70,6 @@ For more information, see
 {metricbeat-ref}/metricbeat-module-system.html[System module].
 --
 
-
 . Enable the {es} {xpack} module in {metricbeat} on each node. +
 +
 --
@@ -96,8 +96,8 @@ output.elasticsearch:
   username: cloud_monitoring_agent <2>
   password: MONITORING_AGENT_PASSWORD <3>
 ----------------------------------
-<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
-<2> The Elastic support team creates this user in ESMS and grants it the
+<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL for {esms-init}.
+<2> The Elastic support team creates this user in {esms-init} and grants it the
 {stack-ov}/built-in-roles.html[`remote_monitoring_agent` built-in role]. 
 <3> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
 Elastic support team.
@@ -105,7 +105,7 @@ Elastic support team.
 
 . {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}].
 
-. Verify that your monitoring data exists in ESMS.
+. Verify that your monitoring data exists in {esms-init}.
 +
 --
 Open {kib} in your web browser. Use the {kib} URL and the administrator user ID
@@ -121,9 +121,9 @@ If you do not see your metrics yet, see
 [[esms-kibana]]
 === Collecting monitoring data about {kib}
 
-There are two methods for sending monitoring data about {kib} to ESMS. You can
-send it directly to ESMS by using {metricbeat} or you can route it through
-exporters on the production cluster.
+There are two methods for sending monitoring data about {kib} to {esms-init}.
+You can send it directly to {esms-init} by using {metricbeat} or you can route
+it through exporters on the production cluster.
 
 TIP: It is simplest to use {metricbeat}. 
 
@@ -187,8 +187,8 @@ configuration file (`metricbeat.yml`):
     username: cloud_monitoring_agent <2>
     password: MONITORING_AGENT_PASSWORD <3>
 ----------------------------------
-<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL from the ESMS.
-<2> The Elastic support team creates this user in ESMS and grants it the
+<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL for {esms-init}.
+<2> The Elastic support team creates this user in {esms-init} and grants it the
 {stack-ov}/built-in-roles.html[`remote_monitoring_agent` built-in role]. 
 <3> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
   Elastic support team.
@@ -196,7 +196,7 @@ configuration file (`metricbeat.yml`):
 
 . {metricbeat-ref}/metricbeat-starting.html[Start {metricbeat}]. 
 
-. Verify that your monitoring data exists in ESMS.
+. Verify that your monitoring data exists in {esms-init}.
 +
 --
 Open {kib} in your web browser. Use the {kib} URL and the administrator user ID

@@ -41,21 +41,6 @@ include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=disable-de
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on each
 node.
 
-. Optional: Disable the system module in {metricbeat}. +
-+
---
-Run the following command:
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-metricbeat modules disable system
-----------------------------------------------------------------------
-
-For more information, see 
-{metricbeat-ref}/configuration-metricbeat.html[Specify which modules to run] and
-{metricbeat-ref}/metricbeat-module-system.html[System module].
---
-
 . Enable the {es} {xpack} module in {metricbeat} on each node. +
 +
 --
@@ -68,6 +53,12 @@ include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=enable-es-
 include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=configure-es-module]
 
 include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=remote-monitoring-user]
+--
+
+. Optional: Disable the system module in {metricbeat}. +
++
+--
+include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=disable-system-module]
 --
 
 . Identify where to send the {es} monitoring data and supply the necessary
@@ -132,21 +123,6 @@ each node in the production cluster.
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on the 
 same server as {kib}.
 
-. Optional: Disable the system module in {metricbeat}. +
-+
---
-Run the following command:
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-metricbeat modules disable system
-----------------------------------------------------------------------
-
-For more information, see 
-{metricbeat-ref}/configuration-metricbeat.html[Specify which modules to run] and
-{metricbeat-ref}/metricbeat-module-system.html[System module].
---
-
 . Enable the {kib} {xpack} module in {metricbeat}. +
 +
 --
@@ -159,6 +135,12 @@ include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=enable-kib
 include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=configure-kibana-module]
 
 include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
+--
+
+. Optional: Disable the system module in {metricbeat}. +
++
+--
+include::{kib-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=disable-system-module]
 --
 
 . Identify where to send the {kib} monitoring data and supply the necessary

@@ -24,11 +24,16 @@ running.
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
-[role="xpack"]
-[[get-started-license]]
-=== Install a trial license
-
-include::{docdir}/get-started-trial.asciidoc[]
+. Verify that you are using a license that includes the role-based access
+control (RBAC) and native authentication {security-features}. To view your
+license in {kib}, go to **Management** and click **License Management**. 
++
+--
+By default, when you install {stack} products, they apply basic licenses
+with no expiration dates. To complete this tutorial, you must have a basic or
+trial license at a minimum. For more information, see {subscriptions} and
+<<license-management>>.
+--
 
 [role="xpack"]
 [[get-started-enable-security]]
@@ -141,10 +146,9 @@ Go to the *Management / Security / Roles* page to see them:
 [role="screenshot"]
 image::security/images/management-roles.jpg["Role management screenshot in Kibana"]
 
-Select a role to see more information about its privileges. For example, if you 
-select the `kibana_user` role, you will see that it grants `manage`, `read`, 
-`index`, and `delete` privileges on the `.kibana*` indices. To learn more about 
-these privileges, see <<privileges-list-indices>>. 
+Select a role to see more information about its privileges. For example, select
+the `kibana_system` role to see its list of cluster and index privileges. To
+learn more, see <<privileges-list-indices>>. 
 
 Let's assign the `kibana_user` role to your user. Go back to the 
 *Management / Security / Users* page and select your user. Add the `kibana_user` 
@@ -153,7 +157,8 @@ role and save the change. For example:
 [role="screenshot"]
 image::security/images/assign-role.jpg["Assigning a role to a user in Kibana"]
 
-This user now has the minimum privileges required to use {kib}. 
+This user now has access to all features in {kib}. For more information about granting
+access to Kibana see {kibana-ref}/xpack-security-authorization.html[Kibana Authorization].
 
 If you completed all of the steps in 
 {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}], you should 
@@ -328,12 +333,9 @@ Congratulations! You've successfully set up authentication and authorization by
 using the native realm. You learned how to create user IDs and roles that 
 prevent unauthorized access to the {stack}. 
 
-Next, you'll want to try other features that are unlocked by your trial license, 
-such as {ml}. See <<ml-getting-started,Getting started with {ml}>>. 
-
-Later, when you're ready to increase the number of nodes in your cluster or set 
-up an production environment, you'll want to encrypt communications across the 
-{stack}. To learn how, read <<encrypting-communications>>. 
+Later, when you're ready to increase the number of nodes in your cluster, you'll
+want to encrypt communications across the {stack}. To learn how, read
+<<encrypting-communications>>. 
 
 For more detailed information about securing the {stack}, see:
 
@@ -351,8 +353,6 @@ Logstash and {es}.
 
 * <<beats,Configuring security in the Beats>>. Configure authentication 
 credentials and encrypt connections to {es}. 
-
-* <<java-clients,Configuring the Java transport client to use encrypted communications>>.
 
 * {hadoop-ref}/security.html[Configuring {es} for Apache Hadoop to use secured transport]. 
 

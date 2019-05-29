@@ -23,33 +23,19 @@ use {metricbeat}.
 
 To use {metricbeat}:
 
-. If your production cluster is stopped,
-{ref}/starting-elasticsearch.html[start it].
-
-. Configure the following settings on each node in the production cluster:
+. Enable the collection of monitoring data on your cluster.
 +
 --
-[source,js]
-----------------------------------
-PUT _cluster/settings
-{
-  "persistent": {
-    "xpack.monitoring.collection.enabled": true,
-    "xpack.monitoring.elasticsearch.collection.enabled": false
-  }
-}
-----------------------------------
-// CONSOLE
-
-Alternatively, you can put those settings in the `elasticsearch.yml` file on
-each node. This method, however, requires you to restart each node.
-
-The `xpack.monitoring.enabled` setting must also have a value of `true`, which
-is its default value. If you have set it to `false` in the `elasticsearch.yml`
-file on any node, you must change or remove it.
+include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=enable-collection]
 
 For more information about these settings, see
 {ref}/monitoring-settings.html[Monitoring settings in {es}].
+--
+
+. Disable the default collection of {es} monitoring metrics.
++
+--
+include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=disable-default-collection]
 --
 
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on each

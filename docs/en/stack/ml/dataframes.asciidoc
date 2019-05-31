@@ -21,14 +21,14 @@ results in a summary of your dataset (which is the {dataframe} itself).
 Defining a pivot consist of two main parts. First, you select one or more fields 
 that your dataset will be grouped by. Principally you can select categorical 
 fields (terms) for grouping. You can also select numerical fields, in this case, 
-the field values will be bucketed using an interval you specify. The analysis
+the field values will be bucketed using an interval you specify. The calculation
 will run against every bucket that was created this way.
 
-The second step is selecting one or more aggregations to perform analysis over
+The second step is selecting one or more aggregations to perform calculation over
 the dataset. When using aggregations, you practically ask questions about the 
-dataset to analyze the data. There are different types of aggregations, each with 
-its own purpose and output. You can learn more about the supported aggregations 
-and group-by fields here (!add a link!).
+dataset. There are different types of aggregations, each with its own purpose and 
+output. You can learn more about the supported aggregations and group-by fields 
+here (!add a link!).
 
 As an optional step, it's also possible to add a query to further limit the 
 scope of the aggregation.
@@ -39,6 +39,7 @@ on the altered data. Using {dataframes} does not require {dfeeds}.
 {con-dataframes-cap} will be introduced in a later version.
 
 .Example
+
 Put the case that you run a webshop that sells clothes. Every order creates a 
 document that contains a unique order ID, the name and the category of the 
 ordered product, its price, the ordered quantity, the exact date of the order, 

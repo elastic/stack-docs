@@ -39,7 +39,18 @@ on the altered data. Using {dataframes} does not require {dfeeds}.
 {con-dataframes-cap} will be introduced in a later version.
 
 .Example
-TO DO
+Put the case that you run a webshop that sells clothes. Every order creates a 
+document that contains a unique order ID, the name and the category of the 
+ordered product, its price, the ordered quantity, the exact date of the order, 
+and some customer information (name, gender, location, etc). Your dataset 
+contains the documents of all the transactions from last year.
+
+If you want to check the sales in the different categories in your last fiscal year,
+define a {dataframe} that is grouped by the product categories (women's shoes, men's
+clothing, etc.) and the order date histogram with the interval of the last year, 
+then set a sum aggregation on the ordered quantity. The result is a {dataframe} 
+pivot that shows the number of sold items in every product category in the last 
+year.
 
 IMPORTANT: Creating a {dataframe} leaves your source index intact. A new index will 
 be created dedicated to the {dataframe}.

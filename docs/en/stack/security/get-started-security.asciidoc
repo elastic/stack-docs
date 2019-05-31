@@ -11,7 +11,15 @@ roles in {es}, {kib}, {ls}, and {metricbeat}.
 === Before you begin
 
 . Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}]. 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
++
+--
+IMPORTANT: To complete this tutorial, you must install the default {es} and
+{kib} packages, which include role-based access control (RBAC) and native authentication {security-features}. When you install these products, they apply
+basic licenses with no expiration dates. All of the subsequent steps in this
+tutorial assume that you are using a basic license. For more information, see {subscriptions} and <<license-management>>.
+
+--
 
 . Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
 you are running it from the command line or running it as a service. For example, 
@@ -23,17 +31,6 @@ running.
 
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
-
-. Verify that you are using a license that includes the role-based access
-control (RBAC) and native authentication {security-features}. To view your
-license in {kib}, go to **Management** and click **License Management**. 
-+
---
-By default, when you install {stack} products, they apply basic licenses
-with no expiration dates. To complete this tutorial, you must have a basic or
-trial license at a minimum. For more information, see {subscriptions} and
-<<license-management>>.
---
 
 [role="xpack"]
 [[get-started-enable-security]]

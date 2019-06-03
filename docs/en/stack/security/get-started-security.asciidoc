@@ -15,9 +15,11 @@ roles in {es}, {kib}, {ls}, and {metricbeat}.
 +
 --
 IMPORTANT: To complete this tutorial, you must install the default {es} and
-{kib} packages, which include role-based access control (RBAC) and native authentication {security-features}. When you install these products, they apply
+{kib} packages, which include role-based access control (RBAC) and native
+authentication {security-features}. When you install these products, they apply
 basic licenses with no expiration dates. All of the subsequent steps in this
-tutorial assume that you are using a basic license. For more information, see {subscriptions} and <<license-management>>.
+tutorial assume that you are using a basic license. For more information, see
+{subscriptions} and <<license-management>>.
 
 --
 
@@ -36,12 +38,30 @@ example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 [[get-started-enable-security]]
 === Enable {es} {security-features}
 
-include::get-started-enable-security.asciidoc[]
+include::get-started-enable-security.asciidoc[] 
 
-NOTE: This tutorial involves a single node cluster, but if you had multiple 
+. Enable single-node discovery in the `ES_PATH_CONF/elasticsearch.yml` file. 
++
+-- 
+This tutorial involves a single node cluster, but if you had multiple 
 nodes, you would enable {es} {security-features} on every node in the cluster
 and configure Transport Layer Security (TLS) for internode-communication, which
-is beyond the scope of this tutorial. 
+is beyond the scope of this tutorial. By enabling single-node discovery, we are
+postponing the configuration of TLS. For example, add the following setting:
+
+[source,yaml]
+----
+discovery.type: single-node
+----
+
+For more information, see
+{ref}/bootstrap-checks.html#single-node-discovery[Single-node discovery].
+--
+
+When you enable {es} {security-features}, basic authentication is enabled by
+default. To communicate with the cluster, you must specify a username and
+password. Unless you <<anonymous-access,enable anonymous access>>, all requests
+that don't include a user name and password are rejected.
 
 [role="xpack"]
 [[get-started-built-in-users]]

@@ -1,13 +1,7 @@
 [[siem-overview]]
-//[role="xpack"]
-//== Overview
+[role="xpack"]
+== Overview
 
-
-== Coming soon
-
-Won't be long now!
-
-////
 beta[]
 
 {siem-soln-cap} gives you a comprehensive view into your security operations,
@@ -16,11 +10,10 @@ and helps make those insights actionable.
 The UI in {kib} brings together data from a variety of sources, making it easier
 for you to identify and resolve security issues.
 
-[float]
 [[siem-components]]
 === SIEM monitoring components
 
-Security monitoring requires the following {stack} components.
+SIEM requires the following {stack} components.
 
 image::images/siem-architecture.png[]
 
@@ -39,4 +32,47 @@ advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
 
 {kib} {siem-ui} provides a dedicated user interface for visualizing host security.
-////
+
+[[data-sources]]
+=== Data sources
+
+SIEM can collect and normalize data from a variety of sources.
+
+*Hosts data sources*
+
+* Auditbeat
+** System module  - Linux, macOS, Win
+*** packages
+*** processes
+*** logins
+*** sockets
+*** users and groups
+** Auditd module (Linux Kernel Audit info)
+** File integrity module (FIM) - Linux, macOS, Win
+* Filebeat 
+** system logs (auth logs) - Linux
+** Santa - macOS
+* Winlogbeat
+** Windows event logs - Windows
+
+
+*Network data sources*
+
+* Packetbeat
+** Flows
+** DNS
+** other protocols
+* Filebeat
+** Zeek NMS module
+** Suricata IDS module
+** Iptables/Ubiquiti module
+** CoreDNS module
+** Envoy proxy module (Kubernetes)
+** Palo Alto firewall module*
+** Cisco ASA firewall module*
+
+
+
+
+
+

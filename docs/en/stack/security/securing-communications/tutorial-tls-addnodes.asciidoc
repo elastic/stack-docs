@@ -1,33 +1,7 @@
 [role="xpack"]
-[testenv="trial"]
+[testenv="basic"]
 [[encrypting-communications-hosts]]
 === Add nodes to your cluster
-
-Up to this point, we have used a cluster with a single {es} node to get up and
-running with the {stack}. An {es} _node_ is a single server that is part of your
-cluster and stores pieces of your data called _shards_. 
-
-You can add more nodes to your cluster and optionally designate specific purposes
-for each node. For example, you can allocate master nodes, data nodes, ingest
-nodes, machine learning nodes, and dedicated coordinating nodes. For details
-about each node type, see {ref}/modules-node.html[Nodes].
-
-In a single cluster, you can have as many nodes as you want but they must be
-able to communicate with each other. The communication between nodes in a
-cluster is handled by the {ref}/modules-transport.html[transport module]. To
-secure your cluster, you must ensure that the internode communications are
-encrypted.
-
-NOTE: In this tutorial, we add more nodes by installing more copies of {es} on
-the same machine. By default, {es} binds to loopback addresses for HTTP and
-transport communication. That is fine for the purposes of this tutorial and for
-downloading and experimenting with {es} in a test or development environment.
-When you are deploying a production environment, however, you are generally
-adding nodes on different machines so that your cluster is resilient to outages
-and avoids data loss.  In a production scenario, there are additional
-requirements that are not covered in this tutorial. See
-{ref}/bootstrap-checks.html#dev-vs-prod-mode[Development vs production mode] and
-{ref}/add-elasticsearch-nodes.html[Adding nodes to your cluster].
 
 Let's add two nodes to our cluster!
 
@@ -39,49 +13,66 @@ in a separate folder. You can simply repeat the steps that you used to install
 {stack-gs}/get-started-elastic-stack.html#install-elasticsearch[Getting started with the {stack}]
 tutorial.
 
-. Update the `ES_PATH_CONF/elasticsearch.yml` file on each node:
+. Generate certificates for the two new nodes.
 +
 --
-.. Enable the {es} {security-features}. 
-.. Ensure that the nodes share the same {ref}/cluster.name.html[`cluster.name`].
-.. Give each node a unique {ref}/node.name.html[`node.name`].
-.. Specify the minimum number of master-eligible nodes that must be available to
-form a cluster. By default, each node is eligible to be elected as the
-{ref}/modules-node.html#master-node[master node] and control the cluster. To
-avoid a _split brain_ scenario where multiple nodes elect themselves as the
-master, use the `discovery.zen.minimum_master_nodes` setting.
+For example, run the following command:
 
-By default, if you run multiple {es} nodes on the same machine, it
-automatically uses free ports in the range 9200-9300 for HTTP and 9300-9400 for
-transport. If you want to assign specific port numbers to each node, however,
-you can add {ref}/modules-transport.html[TCP transport settings]. You can then
-provide a list of these seed nodes,
-which is used to discover the nodes in your cluster.
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+./bin/elasticsearch-certutil cert \
+--ca elastic-stack-ca.p12 \ <1>
+--multiple
+----------------------------------------------------------------------
+// NOTCONSOLE
+<1> Use the certificate authority that you create in <<encrypting-communications-certificates>>.
 
+You are prompted for information about each new node. Specify `node-2` and
+`node-3` for the instance names. For the purposes of this tutorial, specify the
+same IP address (`127.0.0.1,::1`) and DNS name (`localhost`) for each node.
+
+By default, the command produces a zip file named `certificate-bundle.zip`,
+which contains the generated certificates and keys.
+--
+
+. Decompress the `certificate-bundle.zip` file. For example:
++
+--
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+unzip certificate-bundle.zip 
+
+Archive:  certificate-bundle.zip
+   creating: node-2/
+  inflating: node-2/node-2.p12       
+   creating: node-3/
+  inflating: node-3/node-3.p12   
+----------------------------------------------------------------------
+// NOTCONSOLE
+  
+The `certificate-bundle.zip` file contains a folder for each of your nodes. Each
+folder contains a single PKCS#12 keystore that includes a node certificate,
+node key, and CA certificate.
+--
+
+. Create a folder to contain certificates in the configuration directory of each
+{es} node. For example, create a `certs` folder in the `config` directory.
+
+. Copy the appropriate certificate to the configuration directory on each node.
+For example, copy the `node-2.p12` file into the `config/certs` directory on the
+second node and the `node-3.p12` into the `config/certs` directory on the third
+node.
+
+. Specify the name of the cluster and give each node a unique name.
++
+--
 For example, add the following settings to the `ES_PATH_CONF/elasticsearch.yml`
-file on the first node:
-
-[source,yaml]
-----
-xpack.security.enabled: true
-cluster.name: test-cluster
-node.name: node-1
-discovery.zen.minimum_master_nodes: 2
-transport.tcp.port: 9301
-discovery.zen.ping.unicast.hosts: ["localhost:9302", "localhost:9303"]
-----
-
-Add the following settings to the `ES_PATH_CONF/elasticsearch.yml`
 file on the second node:
 
 [source,yaml]
 ----
-xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-2
-discovery.zen.minimum_master_nodes: 2
-transport.tcp.port: 9302
-discovery.zen.ping.unicast.hosts: ["localhost:9301", "localhost:9303"]
 ----
 
 Add the following settings to the `ES_PATH_CONF/elasticsearch.yml`
@@ -89,21 +80,50 @@ file on the third node:
 
 [source,yaml]
 ----
-xpack.security.enabled: true
 cluster.name: test-cluster
 node.name: node-3
-discovery.zen.minimum_master_nodes: 2
-transport.tcp.port: 9303
-discovery.zen.ping.unicast.hosts: ["localhost:9301", "localhost:9302"]
 ----
 
-TIP: In these examples, we have not specified the `transport.host`,
-`transport.bind_host`, or `transport.publish_host` settings, so they default to
-the `network.host` value. If you have not specified the `network.host` setting,
-it defaults to `_local_`, which represents the loopback addresses for the system. 
+NOTE: In order to join the same cluster as the first node, they must share the
+same `cluster.name` value.
 
-If you choose different cluster names, node names, host names, or ports, you
-must substitute the appropriate values in subsequent steps as well. 
+--
+
+. If you set the `cluster.initial_master_nodes` on the first node, specify the
+same value on the second and third master-eligible nodes.
++
+--
+For example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml`
+file:
+
+[source,yaml]
+----
+cluster.initial_master_nodes: ["node-1","node-2","node-3"]
+----
+
+WARNING: If you set `cluster.initial_master_nodes` on multiple nodes, it must
+have the same value to ensure that only a single cluster forms during
+bootstrapping and to avoid the risk of data loss.
+
+For more information, see
+{ref}/modules-discovery-bootstrap-cluster.html[Bootstrapping a cluster].
+--
+
+. On each node, enable TLS for transport communications. You must also configure
+each node to identify itself using its signed certificate.
++
+--
+include::tutorial-tls-internode.asciidoc[tag=enable-tls]
+--
+
+. On each node, store the password for the PKCS#12 file in the {es} keystore.
++
+--
+include::tutorial-tls-internode.asciidoc[tag=secure-passwords]
+
+On the second node, supply the password that you created for the `node-2.p12`
+file. On the third node, supply the password that you created for the
+`node-3.p12` file.
 --
 
 . Start each {es} node. For example, if you installed {es} with a `.tar.gz`
@@ -117,13 +137,34 @@ package, run the following command from each {es} directory:
 
 See {ref}/starting-elasticsearch.html[Starting {es}].
 
+If you encounter errors, you can see some common problems and solutions in
+<<trb-security-ssl>>.
 --
 
-. (Optional) Restart {kib}. For example, if you installed 
-{kib} with a `.tar.gz` package, run the following command from the {kib} 
-directory:
+. Create passwords for the built-in users. 
 +
 --
+include::{stack-repo-dir}/security/get-started-builtin-users.asciidoc[tag=create-users]
+
+NOTE: If you already created these users on the first node for other tutorials,
+you do not need to create them on the second and third node.
+
+--
+
+. <<get-started-kibana-user,Add the built-in user to {kib}>>.
++
+--
+For example, run the following commands to create the {kib} keystore and add the
+`kibana` built-in user and its password in secure settings:
+
+include::{stack-repo-dir}/security/get-started-kibana-users.asciidoc[tag=store-kibana-user]
+--
+
+. Start {kib}.
++
+--
+For example, if you installed {kib} with a `.tar.gz` package, run the following
+command from the {kib}  directory:
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/kibana
@@ -132,10 +173,12 @@ directory:
 See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
 --
 
-. Verify that your cluster now contains three nodes. For example, use the
-{ref}/cluster-health.html[cluster health API]:
+. Verify that your cluster now contains three nodes.
 +
 --
+For example, log into {kib} with the `elastic` built-in user. Go to
+*Dev Tools > Console* and run the {ref}/cluster-health.html[cluster health API]:
+
 [source,js]
 ----------------------------------
 GET _cluster/health
@@ -161,3 +204,21 @@ Now that you have multiple nodes, your data can be distributed across the
 cluster in multiple primary and replica shards. For more information about the
 concepts of clusters, nodes, and shards, see
 {ref}/getting-started.html[Getting started with {es}].
+
+TIP: In these examples, we have not specified the `discovery.seed_hosts` setting,
+so it uses the default value which represents the loopback addresses for the
+system. When you want to form a cluster with nodes on other hosts, you must
+update that setting with a list of master-eligible nodes. See
+{ref}/modules-discovery-settings.html[Discovery and cluster formation settings]
+and {ref}/modules-discovery.html[Discovery and cluster formation].
+
+[float]
+[[encrypting-internode-nextsteps]]
+=== What's next?
+
+Congratulations! You've encrypted communications between the nodes in your
+cluster and can pass the 
+{ref}/bootstrap-checks-xpack.html#bootstrap-checks-tls[TLS bootstrap check].
+
+If you want to encrypt communications between other products in the {stack}, see
+<<encrypting-communications>>.

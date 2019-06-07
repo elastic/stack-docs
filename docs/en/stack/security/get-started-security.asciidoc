@@ -1,5 +1,5 @@
 [role="xpack"]
-[testenv="trial"]
+[testenv="basic"]
 [[security-getting-started]]
 == Tutorial: Getting started with security
 
@@ -11,7 +11,17 @@ roles in {es}, {kib}, {ls}, and {metricbeat}.
 === Before you begin
 
 . Install and configure {es}, {kib}, {ls}, and {metricbeat} as described in 
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}]. 
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
++
+--
+IMPORTANT: To complete this tutorial, you must install the default {es} and
+{kib} packages, which include role-based access control (RBAC) and native
+authentication {security-features}. When you install these products, they apply
+basic licenses with no expiration dates. All of the subsequent steps in this
+tutorial assume that you are using a basic license. For more information, see
+{subscriptions} and <<license-management>>.
+
+--
 
 . Stop {ls}. The method for starting and stopping {ls} varies depending on whether 
 you are running it from the command line or running it as a service. For example, 
@@ -24,27 +34,34 @@ running.
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
 example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 
-. Verify that you are using a license that includes the role-based access
-control (RBAC) and native authentication {security-features}. To view your
-license in {kib}, go to **Management** and click **License Management**. 
-+
---
-By default, when you install {stack} products, they apply basic licenses
-with no expiration dates. To complete this tutorial, you must have a basic or
-trial license at a minimum. For more information, see {subscriptions} and
-<<license-management>>.
---
-
 [role="xpack"]
 [[get-started-enable-security]]
 === Enable {es} {security-features}
 
-include::get-started-enable-security.asciidoc[]
+include::get-started-enable-security.asciidoc[] 
 
-NOTE: This tutorial involves a single node cluster, but if you had multiple 
+. Enable single-node discovery in the `ES_PATH_CONF/elasticsearch.yml` file. 
++
+-- 
+This tutorial involves a single node cluster, but if you had multiple 
 nodes, you would enable {es} {security-features} on every node in the cluster
 and configure Transport Layer Security (TLS) for internode-communication, which
-is beyond the scope of this tutorial. 
+is beyond the scope of this tutorial. By enabling single-node discovery, we are
+postponing the configuration of TLS. For example, add the following setting:
+
+[source,yaml]
+----
+discovery.type: single-node
+----
+
+For more information, see
+{ref}/bootstrap-checks.html#single-node-discovery[Single-node discovery].
+--
+
+When you enable {es} {security-features}, basic authentication is enabled by
+default. To communicate with the cluster, you must specify a username and
+password. Unless you <<anonymous-access,enable anonymous access>>, all requests
+that don't include a user name and password are rejected.
 
 [role="xpack"]
 [[get-started-built-in-users]]

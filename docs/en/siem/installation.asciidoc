@@ -29,7 +29,7 @@ for sorting. For more information, see {kib}.
 === Install {beats} shippers
 
 To populate the {siem-ui} with hosts and
-network data, you need to install and configure the following Beats:
+network data, you need to install and configure Beats on the endpoints you want to collect and send data:
 
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for forwarding and
 centralizing logs and files
@@ -41,46 +41,46 @@ network packets
 
 NOTE: {siem-soln} also works with custom and third-party data sources in addition to Beats.
 {ecs-ref}[Elastic Common Schema (ECS)] makes this possible. Any data tagged as `host.name`
-can be displayed in {siem-soln}. 
+can be used in {siem-soln}. 
 
-[[install-option]]
-==== {beats} installation options
+You can install {beats} from {kib} or from the command line.
 
-To learn how to install and configure the shippers, do one of the following:
+==== Install {beats} from {kib}
 
-* Follow the instructions in the Add Data section of the {kib} home page. Click
+Follow the instructions in the Add Data section of the {kib} home page. Click
 *Add log data* or *Add metrics*, and follow the links for the types of data you
 want to collect.
-+
+
 [role="screenshot"]
 image::add-data.png[]
 
-* If your data source isn't in the list, or you want to install {beats} the old
+==== Download and install {beats} from the command line
+
+If your data source isn't in the list, or you want to install {beats} the old
 fashioned way:
 
-** Follow the
-{metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started]
-and enable modules for the metrics you want to collect.
-
-** Follow the
+* *{filebeat} and {filebeat} modules.* See the
 {filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start]
-and enable modules for the logs you want to collect. If there is no module
-for the logs you want to collect, see the
+and enable modules for the events you want to collect. If there is no module
+for the events you want to collect, see the
 {filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to
 learn how to configure inputs.
 
+* *Auditbeat.* See {auditbeat-ref}/auditbeat-getting-started.html[{auditbeat} getting started]
 
-==== Enable modules and configuration options
+* *Winlogbeat.* {winlogbeat-ref}/winlogbeat-getting-started.html[{winlogbeat} getting started]
+
+* *Packetbeat.* {packetbeat-ref}/packetbeat-getting-started.html[{packetbeat} getting started]
+
+
+=== Enable modules and configuration options
 
 For either approach, you need to enable modules in {filebeat} and {metricbeat}
 to populate the {SIEM-ui} with data.
 
 To populate the *Hosts* view and add logs, enable (NEEDS UPDATING):
 
-* {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module] (enabled by default)
 * {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
 * {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for
 your environment, such as `apache2`, `redis`, and so on
-* {metricbeat-ref}/add-host-metadata.html[{metricbeat} `add_host_metadata` processor] (enabled by default)
-* {metricbeat-ref}/add-cloud-metadata.html[{metricbeat} `add_cloud_metadata` processor] (enabled by default)
 

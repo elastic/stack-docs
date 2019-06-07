@@ -7,11 +7,11 @@ beta[]
 {siem-soln} gives you a comprehensive view into your security operations,
 and helps make those insights actionable.
 
-The UI in {kib} brings together data from a variety of sources, making it easier
+The {siem-app} in {kib} brings together data from a variety of sources, making it easier
 for you to identify and resolve security issues.
 
 [[siem-components]]
-=== SIEM monitoring components
+=== SIEM components
 
 SIEM requires the following {stack} components.
 
@@ -19,7 +19,7 @@ image::images/siem-architecture.png[]
 
 *https://www.elastic.co/products/beats[{beats}]* are open source data
 shippers that you install as agents on your servers to send operational data to
-{es}.
+{es}. 
 
 *https://www.elastic.co/products/elasticsearch[{es}]* is a real-time,
 distributed storage, search, and analytics engine. {es} excels is indexing
@@ -36,7 +36,9 @@ and maps.
 [[data-sources]]
 === Data sources
 
-SIEM can collect and normalize data from a variety of sources.
+SIEM can collect and normalize data from a variety of sources using Beats and
+Beats modules. {beats} and {beats} modules use the {ecs-ref}[Elastic Common Schema (ECS)]
+to normalize data from various data sources.
 
 *Hosts data sources*
 
@@ -72,7 +74,14 @@ SIEM can collect and normalize data from a variety of sources.
 ** Cisco ASA firewall module*
 
 
+[[ecs]]
+==== Elastic Common Schema (ECS) for normalizing data
 
+The {ecs-ref}[Elastic Common Schema (ECS)] defines a common set of fields to be used for
+storing event data in Elasticsearch. ECS helps users normalize their event data
+to better analyze, visualize, and correlate the data represented in their
+events. 
 
-
+{siem-soln} can collect and normalize events from ECS-compatible data sources.
+Data from custom or third-party sources and tagged `host.name` can be included.
 

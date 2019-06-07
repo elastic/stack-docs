@@ -3,8 +3,9 @@
 === Realm chains
 
 <<realms,Realms>> live within a _realm chain_. It is essentially a prioritized list of
-configured realms (typically of various types). The order of the list determines
-the order in which the realms will be consulted. You should make sure each
+configured realms (typically of various types). The `order` setting determines
+the order in which the realms will be consulted. Lower orders will be consulted first.
+You should make sure each
 configured realm has a distinct `order` setting. In the event that two or more
 realms have the same `order`, they will be processed in `name` order.
 During the authentication process, {stack} {security-features} will consult and

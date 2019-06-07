@@ -36,6 +36,9 @@ You are prompted for information about each new node. Specify `node-2` and
 `node-3` for the instance names. For the purposes of this tutorial, specify the
 same IP address (`127.0.0.1,::1`) and DNS name (`localhost`) for each node.
 
+You are prompted to enter the password for your CA. You are also prompted to
+create a password for each certificate.
+
 By default, the command produces a zip file named `certificate-bundle.zip`,
 which contains the generated certificates and keys.
 --
@@ -94,8 +97,8 @@ same `cluster.name` value.
 
 --
 
-. If you set the `cluster.initial_master_nodes` on the first node, specify the
-same value on the second and third master-eligible nodes.
+. (Optional) Provide seed addresses to help your nodes discover other nodes with
+which to form a cluster.
 +
 --
 For example, add the following setting in the `ES_PATH_CONF/elasticsearch.yml`
@@ -103,15 +106,14 @@ file:
 
 [source,yaml]
 ----
-cluster.initial_master_nodes: ["node-1","node-2","node-3"]
+discovery.seed_hosts: ["localhost"]
 ----
 
-WARNING: If you set `cluster.initial_master_nodes` on multiple nodes, it must
-have the same value to ensure that only a single cluster forms during
-bootstrapping and to avoid the risk of data loss.
-
-For more information, see
-{ref}/modules-discovery-bootstrap-cluster.html[Bootstrapping a cluster].
+The default value for this setting is `127.0.0.1, [::1]`, therefore it isn't
+actually required in this tutorial. When you want to form a cluster with nodes
+on other hosts, however, you must use this setting to provide a list of
+master-eligible nodes to seed the discovery process. For more information, see
+{ref}/modules-discovery-hosts-providers.html[Discovery].
 --
 
 . On each node, enable TLS for transport communications. You must also configure
@@ -146,38 +148,6 @@ If you encounter errors, you can see some common problems and solutions in
 <<trb-security-ssl>>.
 --
 
-. Create passwords for the built-in users. 
-+
---
-include::{stack-repo-dir}/security/get-started-builtin-users.asciidoc[tag=create-users]
-
-NOTE: If you already created these users on the first node for other tutorials,
-you do not need to create them on the second and third node.
-
---
-
-. <<get-started-kibana-user,Add the built-in user to {kib}>>.
-+
---
-For example, run the following commands to create the {kib} keystore and add the
-`kibana` built-in user and its password in secure settings:
-
-include::{stack-repo-dir}/security/get-started-kibana-users.asciidoc[tag=store-kibana-user]
---
-
-. Start {kib}.
-+
---
-For example, if you installed {kib} with a `.tar.gz` package, run the following
-command from the {kib}  directory:
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-./bin/kibana
-----------------------------------------------------------------------
-
-See {kibana-ref}/start-stop.html[Starting and stopping {kib}]. 
---
-
 . Verify that your cluster now contains three nodes.
 +
 --
@@ -209,13 +179,6 @@ Now that you have multiple nodes, your data can be distributed across the
 cluster in multiple primary and replica shards. For more information about the
 concepts of clusters, nodes, and shards, see
 {ref}/getting-started.html[Getting started with {es}].
-
-TIP: In these examples, we have not specified the `discovery.seed_hosts` setting,
-so it uses the default value which represents the loopback addresses for the
-system. When you want to form a cluster with nodes on other hosts, you must
-update that setting with a list of master-eligible nodes. See
-{ref}/modules-discovery-settings.html[Discovery and cluster formation settings]
-and {ref}/modules-discovery.html[Discovery and cluster formation].
 
 [float]
 [[encrypting-internode-nextsteps]]

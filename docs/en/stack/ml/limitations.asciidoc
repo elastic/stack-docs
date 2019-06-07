@@ -115,13 +115,13 @@ analyzed.
 
 
 [float]
-=== Time-based index patterns are not supported
+=== Using time-based index patterns
 //See x-pack-elasticsearch/#1910
 
-It is not possible to create a {ml} analysis job that uses time-based
-index patterns, for example `[logstash-]YYYY.MM.DD`.
-This applies to the single metric or multi metric job creation wizards in {kib}.
-
+If you try to create a {ml} analysis job that uses time-based index patterns
+like `[logstash-]YYYY.MM.DD` in the single metric or multi-metric job creation
+wizards in {kib}, errors occur. You must use wildcards in the index pattern.
+For example, create an index pattern like `logstash-2019.*`.
 
 [float]
 === Fields named "by", "count", or "over" cannot be used to split data

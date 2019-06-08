@@ -25,11 +25,12 @@ You might need to modify UI settings in {kib} to change default behaviors,
 such as the index pattern used to query the data, and the timestamp field used
 for sorting. For more information, see {kib}.
 
+[float]
 [[install-beats]]
 === Install {beats} shippers
 
-To populate the {siem-ui} with hosts and
-network data, you need to install and configure Beats on the endpoints you want to collect and send data:
+To populate the {siem-ui} with hosts and network data, you need to install and
+configure Beats on the endpoints you want to collect and send data:
 
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for forwarding and
 centralizing logs and files
@@ -45,6 +46,7 @@ can be used in {siem-soln}.
 
 You can install {beats} from {kib} or from the command line.
 
+[float]
 ==== Install {beats} from {kib}
 
 Follow the instructions in the Add Data section of the {kib} home page. Click
@@ -54,6 +56,7 @@ want to collect.
 [role="screenshot"]
 image::add-data.png[]
 
+[float]
 ==== Download and install {beats} from the command line
 
 If your data source isn't in the list, or you want to install {beats} the old
@@ -66,21 +69,37 @@ for the events you want to collect, see the
 {filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to
 learn how to configure inputs.
 
-* *Auditbeat.* See {auditbeat-ref}/auditbeat-getting-started.html[{auditbeat} getting started]
+* *Auditbeat.* See {auditbeat-ref}/auditbeat-getting-started.html[{auditbeat} getting started].
 
-* *Winlogbeat.* {winlogbeat-ref}/winlogbeat-getting-started.html[{winlogbeat} getting started]
+* *Winlogbeat.* See {winlogbeat-ref}/winlogbeat-getting-started.html[{winlogbeat} getting started].
 
-* *Packetbeat.* {packetbeat-ref}/packetbeat-getting-started.html[{packetbeat} getting started]
+* *Packetbeat.* See {packetbeat-ref}/packetbeat-getting-started.html[{packetbeat} getting started].
 
-
+[float]
 === Enable modules and configuration options
 
-For either approach, you need to enable modules in {filebeat} and {metricbeat}
+For either approach, you need to enable modules in {auditbeat} and {filebeat}
 to populate the {SIEM-ui} with data.
 
-To populate the *Hosts* view and add logs, enable (NEEDS UPDATING):
+To populate *Hosts* data, enable these {auditbeat} modules:
 
-* {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
-* {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for
-your environment, such as `apache2`, `redis`, and so on
+* {auditbeat-ref}/auditbeat-module-system.html[System module  - Linux, macOS, Win]
+* {auditbeat-ref}/auditbeat-module-auditd.html[Auditd module (Linux Kernel Audit info)]
+* {auditbeat-ref}/auditbeat-module-file_integrity.html[File integrity module (FIM) - Linux, macOS, Win]
+
+
+To populate *Network* data, enable these {filebeat} modules:
+
+* https://www.elastic.co/products/beats/filebeat[{filebeat}]
+* {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
+* {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
+* {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
+* {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
+* {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
+* Palo Alto firewall module*
+//* {filebeat-ref}/filebeat-module-panw.html[Palo Alto firewall module]
+* {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module*]
+
+// Palo Alto link target currently missing in 7.x:  {filebeat-ref}/filebeat-module-panw.html[Palo Alto firewall module]
+// https://github.com/elastic/beats/blob/7.x/filebeat/docs/modules/panw.asciidoc
 

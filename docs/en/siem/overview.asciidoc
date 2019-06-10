@@ -35,12 +35,22 @@ and maps.
 The {siem-ui} in {kib} provides a dedicated user interface for visualizing host security.
 
 [float]
+[[siem-integration]]
+==== Elastic integration
+
+{siem-soln} also integrates with other Elastic products and features:
+
+* https://www.elastic.co/products/stack/machine-learning[Machine Learning]
+* https://www.elastic.co/products/stack/alerting[Alerting]
+* https://www.elastic.co/products/stack/canvas[Canvas]
+
+[float]
 [[data-sources]]
 === Data sources
 
-SIEM can collect and normalize data from a variety of sources using Beats and
-Beats modules. {beats} use the {ecs-ref}[Elastic Common Schema (ECS)]
-to normalize data from various data sources.
+SIEM can collect and normalize data from a variety of sources, including Beats
+and Beats modules, and third-party collectors mapped to the {ecs-ref}[Elastic
+Common Schema (ECS)]. 
 
 [float]
 [[hosts-data-sources]]
@@ -93,5 +103,13 @@ to better analyze, visualize, and correlate the data represented in their
 events. 
 
 {siem-soln} can collect and normalize events from ECS-compatible data sources.
-Data from custom or third-party sources and tagged `host.name` can be included.
+
+[float]
+[[host_id]]
+===== Host identification
+All Beats use the `add_host_metadata` processor to add the `host.name` field to
+events. The default value is `host.name`, but you can change it in Beats
+processor settings.
+
+Data from custom or third-party sources that is tagged `host.name` can be included.
 

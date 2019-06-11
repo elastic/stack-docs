@@ -1,50 +1,44 @@
 [[ml-dataframes]]
 === {dataframes-cap}
 
-{dataframes-cap} feature is available in 7.2 and later.
+A _{dataframe}_ is a transformation of a dataset by certain rules. You can think 
+of it like a spreadsheet or a data table that makes your data ready to be analyzed 
+and organized.
 
-A _{dataframe}_ is a transformation of a dataset by certain rules defined during
-the creation of the {dataframe}. You can think of it like a spreadsheet or a 
-data table that makes your data ready to be analyzed and organized.
+A lot of {es} datasets are organized as a stream of events: each event is a individual 
+document, e.g. a single item purchase. {dataframe-cap} pivots allow you to summarize 
+this data, bringing it into an organized, more analysis friendly format, e.g. 
+summarizing all purchases of a single customer (see the example below).
 
-{es} datasets consist of individual documents that have fields and
-values in each field. This architecture makes search easy but on the other hand, 
-makes it hard to run analyses that require reorganized or summarized fields of 
-the dataset. {ml-cap} analyses need clean and transformed data and that is the 
-point where {dataframes} come into play.
-
-To transform the data into a {dataframe}, you need to define a _pivot_. During
-pivoting, you create a set of features that transform the dataset into a
-different, more digestible format to make calculations on your data. Pivoting
+The {dataframe} feature enables you to define a _pivot_ which is a set of features 
+that transform the dataset into a different, more digestible format. Pivoting 
 results in a summary of your dataset (which is the {dataframe} itself).
 
 Defining a pivot consist of two main parts. First, you select one or more fields 
 that your dataset will be grouped by. Principally you can select categorical 
 fields (terms) for grouping. You can also select numerical fields, in this case, 
-the field values will be bucketed using an interval you specify. The calculation
-will run against every bucket that was created this way.
+the field values will be bucketed using an interval you specify.
 
-The second step is selecting one or more aggregations to perform calculation over
-the dataset. When using aggregations, you practically ask questions about the 
-dataset. There are different types of aggregations, each with its own purpose and 
-output. You can learn more about the supported aggregations and group-by fields 
-here (!add a link!).
+The second step is deciding how you want to aggregate the grouped data. When 
+using aggregations, you practically ask questions about the dataset. There are 
+different types of aggregations, each with its own purpose and output. You can 
+learn more about the supported aggregations and group-by fields 
+{ref}/data-frame-transform-pivot.html[here].
 
 As an optional step, it's also possible to add a query to further limit the 
 scope of the aggregation.
 
 IMPORTANT: In 7.2, you can build {dataframes} on the top of a static dataset. 
 When new data comes into the index, you have to perform the transformation again 
-on the altered data. Using {dataframes} does not require {dfeeds}. 
-{con-dataframes-cap} will be introduced in a later version.
+on the altered data.
 
 .Example
 
-Put the case that you run a webshop that sells clothes. Every order creates a 
+Imagine that you run a webshop that sells clothes. Every order creates a 
 document that contains a unique order ID, the name and the category of the 
 ordered product, its price, the ordered quantity, the exact date of the order, 
 and some customer information (name, gender, location, etc). Your dataset 
-contains the documents of all the transactions from last year.
+contains all the transactions from last year.
 
 If you want to check the sales in the different categories in your last fiscal year,
 define a {dataframe} that is grouped by the product categories (women's shoes, men's
@@ -55,3 +49,5 @@ year.
 
 IMPORTANT: Creating a {dataframe} leaves your source index intact. A new index will 
 be created dedicated to the {dataframe}.
+
+TIP: Using {dataframes} does not require {dfeeds}.

@@ -2,13 +2,174 @@
 [role="xpack"]
 == SIEM UI
 
+IMPORTANT: This document is a work in progress. 
+It covers features scheduled for beta release in 7.2.
+
 beta[]
 
-After you have security monitoring <<install-siem,up and
-running>> and data is streaming to {es}, use the {siem-ui} in {kib} to monitor
-and identify security problems in real time.
+After you have security monitoring <<install-siem,up and running>> and data is
+streaming to {es}, check out the {siem-ui} in {kib}. You can monitor, identify,
+track, and notate potential security issues in real time, or look back
+historically to build a case.
 
-For more information about working with the {siem-ui}, see the
-{kib} documentation.
+The {siem-app} is powerful, flexible, and highly interactive. The UI elements
+are designed to be discoverable, clickable, draggable and dropable, expandable
+and collapsible, resizable, moveable, and so forth.
 
+The *{kib} Query Language (KQL) bar* is available throughout the {siem-app} for
+searching and filtering.
+
+[float]
+[[siem-overview-ui]]
+=== Overview
+
+The Overview page provides a high-level view into your security status. It can
+help surface activity that requires further investigation.
+
+Notice the *Timeline* on the right of the {siem-ui}. It is always available in its
+collapsed or expanded state. Identify items you want to dig into, and drag and
+drop them there. Those items are waiting for you when you are ready to start your
+investigation.
+
+[role="screenshot"]
+image::siem-ui.png[]
+
+[float]
+[[hosts-ui]]
+=== Hosts
+
+The Hosts view provides summary and detailed information for the hosts you are
+monitoring. You can drag and drop items of interest from the Hosts view to
+Timeline for further investigation.
+
+[role="screenshot"]
+image::hosts-ui.png[]
+
+Interactive widgets let you drill down for deeper insights:
+
+* Hosts
+* Unique IPs
+* User Authentications (success and failures)
+* Uncommon Processes
+* Events
+
+*Hosts Detail* shows you summary information for a particular host, including
+*Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
+*versions, machine type, and so forth.
+
+[float]
+[[index-config-hosts]]
+==== Index configuration for hosts events
+
+The default index patterns for hosts data are `auditbeat-*``, `winlogbeat-*``,
+`filebeat-*``, and `packetbeat-*`. You can change the default index patterns in
+{kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
+
+
+[float]
+[[network-ui]]
+=== Network
+
+The Network view provides summary and detailed information for the network
+traffic you are monitoring. You can drag and drop items of interest from the
+Network view to Timeline for further investigation.
+
+[role="screenshot"]
+image::network-ui.png[]
+
+Interactive widgets let you drill down for deeper insights:
+
+* Top Talkers
+* Top DNS Domains
+* IP Details
+* Domains
+* Users
+* Transport Layer Security certs
+
+[float]
+[[network-index-config]]
+==== Index configuration for network events
+
+The default index patterns for network data are  `filebeat-*``, and
+`packetbeat-*`. You can change the default index patterns in {kib} -> Management
+-> Advanced Settings -> `siem:defaultIndex`.
+
+
+[float]
+[[timelines-ui]]
+=== Timelines
+
+Use timelines to collect evidence and research suspicious activity during an
+investigation. 
+
+You can drag and drop items that warrant further investigation onto the Timeline
+from any place in the {siem-ui}--from Overview, Hosts, Network pages, or even
+from within Timeline itself.
+
+A timeline is responsive and persists as you move through the {siem-app}
+collecting data.
+
+
+[role="screenshot"]
+image::timeline-ui.png[]
+
+Add notes for your own use and to communicate your workflow and findings to
+others. You can share a timeline, or pass it off to another person or team. You
+can link to timelines from a ticketing system.
+
+
+[float]
+[[raw]]
+==== See raw data 
+
+You can click and expand events to see the raw data, including the raw {es} JSON.
+
+[float]
+[[narrow-expand]]
+==== Narrow or expand your query 
+
+You can specify `AND` and `OR` operations with an item's placement in the query
+bar. Horizontal filters are `AND`-ed together. Vertical filters or sets are
+`OR`-ed together. As you hover the item, you can see whether your placement is
+on target to create an `AND` or `OR` statement.
+
+[float]
+[[pivot]]
+==== Pivot your data 
+
+Right-click an entry to access additional operations to exclude, temporarily
+disable, or delete items from the query. For example, you can change an included
+item to `exclude`.
+
+[float]
+[[row-renderer]]
+==== Get more context for each event
+As you build and modify your queries, you can see the results of your
+interactions in the details pane below. 
+
+As your query takes shape, a secondary line with more details is added to each
+row. It shows relevant contextual information that helps tell the backstory of
+the event. If you see a particular item that interests you, you can drag and
+drop to the query bar for further introspection.
+
+[float]
+[[other]]
+==== Other actions 
+
+The {siem-app} is flexible and highly interactive.  As you would expect, the
+{siem-app} lets you:
+
+* add, remove, or resize columns. 
+* save, open, and list timelines
+* add notes to individual line items, and add a descriptions or summary
+for the whole timeline
+* pin line items for persistence
+
+If you can think of an action or query you would like to try, the {siem-app}
+likely supports it (or possibly will in a future release). Try clicking to
+expand or collapse items, or dragging and dropping them to other areas to see
+what happens.
+
+Are there interactions that you would expect to see that aren't present? 
+Let us know. We welcome your input.
 

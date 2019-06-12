@@ -113,16 +113,6 @@ If you are send pre-aggregated data to a job for analysis, you must ensure
 that the `size` is configured correctly. Otherwise, some data might not be
 analyzed.
 
-
-[float]
-=== Time-based index patterns are not supported
-//See x-pack-elasticsearch/#1910
-
-It is not possible to create a {ml} analysis job that uses time-based
-index patterns, for example `[logstash-]YYYY.MM.DD`.
-This applies to the single metric or multi metric job creation wizards in {kib}.
-
-
 [float]
 === Fields named "by", "count", or "over" cannot be used to split data
 //See x-pack-elasticsearch/#858

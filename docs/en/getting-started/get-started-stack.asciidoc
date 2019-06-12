@@ -697,6 +697,7 @@ enriching, and transforming data.
 
 Use the command that works with your system. If you installed {ls} as a deb or
 rpm package, make sure the config file is in the `config` directory.
+On mac, that step isn't required but it is a best practice for reasons of consistency.
 
 *deb:*
 
@@ -716,7 +717,8 @@ sudo service logstash start
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-./bin/logstash -f demo-metrics-pipeline.conf
+cd logstash-{logstash_version}
+./bin/logstash -f config/demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
 *win:*

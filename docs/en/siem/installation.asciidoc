@@ -21,36 +21,35 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try the {es}
 Service for free].
 ==============
 
-* *{beats}* shippers (version 7.x or later) installed on each system you want to
+* *{beats}* shippers (version 7.x or later) installed for each system you want to
 monitor
 
 You might need to modify UI settings in {kib} to change default behaviors,
-such as the index pattern used to query the data, and the timestamp field used
-for sorting. For more information, see {kib}.
+such as the index pattern used to query the data. For more information, see {kib}.
 
 [float]
 [[install-beats]]
 === Install {beats} shippers
 
-To populate the {siem-ui} with hosts and network data, you need to install and
-configure Beats on the endpoints you want to collect and send data:
+To populate the {siem-app} with hosts and network security events, you need to install and
+configure Beats on the systems from which you want to ingest security events:
 
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for forwarding and
 centralizing logs and files
-* https://www.elastic.co/products/beats/auditbeat[{auditbeat}] for monitoring
-directories for file changes
-* https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}] for centralizing logs
+* https://www.elastic.co/products/beats/auditbeat[{auditbeat}] for collecting security events
+* https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}] for centralizing 
+Windows event logs
 * https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
 network packets 
 
-NOTE: {siem-soln} also works with custom and third-party data sources in addition to Beats.
-{ecs-ref}[Elastic Common Schema (ECS)] makes this possible. Any data tagged as `host.name`
-can be used in {siem-soln}. 
+NOTE: {siem-soln} also works with custom and third-party data sources in addition to
+those supported by Beats. {ecs-ref}[Elastic Common Schema (ECS)] makes this
+possible. 
 
-You can install {beats} from {kib} or from the command line.
+You can install {beats} using a {kib}-based guide or directly from the command line.
 
 [float]
-==== Install {beats} from {kib}
+==== Install {beats} using the {kib}-based guide
 
 Follow the instructions in the Add Data section of the {kib} home page. Click
 *Add log data* or *Add metrics*, and follow the links for the types of data you
@@ -82,7 +81,7 @@ learn how to configure inputs.
 === Enable modules and configuration options
 
 For either approach, you need to enable modules in {auditbeat} and {filebeat}
-to populate the {SIEM-ui} with data.
+to populate the {SIEM-app} with data.
 
 To populate *Hosts* data, enable these {auditbeat} modules:
 

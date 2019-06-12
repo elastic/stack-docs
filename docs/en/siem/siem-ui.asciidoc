@@ -7,29 +7,34 @@ It covers features scheduled for beta release in 7.2.
 
 beta[]
 
-After you have security monitoring <<install-siem,up and running>> and data is
-streaming to {es}, check out the {siem-ui} in {kib}. You can monitor, identify,
-track, and notate potential security issues in real time, or look back
-historically to build a case.
+After you have your {siem-soln} data sources <<install-siem,up and running>> and
+security events are streaming to {es}, check out the {siem-app} in {kib}. You
+can view and analyze security events, investigate previous threat detections, or
+hunt for new potential security issues.
 
-The {siem-app} is powerful, flexible, and highly interactive. The UI elements
-are designed to be discoverable, clickable, draggable and dropable, expandable
-and collapsible, resizable, moveable, and so forth.
+The {siem-app} is a highly interactive workspace for security analysts. It is
+designed to be discoverable, clickable, draggable and droppable, expandable and
+collapsible, resizable, moveable, and so forth.
 
-The *{kib} Query Language (KQL) bar* is available throughout the {siem-app} for
-searching and filtering.
+The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)] bar* is available
+throughout the {siem-app} for searching and filtering.
+
+NOTE: The default index patterns for {siem-soln} events are `auditbeat-*``, `winlogbeat-*``,
+`filebeat-*``, and `packetbeat-*`. You can change the default index patterns in
+{kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
+
 
 [float]
 [[siem-overview-ui]]
 === Overview
 
-The Overview page provides a high-level view into your security status. It can
-help surface activity that requires further investigation.
+The Overview page provides a high-level view into security events available
+for analysis, and can help surface problems with data ingestion.
 
-Notice the *Timeline* on the right of the {siem-ui}. It is always available in its
-collapsed or expanded state. Identify items you want to dig into, and drag and
-drop them there. Those items are waiting for you when you are ready to start your
-investigation.
+Notice the *Timeline* on the right of the {siem-ui}. It is always available for
+starting an investigation, whether in its collapsed or expanded state. Identify
+items you want to dig into, and drag and drop them to the Timeline. Those items
+are waiting for you when you are ready to start your investigation.
 
 [role="screenshot"]
 image::overview-ui.png[]
@@ -38,14 +43,15 @@ image::overview-ui.png[]
 [[hosts-ui]]
 === Hosts
 
-The Hosts view provides summary and detailed information for the hosts you are
-monitoring. You can drag and drop items of interest from the Hosts view to
+The Hosts view provides provides key metrics regarding host-related security
+events, and a set of data tables that let you interact with the Timeline Event
+Viewer. You can drag and drop items of interest from the Hosts view tables to
 Timeline for further investigation.
 
 [role="screenshot"]
 image::hosts-ui.png[]
 
-Interactive widgets let you drill down for deeper insights:
+Interactive table widgets let you drill down for deeper insights:
 
 * Hosts
 * Unique IPs
@@ -53,31 +59,24 @@ Interactive widgets let you drill down for deeper insights:
 * Uncommon Processes
 * Events
 
-*Hosts Detail* shows summary information for a particular host, including
+
+*Hosts Detail* shows information for a selected host, including
 Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
 versions, machine type, and so forth.
-
-[float]
-[[index-config-hosts]]
-==== Index configuration for hosts events
-
-The default index patterns for hosts data are `auditbeat-*``, `winlogbeat-*``,
-`filebeat-*``, and `packetbeat-*`. You can change the default index patterns in
-{kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
-
 
 [float]
 [[network-ui]]
 === Network
 
-The Network view provides summary and detailed information for the network
-traffic you are monitoring. You can drag and drop items of interest from the
+The Network view provides key network activity metrics, facilitates
+investigation time enrichment, and provides network event tables that enable
+interaction with the Timeline. You can drag and drop items of interest from the
 Network view to Timeline for further investigation.
 
 [role="screenshot"]
 image::network-ui.png[]
 
-Interactive widgets let you drill down for deeper insights:
+Interactive table widgets let you drill down for deeper insights:
 
 * Top Talkers
 * Top DNS Domains
@@ -86,28 +85,21 @@ Interactive widgets let you drill down for deeper insights:
 * Users
 * Transport Layer Security certs
 
-[float]
-[[network-index-config]]
-==== Index configuration for network events
-
-The default index patterns for network data are  `filebeat-*``, and
-`packetbeat-*`. You can change the default index patterns in {kib} -> Management
--> Advanced Settings -> `siem:defaultIndex`.
-
 
 [float]
 [[timelines-ui]]
 === Timelines
 
-Use timelines to collect evidence and research suspicious activity during an
-investigation. 
+Use timelines as your workspace for alert investigations or threat hunting. 
 
-You can drag and drop items that warrant further investigation onto the Timeline
-from any place in the {siem-ui}--from Overview, Hosts, Network pages, or even
-from within Timeline itself.
+You can drag objects of interest into the Timeline Event Viewer to create
+exactly the query filter you need to get to the bottom of an alert. You can drag
+items from table widgets within Hosts and Network pages, or even from within
+Timeline itself.
 
 A timeline is responsive and persists as you move through the {siem-app}
-collecting data.
+collecting data. Auto-saving ensures that the results of your investigation are
+available for review by other analysts and incident response teams.
 
 
 [role="screenshot"]
@@ -120,26 +112,29 @@ can link to timelines from a ticketing system.
 
 [float]
 [[raw]]
-==== See raw data 
+==== See raw event data 
 
-You can click and expand events to see the raw data, including the raw {es} JSON.
+Many security events in Timeline are presented in an easy-to-follow rendered
+view, which enables quicker analyst understanding. You can click and expand
+events from within Timeline to see the underlying event data, either in tabular
+form, as as {es} JSON.
 
 [float]
 [[narrow-expand]]
 ==== Narrow or expand your query 
 
-You can specify `AND` and `OR` operations with an item's placement in the query
-bar. Horizontal filters are `AND`-ed together. Vertical filters or sets are
-`OR`-ed together. As you hover the item, you can see whether your placement is
-on target to create an `AND` or `OR` statement.
+You can specify logical `AND` and `OR` operations with an item's placement in
+the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
+sets are `OR`-ed together. As you hover the item over the drop area, you can see
+whether your placement is on target to create an `AND` or `OR` filters.
 
 [float]
 [[pivot]]
 ==== Pivot your data 
 
-Right-click an entry to access additional operations to exclude, temporarily
-disable, or delete items from the query. For example, you can change an included
-item to `exclude`.
+Right-click a drop area filter to access additional operations to exclude, temporarily
+disable, or delete the filter terms. For example, you can change an included
+filter to an exclusion.
 
 [float]
 [[row-renderer]]
@@ -147,29 +142,25 @@ item to `exclude`.
 As you build and modify your queries, you can see the results of your
 interactions in the details pane below. 
 
-As your query takes shape, a secondary line with more details is added to each
-row. It shows relevant contextual information that helps tell the backstory of
-the event. If you see a particular item that interests you, you can drag and
-drop to the query bar for further introspection.
+As your query takes shape, an easy-to-follow rendered view appears for each
+event. It shows relevant contextual information that helps tell the backstory of
+the event. If you see a particular item that interests you, you can drag it to
+the drop area for further introspection.
 
 [float]
 [[other]]
 ==== Other actions 
 
-The {siem-app} is flexible and highly interactive.  As you would expect, the
+The Timeline is flexible and highly interactive.  As you would expect, the
 {siem-app} lets you:
 
-* add, remove, or resize columns. 
-* save, open, and list timelines
-* add notes to individual line items
-* add notes or a summary for the whole timeline
-* pin line items for persistence
+* add, remove, or resize Timeline columns. 
+* save, open, and list Timelines
+* add notes to individual events
+* add investigation notes for the whole Timeline
+* pin events to the Timeline for persistence
 
-If you can think of an action or query you would like to try, the {siem-app}
-likely supports it (or possibly will in a future release). Try clicking to
-expand or collapse items, or dragging and dropping them to other areas to see
-what happens.
-
-Are there interactions that you would expect to see that aren't present? 
-Let us know. We welcome your input.
+Try clicking to expand or collapse items, or dragging and dropping them to other
+areas to see what happens. Are there interactions that you would expect to see
+that aren't present?  Let us know. We welcome your input.
 

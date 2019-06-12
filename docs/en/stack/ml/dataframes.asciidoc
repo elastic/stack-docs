@@ -8,9 +8,10 @@ of it like a spreadsheet or a data table that makes your data ready to be analyz
 and organized.
 
 A lot of {es} datasets are organized as a stream of events: each event is a individual 
-document, e.g. a single item purchase. {dataframe-cap} pivots allow you to summarize 
-this data, bringing it into an organized, more analysis friendly format, e.g. 
-summarizing all purchases of a single customer (see the example below).
+document, for example a single item purchase. {dataframe-transforms-cap} enable 
+you to summarize this data, bringing it into an organized, more analysis friendly 
+format. For example, you can summarize all the purchases of a single customer (see 
+the example below).
 
 The {dataframe} feature enables you to define a _pivot_ which is a set of features 
 that transform the dataset into a different, more digestible format. Pivoting 
@@ -23,9 +24,9 @@ the field values will be bucketed using an interval you specify.
 
 The second step is deciding how you want to aggregate the grouped data. When 
 using aggregations, you practically ask questions about the dataset. There are 
-different types of aggregations, each with its own purpose and output. You can 
-learn more about the supported aggregations and group-by fields 
-{ref}/data-frame-transform-pivot.html[here].
+different types of aggregations, each with its own purpose and output. To learn 
+more about the supported aggregations and group-by fields, see 
+{ref}/data-frame-transform-pivot.html[Pivot resources].
 
 As an optional step, it's also possible to add a query to further limit the 
 scope of the aggregation.
@@ -44,10 +45,9 @@ contains all the transactions from last year.
 
 If you want to check the sales in the different categories in your last fiscal year,
 define a {dataframe} that is grouped by the product categories (women's shoes, men's
-clothing, etc.) and the order date histogram with the interval of the last year, 
-then set a sum aggregation on the ordered quantity. The result is a {dataframe} 
-pivot that shows the number of sold items in every product category in the last 
-year.
+clothing, etc.) and the order date with the interval of the last year, then set 
+a sum aggregation on the ordered quantity. The result is a {dataframe} pivot that 
+shows the number of sold items in every product category in the last year.
 
 IMPORTANT: Creating a {dataframe} leaves your source index intact. A new index will 
 be created dedicated to the {dataframe}.

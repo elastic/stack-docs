@@ -3,17 +3,18 @@
 
 beta[]
 
-A _{dataframe}_ is a transformation of a dataset by certain rules. You can think 
-of it like a spreadsheet or a data table that makes your data ready to be analyzed 
-and organized.
+A _{dataframe}_ is a transformation of data that has been indexed in elasticsearch. 
+Use data frames to _pivot_ your data into a new entity centric index for example. 
+By transforming and summarizing your data, it becomes possible to visualize and 
+analyze it in alternative and interesting ways.
 
-A lot of {es} datasets are organized as a stream of events: each event is a individual 
+A lot of {es} datasets are organized as a stream of events: each event is an individual 
 document, for example a single item purchase. {dataframe-transforms-cap} enable 
 you to summarize this data, bringing it into an organized, more analysis friendly 
 format. For example, you can summarize all the purchases of a single customer (see 
 the example below).
 
-The {dataframe} feature enables you to define a _pivot_ which is a set of features 
+The {dataframe} feature enables you to define a pivot which is a set of features 
 that transform the dataset into a different, more digestible format. Pivoting 
 results in a summary of your dataset (which is the {dataframe} itself).
 
@@ -31,17 +32,17 @@ more about the supported aggregations and group-by fields, see
 As an optional step, it's also possible to add a query to further limit the 
 scope of the aggregation.
 
-IMPORTANT: In 7.2, you can build {dataframes} on the top of a static dataset. 
+IMPORTANT: In 7.2, you can build {dataframes} on the top of a static indices. 
 When new data comes into the index, you have to perform the transformation again 
 on the altered data.
 
 .Example
 
-Imagine that you run a webshop that sells clothes. Every order creates a 
-document that contains a unique order ID, the name and the category of the 
-ordered product, its price, the ordered quantity, the exact date of the order, 
-and some customer information (name, gender, location, etc). Your dataset 
-contains all the transactions from last year.
+Imagine that you run a webshop that sells clothes. Every order creates a document 
+that contains a unique order ID, the name and the category of the ordered product, 
+its price, the ordered quantity, the exact date of the order, and some customer 
+information (name, gender, location, etc). Your dataset contains all the transactions 
+from last year.
 
 If you want to check the sales in the different categories in your last fiscal year,
 define a {dataframe} that is grouped by the product categories (women's shoes, men's
@@ -54,5 +55,3 @@ image::ml/images/ml-dataframepivot.jpg["Example of a data frame pivot in {kib}"]
 
 IMPORTANT: Creating a {dataframe} leaves your source index intact. A new index will 
 be created dedicated to the {dataframe}.
-
-TIP: Using {dataframes} does not require {dfeeds}.

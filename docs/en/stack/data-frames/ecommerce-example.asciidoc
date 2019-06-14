@@ -13,6 +13,22 @@ beta[]
 {kibana-ref}/add-sample-data.html[{kib} sample data] to demonstrate how you can
 pivot and summarize your data with {dataframe-transforms}.
 
+
+. If the {es} {security-features} are enabled, obtain a user ID with sufficient
+privileges to complete these steps. 
++
+--
+You need `manage_data_frame_transforms` cluster privileges to preview and create
+{dataframe-transforms}. Members of the built-in `data_frame_transforms_admin`
+role have these privileges.
+
+You also need `read` and `view_index_metadata` index privileges on the source
+index and `read`, `create_index`, and `index` privileges on the destination
+index. 
+
+For more information, see <<security-privileges>> and <<built-in-roles>>.
+--
+
 . Choose your _source index_.
 +
 --
@@ -20,9 +36,6 @@ In this example, we'll use the eCommerce orders sample data. If you're not
 already familiar with the `kibana_sample_data_ecommerce` index, use the
 *Revenue* dashboard in {kib} to explore the data. Consider what insights you
 might want to derive from this eCommerce data.
-
-
-
 --
 
 . Play with various options for grouping and aggregating the data. 
@@ -36,9 +49,9 @@ they purchased. Or you might want to take the currencies or geographies into
 consideration. What are the most interesting ways you can transform and
 interpret this data?
 
-_Pivoting_ your data involves using at least one field to group your data and
-applying at least one aggregation. You can preview what the transformed data
-will look like, so go ahead and play with it!
+_Pivoting_ your data involves using at least one field to group it and applying
+at least one aggregation. You can preview what the transformed data will look
+like, so go ahead and play with it!
 
 For example, go to *Machine Learning* > *Data Frames* in {kib} and use the
 wizard to create a {dataframe}:

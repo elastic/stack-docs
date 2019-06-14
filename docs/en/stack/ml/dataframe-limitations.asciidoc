@@ -3,14 +3,26 @@
 
 beta[]
 
-[float]
-==== Filtering limitations
+The following limitations and known problems apply to the {version} release of 
+the Elastic {dataframe} feature:
 
-On the _Create {dataframe} page_, there are two ways to select fields to grouping 
-your data: the Group by drop-down menu on the left side and the checkboxes in the 
-source index view on the right side (click the cogwheel in the right side of the 
-source index view to see the available fields).
-The drop-down menu uses the {es} mappings to show the fields while the source 
-index only displays the fields returned from a basic search (the first 100 docs). 
-Therefore there can be a mismatch if mappings are inexact.
+[float]
+[[df-limitations-wizard]]
+==== {dataframe-cap} wizard limitation
+
+The {dataframe} wizard in {kib} cannot display the value of a filed selected by 
+using the source index table on the right side if the selected field contains an 
+array.
+
+[float]
+[[df-limitations-ccs]]
+==== {ccs-cap} limitation
+
+{ccs-cap} is not supported in {version} for {dataframe-transforms}.
+
+[float]
+[[df-limitations-kibana]]
+==== Displaying {dataframe-transforms} in {kib} limitation
+
+{kib} displays {dataframe-transforms} up to 100.
 

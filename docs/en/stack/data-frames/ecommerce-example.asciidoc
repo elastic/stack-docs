@@ -9,7 +9,7 @@
 beta[]
 
 <<ml-dataframes,{dataframes-cap}>> enable you to retrieve information from an
-{es} index, transform it, and store it in a new index. Let's use the
+{es} index, transform it, and store it in another index. Let's use the
 {kibana-ref}/add-sample-data.html[{kib} sample data] to demonstrate how you can
 pivot and summarize your data with {dataframe-transforms}.
 
@@ -205,10 +205,11 @@ PUT _data_frame/transforms/ecommerce-customer-transform
 +
 --
 
-TIP: A {dataframe-transform} increases search and indexing load on your cluster
-while it runs. When it reaches the end of the data in your index, it stops
-automatically. If you're experiencing an excessive load, however, you can stop
-it sooner.
+TIP: Even though resource utilization is automatically adjusted based on the
+cluster load, a {dataframe-transform} increases search and indexing load on your
+cluster while it runs. When it reaches the end of the data in your index, it
+stops automatically. If you're experiencing an excessive load, however, you can
+stop it sooner.
 
 You can start, stop, and manage {dataframe} jobs in {kib}:
 

@@ -1,35 +1,32 @@
 [[siem-overview]]
-//[role="xpack"]
-//== Overview
+[role="xpack"]
+== Overview
 
+IMPORTANT: This document is a work in progress. 
+It covers features scheduled for beta release in 7.2.
 
-== Coming soon
-
-Won't be long now!
-
-////
 beta[]
 
-{siem-soln-cap} gives you a comprehensive view into your security operations,
-and helps make those insights actionable.
+{siem-soln} enables analysis of host-related and network-related security events
+as part of alert investigations or interactive threat hunting.
 
-The UI in {kib} brings together data from a variety of sources, making it easier
-for you to identify and resolve security issues.
+The {siem-app} in {kib} provides an interactive workspace for security teams to
+triage events and perform initial investigations.
 
 [float]
 [[siem-components]]
-=== SIEM monitoring components
+=== SIEM components
 
-Security monitoring requires the following {stack} components.
+SIEM requires the following {stack} components.
 
 image::images/siem-architecture.png[]
 
-*https://www.elastic.co/products/beats[{beats}]* are open source data
-shippers that you install as agents on your servers to send operational data to
-{es}.
+*https://www.elastic.co/products/beats[{beats}]* are open source data shippers
+that you install as agents on your systems. {beats} send security events and other
+data to {es}. 
 
 *https://www.elastic.co/products/elasticsearch[{es}]* is a real-time,
-distributed storage, search, and analytics engine. {es} excels is indexing
+distributed storage, search, and analytics engine. {es} excels at indexing
 streams of semi-structured data, such as logs or metrics.
 
 *https://www.elastic.co/products/kibana[{kib}]* is an open source analytics and
@@ -38,5 +35,79 @@ view, and interact with data stored in {es} indices. You can easily perform
 advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
 
-{kib} {siem-ui} provides a dedicated user interface for visualizing host security.
-////
+The {siem-app} in {kib} provides a dedicated user interface for analyzing and
+investigating host and network security events.
+
+[float]
+[[siem-integration]]
+==== Additional Elastic components
+
+You can use {siem-soln} with other Elastic products and features to help you
+identify and investigate suspicious activity:
+
+* https://www.elastic.co/products/stack/machine-learning[{ml-cap}] 
+* https://www.elastic.co/products/stack/alerting[Alerting]
+* https://www.elastic.co/products/stack/canvas[Canvas]
+
+[float]
+[[data-sources]]
+=== Data sources
+
+SIEM can ingest and analyze data from a variety of sources, including Beats
+and Beats modules, and third-party collectors mapped to the {ecs-ref}[Elastic
+Common Schema (ECS)]. 
+
+[float]
+[[hosts-data-sources]]
+==== Hosts data sources
+
+* https://www.elastic.co/products/beats/auditbeat[{auditbeat}]
+** {auditbeat-ref}/auditbeat-module-system.html[System module  - Linux, macOS, Win]
+*** packages
+*** processes
+*** logins
+*** sockets
+*** users and groups
+** {auditbeat-ref}/auditbeat-module-auditd.html[Auditd module (Linux Kernel Audit info)]
+** {auditbeat-ref}/auditbeat-module-file_integrity.html[File integrity module (FIM) - Linux, macOS, Win]
+* https://www.elastic.co/products/beats/filebeat[{filebeat}] 
+** system logs (auth logs) - Linux
+** Santa - macOS
+* https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}]
+** Windows event logs - Windows
+
+[float]
+[[network-data-sources]]
+==== Network data sources
+
+* https://www.elastic.co/products/beats/packetbeat[{packetbeat}]
+** Flows
+** DNS
+** other protocols
+* https://www.elastic.co/products/beats/filebeat[{filebeat}]
+** {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
+** {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
+** {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
+** {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
+** {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
+** {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
+** {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]
+
+[float]
+[[ecs]]
+==== Elastic Common Schema (ECS) for normalizing data
+
+The {ecs-ref}[Elastic Common Schema (ECS)] defines a common set of fields to be used for
+storing event data in Elasticsearch. ECS helps users normalize their event data
+to better analyze, visualize, and correlate the data represented in their
+events. 
+
+{siem-soln} can ingest and normalize events from ECS-compatible data sources.
+
+[float]
+[[host_id]]
+===== Host identification
+All Beats use the `add_host_metadata` processor to add the `host.name` field to
+events. The default value is `host.name`, but you can change it in Beats
+processor settings.
+

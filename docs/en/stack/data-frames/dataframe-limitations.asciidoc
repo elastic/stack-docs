@@ -28,4 +28,21 @@ array.
 
 [float]
 [df-limitations-dateformat]
-==== Date histogram limitations
+==== Date histogram limitation
+
+When a date histogram is used as a group by field, the defined interval and the 
+used time format must have the same time fidelity, otherwise it might cause issues 
+in the {dataframe}.
+
+For example, if you set the interval of the date histogram to one minute (1m), 
+then make sure that the time format is `yyyy-MM-dd HH:mm` instead of 
+`yyyy-MM-dd HH:00`.
+
+[float]
+[df-limitations-aggresponse]
+==== Strings in aggregation responses
+
+If an aggregation response contains a string (for example, due to a typo in the 
+field name that results in a "NaN" response), the {dataframe} will fail to index 
+the value without warning or causing an error in the {es} logs. However, it results 
+in an empty destination index.

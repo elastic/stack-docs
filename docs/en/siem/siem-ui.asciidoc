@@ -16,11 +16,11 @@ The {siem-app} is a highly interactive workspace for security analysts. It is
 designed to be discoverable, clickable, draggable and droppable, expandable and
 collapsible, resizable, moveable, and so forth.
 
-The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)] bar* is available
+The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
 throughout the {siem-app} for searching and filtering.
 
-NOTE: The default index patterns for {siem-soln} events are `auditbeat-*``, `winlogbeat-*``,
-`filebeat-*``, and `packetbeat-*`. You can change the default index patterns in
+NOTE: The default index patterns for {siem-soln} events are `auditbeat-*`, `winlogbeat-*`,
+`filebeat-*`, and `packetbeat-*`. You can change the default index patterns in
 {kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
 
 
@@ -43,7 +43,7 @@ image::overview-ui.png[]
 [[hosts-ui]]
 === Hosts
 
-The Hosts view provides provides key metrics regarding host-related security
+The Hosts view provides key metrics regarding host-related security
 events, and a set of data tables that let you interact with the Timeline Event
 Viewer. You can drag and drop items of interest from the Hosts view tables to
 Timeline for further investigation.
@@ -132,9 +132,9 @@ whether your placement is on target to create an `AND` or `OR` filters.
 [[pivot]]
 ==== Pivot your data 
 
-Right-click a drop area filter to access additional operations to exclude, temporarily
-disable, or delete the filter terms. For example, you can change an included
-filter to an exclusion.
+Click a filter to access additional operations such as exclude, temporarily
+disable, or delete items from the query. For example, you can change an included
+item so that it is excluded.
 
 [float]
 [[row-renderer]]
@@ -142,10 +142,10 @@ filter to an exclusion.
 As you build and modify your queries, you can see the results of your
 interactions in the details pane below. 
 
-As your query takes shape, an easy-to-follow rendered view appears for each
-event. It shows relevant contextual information that helps tell the backstory of
-the event. If you see a particular item that interests you, you can drag it to
-the drop area for further introspection.
+As your query takes shape, an easy-to-follow rendered view appears for events. It
+shows relevant contextual information that helps tell the backstory of the
+event. If you see a particular item that interests you, you can drag it to the
+drop area for further introspection.
 
 [float]
 [[other]]
@@ -154,7 +154,7 @@ the drop area for further introspection.
 The Timeline is flexible and highly interactive.  As you would expect, the
 {siem-app} lets you:
 
-* add, remove, or resize Timeline columns. 
+* add, remove, reorder, or resize Timeline columns. 
 * save, open, and list Timelines
 * add notes to individual events
 * add investigation notes for the whole Timeline

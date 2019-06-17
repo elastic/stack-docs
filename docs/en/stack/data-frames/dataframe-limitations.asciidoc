@@ -1,14 +1,14 @@
 [[ml-df-limitations]]
-=== {dataframe-cap} limitations
+== {dataframe-cap} limitations
 
 beta[]
 
-The following limitations and known problems apply to the {version} release of 
+The following limitations and known problems apply to the 7.2 release of 
 the Elastic {dataframe} feature:
 
 [float]
 [[df-limitations-wizard]]
-==== {dataframe-cap} wizard limitation
+=== {dataframe-cap} wizard limitation
 
 The {dataframe} wizard in {kib} cannot display the value of a filed selected by 
 using the source index table on the right side if the selected field contains an 
@@ -16,19 +16,19 @@ array.
 
 [float]
 [[df-limitations-ccs]]
-==== {ccs-cap} limitation
+=== {ccs-cap} limitation
 
-{ccs-cap} is not supported in {version} for {dataframe-transforms}.
+{ccs-cap} is not supported in 7.2 for {dataframe-transforms}.
 
 [float]
 [[df-limitations-kibana]]
-==== Displaying {dataframe-transforms} in {kib} limitation
+=== Displaying {dataframe-transforms} in {kib} limitation
 
 {kib} displays {dataframe-transforms} up to 100.
 
 [float]
 [[df-limitations-dateformat]]
-==== Date histogram limitation
+=== Date histogram limitation
 
 When a date histogram is used as a group by field, the defined interval and the 
 used time format must have the same time fidelity, otherwise it might cause issues 
@@ -40,7 +40,7 @@ then make sure that the time format is `yyyy-MM-dd HH:mm` instead of
 
 [float]
 [[df-limitations-aggresponse]]
-==== Strings in aggregation responses
+=== Strings in aggregation responses
 
 If an aggregation response contains a string (for example, due to a typo in the 
 field name that results in a "NaN" response), the {dataframe} will fail to index 

@@ -1,4 +1,4 @@
-[[ml-df-limitations]]
+[[df-limitations]]
 == {dataframe-cap} limitations
 
 beta[]
@@ -10,9 +10,9 @@ the Elastic {dataframe} feature:
 [[df-limitations-wizard]]
 === {dataframe-cap} wizard limitation
 
-The {dataframe} wizard in {kib} cannot display the value of a filed selected by 
-using the source index table on the right side if the selected field contains an 
-array.
+If you have fields that contain arrays, you cannot select these fields in the source 
+index table in the {kib} {dataframe} wizard. You can, however, use those fields 
+when you group and aggregate your data in the wizard.
 
 [float]
 [[df-limitations-ccs]]
@@ -24,15 +24,18 @@ array.
 [[df-limitations-kibana]]
 === Displaying {dataframe-transforms} in {kib} limitation
 
-{kib} displays {dataframe-transforms} up to 100.
+The {kib} *Machine Learning* > *Data Frames* page lists up to 100 {dataframe-transforms}.
+You can work-around this limitation by calling the 
+{ref}/get-data-frame-transform.html[GET {dataframe-transforms} API] 
+with the `size` parameter.
 
 [float]
 [[df-limitations-dateformat]]
 === Date histogram limitation
 
-When a date histogram is used as a group by field, the defined interval and the 
-used time format must have the same time fidelity, otherwise it might cause issues 
-in the {dataframe}.
+When you use the {ref}/data-frame-apis.html[{dataframe-transforms} API] and a date 
+histogram is used as a group by field, the defined interval and the used time format 
+must have the same time fidelity, otherwise it might cause issues in the {dataframe}.
 
 For example, if you set the interval of the date histogram to one minute (1m), 
 then make sure that the time format is `yyyy-MM-dd HH:mm` instead of 
@@ -46,3 +49,6 @@ If an aggregation response contains a string (for example, due to a typo in the
 field name that results in a "NaN" response), the {dataframe} will fail to index 
 the value without warning or causing an error in the {es} logs. However, it results 
 in an empty destination index.
+
+This is a https://github.com/elastic/elasticsearch/issues/43194[known issue] that 
+will be fixed.

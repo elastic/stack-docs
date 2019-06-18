@@ -1,4 +1,4 @@
-[[df-limitations]]
+[[dataframe-limitations]]
 == {dataframe-cap} limitations
 
 beta[]
@@ -7,7 +7,7 @@ The following limitations and known problems apply to the 7.2 release of
 the Elastic {dataframe} feature:
 
 [float]
-[[df-limitations-wizard]]
+[[df-wizard-limitations]]
 === {dataframe-cap} wizard limitation
 
 If you have fields that contain arrays, you cannot select these fields in the source 
@@ -15,13 +15,13 @@ index table in the {kib} {dataframe} wizard. You can, however, use those fields
 when you group and aggregate your data in the wizard.
 
 [float]
-[[df-limitations-ccs]]
+[[df-ccs-limitations]]
 === {ccs-cap} limitation
 
 {ccs-cap} is not supported in 7.2 for {dataframe-transforms}.
 
 [float]
-[[df-limitations-kibana]]
+[[df-kibana-limitations]]
 === Displaying {dataframe-transforms} in {kib} limitation
 
 The {kib} *Machine Learning* > *Data Frames* page lists up to 100 {dataframe-transforms}.
@@ -30,7 +30,7 @@ You can work-around this limitation by calling the
 with the `size` parameter.
 
 [float]
-[[df-limitations-dateformat]]
+[[df-dateformat-limitations]]
 === Date histogram limitation
 
 When you use the {ref}/data-frame-apis.html[{dataframe-transforms} API] and a date 
@@ -42,7 +42,7 @@ then make sure that the time format is `yyyy-MM-dd HH:mm` instead of
 `yyyy-MM-dd HH:00`.
 
 [float]
-[[df-limitations-aggresponse]]
+[[df-aggresponse-limitations]]
 === Strings in aggregation responses
 
 If an aggregation response contains a string (for example, due to a typo in the 

@@ -7,12 +7,11 @@ The following limitations and known problems apply to the 7.2 release of
 the Elastic {dataframe} feature:
 
 [float]
-[[df-wizard-limitations]]
-=== {dataframe-cap} wizard limitation
+[[df-datatype-limitations]]
+=== {dataframe-cap} data type limitation
 
-If you have fields that contain arrays, you cannot select these fields in the source 
-index table in the {kib} {dataframe} wizard. You can, however, use those fields 
-when you group and aggregate your data in the wizard.
+{dataframes-cap} do not (yet) support fields containing arrays – in the UI or 
+the API. If you try to create one, the UI will fail to show the source index table.
 
 [float]
 [[df-ccs-limitations]]
@@ -22,10 +21,10 @@ when you group and aggregate your data in the wizard.
 
 [float]
 [[df-kibana-limitations]]
-=== Displaying {dataframe-transforms} in {kib} limitation
+=== {kib} only displays up to 100 {dataframe-transforms}
 
-The {kib} *Machine Learning* > *Data Frames* page lists up to 100 {dataframe-transforms}.
-You can work-around this limitation by calling the 
+The {kib} *Machine Learning* > *Data Frames* page lists up to 100 
+{dataframe-transforms}. You can work-around this limitation by calling the 
 {ref}/get-data-frame-transform.html[GET {dataframe-transforms} API] 
 with the `size` parameter.
 
@@ -35,8 +34,8 @@ with the `size` parameter.
 
 If you use a {ref}/search-aggregations-bucket-datehistogram-aggregation.html[date 
 histogram] in the `group_by` object in the create or preview {dataframe-transform} 
-APIs, the defined interval and time format must have the same time fidelity, 
-otherwise it might cause issues in the {dataframe}.
+APIs, the defined interval and time format must have the same time fidelity. 
+Otherwise, it might cause issues in the {dataframe}.
 
 For example, if you set the `calendar_interval` of the date histogram to one minute 
 (`1m`), then make sure that the `format` is `yyyy-MM-dd HH:mm` instead of 
@@ -44,11 +43,12 @@ For example, if you set the `calendar_interval` of the date histogram to one min
 
 [float]
 [[df-aggresponse-limitations]]
-=== Strings in aggregation responses
+=== Aggregation responses may be incompatible with destination index mappings
 
-If an aggregation response contains a string (for example, due to a typo in the 
-field name that results in a "NaN" response), the {dataframe} will fail to index 
-the value without warning or causing an error in the {es} logs. However, it results 
-in an empty destination index.
-
-See https://github.com/elastic/elasticsearch/issues/43194[Issue #43194].
+{dataframes-cap} use composite aggregations to transform data. In some cases, 
+composite aggregations may return responses which are not compatible with the 
+mappings set for the destination index. For example "NaN", "Infinity" or possibly 
+a numeric overflow. Where possible, a null response has been substituted. Please, 
+check {es} logs if you think this may have occurred. As a workaround, 
+using the API, you may define custom destination index mappings prior to starting 
+the {dataframe-transform}.

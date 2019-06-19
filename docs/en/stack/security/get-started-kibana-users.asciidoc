@@ -34,6 +34,7 @@ store them in a keystore instead. Run the following commands to create the {kib}
 keystore and add the secure settings:
 +
 --
+// tag::store-kibana-user[]
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 ./bin/kibana-keystore create
@@ -44,6 +45,7 @@ keystore and add the secure settings:
 When prompted, specify the `kibana` built-in user and its password for these 
 setting values.  The settings are automatically applied when you start {kib}.   
 To learn more, see {kibana-ref}/secure-settings.html[Secure settings].
+// end::store-kibana-user[]
 --
 
 . Restart {kib}. For example, if you installed 

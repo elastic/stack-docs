@@ -3,12 +3,12 @@
 
 Looking for an {stack} ("ELK" tutorial) that shows how to set up the {stack}? In
 this tutorial, you learn how to get up and running quickly. First you install
-the core open source products:
+the core products:
 
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
 * <<install-beats,{beats}>>
-* <<install-logstash,{ls}>>
+* <<install-logstash,{ls} (optional)>>
 
 Then you learn how to implement a system monitoring solution that uses
 {metricbeat} to collect server metrics and ship the data to {es}, where you can
@@ -56,7 +56,8 @@ Elasticsearch Service for free].
 
 To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
-Redhat/Centos/Fedora, <<mac, mac>> for OS X, and <<win, win>> for Windows):
+Redhat/Centos/Fedora, <<mac, mac>> or <<brew, brew>> for OS X, <<linux, linux>>
+for Linux, and <<win, win>> for Windows):
 
 
 [[deb]]*deb:*
@@ -117,6 +118,24 @@ cd elasticsearch-{elasticsearch_version}
 
 endif::[]
 
+[[brew]]*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/elasticsearch-full
+elasticsearch
+----------------------------------------------------------------------
+
+endif::[]
 
 [[linux]]*linux:*
 
@@ -246,7 +265,7 @@ file, `kibana.yml`, before starting {kib}.
 To download and install {kib}, open a terminal window and use the commands that
 work with your system:
 
-*deb or rpm:*
+*deb, rpm, or linux:*
 
 ifeval::["{release-state}"=="unreleased"]
 
@@ -282,6 +301,25 @@ curl -L -O https://artifacts.elastic.co/downloads/kibana/kibana-{kibana_version}
 tar xzvf kibana-{kibana_version}-darwin-x86_64.tar.gz
 cd kibana-{kibana_version}-darwin-x86_64/
 ./bin/kibana
+----------------------------------------------------------------------
+
+endif::[]
+
+*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {kib} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/kibana-full
+kibana
 ----------------------------------------------------------------------
 
 endif::[]
@@ -421,6 +459,42 @@ tar xzvf metricbeat-{version}-darwin-x86_64.tar.gz
 
 endif::[]
 
+*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/metricbeat-full
+----------------------------------------------------------------------
+
+endif::[]
+
+*linux:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+------------------------------------------------
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-linux-x86_64.tar.gz
+tar xzvf metricbeat-{version}-linux-x86_64.tar.gz
+------------------------------------------------
+
+endif::[]
+
 *win:*
 
 ifeval::["{release-state}"=="unreleased"]
@@ -487,11 +561,18 @@ To set up the `system` module and start collecting system metrics:
 sudo metricbeat modules enable system
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
 ./metricbeat modules enable system
+----
++
+*brew:*
++
+[source,yaml]
+----
+metricbeat modules enable system
 ----
 +
 *win:*
@@ -510,11 +591,18 @@ PS C:\Program Files\Metricbeat> .\metricbeat.exe modules enable system
 sudo metricbeat setup -e
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
 ./metricbeat setup -e
+----
++
+*brew:*
++
+[source,yaml]
+----
+metricbeat setup -e
 ----
 +
 *win:*
@@ -537,11 +625,18 @@ standard error instead of syslog.
 sudo service metricbeat start
 ----
 +
-*mac:*
+*mac and linux:*
 +
 [source,yaml]
 ----
 ./metricbeat -e
+----
++
+*brew:*
++
+[source,yaml]
+----
+metricbeat -e
 ----
 +
 *win:*
@@ -559,7 +654,7 @@ PS C:\Program Files\Metricbeat> Start-Service metricbeat
 ==== Visualize system metrics in {kib}
 
 To visualize system metrics, open your browser and navigate to the {metricbeat}
-system overview dashboard: http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview
+system overview dashboard: http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview-ecs
 
 TIP: If you don’t see data in {kib}, try changing the date range to a larger
 range. By default, {kib} shows the last 15 minutes. If you see errors, make
@@ -580,12 +675,13 @@ same server--let's add {ls}.
 [float]
 [[install-logstash]]
 
-=== Install {ls}
+=== Install {ls} (optional)
 
 https://www.elastic.co/products/logstash[{ls}] is a powerful tool that
 integrates with a wide variety of deployments. It offers a large selection of
 plugins to help you parse, enrich, transform, and buffer data from a variety of
-sources.
+sources. If your data requires additional processing that is not available in
+{beats}, then you need to add {ls} to your deployment.
 
 To download and install {ls}, open a terminal window and use the commands that
 work with your system:
@@ -626,7 +722,7 @@ sudo rpm -i logstash-{logstash_version}.rpm
 
 endif::[]
 
-*mac:*
+*mac and linux:*
 
 ifeval::["{release-state}"=="unreleased"]
 
@@ -640,6 +736,24 @@ ifeval::["{release-state}"!="unreleased"]
 ----------------------------------------------------------------------
 curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.tar.gz
 tar -xzvf logstash-{logstash_version}.tar.gz
+----------------------------------------------------------------------
+
+endif::[]
+
+*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {ls} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/logstash-full
 ----------------------------------------------------------------------
 
 endif::[]
@@ -725,7 +839,8 @@ enriching, and transforming data.
 
 Use the command that works with your system. If you installed {ls} as a deb or
 rpm package, make sure the config file is in the `config` directory.
-On mac, that step isn't required but it is a best practice for reasons of consistency.
+For other platforms, a `config` directory isn't required, but it's a best
+practice to be consistent.
 
 *deb:*
 
@@ -741,19 +856,26 @@ sudo /etc/init.d/logstash start
 sudo service logstash start
 ----------------------------------------------------------------------
 
-*mac:*
+*mac and linux:*
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
 cd logstash-{logstash_version}
-./bin/logstash -f config/demo-metrics-pipeline.conf
+./bin/logstash -f path/to/config/demo-metrics-pipeline.conf
+----------------------------------------------------------------------
+
+*brew:*
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+logstash -f path/to/config/demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
 *win:*
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-bin\logstash.bat -f demo-metrics-pipeline.conf
+bin\logstash.bat -f path\to\config\demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
 TIP: If you receive JVM error messages, check your Java version as shown in
@@ -767,7 +889,8 @@ configure {metricbeat} to send events to {ls}.
 
 {metricbeat} sends events to {es} by default. To send events to {ls}, modify the
 {metricbeat} configuration file, `metricbeat.yml`. You'll find this file under
-the {metricbeat} install directory, or `/etc/metricbeat` for rpm and deb.
+the {metricbeat} install directory, `/etc/metricbeat` for rpm and deb, or
+`/usr/local/etc/metricbeat` for brew.
 
 Disable the `output.elasticsearch` section by commenting it out, then enable
 the `output.logstash` section by uncommenting it:
@@ -899,6 +1022,13 @@ how, read:
 
 * {stack-ov}/elasticsearch-security.html[Securing the {stack}]
 * {stack-ov}/license-management.html[License Management]
+
+Want to get up and running quickly with infrastructure metrics monitoring and
+centralized log analytics? Try out the
+{infra-guide}/infrastructure-ui-overview.html[Infrastructure] and
+{infra-guide}/logs-ui-overview.html[Logs] UIs
+in {kib}. For setup details, see the {infra-guide}/index.html[Infrastructure
+Monitoring Guide].
 
 Later, when you're ready to set up a production environment, also see the
 {stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade

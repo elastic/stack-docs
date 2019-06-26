@@ -8,8 +8,8 @@
 
 beta[]
 
-This page provides examples of how to use {dataframe-transforms} to gain useful 
-insights on your data. For a more detailed, step-by-step example, see 
+This page provides examples of how to use {dataframe-transforms} to derive useful 
+insights from your data. For a more detailed, step-by-step example, see 
 <<ecommerce-dataframes,Transforming your data with {dataframes}>>.
 
 * <<example-clientips>>
@@ -108,6 +108,42 @@ to count specific types of HTTP responses (error, success, and other).
 <4> This `bucket_script` calculates the duration of the `clientip` access based 
 on the results of the aggregation.
 
+In this example, the API returns the following response (note that this example 
+contains the response partially and shows only the first document object):
+
+[source,js]
+----------------------------------
+{
+  "preview" : [
+    {
+      "geo" : {
+        "src_dc" : 12.0,
+        "dest_dc" : 9.0
+      },
+      "clientip" : "0.72.176.46",
+      "agent_dc" : 3.0,
+      "responses" : {
+        "total" : 14.0,
+        "counts" : {
+          "other" : 0,
+          "success" : 14,
+          "error" : 0
+        }
+      },
+      "bytes_sum" : 74808.0,
+      "timestamp" : {
+        "duration_ms" : 4.919943239E9,
+        "min" : "2019-06-17T07:51:57.333Z",
+        "max" : "2019-08-13T06:31:00.572Z"
+      },
+      "url_dc" : 11.0
+    },
+    ...
+  }
+----------------------------------  
+// CONSOLE
+// TEST[skip:SETUP]
+
 This {dataframe-transform} makes it easier to answer questions such as:
 
 * Which client IPs are transferring the most amounts of data?
@@ -123,4 +159,3 @@ This {dataframe-transform} makes it easier to answer questions such as:
 * Which client IPs are interacting with a high number of destination countries?
   (Based on the `"geo.dest_dc": { "cardinality": { "field": "geo.dest" }},` 
   aggregation.)
-  

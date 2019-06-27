@@ -19,10 +19,11 @@ dashboards that you're already using to watch this data. The better you know the
 data, the quicker you will be able to create {ml} jobs that generate useful
 insights.
 
-The final consideration is where the data is located. This tutorial assumes that
-your data is stored in {es}. It guides you through the steps required to create
-a _{dfeed}_ that passes data to a job. If your own data is outside of {es},
-analysis is still possible by using a post data API.
+The final consideration is where the data is located. This tutorial assumes you
+are using sample data that is stored in {es}. It uses wizards that expedite the
+creation of _{dfeeds}_, which pass data to {ml} jobs. If your own data is
+outside of {es}, analysis is still possible by using the
+{ref}/ml-post-data.html[post data to jobs API].
 
 IMPORTANT: If you want to create {ml} jobs in {kib}, you must use {dfeeds}.
 That is to say, you must store your input data in {es}. When you create
@@ -41,21 +42,19 @@ to the {kib} home page.
 
 . Click *Load a data set and a Kibana dashboard*.
 
-. Pick a data set. In this tutorial, we use *Sample web logs*, which simulates
-website traffic. While you're here, feel free to click *Add* on all of the
+. Pick a data set. In this tutorial, we use the *Sample eCommerce orders* and
+*Sample web logs*. While you're here, feel free to click *Add* on all of the
 available sample data sets.
 
 . If you want to familiarize yourself with the data, click
-*View data* > *Dashboard*.
+*View data* > *Dashboard*. 
 +
 --
-You're taken to the Web Traffic dashboard, a collection of charts, graphs, maps,
-and other visualizations of the data in the `kibana_sample_data_logs` index.
-
-//TO-DO: Add tip about using *View data* > *ML jobs* to skip right to creating
-//the jobs.
+For example, the Web Traffic dashboard for the sample web logs is a collection
+of charts, graphs, maps, and other visualizations of the data in the
+`kibana_sample_data_logs` index.
 --
 
-This data set can now be analyzed in {ml} jobs in {kib}. For more information
+These data sets can now be analyzed in {ml} jobs in {kib}. For more information
 about the {kib} sample data sets, see
 {kibana-ref}/add-sample-data.html[Get up and running with sample data].

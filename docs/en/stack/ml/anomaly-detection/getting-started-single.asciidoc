@@ -1,39 +1,79 @@
 [role="xpack"]
 [[ml-gs-jobs]]
-=== Creating single metric jobs
+=== Analyzing the sample web logs
+
+Now that we have taken a quick look at the type of data that is stored in the 
+`kibana_sample_data_logs` index, let's create some {ml} jobs to start analyzing
+the data.
+
+As we saw in previous steps, {kib} recognizes the sample data and has some
+pre-configured jobs that it recommends. In the Machine Learning app, you can add
+the jobs by selecting the *{kib} sample data web logs* configuration when you
+are creating jobs or using the *Data Visualizer*. 
+
+TIP: Alternatively, after you load a sample data set on the {kib} home page,
+click *View data* > *ML jobs*. There are {ml} jobs for both the sample
+eCommerce orders data set and the sample web logs data set.
+
+[role="screenshot"]
+image::ml/images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
+
+The wizard recommends three jobs: `low_request_rate`, `response_code_rates`, and
+`url_scanning`. You can optionally prefix those job identifiers with a name of
+your choosing.
+
+//For the purposes of this tutorial, we do not want to start the {dfeed} or use
+//the full data set immediately. Click the check boxes to deselect these options.
+
+Click *Create Jobs*. When all three jobs and {dfeeds} have been created and
+started, you receive a summary: 
+
+[role="screenshot"]
+image::ml/images/ml-gs-create-web-jobs-2.jpg["Create jobs for the sample web logs"]
+
+Click *View Results*.
+
+TIP: Depending on the capacity of your machine, you might need to wait a few
+seconds for the {ml} analysis to generate initial results.
+
+[role="screenshot"]
+image::ml/images/ml-gs-web-results.jpg["Create jobs for the sample web logs"]
+
+In the *Anomaly Explorer*, you can immediately see that all three jobs have
+identified anomalies, which are indicated by red blocks in the swim lanes for
+each job.
+
+Before we delve deeper into those anomalies, let's take a step back and consider
+just the simple, single metric job: `low_request_rate`.
+
+[discrete]
+[[ml-gs-single-metric-jobs]]
+=== Single metric jobs
+
+The `low_request_rate` job is a single metric job; it contains a single
+_detector_. A detector defines the type of analysis that will occur
+(in this case, a <<ml-count-functions,`low_count` analytical function>>) and the
+fields that will be analyzed (in this case, none).
+
+Consider, for example, that the sample data is access logs from your website.
+You know that when your application is running well, there is typically a high
+rate of requests. If the request rate drops significantly, it's an indication
+that there might be problems on your website that merit investigation. 
+
+Go to *Job Management* expand the details about the `low_request_rate` job.
+Select the *Job config* tab:
+
+[role="screenshot"]
+image::ml/images/ml-gs-web-config1.jpg["Job configuration details for sample web logs"]
+
 
 ////
-TBD
-At this point in the tutorial, the goal is to detect anomalies in the
-total requests received by your applications and services. The sample data
-contains a single key performance indicator(KPI) to track this, which is the total
-requests over time. It is therefore logical to start by creating a single metric
-job for this KPI.
+TO-DO: Show aggregation used by datafeed.
 
-TIP: If you are using aggregated data, you can create an advanced job
-and configure it to use a `summary_count_field_name`. The {ml} algorithms will
-make the best possible use of summarized data in this case. For simplicity, in
-this tutorial we will not make use of that advanced functionality. For more
-information, see <<ml-configuring-aggregation>>.
-////
-
-A single metric job contains a single _detector_. A detector defines the type of
-analysis that will occur (for example, `max`, `average`, or `rare` analytical
-functions) and the fields that will be analyzed.
-
-To create a single metric job in {kib}:
-
-. Open {kib} in your web browser. If you are running {kib} locally,
-go to `http://localhost:5601/`.
-
-. Click **Machine Learning** in the side navigation.
-
-. Click **Create new job**.
-
-. Select the index pattern that you created for the sample data.  For example,
-`kibana_sample_data_ecommerce`.
-
-. In the **Use a wizard** section, click **Single metric**.
+TIP: If you are using aggregated data, you can configure your job to use a
+`summary_count_field_name`. The {ml} algorithms will make the best possible use
+of summarized data in this case. For more information, see
+<<ml-configuring-aggregation>>.
 
 . Configure the job by providing the following information: +
 +
@@ -270,7 +310,7 @@ The blue line in the chart represents the actual data values. The shaded blue
 area represents the bounds for the expected values. The area between the upper
 and lower bounds are the most likely values for the model. If a value is outside
 of this area then it can be said to be anomalous.
-
+////
 ////
 TBD
 If you slide the time selector from the beginning of the data to the end of the
@@ -279,7 +319,7 @@ beginning, the expected range of values is pretty broad and the model is not
 capturing the periodicity in the data. But it quickly learns and begins to
 reflect the daily variation.
 ////
-
+////
 Any data points outside the range that was predicted by the model are marked
 as anomalies. When you have high volumes of real-life data, many anomalies
 might be found. These vary in probability from very likely to highly unlikely,
@@ -331,3 +371,4 @@ the context of those situations. For example, are there other factors that are
 contributing to the problem? Are the anomalies confined to particular
 products or locations? You can begin to troubleshoot these situations by
 layering additional jobs or creating multi-metric jobs.
+////

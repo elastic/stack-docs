@@ -75,7 +75,7 @@ for metric fields. For example:
 [role="screenshot"]
 image::ml/images/ml-gs-data-topmetrics.jpg["Data Visualizer output for top values in {kib}"]
 
-For date fields, the **Data Visualizer** provides the earliest and latest field
+For `date` fields, the **Data Visualizer** provides the earliest and latest field
 values and the number and percentage of documents that contain the field
 during the selected time period. For example:
 
@@ -85,14 +85,25 @@ image::ml/images/ml-gs-data-dates.jpg["Data Visualizer output for date fields in
 TIP: Make note of these dates, since they are relative to when you added the
 sample data and we'll use that information later in the tutorial.
 
-For keyword fields, the **Data Visualizer** provides the number of distinct
+For `keyword` and `ip` fields, the **Data Visualizer** provides the number of distinct
 values, a list of the top values, and the number and percentage of documents
 that contain the field during the selected time period. For example:
 
 [role="screenshot"]
-image::ml/images/ml-gs-data-keywords.jpg["Data Visualizer output for date fields in {kib}"]
+image::ml/images/ml-gs-data-keywords.jpg["Data Visualizer output for keyword and ip fields in {kib}"]
 
-//TBD: In this tutorial, you will create single and multi-metric jobs that use the
-//`taxful_total_price`, `country_iso_code`, and `category` fields. Though there
-//is an option to create an advanced job directly from the **Data Visualizer**, we
-//will use the single and multi-metric job creation wizards instead.
+Likewise, for `geo_point` fields, the **Data Visualizer** provides the number of
+distinct values, a list of example values, and the number and percentage of
+documents that contain the field during the selected time period. For example:
+
+[role="screenshot"]
+image::ml/images/ml-gs-data-geo.jpg["Data Visualizer output for geo_point fields in {kib}"]
+
+For `text` fields, the **Data Visualizer** provides example values from the
+selected time period. For example:
+
+[role="screenshot"]
+image::ml/images/ml-gs-data-text.jpg["Data Visualizer output for text fields in {kib}"]
+
+In this tutorial, we will create {ml} jobs that use many of these different
+data types.

@@ -9,7 +9,9 @@
 beta[]
 
 This page provides examples of how to use {dataframe-transforms} to derive useful 
-insights from your data. For a more detailed, step-by-step example, see 
+insights from your data. All the examples use one of the 
+{kibana-ref}/add-sample-data.html[{kib} sample datasets]. For a more detailed, 
+step-by-step example, see 
 <<ecommerce-dataframes,Transforming your data with {dataframes}>>.
 
 * <<example-best-customers>>
@@ -120,8 +122,7 @@ With {dataframe-transforms}, you can use
 {ref}/search-aggregations-metrics-scripted-metric-aggregation.html[scripted 
 metric aggregations] on your data. These aggregations are flexible and make 
 it possible to perform very complex processing. Let's use scripted metrics to 
-identify suspicious client IPs in the web log 
-{kibana-ref}/add-sample-data.html[{kib} sample dataset].
+identify suspicious client IPs in the web log sample dataset.
 
 In this example, we transform the data such that the new index contains 
 the sum of bytes and the number of distinct URLs, agents, incoming request by 

@@ -25,8 +25,8 @@ step-by-step example, see
 In this example, we use the eCommerce orders sample dataset to find the customers 
 who spent the most in our hypothetical webshop. Let's transform the data such 
 that the destination index contains the number of orders, the total price of 
-the orders, the amount of unique product and the average price per order, 
-and the total amount of ordered product for each customer.
+the orders, the amount of unique products and the average price per order, 
+and the total amount of ordered products for each customer.
 
 [source,js]
 ----------------------------------
@@ -230,7 +230,7 @@ it possible to perform very complex processing. Let's use scripted metrics to
 identify suspicious client IPs in the web log sample dataset.
 
 We transform the data such that the new index contains the sum of bytes and the 
-number of distinct URLs, agents, incoming request by location, and geographic 
+number of distinct URLs, agents, incoming requests by location, and geographic 
 destinations for each client IP. We also use a scripted field to count the 
 specific types of HTTP responses that each client IP receives. Ultimately, the 
 example below transforms web log data into an entity-centric index where the 

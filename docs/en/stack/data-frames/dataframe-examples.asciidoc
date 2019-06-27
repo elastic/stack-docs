@@ -26,8 +26,12 @@ it possible to perform very complex processing. Let's use scripted metrics to
 identify suspicious client IPs in the web log 
 {kibana-ref}/add-sample-data.html[{kib} sample dataset].
 
-The example below transforms web log data into an entity-centric index where the 
-entity is `clientip`.
+In this example, we transform the data such that the new index contains 
+the sum of bytes and the number of distinct URLs, agents, incoming request by 
+location, and geographic destinations for each client IP. We'll also use a 
+scripted field to count the specific types of HTTP responses that each client IP 
+receives. Ultimately, the example below transforms web log data into an 
+entity-centric index where the entity is `clientip`.
 
 [source,js]
 ----------------------------------
@@ -147,15 +151,9 @@ contains the response partially and shows only the first document object):
 This {dataframe-transform} makes it easier to answer questions such as:
 
 * Which client IPs are transferring the most amounts of data?
-  (Based on the `"bytes_sum": { "sum": { "field": "bytes" }},` aggregation.)
 
 * Which client IPs are interacting with a high number of different URLs?
-  (Based on the `"url_dc": { "cardinality": { "field": "url.keyword" }},` 
-  aggregation.)
   
 * Which client IPs have high error rates?
-  (Based on the `scripted_metric` aggregation.)
   
 * Which client IPs are interacting with a high number of destination countries?
-  (Based on the `"geo.dest_dc": { "cardinality": { "field": "geo.dest" }},` 
-  aggregation.)

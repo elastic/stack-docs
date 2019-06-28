@@ -64,40 +64,30 @@ gives more context to the final results.
 NOTE: In the example above, condensed JSON formatting has been used for easier 
 readability of the pivot object.
 
-The API returns the following response (note that this example contains the 
-response partially and shows only the first document object):
+The preview {dataframe-transforms} API enables you to see the layout of the 
+{dataframe} in advance, populated with some sample values. For example:
 
 [source,js]
 ----------------------------------
 {
   "preview" : [
     {
-      "total_unique_products" : {
-        "avg" : 2.0
-      },
+      "total_order_amt" : 3946.9765625,
+      "order_count" : 59.0,
+      "total_unique_products" : 116.0,
+      "avg_unique_products_per_order" : 2.0,
       "customer_id" : "10",
       "user" : "recip",
-      "order_id" : {
-        "value_count" : 59.0
-      },
-      "taxful_total_price" : {
-        "avg" : 66.89790783898304,
-        "sum" : 3946.9765625
-      },
-      "products" : {
-        "product_id" : {
-          "cardinality" : 116.0
-        }
-      }
+      "avg_amt_per_order" : 66.89790783898304
     },
     ...
+    ]
   }
 ----------------------------------
 // CONSOLE
 // TEST[skip:SETUP]
 
-In the above example we saw how to transform order data into a customer centric 
-index. Doing this makes it easier to answer questions such as:
+This {dataframe} makes it easier to answer questions such as:
 
 * Which customers spend the most?
 
@@ -117,12 +107,13 @@ make creating visualizations much simpler.
 [[example-airline]]
 === Finding air carriers with the most delays
 
-We use the Flights sample dataset to find out which air carrier delayed the most.
-First, we filter the source data such that excludes all the cancelled flights by 
-using a query filter, then transform the data to contain the distinct number of 
-flights, the sum of delayed minutes, and the sum of the flight minutes by air 
-carrier. Finally, we use a `bucket_script` to determine what percentage of the 
-flight time was actually delay.
+In this example, we use the Flights sample dataset to find out which air carrier 
+had the most delays.First, we filter the source data such that it excludes all 
+the cancelled flights by using a query filter. Then we transform the data to 
+contain the distinct number of flights, the sum of delayed minutes, and the sum 
+of the flight minutes by air carrier. Finally, we use a 
+{ref}/search-aggregations-pipeline-bucket-script-aggregation.html[`bucket_script`] 
+to determine what percentage of the flight time was actually delay.
 
 [source,js]
 ----------------------------------
@@ -167,11 +158,12 @@ POST _data_frame/transforms/_preview
 
 <1> Filter the source data to select only flights that were not cancelled.
 <2> The data is grouped by the `Carrier` field which contains the airline name.
-<3> This `bucket_script` performs calculations on the results that returned by 
-the aggregation, in this particular example to calculate what percentage of 
+<3> This `bucket_script` performs calculations on the results that are returned 
+by the aggregation. In this particular example, it calculates what percentage of 
 travel time was taken up by delays.
 
-The API returns the following response:
+The preview {dataframe-transforms} API shows you that the new index would contain 
+data like this for each carrier:
 
 [source,js]
 ----------------------------------
@@ -184,39 +176,18 @@ The API returns the following response:
       "delay_time_percentage" : 9.335543983955839,
       "delay_mins_total" : 134145.0
     },
-    {
-      "carrier" : "JetBeats",
-      "flights_count" : 2833.0,
-      "flight_mins_total" : 1451143.6898144484,
-      "delay_time_percentage" : 8.937088787987832,
-      "delay_mins_total" : 129690.0
-    },
-    {
-      "carrier" : "Kibana Airlines",
-      "flights_count" : 2832.0,
-      "flight_mins_total" : 1419081.404241085,
-      "delay_time_percentage" : 9.088273556017194,
-      "delay_mins_total" : 128970.0
-    },
-    {
-      "carrier" : "Logstash Airways",
-      "flights_count" : 2914.0,
-      "flight_mins_total" : 1503620.8713908195,
-      "delay_time_percentage" : 9.544959286661593,
-      "delay_mins_total" : 143520.0
-    }
+    ...
   ]
 }
 ----------------------------------
 // CONSOLE
 // TEST[skip:SETUP]
 
-The example above transforms flight data into a entity centric index for 
-flight carriers. This makes it easier to answer questions such as:
+This {dataframe} makes it easier to answer questions such as:
 
 * Which air carrier has the most delays as a percentage of flight time?
 
-NOTE: Please note that this data is fictional and does not reflect actual delays 
+NOTE: This data is fictional and does not reflect actual delays 
 or flight stats for any of the featured destination or origin airports.
 
 [float]
@@ -233,7 +204,7 @@ We transform the data such that the new index contains the sum of bytes and the
 number of distinct URLs, agents, incoming requests by location, and geographic 
 destinations for each client IP. We also use a scripted field to count the 
 specific types of HTTP responses that each client IP receives. Ultimately, the 
-example below transforms web log data into an entity-centric index where the 
+example below transforms web log data into an entity centric index where the 
 entity is `clientip`.
 
 [source,js]
@@ -315,8 +286,8 @@ to count specific types of HTTP responses (error, success, and other).
 <4> This `bucket_script` calculates the duration of the `clientip` access based 
 on the results of the aggregation.
 
-The API returns the following response (note that this example contains the 
-response partially and shows only the first document object):
+The preview {dataframe-transforms} API shows you that the new index would contain 
+data like this for each client IP:
 
 [source,js]
 ----------------------------------
@@ -351,7 +322,7 @@ response partially and shows only the first document object):
 // CONSOLE
 // TEST[skip:SETUP]
 
-This {dataframe-transform} makes it easier to answer questions such as:
+This {dataframe} makes it easier to answer questions such as:
 
 * Which client IPs are transferring the most amounts of data?
 

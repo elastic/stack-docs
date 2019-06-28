@@ -1,0 +1,96 @@
+[role="xpack"]
+[[esms-exporters]]
+=== Use collectors and exporters with {esms-init}
+++++
+<titleabbrev>Use collectors and exporters</titleabbrev>
+++++
+
+There are two methods for collecting and sending data about the health of your
+cluster to {esms-init}: {metricbeat} or collectors and exporters.
+
+In the latter method, each component in the {stack} is responsible for
+monitoring itself and then forwarding those documents to an {es} cluster for
+routing and indexing (storage). The routing and indexing processes in {es} are
+handled by what are called
+{ref}/es-monitoring-collectors.html[_collectors_] and
+{ref}/es-monitoring-exporters.html[_exporters_]. 
+
+[discrete]
+[[esms-elasticsearch-exporters]]
+=== Collecting monitoring data about {es}
+
+This method involves using collectors to collect metrics about {es} and using
+HTTP exporters to send them to {esms-init}. 
+
+. Enable the collection of monitoring data on your cluster.
++
+--
+// Set xpack.monitoring.enabled to true in ES.yml (default)
+// Set xpack.monitoring.collection.enabled to true for the cluster (default=false)
+////
+include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=enable-collection]
+
+For more information about these settings, see
+{ref}/monitoring-settings.html[Monitoring settings in {es}].
+////
+--
+
+. Enable the default collection of {es} monitoring metrics.
++
+--
+// Set xpack.monitoring.elasticsearch.collection.enabled to true in ES (default)
+// See https://www.elastic.co/guide/en/elasticsearch/reference/master/collecting-monitoring-data.html
+////
+include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=disable-default-collection]
+////
+--
+
+. Optional: Specify which indices you want to monitor.
++
+--
+By default, the monitoring agent collects data from all {es} indices. 
+--
+
+. Optional: Specify how often to collect monitoring data.
+
+. Identify where to send the {es} monitoring data and supply the necessary
+security information.
++
+--
+Use an http exporter to send data to {esms-init}.
+// See https://www.elastic.co/guide/en/elasticsearch/reference/master/collecting-monitoring-data.html
+////
+Add the following settings in the {metricbeat}
+configuration file (`metricbeat.yml`):
+
+[source,yaml]
+----------------------------------
+output.elasticsearch:
+  hosts: ["MONITORING_ELASTICSEARCH_URL"] <1>
+  username: cloud_monitoring_agent <2>
+  password: MONITORING_AGENT_PASSWORD <3>
+----------------------------------
+<1> Replace `MONITORING_ELASTICSEARCH_URL` with the appropriate URL for {esms-init}.
+<2> The Elastic support team creates this user in {esms-init} and grants it the
+{stack-ov}/built-in-roles.html[`remote_monitoring_agent` built-in role]. 
+<3> Replace `MONITORING_AGENT_PASSWORD` with the value provided to you by the
+Elastic support team.
+////
+--
+
+. Verify that your monitoring data exists in {esms-init}.
++
+--
+Open {kib} in your web browser. Use the {kib} URL and the administrator user ID
+that was provided to you by the Elastic support team.
+{kibana-ref}/elasticsearch-metrics.html[View the {es} metrics] on the
+*Stack Monitoring* page.
+
+If you do not see your metrics yet, see
+<<monitoring-troubleshooting,Troubleshooting {monitor-features}>>.
+--
+
+. Configure your cluster to route monitoring data from sources such as {kib},
+Beats, and {ls} to {esms-init}. See
+{kibana-ref}/monitoring-kibana.html[Collecting {kib} monitoring data] and
+{logstash-ref}/configuring-logstash.html[Configuring monitoring for {ls} nodes]. 

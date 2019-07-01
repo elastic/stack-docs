@@ -1,9 +1,9 @@
 [[get-started-elastic-stack]]
 == Getting started with the {stack}
 
-Looking for an {stack} ("ELK" tutorial) that shows how to set up the {stack}? In
-this tutorial, you learn how to get up and running quickly. First you install
-the core products:
+Looking for an {stack} ("ELK") guide that shows how to set up the {stack} and 
+get up and running quickly? You're on the right place! First you install the 
+core products:
 
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
@@ -377,7 +377,7 @@ The {beats} are open source data shippers that you install as agents on your
 servers to send operational data to {es}. {beats} can send data directly to {es}
 or via {ls}, where you can further process and enhance the data.
 
-Each Beat is a separately installable product. In this tutorial, you learn how
+Each Beat is a separately installable product. In this guide, you learn how
 to install and run {metricbeat} with the `system` module enabled to collect system
 metrics.
 
@@ -788,7 +788,7 @@ To learn more about installing, configuring, and running {ls}, read the
 ==== Configure {ls} to listen for {beats} input
 
 {ls} provides {logstash-ref}/input-plugins.html[input plugins] for reading from
-a variety of inputs. In this tutorial, you create a {ls} pipeline configuration
+a variety of inputs. In this guide, you create a {ls} pipeline configuration
 that listens for {beats} input and sends the received events to the {es} output.
 
 To configure {ls}:
@@ -939,9 +939,9 @@ For example:
 
 Rather than sending the whole command-line argument to {es}, you might want to
 send just the command's path. One way to do that is by using a Grok filter.
-Learning Grok is beyond the scope of this tutorial, but if you want to learn
-more, see the {logstash-ref}/plugins-filters-grok.html[Grok filter plugin]
-documentation.
+Learning Grok is beyond the scope of this getting started guide, but if you want 
+to learn more, see the 
+{logstash-ref}/plugins-filters-grok.html[Grok filter plugin] documentation.
 
 To extract the path, add the following Grok filter between the input and output
 sections in the {ls} config file that you created earlier:

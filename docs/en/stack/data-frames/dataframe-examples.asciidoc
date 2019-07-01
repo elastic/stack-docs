@@ -8,7 +8,7 @@
 
 beta[]
 
-This page provides examples of how to use {dataframe-transforms} to derive useful 
+These examples demonstrate how to use {dataframe-transforms} to derive useful 
 insights from your data. All the examples use one of the 
 {kibana-ref}/add-sample-data.html[{kib} sample datasets]. For a more detailed, 
 step-by-step example, see 
@@ -108,7 +108,7 @@ make creating visualizations much simpler.
 === Finding air carriers with the most delays
 
 In this example, we use the Flights sample dataset to find out which air carrier 
-had the most delays.First, we filter the source data such that it excludes all 
+had the most delays. First, we filter the source data such that it excludes all 
 the cancelled flights by using a query filter. Then we transform the data to 
 contain the distinct number of flights, the sum of delayed minutes, and the sum 
 of the flight minutes by air carrier. Finally, we use a 
@@ -162,8 +162,8 @@ POST _data_frame/transforms/_preview
 by the aggregation. In this particular example, it calculates what percentage of 
 travel time was taken up by delays.
 
-The preview {dataframe-transforms} API shows you that the new index would contain 
-data like this for each carrier:
+The preview shows you that the new index would contain data like this for each 
+carrier:
 
 [source,js]
 ----------------------------------
@@ -286,8 +286,8 @@ to count specific types of HTTP responses (error, success, and other).
 <4> This `bucket_script` calculates the duration of the `clientip` access based 
 on the results of the aggregation.
 
-The preview {dataframe-transforms} API shows you that the new index would contain 
-data like this for each client IP:
+The preview shows you that the new index would contain data like this for each 
+client IP:
 
 [source,js]
 ----------------------------------

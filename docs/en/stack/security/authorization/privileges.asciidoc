@@ -22,6 +22,25 @@ This includes snapshotting, updating settings, and rerouting. It also includes
 obtaining snapshot and restore status. This privilege does not include the 
 ability to manage security.
 
+`manage_api_key`::
+All security-related operations on {es} API keys including 
+{ref}/security-api-create-api-key.html[creating new API keys],
+{ref}/security-api-get-api-key.html[retrieving information about API keys], and
+{ref}/security-api-invalidate-api-key.html[invalidating API keys].
++
+--
+[NOTE]
+======
+
+* When you create new API keys, they will always be owned by the authenticated
+user.
+* When you have this privilege, you can invalidate your own API keys and those
+owned by other users.
+
+======
+
+--
+
 `manage_ccr`::
 All {ccr} operations related to managing follower indices and auto-follow 
 patterns. It also includes the authority to grant the privileges necessary to 

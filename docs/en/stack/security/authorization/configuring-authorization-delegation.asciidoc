@@ -28,6 +28,7 @@ xpack:
         ldap:
           ldap1:
             order: 0
+            authentication.enabled: true <1>
             user_search:
               base_dn: "dc=example,dc=org"
               filter: "(cn={0})"
@@ -37,6 +38,11 @@ xpack:
               role_mapping: "ES_PATH_CONF/role_mapping.yml"
             unmapped_groups_as_roles: false
 ------------------------------------------------------------
+
+<1> Here, we explicitly allow the LDAP realm to be used for authentication
+(that is, users can authenticate using their LDAP username and password).
+If we wanted this LDAP realm to be used for authorization only, then we
+ would set this to `false`.
 
 ==== Kerberos realm configured to delegate authorization
 

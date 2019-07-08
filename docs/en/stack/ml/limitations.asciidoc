@@ -201,10 +201,11 @@ process. For more information, see <<stopping-ml>> and
 [float]
 === Rollup indices and index patterns are not supported
 
-Rollup indices and index patterns cannot be used in machine learning jobs or 
-{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
-{kib} or by using APIs. In {kib}, if you select an index, saved search, or index 
-pattern that uses the Rollup feature, the {ml} job creation wizards fail. 
+Rollup indices and index patterns cannot be used in {ml} {dfeeds}. In {kib}, the
+{ml} job creation wizards will not allow you to select an index pattern that uses
+the rollup feature. If you select a saved search that uses a rollup index or add
+a rollup index directly in the {dfeed} configuration JSON then the {ml} job
+creation wizards will fail.
 
 See {ref}/xpack-rollup.html[Rolling up historical data].
 

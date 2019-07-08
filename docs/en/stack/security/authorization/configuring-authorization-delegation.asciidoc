@@ -43,7 +43,7 @@ xpack:
 Following is an example configuration where the Kerberos realm authenticates a
 user and then delegates authorization to the LDAP realm. The
 Kerberos realm authenticates the user and extracts user principal name
-(usually of format `user@REALM`). In this example, we use `remove_realm_name`
+(usually of format `user@REALM`). In this example, we enable the `remove_realm_name`
 setting to remove the `@REALM` part from the user principal name to get the username.
 This username is used to do a user lookup by the configured authorization realms (in this case the LDAP realm).
 

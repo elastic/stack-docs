@@ -2,7 +2,8 @@
 [[how-monitoring-works]]
 == How monitoring works
 
-Monitoring collects data from {es} nodes, Logstash nodes, and {kib} instances.
+Monitoring collects data from {es} nodes, Logstash nodes, {kib} instances, and
+Beats.
 
 In general, the {es} cluster you are monitoring controls where the monitoring
 metrics for the stack are stored. By default, they are stored in local indices.
@@ -15,17 +16,20 @@ performance of your production cluster. For the same reason, we also
 recommend to use a separate Kibana instance that is connected to the separate
 monitoring cluster.
 
+////
 The following diagram illustrates a typical monitoring architecture with separate
 production and monitoring clusters:
 
 image::monitoring/images/architecture10.png["A typical monitoring environment"]
+////
 
-In 6.4 and later, you can use {metricbeat} to collect and ship data about
-{kib}, rather than routing it through {es}. In 6.5 and later, you can also use
-{metricbeat} to collect and ship data about {es}. For example:
+You can use {metricbeat} to collect and ship data about {es}, {kib}, {ls}, and
+Beats rather than routing it through {es}.
+////
+For example:
 
 image::monitoring/images/architecture20.png[A typical monitoring environment that includes {metricbeat}]
-
+////
 If you have at least a gold license, you can route data from multiple production
 clusters to a single monitoring cluster. For more information about the
 differences between various subscription levels, see: https://www.elastic.co/subscriptions

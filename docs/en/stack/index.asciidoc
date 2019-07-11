@@ -14,35 +14,27 @@
 :kib-repo-dir:      {docdir}/../../../../kibana/docs
 :xes-repo-dir:      {docdir}/../../../../elasticsearch/x-pack/docs/en
 :es-repo-dir:       {docdir}/../../../../elasticsearch/docs/reference
+:stack-repo-dir:    {docdir}
 
 include::{asciidoc-dir}/../../shared/versions.asciidoc[]
 include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
 
 include::introduction.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/security/index.asciidoc
 include::security/index.asciidoc[]
 
-:edit_url:
 include::monitoring/index.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/x-pack/docs/en/watcher/index.asciidoc
 include::{xes-repo-dir}/watcher/index.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/index.asciidoc
 include::ml/index.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ccr/index.asciidoc
+include::data-frames/index.asciidoc[]
+
 include::{es-repo-dir}/ccr/index.asciidoc[]
 
-:edit_url:
 include::troubleshooting.asciidoc[]
 
-:edit_url:
-include::limitations.asciidoc[]
-
-:edit_url:
 include::license.asciidoc[]
 
-:edit_url:
 include::redirects.asciidoc[]

@@ -4,11 +4,10 @@
 
 beta[]
 
-To get up and running with security monitoring, you need:
+You need:
 
-* An Elasticsearch cluster and Kibana (version 6.x or later) with a basic
-license. To learn how to get started quickly, see
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
+* An *Elasticsearch* cluster and *Kibana* (version 7.2 or later) with a basic
+license. See {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
 +
 [TIP]
 ==============
@@ -19,24 +18,82 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try the {es}
 Service for free].
 ==============
 
-* {beats} shippers (version 6.x or later) installed on each system you want to
+* *{beats}* shippers (version 7.x or later) installed for each system you want to
 monitor
 
 You might need to modify UI settings in {kib} to change default behaviors,
-such as the index pattern used to query the data, and the timestamp field used
-for sorting. For more information, see {kib}.
+such as the index pattern used to query the data. For more information, see {kib}.
 
 [float]
 [[install-beats]]
 === Install {beats} shippers
 
-To populate the security UI with metrics and
-log data, you need to install and configure the following shippers:
+To populate the {siem-app} with hosts and network security events, you need to install and
+configure Beats on the systems from which you want to ingest security events:
 
-* https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
-network packets 
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for forwarding and
 centralizing logs and files
-* https://www.elastic.co/products/beats/auditbeat[{auditbeat}] for monitoring
-directories for file changes
+* https://www.elastic.co/products/beats/auditbeat[{auditbeat}] for collecting security events
+* https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}] for centralizing 
+Windows event logs
+* https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
+network packets 
 
+NOTE: {siem-soln} also works with custom and third-party data sources in addition to
+those supported by Beats. {ecs-ref}[Elastic Common Schema (ECS)] makes this
+possible. 
+
+You can install {beats} using a {kib}-based guide or directly from the command line.
+
+[float]
+==== Install {beats} using the {kib}-based guide
+
+Follow the instructions in the Add Data section of the {kib} home page. Click
+*Add log data* or *Add metrics*, and follow the links for the types of data you
+want to collect.
+
+[role="screenshot"]
+image::add-data.png[]
+
+[float]
+==== Download and install {beats} from the command line
+
+If your data source isn't in the list, or you want to install {beats} the old
+fashioned way:
+
+* *{filebeat} and {filebeat} modules.* See the
+{filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start]
+and enable modules for the events you want to collect. If there is no module
+for the events you want to collect, see the
+{filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to
+learn how to configure inputs.
+
+* *Auditbeat.* See {auditbeat-ref}/auditbeat-getting-started.html[{auditbeat} getting started].
+
+* *Winlogbeat.* See {winlogbeat-ref}/winlogbeat-getting-started.html[{winlogbeat} getting started].
+
+* *Packetbeat.* See {packetbeat-ref}/packetbeat-getting-started.html[{packetbeat} getting started].
+
+[float]
+=== Enable modules and configuration options
+
+For either approach, you need to enable modules in {auditbeat} and {filebeat}
+to populate the {SIEM-app} with data.
+
+To populate *Hosts* data, enable these {auditbeat} modules:
+
+* {auditbeat-ref}/auditbeat-module-system.html[System module  - Linux, macOS, Win]
+* {auditbeat-ref}/auditbeat-module-auditd.html[Auditd module (Linux Kernel Audit info)]
+* {auditbeat-ref}/auditbeat-module-file_integrity.html[File integrity module (FIM) - Linux, macOS, Win]
+
+
+To populate *Network* data, enable these {filebeat} modules:
+
+* https://www.elastic.co/products/beats/filebeat[{filebeat}]
+* {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
+* {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
+* {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
+* {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
+* {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
+* {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
+* {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]

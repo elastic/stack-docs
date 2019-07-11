@@ -53,10 +53,8 @@ A critical part of security is keeping confidential data confidential.
 Elasticsearch has built-in protections against accidental data loss and
 corruption. However, there's nothing to stop deliberate tampering or data
 interception. The {stack-security-features} preserve the integrity of your
-data by <<ssl-tls, encrypting communications>> to and from nodes. For even
-greater protection, you can increase the <<ciphers, encryption strength>> and
-<<separating-node-client-traffic, separate client traffic from node-to-node communications>>.
-
+data by <<ssl-tls, encrypting communications>> to and from nodes. For even	
+greater protection, you can increase the {ref}/ciphers.html[encryption strength].
 
 [float]
 [[maintaining-audit-trail]]
@@ -90,29 +88,22 @@ Head over to our {security-forum}[Security Discussion Forum]
 to share your experience, questions, and suggestions.
 --
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/security/how-security-works.asciidoc
 include::how-security-works.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/security/authentication/index.asciidoc
 include::authentication/index.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/security/authorization/index.asciidoc
 include::authorization/index.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/x-pack/docs/en/security/auditing.asciidoc
 include::{xes-repo-dir}/security/auditing/index.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/x-pack/docs/en/security/securing-communications.asciidoc
 include::{xes-repo-dir}/security/securing-communications.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/x-pack/docs/en/security/using-ip-filtering.asciidoc
 include::{xes-repo-dir}/security/using-ip-filtering.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/x-pack/docs/en/security/ccs-clients-integrations.asciidoc
 include::{xes-repo-dir}/security/ccs-clients-integrations.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/security/get-started-security.asciidoc
 include::get-started-security.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/security/securing-communications/tutorial-tls-internode.asciidoc
 include::securing-communications/tutorial-tls-intro.asciidoc[]
+
+include::limitations.asciidoc[]

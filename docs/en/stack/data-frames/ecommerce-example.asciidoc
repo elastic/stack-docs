@@ -1,7 +1,7 @@
 [role="xpack"]
 [testenv="basic"]
 [[ecommerce-dataframes]]
-== Transforming your data with {dataframes}
+== Transforming your data in {dataframes}
 ++++
 <titleabbrev>Transforming your data</titleabbrev>
 ++++
@@ -27,6 +27,8 @@ index and `read`, `create_index`, and `index` privileges on the destination
 index. 
 
 For more information, see <<security-privileges>> and <<built-in-roles>>.
+
+//TBD: Determine additional Kibana security privileges required.
 --
 
 . Choose your _source index_.
@@ -54,10 +56,10 @@ at least one aggregation. You can preview what the transformed data will look
 like, so go ahead and play with it!
 
 For example, go to *Machine Learning* > *Data Frames* in {kib} and use the
-wizard to create a {dataframe}:
+wizard to create a {dataframe-transform}:
 
 [role="screenshot"]
-image::images/ecommerce-pivot1.jpg["Creating a simple {dataframe} in {kib}"]
+image::images/ecommerce-pivot1.jpg["Creating a simple {dataframe-transform} in {kib}"]
 
 In this case, we grouped the data by customer ID and calculated the sum of
 products each customer purchased.
@@ -74,7 +76,7 @@ We'll accomplish this by using the
 on the `order_id` field:
 
 [role="screenshot"]
-image::images/ecommerce-pivot2.jpg["Adding multiple aggregations to a {dataframe} in {kib}"]
+image::images/ecommerce-pivot2.jpg["Adding multiple aggregations to a {dataframe-transform} in {kib}"]
 
 TIP: If you're interested in a subset of the data, you can optionally include a
 {ref}/search-request-query.html[query] element. In this example, we've filtered
@@ -141,9 +143,19 @@ POST _data_frame/transforms/_preview
 {dataframe-transform}. 
 +
 --
-Supply a job ID and the name of the target (or _destination_) index. In {kib},
-you can choose to create and start the job, create it, or copy it to the
-clipboard.
+Supply a job ID and the name of the target (or _destination_) index.
+
+By default, the {dataframe-transform} is not a persistent task. If you want it
+to continue running, enable *Continuous mode*. For this example, let's use the
+`order_date` as the date field and the default delay value.
+
+//TBD: Describe meaning of these fields.
+
+[role="screenshot"]
+image::images/ecommerce-continuous.jpg["Supplying {dataframe-transform} details in {kib}"]
+
+In {kib}, you can choose to create and start the job, create it, or copy it to
+the clipboard.
 
 If you prefer, you can use the
 {ref}/put-data-frame-transform.html[create {dataframe-transforms} API]. For
@@ -166,9 +178,6 @@ PUT _data_frame/transforms/ecommerce-customer-transform
         }
       }
     }
-  },
-  "dest": {
-    "index": "ecommerce-customers"
   },
   "pivot": {
     "group_by": {
@@ -200,6 +209,15 @@ PUT _data_frame/transforms/ecommerce-customer-transform
         }
       }
     }
+  },
+  "dest": {
+    "index": "ecommerce-customers"
+  },
+  "sync": {
+    "time": {
+      "field": "order_date",
+      "delay": "60s"
+    }
   }
 }
 --------------------------------------------------
@@ -213,14 +231,13 @@ PUT _data_frame/transforms/ecommerce-customer-transform
 
 TIP: Even though resource utilization is automatically adjusted based on the
 cluster load, a {dataframe-transform} increases search and indexing load on your
-cluster while it runs. When it reaches the end of the data in your index, it
-stops automatically. If you're experiencing an excessive load, however, you can
-stop it sooner.
+cluster while it runs. If you're experiencing an excessive load, however, you
+can stop it.
 
-You can start, stop, and manage {dataframe} jobs in {kib}:
+You can start, stop, and manage {dataframe-transforms} in {kib}:
 
 [role="screenshot"]
-image::images/dataframe-jobs.jpg["Managing {dataframe} jobs in {kib}"]
+image::images/dataframe-transforms.jpg["Managing {dataframe-transforms} in {kib}"]
 
 Alternatively, you can use the
 {ref}/start-data-frame-transform.html[start {dataframe-transforms}] and

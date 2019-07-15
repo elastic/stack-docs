@@ -145,20 +145,20 @@ POST _data_frame/transforms/_preview
 --
 .. Supply a job ID and the name of the target (or _destination_) index.
 
-.. Decide whether you want the {dataframe-transform} to run once, which is the
-default behavior, or continuously.
+.. Decide whether you want the {dataframe-transform} to run once or continuously.
+--
 +
 --
-Since this sample data index is unchanging, let's use the default behavior.
+Since this sample data index is unchanging, let's use the default behavior and
+just run the {dataframe-transform} once.
 
 [role="screenshot"]
 image::images/ecommerce-batch.jpg["Specifying the {dataframe-transform} options in {kib}"]
 
-If you want to try out *Continuous mode*, however, you must choose a field that
-the {dataframe-transform} can use to check which entities have changed. In
-general, it's a good idea to use the ingest timestamp field. In this example,
-however, you can use the `order_date` field.
---
+If you want to try it out, however, go ahead and click on *Continuous mode*. 
+You must choose a field that the {dataframe-transform} can use to check which
+entities have changed. In general, it's a good idea to use the ingest timestamp
+field. In this example, however, you can use the `order_date` field.
 
 If you prefer, you can use the
 {ref}/put-data-frame-transform.html[create {dataframe-transforms} API]. For
@@ -263,4 +263,5 @@ image::images/ecommerce-results.jpg["Exploring the new index in {kib}"]
 TIP: If you do not want to keep the {dataframe-transform}, you can delete it in
 {kib} or use the
 {ref}/delete-data-frame-transform.html[delete {dataframe-transform} API]. When
-you delete a {dataframe-transform}, its destination index remains.
+you delete a {dataframe-transform}, its destination index and {kib} index
+patterns remain.

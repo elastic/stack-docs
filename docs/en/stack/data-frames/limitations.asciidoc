@@ -209,8 +209,9 @@ If starting a failed {dataframe-transform}, after the root cause has been
 resolved, the `_start?force=true` parameter must be specified.
 
 [float]
-[[df-time-limitations]]
-=== Continuous data frames may give incorrect results if time taken between
+[[df-availability-limitations]]
+=== Continuous data frames may give incorrect results if documents are not yet 
+available to search
 
 After a document is indexed, there is a very small delay until it is available 
 to search.
@@ -222,5 +223,5 @@ within this time window but this document is not yet available to search then
 this entity will not be updated.
 
 If using a `sync.time.field` that represents the data ingest time and using a 
-zero second or very small `sync.time.delay` then it is more likely that this 
+zero second or very small `sync.time.delay`, then it is more likely that this 
 issue will occur.

@@ -143,19 +143,22 @@ POST _data_frame/transforms/_preview
 {dataframe-transform}. 
 +
 --
-Supply a job ID and the name of the target (or _destination_) index.
+.. Supply a job ID and the name of the target (or _destination_) index.
 
-By default, the {dataframe-transform} is not a persistent task. If you want it
-to continue running, enable *Continuous mode*. For this example, let's use the
-`order_date` as the date field and the default delay value.
-
-//TBD: Describe meaning of these fields.
+.. Decide whether you want the {dataframe-transform} to run once, which is the
+default behavior, or continuously.
++
+--
+Since this sample data index is unchanging, let's use the default behavior.
 
 [role="screenshot"]
-image::images/ecommerce-continuous.jpg["Supplying {dataframe-transform} details in {kib}"]
+image::images/ecommerce-batch.jpg["Specifying the {dataframe-transform} options in {kib}"]
 
-In {kib}, you can choose to create and start the job, create it, or copy it to
-the clipboard.
+If you want to try out *Continuous mode*, however, you must choose a field that
+the {dataframe-transform} can use to check which entities have changed. In
+general, it's a good idea to use the ingest timestamp field. In this example,
+however, you can use the `order_date` field.
+--
 
 If you prefer, you can use the
 {ref}/put-data-frame-transform.html[create {dataframe-transforms} API]. For
@@ -212,12 +215,6 @@ PUT _data_frame/transforms/ecommerce-customer-transform
   },
   "dest": {
     "index": "ecommerce-customers"
-  },
-  "sync": {
-    "time": {
-      "field": "order_date",
-      "delay": "60s"
-    }
   }
 }
 --------------------------------------------------

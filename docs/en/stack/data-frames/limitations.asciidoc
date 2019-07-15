@@ -207,3 +207,20 @@ When using the API to delete a failed {dataframe-transform}, first stop it using
 
 If starting a failed {dataframe-transform}, after the root cause has been 
 resolved, the `_start?force=true` parameter must be specified.
+
+[float]
+[[df-time-limitations]]
+=== Continuous data frames may give incorrect results if time taken between
+
+After a document is indexed, there is a very small delay until it is available 
+to search.
+
+A continuous data frame periodically checks for changed entities between the 
+time since it last checked and `now` minus `sync.time.delay`. This time window 
+moves without overlapping. If the timestamp of a recently indexed document falls 
+within this time window but this document is not yet available to search then 
+this entity will not be updated.
+
+If using a `sync.time.field` that represents the data ingest time and using a 
+zero second or very small `sync.time.delay` then it is more likely that this 
+issue will occur.

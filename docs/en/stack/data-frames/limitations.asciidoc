@@ -52,7 +52,7 @@ table.
 [[df-kibana-limitations]]
 === Up to 1,000 {dataframe-transforms} are supported
 
-A single cluster will support up to 1,000 data frame transforms.
+A single cluster will support up to 1,000 {dataframe-transforms}.
 When using the 
 {ref}/get-data-frame-transform.html[GET {dataframe-transforms} API] a total 
 `count` of transforms is returned. Use the `size` and `from` parameters to 
@@ -62,29 +62,28 @@ enumerate through the full list.
 [[df-aggresponse-limitations]]
 === Aggregation responses may be incompatible with destination index mappings
 
-When a {dataframe} is first started, it will deduce the mappings required for the 
-destination index. This process is based on the field types of the source index 
-and the aggregations used, or in the case of fields derived from 
+When a {dataframe-transform} is first started, it will deduce the mappings 
+required for the destination index. This process is based on the field types of 
+the source index and the aggregations used. If the fields are derived from 
 {ref}/search-aggregations-metrics-scripted-metric-aggregation.html[`scripted_metrics`] 
 or {ref}/search-aggregations-pipeline-bucket-script-aggregation.html[`bucket_scripts`], 
 {ref}/dynamic-mapping.html[dynamic mappings] will be used. In some instances the 
-deduced mappings may be incompatible with the actual data. For example, with 
-possible numeric overflows or dynamically mapped fields containing both numbers 
+deduced mappings may be incompatible with the actual data. For example, numeric 
+overflows might occur or dynamically mapped fields might contain both numbers 
 and strings. Please check {es} logs if you think this may have occurred. As a 
 workaround, you may define custom mappings prior to starting the 
-{dataframe-transform}. Do this by {ref}/indices-create-index.html[creating a 
-custom destination index] which will be used in preference to deduced mappings, 
-or by {ref}/indices-templates.html[defining an index template] which will be 
-used in preference to dynamic mappings.
+{dataframe-transform}. For example, 
+{ref}/indices-create-index.html[create a custom destination index] or 
+{ref}/indices-templates.html[define an index template].
 
 [float]
 [[df-batch-limitations]]
-=== Batch {dataframes} may not account for changed documents
+=== Batch {dataframe-transforms} may not account for changed documents
 
-A batch {dataframe} uses a 
+A batch {dataframe-transform} uses a 
 {ref}/search-aggregations-bucket-composite-aggregation.html[composite aggregation]
 which allows efficient pagination through all buckets. Composite aggregations 
-does not yet support a search context, therefore if the source data is changed 
+do not yet support a search context, therefore if the source data is changed 
 (deleted, updated, added) while the batch {dataframe} is in progress, then the 
 results may not include these changes.
 
@@ -98,7 +97,7 @@ some limitations.
 
 Changed entities will only be identified if their time field 
 has also been updated and falls within the range of the action to check for 
-changes. This has been designed in principal for, and is suited to the use case 
+changes. This has been designed in principle for, and is suited to, the use case 
 where new data is given a timestamp for the time of ingest. 
 
 If the indices that fall within the scope of the source index pattern are 
@@ -129,28 +128,30 @@ one have been created, are deleted. These objects must be deleted separately.
 
 During the development of {dataframe-transforms}, control was favoured over 
 performance. In the design considerations, it is preferred for the 
-{dataframe} to take longer to complete quietly in the background rather than to 
-finish quickly and take precedence in resource consumption.
+{dataframe-transform} to take longer to complete quietly in the background 
+rather than to finish quickly and take precedence in resource consumption.
 
 Composite aggregations are well suited for high cardinality data enabling 
-pagination through results. If a parent 
-{ref}/circuit-breaker.html[circuit breaker] memory exception occurs when 
-performing the composite aggregated search then we try again reducing the number 
-of buckets requested. This circuit breaker is calculated based upon all activity 
-within the cluster, not just activity from {dataframe-transforms}, so it 
-therefore may only be a temporary resource availability issue.
+pagination through results. If a {ref}/circuit-breaker.html[circuit breaker] 
+memory exception occurs when performing the composite aggregated search then we 
+try again reducing the number of buckets requested. This circuit breaker is 
+calculated based upon all activity within the cluster, not just activity from 
+{dataframe-transforms}, so it therefore may only be a temporary resource 
+availability issue.
 
-For a batch {dataframe}, the number of buckets requested is only ever adjusted 
-downwards. The lowering of value may result in a longer duration for the 
+For a batch {dataframe-transform}, the number of buckets requested is only ever 
+adjusted downwards. The lowering of value may result in a longer duration for the 
 transform checkpoint to complete. For {cdataframes}, the number of 
 buckets requested is reset back to its default at the start of every checkpoint 
 and it is possible for circuit breaker exceptions to occur repeatedly in the 
 {es} logs. 
 
-The initial value for `composite.size` is 500 (which is configurable using 
-`max_page_search_size`) and the minimum value is 10. If failures still occur 
-once the number of buckets requested has been reduced to its minimum, then the 
-{dataframe} will be set to a failed state.
+The {dataframe-transform} retrieves data in batches which means it calculates 
+several buckets at once. Per default this is 500 buckets per search/index 
+operation. The default can be changed using `max_page_search_size` and the 
+minimum value is 10. If failures still occur once the number of buckets 
+requested has been reduced to its minimum, then the {dataframe-transform} will 
+be set to a failed state.
 
 [float]
 [[df-dynamic-adjustments-limitations]]
@@ -164,7 +165,7 @@ destination index for each page of entities.
 
 The page `size` is defined by `max_page_search_size` which is also used to 
 define the number of buckets returned by the composite aggregation search. The 
-default value is 500, the minimum is 10. 
+default value is 500, the minimum is 10.
 
 The index setting 
 {ref}/index-modules.html#dynamic-index-settings[`index.max_terms_count`] defines 
@@ -210,13 +211,13 @@ resolved, the `_start?force=true` parameter must be specified.
 
 [float]
 [[df-availability-limitations]]
-=== Continuous data frames may give incorrect results if documents are not yet 
+=== {cdataframes-cap} may give incorrect results if documents are not yet 
 available to search
 
 After a document is indexed, there is a very small delay until it is available 
 to search.
 
-A continuous data frame periodically checks for changed entities between the 
+A {cdataframe-transform} periodically checks for changed entities between the 
 time since it last checked and `now` minus `sync.time.delay`. This time window 
 moves without overlapping. If the timestamp of a recently indexed document falls 
 within this time window but this document is not yet available to search then 

@@ -6,14 +6,15 @@
 annotate it with the results. Essentially, as part of its output, {dfanalytics} 
 appends the results of the analysis to the source data. By doing this, it 
 provides additional insights into the data. The process leaves the source index 
-intact, it creates a new index that contains the annotated data. You can slice 
-and dice the data extended with the results as you normally do with any other 
-data set.
+intact, it creates a new index that contains a copy of the source data and the 
+annotated data. You can slice and dice the data extended with the results as you 
+normally do with any other data set.
 
-IMPORTANT: Using {dfanalytics} assumes you have already done some preprocessing 
-on your data by using {ref}/ml-dataframes.html[{dataframes}]. You can transform 
-and clean your data by using the 
-{ref}/data-frame-apis.html[{dataframe-transform}] feature.
+IMPORTANT: Using {dfanalytics} requires source data to be structured as a two 
+dimensional "tabular" data structure, in other words a 
+{ref}/ml-dataframes.html[{dataframe}]. 
+{ref}/data-frame-apis.html[{dataframe-transforms-cap}] allow you to create 
+{dataframes} which can be used as the source for {dfanalytics}.
 
 [float]
 [[dfa-outlier-detection]]

@@ -1,6 +1,9 @@
 [role="xpack"]
-[[ml-dfanalytics]]
-=== {dfanalytics-cap}
+[[ml-dfanalytics-overview]]
+== {dfanalytics-cap} overview
+++++
+<titleabbrev>Overview</titleabbrev>
+++++
 
 {dfanalytics-cap} allows you to perform different analyses of your data and 
 annotate it with the results. Essentially, as part of its output, {dfanalytics} 
@@ -16,9 +19,9 @@ dimensional "tabular" data structure, in other words a
 {ref}/data-frame-apis.html[{dataframe-transforms-cap}] allow you to create 
 {dataframes} which can be used as the source for {dfanalytics}.
 
-[float]
+[discrete]
 [[dfa-outlier-detection]]
-==== {oldetection-cap}
+=== {oldetection-cap}
 
 {oldetection-cap} is an analysis for identifying data points (outliers) whose 
 feature values are different from those of the normal data points in a 
@@ -39,7 +42,7 @@ have similar feature values, while the minority of the data points – the
 outliers – have different feature values and will, therefore, be far away from 
 the normal points.
 
-FIGURE ON DISTANCE BASED METHOD
+//FIGURE ON DISTANCE BASED METHOD
 
 The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
 distance of the data point to its K^th^ nearest neighbor where K is a small 
@@ -58,8 +61,7 @@ account not only the distance of the points to their K nearest neighbors but
 also the distance of these neighbors to their neighbors.
 
 [role="screenshot"]
-image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, 
-Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
+image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
 
 Based on this approach, a metric is computed called local outlier factor 
 (`lof`) for each data point. The higher the local outlier factor, the more 
@@ -83,9 +85,9 @@ IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data
 once. If new data comes into the index, you need to do the analysis again on the 
 altered data.
 
-[float]
+[discrete]
 [[dfa-feature-influence]]
-===== Feature influence
+==== Feature influence
 
 Besides the {olscore}, another value is calculated during {oldetection}: 
 the feature influence score. As we mentioned, there are multiple features of a 
@@ -98,4 +100,4 @@ the point an outlier. By doing this, this value provides context to help
 understand more about the reasons for the data point being unusual and can drive 
 visualizations.
 
-FIGURE ON FEATURE INFLUENCE
+//FIGURE ON FEATURE INFLUENCE

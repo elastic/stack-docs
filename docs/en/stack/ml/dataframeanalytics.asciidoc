@@ -2,13 +2,13 @@
 [[ml-dfanalytics]]
 === {dfanalytics-cap}
 
-{dfanalytics-cap} allows you to analyze your data with different types of 
-analysis and annotate the data with the results. Essentially, {dfanalytics} 
+{dfanalytics-cap} allows you to perform different analyses of your data and 
+annotate it with the results. Essentially, as part of its output, {dfanalytics} 
 appends the results of the analysis to the source data. By doing this, it 
 provides additional insights on the data. The process leaves the source index 
 intact, it creates a new index that contains the annotated data. You can slice 
 and dice the data extended with the results as you normally do with any other 
-dataset.
+data set.
 
 IMPORTANT: Using {dfanalytics} assumes you have already done some preprocessing 
 on your data by using {ref}/ml-dataframes.html[{dataframes}]. You can transform 
@@ -19,61 +19,62 @@ and clean your data by using the
 [[dfa-outlier-detection]]
 ==== {oldetection-cap}
 
-{oldetection-cap} is an analysis for identifying data points with unusual 
-features (outliers) that deviates from the features of the majority of the data 
-points in a particular dataset. Outliers may denote errors or unusual behavior.
+{oldetection-cap} is an analysis for identifying data points (outliers) whose 
+feature values are different from those of the normal data points in a 
+particular data set. Outliers may denote errors or unusual behavior.
 
-We use unsupervised {oldetection} which means that it doesn't use training 
-dataset for teaching the {oldetection} model to recognize outliers. Unsupervised 
+We use unsupervised {oldetection} which means there is no need to provide a 
+training data set to teach {oldetection} to recognize outliers. Unsupervised 
 {oldetection} uses various machine learning techniques to find which data points 
 are unusual compared to the majority of the data points.
 
-In the {stack}, we use four {oldetection} methods. The basic assumption of the 
-**distance based methods** is that normal data points – in other words, points 
-that are not outliers – have a lot of neighbors nearby, because we expect that 
-in a population the majority of the data points have similar features, while the 
-minority of the data points – the outliers – will be far away from the 
-constellation of the normal points because of their differing features.
+In the {stack}, we use an ensemble of four different distance and density based 
+{oldetection} methods. By default, you don't need to select the methods or 
+provide any parameters, but you can override the default behavior if you like. 
+The basic assumption of the **distance based methods** is that normal data 
+points – in other words, points that are not outliers – have a lot of neighbors 
+nearby, because we expect that in a population the majority of the data points 
+have similar feature values, while the minority of the data points – the 
+outliers – have different feature values and will therefore be far away from the 
+normal points.
 
 FIGURE ON DISTANCE BASED METHOD
 
 The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
-distance of the data point to its K^th^ nearest neighbor where K is the number 
-that you picked for the calculation (usually only a tiny fraction of the total 
-data points). The higher value means the higher probability that the data point 
-is an outlier.
+distance of the data point to its K^th^ nearest neighbor where K is small number 
+and usually independent of the total number of data points. The higher this 
+distance the more the data point is an outlier.
 
 The distance of K-nearest neighbors method (`distance_knn`) calculates the 
-average distance of the data points to the nearest neighbors. Points with the 
-largest average distance will most likely be outliers.
+average distance of the data points to their nearest neighbors. Points with the 
+largest average distance will be the most outlying.
 
 While the results of the distance based methods are easy to interpret, their 
 drawback is that they don't take into account the density variations of a 
-dataset. This is the point where **density based methods** come into the 
+data set. This is the point where **density based methods** come into the 
 picture, they are used for mitigating this problem. These methods take into 
-account not only the distance of the points to the K nearest neighbors, but the 
-distance of the points to the **set** of nearest neighbors.
+account not only the distance of the points to their K nearest neighbours, but 
+also the distance of these neighbors to their neighbors.
 
 FIGURE ON DENSITY BASED METHOD
 
 Based on this approach, a metric is computed called local outlier factor 
-(`lof`) for each data point. The higher the local outlier factor, the most 
-likely that the data point is an outlier.
+(`lof`) for each data point. The higher the local outlier factor, the more 
+outlying is the data point.
 
-Another density based method that {oldetection} is using calculates the local 
+The other density based method that {oldetection} uses is the local 
 distance-based outlier factor (`ldof`). Ldof is a ratio of two measures: the 
 first computes the average distance of the data point to its K nearest 
-neighbors; the second computes the pairwise distances of the neighbors 
-themselves and take their average distances. The ratio of these two computations 
-composes the value of the local distance-based outlier factor. Again, the higher 
-value means higher probability of the data point is an outlier.
+neighbors; the second computes the average of the pairwise distances of the 
+neighbors themselves. Again, the higher the value the more the data point is an 
+outlier.
 
 As you can see, these four algorithms work differently, so they don't always 
 agree on which points are outliers. By default, we use all these methods during 
-{oldetection}, then combine their results and give every datapoint in the index 
-an {olscore}. The {olscore} ranges from 0 to 1, where the higher number 
-represents the higher probability that the data point is an outlier compares to 
-the other points in the index.
+{oldetection}, then normalize and combine their results and give every datapoint 
+in the index an {olscore}. The {olscore} ranges from 0 to 1, where the higher 
+number represents the chance that the data point is an outlier compared to the 
+other data points in the index.
 
 IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data 
 once. If new data comes into the index, you need to do the analysis again on the 
@@ -91,7 +92,7 @@ value of feature influence provides a relative ranking of features by their
 contribution to a point being an outlier. Therefore, while {olscore} tells us 
 whether a data point is an outlier, feature influence shows which features make 
 the point an outlier. By doing this, this value provides context to help 
-understand more about the behavior of an unusual datapoint and can drive 
+understand more about the reasons for the data point being unusual and can drive 
 visualizations.
 
 FIGURE ON FEATURE INFLUENCE

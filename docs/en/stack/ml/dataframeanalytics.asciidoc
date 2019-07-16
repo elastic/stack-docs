@@ -5,7 +5,7 @@
 {dfanalytics-cap} allows you to perform different analyses of your data and 
 annotate it with the results. Essentially, as part of its output, {dfanalytics} 
 appends the results of the analysis to the source data. By doing this, it 
-provides additional insights on the data. The process leaves the source index 
+provides additional insights into the data. The process leaves the source index 
 intact, it creates a new index that contains the annotated data. You can slice 
 and dice the data extended with the results as you normally do with any other 
 data set.
@@ -35,15 +35,15 @@ The basic assumption of the **distance based methods** is that normal data
 points – in other words, points that are not outliers – have a lot of neighbors 
 nearby, because we expect that in a population the majority of the data points 
 have similar feature values, while the minority of the data points – the 
-outliers – have different feature values and will therefore be far away from the 
-normal points.
+outliers – have different feature values and will, therefore, be far away from 
+the normal points.
 
 FIGURE ON DISTANCE BASED METHOD
 
 The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
-distance of the data point to its K^th^ nearest neighbor where K is small number 
-and usually independent of the total number of data points. The higher this 
-distance the more the data point is an outlier.
+distance of the data point to its K^th^ nearest neighbor where K is a small 
+number and usually independent of the total number of data points. The higher 
+this distance the more the data point is an outlier.
 
 The distance of K-nearest neighbors method (`distance_knn`) calculates the 
 average distance of the data points to their nearest neighbors. Points with the 
@@ -53,7 +53,7 @@ While the results of the distance based methods are easy to interpret, their
 drawback is that they don't take into account the density variations of a 
 data set. This is the point where **density based methods** come into the 
 picture, they are used for mitigating this problem. These methods take into 
-account not only the distance of the points to their K nearest neighbours, but 
+account not only the distance of the points to their K nearest neighbors but 
 also the distance of these neighbors to their neighbors.
 
 FIGURE ON DENSITY BASED METHOD
@@ -86,7 +86,7 @@ altered data.
 
 Besides the {olscore}, another value is calculated during {oldetection}: 
 the feature influence score. As we mentioned, there are multiple features of a 
-data point that are analyzed during {oldetection}. An influental feature is a 
+data point that are analyzed during {oldetection}. An influential feature is a 
 feature of a data point that is responsible for the point being an outlier. The 
 value of feature influence provides a relative ranking of features by their 
 contribution to a point being an outlier. Therefore, while {olscore} tells us 

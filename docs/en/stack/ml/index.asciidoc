@@ -1,6 +1,6 @@
 [role="xpack"]
 [[xpack-ml]]
-= Machine learning in the {stack}
+= {ml-cap} anomaly detection
 
 [partintro]
 --
@@ -8,7 +8,7 @@ Machine learning is tightly integrated with the {stack}. Data is pulled
 from {es} for analysis and anomaly results are displayed in {kib} dashboards.
 
 * <<ml-overview>>
-* <<ml-getting-started>>
+//* <<ml-getting-started>>
 * <<ml-configuring>>
 * <<stopping-ml>>
 * <<ml-troubleshooting, Troubleshooting Machine Learning>>
@@ -18,22 +18,18 @@ from {es} for analysis and anomaly results are displayed in {kib} dashboards.
 
 --
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/overview.asciidoc
 include::overview.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/getting-started.asciidoc
-include::getting-started.asciidoc[]
+//include::getting-started.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ml/configuring.asciidoc
 include::{es-repo-dir}/ml/configuring.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ml/stopping-ml.asciidoc
 include::{es-repo-dir}/ml/stopping-ml.asciidoc[]
 
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/api-quickref.asciidoc
 include::api-quickref.asciidoc[]
 
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ml/functions.asciidoc
 include::{es-repo-dir}/ml/functions.asciidoc[]
 
+include::troubleshooting.asciidoc[]
 
+include::limitations.asciidoc[]

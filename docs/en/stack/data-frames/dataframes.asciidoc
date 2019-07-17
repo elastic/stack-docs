@@ -38,13 +38,13 @@ scope of the aggregation.
 
 The {dataframe-transform} performs a composite aggregation that 
 paginates through all the data defined by the source index query. The output of
-the aggregation is stored in a destination index, known as a {dataframe}. The 
-processing of a single composite aggregation that the {dataframe-transform} 
-performs is known as checkpointing. You can decide whether you want the 
-{dataframe-transform} to run once (batch {dataframe-transform}) or continuously 
-({cdataframe-transform}). A batch {dataframe-transform} is a single operation that 
-will only reach checkpoint 1. {cdataframe-transforms-cap} continually 
-increment and process checkpoints as new source data is ingested.
+the aggregation is stored in a destination index. Each time the 
+{dataframe-transform} queries the source index, it creates a *checkpoint*. You 
+can decide whether you want the {dataframe-transform} to run once (batch 
+{dataframe-transform}) or continuously ({cdataframe-transform}). A batch 
+{dataframe-transform} is a single operation that will only reach checkpoint 1. 
+{cdataframe-transforms-cap} continually increment and process checkpoints as new 
+source data is ingested.
 
 .Example
 

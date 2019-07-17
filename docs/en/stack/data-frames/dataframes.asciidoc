@@ -1,24 +1,24 @@
 [role="xpack"]
 [[ml-dataframes]]
-= {dataframes-cap}
+= {dataframe-transforms-cap}
 
 [partintro]
 --
 
 beta[]
 
-A _{dataframe}_ is a transformation of data that has been indexed in elasticsearch. 
+A _{dataframe}_ is a transformation of data that has been indexed in {es}. 
 Use data frames to _pivot_ your data into a new entity centric index for example. 
 By transforming and summarizing your data, it becomes possible to visualize and 
 analyze it in alternative and interesting ways.
 
-A lot of {es} indices are organized as a stream of events: each event is an individual 
-document, for example a single item purchase. {dataframe-transforms-cap} enable 
-you to summarize this data, bringing it into an organized, more analysis friendly 
-format. For example, you can summarize all the purchases of a single customer (see 
-the example below).
+A lot of {es} indices are organized as a stream of events: each event is an 
+individual document, for example a single item purchase. 
+{dataframe-transforms-cap} enable you to summarize this data, bringing it into 
+an organized, more analysis-friendly format. For example, you can summarize all 
+the purchases of a single customer (see the example below).
 
-The {dataframe} feature enables you to define a pivot which is a set of features 
+{dataframe-transforms-cap} enable you to define a pivot which is a set of features 
 that transform the index into a different, more digestible format. Pivoting 
 results in a summary of your data (which is the {dataframe} itself).
 
@@ -36,9 +36,15 @@ more about the supported aggregations and group-by fields, see
 As an optional step, it's also possible to add a query to further limit the 
 scope of the aggregation.
 
-IMPORTANT: In 7.2, you can build {dataframes} on the top of a static indices. 
-When new data comes into the index, you have to perform the transformation again 
-on the altered data.
+The {dataframe-transform} performs a composite aggregation that 
+paginates through all the data defined by the source index query. The output of
+the aggregation is stored in a destination index. Each time the 
+{dataframe-transform} queries the source index, it creates a *checkpoint*. You 
+can decide whether you want the {dataframe-transform} to run once (batch 
+{dataframe-transform}) or continuously ({cdataframe-transform}). A batch 
+{dataframe-transform} is a single operation that will only reach checkpoint 1. 
+{cdataframe-transforms-cap} continually increment and process checkpoints as new 
+source data is ingested.
 
 .Example
 
@@ -57,7 +63,7 @@ shows the number of sold items in every product category in the last year.
 [role="screenshot"]
 image::ml/images/ml-dataframepivot.jpg["Example of a data frame pivot in {kib}"]
 
-IMPORTANT: Creating a {dataframe} leaves your source index intact. A new index will 
-be created dedicated to the {dataframe}.
+IMPORTANT: The {dataframe-transform-cap} leaves your source index intact. A new 
+index will be created dedicated to the {dataframe}.
 
 --

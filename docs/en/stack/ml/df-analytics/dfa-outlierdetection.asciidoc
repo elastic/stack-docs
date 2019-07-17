@@ -1,27 +1,7 @@
 [role="xpack"]
-[[ml-dfanalytics-overview]]
-== {dfanalytics-cap} overview
-++++
-<titleabbrev>Overview</titleabbrev>
-++++
-
-{dfanalytics-cap} allows you to perform different analyses of your data and 
-annotate it with the results. Essentially, as part of its output, {dfanalytics} 
-appends the results of the analysis to the source data. By doing this, it 
-provides additional insights into the data. The process leaves the source index 
-intact, it creates a new index that contains a copy of the source data and the 
-annotated data. You can slice and dice the data extended with the results as you 
-normally do with any other data set.
-
-IMPORTANT: Using {dfanalytics} requires source data to be structured as a two 
-dimensional "tabular" data structure, in other words a 
-{stack-ov}/ml-dataframes.html[{dataframe}]. 
-{ref}/data-frame-apis.html[{dataframe-transforms-cap}] allow you to create 
-{dataframes} which can be used as the source for {dfanalytics}.
-
-[discrete]
 [[dfa-outlier-detection]]
-=== {oldetection-cap}
+== {oldetection-cap}
+
 
 {oldetection-cap} is an analysis for identifying data points (outliers) whose 
 feature values are different from those of the normal data points in a 
@@ -60,8 +40,8 @@ picture, they are used for mitigating this problem. These methods take into
 account not only the distance of the points to their K nearest neighbors but 
 also the distance of these neighbors to their neighbors.
 
-[role="screenshot"]
-image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
+//[role="screenshot"]
+//image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
 
 Based on this approach, a metric is computed called local outlier factor 
 (`lof`) for each data point. The higher the local outlier factor, the more 
@@ -87,7 +67,7 @@ altered data.
 
 [discrete]
 [[dfa-feature-influence]]
-==== Feature influence
+=== Feature influence
 
 Besides the {olscore}, another value is calculated during {oldetection}: 
 the feature influence score. As we mentioned, there are multiple features of a 

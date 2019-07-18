@@ -5,8 +5,7 @@
 <titleabbrev>Troubleshooting</titleabbrev>
 ++++
 
-Use the information in this section to troubleshoot common problems and find
-answers for frequently asked questions.
+Use the information in this section to troubleshoot common problems.
 
 include::{stack-repo-dir}/help.asciidoc[tag=get-help]
 
@@ -20,7 +19,8 @@ by your `transform_id`.
 provides information about the transform status and failures.
 * If the {dataframe-transform} exists as a task, you can use the
 {ref}/tasks.html[task management API] to gather task information. For example:
-`GET _tasks?actions=data_frame/transforms*&detailed`.
+`GET _tasks?actions=data_frame/transforms*&detailed`. Typically, the task exists
+when the transform is in a started or failed state.
 * The {es} logs from the node that was running the {dataframe-transform} might
 also contain useful information. You can identify the node from the notification
 messages. Alternatively, if the task still exists, you can get that information

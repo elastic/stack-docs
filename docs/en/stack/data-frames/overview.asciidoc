@@ -1,65 +1,25 @@
 [role="xpack"]
-[[ml-dataframes]]
-= {dataframe-transforms-cap}
-
-[partintro]
---
+[[ml-transform-overview]]
+== Overview
 
 beta[]
 
-{es} aggregations are a powerful and flexible feature that enable you to
-summarize and retrieve complex insights about your data. You can summarize
-complex things like the number of web requests per day on a busy website, broken
-down by geography and browser type. If you use the same data set to try to
-calculate something as simple as a single number for the average duration of
-visitor web sessions, however, you can quickly run out of memory. Why does this
-occur? A web session duration is an example of a behavioral attribute not held
-on any one log record; it has to be derived by finding the first and last
-records for each session in our weblogs. This derivation requires some complex
-query expressions and a lot of memory to connect all the data points. If you
-have an ongoing background process that fuses related events from one index into
-entity-centric summaries in another index, you get a more useful joined-up
-picture--this is essentially what _{dataframes}_ are.
+A _{dataframe}_ is a two-dimensional tabular data structure. In the context of
+the {stack}, it is a transformation of data that is indexed in {es}. For
+example, you can use {dataframes} to _pivot_ your data into a new entity-centric
+index. By transforming and summarizing your data, it becomes possible to
+visualize and analyze it in alternative and interesting ways.
 
-You might want to consider using {dataframes} instead of aggregations when:
+A lot of {es} indices are organized as a stream of events: each event is an 
+individual document, for example a single item purchase. {dataframes-cap} enable
+you to summarize this data, bringing it into an organized, more
+analysis-friendly format. For example, you can summarize all the purchases of a
+single customer.
 
-* You need a complete _feature index_ rather than a top-N set of items.
-
-** In {ml}, you often need a complete set of behavioral features rather just the
-top-N. For example, if you are predicting customer churn, you might look at
-features such as the number of website visits in the last week, the total number
-of sales, or the number of emails sent. The {stack} {ml-features} create models
-based on this multi-dimensional feature space, so they benefit from full feature
-indices ({dataframes}).
-** When you are trying to search across the results of an aggregation or
-multiple aggregations. Aggregation results can be ordered or filtered, but there
-are
-{ref}/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-order[limitations to ordering]
-and
-{ref}/search-aggregations-pipeline-bucket-selector-aggregation.html[filtering by bucket selector]
-is constrained by the maximum number of buckets returned. If you want to search
-all aggregation results, you need to create the complete {dataframe}. If you
-need to sort or filter the aggregation results by multiple fields, {dataframes}
-are particularly useful.
-
-* You need to sort aggregation results by a pipeline aggregation.
-{ref}/search-aggregations-pipeline.html[Pipeline aggregations] cannot be used
-for sorting. Technically, this is because pipeline aggregations are run during
-the reduce phase after all other aggregations have already completed. If you
-create a {dataframe}, you can effectively perform multiple passes over the data.
-
-* You want to create summary tables to optimize queries. For example, if you
-have a high level dashboard that is accessed by a large number of users and it
-uses a complex aggregation over a large dataset, it may be more efficient to
-create a {dataframe} to cache results. Thus, each user doesn't need to run the
-aggregation query.
-
-Though there are multiple ways to create {dataframes}, this content pertains
-<<<<<<< HEAD
-to one specific method: {dataframe-transforms}. {dataframe-transforms-cap}
-enable you to define a pivot, which is a set of features that transform the
-index into a different, more digestible format. Pivoting results in a summary of
-your data, which is the {dataframe}.
+You can create {dataframes} by using {dataframe-transforms}.
+{dataframe-transforms-cap} enable you to define a pivot, which is a set of
+features that transform the index into a different, more digestible format.
+Pivoting results in a summary of your data, which is the {dataframe}.
 
 To define a pivot, first you select one or more fields that you will use to
 group your data. You can select categorical fields (terms) and numerical fields
@@ -103,11 +63,6 @@ items in every product category in the last year.
 [role="screenshot"]
 image::images/ml-dataframepivot.jpg["Example of a data frame pivot in {kib}"]
 
-IMPORTANT: The {dataframe-transform-cap} leaves your source index intact. It
+IMPORTANT: The {dataframe-transform} leaves your source index intact. It
 creates a new index that is dedicated to the {dataframe}.
 
---
-=======
-to one specific method: _{dataframe-transforms}_.
---
->>>>>>> [DOCS] Adds data frame transform overview

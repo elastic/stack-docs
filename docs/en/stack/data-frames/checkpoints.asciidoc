@@ -14,13 +14,13 @@ If your {dataframe-transform} runs only once, there is logically only one
 checkpoint. If your {dataframe-transform} runs continuously, however, it creates
 checkpoints as it ingests and transforms new source data.
 
-For example, a {cdataframe-transform}:
+To create a checkpoint, the {cdataframe-transform}:
 
 . Checks for changes to source indices.
 +
 Using a simple periodic timer, the {dataframe-transform} checks for changes to
-the source indices based on sequence IDs. This check is done based on the
-interval defined in the transform's `frequency` property.
+the source indices. This check is done based on the interval defined in the
+transform's `frequency` property.
 +
 If the source indices remain unchanged or if a checkpoint is already in progress
 then it waits for the next timer.
@@ -36,21 +36,19 @@ synchronize the source and destination indices.
 +
 --
 The {dataframe-transform} applies changes related to either new or changed
-entities to the destination index.
-//TBD: This seems to imply it doesn't handle deletions. Do we want to clarify that?
-The set of changed entities is paginated. For each page, the
-{dataframe-transform} performs a composite aggregation using a `terms` query.
-//TBD: It's not clear why the previous two sentences are noteworthy from a user point of view.
-After all the changes have been applied, the checkpoint is complete.
+entities to the destination index. The set of changed entities is paginated. For
+each page, the {dataframe-transform} performs a composite aggregation using a
+`terms` query. After all the pages of changes have been applied, the checkpoint
+is complete.
 --
 
 This checkpoint process involves both search and indexing activity on the
 cluster. We have attempted to favor control over performance while developing
 {dataframe-transforms}. We decided it was preferable for the
-{dataframe-transform} to take longer to complete quietly in the background,
-rather than to finish quickly and take precedence in resource consumption. That
-being said, the cluster still requires enough resources to support both the
-composite aggregation search and the indexing of its results. 
+{dataframe-transform} to take longer to complete, rather than to finish quickly
+and take precedence in resource consumption. That being said, the cluster still
+requires enough resources to support both the composite aggregation search and
+the indexing of its results. 
 
 TIP: If the cluster experiences unsuitable performance degradation due to the
 {dataframe-transform}, stop the transform. Consider whether you can apply a

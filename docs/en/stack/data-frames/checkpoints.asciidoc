@@ -82,7 +82,8 @@ the interval defined in the transform's `frequency` property. If the search
 is retried to the point where it reaches a minimal number of buckets, an
 irrecoverable failure occurs.
 
-//TBD: Where is the minimal number of buckets specified?
-
-In general, the design of {dataframe-transforms} favors data consistency over
-continuous running.
+If the node running the {dataframe-transforms} fails, the transform restarts
+from the most recent persisted cursor position. This recovery process might
+repeat some of the work the transform had already done, but it ensures data
+consistency. In general, the design of {dataframe-transforms} favors data
+consistency over continuous running.

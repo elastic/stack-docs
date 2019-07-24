@@ -7,6 +7,10 @@
 
 beta[]
 
+[discrete]
+[[ml-what-is-a-dataframe]]
+== What is a {dataframe}?
+
 A _{dataframe}_ is a transformation of data that has been indexed in {es}. 
 Use data frames to _pivot_ your data into a new entity centric index for example. 
 By transforming and summarizing your data, it becomes possible to visualize and 
@@ -21,6 +25,10 @@ the purchases of a single customer (see the example below).
 {dataframe-transforms-cap} enable you to define a pivot which is a set of features 
 that transform the index into a different, more digestible format. Pivoting 
 results in a summary of your data (which is the {dataframe} itself).
+
+[discrete]
+[[ml-pivoting]]
+== Pivoting
 
 Defining a pivot consist of two main parts. First, you select one or more fields 
 that your data will be grouped by. Principally you can select categorical 
@@ -46,7 +54,9 @@ can decide whether you want the {dataframe-transform} to run once (batch
 {cdataframe-transforms-cap} continually increment and process checkpoints as new 
 source data is ingested.
 
-.Example
+[discrete]
+[[ml-df-example]]
+== An example
 
 Imagine that you run a webshop that sells clothes. Every order creates a document 
 that contains a unique order ID, the name and the category of the ordered product, 

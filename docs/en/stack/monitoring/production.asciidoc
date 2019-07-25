@@ -2,12 +2,11 @@
 [[monitoring-production]]
 == Monitoring in a production environment
 
-By default, monitoring agents store data in the cluster where they're running.
-In production, you should send data to a separate _monitoring cluster_ so that
-historical monitoring data is available even when the nodes you are monitoring
-are not. For example, you can use {metricbeat} to ship monitoring data about
-{kib}, {es}, {ls}, and Beats to the monitoring cluster. If you are sending your
-data to the {esms-init}, see <<esms>>.
+In production, you should send monitoring data to a separate _monitoring cluster_
+so that historical data is available even when the nodes you are monitoring are
+not. For example, you can use {metricbeat} to ship monitoring data about {kib},
+{es}, {ls}, and Beats to the monitoring cluster. If you are sending your data to
+the {esms-init}, see <<esms>>.
 
 If you have at least a gold license, using a dedicated monitoring cluster also 
 enables you to monitor multiple clusters from a central location.

@@ -24,7 +24,8 @@ image::monitoring/images/architecture10.png["A typical monitoring environment"]
 ////
 
 You can use {metricbeat} to collect and ship data about {es}, {kib}, {ls}, and
-Beats rather than routing it through {es}.
+Beats directly to your monitoring cluster rather than routing it through your
+production cluster.
 ////
 For example:
 
@@ -39,11 +40,3 @@ should be running the same version of the stack. A monitoring cluster cannot
 monitor production clusters running newer versions of the stack. If necessary,
 the monitoring cluster can monitor production clusters running the latest
 release of the previous major version.
-
-If you use {kib} to visualize data and administer the cluster, you might want to
-create a dedicated {kib} instance for monitoring, rather than using a single
-{kib} instance to access both your production cluster and monitoring cluster. 
-
-////
-image::monitoring/images/architecture30.png["A separate {kib} instance accesses the monitoring cluster"]
-////

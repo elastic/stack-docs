@@ -457,8 +457,10 @@ Authentication in {kib} fails and the following error is printed in the
 
 ....
 Authentication to realm saml1 failed - Provided SAML response is not valid for realm
-saml/saml1 (Caused by ElasticsearchSecurityException[Conditions [https://some-url-here...]
-do not match required audience [https://my.kibana.url]])
+saml/saml1 (Caused by ElasticsearchSecurityException[Conditions
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company....ple.com/]
+do not match required audience
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company.example.com]])
 ....
 
 *Resolution:*
@@ -470,6 +472,20 @@ the SAML Service Provider Entity ID in the SAML Identity Provider documentation.
 
 To resolve this issue, ensure that both the saml realm in {es} and the IdP are
 configured with the same string for the SAML Entity ID of the Service Provider.
+
+In the {es} log, just before the exception message (above), there will also be
+one or more `INFO` level messages of the form
+....
+Audience restriction
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company.example.com/]
+does not match required audience
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company.example.com]
+(difference starts at character [#68] [/] vs [])
+....
+This log message can assist in determining the difference between the value that
+was received from the IdP and the value at has been configured in {es}.
+The text in parentheses that describes the difference between the two audience
+identifiers will only be shown if the two strings are considered to be similar.
 
 TIP: These strings are compared as case-sensitive strings and not as
 canonicalized URLs even when the values are URL-like. Be mindful of trailing

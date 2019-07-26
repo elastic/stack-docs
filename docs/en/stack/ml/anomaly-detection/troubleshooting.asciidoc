@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-troubleshooting]]
-== Troubleshooting {ml}
+== Troubleshooting {ml} {anomaly-detect}
 ++++
 <titleabbrev>Troubleshooting</titleabbrev>
 ++++
@@ -42,7 +42,7 @@ For more information, see {ref}/rolling-upgrades.html[Rolling upgrades].
 [[ml-mappingclash]]
 === Job creation failure due to mapping clash
 
-This problem occurs when you try to create a job.
+This problem occurs when you try to create an {anomaly-job}.
 
 *Symptoms:*
 
@@ -61,15 +61,16 @@ data types or different `fields` settings.
 
 By default, {ml} results are stored in the `.ml-anomalies-shared` index in {es}.
 To resolve this issue, click *Advanced > Use dedicated index* when you create
-the job in {kib}. If you are using the create job API, specify an index name in
-the `results_index_name` property.
+the job in {kib}. If you are using the create {anomaly-job} job API, specify an
+index name in the `results_index_name` property.
 
 [[ml-jobnames]]
 === {kib} cannot display jobs with invalid characters in their name
 
-This problem occurs when you create a job by using the
-{ref}/ml-put-job.html[Create Jobs API] then try to view that job in {kib}. In
-particular, the problem occurs when you use a period(.) in the job identifier.
+This problem occurs when you create an {anomaly-job} by using the
+{ref}/ml-put-job.html[Create {anomaly-jobs} API] then try to view that job in
+{kib}. In particular, the problem occurs when you use a period(.) in the job
+identifier.
 
 *Symptoms:*
 
@@ -82,10 +83,11 @@ abbreviated name, it is displayed.
 
 *Resolution:*
 
-Create jobs in {kib} or ensure that you create jobs with valid identifiers when
-you use the {ml} APIs. For more information about valid identifiers, see
-{ref}/ml-put-job.html[Create Jobs API] or
-{ref}/ml-job-resource.html[Job Resources].
+Create {anomaly-jobs} in {kib} or ensure that you create {anomaly-jobs} with
+valid identifiers when you use the APIs. For more information about valid
+identifiers, see
+{ref}/ml-put-job.html[Create {anomaly-jobs} API] or
+{ref}/ml-job-resource.html[{anomaly-detect-cap} job resources].
 
 [[ml-upgradedf]]
 
@@ -113,6 +115,6 @@ after the upgrade.
 
 If you do not fix or delete the {dfeed} before the upgrade, in order to successfully
 start the failing nodes you must downgrade the nodes then fix the problem per
-above.
+above.s
 
 See also {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].

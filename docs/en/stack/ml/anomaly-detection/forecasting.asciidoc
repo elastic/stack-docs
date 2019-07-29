@@ -15,7 +15,8 @@ your disk utilization will reach 100% before the end of next week.
 
 Each forecast has a unique ID, which you can use to distinguish between forecasts
 that you created at different times. You can create a forecast by using the
-{ref}/ml-forecast.html[Forecast Jobs API] or by using {kib}. For example:
+{ref}/ml-forecast.html[forecast {anomaly-jobs} API] or by using {kib}. For
+example:
 
 
 [role="screenshot"]
@@ -34,19 +35,17 @@ Eventually if the confidence levels are too low, the forecast stops.
 You can also optionally specify when the forecast expires. By default, it
 expires in 14 days and is deleted automatically thereafter. You can specify a
 different expiration period by using the `expires_in` parameter in the
-{ref}/ml-forecast.html[Forecast Jobs API].
-
-//Add examples of forecast_request_stats and forecast documents?
+{ref}/ml-forecast.html[forecast {anomaly-jobs} API].
 
 There are some limitations that affect your ability to create a forecast:
 
 * You can generate only three forecasts concurrently. There is no limit to the
 number of forecasts that you retain. Existing forecasts are not overwritten when
 you create new forecasts. Rather, they are automatically deleted when they expire.
-* If you use an `over_field_name` property in your job (that is to say, it's a
-_population job_), you cannot create a forecast.
-* If you use any of the following analytical functions in your job, you
-cannot create a forecast:
+* If you use an `over_field_name` property in your {anomaly-job} (that is to say,
+it's a _population job_), you cannot create a forecast.
+* If you use any of the following analytical functions in your {anomaly-job},
+you cannot create a forecast:
 ** `lat_long`
 ** `rare` and `freq_rare`
 ** `time_of_day` and `time_of_week`
@@ -56,9 +55,10 @@ For more information about any of these functions, see <<ml-functions>>.
 --
 * Forecasts run concurrently with real-time {ml} analysis. That is to say, {ml}
 analysis does not stop while forecasts are generated. Forecasts can have an
-impact on {ml} jobs, however, especially in terms of memory usage. For this
+impact on {anomaly-jobs}, however, especially in terms of memory usage. For this
 reason, forecasts run only if the model memory status is acceptable.
-* The job must be open when you create a forecast. Otherwise, an error occurs.
+* The {anomaly-job} must be open when you create a forecast. Otherwise, an error
+occurs.
 * If there is insufficient data to generate any meaningful predictions, an
 error occurs. In general, forecasts that are created early in the learning phase
 of the data analysis are less accurate.

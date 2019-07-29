@@ -1,0 +1,100 @@
+[role="xpack"]
+[[ml-dfanalytics-evaluate]]
+== Evaluating {dfanalytics}
+
+Using the {dfanalytics} features to gain insights from a data set is an 
+iterative process. You might need to experiment with different analyses, 
+parameters, ways to transform data before you arrive to a result that satisfies 
+your use case. A valuable companion to this process is the 
+{ref}/valuate-dfanalytics.html/[{evaluatedf-api}] that allows you to evaluate 
+the {dfanalytics} performance against a marked up data set. It helps to 
+understand error distributions and to know the points where is the {dfanalytics} 
+model performing well or less trustworthily.
+
+{evaluatedf-api-cap} is designed for providing a general evaluation mechanism 
+for the different kinds of {dfanalytics}. That means that every type of analysis 
+can be evaluated by using one of the evaluation types that the {evaluatedf-api} 
+offers. For example, the results of an {oldetection} analysis can be evaluated 
+by using {binarysc} through the {evaluatedf-api}.
+
+To evaluate an algorithm with this API, you need to annotate your index that 
+contains the results of the analysis with a field that marks each {datafame} row 
+with the ground truth (for example, in case of {oldetection}, whether the given 
+data point really is an outlier or not). The {evaluatedf-api} will evaluate the 
+performance of the {dfanalytics} against this manually provided ground truth.
+
+[discrete]
+[[ml-dfanalytics-binary-soft-classification]]
+=== {binarysc-cap} evaluation
+
+{oldetection-cap} essentially classifies each data point in a data set into one 
+of two categories (outlier or normal), this process is called {binarysc}. The 
+{binarysc} evaluation type uses four different metrics to evaluate the model 
+performance:
+
+* confusion matrix
+* precision
+* recall
+* receiver operating characteristic (ROC) curve.
+
+[discrete]
+[[ml-dfanalytics-confusion-matrix]]
+==== Confusion Matrix
+
+Confusion matrix tells you four measures of how well the {dfanalytics} worked on 
+your data set: true positives (TP), true negatives (TN), false positives (FP), 
+and false negatives (FN).
+
+* True positives: Outliers that the analysis identified as outliers.
+* True negatives: Normal values that the analysis identified as normals.
+* False positives: Normal values that the analysis misidentified as outliers.
+* False negatives: Outliers that the analysis misidentified as normals.
+
+Although, the {evaluatedf-api} can compute the confusion matrix out of the 
+{oldetection} results, these results are not binary values (outlier/not 
+outlier), but a number between 0 and 1 called {olscore}. This value captures how 
+likely it is for a data point to be an outlier. It means that it is up to the 
+user who is evaluating the results to decide what is the threshold or cutoff 
+point at which the data point will be considered as an outlier. For example, the 
+user can say that all the data points with an {olscore} higher than 0.5 will be 
+considered as outliers.
+
+To take this complexity into account, the {evaluatedf-api} returns the confusion 
+matrix at different thresholds (at 0.25, 0.5, and 0.75 by default).
+
+[discrete]
+[[ml-dfanalytics-precision-recall]]
+==== Precision and recall
+
+Confusion matrix is a useful measure, but it could be hard to compare the 
+results across the different algorithms. Precision and recall values are for 
+summarizing the algorithm performance as a single number that makes it easier to 
+compare the evaluation results.
+
+Precision shows how many of the data points that the algorithm identified as 
+outliers were actually outliers. 
+
+*Precision = TP/TP+FP*
+
+Recall answers a slightly different question. This value shows how many of the 
+data points that are actual outliers were identified correctly as outliers.
+
+*Recall = TP/TP+FN*
+
+Of course, you need to define different threshold levels for computing precision 
+and recall for the same reason as we see it in the case of the confusion matrix.
+
+[discrete]
+[[ml-dfanalytics-roc]]
+==== Receiver operating characteristic (ROC) curve
+
+The receiver operating characteristic curve is a plot that represents the 
+performance of the binary classification process at different thresholds. ROC 
+compares the rate of true positives against the rate of false positives at the 
+different threshold levels to create the curve. From this plot, you can compute 
+the area under the curve (AUC) value which is a number between 0 and 1. The 
+closer to 1, the better the algorithm performance.
+
+The {evaluatedf-api} can return the false positive rate (`fpr`) and the true 
+positive rate (`tpr`) at the different threshold levels, so you can visualize 
+the algorithm performance by using these values.

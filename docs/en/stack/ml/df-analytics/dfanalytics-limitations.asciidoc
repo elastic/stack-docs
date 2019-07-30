@@ -29,13 +29,6 @@ destination index won't be deleted. This object must be deleted separately.
 then create a new {dfanalytics-job} instead.
 
 [float]
-[[dfa-datatype-limitations]]
-=== {dfanalytics-cap} data type limitation
-
-{dfanalytics-cap} only support numeric fields and don't support fields that 
-contain arrays. The analysis will skip every document that has such fields.
-
-[float]
 [[dfa-dataframe-size-limitations]]
 === {dataframe-cap} memory limitation
 
@@ -44,11 +37,13 @@ dedicated for {ml} processes. For general {ml} settings, see
 {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
 [float]
-[[dfa-categorical-limitations]]
-=== Categorical fields are not supported in {dfanalytics}
+[[dfa-field-limitations]]
+=== Field limitations in {dfanalytics}
 
 Currently, categorical fields are not considered as feature fields for 
-{oldetection}, so they cannot be used during the analysis.
+{oldetection}, so they cannot be used during the analysis. {dfanalytics-cap} 
+only support numeric fields and don't support fields that contain arrays. The 
+analysis will skip every document that has such fields.
 
 [float]
 [[dfa-missing-fields-limitations]]

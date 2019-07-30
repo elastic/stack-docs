@@ -1,0 +1,59 @@
+[role="xpack"]
+[[ml-dfa-limitations]]
+== {dfanalytics-cap} limitations
+
+experimental[]
+
+The following limitations and known problems apply to the 7.3 release of 
+the Elastic {dfanalytics} feature:
+
+[float]
+[[dfa-ccs-limitations]]
+=== {ccs-cap} limitation
+
+{ccs-cap} is not supported in 7.3 for {dfanalytics}.
+
+[float]
+[[dfa-deletion-limitations]]
+=== Deleting a {dfanalytics-job} does not delete the {dataframe} destination index
+
+When deleting a {dfanalytics-job} using 
+`DELETE _ml/data_frame/analytics/<data_frame_analytics_id>` the {dataframe} 
+destination index won't be deleted. This object must be deleted separately.
+
+[float]
+[[dfa-update-limitations]]
+=== Cannot update a {dfanalytics-job}
+
+{dfanalytics-cap} configurations cannot be updated. Please delete and 
+then create a new {dfanalytics-job} instead.
+
+[float]
+[[dfa-datatype-limitations]]
+=== {dfanalytics-cap} data type limitation
+
+{dfanalytics-cap} only support numeric fields and don't support fields that 
+contain arrays. The analysis will skip every document that has such fields.
+
+[float]
+[[dfa-dataframe-size-limitations]]
+=== {dataframe-cap} memory limitation
+
+{dfanalytics-cap} can analyze {dataframes} that fit into the memory limit 
+dedicated for {ml} processes. For general {ml} settings, see 
+{ref}/ml-settings.html[{ml-cap} settings in {es}].
+
+[float]
+[[dfa-categorical-limitations]]
+=== Categorical fields are not supported in {dfanalytics}
+
+Currently, categorical fields are not considered as feature fields for 
+{oldetection}, so they cannot be used during the analysis.
+
+[float]
+[[dfa-missing-fields-limitations]]
+=== Missing values in analyzed fields
+
+If there are missing values in feature fields (fields that are subjects of the 
+{dfanalytics}), then the document that contains the fields with the missing 
+values will be skipped during the analysis.

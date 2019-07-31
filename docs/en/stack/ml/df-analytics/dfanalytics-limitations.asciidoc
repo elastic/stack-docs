@@ -40,10 +40,11 @@ dedicated for {ml} processes. For general {ml} settings, see
 [[dfa-field-limitations]]
 === Field limitations in {dfanalytics}
 
-Currently, categorical fields are not considered as feature fields for 
-{oldetection}, so they cannot be used during the analysis. {dfanalytics-cap} 
-only support numeric fields and don't support fields that contain arrays. The 
-analysis will skip every document that has such fields.
+Currently, {oldetection} only supports numeric features. Non-numeric fields will 
+be excluded from the analysis by default. If such a field is explicitly included 
+in the analysis, starting the {dfanalytics} should result in failure. Arrays are 
+not supported either. Documents that contain analyzed fields with unsupported 
+values will be skipped entirely.
 
 [float]
 [[dfa-missing-fields-limitations]]

@@ -1,6 +1,10 @@
 [role="xpack"]
 [[ml-dfa-limitations]]
 == {dfanalytics-cap} limitations
+[subs="attributes"]
+++++
+<titleabbrev>Limitations</titleabbrev>
+++++
 
 experimental[]
 
@@ -17,16 +21,16 @@ the Elastic {dfanalytics} feature:
 [[dfa-deletion-limitations]]
 === Deleting a {dfanalytics-job} does not delete the {dataframe} destination index
 
-When deleting a {dfanalytics-job} using 
-`DELETE _ml/data_frame/analytics/<data_frame_analytics_id>` the {dataframe} 
-destination index won't be deleted. This object must be deleted separately.
+The {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API] does not delete
+the {dataframe} 
+destination index. That index must be deleted separately.
 
 [float]
 [[dfa-update-limitations]]
 === Cannot update a {dfanalytics-job}
 
-{dfanalytics-cap} configurations cannot be updated. Please delete and 
-then create a new {dfanalytics-job} instead.
+You cannot update {dfanalytics-cap} configurations. Instead, delete the {dfanalytics-job} and
+create a new one.
 
 [float]
 [[dfa-dataframe-size-limitations]]

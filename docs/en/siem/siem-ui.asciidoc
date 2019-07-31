@@ -161,3 +161,63 @@ Try clicking to expand or collapse items, or dragging and dropping them to other
 areas to see what happens. Are there interactions that you would expect to see
 that aren't present?  Let us know. We welcome your input.
 
+
+[float]
+[[machine-learning]]
+=== Machine Learning
+
+For *https://www.elastic.co/cloud/elasticsearch-service/signup[Free Trial]*
+and *https://www.elastic.co/subscriptions[Platinum License]* deployments,
+Machine Learning functionality is available throughout the SIEM app. You can
+view the details of detected anomalies within the `Anomalies` table widget
+shown on the Hosts, Network and associated Details pages, or even narrow to
+the specific daterange of an anomaly from the `Max Anomaly Score` details in
+the overview of the Host and IP Details pages. Each of these interfaces also
+offer the ability to drag and drop details of the anomaly to Timeline, such
+as the `Entity` itself, or any of the associated `Influencers`.
+
+[role="screenshot"]
+image::ml-ui.png[]
+
+
+[float]
+[[manage-jobs]]
+==== Manage machine learning jobs
+For users with the `ml_admin` role, the `Anomaly Detection` interface within
+the main navigation header can be used for for viewing, starting, and stopping
+SIEM Machine Learning Jobs.
+
+[float]
+[[included-jobs]]
+===== Prebuilt Jobs
+
+The SIEM app ships with prebuilt Machine Learning Jobs for detecting anomalies.
+If your environment is configured with the appropriate indices (`auditbeat-*`
+and `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be
+installed on page load, and will be displayed within the `Anomaly Detection`
+interface.
+
+* SIEM Auditbeat: Detect suspicious logins and unusual processes in Auditbeat
+ECS data (beta)
+** siem-api-suspicious_login_activity_ecs
+** siem-api-rare_process_linux_ecs
+
+* SIEM Winlogbeat: Detect unusual processes in Winlogbeat ECS data (beta)
+** siem-api-rare_process_windows_ecs
+
+[float]
+[[view-anomolies]]
+==== Viewing detected anomalies
+To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
+the user must have the `ml_admin` or `ml_user` role.
+
+NOTE: To adjust the `score` threshold for which anomalies are shown, you can
+modify {kib} -> Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
+
+
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+[role="xpack"]
+[[ml-dfa-limitations]]
+== {dfanalytics-cap} limitations
+[subs="attributes"]
+++++
+<titleabbrev>Limitations</titleabbrev>
+++++
+
+experimental[]
+
+The following limitations and known problems apply to the 7.3 release of 
+the Elastic {dfanalytics} feature:
+
+[float]
+[[dfa-ccs-limitations]]
+=== {ccs-cap} limitation
+
+{ccs-cap} is not supported in 7.3 for {dfanalytics}.
+
+[float]
+[[dfa-deletion-limitations]]
+=== Deleting a {dfanalytics-job} does not delete the {dataframe} destination index
+
+The {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API] does not delete
+the {dataframe} destination index. That index must be deleted separately.
+
+[float]
+[[dfa-update-limitations]]
+=== Cannot update a {dfanalytics-job}
+
+You cannot update {dfanalytics-cap} configurations. Instead, delete the 
+{dfanalytics-job} and create a new one.
+
+[float]
+[[dfa-dataframe-size-limitations]]
+=== {dataframe-cap} memory limitation
+
+{dfanalytics-cap} can analyze {dataframes} that fit into the memory limit 
+dedicated for {ml} processes. For general {ml} settings, see 
+{ref}/ml-settings.html[{ml-cap} settings in {es}].
+
+[float]
+[[dfa-field-limitations]]
+=== Field limitations in {dfanalytics}
+
+Currently, {oldetection} only supports numeric features. Non-numeric fields will 
+be excluded from the analysis by default. If such a field is explicitly included 
+in the analysis, starting the {dfanalytics} should result in failure. Arrays are 
+not supported either. Documents that contain analyzed fields with unsupported 
+values will be skipped entirely.
+
+[float]
+[[dfa-missing-fields-limitations]]
+=== Missing values in analyzed fields
+
+If there are missing values in feature fields (fields that are subjects of the 
+{dfanalytics}), then the document that contains the fields with the missing 
+values will be skipped during the analysis.

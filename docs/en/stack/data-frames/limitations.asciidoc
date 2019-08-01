@@ -13,8 +13,7 @@ the Elastic {dataframe} feature:
 
 [float]
 [[df-compatibility-limitations]]
-=== Beta {dataframe-transforms} do not have guaranteed backwards or forwards 
-compatibility
+=== Beta {dataframe-transforms} do not have guaranteed backwards or forwards compatibility
 
 Whilst {dataframe-transforms} are beta, it is not guaranteed that a 
 {dataframe-transform} created in a previous version of the {stack} will be able 
@@ -116,8 +115,7 @@ updated when viewing the {dataframe} destination index.
 
 [float]
 [[df-deletion-limitations]]
-=== Deleting a {dataframe-transform} does not delete the {dataframe} destination 
-index or {kib} index pattern
+=== Deleting a {dataframe-transform} does not delete the {dataframe} destination index or {kib} index pattern
 
 When deleting a {dataframe-transform} using `DELETE _data_frame/transforms/index` 
 neither the {dataframe} destination index nor the {kib} index pattern, should 
@@ -212,8 +210,7 @@ resolved, the `_start?force=true` parameter must be specified.
 
 [float]
 [[df-availability-limitations]]
-=== {cdataframes-cap} may give incorrect results if documents are not yet 
-available to search
+=== {cdataframes-cap} may give incorrect results if documents are not yet available to search
 
 After a document is indexed, there is a very small delay until it is available 
 to search.

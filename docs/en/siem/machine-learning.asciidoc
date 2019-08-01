@@ -18,14 +18,14 @@ image::ml-ui.png[]
 
 [float]
 [[manage-jobs]]
-==== Manage machine learning jobs
+=== Manage machine learning jobs
 For users with the `ml_admin` role, the `Anomaly Detection` interface within
 the main navigation header can be used for for viewing, starting, and stopping
 SIEM Machine Learning Jobs.
 
 [float]
 [[included-jobs]]
-===== Prebuilt Jobs
+==== Prebuilt Jobs
 
 The SIEM app ships with prebuilt Machine Learning Jobs for detecting anomalies.
 If your environment is configured with the appropriate indices (`auditbeat-*`
@@ -33,17 +33,17 @@ and `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be
 installed on page load, and will be displayed within the `Anomaly Detection`
 interface.
 
-* SIEM Auditbeat: Detect suspicious logins and unusual processes in Auditbeat
+* SIEM https://www.elastic.co/products/beats/auditbeat[{Auditbeat}]: Detect suspicious logins and unusual processes in Auditbeat
 ECS data (beta)
 ** siem-api-suspicious_login_activity_ecs
 ** siem-api-rare_process_linux_ecs
 
-* SIEM Winlogbeat: Detect unusual processes in Winlogbeat ECS data (beta)
+* SIEM https://www.elastic.co/products/beats/winlogbeat[{Winlogbeat}]: Detect unusual processes in Winlogbeat ECS data (beta)
 ** siem-api-rare_process_windows_ecs
 
 [float]
 [[view-anomolies]]
-==== Viewing detected anomalies
+=== View detected anomalies
 To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
 the user must have the `ml_admin` or `ml_user` role.
 

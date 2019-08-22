@@ -1,109 +1,125 @@
 [[install-infrastructure-monitoring]]
 [role="xpack"]
-== Get up and running
+== Getting started with infrastructure monitoring
 
-beta[]
+To get started with infrastructure monitoring, you need:
 
-To get up and running with infrastructure monitoring, you need:
+* An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic license
+// Add a link to what constitutes a basic license. And is this any different for the cloud?
 
-* An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic
-license. To learn how to get started quickly, see
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
-+
-[TIP]
-==============
-You can skip having to install {es} and {kib} by using our
-https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
-Elastic Cloud. The {es} Service is available on both AWS and GCP.
-https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {es}
-Service for free].
-==============
-
-* {beats} shippers (version 6.5 or later) installed on each system you want to
+* Appropriate {beats} shippers (version 6.5 or later) installed on each system you want to
 monitor
 
-You might also need to modify UI settings in {kib} to change default behaviors,
-such as the index pattern used to query the data, and the timestamp field used
-for sorting. For more information, see
-{kibana-ref}/infrastructure-ui-settings-kb.html[{infra-ui} UI Settings] and
-{kibana-ref}/logs-ui-settings-kb.html[{logs-ui} UI Settings].
+// + May need to mention another step here about enabling modules and/or configuration
+
+[float]
+=== Get Elasticsearch and Kibana
+
+To get started, you can use our hosted {es} Service on Elastic Cloud (recommended for new users), or you can install {es} and {kib} locally.
+
+[float]
+==== Use our hosted service
+
+The hosted {es} Service is available on both AWS and GCP.
+https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {es} Service for free].
+
+[float]
+==== Install {es} and {kib} locally
+
+Alternatively, you can {stack-gs}/get-started-elastic-stack.html[install {es} and {kib} locally].
+Follow the instructions to install {es}, and to install and start {kib}.
 
 [float]
 [[install-beats-for-infra-UI]]
 === Install {beats} shippers
 
-To populate the <<infrastructure-ui-overview,{infra-ui} UI>> with metrics and
-log data, you need to install and configure the following shippers:
+To start collecting metrics and log data, you need to install and configure the following Beats shippers:
 
 * https://www.elastic.co/products/beats/metricbeat[{metricbeat}] for metrics
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for log data
 
-To learn how to install and configure the shippers, do one of the following:
-
-* Follow the instructions in the Add Data section of the {kib} home page. Click
-*Add log data* or *Add metrics*, and follow the links for the types of data you
-want to collect.
-+
-[role="screenshot"]
-image::add-data.png[]
-
-* If your data source isn't in the list, or you want to install {beats} the old
-fashioned way:
-
-** Follow the
-{metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started]
-and enable modules for the metrics you want to collect.
-
-** Follow the
-{filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start]
-and enable modules for the logs you want to collect. If there is no module
-for the logs you want to collect, see the
-{filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to
-learn how to configure inputs.
-
-For either approach, you need to enable modules in {filebeat} and {metricbeat}
-to populate the {infra-ui} UI with data.
-
+You can install and configure Beats shippers for most kinds of data directly from {kib}, or you can install Beats yourself, then enable the modules you need.
 
 [float]
-==== Which modules and configuration options do I enable?
+==== Install {beats} from {kib}
 
-To populate the *Hosts* view and add logs, enable:
+To install {beats} from {kib}, in the {kib} home page, go to the *Add Data to Kibana* section, then click *Add metric data* or *Add log data*.
+Now follow the instructions for the type of data you want to collect.
+The instructions walk you through the steps required to download, install and configure the appropriate Beats modules for your data.
+
+// ++ Presumably, you need to run Kibana on the machine where you want to install the Beats? And that in turn is the machine for which you want to collect the metrics and logs?
+
+[role="screenshot"]
+image::images/add-data.png[]
+
+[float]
+==== Install {beats} yourself
+
+If your data source doesn't have a Beats module, or if you want to install {beats} the old fashioned way:
+
+** Follow the {metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started] and enable modules for the metrics you want to collect.
+
+** Follow the {filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start] and enable modules for the logs you want to collect.
+If there is no module for the logs you want to collect, see the {filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to learn how to configure inputs.
+
+[float]
+=== Enable modules
+However you install {beats}, you need to enable the appropriate modules in {filebeat} and {metricbeat} to populate the Infrastructure and Logs views with data.
+
+// ++ To enable modules, do you follow the instructions below? Is this still necessary if you've installed Beats from Kibana?
+// ++ What about if you are using Cloud? Is anything different?
+
+[float]
+=== Configure your data sources
+// ++ Where does this bit belong? It didn't belong above, where it originally was.
+// ++ Does it come before or after enabling modules?
+// ++ And should it refer directly to the Kibana Source config tab, rather than the detailed list of settings as t currently does?
+You may need to modify some configuration settings in {kib} to change default behaviors, such as the index pattern used to query the data, and the timestamp field used for sorting.
+For more information, see {kibana-ref}/infrastructure-ui-settings-kb.html[{infra-ui} UI Settings] and {kibana-ref}/logs-ui-settings-kb.html[{logs-ui} UI Settings].
+
+// + I have mixed feelings about the rest of this content. I am inclined to think some of it may be advanced configuration, and not getting started at all. Perhaps a separate topic? Check this.
+
+[float]
+=== Which modules and configuration options do I enable?
+
+To populate the *Hosts* view in the Infrastructure app and add logs, enable:
 
 * {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module] (enabled by default)
 * {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
-* {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for
-your environment, such as `apache2`, `redis`, and so on
+* {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for your environment, such as `apache2`, `redis`, and so on
 * {metricbeat-ref}/add-host-metadata.html[{metricbeat} `add_host_metadata` processor] (enabled by default)
 * {metricbeat-ref}/add-cloud-metadata.html[{metricbeat} `add_cloud_metadata` processor] (enabled by default)
 
-To populate the *Docker* view and add logs, enable:
+To populate the *Docker* view in the Infrastructure app and add logs, enable:
 
 * {metricbeat-ref}/metricbeat-module-docker.html[{metricbeat} `docker` module]
 * {metricbeat-ref}/add-docker-metadata.html[{metricbeat} `add_docker_metadata` processor]
 * {filebeat-ref}/filebeat-input-docker.html[{filebeat} `docker` input]
 * {filebeat-ref}/add-docker-metadata.html[{filebeat} `add_docker_metadata` processor]
 
-To populate the *Kubernetes* view and add logs, enable:
+To populate the *Kubernetes* view in the Infrastructure app and add logs, enable:
 
-* {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes`
-module]
+* {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes` module]
 * {metricbeat-ref}/add-kubernetes-metadata.html[{metricbeat} `add_kubernetes_metadata` processor]
 * {filebeat-ref}/filebeat-input-docker.html[{filebeat} `docker` input]
 * {filebeat-ref}/add-kubernetes-metadata.html[{filebeat} `add_kubernetes_metadata` processor]
 
 [float]
-==== Which fields are used for the metrics on the Infrastructure home page?
+=== Which fields are used for the metrics on the Infrastructure home page?
 
-The metrics listed below are provided by the Beats Shippers. Each system type requires their corresponding identity field to be in the same event document:
+The metrics listed below are provided by the Beats shippers.
+// ++ what does this mean? What does the reader need to do?
+Each system type requires their corresponding identity field to be in the same event document:
 
 * Hosts require `host.name`
 * Docker containers require `container.id`
 * Kubernetes pods require `kubernetes.pod.uid`
 
-For the metrics detail page, `event.dataset` is a required field. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the sub module name.
+// + I think this applies to the View Metrics page, not the Infrastructure home page.
+// ++ What does this mean, and what does the reader need to do about it, if anything to ensure the "required field" is available?
+For the metrics detail page, `event.dataset` is a required field. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the metricset name.
 
-
+//++ I think the next few sections are informational, and tell you the origin of the fields that are shown in the UI. Again, I think the reader needs to do nothing, but I'm not sure.
 [float]
 ===== Host Metrics
 
@@ -120,7 +136,6 @@ For the metrics detail page, `event.dataset` is a required field. This field is 
 *Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate.
 This metric relies on the same indices as the logs.
 
-
 [float]
 ===== Docker Container Metrics
 
@@ -131,7 +146,6 @@ This metric relies on the same indices as the logs.
 *Inbound Traffic*:: Derivative of the max of `docker.network.in.bytes` scaled to a 1 second rate
 
 *Outbound Traffic*:: Derivative of the max of `docker.network.out.bytes` scaled to a 1 second rate
-
 
 [float]
 ===== Kubernetes Pod Metrics
@@ -144,22 +158,23 @@ This metric relies on the same indices as the logs.
 
 *Outbound Traffic*:: Derivative of the max of `kubernetes.pod.network.tx.bytes` scaled to a 1 second rate
 
-
-
 [float]
 ==== More about container monitoring
 
-If you're monitoring containers, you can use autodiscover to automatically apply
-configuration changes in response to changes in your containers. To learn how,
-see:
+// ++ What does this mean?
 
-* {filebeat-ref}/configuration-autodiscover.html[{filebeat} autodiscover
-configuration]
-* {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover
-configuration]
+If you're monitoring containers, you can use autodiscover to automatically apply configuration changes in response to changes in your containers.
+To learn how, see:
 
+* {filebeat-ref}/configuration-autodiscover.html[{filebeat} autodiscover configuration]
+* {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover configuration]
 
 [float]
 ==== Known Workarounds
 
-*Running Metricbeat <=6.5 with Kibana 6.6+*:: For Kubernetes, you will need to change the "Pod ID" field in the "Configure Source" panel (`xpack.infra.sources.default.fields.pod` in `config/kibana.yml` for Kibana 6.6) to `kubernetes.pod.name`. There is a caveat for this workaround; if you have two pods with the same name, only one will be visible in the UI.
+// ++ Does this still apply and what does it mean?
+// ++ Do the version numbers need to be updated for later versions of Metricbeat and Kibana?
+// ++ Configure source panel has changed. Provide a link.
+
+*Running Metricbeat <=6.5 with Kibana 6.6+*:: For Kubernetes, you need to change the `Pod ID` field in the *Configure Source* panel (`xpack.infra.sources.default.fields.pod` in `config/kibana.yml` for Kibana 6.6) from `kubernetes.pod.uid` to `kubernetes.pod.name`.
+There is a caveat for this workaround; if you have two pods with the same name, only one be visible in the UI.

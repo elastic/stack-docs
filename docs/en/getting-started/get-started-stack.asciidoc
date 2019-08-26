@@ -1,9 +1,9 @@
 [[get-started-elastic-stack]]
 == Getting started with the {stack}
 
-Looking for an {stack} ("ELK" tutorial) that shows how to set up the {stack}? In
-this tutorial, you learn how to get up and running quickly. First you install
-the core open source products:
+Looking for an {stack} ("ELK") guide that shows how to set up the {stack} and 
+get up and running quickly? You're on the right place! First you install the 
+core products:
 
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
@@ -56,8 +56,8 @@ Elasticsearch Service for free].
 
 To download and install {es}, open a terminal window and use the commands that
 work with your system (<<deb, deb>> for Debian/Ubuntu, <<rpm, rpm>> for
-Redhat/Centos/Fedora, <<mac, mac>> for OS X, <<linux, linux>> for Linux, and
-<<win, win>> for Windows):
+Redhat/Centos/Fedora, <<mac, mac>> or <<brew, brew>> for OS X, <<linux, linux>>
+for Linux, and <<win, win>> for Windows):
 
 
 [[deb]]*deb:*
@@ -118,6 +118,24 @@ cd elasticsearch-{elasticsearch_version}
 
 endif::[]
 
+[[brew]]*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {es} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/elasticsearch-full
+elasticsearch
+----------------------------------------------------------------------
+
+endif::[]
 
 [[linux]]*linux:*
 
@@ -174,6 +192,13 @@ endif::[]
 
 For other operating systems, go to the
 https://www.elastic.co/downloads/elasticsearch[{es} download] page.
+
+TIP: The default {ref}/cluster.name.html[cluster.name] and
+{ref}/node.name.html[node.name] are `elasticsearch` and your hostname,
+respectively. If you plan to keep using this cluster or add more nodes, it is a
+good idea to change these default values to unique names. For details about
+changing these and other settings in the `elasticsearch.yml` file, see
+{ref}/settings.html[Configuring {es}].
 
 To learn more about installing, configuring, and running {es}, read the
 https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html[{es} Reference].
@@ -280,6 +305,25 @@ cd kibana-{kibana_version}-darwin-x86_64/
 
 endif::[]
 
+*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {kib} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/kibana-full
+kibana
+----------------------------------------------------------------------
+
+endif::[]
+
 *win:*
 
 ifeval::["{release-state}"=="unreleased"]
@@ -333,7 +377,7 @@ The {beats} are open source data shippers that you install as agents on your
 servers to send operational data to {es}. {beats} can send data directly to {es}
 or via {ls}, where you can further process and enhance the data.
 
-Each Beat is a separately installable product. In this tutorial, you learn how
+Each Beat is a separately installable product. In this guide, you learn how
 to install and run {metricbeat} with the `system` module enabled to collect system
 metrics.
 
@@ -412,6 +456,24 @@ ifeval::["{release-state}"!="unreleased"]
 curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-{version}-darwin-x86_64.tar.gz
 tar xzvf metricbeat-{version}-darwin-x86_64.tar.gz
 ------------------------------------------------
+
+endif::[]
+
+*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {metricbeat} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/metricbeat-full
+----------------------------------------------------------------------
 
 endif::[]
 
@@ -506,6 +568,13 @@ sudo metricbeat modules enable system
 ./metricbeat modules enable system
 ----
 +
+*brew:*
++
+[source,yaml]
+----
+metricbeat modules enable system
+----
++
 *win:*
 +
 [source,yaml]
@@ -527,6 +596,13 @@ sudo metricbeat setup -e
 [source,yaml]
 ----
 ./metricbeat setup -e
+----
++
+*brew:*
++
+[source,yaml]
+----
+metricbeat setup -e
 ----
 +
 *win:*
@@ -556,6 +632,13 @@ sudo service metricbeat start
 ./metricbeat -e
 ----
 +
+*brew:*
++
+[source,yaml]
+----
+metricbeat -e
+----
++
 *win:*
 +
 [source,yaml]
@@ -571,7 +654,7 @@ PS C:\Program Files\Metricbeat> Start-Service metricbeat
 ==== Visualize system metrics in {kib}
 
 To visualize system metrics, open your browser and navigate to the {metricbeat}
-system overview dashboard: http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview
+system overview dashboard: http://localhost:5601/app/kibana#/dashboard/Metricbeat-system-overview-ecs
 
 TIP: If you don’t see data in {kib}, try changing the date range to a larger
 range. By default, {kib} shows the last 15 minutes. If you see errors, make
@@ -657,6 +740,24 @@ tar -xzvf logstash-{logstash_version}.tar.gz
 
 endif::[]
 
+*brew:*
+
+ifeval::["{release-state}"=="unreleased"]
+
+Version {version} of {ls} has not yet been released.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+
+["source","sh",subs="attributes"]
+----------------------------------------------------------------------
+brew tap elastic/tap
+brew install elastic/tap/logstash-full
+----------------------------------------------------------------------
+
+endif::[]
+
 *win:*
 
 ifeval::["{release-state}"=="unreleased"]
@@ -687,7 +788,7 @@ To learn more about installing, configuring, and running {ls}, read the
 ==== Configure {ls} to listen for {beats} input
 
 {ls} provides {logstash-ref}/input-plugins.html[input plugins] for reading from
-a variety of inputs. In this tutorial, you create a {ls} pipeline configuration
+a variety of inputs. In this guide, you create a {ls} pipeline configuration
 that listens for {beats} input and sends the received events to the {es} output.
 
 To configure {ls}:
@@ -738,6 +839,8 @@ enriching, and transforming data.
 
 Use the command that works with your system. If you installed {ls} as a deb or
 rpm package, make sure the config file is in the `config` directory.
+For other platforms, a `config` directory isn't required, but it's a best
+practice to be consistent.
 
 *deb:*
 
@@ -757,14 +860,22 @@ sudo service logstash start
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-./bin/logstash -f demo-metrics-pipeline.conf
+cd logstash-{logstash_version}
+./bin/logstash -f path/to/config/demo-metrics-pipeline.conf
+----------------------------------------------------------------------
+
+*brew:*
+
+["source","sh",subs="attributes,callouts"]
+----------------------------------------------------------------------
+logstash -f path/to/config/demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
 *win:*
 
 ["source","sh",subs="attributes,callouts"]
 ----------------------------------------------------------------------
-bin\logstash.bat -f demo-metrics-pipeline.conf
+bin\logstash.bat -f path\to\config\demo-metrics-pipeline.conf
 ----------------------------------------------------------------------
 
 TIP: If you receive JVM error messages, check your Java version as shown in
@@ -778,7 +889,8 @@ configure {metricbeat} to send events to {ls}.
 
 {metricbeat} sends events to {es} by default. To send events to {ls}, modify the
 {metricbeat} configuration file, `metricbeat.yml`. You'll find this file under
-the {metricbeat} install directory, or `/etc/metricbeat` for rpm and deb.
+the {metricbeat} install directory, `/etc/metricbeat` for rpm and deb, or
+`/usr/local/etc/metricbeat` for brew.
 
 Disable the `output.elasticsearch` section by commenting it out, then enable
 the `output.logstash` section by uncommenting it:
@@ -827,9 +939,9 @@ For example:
 
 Rather than sending the whole command-line argument to {es}, you might want to
 send just the command's path. One way to do that is by using a Grok filter.
-Learning Grok is beyond the scope of this tutorial, but if you want to learn
-more, see the {logstash-ref}/plugins-filters-grok.html[Grok filter plugin]
-documentation.
+Learning Grok is beyond the scope of this getting started guide, but if you want 
+to learn more, see the 
+{logstash-ref}/plugins-filters-grok.html[Grok filter plugin] documentation.
 
 To extract the path, add the following Grok filter between the input and output
 sections in the {ls} config file that you created earlier:

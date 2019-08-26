@@ -1,0 +1,163 @@
+[[siem-ui-overview]]
+[role="xpack"]
+== SIEM UI
+
+beta[]
+
+After you have your {siem-soln} data sources <<install-siem,up and running>> and
+security events are streaming to {es}, check out the {siem-app} in {kib}. You
+can view and analyze security events, investigate previous threat detections, or
+hunt for new potential security issues.
+
+The {siem-app} is a highly interactive workspace for security analysts. It is
+designed to be discoverable, clickable, draggable and droppable, expandable and
+collapsible, resizable, moveable, and so forth.
+
+The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
+throughout the {siem-app} for searching and filtering.
+
+NOTE: The default index patterns for {siem-soln} events are `auditbeat-*`, `winlogbeat-*`,
+`filebeat-*`, and `packetbeat-*`. You can change the default index patterns in
+{kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
+
+
+[float]
+[[siem-overview-ui]]
+=== Overview
+
+The Overview page provides a high-level view into security events available
+for analysis, and can help surface problems with data ingestion.
+
+Notice the *Timeline* on the right of the {siem-ui}. It is always available for
+starting an investigation, whether in its collapsed or expanded state. Identify
+items you want to dig into, and drag and drop them to the Timeline. Those items
+are waiting for you when you are ready to start your investigation.
+
+[role="screenshot"]
+image::overview-ui.png[]
+
+[float]
+[[hosts-ui]]
+=== Hosts
+
+The Hosts view provides key metrics regarding host-related security
+events, and a set of data tables that let you interact with the Timeline Event
+Viewer. You can drag and drop items of interest from the Hosts view tables to
+Timeline for further investigation.
+
+[role="screenshot"]
+image::hosts-ui.png[]
+
+Interactive table widgets let you drill down for deeper insights:
+
+* Hosts
+* Unique IPs
+* User Authentications (success and failures)
+* Uncommon Processes
+* Events
+
+
+*Hosts Detail* shows information for a selected host, including
+Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
+versions, machine type, and so forth.
+
+[float]
+[[network-ui]]
+=== Network
+
+The Network view provides key network activity metrics, facilitates
+investigation time enrichment, and provides network event tables that enable
+interaction with the Timeline. You can drag and drop items of interest from the
+Network view to Timeline for further investigation.
+
+[role="screenshot"]
+image::network-ui.png[]
+
+Interactive table widgets let you drill down for deeper insights:
+
+* Top Talkers
+* Top DNS Domains
+* IP Details
+* Domains
+* Users
+* Transport Layer Security certs
+
+
+[float]
+[[timelines-ui]]
+=== Timelines
+
+Use timelines as your workspace for alert investigations or threat hunting. 
+
+You can drag objects of interest into the Timeline Event Viewer to create
+exactly the query filter you need to get to the bottom of an alert. You can drag
+items from table widgets within Hosts and Network pages, or even from within
+Timeline itself.
+
+A timeline is responsive and persists as you move through the {siem-app}
+collecting data. Auto-saving ensures that the results of your investigation are
+available for review by other analysts and incident response teams.
+
+
+[role="screenshot"]
+image::timeline-ui.png[]
+
+Add notes for your own use and to communicate your workflow and findings to
+others. You can share a timeline, or pass it off to another person or team. You
+can link to timelines from a ticketing system.
+
+
+[float]
+[[raw]]
+==== See raw event data 
+
+Many security events in Timeline are presented in an easy-to-follow rendered
+view, which enables quicker analyst understanding. You can click and expand
+events from within Timeline to see the underlying event data, either in tabular
+form, as as {es} JSON.
+
+[float]
+[[narrow-expand]]
+==== Narrow or expand your query 
+
+You can specify logical `AND` and `OR` operations with an item's placement in
+the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
+sets are `OR`-ed together. As you hover the item over the drop area, you can see
+whether your placement is on target to create an `AND` or `OR` filters.
+
+[float]
+[[pivot]]
+==== Pivot your data 
+
+Click a filter to access additional operations such as exclude, temporarily
+disable, or delete items from the query. For example, you can change an included
+item so that it is excluded.
+
+[float]
+[[row-renderer]]
+==== Get more context for each event
+As you build and modify your queries, you can see the results of your
+interactions in the details pane below. 
+
+As your query takes shape, an easy-to-follow rendered view appears for events. It
+shows relevant contextual information that helps tell the backstory of the
+event. If you see a particular item that interests you, you can drag it to the
+drop area for further introspection.
+
+[float]
+[[other]]
+==== Other actions 
+
+The Timeline is flexible and highly interactive.  As you would expect, the
+{siem-app} lets you:
+
+* add, remove, reorder, or resize Timeline columns. 
+* save, open, and list Timelines
+* add notes to individual events
+* add investigation notes for the whole Timeline
+* pin events to the Timeline for persistence
+
+Try clicking to expand or collapse items, or dragging and dropping them to other
+areas to see what happens. Are there interactions that you would expect to see
+that aren't present?  Let us know. We welcome your input.
+

@@ -38,7 +38,7 @@ To start collecting metrics and log data, you need to install and configure the 
 * https://www.elastic.co/products/beats/metricbeat[{metricbeat}] for metrics
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for log data
 
-You can install and configure Beats shippers for most kinds of data directly from {kib}, or you can install Beats yourself, then enable the modules you need.
+You can install and configure {beats} shippers for most kinds of data directly from {kib}, or you can install {beats} yourself, then enable the modules you need.
 
 [float]
 ==== Install {beats} from {kib}
@@ -55,7 +55,7 @@ image::images/add-data.png[]
 [float]
 ==== Install {beats} yourself
 
-If your data source doesn't have a Beats module, or if you want to install {beats} the old fashioned way:
+If your data source doesn't have a {beats} module, or if you want to install {beats} the old fashioned way:
 
 ** Follow the {metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started] and enable modules for the metrics you want to collect.
 
@@ -74,7 +74,7 @@ However you install {beats}, you need to enable the appropriate modules in {file
 // ++ Where does this bit belong? It didn't belong above, where it originally was.
 // ++ Does it come before or after enabling modules?
 // ++ And should it refer directly to the Kibana Source config tab, rather than the detailed list of settings as t currently does?
-You may need to modify some configuration settings in {kib} to change default behaviors, such as the index pattern used to query the data, and the timestamp field used for sorting.
+If your metrics data or logs data has non-standard fields, you may need to modify some configuration settings in {kib} to change the default behaviors, such as the index pattern used to query the data, and the timestamp field used for sorting.
 For more information, see {kibana-ref}/infrastructure-ui-settings-kb.html[{infra-ui} UI Settings] and {kibana-ref}/logs-ui-settings-kb.html[{logs-ui} UI Settings].
 
 // + I have mixed feelings about the rest of this content. I am inclined to think some of it may be advanced configuration, and not getting started at all. Perhaps a separate topic? Check this.
@@ -107,7 +107,7 @@ To populate the *Kubernetes* view in the Infrastructure app and add logs, enable
 [float]
 === Which fields are used for the metrics on the Infrastructure home page?
 
-The metrics listed below are provided by the Beats shippers.
+The metrics listed below are provided by the {beats} shippers.
 // ++ what does this mean? What does the reader need to do?
 Each system type requires their corresponding identity field to be in the same event document:
 

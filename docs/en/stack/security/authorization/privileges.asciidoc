@@ -27,14 +27,6 @@ All security-related operations on {es} API keys including
 {ref}/security-api-create-api-key.html[creating new API keys],
 {ref}/security-api-get-api-key.html[retrieving information about API keys], and
 {ref}/security-api-invalidate-api-key.html[invalidating API keys].
-
-`manage_own_api_key`::
-All security-related operations on {es} API keys, those that are owned by current
-authenticated user. The operations include 
-{ref}/security-api-create-api-key.html[creating new API keys],
-{ref}/security-api-get-api-key.html[retrieving information about API keys], and
-{ref}/security-api-invalidate-api-key.html[invalidating API keys].
-
 +
 --
 [NOTE]
@@ -85,6 +77,13 @@ Enables the use of {es} APIs
 {ref}/security-api-oidc-authenticate.html[OpenID Connect Authenticate], and
 {ref}/security-api-oidc-logout.html[OpenID Connect Logout])
 to initiate and manage OpenID Connect authentication on behalf of other users.
+
+`manage_own_api_key`::
+All security-related operations on {es} API keys that are owned by the current
+authenticated user. The operations include 
+{ref}/security-api-create-api-key.html[creating new API keys],
+{ref}/security-api-get-api-key.html[retrieving information about API keys], and
+{ref}/security-api-invalidate-api-key.html[invalidating API keys].
 
 `manage_pipeline`::
 All operations on ingest pipelines.

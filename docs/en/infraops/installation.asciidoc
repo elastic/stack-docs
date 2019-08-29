@@ -110,10 +110,11 @@ To learn how, see:
 * {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover configuration]
 
 [float]
-=== Known Workarounds
-// ++ Is this we've just installed the latest version of both Kibana and Metricbeat?
+=== Running Metricbeat 6.5 or earlier with Kibana 6.6 or later
+
+// ++ Is this needed here since we've just installed the latest version of both Kibana and Metricbeat?
 // ++ If not, where does it belong?
 // ++ Then what does it mean? What happens if you fail to do this?
 
-*Running Metricbeat 6.5 or earlier with Kibana 6.6 or later*:: For Kubernetes, you need to change the `Pod ID` field in the *Configure Source* panel (`xpack.infra.sources.default.fields.pod` in `config/kibana.yml` for Kibana 6.6) from `kubernetes.pod.uid` to `kubernetes.pod.name`.
-There is a caveat for this workaround; if you have two pods with the same name, only one is visible in the Infrastructure app.
+For Kubernetes, you need to change the `Pod ID` field in the *Configure Source* panel (or `xpack.infra.sources.default.fields.pod` in `config/kibana.yml` for Kibana 6.6) from `kubernetes.pod.uid` to `kubernetes.pod.name`.
+Additionally, if you have two pods with the same name, only one will be visible in the Infrastructure app.

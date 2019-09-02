@@ -3,8 +3,8 @@
 == {regression-cap}
 
 {reganalysis-cap} is a {ml} process for estimating the relationships among 
-a number of {feature-vars} and a {depvar} (or {con-targvar}), then making 
-further predictions based on the described relationship.
+a number of {feature-vars} and a {depvar}, then making further predictions based 
+on the described relationship.
 
 For example, suppose we are interested in finding the relationship between 
 apartment size and monthly rent in a city. In this simple example, the rent is 
@@ -35,11 +35,10 @@ apartment has a riverside view or not and so on.
 [dfa-regression-features]
 === {feature-vars-cap}
 
-{feature-vars-cap} are the values that the {con-targvar} value depends on 
-(that's why it is also called as {depvar}). If one or more of the {feature-vars} 
-changes that means that the {con-targvar} value also changes. There are three 
-different types of {feature-vars} that you can ship to the {regression} 
-algorithm:
+{feature-vars-cap} are the values that the {depvar} value depends on. If one or 
+more of the {feature-vars} changes that means that the {depvar} value also 
+changes. There are three different types of {feature-vars} that you can ship to 
+the {regression} algorithm:
 * Numerical. In our example, the size of the apartment was a 
   numerical {feature-var}.
 * Categorical. A variable that can have one value from a set of values. The 
@@ -47,6 +46,7 @@ algorithm:
   the location of the apartment in the city (borough) is a categorical variable.
 * Boolean. The riverside view in the example is a boolean value because an 
   apartment either has a riverside view or doesn't have one.
+Arrays are not supported.
 
 
 [discrete]
@@ -67,7 +67,7 @@ mathematical formula. {reganalysis-cap} tries to find the best value for the
 we use an ensemble learning model that uses multiple algorithms. The performance 
 of an ensemble is usually better than the performance of an individual 
 algorithm because each of the algorithms has a different bias, so each of them 
-falls into different traps. When they used together as a group, then they 
+falls into different traps. When they are used together as a group, then they 
 capture the characteristics of the data better. The ensemble learning technique 
 that we use in the {stack} is a type of boosting called extreme gradient boost 
 (XGboost) which combines decision trees with gradient boosting methodologies.
@@ -79,9 +79,10 @@ that we use in the {stack} is a type of boosting called extreme gradient boost
 
 You can measure how well the model has performed on your training dataset by 
 using the `regression` evaluation type of the evaluate {dfanalytics} API. The 
-error value that the evaluation provides you on the training dataset is the 
-*training error*. Training the {regression} model means finding the combination 
-of model parameters that produces the lowest possible training error.
+mean squared error value that the evaluation may provide you on the training 
+dataset is the *training error*. Training the {regression} model means finding 
+the combination of model parameters that produces the lowest possible training 
+error.
 
 The training error does not tell much about how the model will perform on unseen 
 data points, however, this is a crucial factor that you want to know. To assess 

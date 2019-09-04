@@ -43,7 +43,7 @@ You can install and configure {beats} shippers for most kinds of data directly f
 [float]
 ==== Install {beats} from {kib}
 
-To install {beats} from {kib}, on the machine where you want collect the data, open a {kib} browser window.
+To install {beats} from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
 In the *Add Data to Kibana* section, click *Add metric data* or *Add log data*.
 Now follow the instructions for the type of data you want to collect.
 The instructions walk you through the steps required to download, install and configure the appropriate Beats modules for your data.
@@ -66,7 +66,7 @@ If there is no module for the logs you want to collect, see the {filebeat-ref}/f
 However you install {beats}, you need to enable the appropriate modules in {filebeat} and {metricbeat} to populate the Infrastructure and Logs views with data.
 
 // ++ I think some of this is still necessary even if you've followed the instructions to install Beats from Kibana.
-// ++ The instructions there are about enabling the module. Here, we enable more stuff.
+// ++ The instructions there explain how to enable the module. Below, we enable more stuff.
 // ++ What about if you are using Cloud? Is anything different?
 
 To populate the *Hosts* view in the Infrastructure app and add logs, enable:
@@ -96,25 +96,13 @@ To populate the *Kubernetes* view in the Infrastructure app and add logs, enable
 // ++ This should probably link directly to the Kibana Source config tab (to be), rather than the detailed list of settings as it currently does?
 If your metrics data or logs data has non-standard fields, you may need to modify some configuration settings in {kib} to change the default behaviors, such as the index pattern used to query the data, and the timestamp field used for sorting.
 For more information, see {kibana-ref}/infrastructure-ui-settings-kb.html[{infra-ui} UI Settings] and {kibana-ref}/logs-ui-settings-kb.html[{logs-ui} UI Settings].
-// ++ This probably should link to the docs about Configure Source flyout/tab-to-be instead of this, unless there is more to do . . .
 
 [float]
 === More about container monitoring
 
-// ++ What does this mean?
-
-If you're monitoring containers, you can use autodiscover to automatically apply configuration changes in response to changes in your containers.
-To learn how, see:
+If you're monitoring Docker containers or Kubernetes pods, you can use autodiscover to automatically change the configuration settings in response to changes in your containers.
+This ensures you don't stop collecting data when your container configuration changes.
+To learn how to do this, see:
 
 * {filebeat-ref}/configuration-autodiscover.html[{filebeat} autodiscover configuration]
 * {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover configuration]
-
-[float]
-=== Running Metricbeat 6.5 or earlier with Kibana 6.6 or later
-
-// ++ Is this needed here since we've just installed the latest version of both Kibana and Metricbeat?
-// ++ If not, where does it belong?
-// ++ Then what does it mean? What happens if you fail to do this?
-
-For Kubernetes, you need to change the `Pod ID` field in the *Configure Source* panel (or `xpack.infra.sources.default.fields.pod` in `config/kibana.yml` for Kibana 6.6) from `kubernetes.pod.uid` to `kubernetes.pod.name`.
-Additionally, if you have two pods with the same name, only one will be visible in the Infrastructure app.

@@ -3,17 +3,15 @@
 
 == Infrastructure metrics
 
+// ++ More explanation needed. Beats provides these metrics automatically, but other solutions for collecting metrics or logs will need to provide these values.
 The metrics listed below are provided by the {beats} shippers.
-// ++ what does the sentence below mean? What does the reader need to do?
 Each system type requires their corresponding identity field to be in the same event document:
 
 * Hosts require `host.name`
 * Docker containers require `container.id`
 * Kubernetes pods require `kubernetes.pod.uid`
 
-// + I think this bit applies to the View Metrics page, not the Infrastructure home page.
-// ++ What does this mean, and what does the reader need to do about it, if anything to ensure the "required field" is available?
-For the metrics detail page, `event.dataset` is a required field. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the metricset name.
+The `event.dataset` field is required to display data properly in some views. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the metricset name.
 
 [float]
 === Host Metrics
@@ -26,7 +24,7 @@ For the metrics detail page, `event.dataset` is a required field. This field is 
 
 *Inbound Traffic*:: Derivative of the maximum of `system.network.in.bytes` scaled to a 1 second rate
 
-*Outbound Traffic*:: Derivative of the maxoimum of `system.network.out.bytes` scaled to a 1 second rate
+*Outbound Traffic*:: Derivative of the maximum of `system.network.out.bytes` scaled to a 1 second rate
 
 *Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate.
 This metric relies on the same indices as the logs.
@@ -38,9 +36,9 @@ This metric relies on the same indices as the logs.
 
 *Memory Usage*:: Average of `docker.memory.usage.pct`
 
-*Inbound Traffic*:: Derivative of the max of `docker.network.in.bytes` scaled to a 1 second rate
+*Inbound Traffic*:: Derivative of the maximum of `docker.network.in.bytes` scaled to a 1 second rate
 
-*Outbound Traffic*:: Derivative of the max of `docker.network.out.bytes` scaled to a 1 second rate
+*Outbound Traffic*:: Derivative of the maximum of `docker.network.out.bytes` scaled to a 1 second rate
 
 [float]
 === Kubernetes Pod Metrics
@@ -49,6 +47,6 @@ This metric relies on the same indices as the logs.
 
 *Memory Usage*:: Average of `kubernetes.pod.memory.usage.node.pct`
 
-*Inbound Traffic*:: Derivative of the max of `kubernetes.pod.network.rx.bytes` scaled to a 1 second rate
+*Inbound Traffic*:: Derivative of the maximum of `kubernetes.pod.network.rx.bytes` scaled to a 1 second rate
 
-*Outbound Traffic*:: Derivative of the max of `kubernetes.pod.network.tx.bytes` scaled to a 1 second rate
+*Outbound Traffic*:: Derivative of the maximum of `kubernetes.pod.network.tx.bytes` scaled to a 1 second rate

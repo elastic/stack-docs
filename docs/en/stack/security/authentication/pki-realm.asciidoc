@@ -10,7 +10,7 @@ You can use PKI certificates to authenticate users in {es} as well as {kib}.
 
 To use PKI in {es}, you configure a PKI realm, enable client authentication on
 the desired network layers (transport or http), and map the Distinguished Names
-(DNs) from the user certificates to roles in the <<pki-role-mapping, role
+(DNs) from the user certificates to roles. You create the mappings in a <<pki-role-mapping, role
 mapping file or using the API>>. If you wish that the same users also be
 authenticated using certificates when they connect to {kib}, then the {es} PKI
 realm needs to be configured to

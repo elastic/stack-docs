@@ -1,49 +1,10 @@
 [[infrastructure-ui-overview]]
 [role="xpack"]
-== {infra-ui} UI
+== {infra-ui} app
 
-beta[]
+After you have <<install-infrastructure-monitoring, set up infrastructure monitoring>> and data is streaming to {es}, you can use the {infra-ui} app to monitor your infrastructure and identify problems in real time.
 
-After you have infrastructure monitoring <<install-infrastructure-monitoring,up and running>>
-and data is streaming to {es}, use the {infra-ui} UI in {kib} to monitor your
-infrastructure and identify problems in real time.
-
-For more information about working with the {infra-ui} UI, see the
-{kibana-ref}/xpack-infra.html[{kib} documentation].
-
-[float]
-=== Monitor your hosts and containers
-
-You start with an overview of the hosts and containers running in your
-infrastructure. The overview provides a summary of high-level metrics, like CPU
-usage, system load, memory usage, and network traffic, to help you assess the
-overall health of your systems and services.
-
-You can search for specific hosts to filter the overview, or enter
-{kibana-ref}/kuery-query.html[Kibana Query Language] for more sophisticated
-searches. To see data about related hosts or containers, you can group by important
-characteristics, such as availability zones for cloud infrastructure, or
-namespaces for containers.
-
-When you see a potential problem, you can drill down into individual nodes to
-view related metrics and logs.
+For more information about the {infra-ui} app, see the {kibana-ref}/xpack-infra.html[{infra-ui} app in the {kib} documentation].
 
 [role="screenshot"]
-image::screenshot-systems-monitoring.jpg[]
-
-[float]
-=== View detailed metrics
-
-After drilling down into the metrics for a specific node, you see details like
-CPU usage, system load, memory usage, and network traffic over time. You can
-place your cursor over a point in the timeline to see detailed metrics captured
-at that moment in the timeline.
-
-[role="screenshot"]
-image::screenshot-metrics-infrastructure-monitoring.jpg[]
-
-[float]
-=== View related logs
-
-You can drill down into the logs for a specific node and explore the log data
-in the <<logs-ui-overview,Logs UI>>.
+image::images/infra-sysmon.png[]

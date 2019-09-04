@@ -6,14 +6,20 @@ You can configure {stack} {security-features} to use Public Key Infrastructure
 (PKI) certificates to authenticate users in {es}. This requires clients to
 present X.509 certificates.
 
-NOTE: You cannot use PKI certificates to authenticate users in {kib}.
+You can use PKI certificates to authenticate users in {es} as well as {kib}.
 
 To use PKI in {es}, you configure a PKI realm, enable client authentication on
 the desired network layers (transport or http), and map the Distinguished Names
-(DNs) from the user certificates to roles in the
-<<mapping-roles, role mapping file>>.
+(DNs) from the user certificates to roles. You create the mappings in a <<pki-role-mapping, role
+mapping file>> or use the {ref}/security-api-put-role-mapping.html[create role mappings API]. If you want the same users to also be
+authenticated using certificates when they connect to {kib}, you must configure the {es} PKI
+realm to
+{ref}/configuring-pki-realm.html#pki-realm-for-proxied-clients[allow
+delegation] and to
+{kibana-ref}/kibana-authentication.html#pki-authentication[enable PKI
+authentication in {kib}].
 
-See {ref}/configuring-pki-realm.html[Configuring a PKI realm].
+See also {ref}/configuring-pki-realm.html[Configuring a PKI realm].
 
 [[pki-settings]]
 ==== PKI realm settings

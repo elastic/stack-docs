@@ -25,14 +25,17 @@ SIEM Machine Learning Jobs.
 
 [float]
 [[included-jobs]]
-==== Prebuilt Jobs
+==== Prebuilt jobs
 
-The SIEM app ships with prebuilt Machine Learning Jobs for detecting anomalies.
-If your environment is configured with the appropriate indices (`auditbeat-*`
-and `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be
+The SIEM app ships with prebuilt https://www.elastic.co/products/stack/machine-learning[{ml-cap}] jobs for detecting anomalies.
+If your environment is configured with the appropriate indices (`auditbeat-*`,
+`filebeat-*`, `packetbeat-*`, or `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be
 installed on page load, and will be displayed within the `Anomaly Detection`
 interface.
 
+NOTE: Machine learning jobs look back and analyse two weeks of historical data prior to
+the time they are enabled. After jobs are enabled, they continuously analyse incoming data.
+////
 * SIEM https://www.elastic.co/products/beats/auditbeat[{Auditbeat}]: Detect suspicious logins and unusual processes in Auditbeat
 ECS data (beta)
 ** siem-api-suspicious_login_activity_ecs
@@ -40,6 +43,45 @@ ECS data (beta)
 
 * SIEM https://www.elastic.co/products/beats/winlogbeat[{Winlogbeat}]: Detect unusual processes in Winlogbeat ECS data (beta)
 ** siem-api-rare_process_windows_ecs
+////
+The following prebuilt jobs are available:
+[horizontal]
+rare_process_by_host_windows_ecs:: Detects unusual processes running on Windows.
+windows_anomalous_network_activity_ecs:: Searches for unusual network processes
+that could indicate command-and-control, lateral movement, persistence, or data
+exfiltration activity.
+windows_anomalous_path_activity_ecs:: Searches for activity in uncommon paths that
+could indicate malware execution or persistence mechanisms. Windows payloads are usually
+executed from user profile paths.
+windows_anomalous_process_all_hosts_ecs:: Searches for unusual processes running on
+all Windows hosts that could indicate execution of unauthorized services, malware,
+or persistence mechanisms.
+windows_anomalous_process_creation:: Searches for unusual process relationships that
+could indicate malware execution or persistence mechanisms.
+windows_anomalous_script:: Searches for unusual PowerShell scripts that could indicate
+malware execution or persistence mechanisms.
+windows_anomalous_service:: Searches for unusual Windows services that could indicate
+execution of unauthorized services, malware, or persistence mechanisms.
+windows_anomalous_user_name_ecs:: Searches for activity from users who are not normally
+active, which could indicate unauthorized changes, activity by unauthorized users, lateral movement, and compromised credentials.
+linux_anomalous_network_activity_ecs:: Searches for unusual network processes that
+could indicate command-and-control, lateral movement, persistence, or data exfiltration activity.
+linux_anomalous_network_port_activity_ecs:: Searches for unusual destination port
+activity that could indicate command-and-control, persistence mechanism, or
+data exfiltration activity.
+linux_anomalous_network_service:: Searches for unusual listening ports that could
+indicate execution of unauthorized services, backdoors, or persistence mechanisms.
+linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests
+from Linux instances. Although Curl and wget web requests are very common, unusual
+requests from a Linux server are sometimes used for malware delivery and execution.
+linux_anomalous_process_all_hosts_ecs:: Searches for unusual processes running on
+all Linux hosts that could indicate execution of unauthorized services, malware,
+or persistence mechanisms.
+linux_anomalous_user_name_ecs:: Searches for activity from unusual users who are not
+normally active, which could indicate unauthorized changes, activity by unauthorized users,
+lateral movement, and compromised credentials.
+rare_process_by_host_linux_ecs:: Detects unusual processes running on Linux.
+suspicious_login_activity_ecs:: Detects unusually high number of authentication attempts.
 
 [float]
 [[view-anomolies]]
@@ -49,7 +91,3 @@ the user must have the `ml_admin` or `ml_user` role.
 
 NOTE: To adjust the `score` threshold for which anomalies are shown, you can
 modify {kib} -> Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
-
-
-
-

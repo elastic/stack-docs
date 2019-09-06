@@ -7,9 +7,9 @@ a number of {feature-vars} and a {depvar}, then making further predictions based
 on the described relationship.
 
 For example, suppose we are interested in finding the relationship between 
-apartment size and monthly rent in a city. In this simple example, the rent is 
-the {depvar} while the apartment size is the {feature-var} and we try to 
-find out the relationship between them in order to make further predictions. Our 
+apartment size and monthly rent in a city. In this example, the rent is the 
+{depvar} while the apartment size is the {feature-var} and we try to find out 
+the relationship between them in order to make further predictions. Our 
 imaginary dataset consists of three data points:
 
 |===
@@ -23,22 +23,22 @@ After the model described the relationship between the {feature-vars} and the
 {depvar}, it can predict the monthly rent of a hundred square meter-size 
 apartment.
 
-Of course, this is a very simple example, usually {regression} problems are 
-multi-dimensional, so the relationships that {reganalysis} tries to find are 
-between multiple {feature-vars} and the {depvar}. To extend our example, a 
-more complex {reganalysis} could take into account further {feature-vars} like 
-the location of the apartment in the city, on which floor it is, and whether the 
-apartment has a riverside view or not and so on.
+This is a simple example, usually {regression} problems are multi-dimensional, 
+so the relationships that {reganalysis} tries to find are between multiple 
+{feature-vars} and the {depvar}. To extend our example, a more complex 
+{reganalysis} could take into account further {feature-vars} like the location 
+of the apartment in the city, on which floor it is, and whether the apartment 
+has a riverside view or not and so on.
 
 
 [discrete]
-[dfa-regression-features]
+[[dfa-regression-features]]
 === {feature-vars-cap}
 
 {feature-vars-cap} are the values that the {depvar} value depends on. If one or 
-more of the {feature-vars} changes that means that the {depvar} value also 
-changes. There are three different types of {feature-vars} that you can ship to 
-the {regression} algorithm:
+more of the {feature-vars} changes, the {depvar} value also changes. There are 
+three different types of {feature-vars} that you can ship to the {regression} 
+algorithm:
 * Numerical. In our example, the size of the apartment was a 
   numerical {feature-var}.
 * Categorical. A variable that can have one value from a set of values. The 
@@ -50,7 +50,7 @@ Arrays are not supported.
 
 
 [discrete]
-[dfa-regression-supervised]
+[[dfa-regression-supervised]]
 === Training the {regression} algorithm
 
 {regression-cap} is a supervised machine learning process, which means that you 
@@ -74,7 +74,7 @@ that we use in the {stack} is a type of boosting called extreme gradient boost
 
  
 [discrete]
-[dfa-regression-evaluation]
+[[dfa-regression-evaluation]]
 === Measuring model performance
 
 You can measure how well the model has performed on your training dataset by 

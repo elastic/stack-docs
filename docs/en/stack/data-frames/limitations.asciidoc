@@ -195,11 +195,8 @@ Failed {dataframe-transforms} remain as a persistent task and should be handled
 appropriately, either by deleting it or by resolving the root cause of the 
 failure and re-starting.
 
-When using the API to delete a failed {dataframe-transform}, first stop it using 
-`_stop?force=true`, then delete it.
-
-If starting a failed {dataframe-transform}, after the root cause has been 
-resolved, the `_start?force=true` parameter must be specified.
+When using the API to re-start or delete a failed {dataframe-transform}, first 
+stop it using `_stop?force=true`, then re-start or delete it.
 
 [float]
 [[df-availability-limitations]]

@@ -8,14 +8,14 @@
 
 experimental[]
 
-The following limitations and known problems apply to the 7.3 release of 
+The following limitations and known problems apply to the {version} release of 
 the Elastic {dfanalytics} feature:
 
 [float]
 [[dfa-ccs-limitations]]
 === {ccs-cap} limitation
 
-{ccs-cap} is not supported in 7.3 for {dfanalytics}.
+{ccs-cap} is not supported for {dfanalytics}.
 
 [float]
 [[dfa-deletion-limitations]]
@@ -56,3 +56,28 @@ values will be skipped entirely.
 If there are missing values in feature fields (fields that are subjects of the 
 {dfanalytics}), then the document that contains the fields with the missing 
 values will be skipped during the analysis.
+
+[float]
+[[dfa-field-type-docs-limitations]]
+=== {dfanalytics-cap} field type and document limitation
+
+[float]
+==== {oldetection-cap}
+
+{oldetection-cap} requires numeric or boolean data to analyze. The algorithms 
+don't support missing values (see also <<dfa-missing-fields-limitations>>), 
+therefore fields other than numeric or boolean will be ignored. Documents where 
+included fields contain missing values, null values, or an array also will be 
+ignored. Therefore a `dest` index may contain documents that don't have an 
+{olscore}. These documents are still reindexed from `source` to `dest`, but they 
+are not included in the {oldetection} analysis and therefore no {olscore} is 
+computed.
+
+[float]
+==== {regression-cap}
+
+{regression-cap} supports fields that are numeric, boolean, text, keyword and ip 
+and is tolerant of missing values. Fields that are supported will be included in 
+the analysis, other fields will be ignored. Documents where included fields 
+contain an array will also be ignored. Documents in `dest` that don't contain a 
+results field will not be included in the {reganalysis}.

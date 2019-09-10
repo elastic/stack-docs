@@ -87,7 +87,9 @@ Interactive table widgets let you drill down for deeper insights:
 [[timelines-ui]]
 === Timelines
 
-Use timelines as your workspace for alert investigations or threat hunting. 
+Use timelines as your workspace for alert investigations or threat hunting.
+Data from multiple indices can be added to a timeline, which enables investigating
+complex threats, such as lateral movement of malware across hosts in your network.
 
 You can drag objects of interest into the Timeline Event Viewer to create
 exactly the query filter you need to get to the bottom of an alert. You can drag
@@ -109,7 +111,7 @@ can link to timelines from a ticketing system.
 
 [float]
 [[raw]]
-==== See raw event data 
+==== See raw event data
 
 Many security events in Timeline are presented in an easy-to-follow rendered
 view, which enables quicker analyst understanding. You can click and expand
@@ -118,7 +120,7 @@ form, as as {es} JSON.
 
 [float]
 [[narrow-expand]]
-==== Narrow or expand your query 
+==== Narrow or expand your query
 
 You can specify logical `AND` and `OR` operations with an item's placement in
 the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
@@ -127,7 +129,7 @@ whether your placement is on target to create an `AND` or `OR` filters.
 
 [float]
 [[pivot]]
-==== Pivot your data 
+==== Pivot on a data point 
 
 Click a filter to access additional operations such as exclude, temporarily
 disable, or delete items from the query. For example, you can change an included
@@ -137,7 +139,7 @@ item so that it is excluded.
 [[row-renderer]]
 ==== Get more context for each event
 As you build and modify your queries, you can see the results of your
-interactions in the details pane below. 
+interactions in the details pane below.
 
 As your query takes shape, an easy-to-follow rendered view appears for events. It
 shows relevant contextual information that helps tell the backstory of the
@@ -146,12 +148,12 @@ drop area for further introspection.
 
 [float]
 [[other]]
-==== Other actions 
+==== Other actions
 
 The Timeline is flexible and highly interactive.  As you would expect, the
 {siem-app} lets you:
 
-* add, remove, reorder, or resize Timeline columns. 
+* add, remove, reorder, or resize Timeline columns.
 * save, open, and list Timelines
 * add notes to individual events
 * add investigation notes for the whole Timeline
@@ -160,4 +162,3 @@ The Timeline is flexible and highly interactive.  As you would expect, the
 Try clicking to expand or collapse items, or dragging and dropping them to other
 areas to see what happens. Are there interactions that you would expect to see
 that aren't present?  Let us know. We welcome your input.
-

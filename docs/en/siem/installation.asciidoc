@@ -39,9 +39,10 @@ Windows event logs
 * https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
 network activity
 
-NOTE: {siem-soln} also works with custom and third-party data sources in addition to
-those supported by Beats. {ecs-ref}[Elastic Common Schema (ECS)] makes this
-possible.
+NOTE: The {ecs-ref}[Elastic Common Schema (ECS)] enables {siem-soln} to work
+with custom and third-party data sources in addition to
+those supported by Beats. It is important to note that {siem-soln} uses the
+{ecs-ref}/ecs-host.html[`host.name`] ECS field as the primary key for identifying hosts.
 
 You can install {beats} using a {kib}-based guide or directly from the command line.
 
@@ -87,13 +88,18 @@ To populate *Hosts* data, enable these {auditbeat} modules:
 * {auditbeat-ref}/auditbeat-module-file_integrity.html[File integrity module (FIM) - Linux, macOS, Win]
 
 
-To populate *Network* data, enable these {filebeat} modules:
+To populate *Network* data, enable the relevant {packetbeat} protocols
+and {filebeat} modules:
 
-* https://www.elastic.co/products/beats/filebeat[{filebeat}]
-* {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
-* {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
-* {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
-* {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
-* {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
-* {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
-* {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]
+* https://www.elastic.co/products/beats/packetbeat[{packetbeat}]:
+** {packetbeat-ref}/packetbeat-dns-options.html[DNS]
+** {packetbeat-ref}/configuration-tls.html[TLS]
+** {packetbeat-ref}/configuration-protocols.html[Other supported protocols]
+* https://www.elastic.co/products/beats/filebeat[{filebeat}]:
+** {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
+** {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
+** {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
+** {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
+** {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
+** {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
+** {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]

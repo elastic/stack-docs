@@ -35,17 +35,15 @@ interface.
 
 NOTE: Machine learning jobs look back and analyse two weeks of historical data prior to
 the time they are enabled. After jobs are enabled, they continuously analyse incoming data.
+////
+* SIEM https://www.elastic.co/products/beats/auditbeat[{Auditbeat}]: Detect suspicious logins and unusual processes in Auditbeat
+ECS data (beta)
+** siem-api-suspicious_login_activity_ecs
+** siem-api-rare_process_linux_ecs
 
-
-// * SIEM https://www.elastic.co/products/beats/auditbeat[{Auditbeat}]: Detect suspicious logins and unusual processes in Auditbeat
-// ECS data (beta)
-// ** siem-api-suspicious_login_activity_ecs
-// ** siem-api-rare_process_linux_ecs
-//
-// * SIEM https://www.elastic.co/products/beats/winlogbeat[{Winlogbeat}]: Detect unusual processes in Winlogbeat ECS data (beta)
-// ** siem-api-rare_process_windows_ecs
-
-
+* SIEM https://www.elastic.co/products/beats/winlogbeat[{Winlogbeat}]: Detect unusual processes in Winlogbeat ECS data (beta)
+** siem-api-rare_process_windows_ecs
+////
 The following prebuilt jobs are available:
 [horizontal]
 rare_process_by_host_windows_ecs:: Detects unusual processes running on Windows.
@@ -65,11 +63,12 @@ malware execution or persistence mechanisms.
 windows_anomalous_service:: Searches for unusual Windows services that could indicate
 execution of unauthorized services, malware, or persistence mechanisms.
 windows_anomalous_user_name_ecs:: Searches for activity from users who are not normally
-active, which could indicate unauthorized changes, activity by unauthorized users, lateral
-movement, and compromised credentials.
-linux_anomalous_network_activity_ecs:: Searches for processes that do not usually use the
-network but have unexpected network activity, which could indicate command-and-control,
-lateral movement, persistence, or data exfiltration activity.
+active, which could indicate unauthorized changes, activity by unauthorized users, lateral movement, and compromised credentials.
+linux_anomalous_network_activity_ecs:: Searches for unusual network processes that
+could indicate command-and-control, lateral movement, persistence, or data exfiltration activity.
+linux_anomalous_network_port_activity_ecs:: Searches for unusual destination port
+activity that could indicate command-and-control, persistence mechanism, or
+data exfiltration activity.
 linux_anomalous_network_service:: Searches for unusual listening ports that could
 indicate execution of unauthorized services, backdoors, or persistence mechanisms.
 linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests

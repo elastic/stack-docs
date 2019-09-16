@@ -192,26 +192,16 @@ on your hosts:
 TIP: You can also enrich your data with other
 {packetbeat-ref}/add-host-metadata.html[host fields].
 
-. Do *one* of the following:
-** If you are using Elastic Cloud, add `output.elasticsearch.pipeline: geoip-info`
-to the Beats configuration files:
-+
-[source,yml]
-----------------------------------
-output.elasticsearch.pipeline: geoip-info <1>
-----------------------------------
-<1> The value of this field must be the same as the ingest pipeline name in
-<<geo_pipeleine, step 1>> (`geoip-info` in this example).
-+
-** For local Elastic deployments, add `pipeline: geoip-info` under the
-`output.elasticsearch` tag:
+. Add the pipeline to the `output.elasticsearch` tag:
 +
 [source,yml]
 ----------------------------------
   output.elasticsearch:
     hosts: ["localhost:9200"]
-    pipeline: geoip-info
+    pipeline: geoip-info <1>
 ----------------------------------
+<1> The value of this field must be the same as the ingest pipeline name in
+<<geo_pipeleine, step 1>> (`geoip-info` in this example).
 
 [float]
 [[map-actions]]

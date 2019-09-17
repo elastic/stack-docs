@@ -3,14 +3,12 @@
 == {regression-cap}
 
 {reganalysis-cap} is a {ml} process for estimating the relationships among 
-a number of {feature-vars} and a {depvar}, then making further predictions based 
-on these relationships.
+different variables, then making further predictions based on these 
+relationships.
 
 For example, suppose we are interested in finding the relationship between 
-apartment size and monthly rent in a city. In this example, the rent is the 
-{depvar} while the apartment size is the {feature-var} and we try to find out 
-the relationship between them in order to make further predictions. Our 
-imaginary dataset consists of three data points:
+apartment size and monthly rent in a city. Our imaginary dataset consists of 
+three data points:
 
 |===
 | Size (m2) | Monthly rent 
@@ -19,9 +17,9 @@ imaginary dataset consists of three data points:
 | 63        | 2300
 |===
 
-After the model determines the relationship between the {feature-vars} (apartment size) and the 
-{depvar} (rent), it can make predictions such as the monthly rent of a hundred square meter-size 
-apartment.
+After the model determines the relationship between the {feature-vars} 
+(apartment size) and the {depvar} (rent), it can make predictions such as the 
+monthly rent of a hundred square meter-size apartment.
 
 This is a simple example. Usually {regression} problems are multi-dimensional, 
 so the relationships that {reganalysis} tries to find are between multiple 
@@ -79,27 +77,27 @@ that we use in the {stack} is a type of boosting called extreme gradient boost
 === Measuring model performance
 
 You can measure how well the model has performed on your training dataset by 
-using the `regression` evaluation type of the {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The 
-mean squared error (MSE) value that the evaluation may provide you on the training 
-dataset is the _training error_. Training the {regression} model means finding 
-the combination of model parameters that produces the lowest possible training 
+using the `regression` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The mean squared 
+error (MSE) value that the evaluation provides you on the training dataset is 
+the _training error_. Training the {regression} model means finding the 
+combination of model parameters that produces the lowest possible training 
 error.
 
 Another crucial measurement is how well your model performs on unseen 
-data points. To assess 
-how well the trained model will perform on data it has never seen before, you must set aside a 
-proportion of the training dataset for testing. This split 
-of the dataset is the testing dataset. Once the model has been trained and found 
-out the required coefficients, you can let the model predict the value of the 
-data points it has never seen before and compare the prediction to the actual 
-value. This test provides an estimate of a quantity known as the _model 
-generalization error_.
+data points. To assess how well the trained model will perform on data it has 
+never seen before, you must set aside a proportion of the training dataset for 
+testing. This split of the dataset is the testing dataset. Once the model has 
+been trained and found out the required coefficients, you can let the model 
+predict the value of the data points it has never seen before and compare the 
+prediction to the actual value. This test provides an estimate of a quantity 
+known as the _model generalization error_.
 
 Two concepts describe how well the {regression} algorithm was able to learn the 
 relationship between the {feature-vars} and the {depvar}. _Underfitting_ is when 
-the model cannot capture the complexity of the dataset. _Overfitting_ is when the 
-model has trained so specifically to a dataset that it is capturing all the 
+the model cannot capture the complexity of the dataset. _Overfitting_ is when 
+the model has trained so specifically to a dataset that it is capturing all the 
 details and cannot generalize well enough. A model that overfits the data has a 
-low MSE value on the training dataset and a high MSE value 
-on the testing dataset. For more information about the evaluation metrics, see 
+low MSE value on the training dataset and a high MSE value on the testing 
+dataset. For more information about the evaluation metrics, see 
 <<ml-dfanalytics-regression-evaluation>>.

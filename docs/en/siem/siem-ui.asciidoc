@@ -88,8 +88,9 @@ Interactive table widgets let you drill down for deeper insights:
 === Map
 The map provides a visual overview of your network traffic. It is interactive
 and integrated with the KQL bar and time picker, so submitting a query refreshes
-the map. Likewise, you can use the map to add fields directly to the KQL bar and
-jump to specific Host and IP details pages.
+the map. Likewise, you can use the map to add fields directly to the KQL bar and,
+after <<map-links, defining field URLs>>, jump to specific Host and IP
+details pages.
 
 [float]
 [[map-data]]
@@ -202,6 +203,52 @@ TIP: You can also enrich your data with other
 ----------------------------------
 <1> The value of this field must be the same as the ingest pipeline name in
 <<geo_pipeleine, step 1>> (`geoip-info` in this example).
+
+[float]
+[[map-links]]
+==== Define map links
+To jump from the map to specific Host and IP Details pages,
+{kibana-ref}/field-formatters-string.html[format] these fields
+as URL links:
+
+* `host.name`
+* `source.ip`
+* `destination.ip`
+
+. Open Management -> Index patterns.
+
+. Select the relevant index pattern.
+
+. Edit the `host.name` field.
+
+.. From the Format list, select _Url_.
+
+.. From the Type list, select _Link_.
+
+.. In the Url template field, enter:
++
+[source,url]
+----------------------------------
+  <KibanaURL>/app/siem#/link-to/hosts/{{value}} <1>
+----------------------------------
+<1> Where `<KibanaURL>` is the URL of your Kibana server.
+
+.. In the Label template field, enter `{{value}}`.
++
+[role="screenshot"]
+image::field-ui.png[]
+
+.. Save your changes.
+
+. Repeat for the `source.ip` and `destination.ip` fields, using the following
+Url template:
++
+[source,url]
+----------------------------------
+  <KibanaURL>/app/siem#/network/ip/{{value}}
+----------------------------------
+
+. Repeat for all {siem-soln} indices. 
 
 [float]
 [[map-actions]]

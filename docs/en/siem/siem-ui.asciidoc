@@ -86,29 +86,126 @@ Interactive table widgets let you drill down for deeper insights:
 [float]
 [[map-ui]]
 === Map
-The map provides a visual overview of your network traffic. It is interactive
-and integrated with the KQL bar and time picker, so submitting a query refreshes
-the map. Likewise, you can use the map to add fields directly to the KQL bar and,
-after <<map-links, defining field URLs>>, jump to specific Host and IP
-details pages.
+The map provides a visual overview of your network traffic. It is interactive,
+so you can start exploring data directly from the map. Hover over source and
+destination points to see more information, such as hostnames and IP addresses.
+To drill down, click a point and use the plus sign to add a field to the
+query bar. You can also click a hostname to jump to the SIEM Host page, or
+an IP address to open the relevant network details.
+
+Just as you can start an investigation using the map, the map refreshes to show
+relevant data when you run a query or update the time frame.
+
+TIP: To add and remove layers, click on the more options icon in the top right
+corner of the map.
+
+<<conf-map-ui>> describes how to add map data and set up interactions.
 
 [float]
-[[map-data]]
-==== Add network data to the map
-To populate the map with your network data, you need to configure geoIP
-information.
+[[timelines-ui]]
+=== Timelines
+
+Use timelines as your workspace for alert investigations or threat hunting.
+
+You can drag objects of interest into the Timeline Event Viewer to create
+exactly the query filter you need to get to the bottom of an alert. You can drag
+items from table widgets within Hosts and Network pages, or even from within
+Timeline itself.
+
+A timeline is responsive and persists as you move through the {siem-app}
+collecting data. Auto-saving ensures that the results of your investigation are
+available for review by other analysts and incident response teams.
+
+
+[role="screenshot"]
+image::timeline-ui.png[]
+
+Add notes for your own use and to communicate your workflow and findings to
+others. You can share a timeline, or pass it off to another person or team. You
+can link to timelines from a ticketing system.
+
+
+[float]
+[[raw]]
+==== See raw event data
+
+Many security events in Timeline are presented in an easy-to-follow rendered
+view, which enables quicker analyst understanding. You can click and expand
+events from within Timeline to see the underlying event data, either in tabular
+form, as as {es} JSON.
+
+[float]
+[[narrow-expand]]
+==== Narrow or expand your query
+
+You can specify logical `AND` and `OR` operations with an item's placement in
+the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
+sets are `OR`-ed together. As you hover the item over the drop area, you can see
+whether your placement is on target to create an `AND` or `OR` filters.
+
+[float]
+[[pivot]]
+==== Pivot your data
+
+Click a filter to access additional operations such as exclude, temporarily
+disable, or delete items from the query. For example, you can change an included
+item so that it is excluded.
+
+[float]
+[[row-renderer]]
+==== Get more context for each event
+
+As you build and modify your queries, you can see the results of your
+interactions in the details pane below.
+
+As your query takes shape, an easy-to-follow rendered view appears for events. It
+shows relevant contextual information that helps tell the backstory of the
+event. If you see a particular item that interests you, you can drag it to the
+drop area for further introspection.
+
+[float]
+[[other]]
+==== Other actions
+
+The Timeline is flexible and highly interactive.  As you would expect, the
+{siem-app} lets you:
+
+* add, remove, reorder, or resize Timeline columns.
+* save, open, and list Timelines
+* add notes to individual events
+* add investigation notes for the whole Timeline
+* pin events to the Timeline for persistence
+
+Try clicking to expand or collapse items, or dragging and dropping them to other
+areas to see what happens. Are there interactions that you would expect to see
+that aren't present?  Let us know. We welcome your input.
+
+[[conf-map-ui]]
+=== Configuring map data
+
+Depending on your {kib} setup, to display and interact with data on the map you
+might need to:
+
+* <<geoip-data, Add geographical IP data to events>>
+* <<private-network>>
+* <<map-links, Format index fields as URL links>>
+
+[float]
+[[geoip-data]]
+==== Add geoIP data
 
 If you are not using Beats to ship your data, add the relevant index patterns to
 Kibana (Management -> Index patterns) and the SIEM app (Management -> Advanced
-settings -> SIEM default index). When the ECS {ecs-ref}/ecs-geo.html[source.geo.location and
-destination.geo.location] fields are mapped, network data is displayed on the map.
+settings -> SIEM default index). When the ECS {ecs-ref}/ecs-geo.html[source.geo.location
+and destination.geo.location] fields are mapped, network data is displayed on
+the map.
 
-If you use Beats, configure the geoip processor to add data to the relevant fields:
+If you use Beats, configure a geoIP processor to add data to the relevant fields:
 
-[[geo_pipeleine]]
-. Define an ingest node pipeline that uses one or more `geoip` processors to
-add location information to the event. For example, you can use the Console in
-{kib} to create the following pipeline:
+[[geo-pipeleine]]
+. Define an ingest node pipeline that uses one or more `geoIP` processors to add
+location information to events. For example, use the Console in {kib} to create
+the following pipeline:
 +
 --
 [source,json]
@@ -164,10 +261,26 @@ that contains the IP address to use for the geographical lookup, and
 `"ignore_missing": true` configures the pipeline to continue processing when
 it encounters an event that doesn't have the specified field.
 
-. If you want to add your network’s internal IP addresses to the map,
-define geo location fields under the `processors` tag in the Beats configuration files
-on your hosts:
+. In your Beats configuration files, add the pipeline to the `output.elasticsearch`
+tag:
 +
+[source,yml]
+----------------------------------
+  output.elasticsearch:
+    hosts: ["localhost:9200"]
+    pipeline: geoip-info <1>
+----------------------------------
+<1> The value of this field must be the same as the ingest pipeline name in
+<<geo-pipeleine, step 1>> (`geoip-info` in this example).
+
+[float]
+[[private-network]]
+==== Map your internal network
+
+If you want to add your network’s internal IP addresses to the map, define geo
+location fields under the `processors` tag in the Beats configuration files
+on your hosts:
+
 [source,yml]
 ----------------------------------
   processors:
@@ -193,154 +306,46 @@ on your hosts:
 TIP: You can also enrich your data with other
 {packetbeat-ref}/add-host-metadata.html[host fields].
 
-. Add the pipeline to the `output.elasticsearch` tag:
-+
-[source,yml]
-----------------------------------
-  output.elasticsearch:
-    hosts: ["localhost:9200"]
-    pipeline: geoip-info <1>
-----------------------------------
-<1> The value of this field must be the same as the ingest pipeline name in
-<<geo_pipeleine, step 1>> (`geoip-info` in this example).
-
 [float]
 [[map-links]]
-==== Define map links
+==== Define map field links
+
 To jump from the map to specific Host and IP Details pages,
-{kibana-ref}/field-formatters-string.html[format] these fields
-as URL links:
+{kibana-ref}/field-formatters-string.html[format] these fields in all {siem-soln}
+indices as URL links:
 
 * `host.name`
 * `source.ip`
 * `destination.ip`
 
-. Open Management -> Index patterns.
+
+. Go to *Management* -> *Index Patterns*.
 
 . Select the relevant index pattern.
 
-. Edit the `host.name` field.
+. Edit the the index's `host.name` field.
 
-.. From the Format list, select _Url_.
+.. From the *Format* drop-down list, select _Url_.
 
-.. From the Type list, select _Link_.
+.. From the *Type* drop-down list, select _Link_.
 
-.. In the Url template field, enter:
+.. In the *Url template* field, enter:
 +
 [source,url]
 ----------------------------------
   <KibanaURL>/app/siem#/link-to/hosts/{{value}} <1>
 ----------------------------------
-<1> Where `<KibanaURL>` is the URL of your Kibana server.
+<1> `<KibanaURL>` is the URL of your Kibana server.
 
 .. In the Label template field, enter `{{value}}`.
 +
 [role="screenshot"]
 image::field-ui.png[]
 
-.. Save your changes.
-
-. Repeat for the `source.ip` and `destination.ip` fields, using the following
-Url template:
+. Repeat step 3 for the `source.ip` and `destination.ip` index fields,
+using the following *Url template*:
 +
 [source,url]
 ----------------------------------
   <KibanaURL>/app/siem#/network/ip/{{value}}
 ----------------------------------
-
-. Repeat for all {siem-soln} indices. 
-
-[float]
-[[map-actions]]
-==== Interact with the map
-Hover over source and destination points to see more information, such as hostnames
-and IP addresses. To drill down, click a point and use the plus sign to add a field
-to the query bar. You can also click a hostname to jump to the SIEM Host page, or
-an IP address to open the relevant network details.
-
-Just as you can start an investigation using the map, the map refreshes to show relevant
-data when you run a query or update the time frame.
-
-TIP: To add and remove layers, click on the more options icon in the top right
-corner of the map.
-
-
-[float]
-[[timelines-ui]]
-=== Timelines
-
-Use timelines as your workspace for alert investigations or threat hunting.
-Data from multiple indices can be added to a timeline, which enables investigating
-complex threats, such as lateral movement of malware across hosts in your network.
-
-You can drag objects of interest into the Timeline Event Viewer to create
-exactly the query filter you need to get to the bottom of an alert. You can drag
-items from table widgets within Hosts and Network pages, or even from within
-Timeline itself.
-
-A timeline is responsive and persists as you move through the {siem-app}
-collecting data. Auto-saving ensures that the results of your investigation are
-available for review by other analysts and incident response teams.
-
-
-[role="screenshot"]
-image::timeline-ui.png[]
-
-Add notes for your own use and to communicate your workflow and findings to
-others. You can share a timeline, or pass it off to another person or team. You
-can link to timelines from a ticketing system.
-
-
-[float]
-[[raw]]
-==== See raw event data
-
-Many security events in Timeline are presented in an easy-to-follow rendered
-view, which enables quicker analyst understanding. You can click and expand
-events from within Timeline to see the underlying event data, either in tabular
-form, as as {es} JSON.
-
-[float]
-[[narrow-expand]]
-==== Narrow or expand your query
-
-You can specify logical `AND` and `OR` operations with an item's placement in
-the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
-sets are `OR`-ed together. As you hover the item over the drop area, you can see
-whether your placement is on target to create an `AND` or `OR` filters.
-
-[float]
-[[pivot]]
-==== Pivot on a data point 
-
-Click a filter to access additional operations such as exclude, temporarily
-disable, or delete items from the query. For example, you can change an included
-item so that it is excluded.
-
-[float]
-[[row-renderer]]
-==== Get more context for each event
-As you build and modify your queries, you can see the results of your
-interactions in the details pane below.
-
-As your query takes shape, an easy-to-follow rendered view appears for events. It
-shows relevant contextual information that helps tell the backstory of the
-event. If you see a particular item that interests you, you can drag it to the
-drop area for further introspection.
-
-[float]
-[[other]]
-==== Other actions
-
-The Timeline is flexible and highly interactive.  As you would expect, the
-{siem-app} lets you:
-
-* add, remove, reorder, or resize Timeline columns.
-* save, open, and list Timelines
-* add notes to individual events
-* add investigation notes for the whole Timeline
-* pin events to the Timeline for persistence
-
-Try clicking to expand or collapse items, or dragging and dropping them to other
-areas to see what happens. Are there interactions that you would expect to see
-that aren't present?  Let us know. We welcome your input.

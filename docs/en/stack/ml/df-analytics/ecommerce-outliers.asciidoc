@@ -5,26 +5,9 @@
 
 beta[]
 
-////
-The goal of <<dfa-outlier-detection>> is to find the most unusual data points in
-an index. We analyse the numerical fields of 
-each data point (document in an index) and annotate them with how unusual they 
-are.
- 
-We use unsupervised {oldetection} which means there is no need to provide a 
-training data set to teach {oldetection} to recognize outliers. In practice, 
-this is achieved by using an ensemble of distance based and density based 
-techniques to identify those data points which are the most different from the 
-bulk of the data in the index. We assign to each analysed data point an 
-{olscore}, which captures how different the entity is from other entities in the 
-index.
- 
-////
-////
-Let's use the
-{kibana-ref}/add-sample-data.html[{kib} sample data] to demonstrate how you can
-pivot and summarize your data with {transforms}.
-////
+The goal of <<dfa-outlier-detection>> is to find the most unusual documents in
+an index. Let's try to detect unusual customer behavior in the 
+{kibana-ref}/add-sample-data.html[eCommerce sample data set]. 
 
 . Obtain a license that includes the {ml-features}.
 +
@@ -173,7 +156,7 @@ POST _data_frame/transforms/ecommerce-customer-sales/_start
 
 --
 
-. Create a {dfanalytics-job} to detect outliers in the new index.
+. Create a {dfanalytics-job} to detect outliers in the entity-centric index.
 +
 --
 There is a wizard for creating {dfanalytics-jobs} on the
@@ -226,12 +209,28 @@ POST _ml/data_frame/analytics/ecommerce/_start
 . View the results of the {oldetection} analysis.
 +
 --
+The {dfanalytics-job} creates an index that contains the original data and
+{olscores} for each document. The {olscore} indicates how different each entity
+is from other entities.
+
+In {kib}, you can view the results from the {dfanalytics-job} and sort them
+on the outlier score:
 
 [role="screenshot"]
 image::images/outliers.jpg["View {oldetection} results in {kib}"]
 
-Alternatively, you can examine the values in the `outlier_score` field in your
-new index.
+The `ml.outlier` score is a value between 0 and 1. The larger the value, the
+more likely they are to be an outlier.
+
+In addition to an overall outlier score, each document is annotated with feature
+influence values for each field. These values add up to 1 and indicate which
+fields are the most important in deciding whether an entity is an outlier or
+inlier. For example, the dark shading on the `products.taxful_price.sum` field
+for Wagdi Shaw indicates that the sum of the product prices that was the most
+influential feature in determining that Wagdi is an outlier.
+
+If you want to see the exact feature influence values, you can retrieve them
+from the new index. For example:
 
 [source,console]
 --------------------------------------------------
@@ -254,7 +253,6 @@ The search results include the following {oldetection} scores:
 --------------------------------------------------
 // NOTCONSOLE
 --
-
 
 TIP: If you do not want to keep the {transform} and the {dfanalytics-job}, you
 can delete them in {kib} or use the

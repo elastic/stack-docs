@@ -1,0 +1,264 @@
+[role="xpack"]
+[testenv="platinum"]
+[[ecommerce-outliers]]
+=== Finding outliers in the eCommerce sample data
+
+beta[]
+
+////
+The goal of <<dfa-outlier-detection>> is to find the most unusual data points in
+an index. We analyse the numerical fields of 
+each data point (document in an index) and annotate them with how unusual they 
+are.
+ 
+We use unsupervised {oldetection} which means there is no need to provide a 
+training data set to teach {oldetection} to recognize outliers. In practice, 
+this is achieved by using an ensemble of distance based and density based 
+techniques to identify those data points which are the most different from the 
+bulk of the data in the index. We assign to each analysed data point an 
+{olscore}, which captures how different the entity is from other entities in the 
+index.
+ 
+////
+////
+Let's use the
+{kibana-ref}/add-sample-data.html[{kib} sample data] to demonstrate how you can
+pivot and summarize your data with {transforms}.
+////
+
+. Obtain a license that includes the {ml-features}.
++
+--
+include::{docdir}/get-started-trial.asciidoc[]
+--
+
+. If the {es} {security-features} are enabled, obtain a user ID with sufficient
+privileges to complete these steps. 
++
+--
+You need `manage_data_frame_transforms` cluster privileges to preview and create
+{transforms}. Members of the built-in `data_frame_transforms_admin`
+role have these privileges.
+
+You must also be a member of the `machine_learning_admin` built-in role to
+create and manage {dfanalytics-jobs}.
+
+You also need `read` and `view_index_metadata` index privileges on the source
+index and `read`, `create_index`, and `index` privileges on the destination
+index. 
+
+For more information, see <<security-privileges>> and <<built-in-roles>>.
+--
+
+. Create a {transform} that generates an entity-centric index with numeric or
+boolean data to analyze.
++
+--
+In this example, we'll use the eCommerce orders sample data and pivot the data
+such that we get a new index that contains a sales summary for each customer.
+
+In particular, create a {transform} that calculates the sum of the products
+(`products.quantity`) and the sum of prices(`products.taxful_price`) in all of
+the orders, grouped by customer (`customer_full_name`). Also include a value
+count aggregation, so that we know how many orders (`order_id`) exist for each
+customer.
+
+You can preview the {transform} before you create it in {kib}:
+
+[role="screenshot"]
+image::images/ecommerce-transform-preview.jpg["Creating a {transform} in {kib}"]
+
+Alternatively, you can preview and create the {transform} with the following
+APIs:
+
+[source,console]
+--------------------------------------------------
+POST _data_frame/transforms/_preview
+{
+  "source": {
+    "index": [
+      "kibana_sample_data_ecommerce"
+    ]
+  },
+  "pivot": {
+    "group_by": {
+      "customer_full_name.keyword": {
+        "terms": {
+          "field": "customer_full_name.keyword"
+        }
+      }
+    },
+    "aggregations": {
+      "products.quantity.sum": {
+        "sum": {
+          "field": "products.quantity"
+        }
+      },
+      "products.taxful_price.sum": {
+        "sum": {
+          "field": "products.taxful_price"
+        }
+      },
+      "order_id.value_count": {
+        "value_count": {
+          "field": "order_id"
+        }
+      }
+    }
+  }
+}
+
+PUT _data_frame/transforms/ecommerce-customer-sales
+{
+  "source": {
+    "index": [
+      "kibana_sample_data_ecommerce"
+    ]
+  },
+  "pivot": {
+    "group_by": {
+      "customer_full_name.keyword": {
+        "terms": {
+          "field": "customer_full_name.keyword"
+        }
+      }
+    },
+    "aggregations": {
+      "products.quantity.sum": {
+        "sum": {
+          "field": "products.quantity"
+        }
+      },
+      "products.taxful_price.sum": {
+        "sum": {
+          "field": "products.taxful_price"
+        }
+      },
+      "order_id.value_count": {
+        "value_count": {
+          "field": "order_id"
+        }
+      }
+    }
+  },
+  "description": "E-commerce sales by customer",
+  "dest": {
+    "index": "ecommerce-customer-sales"
+  }
+}
+--------------------------------------------------
+// TEST[skip:set up sample data]
+
+For more details about creating {transforms}, see <<ecommerce-dataframes>>.
+--
+
+. Start the {transform}.
++
+--
+
+TIP: Even though resource utilization is automatically adjusted based on the
+cluster load, a {transform} increases search and indexing load on your
+cluster while it runs. If you're experiencing an excessive load, however, you
+can stop it.
+
+You can start, stop, and manage {transforms} in {kib}. Alternatively, you can
+use the {ref}/start-data-frame-transform.html[start {transforms}] API. For
+example:
+
+[source,console]
+--------------------------------------------------
+POST _data_frame/transforms/ecommerce-customer-sales/_start
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+
+--
+
+. Create a {dfanalytics-job} to detect outliers in the new index.
++
+--
+There is a wizard for creating {dfanalytics-jobs} on the
+*Machine Learning* > *Analytics* page in {kib}:
+
+[role="screenshot"]
+image::images/ecommerce-outlier-job.jpg["Create a {dfanalytics-job} in {kib}"]
+
+Alternatively, you can use the
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. For example:
+
+[source,console]
+--------------------------------------------------
+PUT _ml/data_frame/analytics/ecommerce
+{
+  "source": {
+    "index": "ecommerce-customer-sales"
+  },
+  "dest": {
+    "index": "ecommerce-outliers"
+  },
+  "analysis": {
+    "outlier_detection": {
+    }
+  },
+  "analyzed_fields" : {
+    "includes" : ["products.quantity.sum","products.taxful_price.sum","order_id.value_count"]
+  }
+}
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+--
+
+. Start the {dfanalytics-job}.
++
+--
+You can start, stop, and manage {dfanalytics-jobs} on the
+*Machine Learning* > *Analytics* page in {kib}. Alternatively, you can use the
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and
+{ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs. For
+example:
+
+[source,console]
+--------------------------------------------------
+POST _ml/data_frame/analytics/ecommerce/_start
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+--
+
+. View the results of the {oldetection} analysis.
++
+--
+
+[role="screenshot"]
+image::images/outliers.jpg["View {oldetection} results in {kib}"]
+
+Alternatively, you can examine the values in the `outlier_score` field in your
+new index.
+
+[source,console]
+--------------------------------------------------
+GET ecommerce-outliers/_search?q="Wagdi Shaw"
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+
+The search results include the following {oldetection} scores:
+
+[source,js]
+--------------------------------------------------
+...
+"ml" :{
+  "outlier_score" : 0.9653657078742981,
+  "feature_influence.products.quantity.sum" : 0.00592468399554491,
+  "feature_influence.order_id.value_count" : 0.01975759118795395,
+  "feature_influence.products.taxful_price.sum" : 0.974317729473114
+}
+...
+--------------------------------------------------
+// NOTCONSOLE
+--
+
+
+TIP: If you do not want to keep the {transform} and the {dfanalytics-job}, you
+can delete them in {kib} or use the
+{ref}/delete-data-frame-transform.html[delete {transform} API] and
+{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When
+you delete {transforms} and {dfanalytics-jobs}, the destination indices and
+{kib} index patterns remain.

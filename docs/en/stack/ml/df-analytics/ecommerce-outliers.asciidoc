@@ -5,8 +5,8 @@
 
 beta[]
 
-The goal of <<dfa-outlier-detection>> is to find the most unusual documents in
-an index. Let's try to detect unusual customer behavior in the 
+The goal of <<dfa-outlier-detection,{oldetection}>> is to find the most unusual
+documents in an index. Let's try to detect unusual customer behavior in the 
 {kibana-ref}/add-sample-data.html[eCommerce sample data set]. 
 
 . Obtain a license that includes the {ml-features}.
@@ -27,8 +27,8 @@ You must also be a member of the `machine_learning_admin` built-in role to
 create and manage {dfanalytics-jobs}.
 
 You also need `read` and `view_index_metadata` index privileges on the source
-index and `read`, `create_index`, and `index` privileges on the destination
-index. 
+indices and `read`, `create_index`, and `index` privileges on the destination
+indices. 
 
 For more information, see <<security-privileges>> and <<built-in-roles>>.
 --
@@ -41,7 +41,7 @@ In this example, we'll use the eCommerce orders sample data and pivot the data
 such that we get a new index that contains a sales summary for each customer.
 
 In particular, create a {transform} that calculates the sum of the products
-(`products.quantity`) and the sum of prices(`products.taxful_price`) in all of
+(`products.quantity`) and the sum of prices (`products.taxful_price`) in all of
 the orders, grouped by customer (`customer_full_name`). Also include a value
 count aggregation, so that we know how many orders (`order_id`) exist for each
 customer.
@@ -156,7 +156,7 @@ POST _data_frame/transforms/ecommerce-customer-sales/_start
 
 --
 
-. Create a {dfanalytics-job} to detect outliers in the entity-centric index.
+. Create a {dfanalytics-job} to detect outliers in the new entity-centric index.
 +
 --
 There is a wizard for creating {dfanalytics-jobs} on the
@@ -226,11 +226,11 @@ In addition to an overall outlier score, each document is annotated with feature
 influence values for each field. These values add up to 1 and indicate which
 fields are the most important in deciding whether an entity is an outlier or
 inlier. For example, the dark shading on the `products.taxful_price.sum` field
-for Wagdi Shaw indicates that the sum of the product prices that was the most
+for Wagdi Shaw indicates that the sum of the product prices was the most
 influential feature in determining that Wagdi is an outlier.
 
 If you want to see the exact feature influence values, you can retrieve them
-from the new index. For example:
+from the index that is associated with your {dfanalytics-job}. For example:
 
 [source,console]
 --------------------------------------------------
@@ -253,6 +253,12 @@ The search results include the following {oldetection} scores:
 --------------------------------------------------
 // NOTCONSOLE
 --
+
+Now that you've found unusual behavior in the sample data set, consider how you
+might apply these steps to other data sets. If you have data that is already
+marked up with true outliers, you can determine how well the {oldetection}
+algorithms perform by using the evaluate {dfanalytics} API. See
+<<ml-dfanalytics-evaluate>>.
 
 TIP: If you do not want to keep the {transform} and the {dfanalytics-job}, you
 can delete them in {kib} or use the

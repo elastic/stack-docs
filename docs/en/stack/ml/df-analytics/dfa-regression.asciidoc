@@ -1,0 +1,105 @@
+[role="xpack"]
+[[dfa-regression]]
+== {regression-cap}
+
+{reganalysis-cap} is a {ml} process for estimating the relationships among 
+different fields in your data, then making further predictions based on these 
+relationships.
+
+For example, suppose we are interested in finding the relationship between 
+apartment size and monthly rent in a city. Our imaginary dataset consists of 
+three data points:
+
+|===
+| Size (m2) | Monthly rent 
+| 44        | 1600
+| 24        | 1055
+| 63        | 2300
+|===
+
+After the model determines the relationship between the
+apartment size and the rent, it can make predictions such as the 
+monthly rent of a hundred square meter-size apartment.
+
+This is a simple example. Usually {regression} problems are multi-dimensional, 
+so the relationships that {reganalysis} tries to find are between multiple 
+fields. To extend our example, a more complex 
+{reganalysis} could take into account additional factors such as the location 
+of the apartment in the city, on which floor it is, and whether the apartment 
+has a riverside view or not and so on.
+
+
+[discrete]
+[[dfa-regression-features]]
+=== {feature-vars-cap}
+
+When you perform {reganalysis}, you must identify a subset of fields that you 
+want to use to create a model for predicting other fields. We refer to these 
+fields as _feature variables_ and _dependent variables_, respectively.
+{feature-vars-cap} are the values that the {depvar} value depends on. If one or 
+more of the {feature-vars} changes, the {depvar} value also changes. There are 
+three different types of {feature-vars} that you can use with our {regression} 
+algorithm:
+
+* Numerical. In our example, the size of the apartment was a 
+  numerical {feature-var}.
+* Categorical. A variable that can have one value from a set of values. The 
+  value set has a fixed and limited number of possible items. In the example, 
+  the location of the apartment in the city (borough) is a categorical variable.
+* Boolean. The riverside view in the example is a boolean value because an 
+  apartment either has a riverside view or doesn't have one.
+Arrays are not supported.
+
+
+[discrete]
+[[dfa-regression-supervised]]
+=== Training the {regression} algorithm
+
+{regression-cap} is a supervised machine learning process, which means that you 
+need to supply a labeled training dataset that has some {feature-vars} and a 
+{depvar}. The {regression} algorithm learns the relationships between the 
+feature and the {depvar}. Once you've trained the model on your training 
+dataset, you can reuse the knowledge that the model has learned about the 
+relationships between the data points to make certain inferences about new data 
+points.
+
+The relationships between the {feature-vars} and the {depvar} are described as a 
+mathematical function. {reganalysis-cap} tries to find the best prediction for 
+the {depvar} by combining the predictions from multiple base learners – algorithms that generalize from the dataset. The 
+performance of an ensemble is usually better than the performance of each 
+individual base learner because the individual learners will make different 
+errors. These average out when their predictions are combined. The ensemble 
+learning technique that we use in the {stack} is a type of boosting called 
+extreme gradient boost (XGboost) which combines decision trees with gradient 
+boosting methodologies.
+
+ 
+[discrete]
+[[dfa-regression-evaluation]]
+=== Measuring model performance
+
+You can measure how well the model has performed on your training dataset by 
+using the `regression` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The mean squared 
+error (MSE) value that the evaluation provides you on the training dataset is 
+the _training error_. Training the {regression} model means finding the 
+combination of model parameters that produces the lowest possible training 
+error.
+
+Another crucial measurement is how well your model performs on unseen 
+data points. To assess how well the trained model will perform on data it has 
+never seen before, you must set aside a proportion of the training dataset for 
+testing. This split of the dataset is the testing dataset. Once the model has 
+been trained, you can let the model 
+predict the value of the data points it has never seen before and compare the 
+prediction to the actual value. This test provides an estimate of a quantity 
+known as the _model generalization error_.
+
+Two concepts describe how well the {regression} algorithm was able to learn the 
+relationship between the {feature-vars} and the {depvar}. _Underfitting_ is when 
+the model cannot capture the complexity of the dataset. _Overfitting_ is when 
+the model is too specific to the training data set and is capturing details 
+which do not generalize to new data. A model that overfits the data has a 
+low MSE value on the training dataset and a high MSE value on the testing 
+dataset. For more information about the evaluation metrics, see 
+<<ml-dfanalytics-regression-evaluation>>.

@@ -99,3 +99,38 @@ closer to 1, the better the algorithm performance.
 The {evaluatedf-api} can return the false positive rate (`fpr`) and the true 
 positive rate (`tpr`) at the different threshold levels, so you can visualize 
 the algorithm performance by using these values.
+
+
+[discrete]
+[[ml-dfanalytics-regression-evaluation]]
+=== {regression-cap} evaluation
+
+This evaluation type is suitable for evaluating {regression} models. The 
+{regression} evaluation type offers the following metrics to evaluate the model 
+performance:
+
+* Mean squared error (MSE)
+* R-squared (R^2^)
+
+
+[discrete]
+[[ml-dfanalytics-mse]]
+==== Mean squared error
+
+The API provides a MSE by computing the 
+average squared sum of the difference between the true value and the value that 
+the {regression} model predicted. (Avg (predicted value-actual value)^2^).
+You can use the MSE to measure how well the {reganalysis} model is performing.
+
+
+[discrete]
+[[ml-dfanalytics-r-sqared]]
+==== R-squared
+
+Another evaluation metrics for {reganalysis} is R-squared (R^2^). It represents 
+the goodness of fit and measures how much of the variation in the data the 
+predictions are able to explain. The value of R^2^ are less than or equal to 1, where 1 
+indicates that the predictions and true values are equal. A value of 0 is 
+obtained when all the predictions are set to the mean of the true values. A 
+value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
+(about 30%) closer to true values than their mean.

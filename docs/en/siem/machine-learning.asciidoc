@@ -101,22 +101,20 @@ windows_anomalous_process_creation:: Identifies unusual parent/child process
 relationships that could indicate malware execution or persistence mechanisms.
 +
 Malicious scripts often call on other applications and processes as part of their
-exploit payload. For example, a malicious Office document runs a script that starts
-an Excel or Word script interpreter process, which, in turn, executes another script
-that downloads and runs malware. Another common scenario is Outlook running an
-unusual process when malware is downloaded in an email.
+exploit payload. For example, when a malicious Office document runs scripts as
+part of an exploit payload, Excel or Word may start a script interpreter process,
+which, in turn, runs a script that downloads and executes malware. Another common
+scenario is Outlook running an unusual process when malware is downloaded in an email.
 +
-Monitoring and identifying process relationships is an excellent way of detecting
+Monitoring and identifying anomalous process relationships is an excellent way of detecting
 new and emerging malware that is not yet recognized by anti-virus scanners.
 +
 Beats required on hosts:
 
 * Winlogbeat
-windows_anomalous_script:: Searches for PowerShell scripts that potentially indicate
-malware execution or persistence mechanisms.
-+
-PowerShell scripts with high levels of entropy (apparent randomness) point to the
-use of obfuscation techniques, which are often used in malicious scripts.
+windows_anomalous_script:: Searches for PowerShell scripts with unusual data
+characteristics, such as obfuscation, that may be a characteristic of malicious
+PowerShell script text blocks.
 +
 Beats required on hosts:
 

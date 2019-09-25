@@ -1,0 +1,35 @@
+[[logs-app-overview]]
+[role="xpack"]
+== Logs monitoring overview
+
+Logs monitoring enables you to view logs from your infrastructure and identify problems in real time.
+You can view logs from servers, containers, services, and so on.
+Then you can drill down to view more detailed information about an individual log entry, or you can seamlessly switch to view corresponding metrics, uptime information or APM traces where available.
+
+// Add one-sentence description of the Analysis tab functionality.
+// Add links to metrics, uptime and APM when I have them.
+
+[float]
+=== Logs monitoring components
+
+image::images/monitoring-architecture.png[]
+
+// redo image for metrics and logs separately.
+
+Logs monitoring requires the following {stack} components.
+
+*https://www.elastic.co/products/elasticsearch[{es}]* is a real-time,
+distributed storage, search, and analytics engine.
+{es} can store, search, and analyze large volumes of data in near real-time.
+The {logs-app} uses {es} to store logs data in {es} documents which are queried on demand.
+
+*https://www.elastic.co/products/beats[{beats}]* are open source data shippers that you install as agents on your servers to send data to {es}.
+The {logs-app} uses Filebeat to collect metrics from the servers, containers, and other services in your infrastructure.
+Filebeat modules are available for most common servers, containers and services.
+
+*https://www.elastic.co/products/kibana[{kib}]* is an open source analytics and visualization platform designed to work with {es}.
+You use {kib} to search, view, and interact with the logs data stored in {es}.
+You can easily perform advanced data analysis and visualize your data in a variety of charts, tables,
+and maps.
+The <<logs-ui-overview, {logs-app}>> in {kib} provides a dedicated user interface to view logs from the servers, containers and services in your infrastructure.
+

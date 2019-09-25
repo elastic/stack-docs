@@ -1,20 +1,25 @@
 :doctype: book
-:infra-ui: Infrastructure
-:infra-soln: infrastructure monitoring
-:logs-ui: Logs
+:metrics: Infrastructure
+:metrics-app: Infrastructure app
+:logs: Logs
+:logs-app: Logs app
 
-= Infrastructure Monitoring Guide
+= Infrastructure and Logs Monitoring Guide
 
-include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
+include::{asciidoc-dir}/../../shared/versions.asciidoc[]
 
 include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
 
-include::overview.asciidoc[]
+include::metrics-overview.asciidoc[]
 
-include::installation.asciidoc[]
+include::install-config-metrics.asciidoc[]
 
 include::infrastructure-metrics.asciidoc[]
 
 include::infra-ui-intro.asciidoc[]
+
+include::logs-overview.asciidoc[]
+
+include::install-config-logs.asciidoc[]
 
 include::logs-ui-intro.asciidoc[]

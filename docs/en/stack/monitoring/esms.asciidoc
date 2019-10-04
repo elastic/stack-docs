@@ -22,7 +22,7 @@ To use {metricbeat}:
 . Enable the collection of monitoring data on your cluster.
 +
 --
-include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=enable-collection]
+include::{elasticsearch-reference}/monitoring/configuring-metricbeat.asciidoc[tag=enable-collection]
 
 For more information about these settings, see
 {ref}/monitoring-settings.html[Monitoring settings in {es}].
@@ -31,7 +31,7 @@ For more information about these settings, see
 . Disable the default collection of {es} monitoring metrics.
 +
 --
-include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=disable-default-collection]
+include::{elasticsearch-reference}/monitoring/configuring-metricbeat.asciidoc[tag=disable-default-collection]
 --
 
 . {metricbeat-ref}/metricbeat-installation.html[Install {metricbeat}] on each
@@ -40,21 +40,21 @@ node.
 . Enable the {es} {xpack} module in {metricbeat} on each node. +
 +
 --
-include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=enable-es-module]
+include::{elasticsearch-reference}/monitoring/configuring-metricbeat.asciidoc[tag=enable-es-module]
 --
 
 . Configure the {es} {xpack} module in {metricbeat} on each node. +
 +
 --
-include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=configure-es-module]
+include::{elasticsearch-reference}/monitoring/configuring-metricbeat.asciidoc[tag=configure-es-module]
 
-include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=remote-monitoring-user]
+include::{elasticsearch-reference}/monitoring/configuring-metricbeat.asciidoc[tag=remote-monitoring-user]
 --
 
 . Optional: Disable the system module in {metricbeat}. +
 +
 --
-include::{es-repo-dir}/monitoring/configuring-metricbeat.asciidoc[tag=disable-system-module]
+include::{elasticsearch-reference}/monitoring/configuring-metricbeat.asciidoc[tag=disable-system-module]
 --
 
 . Identify where to send the {es} monitoring data and supply the necessary
@@ -107,7 +107,7 @@ To use {metricbeat}:
 . Disable the default collection of {kib} monitoring metrics. +
 +
 --
-include::{kib-repo-dir}/user/monitoring/monitoring-metricbeat.asciidoc[tag=disable-kibana-collection]
+include::{kibana-root}/docs/user/monitoring/monitoring-metricbeat.asciidoc[tag=disable-kibana-collection]
 
 For more information, see 
 {kibana-ref}/monitoring-settings-kb.html[Monitoring settings in {kib}].
@@ -124,21 +124,21 @@ same server as {kib}.
 . Enable the {kib} {xpack} module in {metricbeat}. +
 +
 --
-include::{kib-repo-dir}/user/monitoring/monitoring-metricbeat.asciidoc[tag=enable-kibana-module]
+include::{kibana-root}/docs/user/monitoring/monitoring-metricbeat.asciidoc[tag=enable-kibana-module]
 --
 
 . Configure the {kib} {xpack} module in {metricbeat}. +
 +
 --
-include::{kib-repo-dir}/user/monitoring/monitoring-metricbeat.asciidoc[tag=configure-kibana-module]
+include::{kibana-root}/docs/user/monitoring/monitoring-metricbeat.asciidoc[tag=configure-kibana-module]
 
-include::{kib-repo-dir}/user/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
+include::{kibana-root}/docs/user/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
 --
 
 . Optional: Disable the system module in {metricbeat}. +
 +
 --
-include::{kib-repo-dir}/user/monitoring/monitoring-metricbeat.asciidoc[tag=disable-system-module]
+include::{kibana-root}/docs/user/monitoring/monitoring-metricbeat.asciidoc[tag=disable-system-module]
 --
 
 . Identify where to send the {kib} monitoring data and supply the necessary
@@ -177,13 +177,13 @@ For example, to use {metricbeat} to monitor {beatname_uc}:
 . Enable the HTTP endpoint to allow external collection of monitoring data:
 +
 --
-include::{beats-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=enable-http-endpoint]
+include::{beats-root}/libbeat/docs/monitoring/monitoring-metricbeat.asciidoc[tag=enable-http-endpoint]
 --
 
 . Disable the default collection of {beatname_uc} monitoring metrics. +
 +
 --
-include::{beats-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=disable-beat-collection]
+include::{beats-root}/libbeat/docs/monitoring/monitoring-metricbeat.asciidoc[tag=disable-beat-collection]
 --
 
 . Start {beatname_uc}.
@@ -195,21 +195,21 @@ server, skip this step.
 . Enable the `beat-xpack` module in {metricbeat}.
 +
 --
-include::{beats-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=enable-beat-module]
+include::{beats-root}/libbeat/docs/monitoring/monitoring-metricbeat.asciidoc[tag=enable-beat-module]
 --
 
 . Configure the `beat-xpack` module in {metricbeat}. +
 +
 --
-include::{beats-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=configure-beat-module]
+include::{beats-root}/libbeat/docs/monitoring/monitoring-metricbeat.asciidoc[tag=configure-beat-module]
 
-include::{beats-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
+include::{beats-root}/libbeat/docs/monitoring/monitoring-metricbeat.asciidoc[tag=remote-monitoring-user]
 --
 
 . Optional: Disable the system module in the {metricbeat}.
 +
 --
-include::{beats-repo-dir}/monitoring/monitoring-metricbeat.asciidoc[tag=disable-system-module]
+include::{beats-root}/libbeat/docs/monitoring/monitoring-metricbeat.asciidoc[tag=disable-system-module]
 --
 
 . Identify where to send the monitoring data and supply the necessary security

@@ -2,9 +2,34 @@
 == Running the {stack} on Docker
 
 The Elastic Docker registry contains Docker images for all the products in the 
-{stack}. For more information, see:
+{stack}: https://www.docker.elastic.co/
 
-* Official Elastic Docker images: https://www.docker.elastic.co/
+To get the default distributions of {es} and {kib} up and running in Docker, you can use 
+`docker-compose`:
+
+. Pull the docker images for {es} and {kib}:
++
+["source","sh",subs="attributes"]
+--------------------------------------------
+docker pull docker.elastic.co/elasticsearch/elasticsearch:{version}
+docker pull docker.elastic.co/kibana/kibana:{version}
+--------------------------------------------
+
+. {stack-gs}/docker-compose.yml[Download the docker-compose.yml] file for the Elastic Stack:
++
+["source","yaml",subs="attributes"]
+--------------------------------------------
+include::images/docker-compose.yml[]
+--------------------------------------------
+
+. Run `docker-compose` to bring up a three node Elasticsearch cluster and Kibana:
++
+["source","sh",subs="attributes"]
+--------------------------------------------
+docker-compose up
+--------------------------------------------
+
+For more information, see
 * {ref}/docker.html[Install {es} with Docker]
 * {apm-server-ref}/running-on-docker.html[Running APM Server on Docker]
 * {auditbeat-ref}/running-on-docker.html[Running {auditbeat} on Docker]

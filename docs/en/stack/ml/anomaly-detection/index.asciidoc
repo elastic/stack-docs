@@ -1,39 +1,40 @@
 [role="xpack"]
 [[xpack-ml]]
-= {ml-cap} {anomaly-detect}
+= {ml-cap} anomaly detection
 
 [partintro]
 --
-{ml-cap} is tightly integrated with the {stack}. Data is pulled from {es} for 
-analysis and anomaly results are displayed in {kib} dashboards.
+Machine learning is tightly integrated with the {stack}. Data is pulled
+from {es} for analysis and anomaly results are displayed in {kib} dashboards.
 
 * <<ml-overview>>
-* <<ml-concepts>>
-* <<ml-configuration>>
+* <<create-jobs>>
 //* <<ml-getting-started>>
+* <<ml-configuring>>
+* <<stopping-ml>>
+* <<ml-troubleshooting, Troubleshooting Machine Learning>>
 * <<ml-api-quickref>>
 * <<ml-functions>>
-* <<anomaly-examples>>
-* <<ml-limitations>>
-//* <<ml-troubleshooting>>
 
 
 --
 
 include::overview.asciidoc[]
 
-include::ml-concepts.asciidoc[]
+include::create-jobs.asciidoc[]
 
-include::ml-configuration.asciidoc[]
+include::job-tips.asciidoc[]
 
 //include::getting-started.asciidoc[]
+
+include::{es-repo-dir}/ml/anomaly-detection/configuring.asciidoc[]
+
+include::{es-repo-dir}/ml/anomaly-detection/stopping-ml.asciidoc[]
 
 include::api-quickref.asciidoc[]
 
 include::{es-repo-dir}/ml/anomaly-detection/functions.asciidoc[]
 
-include::examples.asciidoc[]
+include::troubleshooting.asciidoc[]
 
 include::limitations.asciidoc[]
-
-//include::troubleshooting.asciidoc[]

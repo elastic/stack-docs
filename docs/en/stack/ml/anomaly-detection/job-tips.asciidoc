@@ -1,6 +1,6 @@
 [role="xpack"]
 [[job-tips]]
-==== Machine learning job tips
+=== Machine learning job tips
 ++++
 <titleabbrev>Job tips</titleabbrev>
 ++++
@@ -11,7 +11,7 @@ suggestions, you can create jobs that are more likely to produce insightful {ml}
 results.
 
 [[bucket-span]]
-===== Bucket span
+==== Bucket span
 
 The bucket span is the time interval that {ml} analytics use to summarize and
 model data for your job. When you create an {anomaly-job} in {kib}, you can
@@ -25,7 +25,7 @@ than the estimated value, you receive an informational message. For more
 information about choosing an appropriate bucket span, see <<ml-buckets>>.
 
 [[cardinality]]
-===== Cardinality
+==== Cardinality
 
 If there are logical groupings of related entities in your data, {ml} analytics
 can make data models and generate results that take these groupings into
@@ -42,7 +42,7 @@ Likewise if you are performing population analysis and the cardinality of the
 field to use. For more information, see <<ml-configuring-pop>>.
 
 [[detectors]]
-===== Detectors
+==== Detectors
 
 Each {anomaly-job} must have one or more _detectors_. A detector applies an
 analytical function to specific fields in your data. If your job does not
@@ -54,7 +54,7 @@ duplicates if they have the same `function`, `field_name`, `by_field_name`,
 `over_field_name` and `partition_field_name`. 
 
 [[influencers]]
-===== Influencers
+==== Influencers
 
 When you create an {anomaly-job}, you can specify _influencers_, which are also 
 sometimes referred to as _key fields_. Picking an influencer is strongly
@@ -75,7 +75,7 @@ overwhelming and there is a small overhead to the analysis.
 The job creation wizards in {kib} can suggest which fields to use as influencers.
 
 [[model-memory-limits]]
-===== Model memory limits
+==== Model memory limits
 
 For each {anomaly-job}, you can optionally specify a `model_memory_limit`, which
 is the approximate maximum amount of memory resources that are required for

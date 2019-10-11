@@ -1,0 +1,32 @@
+[role="xpack"]
+[[ml-dfa-overview]]
+== Overview
+
+[partintro]
+--
+{dfanalytics-cap} enable you to perform different analyses of your data and 
+annotate it with the results. Essentially, as part of its output, {dfanalytics} 
+appends the results of the analysis to the source data. By doing this, it 
+provides additional insights into the data. The process leaves the source index 
+intact, it creates a new index that contains a copy of the source data and the 
+annotated data. You can slice and dice the data extended with the results as you 
+normally do with any other data set.
+
+You can evaluate the {dfanalytics} performance by using the {evaluatedf-api} 
+against a marked up data set. It helps you understand error distributions and 
+identifies the points where the {dfanalytics} model performs well or less 
+trustworthily.
+
+For the available types of {dfanalytics} and the evaluation methods, consult the 
+table below.
+
+
+[width="50%"]
+.{dfanalytics-cap} overview table
+|===
+| Type of {dfanalytics}     | Learning type | Evaluation type
+
+| {outlierdetection}        | unsupervised  | {binarysc}
+| {regression}              | supervised    | {regression}
+|===
+

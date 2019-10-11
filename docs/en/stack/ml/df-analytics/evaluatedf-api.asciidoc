@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-dfanalytics-evaluate]]
-== Evaluating {dfanalytics}
+=== Evaluating {dfanalytics}
 
 Using the {dfanalytics} features to gain insights from a data set is an 
 iterative process. You might need to experiment with different analyses, 
@@ -24,7 +24,7 @@ this manually provided ground truth.
 
 [discrete]
 [[ml-dfanalytics-binary-soft-classification]]
-=== {binarysc-cap} evaluation
+==== {binarysc-cap} evaluation
 
 This evaluation type is suitable for analyses which calculate a probability that 
 each data point in a data set is a member of a class or not. The {binarysc} 
@@ -37,7 +37,7 @@ evaluation type offers the following metrics to evaluate the model performance:
 
 [discrete]
 [[ml-dfanalytics-confusion-matrix]]
-==== Confusion matrix
+===== Confusion matrix
 
 A confusion matrix provides four measures of how well the {dfanalytics} worked 
 on your data set:
@@ -66,7 +66,7 @@ matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
 
 [discrete]
 [[ml-dfanalytics-precision-recall]]
-==== Precision and recall
+===== Precision and recall
 
 A confusion matrix is a useful measure, but it could be hard to compare the 
 results across the different algorithms. Precision and recall values
@@ -87,7 +87,7 @@ threshold levels for computing precision and recall.
 
 [discrete]
 [[ml-dfanalytics-roc]]
-==== Receiver operating characteristic curve
+===== Receiver operating characteristic curve
 
 The receiver operating characteristic (ROC) curve is a plot that represents the 
 performance of the binary classification process at different thresholds. It 
@@ -103,7 +103,7 @@ the algorithm performance by using these values.
 
 [discrete]
 [[ml-dfanalytics-regression-evaluation]]
-=== {regression-cap} evaluation
+==== {regression-cap} evaluation
 
 This evaluation type is suitable for evaluating {regression} models. The 
 {regression} evaluation type offers the following metrics to evaluate the model 
@@ -115,7 +115,7 @@ performance:
 
 [discrete]
 [[ml-dfanalytics-mse]]
-==== Mean squared error
+===== Mean squared error
 
 The API provides a MSE by computing the 
 average squared sum of the difference between the true value and the value that 
@@ -125,7 +125,7 @@ You can use the MSE to measure how well the {reganalysis} model is performing.
 
 [discrete]
 [[ml-dfanalytics-r-sqared]]
-==== R-squared
+===== R-squared
 
 Another evaluation metrics for {reganalysis} is R-squared (R^2^). It represents 
 the goodness of fit and measures how much of the variation in the data the 

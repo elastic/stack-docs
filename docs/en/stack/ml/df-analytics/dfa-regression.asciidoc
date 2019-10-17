@@ -1,6 +1,6 @@
 [role="xpack"]
 [[dfa-regression]]
-== {regression-cap}
+=== {regression-cap}
 
 experimental[]
 
@@ -33,7 +33,7 @@ has a riverside view or not and so on.
 
 [discrete]
 [[dfa-regression-features]]
-=== {feature-vars-cap}
+==== {feature-vars-cap}
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
 want to use to create a model for predicting other fields. We refer to these 
@@ -55,7 +55,7 @@ Arrays are not supported.
 
 [discrete]
 [[dfa-regression-supervised]]
-=== Training the {regression} algorithm
+==== Training the {regression} algorithm
 
 {regression-cap} is a supervised machine learning process, which means that you 
 need to supply a labeled training dataset that has some {feature-vars} and a 
@@ -67,18 +67,18 @@ points.
 
 The relationships between the {feature-vars} and the {depvar} are described as a 
 mathematical function. {reganalysis-cap} tries to find the best prediction for 
-the {depvar} by combining the predictions from multiple base learners – algorithms that generalize from the dataset. The 
-performance of an ensemble is usually better than the performance of each 
-individual base learner because the individual learners will make different 
-errors. These average out when their predictions are combined. The ensemble 
-learning technique that we use in the {stack} is a type of boosting called 
-extreme gradient boost (XGboost) which combines decision trees with gradient 
-boosting methodologies.
+the {depvar} by combining the predictions from multiple base learners – 
+algorithms that generalize from the dataset. The performance of an ensemble is 
+usually better than the performance of each individual base learner because the 
+individual learners will make different errors. These average out when their 
+predictions are combined. The ensemble learning technique that we use in the 
+{stack} is a type of boosting called extreme gradient boost (XGboost) which 
+combines decision trees with gradient boosting methodologies.
 
  
 [discrete]
 [[dfa-regression-evaluation]]
-=== Measuring model performance
+==== Measuring model performance
 
 You can measure how well the model has performed on your training dataset by 
 using the `regression` evaluation type of the 

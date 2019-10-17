@@ -2,16 +2,8 @@
 [[ml-dfanalytics]]
 = {ml-cap} {dfanalytics}
 
-[partintro]
+[partintro]	
 --
-{dfanalytics-cap} enable you to perform different analyses of your data and 
-annotate it with the results. Essentially, as part of its output, {dfanalytics} 
-appends the results of the analysis to the source data. By doing this, it 
-provides additional insights into the data. The process leaves the source index 
-intact, it creates a new index that contains a copy of the source data and the 
-annotated data. You can slice and dice the data extended with the results as you 
-normally do with any other data set.
-
 IMPORTANT: Using {dfanalytics} requires source data to be structured as a two 
 dimensional "tabular" data structure, in other words a {dataframe}. 
 {ref}/transforms.html[{transforms-cap}] enable you to create 
@@ -19,17 +11,19 @@ dimensional "tabular" data structure, in other words a {dataframe}.
 
 experimental[]
 
-* <<dfa-outlier-detection>>
-* <<dfa-regression>>
-* <<ml-dfanalytics-evaluate>>
+{dfanalytics-cap} enable you to perform different analyses of your data and 
+annotate it with the results.
+
+* <<ml-dfa-overview>>
+* <<ml-dfa-concepts>>
 * <<ml-dfanalytics-apis>>
+* <<dfanalytics-examples>>
 * <<ml-dfa-limitations>>
 
 --
 
-include::dfa-outlierdetection.asciidoc[]
-include::dfa-regression.asciidoc[]
-include::evaluatedf-api.asciidoc[]
+include::ml-dfa-overview.asciidoc[]
+include::ml-dfa-concepts.asciidoc[]
 include::api-quickref.asciidoc[]
 include::examples.asciidoc[]
 include::dfanalytics-limitations.asciidoc[]

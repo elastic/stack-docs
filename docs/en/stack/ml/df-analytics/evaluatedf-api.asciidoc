@@ -119,10 +119,10 @@ performance:
 [[ml-dfanalytics-mse]]
 ===== Mean squared error
 
-The API provides a MSE by computing the 
-average squared sum of the difference between the true value and the value that 
-the {regression} model predicted. (Avg (predicted value-actual value)^2^).
-You can use the MSE to measure how well the {reganalysis} model is performing.
+The API provides a MSE by computing the average squared sum of the difference 
+between the true value and the value that the {regression} model predicted. 
+(Avg (predicted value-actual value)^2^). You can use the MSE to measure how well 
+the {reganalysis} model is performing.
 
 
 [discrete]
@@ -131,8 +131,31 @@ You can use the MSE to measure how well the {reganalysis} model is performing.
 
 Another evaluation metrics for {reganalysis} is R-squared (R^2^). It represents 
 the goodness of fit and measures how much of the variation in the data the 
-predictions are able to explain. The value of R^2^ are less than or equal to 1, where 1 
-indicates that the predictions and true values are equal. A value of 0 is 
-obtained when all the predictions are set to the mean of the true values. A 
+predictions are able to explain. The value of R^2^ are less than or equal to 1, 
+where 1 indicates that the predictions and true values are equal. A value of 0 
+is obtained when all the predictions are set to the mean of the true values. A 
 value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
 (about 30%) closer to true values than their mean.
+
+
+[discrete]
+[[ml-dfanalytics-classification]]
+==== {classification-cap} evaluation
+
+This evaluation type is suitable for evaluating {classification} models. In the 
+{version} version of the {stack}, {classification} evaluation handles two 
+classes. The {classification} evaluation offers the following metrics to 
+evaluate the model performance:
+
+* Multi-class confusion matrix
+
+
+[discrete]
+[[ml-dfanalytics-mccm]]
+===== Multi-class confusion matrix
+
+The multi-class confusion matrix contains the number of occurrences where the 
+analysis classified data points correctly with their actual class as well as the 
+number of occurrences where it misclassified them with another class. This way, 
+the multi-class confusion matrix provides a summary about the performance of the 
+{classification} analysis.

@@ -5,9 +5,9 @@ services:
     container_name: es01
     environment:
       - node.name=es01
+      - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es02,es03
       - cluster.initial_master_nodes=es01,es02,es03
-      - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -15,19 +15,20 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata01:/usr/share/elasticsearch/data
+      - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
-      - esnet
+      - esnet    
+
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
     container_name: es02
     environment:
       - node.name=es02
+      - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es01,es03
       - cluster.initial_master_nodes=es01,es02,es03
-      - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -35,19 +36,20 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata02:/usr/share/elasticsearch/data
+      - data02:/usr/share/elasticsearch/data
     ports:
       - 9201:9201
     networks:
       - esnet
+  
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
     container_name: es03
     environment:
       - node.name=es03
+      - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es01,es02
       - cluster.initial_master_nodes=es01,es02,es03
-      - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -55,18 +57,17 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata03:/usr/share/elasticsearch/data
+      - data03:/usr/share/elasticsearch/data
     ports:
       - 9202:9202     
     networks:
       - esnet
+
   kib01:
     image: docker.elastic.co/kibana/kibana:7.4.0
     container_name: kib01
     ports:
       - 5601:5601
-    expose:
-      - "5601"
     environment:
       ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: http://es01:9200
@@ -74,11 +75,11 @@ services:
       - esnet      
 
 volumes:
-  esdata01:
+  data01:
     driver: local
-  esdata02:
+  data02:
     driver: local
-  esdata03:
+  data03:
     driver: local    
 
 networks:

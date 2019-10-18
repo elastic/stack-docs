@@ -1,11 +1,11 @@
 [[get-started-docker]]
 == Running the {stack} on Docker
 
-The Elastic Docker registry contains Docker images for all the products in the 
-{stack}: https://www.docker.elastic.co/
+The Elastic Docker registry contains Docker images for all the products in 
+the {stack}: https://www.docker.elastic.co/
 
-To get the default distributions of {es} and {kib} up and running in Docker, you can use 
-`docker-compose`:
+To get the default distributions of {es} and {kib} up and running in Docker, 
+you can use `docker-compose`:
 
 . Pull the docker images for {es} and {kib}:
 +
@@ -15,11 +15,11 @@ docker pull docker.elastic.co/elasticsearch/elasticsearch:{version}
 docker pull docker.elastic.co/kibana/kibana:{version}
 --------------------------------------------
 
-. {stack-gs}/docker-compose.yml[Download the docker-compose.yml] file for the Elastic Stack:
+. Download the `docker-compose.yml` file for the Elastic Stack:
 +
 ["source","yaml",subs="attributes"]
 --------------------------------------------
-include::images/docker-compose.yml[]
+include::docker-compose.yml[]
 --------------------------------------------
 
 . Run `docker-compose` to bring up a three node Elasticsearch cluster and Kibana:
@@ -28,6 +28,16 @@ include::images/docker-compose.yml[]
 --------------------------------------------
 docker-compose up
 --------------------------------------------
+
+. Submit a `_cat/nodes` request to see that the nodes are up and running:
++
+[source,console]
+--------------------------------------------------
+GET /_cat/nodes?v
+--------------------------------------------------
+
+. Open Kibana to load sample data and interact with the cluster: 
+http://localhost:5601. 
 
 For more information, see
 * {ref}/docker.html[Install {es} with Docker]

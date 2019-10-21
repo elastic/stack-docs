@@ -13,7 +13,7 @@ the Elastic {dfanalytics} feature:
 
 [float]
 [[dfa-ccs-limitations]]
-=== {ccs-cap} limitation
+=== {ccs-cap} is not supported
 
 {ccs-cap} is not supported for {dfanalytics}.
 
@@ -27,7 +27,7 @@ That index must be deleted separately.
 
 [float]
 [[dfa-update-limitations]]
-=== Cannot update a {dfanalytics-job}
+=== A {dfanalytics-job} configuration cannot be updated
 
 You cannot update {dfanalytics-cap} configurations. Instead, delete the 
 {dfanalytics-job} and create a new one.
@@ -41,18 +41,8 @@ dedicated for {ml} processes. For general {ml} settings, see
 {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
 [float]
-[[dfa-field-limitations]]
-=== Field limitations in {dfanalytics}
-
-Currently, {oldetection} only supports numeric features. Non-numeric fields will 
-be excluded from the analysis by default. If such a field is explicitly included 
-in the analysis, starting the {dfanalytics} should result in failure. Arrays are 
-not supported either. Documents that contain analyzed fields with unsupported 
-values will be skipped entirely.
-
-[float]
 [[dfa-missing-fields-limitations]]
-=== Missing values in analyzed fields
+=== Documents with missing values in analyzed fields will be skipped
 
 If there are missing values in feature fields (fields that are subjects of the 
 {dfanalytics}), then the document that contains the fields with the missing 
@@ -60,7 +50,7 @@ values will be skipped during the analysis.
 
 [float]
 [[dfa-od-field-type-docs-limitations]]
-=== {oldetection-cap} field type and document limitation
+=== {oldetection-cap} field types
 
 {oldetection-cap} requires numeric or boolean data to analyze. The algorithms 
 don't support missing values (see also <<dfa-missing-fields-limitations>>), 
@@ -73,7 +63,7 @@ and therefore no {olscore} is computed.
 
 [float]
 [[dfa-regression-field-type-docs-limitations]]
-=== {regression-cap} field type and document limitation
+=== {regression-cap} field types
 
 {regression-cap} supports fields that are numeric, boolean, text, keyword and 
 ip. It is also tolerant of missing values. Fields that are supported are 

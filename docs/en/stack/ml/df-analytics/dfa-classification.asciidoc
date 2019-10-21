@@ -5,17 +5,17 @@
 experimental[]
 
 {classification-cap} is a {ml} process for predicting the class or category of a 
-given datapoint in a dataset. Typical examples for {classification} problems are 
+given data point in a dataset. Typical examples of {classification} problems are 
 predicting loan risk, classifying music, or detecting cancer in a DNA sequence. 
-In the first case for example, our dataset consists of data on loan applicants 
+In the first case, for example, our dataset consists of data on loan applicants 
 that covers investment history, employment status, debit status, and so on. 
-Based on the historical data, the {classification} analysis predicts whether it 
-is safe or risky to lend money to a given loan applicant. In the second case, 
-the data we have represents songs and the analysis – based on the features of 
-the data points – classifies the songs as hip-hop, country, classical, or any 
-other genre that available in the set of categories we have. Therefore, 
+Based on historical data, the {classification} analysis predicts whether it is 
+safe or risky to lend money to a given loan applicant. In the second case, the 
+data we have represents songs and the analysis – based on the features of the 
+data points – classifies the songs as hip-hop, country, classical, or any 
+other genres available in the set of categories we have. Therefore, 
 {classification} is for predicting discrete, categorical values, unlike 
-{regression} which predicts continuous, numerical values.
+{reganalysis} which predicts continuous, numerical values.
 
 From the perspective of the possible output, there are two types of 
 {classification}: binary and multi-class {classification}. In binary 
@@ -24,7 +24,7 @@ The loan example above is a binary {classification} problem where the two
 potential outputs are `safe` or `risky`. The music classification problem is an 
 example of multi-class {classification} where there are many different potential 
 outputs; one for every possible music genre. In the {version} version of the 
-{stack}, you can perform binary {classification} analysis.
+{stack}, you can perform binary {classanalysis}.
 
 
 [discrete]
@@ -45,8 +45,8 @@ supported in the {feature-var} fields.
 ==== Training the {classification} algorithm
 
 {classification-cap} – just like {regression} – is a supervised {ml} process. It 
-means that you need to supply a labeled training dataset that has some feature 
-variables and a {depvar}. The {classification} algorithm learns the 
+means that you need to supply a labeled training dataset that has some 
+{feature-vars} and a {depvar}. The {classification} algorithm learns the 
 relationships between the features and the {depvar}. Once you’ve trained the 
 model on your training dataset, you can reuse the knowledge that the model has 
 learned about the relationships between the data points to classify new data.
@@ -70,10 +70,9 @@ You can measure how well the model has performed on your dataset by using the
 `classification` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The metric that the 
 evaluation provides you is the multi-class confusion matrix which tells you how 
-many times a given datapoint that belongs to a given class was classified 
-correctly with its class and incorrectly with another class. In other words, how 
-many times your datapoint that belongs to the X class was mistakenly classified 
-as Y.
+many times a given data point that belongs to a given class was classified 
+correctly and incorrectly. In other words, how many times your data point that 
+belongs to the X class was mistakenly classified as Y.
 
 Another crucial measurement is how well your model performs on unseen data 
 points. To assess how well the trained model will perform on data it has never 

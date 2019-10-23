@@ -62,17 +62,17 @@ However you install {beats}, you need to enable the appropriate modules in {file
 // ++ The instructions there explain how to enable the module. Below, we enable more stuff.
 // ++ What about if you are using Cloud? Is anything different?
 
-To populate the *Hosts* view with logs data, enable:
+To collect logs from your host system, enable:
 
 * {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
 * {filebeat-ref}/filebeat-modules.html[Other {filebeat} modules] needed for your environment, such as `apache2`, `redis`, and so on
 
-To populate the *Docker* view with logs data, enable:
+To collect logs from Docker containers, enable:
 
 * {filebeat-ref}/filebeat-input-docker.html[{filebeat} `docker` input]
 * {filebeat-ref}/add-docker-metadata.html[{filebeat} `add_docker_metadata` processor]
 
-To populate the *Kubernetes* view with logs data, enable:
+To collect logs from Kubernetes pods, enable:
 
 * {filebeat-ref}/filebeat-input-docker.html[{filebeat} `docker` input]
 * {filebeat-ref}/add-kubernetes-metadata.html[{filebeat} `add_kubernetes_metadata` processor]
@@ -80,13 +80,13 @@ To populate the *Kubernetes* view with logs data, enable:
 [float]
 === Configure your data sources
 
-If your logs data has non-standard fields, you may need to modify some configuration settings in {kib}, such as the index pattern used to query the data, and the timestamp field used for sorting.
+If your logs data has nonstandard fields, you may need to modify some configuration settings in {kib}, such as the index pattern used to query the data, and the timestamp field used for sorting.
 You can use the {kibana-ref}/xpack-logs-configuring.html[*Settings* tab in the {logs-app}] to modify some common settings.
 Alternatively, see {kibana-ref}/logs-ui-settings-kb.html[{logs} settings] for a complete list of logs configuration settings.
 
 [float]
 === More about container monitoring
 
-If you're monitoring Docker containers or Kubernetes pods, you can use autodiscover to automatically change the configuration settings in response to changes in your containers.
+If you're monitoring Docker containers or Kubernetes pods, you can use autodiscovery to automatically change the configuration settings in response to changes in your containers.
 This ensures you don't stop collecting data when your container configuration changes.
 To learn how to do this, see {filebeat-ref}/configuration-autodiscover.html[{filebeat} autodiscover configuration].

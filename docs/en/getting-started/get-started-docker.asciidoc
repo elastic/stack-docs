@@ -2,7 +2,7 @@
 == Running the {stack} on Docker
 
 The Elastic Docker registry contains Docker images for all the products in 
-the {stack}: https://www.docker.elastic.co/
+the {stack}: https://www.docker.elastic.co/.
 
 [float]
 [[run-stack-docker]]
@@ -17,6 +17,11 @@ you can use Docker Compose:
 --------------------------------------------
 include::docker/docker-compose.yml[]
 --------------------------------------------
+// tag::docker-memory[]
+. Make sure Docker Engine is allotted at least 4GiB of memory. 
+In Docker Desktop, you configure resource usage on the Advanced tab in Preference (macOS)
+or Settings (Windows).
+// end::docker-memory[]
 
 . Run `docker-compose` to bring up the three-node {es} cluster and {kib}:
 +
@@ -87,15 +92,17 @@ include::docker/create-certs.yml[]
 include::docker/elastic-docker-tls.yml[]
 ----
 <1> Bootstrap {es} with the password defined in `.env` to enable you to run 
-the `elasticsearch-setup-passwords` tool to set the passwords for the built in users, 
+the `elasticsearch-setup-passwords` tool to set the passwords for the built-in users, 
 including the `elastic` and `kibana` users. 
-See {ref}/bootstrap-elastic-passwords.html[Bootstrap Elastic passwords].
 <2> Generate and apply a trial license that supports Transport Layer Security.
 <3> Enable Transport Layer Security to encrypt client communications.
 <4> Enable Transport Layer Security to encrypt internode communications.
 <5> Allow the use of self-signed certificates by not requiring hostname verification. 
 
 --
+
+include::get-started-docker.asciidoc[tag=docker-memory]
+
 
 . Generate certificates for {es} by bringing up the `create-certs` container:
 +

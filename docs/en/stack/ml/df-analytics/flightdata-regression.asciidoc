@@ -48,7 +48,9 @@ of {reganalysis} supports a single batch analysis for both training and
 predictions. Future versions will allow a learned model to be incorporated at 
 index time.
 
-1. Create a {dfanalytics-job}.
+. Create a {dfanalytics-job}.
++
+--
 Use the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API as you can see 
 in the following example:
 
@@ -111,7 +113,7 @@ execution if the available memory on the node is limited.
 The API returns the following response:
 
 [source,console-result]
-----  
+--------------------------------------------------  
 {
   "id" : "model-flight-delays",
   "source" : {
@@ -149,10 +151,12 @@ The API returns the following response:
   "version" : "7.5.0",
   "allow_lazy_start" : false
 }
-----
+--------------------------------------------------
+--
 
-
-2. Start the job.
+. Start the job.
++
+--
 Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and 
 {ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs to start and stop 
 jobs. 
@@ -167,9 +171,12 @@ POST _ml/data_frame/analytics/model-flight-delays/_start
 The job takes a few minutes to run. Runtime depends on the local hardware and 
 also on the number of documents and fields that analyzed. The more fields and 
 documents, the longer the job to run.
+--
 
-3. Check the job stats to follow the progress by using the 
+. Check the job stats to follow the progress by using the 
 {ref}/get-dfanalytics-stats.html[get {dfanalytics-jobs} statistics API].
++
+--
 
 
 [source,console]
@@ -215,12 +222,15 @@ The API call returns the following response:
 
 The job has four phases. When all the phases have completed, the job 
 state becomes `stopped` and the results are ready to view and evaluate.
+--
 
 
 [[flightdata-regression-results]]
 ==== Viewing results
 
-4. Run the following command to view the results in the destination index:
+.Run the following command to view the results in the destination index:
++
+--
 
 [source,console]
 --------------------------------------------------
@@ -255,6 +265,7 @@ If a document doesn't contain a prediction field, then it is excluded from the
 analysis. In order to be analyzed, a document must contain at least one field 
 with a supported data type (i.e. `numeric`, `boolean`, `text`, `keyword` or 
 `ip`) and must not contain arrays with more than one item.
+--
 
 
 [[flightdata-regression-evaluate]]
@@ -264,8 +275,9 @@ The results can be evaluated for documents which contain both the ground truth
 field and the prediction. In the example below, `FlightDelayMins` contains the 
 ground truth and the prediction is stored as `ml.FlightDelayMin_prediction`.
 
-5. Use the {dfanalytics} evaluate API to evaluate the results.
-
+. Use the {dfanalytics} evaluate API to evaluate the results.
++
+--
 First, we want to know the training error that represents how well the model 
 performed on the training dataset:
 
@@ -352,3 +364,4 @@ For more information about the evaluation metrics, see
 If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
 {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 
 {dfanalytics-jobs}, the destination indices remain intact.
+--

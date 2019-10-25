@@ -12,8 +12,10 @@ To get the default distributions of {es} and {kib} up and running in Docker,
 you can use Docker Compose:
 
 . Create a `docker-compose.yml` file for the Elastic Stack:
+
+ifeval::["{release-state}"!="unreleased"]
 +
-["source","yaml"]
+["source","yaml",subs="attributes"]
 --------------------------------------------
 include::docker/docker-compose.yml[]
 --------------------------------------------

@@ -3,23 +3,20 @@
 [[flightdata-regression]]
 === Predicting delays with {reganalysis} by using Kibana sample flight data
 
-
-The goal of <<dfa-regression,{reganalysis}>> is to find relationships among 
-different features of your data, then make predictions on the new data points 
-based on the previously found relationships. 
-
 Let's try to predict flight delays by using the 
 {kibana-ref}/add-sample-data.html[sample flight data]. We use this data to learn 
-a model that allows us to predict flight delays based on information such as 
-weather and location of the destination and origin, flight distance and carrier. 
-We'd like to predict the number of minutes delayed for each flight. As it is a 
-continuous numeric variable, we'll use {reganalysis} to make the prediction.
+a {regression} model that allows us to predict flight delays based on 
+information such as weather and location of the destination and origin, flight 
+distance and carrier. We'd like to predict the number of minutes delayed for 
+each flight. As it is a continuous numeric variable, we'll use {reganalysis} to 
+make the prediction.
 
 This dataset consists of sample data that has been manually created and it 
 contains inconsistencies. For example, a flight can be both delayed and 
-canceled. However, it is easy to set up in Kibana and the use case is 
-applicable, so it is suitable to be an example. Still, don't forget this is only 
-sample data, do not expect adequate results.
+canceled. Despite the data inconsistencies, flight delays can be used to 
+demonstrate {reganalysis} because it is easy to set up in Kibana, the use case 
+is relevant and it is a good example of how the quality of input data will 
+affect the quality of results.
 
 We will create an {dfanalytics-job} to predict the minutes that flights are 
 delayed by. Each document in the dataset contains details for a single flight, 
@@ -31,7 +28,50 @@ data into an entity-centric index before you could setup and start the analysis.
 This is an example source document from the dataset:
 
 ```
-{"_index":"kibana_sample_data_flights","_type":"_doc","_id":"S-JS1W0BJ7wufFIaPAHe","_version":1,"_seq_no":3356,"_primary_term":1,"found":true,"_source":{"FlightNum":"N32FE9T","DestCountry":"JP","OriginWeather":"Thunder & Lightning","OriginCityName":"Adelaide","AvgTicketPrice":499.08518599798685,"DistanceMiles":4802.864932998549,"FlightDelay":false,"DestWeather":"Sunny","Dest":"Chubu Centrair International Airport","FlightDelayType":"No Delay","OriginCountry":"AU","dayOfWeek":3,"DistanceKilometers":7729.461862731618,"timestamp":"2019-10-17T11:12:29","DestLocation":{"lat":"34.85839844","lon":"136.8049927"},"DestAirportID":"NGO","Carrier":"ES-Air","Cancelled":false,"FlightTimeMin":454.6742272195069,"Origin":"Adelaide International Airport","OriginLocation":{"lat":"-34.945","lon":"138.531006"},"DestRegion":"SE-BD","OriginAirportID":"ADL","OriginRegion":"SE-BD","DestCityName":"Tokoname","FlightTimeHour":7.577903786991782,"FlightDelayMin":0}}
+{
+  "_index": "kibana_sample_data_flights",
+  "_type": "_doc",
+  "_id": "S-JS1W0BJ7wufFIaPAHe",
+  "_version": 1,
+  "_seq_no": 3356,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "FlightNum": "N32FE9T",
+    "DestCountry": "JP",
+    "OriginWeather": "Thunder & Lightning",
+    "OriginCityName": "Adelaide",
+    "AvgTicketPrice": 499.08518599798685,
+    "DistanceMiles": 4802.864932998549,
+    "FlightDelay": false,
+    "DestWeather": "Sunny",
+    "Dest": "Chubu Centrair International Airport",
+    "FlightDelayType": "No Delay",
+    "OriginCountry": "AU",
+    "dayOfWeek": 3,
+    "DistanceKilometers": 7729.461862731618,
+    "timestamp": "2019-10-17T11:12:29",
+    "DestLocation": {
+      "lat": "34.85839844",
+      "lon": "136.8049927"
+    },
+    "DestAirportID": "NGO",
+    "Carrier": "ES-Air",
+    "Cancelled": false,
+    "FlightTimeMin": 454.6742272195069,
+    "Origin": "Adelaide International Airport",
+    "OriginLocation": {
+      "lat": "-34.945",
+      "lon": "138.531006"
+    },
+    "DestRegion": "SE-BD",
+    "OriginAirportID": "ADL",
+    "OriginRegion": "SE-BD",
+    "DestCityName": "Tokoname",
+    "FlightTimeHour": 7.577903786991782,
+    "FlightDelayMin": 0
+  }
+}
 ```
 
 
@@ -71,8 +111,7 @@ PUT _ml/data_frame/analytics/model-flight-delays
     }
   },
   "dest": {
-    "index": "df-flight-delays",  <3>
-    "results_field": "ml" 
+    "index": "df-flight-delays"  <3>
   },
   "analysis": {
     "regression": {
@@ -95,8 +134,9 @@ PUT _ml/data_frame/analytics/model-flight-delays
 
 <1> The source index to analyze.
 <2> This query removes erroneous data from the analysis to improve its quality.
-<3> The index that contains the results of the analysis; it consists of a copy 
-of the source index data where each document is annotated with the results.
+<3> The index that will contain the results of the analysis; it will consist of 
+a copy of the source index data where each document is annotated with the 
+results.
 <4> Specifies the continuous variable we want to predict with the {reganalysis}.
 <5> Specifies the proportion of data that is used for training the model. In 
 this example we use 90% of the source data. The training data is randomly 
@@ -157,9 +197,9 @@ The API returns the following response:
 . Start the job.
 +
 --
-Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and 
-{ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs to start and stop 
-jobs. 
+Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API to start the 
+job. It will stop automatically when the analysis is complete, you don't need to 
+stop it manually.
 
 [source,console]
 --------------------------------------------------
@@ -228,7 +268,8 @@ state becomes `stopped` and the results are ready to view and evaluate.
 [[flightdata-regression-results]]
 ==== Viewing results
 
-. Run the following command to view the results in the destination index:
+. Use the standard {es} search command to view the results in the destination 
+index:
 +
 --
 
@@ -237,6 +278,7 @@ state becomes `stopped` and the results are ready to view and evaluate.
 GET df-flight-delays/_search
 --------------------------------------------------
 // TEST[skip:TBD]
+
 
 
 The snippet below shows a part of a document with the annotated results:
@@ -263,8 +305,8 @@ trying to predict with the {reganalysis}.
 
 If a document doesn't contain a prediction field, then it is excluded from the 
 analysis. In order to be analyzed, a document must contain at least one field 
-with a supported data type (i.e. `numeric`, `boolean`, `text`, `keyword` or 
-`ip`) and must not contain arrays with more than one item.
+with a supported data type (`numeric`, `boolean`, `text`, `keyword` or `ip`) and 
+must not contain arrays with more than one item.
 --
 
 
@@ -310,9 +352,8 @@ POST _ml/data_frame/_evaluate
 <3> The ground truth label.
 <4> Predicted value.
 
-
-You can also evaluate the data that has not been used to train the model, the 
-quantity you get this way is the model generalization error.
+Next, we calculate the generalization error that represents how well the model 
+performed on previously unseen data:
 
 [source,console]
 --------------------------------------------------

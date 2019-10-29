@@ -13,7 +13,7 @@ the Elastic {dfanalytics} feature:
 
 [float]
 [[dfa-ccs-limitations]]
-=== {ccs-cap} limitation
+=== {ccs-cap} is not supported
 
 {ccs-cap} is not supported in 7.3 for {dfanalytics}.
 
@@ -27,7 +27,7 @@ That index must be deleted separately.
 
 [float]
 [[dfa-update-limitations]]
-=== Cannot update a {dfanalytics-job}
+=== {dfanalytics-jobs-cap} cannot be updated
 
 You cannot update {dfanalytics-cap} configurations. Instead, delete the 
 {dfanalytics-job} and create a new one.
@@ -52,7 +52,7 @@ values will be skipped entirely.
 
 [float]
 [[dfa-missing-fields-limitations]]
-=== Missing values in analyzed fields
+=== Documents with missing values in analyzed fields are skipped
 
 If there are missing values in feature fields (fields that are subjects of the 
 {dfanalytics}), then the document that contains the fields with the missing 
@@ -60,7 +60,7 @@ values will be skipped during the analysis.
 
 [float]
 [[dfa-od-field-type-docs-limitations]]
-=== {oldetection-cap} field type and document limitation
+=== {oldetection-cap} field types
 
 {oldetection-cap} requires numeric or boolean data to analyze. The algorithms 
 don't support missing values (see also <<dfa-missing-fields-limitations>>), 

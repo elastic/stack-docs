@@ -18,6 +18,10 @@ SIEM requires the following {stack} components.
 
 image::images/siem-architecture.png[]
 
+*https://www.elastic.co/products/endpoint-security[Elastic Endpoint Security]*
+is an endpoint agent that combines prevention, detection, and response capabilities.
+It ships events and security alerts directly to {es}. 
+
 *https://www.elastic.co/products/beats[{beats}]* are open source data shippers
 that you install as agents on your systems. {beats} send security events and other
 data to {es}. 
@@ -58,6 +62,8 @@ Common Schema (ECS)].
 [[hosts-data-sources]]
 ==== Hosts data sources
 
+* https://www.elastic.co/products/endpoint-security[Elastic Endpoint Security]
+(formally Endgame)
 * https://www.elastic.co/products/beats/auditbeat[{auditbeat}]
 ** {auditbeat-ref}/auditbeat-module-system.html[System module  - Linux, macOS, Win]
 *** packages

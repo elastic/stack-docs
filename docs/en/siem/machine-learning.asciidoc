@@ -30,8 +30,9 @@ the job's `Group` field ({kib} -> {ml-cap} -> Create/Edit job -> Job details).
 [[included-jobs]]
 ==== Prebuilt jobs
 
-The SIEM app ships with prebuilt Machine Learning jobs for detecting anomalies.
-If you ship data using https://www.elastic.co/products/beats[Beats] and your environment
+The SIEM app ships with prebuilt Machine Learning {ml-cap} {anomaly-jobs} for
+automatically detecting host and network anomalies. If you ship data using
+https://www.elastic.co/products/beats[Beats] and your environment
 is configured with the appropriate indices (`auditbeat-*`, `filebeat-*`, `packetbeat-*`,
 or `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be installed
 on page load, and will be displayed within the `Anomaly Detection` interface.
@@ -51,7 +52,7 @@ to reduce the number of false positive, see <<tuning-anomaly-results>>.
 To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
 the user must have the `ml_admin` or `ml_user` role.
 
-NOTE: To adjust the `score` threshold for which {xpack-ref}/xpack-ml.html[anomalies]
+NOTE: To adjust the `score` threshold for which {stack-ov}/xpack-ml.html[anomalies]
 are shown, you can modify {kib} -> Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
 
 [[prebuilt-ml-jobs]]

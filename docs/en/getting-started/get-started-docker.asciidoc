@@ -12,6 +12,11 @@ To get the default distributions of {es} and {kib} up and running in Docker,
 you can use Docker Compose:
 
 . Create a `docker-compose.yml` file for the Elastic Stack:
+ifeval::["{release-state}"=="unreleased"]
++
+WARNING: Version {version} of {es} has not yet been released, so the
+sample compose file is not yet available for this version.
+endif::[]
 
 ifeval::["{release-state}"!="unreleased"]
 +
@@ -19,6 +24,8 @@ ifeval::["{release-state}"!="unreleased"]
 --------------------------------------------
 include::docker/docker-compose.yml[]
 --------------------------------------------
+endif::[]
+
 // tag::docker-memory[]
 . Make sure Docker Engine is allotted at least 4GiB of memory. 
 In Docker Desktop, you configure resource usage on the Advanced tab in Preference (macOS)
@@ -55,10 +62,18 @@ To get an {es} cluster and {kib} up and running in Docker with security enabled,
 you can use Docker Compose`:
 
 . Download and extract the sample Docker Compose and configuration files:
+ifeval::["{release-state}"=="unreleased"]
++
+WARNING: Version {version} of {es} has not yet been released, so the
+sample compose and configuration files are not yet available for this version.
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
 +
 --
 * Linux/MacOS: `elasticsearch-docker-config.tar.gz` 
 * Windows: `elasticsearch-docker-config.zip`
+endif::[]
 
 The archive contains four files:
 

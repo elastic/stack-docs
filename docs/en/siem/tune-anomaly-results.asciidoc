@@ -1,0 +1,101 @@
+[[tuning-anomaly-results]]
+[role="xpack"]
+=== Optimizing anomaly results
+
+To gain clearer insights into real threats, you can tune the anomaly results and
+remove known false positives.
+
+==== Filter out anomalies from rarely used applications and processes
+
+When anomalies include results from a known process that only runs occasionally,
+you can filter out the unwanted results.
+
+For example, to filter out results from a housekeeping process, named
+`maintenanceservice.exe`, that only executes occasionally you need to:
+
+. <<create-fiter-list>>
+. <<add-job-filter>>
+. <<clone-job, Clone and rerun the job>> (optional)
+
+[[create-fiter-list]]
+===== Create a filter list
+
+. Got to *Machine Learning* -> *Anomaly Detection* -> *Settings*.
+. Click *Filter Lists* and then *New*.
++
+The *Create new filter list* pane is displayed.
+. Enter a filter list ID.
+. Enter a description for the filter list (optional).
+. Click *Add item*.
+. In the *Items* textbox, enter the `process.name` field of the process for which
+you want to filter out anomaly results (`maintenanceservice.exe` in our example).
++
+[role="screenshot"]
+image::filter-add-item.png[]
+. Click *Add* and then *Save*.
++
+The new filter appears in the Filter List and can be added to relevant jobs.
+
+[[add-job-filter]]
+===== Add the filter to the relevant job
+
+. Go to *Machine Learning* -> *Anomaly Detection* -> *Anomaly Explorer*.
+. Navigate to the job results for which the filter is required. If the job results
+are not listed, click *Edit job selection* and select the relevant job.
+. In the *actions* column, click the gear icon and then select _Configure rules_.
++
+The *Create Rule* window is displayed.
++
+[role="screenshot"]
+image::rule-scope.png[]
+. Select:
+.. _Add a filter list to limit where the rule applies_.
+.. The _WHEN_ statement for the relevant detector (`process.name` in our
+example).
++
+TIP: For more information about detectors, see
+{xpack-ref}/ml-jobs.html[Anomaly detection jobs].
+.. The _IS IN_ statement.
+.. The filter you created as part of the <<create-fiter-list>> procedure.
+
+. Click *Save*.
+
+NOTE: Changes to rules only affect new results. All anomalies found by the job
+before the filter was added are still displayed.
+
+[[clone-job]]
+==== Clone and rerun the job
+
+If you want to remove all the previously detected results for the process, you
+must clone and run the cloned job.
+
+IMPORTANT: Rerunning the cloned job can take some time. Only rerun the job after you
+have completed all job rule changes.
+
+. Go to *Machine Learning* -> *Anomaly Detection* -> *Job Management*.
+. Navigate to the job for which you configured the rule.
+. Optionally, expand the job row and click *JSON* to verify the configured filter
+appears under `custom rules` in the JSON code.
+. In the *actions* column, click the more (three dot) icon and select _Clone job_.
++
+The *Configure datafeed* page is displayed.
+. Click *Data Preview* and check the data is displayed without errors.
+. Click *Next* until the *Job details* page is displayed.
+. Enter a Job ID for the cloned job that indicates it is an iteration of the
+original one. For example, append a number or a username to the original job
+name, such as `windows-rare-network-process-2`.
++
+[role="screenshot"]
+image::cloned-job-details.png[]
+. Click *Next* and check the job validates without errors. Warnings about multiple
+influencers can be ignored.
+. Click *Next* and then *Create job*.
++
+The *Start <job name>* window is displayed.
++
+[role="screenshot"]
+image::start-job-window.png[]
+. Select the point of time from which the job will analyse anomalies.
+. Click *Start*.
++
+After a while, results will start to appear on the *Anomaly Explorer* page.

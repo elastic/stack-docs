@@ -16,9 +16,9 @@ collapsible, resizable, moveable, and so forth.
 The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
 throughout the {siem-app} for searching and filtering.
 
-NOTE: The default index patterns for {siem-soln} events are `auditbeat-*`, `winlogbeat-*`,
-`filebeat-*`, and `packetbeat-*`. You can change the default index patterns in
-{kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
+NOTE: The default index patterns for {siem-soln} events are `endgame-*`,
+`auditbeat-*`, `winlogbeat-*`, `filebeat-*`, and `packetbeat-*`. You can change
+the default index patterns in {kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
 
 
 [float]
@@ -48,18 +48,25 @@ Timeline for further investigation.
 [role="screenshot"]
 image::hosts-ui.png[]
 
-Interactive table widgets let you drill down for deeper insights:
+Interactive widgets let you drill down for deeper insights:
 
 * Hosts
-* Unique IPs
 * User Authentications (success and failures)
-* Uncommon Processes
+* Unique IPs
+
+There are also tabs for viewing and investigating specific types of data:
+
+* All hosts
+* Authentications
+* Uncommon processes
+* Anomalies
 * Events
 
 
 *Hosts Detail* shows information for a selected host, including
 Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
-versions, machine type, and so forth.
+versions, machine type, and so forth. Additionally, it contains all the widgets
+and tabs relevant for the selected host.
 
 [float]
 [[network-ui]]
@@ -73,15 +80,24 @@ the Network view to Timeline for further investigation.
 [role="screenshot"]
 image::network-ui.png[]
 
-Interactive table widgets let you drill down for deeper insights:
+Interactive widgets let you drill down for deeper insights:
 
-* Source IP
-* Destination IP
-* Top DNS Domains
-* IP Details
-* Domains
-* Users
-* Transport Layer Security certs
+* Network events
+* DNS queries
+* Unique flow IDs
+* TLS handshakes
+* Unique private IPs
+
+There are also tabs for viewing and investigating specific types of data:
+
+* Flows
+** Source IPs
+** Destination IPs
+** Source Countries
+** Destination Countries
+* DNS
+* TLS
+* Anomalies
 
 [float]
 [[map-ui]]
@@ -89,9 +105,9 @@ Interactive table widgets let you drill down for deeper insights:
 The map provides a visual overview of your network traffic. It is interactive,
 so you can start exploring data directly from the map. Hover over source and
 destination points to see more information, such as hostnames and IP addresses.
-To drill down, click a point and use the plus sign to add a field to the
-query bar. You can also click a hostname to jump to the SIEM Host page, or
-an IP address to open the relevant network details.
+To drill down, click a point and use the filter icon to add a field to the
+filter bar or drag a field to the Timeline. You can also click a hostname
+to jump to the SIEM Host page, or an IP address to open the relevant network details.
 
 Just as you can start an investigation using the map, the map refreshes to show
 relevant data when you run a query or update the time frame.
@@ -173,7 +189,7 @@ drop area for further introspection.
 The Timeline is flexible and highly interactive.  As you would expect, the
 {siem-app} lets you:
 
-* add, remove, reorder, or resize Timeline columns.
+* add, remove, reorder, or resize Timeline columns
 * save, open, and list Timelines
 * add notes to individual events
 * add investigation notes for the whole Timeline
@@ -191,7 +207,6 @@ might need to:
 
 * <<geoip-data, Add geographical IP data to events>>
 * <<private-network>>
-* <<map-links, Format index fields as URL links>>
 
 NOTE: To see source and destination connections lines on the map, you must
 configure `source.geo` and `dest.geo` ECS fields for your indices.
@@ -308,50 +323,6 @@ on your hosts:
        target: ''
 ----------------------------------
 <1> For the IP address, you can use either `private` or CIDR notation.
-+
+
 TIP: You can also enrich your data with other
 {packetbeat-ref}/add-host-metadata.html[host fields].
-
-[float]
-[[map-links]]
-==== Define map field links
-
-To jump from the map to specific Host and IP Details pages,
-{kibana-ref}/field-formatters-string.html[format] these fields in all {siem-soln}
-indices as URL links:
-
-* `host.name`
-* `source.ip`
-* `destination.ip`
-
-
-. Go to *Management* -> *Index Patterns*.
-
-. Select the relevant index pattern.
-
-. Edit the the index's `host.name` field.
-
-.. From the *Format* drop-down list, select _Url_.
-
-.. From the *Type* drop-down list, select _Link_.
-
-.. In the *Url template* field, enter:
-+
-[source,url]
-----------------------------------
-  <KibanaURL>/app/siem#/link-to/hosts/{{value}} <1>
-----------------------------------
-<1> `<KibanaURL>` is the URL of your Kibana server.
-
-.. In the Label template field, enter `{{value}}`.
-+
-[role="screenshot"]
-image::field-ui.png[]
-
-. Repeat step 3 for the `source.ip` and `destination.ip` index fields,
-using the following *Url template*:
-+
-[source,url]
-----------------------------------
-  <KibanaURL>/app/siem#/network/ip/{{value}}
-----------------------------------

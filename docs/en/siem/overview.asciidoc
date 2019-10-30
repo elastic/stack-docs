@@ -18,6 +18,10 @@ SIEM requires the following {stack} components.
 
 image::images/siem-architecture.png[]
 
+*https://www.elastic.co/products/endpoint-security[Elastic Endpoint Security]*
+is an endpoint security platform and agent that provides prevention, detection,
+and response capabilities. It ships events and security alerts directly to {es}. 
+
 *https://www.elastic.co/products/beats[{beats}]* are open source data shippers
 that you install as agents on your systems. {beats} send security events and other
 data to {es}. 
@@ -50,9 +54,9 @@ identify and investigate suspicious activity:
 [[data-sources]]
 === Data sources
 
-SIEM can ingest and analyze data from a variety of sources, including Beats
-and Beats modules, and third-party collectors mapped to the {ecs-ref}[Elastic
-Common Schema (ECS)]. 
+SIEM can ingest and analyze data from a variety of sources, including Elastic
+Endpoint Security, Beats and Beats modules, and third-party collectors mapped to
+the {ecs-ref}[Elastic Common Schema (ECS)]. 
 
 [float]
 [[hosts-data-sources]]
@@ -89,6 +93,13 @@ Common Schema (ECS)].
 ** {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
 ** {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
 ** {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]
+
+[float]
+[[endpoint-security-platform]]
+==== Elastic Endpoint Sensor Management Platform
+
+The Sensor Management Platform (SMP) ships all relevant host and network data
+directly to the {siem-app}.
 
 [float]
 [[ecs]]

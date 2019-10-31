@@ -12,14 +12,12 @@ To get the default distributions of {es} and {kib} up and running in Docker,
 you can use Docker Compose:
 
 . Create a `docker-compose.yml` file for the Elastic Stack:
++
 ifeval::["{release-state}"=="unreleased"]
-+
-WARNING: Version {version} of {es} has not yet been released, so the
-sample compose file is not yet available for this version.
+WARNING: Version {version} of {es} has not been released, 
+so the sample compose file is not yet available for this version.
 endif::[]
-
 ifeval::["{release-state}"!="unreleased"]
-+
 ["source","yaml",subs="attributes"]
 --------------------------------------------
 include::docker/docker-compose.yml[]
@@ -62,15 +60,14 @@ To get an {es} cluster and {kib} up and running in Docker with security enabled,
 you can use Docker Compose`:
 
 . Download and extract the sample Docker Compose and configuration files:
-ifeval::["{release-state}"=="unreleased"]
 +
-WARNING: Version {version} of {es} has not yet been released, so the
-sample compose and configuration files are not yet available for this version.
+--
+ifeval::["{release-state}"=="unreleased"]
+WARNING: Version {version} of {es} has not been released, 
+so the sample compose and configuration files are not yet available for this version.
 endif::[]
 
 ifeval::["{release-state}"!="unreleased"]
-+
---
 * Linux/MacOS: `elasticsearch-docker-config.tar.gz` 
 * Windows: `elasticsearch-docker-config.zip`
 endif::[]
@@ -85,6 +82,7 @@ for {es} and {kib}.
 * `docker-elastic-tls.yml` is a Docker Compose file that brings up a three-node {es} cluster
 and a {kib} instance with TLS enabled.
 
+ifeval::["{release-state}"!="unreleased"]
 .`instances.yml`:
 ["source","yaml"]
 ----
@@ -115,7 +113,7 @@ including the `elastic` and `kibana` users.
 <3> Enable Transport Layer Security to encrypt client communications.
 <4> Enable Transport Layer Security to encrypt internode communications.
 <5> Allow the use of self-signed certificates by not requiring hostname verification. 
-
+endif::[]
 --
 
 include::get-started-docker.asciidoc[tag=docker-memory]

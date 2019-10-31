@@ -30,21 +30,21 @@ the job's `Group` field ({kib} -> {ml-cap} -> Create/Edit job -> Job details).
 [[included-jobs]]
 ==== Prebuilt jobs
 
-The SIEM app ships with prebuilt {ml} {anomaly-jobs} for
-automatically detecting host and network anomalies. If you ship data using
-https://www.elastic.co/products/beats[Beats] and your environment
-is configured with the appropriate indices (`auditbeat-*`, `filebeat-*`, `packetbeat-*`,
-or `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be installed
-on page load, and will be displayed within the `Anomaly Detection` interface.
+The SIEM app comes with prebuilt {ml} {anomaly-jobs} for automatically detecting
+host and network anomalies. The jobs are displayed in the `Anomaly Detection`
+interface. They are available if you ship data using 
+https://www.elastic.co/products/beats[Beats] and {kib} is configured with the required
+index patterns (`auditbeat-*`, `filebeat-*`, `packetbeat-*`, or `winlogbeat-*`
+via {kib} -> Management -> Index Patterns).
 
 NOTE: Machine learning jobs look back and analyse two weeks of historical data prior to
 the time they are enabled. After jobs are enabled, they continuously analyse incoming data.
 When jobs are stopped and restarted within the two week timeframe, previously
 analysed data is not processed again.
 
-<<prebuilt-ml-jobs>> describes all available Machine Learning jobs and lists 
-which beats are required on hosts for each job. For information on tuning anomaly results
-to reduce the number of false positive, see <<tuning-anomaly-results>>.
+<<prebuilt-ml-jobs>> describes all available {ml} jobs and lists 
+which beats are required on your hosts for each job. For information on tuning
+anomaly results to reduce the number of false positive, see <<tuning-anomaly-results>>.
 
 [float]
 [[view-anomolies]]

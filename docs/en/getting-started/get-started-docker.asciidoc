@@ -14,8 +14,9 @@ you can use Docker Compose:
 . Create a `docker-compose.yml` file for the Elastic Stack:
 +
 ifeval::["{release-state}"=="unreleased"]
-WARNING: Version {version} of {es} has not been released, 
+NOTE: Version {version} of {es} has not been released, 
 so the sample compose file is not yet available for this version.
+See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
 endif::[]
 ifeval::["{release-state}"!="unreleased"]
 ["source","yaml",subs="attributes"]
@@ -23,7 +24,6 @@ ifeval::["{release-state}"!="unreleased"]
 include::docker/docker-compose.yml[]
 --------------------------------------------
 endif::[]
-
 // tag::docker-memory[]
 . Make sure Docker Engine is allotted at least 4GiB of memory. 
 In Docker Desktop, you configure resource usage on the Advanced tab in Preference (macOS)
@@ -63,8 +63,9 @@ you can use Docker Compose`:
 +
 --
 ifeval::["{release-state}"=="unreleased"]
-WARNING: Version {version} of {es} has not been released, 
+NOTE: Version {version} of {es} has not been released, 
 so the sample compose and configuration files are not yet available for this version.
+See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
 endif::[]
 
 ifeval::["{release-state}"!="unreleased"]
@@ -165,13 +166,17 @@ and join the lines before running this command.
 . Set `ELASTICSEARCH_PASSWORD` in the `elastic-docker-tls.yml` compose file to the password 
 generated for the `kibana` user.
 +
---
+ifeval::["{release-state}"=="unreleased"]
+NOTE: Version {version} of {es} has not been released, 
+so the sample compose file is not yet available for this version.
+See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
+endif::[]
+ifeval::["{release-state}"!="unreleased"]
 ["source","txt",subs="-callouts"]
 ----
-include::docker/elastic-docker-tls.yml[]
+include::docker/elastic-docker-tls.yml[tag=kibana-config]
 ----
-
---
+endif::[]
 
 . Use `docker-compose` to restart the cluster and {kib}:
 +

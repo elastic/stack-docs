@@ -12,20 +12,18 @@ To get the default distributions of {es} and {kib} up and running in Docker,
 you can use Docker Compose:
 
 . Create a `docker-compose.yml` file for the Elastic Stack:
++
 ifeval::["{release-state}"=="unreleased"]
-+
-WARNING: Version {version} of {es} has not yet been released, so the
-sample compose file is not yet available for this version.
+NOTE: Version {version} of {es} has not been released, 
+so the sample compose file is not yet available for this version.
+See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
 endif::[]
-
 ifeval::["{release-state}"!="unreleased"]
-+
 ["source","yaml",subs="attributes"]
 --------------------------------------------
 include::docker/docker-compose.yml[]
 --------------------------------------------
 endif::[]
-
 // tag::docker-memory[]
 . Make sure Docker Engine is allotted at least 4GiB of memory. 
 In Docker Desktop, you configure resource usage on the Advanced tab in Preference (macOS)
@@ -61,21 +59,17 @@ we advise securing your stack from the start.
 To get an {es} cluster and {kib} up and running in Docker with security enabled, 
 you can use Docker Compose`:
 
-. Download and extract the sample Docker Compose and configuration files:
-ifeval::["{release-state}"=="unreleased"]
-+
-WARNING: Version {version} of {es} has not yet been released, so the
-sample compose and configuration files are not yet available for this version.
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
+. Create the following compose and configuration files. 
+These files are also available from the 
+https://github.com/elastic/stack-docs/blob/master/docs/en/getting-started/docker/[elastic/stack-docs] 
+repository on GitHub.
 +
 --
-* Linux/MacOS: `elasticsearch-docker-config.tar.gz` 
-* Windows: `elasticsearch-docker-config.zip`
+ifeval::["{release-state}"=="unreleased"]
+NOTE: Version {version} of {es} has not been released, 
+so the sample compose and configuration files are not yet available for this version.
+See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
 endif::[]
-
-The archive contains four files:
 
 * `instances.yml` identifies the instances you need to create certificates for.
 * `.env` sets environment variables to specify a bootstrap password for {es} and
@@ -85,6 +79,7 @@ for {es} and {kib}.
 * `docker-elastic-tls.yml` is a Docker Compose file that brings up a three-node {es} cluster
 and a {kib} instance with TLS enabled.
 
+ifeval::["{release-state}"!="unreleased"]
 .`instances.yml`:
 ["source","yaml"]
 ----
@@ -115,7 +110,7 @@ including the `elastic` and `kibana` users.
 <3> Enable Transport Layer Security to encrypt client communications.
 <4> Enable Transport Layer Security to encrypt internode communications.
 <5> Allow the use of self-signed certificates by not requiring hostname verification. 
-
+endif::[]
 --
 
 include::get-started-docker.asciidoc[tag=docker-memory]
@@ -167,13 +162,17 @@ and join the lines before running this command.
 . Set `ELASTICSEARCH_PASSWORD` in the `elastic-docker-tls.yml` compose file to the password 
 generated for the `kibana` user.
 +
---
+ifeval::["{release-state}"=="unreleased"]
+NOTE: Version {version} of {es} has not been released, 
+so the sample compose file is not yet available for this version.
+See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
+endif::[]
+ifeval::["{release-state}"!="unreleased"]
 ["source","txt",subs="-callouts"]
 ----
-include::docker/elastic-docker-tls.yml[]
+include::docker/elastic-docker-tls.yml[tag=kibana-config]
 ----
-
---
+endif::[]
 
 . Use `docker-compose` to restart the cluster and {kib}:
 +

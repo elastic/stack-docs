@@ -59,7 +59,10 @@ we advise securing your stack from the start.
 To get an {es} cluster and {kib} up and running in Docker with security enabled, 
 you can use Docker Compose`:
 
-. Download and extract the sample Docker Compose and configuration files:
+. Create the following compose and configuration files. 
+These files are also available from the 
+https://github.com/elastic/stack-docs/blob/master/docs/en/getting-started/docker/[elastic/stack-docs] 
+repository on GitHub.
 +
 --
 ifeval::["{release-state}"=="unreleased"]
@@ -67,13 +70,6 @@ NOTE: Version {version} of {es} has not been released,
 so the sample compose and configuration files are not yet available for this version.
 See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
 endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-* Linux/MacOS: `elasticsearch-docker-config.tar.gz` 
-* Windows: `elasticsearch-docker-config.zip`
-endif::[]
-
-The archive contains four files:
 
 * `instances.yml` identifies the instances you need to create certificates for.
 * `.env` sets environment variables to specify a bootstrap password for {es} and

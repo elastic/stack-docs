@@ -104,7 +104,7 @@ services:
       - certs:$CERTS_DIR
     networks:
       - elastic
-
+// tag::kibana-config[]
   kib01:
     image: docker.elastic.co/kibana/kibana:${VERSION}
     container_name: kib01
@@ -125,7 +125,7 @@ services:
       - certs:$CERTS_DIR
     networks:
       - elastic    
-
+// end::kibana-config[]
 volumes:
   data01:
     driver: local

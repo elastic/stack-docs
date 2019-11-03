@@ -28,20 +28,38 @@ the job's `Group` field ({kib} -> {ml-cap} -> Create/Edit job -> Job details).
 
 [float]
 [[included-jobs]]
-==== Prebuilt Jobs
+==== Prebuilt jobs
 
-The SIEM app ships with prebuilt Machine Learning Jobs for detecting anomalies.
-If you ship data using https://www.elastic.co/products/beats[Beats] and your environment
-is configured with the appropriate indices (`auditbeat-*`, `filebeat-*`, `packetbeat-*`,
-or `winlogbeat-*`) via {kib} -> Management -> Index Patterns, the jobs will be installed
-on page load, and will be displayed within the `Anomaly Detection` interface.
+The SIEM app comes with prebuilt {ml} {anomaly-jobs} for automatically detecting
+host and network anomalies. The jobs are displayed in the `Anomaly Detection`
+interface. They are available if you ship data using 
+https://www.elastic.co/products/beats[Beats] and {kib} is configured with the required
+index patterns (`auditbeat-*`, `filebeat-*`, `packetbeat-*`, or `winlogbeat-*`
+via {kib} -> Management -> Index Patterns).
 
 NOTE: Machine learning jobs look back and analyse two weeks of historical data prior to
 the time they are enabled. After jobs are enabled, they continuously analyse incoming data.
 When jobs are stopped and restarted within the two week timeframe, previously
 analysed data is not processed again.
 
-The following prebuilt jobs are available:
+<<prebuilt-ml-jobs>> describes all available {ml} jobs and lists 
+which beats are required on your hosts for each job. For information on tuning
+anomaly results to reduce the number of false positive, see <<tuning-anomaly-results>>.
+
+[float]
+[[view-anomolies]]
+=== View detected anomalies
+To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
+the user must have the `ml_admin` or `ml_user` role.
+
+NOTE: To adjust the `score` threshold for which {stack-ov}/xpack-ml.html[anomalies]
+are shown, you can modify {kib} -> Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
+
+[[prebuilt-ml-jobs]]
+=== Prebuilt job reference
+
+Prebuilt jobs automatically detect file system and network anomalies on your hosts:
+
 [horizontal]
 rare_process_by_host_windows_ecs::
 +
@@ -82,7 +100,7 @@ directly from the internet or a malicious script/macro executed malware.
 +
 Beats required on hosts:
 
-* Winlogbeat
+* Winlogbeat (Windows)
 windows_anomalous_process_all_hosts_ecs::
 +
 linux_anomalous_process_all_hosts_ecs:: Searches for rare processes running on
@@ -110,7 +128,7 @@ new and emerging malware that is not yet recognized by anti-virus scanners.
 +
 Beats required on hosts:
 
-* Winlogbeat
+* Winlogbeat (Windows)
 windows_anomalous_script:: Searches for PowerShell scripts with unusual data
 characteristics, such as obfuscation, that may be a characteristic of malicious
 PowerShell script text blocks.
@@ -127,7 +145,7 @@ installed and run as a service.
 +
 Beats required on hosts:
 
-* Winlogbeat
+* Winlogbeat (Windows)
 windows_anomalous_user_name_ecs::
 +
 linux_anomalous_user_name_ecs:: Searches for activity from users who are not normally
@@ -158,13 +176,13 @@ indicate unauthorized access or threat actor activity.
 +
 Beats required on hosts:
 
-* Auditbeat
+* Auditbeat (Linux)
 linux_anomalous_network_service:: Searches for unusual listening ports that
 could indicate execution of unauthorized services, backdoors, or persistence mechanisms.
 +
 Beats required on hosts:
 
-* Auditbeat
+* Auditbeat (Linux)
 linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests
 from hosts, which could indicate malware delivery and execution.
 +
@@ -177,7 +195,7 @@ indicate unauthorized downloads or threat activity.
 +
 Beats required on hosts:
 
-* Auditbeat
+* Auditbeat (Linux)
 suspicious_login_activity_ecs:: Identifies an unusually high number of authentication
 attempts.
 +
@@ -185,12 +203,88 @@ Beats required on hosts:
 
 * Auditbeat (Windows and Linux)
 * Winlogbeat (Windows)
+Packetbeat_dns_tunneling:: Searches for unusually large numbers of DNS queries
+for a single top-level DNS domain, which is often used for DNS tunneling.
++
+DNS tunneling can be used for command-and-control, persistence, or data exfiltration
+activity. For example, dnscat tends to generate many DNS questions for a top-level
+domain (TLD) as it uses the DNS protocol to tunnel data.
++
+Beats required on hosts:
 
-[float]
-[[view-anomolies]]
-=== View detected anomalies
-To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
-the user must have the `ml_admin` or `ml_user` role.
+* Packetbeat (Windows and Linux)
+Packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
+indicate network activity with unusual domains is about to occur. This can be due
+to initial access, persistence, command-and-control, or exfiltration activity.
++
+For example, when a user clicks on a link in a phishing email or opens a malicious
+document, a request may be sent to an uncommon domain to download and run a payload.
+When malware is already running, it may send requests to an uncommon
+DNS domain the malware uses for command-and-control communication.
++
+Beats required on hosts:
 
-NOTE: To adjust the `score` threshold for which {xpack-ref}/xpack-ml.html[anomalies]
-are shown, you can modify {kib} -> Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
+* Packetbeat (Windows and Linux)
+Packetbeat_rare_server_domain:: Searches for rare and unusual DNS queries that
+indicate network activity with unusual domains is about to occur. This can be due
+to initial access, persistence, command-and-control, or exfiltration activity.
++
+For example, when a user clicks on a link in a phishing email or opens a malicious
+document, a request may be sent to an uncommon HTTP or TLS server to download and
+run a payload. When malware is already running, it may send requests to an uncommon
+DNS domain the malware uses for command-and-control communication.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+Packetbeat_rare_urls:: Searches for rare and unusual URLs that indicate unusual web
+browsing activity. This can be due to initial access, persistence,
+command-and-control, or exfiltration activity.
++
+For example, in a strategic web compromise or watering hole attack, when a
+trusted website is compromised to target a particular sector or organization,
+targeted users may receive emails with uncommon URLs for trusted websites. These
+URLs can be used to download and run a payload. When malware is already running,
+it may send requests to uncommon URLs on trusted websites the malware uses for
+command-and-control communication. When rare URLs are observed being requested
+for a local web server by a remote source, these can be due to web scanning,
+enumeration or attack traffic, or they can be due to bots and web scrapers which
+are part of common Internet background traffic.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+Packetbeat_rare_user_agent:: Searches for rare and unusual user agents that
+indicate web browsing activity by an unusual process other than a web browser.
+This can be due to persistence, command-and-control, or exfiltration activity.
+Uncommon user agents coming from remote sources to local destinations are often
+the result of scanners, bots, and web scrapers which are part of common Internet
+background traffic.
++
+Much of this is noise, but more targeted attacks on websites
+using tools like Burp or SQLmap can sometimes be discovered by spotting uncommon
+user agents. Uncommon user agents in traffic from local sources to remote
+destinations can be any number of things, including harmless programs like
+weather monitoring or stock-trading programs. However, uncommon user agents from
+local sources can also be due to malware or scanning activity.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+Windows_rare_user_type10_remote_login:: Unusual remote desktop protocol (RDP)
+logins can indicate account takeover or credentialed persistence using
+compromised accounts. RDP attacks such as BlueKeep also tend to use unusual
+usernames.
++
+Beats required on hosts:
+
+* Winlogbeat (Windows)
+Windows_rare_user_runas_event:: Unusual user context switches using the `runas`
+command or similar techniques can indicate account takeover or privilege
+escalation using compromised accounts. Privilege elevation using tools like
+`runas` is more common for domain and network administrators than professional
+workers who are not members of the technology department.
++
+Beats required on hosts:
+
+* Winlogbeat (Windows)

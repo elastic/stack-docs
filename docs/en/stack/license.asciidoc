@@ -23,7 +23,7 @@ the trial, or https://www.elastic.co/subscriptions/[purchase a subscription].
 
 [float]
 [[installing-license]]
-== Updating Your license
+== Updating your license
 
 You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
@@ -47,27 +47,42 @@ These error messages tell you when the license expires and what features will be
 disabled if you fail to update the license.
 
 [float]
+[[expiration-kibana]]
+=== Kibana
+* Users can still log into {kib}
+* It is still usable for data exploration and visualization, but some features
+are disabled
+* The license management UI is available to easily upgrade your license. See
+<<installing-license>> and
+{kibana-ref}/managing-licenses.html[License management].
+
+[float]
+[[expiration-watcher]]
 === Watcher
 * PUT / GET watch APIs will be disabled, DELETE watch API will continue to work
 * Watches will execute and write to the history
 * The actions of the watches will not execute
 
 [float]
+[[expiration-monitoring]]
 === Monitoring
 * The agent will stop collecting cluster and indices metrics
 * The agent will stop automatically cleaning indices older than `xpack.monitoring.history.duration`
 
 [float]
+[[expiration-graph]]
 === Graph
 * Graph explore APIs will be disabled
 
 [float]
+[[expiration-reporting]]
 === Reporting
 * Reporting will no longer be available in {kib}
 * Report generation urls will stop working
 * Existing reports will no longer be accessible
 
 [float]
+[[expiration-security]]
 === Security
 * Cluster health, cluster stats and indices stats operations will be blocked
 * All data operations (read and write) will continue to work
@@ -98,6 +113,7 @@ This message enables automatic monitoring systems to easily detect the license
 failure without immediately impacting other users.
 
 [float]
+[[expiration-ml]]
 === Machine learning
 * APIs to create jobs, open jobs, send data to jobs, create {dfeeds}, and start
 {dfeeds} will be disabled
@@ -105,7 +121,8 @@ failure without immediately impacting other users.
 * Existing job results will continue to be available by using {kib} or APIs
 
 [float]
-=== Logstash Pipeline Management
+[[expiration-logstash]]
+=== Logstash pipeline management
 * Will not be able to create new pipelines and edit or delete existing pipelines from the UI
 * Will be able to list and view existing pipelines from the UI
 * Will be able to run Logstash instances which are registered to listen to existing pipelines

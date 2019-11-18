@@ -12,6 +12,7 @@ answers for frequently asked questions.
 * <<ml-mappingclash>>
 * <<ml-jobnames>>
 * <<ml-upgradedf>>
+* <<ml-stopjobs>>
 
 include::{stack-repo-dir}/help.asciidoc[tag=get-help]
 
@@ -120,3 +121,43 @@ start the failing nodes you must downgrade the nodes then fix the problem per
 above.
 
 See also {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
+
+[[ml-stopjobs]]
+=== Problems deleting {anomaly-jobs}
+
+Before you can delete an {anomaly-job}, you must stop and delete its {dfeeds}
+and close the job. If you still encounter problems deleting the job, you might
+need to take extra steps.
+
+*Symptoms:*
+
+* The {dfeed} was stopped and deleted successfully. When you try to delete the 
+job, however, it fails. For example, you receive an error message that says the 
+job is in a failed state. 
+
+*Resolution:*
+
+Try to stop and delete the job again and specify the `force` parameter.  For 
+example:
+
+[source,js]
+--------------------------------------------------
+POST _ml/datafeeds/datafeed-total-requests/_stop?force=true
+POST _ml/anomaly_detectors/total-requests/_close?force=true
+DELETE _ml/anomaly_detectors/total-requests?force=true
+-------------------------------------------------- 
+// CONSOLE
+
+If the job persists, check whether there are any hung {ml} processes. For 
+example use the `ps` command and grep for the `autodetect` process, which is the 
+C++ process that runs the {ml} code. Kill these autodetect processes then delete 
+the job. 
+
+WARNING: Make sure you kill the right autodetect process. Otherwise, you might
+abort a healthy job.  
+
+If the job still persists, you can delete the results index. Only use this option 
+if you know that the problematic job is the only one using the results index. 
+Otherwise, all results for all affected jobs will be lost. 
+
+See also <<stopping-ml>>.

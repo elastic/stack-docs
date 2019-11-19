@@ -113,7 +113,7 @@ PUT _ml/data_frame/analytics/model-delayed-flights
   "analysis": {
     "classification": {
       "dependent_variable": "FlightDelay",  <4>
-      "training_percent": 70  <5>
+      "training_percent": 10  <5>
     }
   },
   "analyzed_fields": {
@@ -136,9 +136,10 @@ a copy of the source index data where each document is annotated with the
 results.
 <4> Specifies the variable we want to predict with the {classanalysis}.
 <5> Specifies the proportion of data that is used for training the model. In 
-this example we use 90% of the source data. The training data is randomly 
-selected and provide predictions from the remaining 10%. These percentages are 
-approximate.
+this example we use 10% of the source data. The training data is randomly 
+selected and provide predictions from the remaining 90%. These percentages are 
+approximate. For most of the datasets, even a small proportion of the training 
+data (2-5%) results in good predictions.
 <6> Specifies fields to be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.

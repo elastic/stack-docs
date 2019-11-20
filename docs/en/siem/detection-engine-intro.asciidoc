@@ -1,0 +1,37 @@
+[[detection-engine-overview]]
+[role="xpack"]
+== Detection engine
+
+The detection engine automatically searches for threats and creates signals 
+when they are detected. These threats are detected using rules that define the 
+conditions required for a signal to be issued. The {siem-app} comes 
+preconfigured with rules that search for suspicious activity on your network 
+and hosts. Additionally, you can <<rules-ui-create, create your own rules>>.
+
+[float]
+[[det-engine-terminology]]
+=== Terminology
+
+Signals::
+Always refer to a {siem-soln} produced detection. That is, signals are never 
+received from third-party systems. When a detection engine rule's conditions 
+are met, the {siem-app} writes one or more signals to an Elasticsearch 
+`signals` index.
+
+Alerts and events::
+Always refer to data and detections {siem-soln} receives from data shippers and 
+third-party tools, such as Suricata and Elastic Endpoint Security.
+
+[float]
+=== Signals
+
+When a rule's conditions are met, a signal is produced and displayed on the 
+Detection Engine page. To view all signals created by a specific rule, click 
+*Manage rules* and then the relevant rule in the All rules table.
+
+[NOTE]
+==============
+Signal indices are created for each {kib} space. The naming convention is:
+`.siem-signals-<space name>`. For the default space, the signals index is named 
+`.siem-signals-default`.
+==============

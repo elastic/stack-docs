@@ -101,6 +101,22 @@ There are also tabs for viewing and investigating specific types of data:
 * Anomalies
 
 [float]
+[[detection-engine-ui]]
+=== Detection Engine
+
+The Detection Engine page provides an overview of all the signals created by 
+detection engine rules. It is also the place where you can enable prepackaged 
+rules and create new rules. <<detection-engine-overview>> provides a detailed 
+description of the detection engine and how to use it.
+
+[role="screenshot"]
+image::detection-engine.png[]
+
+The `Signal detection rate` histograms show the detection rate of signals 
+according to various attributes, including `Risk scores`, `Severities`, and 
+`Top event categories`. The `All signals` table helps with investigations, allowing you to search, filter, and aggregate all {siem-soln} signals.
+
+[float]
 [[map-ui]]
 === Map
 The map provides a visual overview of your network traffic. It is interactive,
@@ -212,7 +228,6 @@ might need to:
 NOTE: To see source and destination connections lines on the map, you must
 configure `source.geo` and `destination.geo` ECS fields for your indices.
 
-[float]
 [[kibana-index-pattern]]
 ==== Create {kib} index patterns
 
@@ -237,7 +252,6 @@ such as `servers-*`, map data for the indices is *not* displayed.
 // {kibana-ref}/tutorial-define-index.html[Define your index patterns].
 // =====================
 
-[float]
 [[geoip-data]]
 ==== Add geoIP data
 
@@ -319,7 +333,6 @@ it encounters an event that doesn't have the specified field.
 <1> The value of this field must be the same as the ingest pipeline name in
 <<geo-pipeleine, step 1>> (`geoip-info` in this example).
 
-[float]
 [[private-network]]
 ==== Map your internal network
 

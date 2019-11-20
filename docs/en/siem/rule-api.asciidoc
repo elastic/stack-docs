@@ -91,7 +91,7 @@ single execution *Frank: need help* |No, defaults to 100
 |name |String |Rule's name |Yes
 
 |severity |String |Severity level of signals produced by the rule, recommended
-values: `Low`, `Medium`, and `High` *Frank: need help* |Yes
+values: `Low`, `Medium`, `High`, `Critical` *Frank: need help* |Yes
 
 |tags |String[] |String array containing words and phrases to help categorize,
 filter, and search rules |No, defaults to an empty array
@@ -106,3 +106,10 @@ or `saved_query` |Yes
 information, such as URLs *Frank: need help* |No, defaults to an empty array
 
 |==============================================
+
+NOTE: Rules can be both query- and filter-based. When rules are use both queries
+and filter, make sure all required fields are provided.
+
+[float]
+=== Common use cases and examples
+

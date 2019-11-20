@@ -1,0 +1,101 @@
+[[rules-ui-create]]
+[role="xpack"]
+=== Managing detection engine rules
+
+Rules run periodically, and search the specified indices for 
+documents that meet their criteria. On the Rules page, you can:
+
+* <<create-rule-ui, Create rules>>
+* <<manage-rules-ui, Clone, delete, disable, and enable rules>>
+* <<import-export-rules-ui>>
+
+[role="screenshot"]
+image::all-rules.png[]
+
+[[create-rule-ui]]
+==== Create a new rule
+
+. Go to *SIEM* -> *Detection Engine* -> *Manage rules*.
+. Click *Create new rule*.
++
+The *Create new rule* page is displayed.
+[role="screenshot"]
+image::create-new-rule.png[]
+. Set which indices the rule analyzes for signals:
++
+.. Configured SIEM indices (*Management* -> *Advanced 
+setting* -> *siem:defaultIndex*).
+.. A custom list of indices.
+. Use the filter and query fields to create the criteria used for detecting 
+signals. For example, a rule that detects when a Microsoft Office product 
+starts a process in a user folder uses the following query and filters:
+
+* _Custom query_ `field: process.parent.name: EXCEL.EXE or process.parent.name: MSPUB.EXE or process.parent.name: OUTLOOK.EXE or process.parent.name: POWERPNT.EXE or process.parent.name: VISIO.EXE or process.parent.name: WINWORD.EXE`
+* _Add filter_:
+** *Field*: `event.action`
+** *Operator*: `is`
+** *Value* : `Process Create (rule: ProcessCreate)`
+. Click *Continue*.
++
+The *About rule* pane is displayed.
+[role="screenshot"]
+image::about-rule-pane.png[]
+. Fill in the following fields:
+.. _Name_: The rule's name.
+.. _Description_: A description of what the rule does.
+.. _Severity_: Select the severity levels of signals created by the rule:
+... `Low`: Signals that are of interest but generally not considered to be 
+security incidents. Sometimes, a combination of low severity events can 
+indicate suspicious activity.
+... `Medium`: Signals that require investigation.
+... `High`: Signals that require an immediate investigation.
+... `Critical`: Signals that indicate a security incident has occurred.
+.. _Risk score_: A numerical value between 0 and 100 that correlates with the _Severity_ level. General guidelines are:
+... `21` represents low severity.
+... `47` represents medium severity.
+... `73` represents high severity.
+... `99` represents critical severity.
+.. _Reference URLs_ (optional): References to information that is relevant to 
+the rule. For example, links to the relevant MITRE framework URL.
+.. _False positives_ (optional): List of common scenarios that may produce 
+false-positive signals.
+.. _MITRE ATT&CK_ (optional): Relevant MITRE framework tactics and techniques.
+.. _Tags_ (optional): Words and phrases used to categorize, filter, and search 
+the rule.
+. Click *Continue*.
++
+The *Schedule rule* pane is displayed.
+[role="screenshot"]
+image::schedule-rule.png[]
+. Select how often the rule runs.
+. Optionally, add look-back time to the rule. When defined, the rule searches 
+indices with the additional time period.
++
+For example, if you set a rule to run every 5 minutes with an additional
+look-back time of 1 minute, the rule runs every 5 minutes but analyses the 
+documents added to indices during the last 6 minutes. This overlap helps ensure 
+signals are issued even when incoming host and network data is delayed.
+. Save the rule with or without activation.
+
+[[manage-rules-ui]]
+==== Manage existing rules
+
+. Go to *SIEM* -> *Detection Engine*.
+. Do one of the following:
+* Click the actions icon (three dots), and select the required action.
+* In the *Rule* column, select all the rules you want to perform an action on, and then the required action from `Batch actions` menu.
+
+
+[[import-export-rules-ui]]
+==== Import and export rules
+
+. Go to *SIEM* -> *Detection Engine* -> *Manage rules*.
+. To import rules:
+.. Click *Import rule*.
+.. Drag and drop files containing the detection engine rules.
++
+NOTE: Imported rules must be ndjson files.
+
+. To export rules:
+.. In the *All rules* table, select the rules you want to export.
+.. Select *Batch actions* -> *Export selected*.

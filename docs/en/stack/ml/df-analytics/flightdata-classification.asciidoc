@@ -107,7 +107,7 @@ PUT _ml/data_frame/analytics/model-delayed-flights
     }
   },
   "dest": {
-    "index": "df-flight-results",  <3>
+    "index": "df-flight-delayed",  <3>
     "results_field": "ml" 
   },
   "analysis": {
@@ -167,7 +167,7 @@ The API returns the following response:
     }
   },
   "dest" : {
-    "index" : "df-flight-results",
+    "index" : "df-flight-delayed",
     "results_field" : "ml"
   },
   "analysis" : {
@@ -209,8 +209,8 @@ POST _ml/data_frame/analytics/model-delayed-flights/_start
 
 
 The job takes a few minutes to run. Runtime depends on the local hardware and 
-also on the number of documents and fields that analyzed. The more fields and 
-documents, the longer the job to run.
+also on the number of documents and fields that are analyzed. The more fields 
+and documents, the longer the job to run.
 --
 
 . Check the job stats to follow the progress by using the 
@@ -273,7 +273,7 @@ index:
 
 [source,console]
 --------------------------------------------------
-GET df-flight-results/_search
+GET df-flight-delayed/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -314,34 +314,37 @@ The snippet below shows a part of a document with the annotated results:
                 "class_name" : "false" <4>
               },
               {
-                "class_probability" : 0.06066463494150393,
+                "class_probability" : 0.06066463494150393, <5>
                 "class_name" : "true"
               }
             ],
-            "FlightDelay_prediction" : "false", <5>
-            "is_training" : false <6>
+            "FlightDelay_prediction" : "false", <6>
+            "is_training" : false <7>
           }
 ----
 <1> The `dependent_variable` with the ground truth value. This is what we are 
 trying to predict with the {classanalysis}.
 <2> The top classes object contains the predicted classes with the highest 
 probability.
-<3> The probability that the datapoint belongs to the given class. This is a 
-value between 0 and 1. The higher the number the higher the probability that the 
-datapoint belongs to the class.
+<3> The probability that `FlightDelay` is false (the larger probability of the 
+two, hence this is the predicted class). This is a value between 0 and 1. The 
+higher the number the higher the probability that the datapoint belongs to the 
+class.
 <4> Name of the class.
-<5> The prediction. The field name is suffixed with `_prediction`.
-<6> Indicates that this document was not used in the training set.
+<5> The probability that `FlightDelay` is true.
+<6> The prediction. The field name is suffixed with `_prediction` by default. 
+You can specify the field name by defining `prediction_field_name` via the API. 
+<7> Indicates that this document was not used in the training set.
 
 The example above shows that the analysis has predicted the probability of all 
-the possible classes. In this case, there are two classes: `true` and `false`. 
-The class names along with the probability of the given classes are displayed in 
-the `top_classes` object. The most probable class is the prediction. In the 
-example above, `false` has a `class_probability` of 0.93 while `true` has only 
-0.06, so the prediction will be `false` which coincides with the ground truth 
-contained by the `FlightDelay` field. The class probability values help you to 
-understand how sure the model is about the prediction. The higher number means 
-that the model is more confident.
+possible classes. In this case, there are two classes: `true` and `false`. The 
+class names along with the probability of the given classes are displayed in the 
+`top_classes` object. The most probable class is the prediction. In the example 
+above, `false` has a `class_probability` of 0.93 while `true` has only 0.06, so 
+the prediction will be `false` which coincides with the ground truth contained 
+by the `FlightDelay` field. The class probability values help you understand how 
+sure the model is about the prediction. The higher number means that the model 
+is more confident.
 
 If a document doesn't contain a prediction field, then it is excluded from the 
 analysis. In order to be analyzed, a document must contain at least one field 
@@ -367,7 +370,7 @@ performed on the training dataset:
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "df-flight-results",  <1>
+ "index": "df-flight-delayed",  <1>
    "query": {
     "term": {
       "ml.is_training": {
@@ -400,7 +403,7 @@ performed on previously unseen data:
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "df-flight-classified",
+ "index": "df-flight-delayed",
    "query": {
     "term": {
       "ml.is_training": {
@@ -425,7 +428,7 @@ POST _ml/data_frame/_evaluate
 calculate the generalization error which shows the algorithm accuracy in making 
 predictions for previously unseen data.
 
-The API call returns a similar response:
+The API call returns the following response:
 
 [source,console-result]
 --------------------------------------------------
@@ -434,31 +437,31 @@ The API call returns a similar response:
     "multiclass_confusion_matrix" : {
       "confusion_matrix" : [
         {
-          "actual_class" : "false",  <1>
-          "actual_class_doc_count" : 912,  <2>
+          "actual_class" : "false", 
+          "actual_class_doc_count" : 912,
           "predicted_classes" : [
             {
-              "predicted_class" : "false",  <3>
-              "count" : 755  <4>
+              "predicted_class" : "false",  <1>
+              "count" : 755 
             },
             {
-              "predicted_class" : "true",  <3>
-              "count" : 157  <4>
+              "predicted_class" : "true", <2>
+              "count" : 157
             }
           ],
           "other_predicted_class_doc_count" : 0
         },
         {
-          "actual_class" : "true",  <1>
-          "actual_class_doc_count" : 306,  <2>
+          "actual_class" : "true",
+          "actual_class_doc_count" : 306,
           "predicted_classes" : [
             {
-              "predicted_class" : "false",  <3>
-              "count" : 80  <4>
+              "predicted_class" : "false", <3>
+              "count" : 80
             },
             {
-              "predicted_class" : "true",  <3>
-              "count" : 226  <4>
+              "predicted_class" : "true", <4>
+              "count" : 226
             }
           ],
           "other_predicted_class_doc_count" : 0
@@ -469,12 +472,10 @@ The API call returns a similar response:
   }
 }
 --------------------------------------------------
-<1> The name of the actual class, in this case, there are two actual classes: 
-`true` and `false`.
-<2> The number of documents in the dataset that belong to the actual class.
-<3> The name of the predicted class.
-<4> The number of documents belong to the actual class that are labelled as the 
-predicted class. 
+The returned confusion matrix shows us how many datapoints were classified 
+correctly (where the `actual_class` matches the `predicted_class` - see <1> and 
+<4>) and how many were misclassified (`actual_class` does not match 
+`predicted_class` - see [2] and [3]).
 
 The API response above shows that there are 912 documents in the dataset that 
 have the `false` class. The model labelled 755 documents (out of 912) correctly 

@@ -1,0 +1,30 @@
+[[rules-api-get]]
+=== Get rule
+
+Retrieves a single rule using the `rule_id` or `id` field.
+
+==== Request URL
+
+`GET /api/detection_engine/rules`
+
+===== URL query parameters
+
+The URL query must include one of the following:
+
+* `id` - `GET /api/detection_engine/rules?id=<id>`
+* `rule_id` - `GET /api/detection_engine/rules?rule_id=<rule_id>`
+
+===== Example request
+
+Retrieves the rule with an `id` value of `16947168-5405-453d-a8b5-aadad357af42`:
+
+[source,js]
+--------------------------------------------------
+GET api/detection_engine/rules?id=16947168-5405-453d-a8b5-aadad357af42
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

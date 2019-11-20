@@ -1,0 +1,55 @@
+[[rules-api-find]]
+=== Find rules
+
+Retrieves a paginated subset of signal detection rules. By default, the first page is returned with 20 results per page.
+
+==== Request URL
+
+`GET /api/detection_engine/rules/_find`
+
+===== URL query parameters
+
+All parameters are optional:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description
+
+|`page` |Integer |The page number to return.
+
+|`per_page` |Integer |The number of rules to return per page.
+
+|`sort_field` |String |Determines which field is used to sort the results.
+
+|`sort_order` |String |Determines the sort order, which can be `desc` or `asc`.
+
+|`filter` |String a|Filters the returned results according to the value of the 
+specified field, using the `alert.attributes.<field name>:<field value>` 
+syntax, where `<field name>` can be:
+
+* `name`
+* `enabled`
+* `tags`
+* `createdBy`
+* `interval`
+* `updatedBy`
+
+NOTE: Even though the JSON rule object uses `created_by` and `updated_by` 
+fields, you must use `createdBy` and `updatedBy` fields in the filter.
+|==============================================
+
+===== Example request
+
+Retrieves the first five rules with the word `windows` in their names, sorted 
+in ascending order:
+
+[source,js]
+--------------------------------------------------
+GET api/detection_engine/rules/_find?page=1&per_page=5&sort_field=enabled&sort_order=asc&filter=alert.attributes.name:windows
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

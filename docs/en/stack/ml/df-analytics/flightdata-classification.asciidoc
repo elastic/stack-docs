@@ -437,15 +437,15 @@ The API call returns the following response:
     "multiclass_confusion_matrix" : {
       "confusion_matrix" : [
         {
-          "actual_class" : "false", 
-          "actual_class_doc_count" : 912,
+          "actual_class" : "false", <1>
+          "actual_class_doc_count" : 912, <2>
           "predicted_classes" : [
             {
-              "predicted_class" : "false",  <1>
-              "count" : 755 
+              "predicted_class" : "false", <3>
+              "count" : 755 <4>
             },
             {
-              "predicted_class" : "true", <2>
+              "predicted_class" : "true",
               "count" : 157
             }
           ],
@@ -472,14 +472,19 @@ The API call returns the following response:
   }
 }
 --------------------------------------------------
-The returned confusion matrix shows us how many datapoints were classified 
-correctly (where the `actual_class` matches the `predicted_class` - see <1> and 
-<4>) and how many were misclassified (`actual_class` does not match 
-`predicted_class` - see [2] and [3]).
+<1> The name of the actual class. In this example, there are two actual classes: 
+`true` and `false`.
+<2> The number of documents in the dataset that belong to the actual class.
+<3> The name of the predicted class.
+<4> The number of documents belong to the actual class that are labelled as the 
+predicted class. 
 
-The API response above shows that there are 912 documents in the dataset that 
-have the `false` class. The model labelled 755 documents (out of 912) correctly 
-as `false` and 157 documents as `true` while those are actually `false`. There 
-are 306 documents in the dataset that have the `true` class. 80 of them are 
-predicted as `false` and 226 are predicted correctly as `true`.
+The returned confusion matrix shows us how many datapoints were classified 
+correctly (where the `actual_class` matches the `predicted_class`) and how many 
+were misclassified (`actual_class` does not match `predicted_class`). There are 
+912 documents in the dataset that have the `false` class. The model labelled 755 
+documents (out of 912) correctly as `false` and 157 documents as `true` while 
+those are actually `false`. There are 306 documents in the dataset that have the 
+`true` class. 80 of them are predicted as `false` and 226 are predicted 
+correctly as `true`.
 --

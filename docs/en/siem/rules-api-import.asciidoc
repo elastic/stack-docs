@@ -1,0 +1,51 @@
+[[rules-api-import]]
+=== Import rules
+
+Imports rules from an ndjson file.
+
+==== Request URL
+
+`POST /api/detection_engine/rules/_import`
+
+The request must include:
+
+* The `Content-Type: multipart/form-data` HTTP header.
+* A link to the ndjson file containing the rules.
+
+For example, using cURL:
+
+[source,js]
+--------------------------------------------------
+curl -X POST "<KibanaURL>/api/detection_engine/rules/_import"
+-u <username>:<password> -H 'kbn-xsrf: true'
+-H 'Content-Type: multipart/form-data'
+--form "file=@<link to file>" <1>
+--------------------------------------------------
+<1> The relative link to the ndjson file containing the rules.
+
+===== URL query parameters
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`overwrite` |Boolean |Determines whether existing rules with the same 
+`rule_id` are overwritten. |No, defaults to `false`.
+|==============================================
+
+===== Example request
+
+Imports the rules in the `detection_rules.ndjson` file and overwrites 
+existing rules with the same `rule_id` values:
+
+[source,js]
+--------------------------------------------------
+curl -X POST "api/detection_engine/rules/_import?overwrite=true"
+-H 'kbn-xsrf: true' -H 'Content-Type: multipart/form-data'
+--form "file=@detection_rules.ndjson"
+--------------------------------------------------
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

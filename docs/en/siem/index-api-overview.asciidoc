@@ -1,0 +1,108 @@
+[[index-api-overview]]
+=== Index endpoint
+
+You use the index endpoint to create, get, and delete a signal index in a 
+{kib} space.
+
+You can only create a signal index when the user role has `manage` privileges 
+for both the {ref}/security-privileges.html[{es} cluster and the
+`.siem-signals-<Kibana space>` index].
+
+NOTE: To make sure administrators can always create indices, use a glob 
+pattern that matches indices from multiple spaces in the `Indices` field on 
+the *Create role* page (*Management* -> *Roles* -> *Create role*). For 
+example, `.siem-signals-*`.
+
+==== Create index
+
+Creates a signal index. The naming convention for the index is
+`.siem-signals-<space name>`.
+
+===== Request URL
+
+`POST  /api/detection_engine/index`
+
+====== Example request
+
+Creates a signal index in the {kib} `siem` space.
+
+[source, js]
+--------------------------------------------------
+POST s/siem/api/detection_engine/index
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+
+==== Get index
+
+Gets the signal index name if it exists.
+
+===== Request URL
+
+`GET /api/detection_engine/index`
+
+====== Example request
+
+Gets the signal index for the {kib} `siem` space:
+
+[source, js]
+--------------------------------------------------
+GET s/siem/api/detection_engine/index
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+`404`::
+    Indicates no index exists.
+    
+====== Example responses
+
+Example response when index exists:
+
+[source,json]
+--------------------------------------------------
+{
+  "name": ".siem-signals-siem"
+}
+--------------------------------------------------
+
+Example response when no index exists:
+
+[source,json]
+--------------------------------------------------
+{
+  "statusCode": 404,
+  "error": "Not Found",
+  "message": "index for this space does not exist"
+}
+--------------------------------------------------
+
+==== Delete index
+
+Deletes the signal index.
+
+===== Request URL
+
+`DELETE /api/detection_engine/index`
+
+====== Example request
+
+Deletes the signal index for the {kib} `siem` space:
+
+[source, js]
+--------------------------------------------------
+DELETE s/siem/api/detection_engine/index
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.

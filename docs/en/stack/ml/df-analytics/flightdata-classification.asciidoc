@@ -97,53 +97,45 @@ PUT _ml/data_frame/analytics/model-delayed-flights
   "source": {
     "index": [
       "kibana_sample_data_flights"  <1>
-    ],
-    "query": {  <2>
-      "range": {
-        "DistanceKilometers": { 
-          "gt": 0
-        }
-      }
-    }
+    ]
   },
   "dest": {
-    "index": "df-flight-delayed",  <3>
+    "index": "df-flight-delayed",  <2>
     "results_field": "ml" 
   },
   "analysis": {
     "classification": {
-      "dependent_variable": "FlightDelay",  <4>
-      "training_percent": 10  <5>
+      "dependent_variable": "FlightDelay",  <3>
+      "training_percent": 10  <4>
     }
   },
   "analyzed_fields": {
     "includes": [],
-    "excludes": [    <6>
+    "excludes": [    <5>
       "Cancelled",
       "FlightDelayMin",
       "FlightDelayType"
     ]
   },
-  "model_memory_limit": "100mb" <7>
+  "model_memory_limit": "100mb" <6>
 }
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 
 <1> The source index to analyze.
-<2> This query removes erroneous data from the analysis to improve its quality.
-<3> The index that will contain the results of the analysis; it will consist of 
+<2> The index that will contain the results of the analysis; it will consist of 
 a copy of the source index data where each document is annotated with the 
 results.
-<4> Specifies the variable we want to predict with the {classanalysis}.
-<5> Specifies the proportion of data that is used for training the model. In 
+<3> Specifies the variable we want to predict with the {classanalysis}.
+<4> Specifies the proportion of data that is used for training the model. In 
 this example we use 10% of the source data. The training data is randomly 
 selected and provide predictions from the remaining 90%. These percentages are 
 approximate. For most of the datasets, even a small proportion of the training 
 data (2-5%) results in good predictions.
-<6> Specifies fields to be excluded from the analysis. It is recommended to 
+<5> Specifies fields to be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
-<7> Specifies a memory limit for the job. If the job requires more than this 
+<6> Specifies a memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. This makes it possible to prevent job 
 execution if the available memory on the node is limited.
 
@@ -153,17 +145,13 @@ The API returns the following response:
 [source,console-result]
 --------------------------------------------------  
 {
-  "id" : "model-delayed-flights",
+  "id" : "model-flight-delays",
   "source" : {
     "index" : [
       "kibana_sample_data_flights"
     ],
     "query" : {
-      "range" : {
-        "DistanceKilometers" : {
-          "gt" : 0
-        }
-      }
+      "match_all" : { }
     }
   },
   "dest" : {
@@ -171,23 +159,22 @@ The API returns the following response:
     "results_field" : "ml"
   },
   "analysis" : {
-    "classification" : {
-      "dependent_variable" : "FlightDelay",
-      "num_top_classes" : 2,
-      "prediction_field_name" : "FlightDelay_prediction",
-      "training_percent" : 70.0
+    "regression" : {
+      "dependent_variable" : "FlightDelayMin",
+      "prediction_field_name" : "FlightDelayMin_prediction",
+      "training_percent" : 10.0
     }
   },
   "analyzed_fields" : {
     "includes" : [ ],
     "excludes" : [
       "Cancelled",
-      "FlightDelayMin",
+      "FlightDelay",
       "FlightDelayType"
     ]
   },
   "model_memory_limit" : "100mb",
-  "create_time" : 1574165518647,
+  "create_time" : 1574436219144,
   "version" : "7.5.0",
   "allow_lazy_start" : false
 }
@@ -328,7 +315,7 @@ trying to predict with the {classanalysis}.
 probability.
 <3> The probability that `FlightDelay` is false (the larger probability of the 
 two, hence this is the predicted class). This is a value between 0 and 1. The 
-higher the number the higher the probability that the datapoint belongs to the 
+higher the number, the higher the probability that the datapoint belongs to the 
 class.
 <4> Name of the class.
 <5> The probability that `FlightDelay` is true.

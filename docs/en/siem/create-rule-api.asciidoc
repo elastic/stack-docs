@@ -11,6 +11,8 @@ Creates a new detection engine rule
 
 A JSON object with these fields:
 
+
+// tag::rules-api-json-schema
 [width="100%",options="header"]
 |==============================================
 |Name |Type |Description |Required
@@ -55,7 +57,8 @@ rules only
 |saved_id |String |Kibana saved search used by the rule to create signals 
 |Yes, for saved-query-based rules only
 
-|risk_score |Integer |A numerical representation of the signal's risk |Yes
+|risk_score |Integer |A numerical representation of the signal's risk, from 0 
+to 100 |Yes
 
 |max_signals |Integer |Maximum number of signals the rule can create during a
 single execution *Frank: need help* |No, defaults to 100
@@ -78,6 +81,7 @@ or `saved_query` |Yes
 information, such as URLs *Frank: need help* |No, defaults to an empty array
 
 |==============================================
+// end::rules-api-json-schema
 
 NOTE: Rules can include both queries filters. When both queries
 and filters are used, make sure all required fields are provided.

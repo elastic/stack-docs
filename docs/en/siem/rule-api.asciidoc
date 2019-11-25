@@ -1,12 +1,12 @@
 [[rule-api-overview]]
 [role="xpack"]
-== SIEM rule API
+== SIEM rules API
 
 You can create rules that automatically turn events and alerts sent to the
 {siem-app} into signals, which notify you when something potentially important
-occurs. Signals can be defined in numerous ways, from a single alert sent from a
-specific third-party system to detecting potentially malicious intent from a
-complex series of seemingly harmless events.
+occurs. Signals can be defined in numerous ways, from a single alert sent from 
+a third-party system to detecting malicious intent from a complex series 
+of seemingly harmless events.
 
 For more information on signals, and the difference between signals and alerts,
 see *ben:xref*.
@@ -23,9 +23,7 @@ to the Kibana UI, is required to access the API.
 [float]
 === API calls
 
-All calls to the API are stateless. Each call must include all the information
-the SIEM needs to perform the request. Persistence between calls must be
-implemented on the client's side.
+All calls to the API are stateless. Each call must include all the information {siem-soln} needs to perform the request.
 
 The API methods are:
 
@@ -34,83 +32,16 @@ The API methods are:
 * `PUT`: Updates existing rules
 * `DELETE`: Deletes rules
 
-For example, a call to `GET _/api/detection_engine/rules` retrieves all existing
-SIEM rules. *Ben:xref* provides more detailed examples.
+All requests must contain these headers:
 
-[float]
-=== Rule JSON schema
+* `Content-Type: application/json`
+* `kbn-xsrf: <value>`, where `<value>` can be any text (for example, `kbn-xsrf: kibana`)
 
-Rules are defined in JSON, which are sent and received in the HTTP payload:
+For example, the following call retrieves all existing detection engine rules:
 
-[width="100%",options="header"]
-|==============================================
-|Name |Type |Description |Required
-
-|description |String |Describes the rule |Yes
-
-|enabled |Boolean |Indicates/determines if the rule is enabled |No, defaults to
-`true`
-
-|false_positives |String[] |String array describing common reasons why the rule
-may issue false-positive signals *Frank: need help* |No, defaults to an empty
-array
-
-|filter |Object |Filter used by the rule to create a signal |Yes, for
-filter-based rules only
-
-|filters |Object[] |Array of filters used by the rule to create a signal 
-*Frank: need help*|No, only relevant for filter-based rules using multiple 
-filters
-
-|from |String |Time from which data is analyzed each time the rule executes,
-using a {ref}/common-options.html#date-math[date math range] |Yes
-
-|rule_id |String |Unique ID that can be used as a reference for rules converted
-from third-party security solutions |No, automatically created when it
-is not provided
-
-|immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
-defaults to `false`
-
-|index |String[] |Indices on which the rule functions |Yes
-
-|interval |String |Frequency of rule execution, using a date math range |No,
-defaults to 5 minutes
-
-|query |String |Query used by the rule to create a signal |Yes, for query-based
-rules only
-
-|language |String |Indicates/determines the query language, which must be
-`kuery` or `lucene` |Yes, for query-based rules only
-
-|saved_id |String |Kibana saved search used by the rule to create signals 
-|Yes, for saved-query-based rules only
-
-|max_signals |Integer |Maximum number of signals the rule can create during a
-single execution *Frank: need help* |No, defaults to 100
-
-|name |String |Rule's name |Yes
-
-|severity |String |Severity level of signals produced by the rule, recommended
-values: `Low`, `Medium`, `High`, `Critical` *Frank: need help* |Yes
-
-|tags |String[] |String array containing words and phrases to help categorize,
-filter, and search rules |No, defaults to an empty array
-
-|to |String |Time to which data is analyzed each time the rule executes, using a
-date math range |Yes
-
-|type |String |Data type on which the rule is based, must be `filter`, `query`,
-or `saved_query` |Yes
-
-|references |String[] |String array containing references to relevant
-information, such as URLs *Frank: need help* |No, defaults to an empty array
-
-|==============================================
-
-NOTE: Rules can be both query- and filter-based. When rules are use both queries
-and filter, make sure all required fields are provided.
-
-[float]
-=== Common use cases and examples
-
+[source,js]
+--------------------------------------------------
+curl -X GET "<kibana URL>/api/detection_engine/rules/_find"
+-H 'kbn-xsrf: kibana' -H 'Content-Type: application/json'
+-u <username>:<password>
+--------------------------------------------------

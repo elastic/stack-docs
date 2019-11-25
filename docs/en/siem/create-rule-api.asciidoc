@@ -1,0 +1,166 @@
+[[create-rule-api]]
+=== Create rule
+
+Creates a new detection engine rule
+
+==== Request URL
+
+`POST /api/detection_engine/rules`
+
+==== Request body
+
+A JSON object with these fields:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|description |String |Describes the rule |Yes
+
+|enabled |Boolean |Indicates/determines if the rule is enabled |No, defaults to
+`true`
+
+|false_positives |String[] |String array describing common reasons why the rule
+may issue false-positive signals *Frank: need help* |No, defaults to an empty
+array
+
+|filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to create a signal |Yes, for
+filter-based rules only
+
+|filters |Object[] |Array of filters used by the rule to create a signal 
+*Frank: need help*|No, only relevant for filter-based rules using multiple 
+filters
+
+|from |String |Time from which data is analyzed each time the rule executes,
+using a {ref}/common-options.html#date-math[date math range] |Yes
+
+|rule_id |String |Unique ID that can be used as a reference for rules converted
+from third-party security solutions |No, automatically created when it
+is not provided
+
+|immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
+defaults to `false`
+
+|index |String[] |Indices on which the rule functions |Yes
+
+|interval |String |Frequency of rule execution, using a date math range |No,
+defaults to 5 minutes
+
+|query |String |{kibana-ref}/search.html[Query] used by the rule to create a signal |Yes, for query-based
+rules only
+
+|language |String |Indicates/determines the query language, which must be
+`kuery` or `lucene` |Yes, for query-based rules only
+
+|saved_id |String |Kibana saved search used by the rule to create signals 
+|Yes, for saved-query-based rules only
+
+|risk_score |Integer |A numerical representation of the signal's risk |Yes
+
+|max_signals |Integer |Maximum number of signals the rule can create during a
+single execution *Frank: need help* |No, defaults to 100
+
+|name |String |Rule's name |Yes
+
+|severity |String |Severity level of signals produced by the rule, recommended
+values: `Low`, `Medium`, `High`, `Critical` *Frank: need help* |Yes
+
+|tags |String[] |String array containing words and phrases to help categorize,
+filter, and search rules |No, defaults to an empty array
+
+|to |String |Time to which data is analyzed each time the rule executes, using a
+date math range |Yes
+
+|type |String |Data type on which the rule is based, must be `filter`, `query`,
+or `saved_query` |Yes
+
+|references |String[] |String array containing references to relevant
+information, such as URLs *Frank: need help* |No, defaults to an empty array
+
+|==============================================
+
+NOTE: Rules can include both queries filters. When both queries
+and filters are used, make sure all required fields are provided.
+
+===== Example request
+
+[source,js]
+--------------------------------------------------
+POST /api/detection_engine/rules
+{
+  "type": "saved_query",
+  "index": [
+    "packetbeat-*"
+  ],
+  "language": "kuery",
+  "filters": [],
+  "output_index": ".siem-signals",
+  "query": "host.hostname : \"siem-es\" ",
+  "saved_id": "packetbeat",
+  "false_positives": [],
+  "references": [],
+  "risk_score": 21,
+  "name": "All packetbeat events",
+  "description": "Converts all packetbeat events from siem-es into signals",
+  "severity": "low",
+  "tags": [
+    "packetbeat"
+  ],
+  "interval": "5m",
+  "from": "now-300s",
+  "enabled": false,
+  "to": "now",
+  "meta": {
+    "from": "now-300s"
+  }
+}
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+==== Response payload
+
+A JSON object that includes a unique ID. If the request payload did not include a `rule_id` field, a unique rule ID is also generated.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "created_by": "elastic",
+  "description": "Converts all packetbeat events from siem-es into signals",
+  "enabled": false,
+  "false_positives": [],
+  "filters": [],
+  "from": "now-300s",
+  "id": "7263532e-4797-4958-a185-b1dc904e6f54",
+  "immutable": false,
+  "index": [
+    "packetbeat-*"
+  ],
+  "interval": "5m",
+  "rule_id": "c02b2b67-5f96-47b5-9d9a-534d355568a0",
+  "language": "kuery",
+  "output_index": ".siem-signals",
+  "max_signals": 100,
+  "risk_score": 21,
+  "name": "All packetbeat events",
+  "query": "host.hostname : \"siem-es\" ",
+  "references": [],
+  "saved_id": "packetbeat",
+  "meta": {
+    "from": "now-300s"
+  },
+  "severity": "low",
+  "updated_by": "elastic",
+  "tags": [
+    "packetbeat"
+  ],
+  "to": "now",
+  "type": "saved_query"
+}
+--------------------------------------------------

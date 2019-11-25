@@ -12,7 +12,7 @@ Creates a new detection engine rule
 A JSON object with these fields:
 
 
-// tag::rules-api-json-schema
+// tag::rules-api-json-schema[]
 [width="100%",options="header"]
 |==============================================
 |Name |Type |Description |Required
@@ -36,9 +36,11 @@ filters
 |from |String |Time from which data is analyzed each time the rule executes,
 using a {ref}/common-options.html#date-math[date math range] |Yes
 
+// tag::exlude-rule-id-field[]
 |rule_id |String |Unique ID that can be used as a reference for rules converted
 from third-party security solutions |No, automatically created when it
 is not provided
+// end::exlude-rule-id-field[]
 
 |immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
 defaults to `false`
@@ -81,7 +83,7 @@ or `saved_query` |Yes
 information, such as URLs *Frank: need help* |No, defaults to an empty array
 
 |==============================================
-// end::rules-api-json-schema
+// end::rules-api-json-schema[]
 
 NOTE: Rules can include both queries filters. When both queries
 and filters are used, make sure all required fields are provided.

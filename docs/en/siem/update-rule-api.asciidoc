@@ -1,0 +1,85 @@
+[[update-rule-api]]
+=== Update rule
+
+Updates an existing detection engine rule.
+
+==== Request URL
+
+`PUT /api/detection_engine/rules`
+
+==== Request body
+
+A JSON object with:
+
+* The `id` or `rule_id` field of the rule you want to update.
+* The fields you want to modify.
+
+NOTE: You cannot modify the `id` or `rule_id` values.
+
+These fields can be modified:
+
+include::create-rule-api.asciidoc[tags=rules-api-json-schema;!exlude-rule-id-field]
+
+===== Example request
+
+This example updated the `name`, `description` and `query` fields:
+
+[source,js]
+--------------------------------------------------
+PUT /api/detection_engine/rules
+{
+  "id": "5a154358-9c62-458f-948b-10aa2c966de7",
+  "name": "New rule name"
+  "description": "All events and alerts from London",
+  "type": "query"
+  "query": "geo.city.name: London"
+}
+--------------------------------------------------
+// KIBANA
+
+*Frank: need help - I needed to add the type field to update the query - any other constraints?*
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+==== Response payload
+
+The rule's updated JSON object.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "created_by": "elastic",
+  "description": "All events and alerts from London",
+  "enabled": false,
+  "false_positives": [],
+  "filters": [],
+  "from": "now-300s",
+  "id": "5a154358-9c62-458f-948b-10aa2c966de7",
+  "immutable": false,
+  "index": [
+    "auditbeat-*"
+  ],
+  "interval": "5m",
+  "rule_id": "45ead270-35a5-4a84-b710-5f399e4502ad",
+  "language": "kuery",
+  "output_index": ".siem-signals",
+  "max_signals": 100,
+  "risk_score": 21,
+  "name": "New name",
+  "query": "geo.city.name: London",
+  "references": [],
+  "meta": {
+    "from": "now-300s"
+  },
+  "severity": "low",
+  "updated_by": "elastic",
+  "tags": [],
+  "to": "now",
+  "type": "query"
+}
+--------------------------------------------------

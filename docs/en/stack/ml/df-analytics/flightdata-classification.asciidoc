@@ -78,7 +78,7 @@ document as the actual value of `FlightDelay`.
 
 If your source data consists of some documents that contain a 
 dependent variable and some that do not, the model is trained on the 
-`training_percent` of the documents that contain ground truth. However, 
+subset of documents that contain ground truth. By default, all of that subset of documents is used for training. However, you can choose to specify a percentage of the documents as your training data. 
 predictions are made against all of the data. The current implementation of 
 {classanalysis} supports a single batch analysis for both training and 
 predictions.

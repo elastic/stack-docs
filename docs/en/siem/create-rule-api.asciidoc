@@ -23,15 +23,14 @@ A JSON object with these fields:
 `true`
 
 |false_positives |String[] |String array describing common reasons why the rule
-may issue false-positive signals *Frank: need help* |No, defaults to an empty
-array
+may issue false-positive signals |No, defaults to an empty array
 
-|filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to create a signal |Yes, for
-filter-based rules only
+// |filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to 
+// create a signal |Yes, for filter-based rules only
 
-|filters |Object[] |Array of filters used by the rule to create a signal 
-*Frank: need help*|No, only relevant for filter-based rules using multiple 
-filters
+|filters |Object[] |The {ref}/query-filter-context.html[query and filter 
+context] JSON array used to define when a signal is created from an alert or 
+event |No, only relevant for filter-based rules using multiple filters
 
 |from |String |Time from which data is analyzed each time the rule executes,
 using a {ref}/common-options.html#date-math[date math range] |Yes
@@ -63,12 +62,13 @@ rules only
 to 100 |Yes
 
 |max_signals |Integer |Maximum number of signals the rule can create during a
-single execution *Frank: need help* |No, defaults to 100
+single execution |No, defaults to 100
 
 |name |String |Rule's name |Yes
 
-|severity |String |Severity level of signals produced by the rule, recommended
-values: `Low`, `Medium`, `High`, `Critical` *Frank: need help* |Yes
+|severity |String |Severity level of signals produced by the rule, *must* be
+`low`, `medium`, `high`, or `critical` *Ben: waiting for Craig's explanation* 
+|Yes
 
 |tags |String[] |String array containing words and phrases to help categorize,
 filter, and search rules |No, defaults to an empty array
@@ -79,8 +79,8 @@ date math range |Yes
 |type |String |Data type on which the rule is based, must be `filter`, `query`,
 or `saved_query` |Yes
 
-|references |String[] |String array containing references to relevant
-information, such as URLs *Frank: need help* |No, defaults to an empty array
+|references |String[] |String array containing notes about or references to 
+relevant information about the rule |No, defaults to an empty array
 
 |==============================================
 // end::rules-api-json-schema[]

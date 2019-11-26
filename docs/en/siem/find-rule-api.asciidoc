@@ -1,0 +1,42 @@
+[[find-rules-api]]
+=== Find rules
+
+Retrieves a paginated subset of detection engine rules. By default, the first page is returned with 20 results per page.
+
+==== Request URL
+
+`GET /api/detection_engine/rules/_find`
+
+===== URL query parameters
+
+All parameters are optional:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description
+
+|`page` |Integer |The page number to return.
+
+|`per_page` |Integer |The number of rules to return per page.
+
+|`sort_field` |String |Determines which field is used to sort the results. 
+*Frank: does this only work on `enabled`?*
+
+|`sort_order` |String |Determines the sort order, which can be `desc` or `asc`.
+
+|`filter` |String |Filters the returned results according to the value of the 
+specified field, using the `alert.attributes.<field name>:<field value>`syntax. 
+*Frank: what fields are available under alert.attributes?*
+
+|==============================================
+
+===== Example request
+
+Retrieves the first five rules with `windows` in their names, sorted in ascending 
+order.
+
+[source,js]
+--------------------------------------------------
+GET /api/detection_engine/rules/_find?page=1&per_page=5&sort_field=enabled&sort_order=asc&filter=alert.attributes.name:windows
+--------------------------------------------------
+// KIBANA

@@ -1,4 +1,4 @@
-[[update-rule-api]]
+[[rules-api-update]]
 === Update rule
 
 Updates an existing detection engine rule.
@@ -22,11 +22,11 @@ include::create-rule-api.asciidoc[tags=rules-api-json-schema;!exlude-rule-id-fie
 
 ===== Example request
 
-This example updated the `name`, `description` and `query` fields:
+Updates the `name`, `description` and `query` fields:
 
 [source,js]
 --------------------------------------------------
-PUT /api/detection_engine/rules
+PUT api/detection_engine/rules
 {
   "id": "5a154358-9c62-458f-948b-10aa2c966de7",
   "name": "New rule name"

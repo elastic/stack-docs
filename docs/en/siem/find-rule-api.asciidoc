@@ -1,4 +1,4 @@
-[[find-rules-api]]
+[[rules-api-find]]
 === Find rules
 
 Retrieves a paginated subset of detection engine rules. By default, the first page is returned with 20 results per page.
@@ -32,11 +32,16 @@ specified field, using the `alert.attributes.<field name>:<field value>`syntax.
 
 ===== Example request
 
-Retrieves the first five rules with `windows` in their names, sorted in ascending 
-order.
+Retrieves the first five rules with `windows` in their names, sorted in 
+ascending order:
 
 [source,js]
 --------------------------------------------------
-GET /api/detection_engine/rules/_find?page=1&per_page=5&sort_field=enabled&sort_order=asc&filter=alert.attributes.name:windows
+GET api/detection_engine/rules/_find?page=1&per_page=5&sort_field=enabled&sort_order=asc&filter=alert.attributes.name:windows
 --------------------------------------------------
 // KIBANA
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

@@ -8,10 +8,11 @@ Let's try to predict whether a flight will be delayed or not by using the
 information such as weather conditions, carrier, flight distance, origin, or 
 destination to predict flight delays.
 
-This sample dataset is made up and it contains inconsistencies. For example, a 
-flight can be both delayed and canceled. Nonetheless, the use case is relevant 
-and it is a good example of how the quality of input data affects the quality of 
-results.
+We have chosen this dataset as an example because it is easily accessible for 
+{kib} users and the use case is relevant. However, the data has been manually 
+created and contains some inconsistencies. For example, a flight can be both 
+delayed and canceled. Please remember that the quality of your input data will 
+affect the quality of results.
 
 Each document in the dataset contains details for a single flight, so this data 
 is ready for analysis as it is already in a two-dimensional entity-based data 
@@ -90,6 +91,7 @@ training and predictions.
 ==== Creating a {classification} model
 
 To predict whether a specific flight is delayed:
+
 . Create a {dfanalytics-job}.
 +
 --
@@ -135,12 +137,11 @@ results.
 <3> Specifies the name of the field in the `dest` index that contains the 
 results of the analysis.
 <4> Specifies the variable we want to predict with the {classanalysis}.
-<5> Specifies the proportion of data that is used for training the model. In 
-this example, we use 10% of the source data. The training data is randomly 
-selected and provides predictions from the remaining 90%. These percentages are 
-approximate. For most of the datasets, even a small proportion of the training 
-data (2-5%) results in good predictions. It's worth to take into account when 
-you need to label your dataset manually.
+<5> Specifies the approximate proportion of data that is used for training. In 
+this example we randomly select 10% of the source data for training. For most of 
+the datasets, even a small proportion of the training data (2-5%) results in 
+good predictions. It's worth to take into account when you need to label your 
+dataset manually.
 <6> Specifies fields to be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
@@ -153,8 +154,7 @@ execution if the available memory on the node is limited.
 +
 --
 Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API to start the 
-job. It stops automatically when the analysis is complete; you don't need to 
-stop it manually.
+job. It stops automatically when the analysis is complete.
 
 [source,console]
 --------------------------------------------------

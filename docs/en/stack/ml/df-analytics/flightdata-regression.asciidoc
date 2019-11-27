@@ -10,10 +10,11 @@ distance and carrier to predict the number of minutes delayed for each flight.
 As it is a continuous numeric variable, we'll use {reganalysis} to make the 
 prediction.
 
-This dataset consists of sample data that has been manually created and it 
-contains inconsistencies. For example, a flight can be both delayed and 
-canceled. Nonetheless, the use case is relevant and it is a good example of how 
-the quality of input data will affect the quality of results.
+We have chosen this dataset as an example because it is easily accessible for 
+{kib} users and the use case is relevant. However, the data has been manually 
+created and contains some inconsistencies. For example, a flight can be both 
+delayed and canceled. Please remember that the quality of your input data will 
+affect the quality of results.
 
 Each document in the dataset contains details for a single flight, so this data 
 is ready for analysis as it is already in a two-dimensional entity-based data 
@@ -91,6 +92,7 @@ predictions.
 ==== Creating a {regression} model
 
 To predict the number of minutes delayed for each flight:
+
 . Create a {dfanalytics-job}.
 +
 --
@@ -141,10 +143,8 @@ PUT _ml/data_frame/analytics/model-flight-delays
 a copy of the source index data where each document is annotated with the 
 results.
 <4> Specifies the continuous variable we want to predict with the {reganalysis}.
-<5> Specifies the proportion of data that is used for training the model. In 
-this example we use 90% of the source data. The training data is randomly 
-selected and provide predictions from the remaining 10%. These percentages are 
-approximate.
+<5> Specifies the approximate proportion of data that is used for training. In 
+this example we randomly select 90% of the source data for training.
 <6> Specifies fields to be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
@@ -157,8 +157,7 @@ execution if the available memory on the node is limited.
 +
 --
 Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API to start the 
-job. It will stop automatically when the analysis is complete, you don't need to 
-stop it manually.
+job. It will stop automatically when the analysis is complete.
 
 [source,console]
 --------------------------------------------------

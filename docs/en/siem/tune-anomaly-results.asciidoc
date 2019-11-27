@@ -2,9 +2,13 @@
 [role="xpack"]
 === Optimizing anomaly results
 
-To gain clearer insights into real threats, you can tune the anomaly results and
-remove known false positives.
+To gain clearer insights into real threats, you can tune the anomaly results. The following procedures help to reduce the number of false positives: 
 
+* <<rarely-used-processes, Tune results for rare applications and 
+processes>>
+* <<define-rule-threshold, Define a numerical threshold for the rule>>
+
+[rarely-used-processes]
 ==== Filter out anomalies from rarely used applications and processes
 
 When anomalies include results from a known process that only runs occasionally,
@@ -99,3 +103,10 @@ image::start-job-window.png[]
 . Click *Start*.
 +
 After a while, results will start to appear on the *Anomaly Explorer* page.
+
+[define-rule-threshold]
+==== Define a threshold for the rule
+
+You can define a threshold for when a {ml} condition applies. This helps to reduce the number of false positives when an automated maintenance job is known to produce a burst of activity on your servers.
+
+. Go to *Machine Learning* -> *Anomaly Detection* -> *Anomaly Explorer*.

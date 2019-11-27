@@ -30,7 +30,7 @@ may issue false-positive signals |No, defaults to an empty array
 
 |filters |Object[] |The {ref}/query-filter-context.html[query and filter 
 context] JSON array used to define when a signal is created from an alert or 
-event |No, only relevant for filter-based rules using multiple filters
+event |Yes, for filter-based rules only
 
 |from |String |Time from which data is analyzed each time the rule executes,
 using a {ref}/common-options.html#date-math[date math range] |Yes
@@ -49,8 +49,8 @@ defaults to `false`
 |interval |String |Frequency of rule execution, using a date math range |No,
 defaults to 5 minutes
 
-|query |String |{kibana-ref}/search.html[Query] used by the rule to create a signal |Yes, for query-based
-rules only
+|query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
+signal |Yes, for query-based rules only
 
 |language |String |Indicates/determines the query language, which must be
 `kuery` or `lucene` |Yes, for query-based rules only

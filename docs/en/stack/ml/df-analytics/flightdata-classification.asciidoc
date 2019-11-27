@@ -87,7 +87,7 @@ training and predictions.
 
 
 [[flightdata-classification-model]]
-==== Creating a classification model
+==== Creating a {classification} model
 
 To predict whether a specific flight is delayed:
 . Create a {dfanalytics-job}.
@@ -219,7 +219,7 @@ the results are ready to view and evaluate.
 
 
 [[flightdata-classification-results]]
-==== Viewing classification results
+==== Viewing {classification} results
 
 Now you have a new index that contains a copy of your source data with 
 predictions for your dependent variable. Use the standard {es} search command to 
@@ -436,3 +436,7 @@ There are 8778 documents in the testing proportion of the dataset that have the
 2939 documents in the testing data that have the `true` class. 1213 of them are 
 predicted as `false` and 1726 are predicted correctly as `true`.
 --
+
+If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
+{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 
+{dfanalytics-jobs}, the destination indices remain intact.

@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-gs-jobs]]
-=== Analyzing the sample web logs
+== Analyze the sample web logs
 
 Now that we have taken a quick look at the type of data that is stored in the 
 `kibana_sample_data_logs` index, let's create some {ml} jobs to start analyzing
@@ -16,7 +16,7 @@ click *View data* > *ML jobs*. There are {ml} jobs for both the sample
 eCommerce orders data set and the sample web logs data set.
 
 [role="screenshot"]
-image::ml/images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
+image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
 
 The wizard recommends three jobs: `low_request_rate`, `response_code_rates`, and
 `url_scanning`. You can optionally prefix those job identifiers with a name of
@@ -29,7 +29,7 @@ Click *Create Jobs*. When all three jobs and {dfeeds} have been created and
 started, you receive a summary: 
 
 [role="screenshot"]
-image::ml/images/ml-gs-create-web-jobs-2.jpg["Create jobs for the sample web logs"]
+image::images/ml-gs-create-web-jobs-2.jpg["Create jobs for the sample web logs"]
 
 Click *View Results*.
 
@@ -37,7 +37,7 @@ TIP: Depending on the capacity of your machine, you might need to wait a few
 seconds for the {ml} analysis to generate initial results.
 
 [role="screenshot"]
-image::ml/images/ml-gs-web-results.jpg["Create jobs for the sample web logs"]
+image::images/ml-gs-web-results.jpg["Create jobs for the sample web logs"]
 
 In the *Anomaly Explorer*, you can immediately see that all three jobs have
 identified anomalies, which are indicated by red blocks in the swim lanes for
@@ -64,7 +64,7 @@ Go to *Job Management* expand the details about the `low_request_rate` job.
 Select the *Job config* tab:
 
 [role="screenshot"]
-image::ml/images/ml-gs-web-config1.jpg["Job configuration details for sample web logs"]
+image::images/ml-gs-web-config1.jpg["Job configuration details for sample web logs"]
 
 
 ////
@@ -79,7 +79,7 @@ of summarized data in this case. For more information, see
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-single-job.jpg["Create a new job from the server-metrics index"]
+image::images/ml-gs-single-job.jpg["Create a new job from the server-metrics index"]
 --
 
 .. For the **Aggregation**, select `Mean`. This value specifies the analysis
@@ -142,7 +142,7 @@ of February. Click **Absolute** and set the start and end dates. Once
 you've got the time range set up, click the **Go** button. +
 
 [role="screenshot"]
-image::ml/images/ml-gs-job1-time.jpg["Setting the time range for the {dfeed}"]
+image::images/ml-gs-job1-time.jpg["Setting the time range for the {dfeed}"]
 --
 +
 --
@@ -161,7 +161,7 @@ job and create a job group.
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job1.jpg["A graph of the mean total prices over time"]
+image::images/ml-gs-job1.jpg["A graph of the mean total prices over time"]
 --
 
 As the job is created, the graph is updated to give a visual representation of
@@ -178,7 +178,7 @@ manage jobs and {dfeeds} before we view the results.
 After you create a job, you can see its status in the **Job Management** tab: +
 
 [role="screenshot"]
-image::ml/images/ml-gs-job1-manage1.jpg["Status information for the total-requests job"]
+image::images/ml-gs-job1-manage1.jpg["Status information for the total-requests job"]
 
 The following information is provided for each job:
 
@@ -249,7 +249,7 @@ now process the remaining data by restarting the {dfeed}:
 +
 --
 [role="screenshot"]
-image:ml/images/ml-gs-start-feed.jpg["Start {dfeed}"]
+image:images/ml-gs-start-feed.jpg["Start {dfeed}"]
 --
 
 . Choose a start time and end time. For example,
@@ -261,7 +261,7 @@ otherwise you might miss anomalies. +
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job1-datafeed.jpg["Restarting a {dfeed}"]
+image::images/ml-gs-job1-datafeed.jpg["Restarting a {dfeed}"]
 --
 
 The {dfeed} state changes to `started`, the job state changes to `opened`,
@@ -303,7 +303,7 @@ Single Metric Viewer::
 By default when you view the results for a single metric job, the
 **Single Metric Viewer** opens:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-analysis.jpg["Single Metric Viewer for total-requests job"]
+image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for total-requests job"]
 
 
 The blue line in the chart represents the actual data values. The shaded blue
@@ -338,7 +338,7 @@ anomaly data point. If you hover over the point, you can see more information
 about that data point. You can also see details in the **Anomalies** section
 of the viewer. For example:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for total-requests job"]
+image::images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for total-requests job"]
 
 For each anomaly you can see key details such as the time, the actual and
 expected ("typical") values, and their probability.
@@ -358,13 +358,13 @@ show all anomalies.
 You can see the same information in a different format by using the
 **Anomaly Explorer**:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-explorer.jpg["Anomaly Explorer for total-requests job"]
+image::images/ml-gs-job1-explorer.jpg["Anomaly Explorer for total-requests job"]
 
 
 Click one of the red sections in the swim lane to see details about the anomalies
 that occurred in that time interval. For example:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-explorer-anomaly.jpg["Anomaly Explorer details for total-requests job"]
+image::images/ml-gs-job1-explorer-anomaly.jpg["Anomaly Explorer details for total-requests job"]
 
 After you have identified anomalies, often the next step is to try to determine
 the context of those situations. For example, are there other factors that are

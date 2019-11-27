@@ -1,19 +1,6 @@
 [role="xpack"]
-[[ml-getting-started]]
-== Tutorial: An introduction to machine learning
-
-Ready to get some hands-on experience with the {ml-features}? This
-tutorial shows you how to:
-
-* Create single, multi-metric, and population {ml} jobs for the {kib} sample data
-* Use the results to identify possible anomalies in the data
-
-At the end of this tutorial, you should have a good idea of what {ml} is and
-will hopefully be inspired to use it to detect anomalies in your own data.
-
-[float]
-[[ml-gs-sysoverview]]
-=== Before you begin
+[[get-started-enable]]
+== Enable {ml-features}
 
 . Install {es} and {kib}.
 +
@@ -28,9 +15,11 @@ https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on {ecloud}.
 The {ess} is available on both AWS and GCP.
 https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {ess} for free].
 ==========
-
-For more information, see
-{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
+////
+TIP: The fastest way to get started with {es} is to
+https://www.elastic.co/cloud/elasticsearch-service/signup[start a free 14-day
+trial of {ess}] in the cloud.
+////
 --
 
 . Launch the {kib} web interface by pointing your browser to port 5601. For 
@@ -39,7 +28,7 @@ example, http://127.0.0.1:5601[http://127.0.0.1:5601].
 . Obtain a license that includes the {ml-features}. 
 +
 --
-include::{docdir}/get-started-trial.asciidoc[]
+include::get-started-trial.asciidoc[]
 --
 
 . If the {es} {security-features} are enabled in your cluster, you need a user
@@ -54,14 +43,16 @@ easier to control which users have authority to view and manage the jobs,
 By default, you can perform all of the steps in this tutorial by using the
 built-in `elastic` super user. However, the password must be set before the user
 can do anything. For information about how to set that password, see
-<<security-getting-started>>.
+{ref}/built-in-users.html[Built-in users].
 
 If you are performing these steps in a production environment, take extra care
 because `elastic` has the `superuser` role and you could inadvertently make
 significant changes to the system. You can alternatively assign the
 `machine_learning_admin` and `kibana_admin` roles to a user ID of your choice.
 
-For more information, see <<built-in-roles>> and <<privileges-list-cluster>>.
+For more information, see
+{ref}/built-in-roles.html[Built-in roles] and
+{ref}/security-privileges.html[Security privileges].
 
 --
 
@@ -70,17 +61,3 @@ dedicate nodes to specific purposes. If you want to control which nodes are
 _machine learning nodes_ or limit which nodes run resource-intensive
 activity related to jobs, see 
 {ref}/modules-node.html#ml-node[{ml} node settings]. 
-
-include::getting-started-data.asciidoc[]
-
-include::getting-started-wizards.asciidoc[]
-
-include::getting-started-single.asciidoc[]
-
-////
-include::getting-started-multi.asciidoc[]
-
-include::getting-started-forecast.asciidoc[]
-
-include::getting-started-next.asciidoc[]
-////

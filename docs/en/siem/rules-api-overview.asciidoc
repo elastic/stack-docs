@@ -19,11 +19,23 @@ path component to its URL.
 how to work with and disable the random path.
 
 [float]
+=== Kibana role requirements
+
+To create and run rules, you must create a user role for your space with at 
+least:
+
+* the {ref}/security-privileges.html[`manage_api_key` privilege].
+* `read` and `write` permissions for the signals index (the system index used 
+  for storing signals created from rules).
+* `all` privileges for {kibana-ref}/xpack-spaces.html[`SIEM`, `Actions`, and 
+`Alerting`] features.
+
+
+[float]
 === Authentication
 
 Token-based authentication, using the same username and password used to log in
 to the Kibana UI, is required to access the API.
-*Frank: required user roles?*
 
 [float]
 === API calls

@@ -21,11 +21,11 @@ event |Yes, for filter-based rules only
 |from |String |Time from which data is analyzed each time the rule executes,
 using a {ref}/common-options.html#date-math[date math range] |Yes
 
-// tag::rules-create-api[]
+ifeval::["{api-call}" == "create-rule"]
 |rule_id |String |Unique ID that can be used as a reference for rules converted
 from third-party security solutions |No, automatically created when it
 is not provided
-// end::rules-create-api[]
+endif::[]
 
 |immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
 defaults to `false`
@@ -74,29 +74,31 @@ date math range |Yes
 `query`, or `saved_query` *Frank: I think we need to add a better 
 explanation. I'm not sure when filter would be used.* |Yes
 
-// tag::rules-update-api[]
+ifeval::["{api-call}" == "update-rule"]
 |threats |<<threats-object-update, threats[]>> |Object containing MITRE ATT&CK 
 information about the type of threat the rule monitors *Frank: need help* |No, 
 defaults to an empty array
-// end::rules-update-api[]
+endif::[]
 
-// tag::rules-create-api[]
+ifeval::["{api-call}" == "create-rule"]
 |threats |<<threats-object-create, threats[]>> |Object containing MITRE ATT&CK 
 information about the type of threat the rule monitors *Frank: need help* |No, 
 defaults to an empty array
-// end::rules-create-api[]
+endif::[]
 
 |references |String[] |String array containing notes about or references to 
 relevant information about the rule |No, defaults to an empty array
 
 |==============================================
 
-// tag::rules-update-api[]
+ifeval::["{api-call}" == "update-rule"]
 [[threats-object-update]]
-// end::rules-update-api[]
-// tag::rules-create-api[]
+endif::[]
+
+ifeval::["{api-call}" == "create-rule"]
 [[threats-object-create]]
-// end::rules-create-api[]
+endif::[]
+
 ===== `threats` schema
 
 *Frank: need help with the table below. Add example.*

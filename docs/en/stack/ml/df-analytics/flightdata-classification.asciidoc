@@ -1,0 +1,431 @@
+[role="xpack"]
+[testenv="platinum"]
+[[flightdata-classification]]
+=== Predicting delayed flights with {classanalysis}
+
+Let's try to predict whether a flight will be delayed or not by using the 
+{kibana-ref}/add-sample-data.html[sample flight data]. We want to be able to use 
+information such as weather conditions, carrier, flight distance, origin, or 
+destination to predict flight delays. There are only two possible outcome 
+values: the flight is either delayed or not, therefore we use binary 
+{classification} to make the prediction.
+
+We have chosen this dataset as an example because it is easily accessible for 
+{kib} users and the use case is relevant. However, the data has been manually 
+created and contains some inconsistencies. For example, a flight can be both 
+delayed and canceled. Please remember that the quality of your input data will 
+affect the quality of results.
+
+Each document in the dataset contains details for a single flight, so this data 
+is ready for analysis as it is already in a two-dimensional entity-based data 
+structure (_{dataframe}_). In general, you often need to 
+{ref}/transforms.html[transform] the data into an entity-centric index before 
+you analyze the data.
+
+This is an example source document from the dataset:
+
+```
+{
+  "_index": "kibana_sample_data_flights",
+  "_type": "_doc",
+  "_id": "S-JS1W0BJ7wufFIaPAHe",
+  "_version": 1,
+  "_seq_no": 3356,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "FlightNum": "N32FE9T",
+    "DestCountry": "JP",
+    "OriginWeather": "Thunder & Lightning",
+    "OriginCityName": "Adelaide",
+    "AvgTicketPrice": 499.08518599798685,
+    "DistanceMiles": 4802.864932998549,
+    "FlightDelay": false,
+    "DestWeather": "Sunny",
+    "Dest": "Chubu Centrair International Airport",
+    "FlightDelayType": "No Delay",
+    "OriginCountry": "AU",
+    "dayOfWeek": 3,
+    "DistanceKilometers": 7729.461862731618,
+    "timestamp": "2019-10-17T11:12:29",
+    "DestLocation": {
+      "lat": "34.85839844",
+      "lon": "136.8049927"
+    },
+    "DestAirportID": "NGO",
+    "Carrier": "ES-Air",
+    "Cancelled": false,
+    "FlightTimeMin": 454.6742272195069,
+    "Origin": "Adelaide International Airport",
+    "OriginLocation": {
+      "lat": "-34.945",
+      "lon": "138.531006"
+    },
+    "DestRegion": "SE-BD",
+    "OriginAirportID": "ADL",
+    "OriginRegion": "SE-BD",
+    "DestCityName": "Tokoname",
+    "FlightTimeHour": 7.577903786991782,
+    "FlightDelayMin": 0
+  }
+}
+```
+
+Notice that each document contains a `FlightDelay` field with a boolean value. 
+{classification-cap} is a supervised machine learning analysis and therefore 
+needs to train on data that contains the ground truth, known as the 
+_dependent_variable_. In this example, the ground truth is available in each 
+document as the actual value of `FlightDelay`. In order to be analyzed, a 
+document must contain at least one field with a supported data type (`numeric`, 
+`boolean`, `text`, `keyword` or `ip`) and must not contain arrays with more than 
+one item.
+
+If your source data consists of some documents that contain a _dependent 
+variable_ and some that do not, the model is trained on the subset of documents 
+that contain ground truth. By default, all of that subset of documents is used 
+for training. However, you can choose to specify a percentage of the documents 
+as your training data. Predictions are made against all of the data. The current 
+implementation of {classanalysis} supports a single batch analysis for both 
+training and predictions.
+
+
+[[flightdata-classification-model]]
+==== Creating a {classification} model
+
+To predict whether a specific flight is delayed:
+
+. Create a {dfanalytics-job}.
++
+--
+Use the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API as you can see 
+in the following example:
+
+[source,console]
+--------------------------------------------------
+PUT _ml/data_frame/analytics/model-flight-delay-classification
+{
+  "source": {
+    "index": [
+      "kibana_sample_data_flights"  <1>
+    ]
+  },
+  "dest": {
+    "index": "df-flight-delayed",  <2>
+    "results_field": "ml" <3>
+  },
+  "analysis": {
+    "classification": {
+      "dependent_variable": "FlightDelay",  <4>
+      "training_percent": 10  <5>
+    }
+  },
+  "analyzed_fields": {
+    "includes": [],
+    "excludes": [    <6>
+      "Cancelled",
+      "FlightDelayMin",
+      "FlightDelayType"
+    ]
+  },
+  "model_memory_limit": "100mb" <7>
+}
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+
+<1> The source index to analyze.
+<2> The index that will contain the results of the analysis; it will consist of 
+a copy of the source index data where each document is annotated with the 
+results.
+<3> Specifies the name of the field in the `dest` index that contains the 
+results of the analysis.
+<4> Specifies the variable we want to predict with the {classanalysis}.
+<5> Specifies the approximate and randomly selected proportion of data that is 
+used for training. While 10% is low for this example, for many large datasets 
+using a small training sample will greatly reduce runtime without impacting 
+accuracy. 
+<6> Specifies fields to be excluded from the analysis. It is recommended to 
+exclude fields that either contain erroneous data or describe the 
+`dependent_variable`.
+<7> Specifies a memory limit for the job. If the job requires more than this 
+amount of memory, it fails to start. This makes it possible to prevent job 
+execution if the available memory on the node is limited.
+--
+
+. Start the job.
++
+--
+Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API to start the 
+job. It stops automatically when the analysis is complete.
+
+[source,console]
+--------------------------------------------------
+POST _ml/data_frame/analytics/model-flight-delay-classification/_start
+--------------------------------------------------
+// TEST[skip:TBD]
+
+
+The job takes a few minutes to run. Runtime depends on the local hardware and 
+also on the number of documents and fields that are analyzed. The more fields 
+and documents, the longer the job runs.
+--
+
+. Check the job stats to follow the progress by using the 
+{ref}/get-dfanalytics-stats.html[get {dfanalytics-jobs} statistics API].
++
+--
+
+[source,console]
+--------------------------------------------------
+GET _ml/data_frame/analytics/model-flight-delay-classification/_stats
+--------------------------------------------------
+// TEST[skip:TBD]
+
+
+The API call returns the following response: 
+
+[source,console-result]
+----  
+{
+  "count" : 1,
+  "data_frame_analytics" : [
+    {
+      "id" : "model-flight-delay-classification",
+      "state" : "stopped",
+      "progress" : [
+        {
+          "phase" : "reindexing",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "loading_data",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "analyzing",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "writing_results",
+          "progress_percent" : 100
+        }
+      ]
+    }
+  ]
+}
+----  
+
+The job has four phases. When all the phases have completed, the job stops and 
+the results are ready to view and evaluate.
+--
+
+
+[[flightdata-classification-results]]
+==== Viewing {classification} results
+
+Now you have a new index that contains a copy of your source data with 
+predictions for your dependent variable. Use the standard {es} search command to 
+view the results in the destination index:
+
+[source,console]
+--------------------------------------------------
+GET df-flight-delayed/_search
+--------------------------------------------------
+// TEST[skip:TBD]
+
+
+The snippet below shows a part of a document with the annotated results:
+
+[source,console-result]
+----  
+          ...
+          "FlightDelay" : false, <1>
+          ...
+          "ml" : {
+            "top_classes" : [ <2>
+              {
+                "class_probability" : 0.939335365058496,
+                "class_name" : "false"
+              },
+              {
+                "class_probability" : 0.06066463494150393,
+                "class_name" : "true"
+              }
+            ],
+            "FlightDelay_prediction" : "false", <3>
+            "is_training" : false <4>
+          }
+----
+<1> The `dependent_variable` with the ground truth value. This is what we are 
+trying to predict with the {classanalysis}.
+<2> An array of values specifying the probability of the prediction for each 
+class. The probability is a value between 0 and 1. The higher the number, the 
+higher the probability that the datapoint belongs to the named class.The top 
+classes object contains the predicted classes with the highest probability.
+<3> The prediction. The field name is suffixed with `_prediction` by default. 
+You can specify the field name by defining `prediction_field_name` via the API. 
+<4> Indicates that this document was not used in the training set.
+
+The example above shows that the analysis has predicted the probability of all 
+possible classes. In this case, there are two classes: `true` and `false`. The 
+class names along with the probability of the given classes are displayed in the 
+`top_classes` object. The most probable class is the prediction. In the example 
+above, `false` has a `class_probability` of 0.93 while `true` has only 0.06, so 
+the prediction will be `false` which coincides with the ground truth contained 
+by the `FlightDelay` field. The class probability values help you understand how 
+sure the model is about the prediction. The higher number means that the model 
+is more confident.
+
+
+[[flightdata-classification-evaluate]]
+==== Evaluating results
+
+The results can be evaluated for documents which contain both the ground truth 
+field and the prediction. In the example below, `FlightDelay` contains the 
+ground truth and the prediction is stored as `FlightDelay_prediction`.
+
+We use the {dfanalytics} evaluate API to evaluate the results. First, we want to 
+know the training error that represents how well the model performed on the 
+training dataset. In the previous step, we saw that the new index contained a 
+field that indicated which documents were used as training data, which we can 
+now use to calculate the training error:
+
+[source,console]
+--------------------------------------------------
+POST _ml/data_frame/_evaluate
+{
+ "index": "df-flight-delayed",  <1>
+   "query": {
+    "term": {
+      "ml.is_training": {
+        "value": true  <2>
+      }
+    }
+  },
+ "evaluation": {
+   "classification": {
+     "actual_field": "FlightDelay",  <3>
+     "predicted_field": "ml.FlightDelay_prediction",  <4>
+     "metrics": {  
+       "multiclass_confusion_matrix" : {}
+     }
+   }
+ }
+}
+--------------------------------------------------
+// TEST[skip:TBD]
+
+<1> The destination index which is the output of the analysis job.
+<2> We calculate the training error by only evaluating the training data.
+<3> The field that contains the ground truth label.
+<4> The field that contains the predicted value.
+
+Next, we calculate the generalization error that represents how well the model 
+performed on previously unseen data:
+
+[source,console]
+--------------------------------------------------
+POST _ml/data_frame/_evaluate
+{
+ "index": "df-flight-delayed",
+   "query": {
+    "term": {
+      "ml.is_training": {
+        "value": false  <1>
+      }
+    }
+  },
+ "evaluation": {
+   "classification": {
+     "actual_field": "FlightDelay",
+     "predicted_field": "ml.FlightDelay_prediction",
+     "metrics": {  
+       "multiclass_confusion_matrix" : {}
+     }
+   }
+ }
+}
+--------------------------------------------------
+// TEST[skip:TBD]
+
+<1> We evaluate only the documents that are not part of the training data.
+
+
+The returned confusion matrix shows us how many datapoints were classified 
+correctly (where the `actual_class` matches the `predicted_class`) and how many 
+were misclassified (`actual_class` does not match `predicted_class`):
+
+[source,console-result]
+--------------------------------------------------
+{
+  "classification" : {
+    "multiclass_confusion_matrix" : {
+      "confusion_matrix" : [
+        {
+          "actual_class" : "false", <1>
+          "actual_class_doc_count" : 8778, <2>
+          "predicted_classes" : [
+            {
+              "predicted_class" : "false", <3>
+              "count" : 7509 <4>
+            },
+            {
+              "predicted_class" : "true",
+              "count" : 1269
+            }
+          ],
+          "other_predicted_class_doc_count" : 0
+        },
+        {
+          "actual_class" : "true",
+          "actual_class_doc_count" : 2939,
+          "predicted_classes" : [
+            {
+              "predicted_class" : "false",
+              "count" : 1213
+            },
+            {
+              "predicted_class" : "true",
+              "count" : 1726
+            }
+          ],
+          "other_predicted_class_doc_count" : 0
+        }
+      ],
+      "other_actual_class_count" : 0
+    }
+  }
+}
+--------------------------------------------------
+<1> The name of the actual class. In this example, there are two actual classes: 
+`true` and `false`.
+<2> The number of documents in the dataset that belong to the actual class.
+<3> The name of the predicted class.
+<4> The number of documents belong to the actual class that are labelled as the 
+predicted class. 
+
+There are 8778 documents in the testing proportion of the dataset that have the 
+`false` class. The model labelled 7509 documents (out of 8778) correctly as 
+`false` (true negative) and 1269 documents as `true` while those are actually 
+`false` (false positive). There are 2939 documents in the testing data that 
+have the `true` class. 1213 of them are predicted as `false` (false negative) 
+and 1726 are predicted correctly as `true` (true positive). You can see the 
+confusion matrix in a tabular form below:
+
+
+[width="50%"]
+|===
+| n= 11717                | Predicted false   | Predicted true   | 
+| Actual false (TN + FP)  | *TN = 7509*       | FP = 1269        | 8778
+| Actual true  (TP + FN)  | FN = 1213         | *TP = 1726*      | 2939
+|                         | 8722              | 2995             |
+|===
+_TN = true negative, FN = false negative, TP = true positive, FP = false 
+positive_
+
+NOTE: As the sample data may change when it is loaded into {kib}, the results of 
+the {classanalysis} can vary even if you use the same configuration as the 
+example.
+
+If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
+{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 
+{dfanalytics-jobs}, the destination indices remain intact.

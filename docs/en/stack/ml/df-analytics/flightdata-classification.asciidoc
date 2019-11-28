@@ -6,7 +6,9 @@
 Let's try to predict whether a flight will be delayed or not by using the 
 {kibana-ref}/add-sample-data.html[sample flight data]. We want to be able to use 
 information such as weather conditions, carrier, flight distance, origin, or 
-destination to predict flight delays.
+destination to predict flight delays. There are only two possible outcome 
+values: the flight is either delayed or not, therefore we use binary 
+{classification} to make the prediction.
 
 We have chosen this dataset as an example because it is easily accessible for 
 {kib} users and the use case is relevant. However, the data has been manually 
@@ -137,11 +139,10 @@ results.
 <3> Specifies the name of the field in the `dest` index that contains the 
 results of the analysis.
 <4> Specifies the variable we want to predict with the {classanalysis}.
-<5> Specifies the approximate proportion of data that is used for training. In 
-this example we randomly select 10% of the source data for training. For most of 
-the datasets, even a small proportion of the training data (2-5%) results in 
-good predictions. It's worth to take into account when you need to label your 
-dataset manually.
+<5> Specifies the approximate and randomly selected proportion of data that is 
+used for training. While 10% is low for this example, for many large datasets 
+using a small training sample will greatly reduce runtime without impacting 
+accuracy. 
 <6> Specifies fields to be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
@@ -238,57 +239,31 @@ The snippet below shows a part of a document with the annotated results:
 ----  
           ...
           "FlightDelay" : false, <1>
-          "DistanceMiles" : 8865.200239823978,
-          "FlightTimeMin" : 792.6198230421824,
-          "OriginWeather" : "Cloudy",
-          "dayOfWeek" : 1,
-          "AvgTicketPrice" : 816.1058877497752,
-          "Carrier" : "Kibana Airlines",
-          "FlightDelayMin" : 0,
-          "OriginRegion" : "CO-CUN",
-          "FlightDelayType" : "No Delay",
-          "DestAirportID" : "NRT",
-          "timestamp" : "2019-11-12T17:06:35",
-          "Dest" : "Narita International Airport",
-          "FlightTimeHour" : 13.210330384036373,
-          "Cancelled" : false,
-          "DistanceKilometers" : 14267.156814759282,
-          "OriginCityName" : "Bogota",
-          "DestWeather" : "Sunny",
-          "OriginCountry" : "CO",
-          "ml__id_copy" : "-7OQg24B95sXiIrm0EZo",
-          "DestCountry" : "JP",
-          "DestRegion" : "SE-BD",
-          "OriginAirportID" : "BOG",
-          "DestCityName" : "Tokyo",
+          ...
           "ml" : {
             "top_classes" : [ <2>
               {
-                "class_probability" : 0.939335365058496, <3>
-                "class_name" : "false" <4>
+                "class_probability" : 0.939335365058496,
+                "class_name" : "false"
               },
               {
-                "class_probability" : 0.06066463494150393, <5>
+                "class_probability" : 0.06066463494150393,
                 "class_name" : "true"
               }
             ],
-            "FlightDelay_prediction" : "false", <6>
-            "is_training" : false <7>
+            "FlightDelay_prediction" : "false", <3>
+            "is_training" : false <4>
           }
 ----
 <1> The `dependent_variable` with the ground truth value. This is what we are 
 trying to predict with the {classanalysis}.
-<2> The top classes object contains the predicted classes with the highest 
-probability.
-<3> The probability that `FlightDelay` is false (the larger probability of the 
-two, hence this is the predicted class). This is a value between 0 and 1. The 
-higher the number, the higher the probability that the datapoint belongs to the 
-class.
-<4> Name of the class.
-<5> The probability that `FlightDelay` is true.
-<6> The prediction. The field name is suffixed with `_prediction` by default. 
+<2> An array of values specifying the probability of the prediction for each 
+class. The probability is a value between 0 and 1. The higher the number, the 
+higher the probability that the datapoint belongs to the named class.The top 
+classes object contains the predicted classes with the highest probability.
+<3> The prediction. The field name is suffixed with `_prediction` by default. 
 You can specify the field name by defining `prediction_field_name` via the API. 
-<7> Indicates that this document was not used in the training set.
+<4> Indicates that this document was not used in the training set.
 
 The example above shows that the analysis has predicted the probability of all 
 possible classes. In this case, there are two classes: `true` and `false`. The 
@@ -308,13 +283,11 @@ The results can be evaluated for documents which contain both the ground truth
 field and the prediction. In the example below, `FlightDelay` contains the 
 ground truth and the prediction is stored as `FlightDelay_prediction`.
 
-. Use the {dfanalytics} evaluate API to evaluate the results.
-+
---
-First, we want to know the training error that represents how well the model 
-performed on the training dataset. In the previous step, we saw that the new 
-index contained a field that indicated which documents were used as training 
-data, which we can now use to calculate the training error:
+We use the {dfanalytics} evaluate API to evaluate the results. First, we want to 
+know the training error that represents how well the model performed on the 
+training dataset. In the previous step, we saw that the new index contained a 
+field that indicated which documents were used as training data, which we can 
+now use to calculate the training error:
 
 [source,console]
 --------------------------------------------------
@@ -432,10 +405,25 @@ predicted class.
 
 There are 8778 documents in the testing proportion of the dataset that have the 
 `false` class. The model labelled 7509 documents (out of 8778) correctly as 
-`false` and 1269 documents as `true` while those are actually `false`. There are 
-2939 documents in the testing data that have the `true` class. 1213 of them are 
-predicted as `false` and 1726 are predicted correctly as `true`.
---
+`false` (true negative) and 1269 documents as `true` while those are actually 
+`false` (false positive). There are 2939 documents in the testing data that 
+have the `true` class. 1213 of them are predicted as `false` (false negative) 
+and 1726 are predicted correctly as `true` (true positive). You can see the 
+confusion matrix in a tabular form below:
+
+
+[width="50%"]
+|===
+| n= 11717                | Predicted false   | Predicted true   | 
+| Actual false (TN + FP)  | *TN = 7509*       | FP = 1269        | 8778
+| Actual true  (TP + FN)  | FN = 1213         | *TP = 1726*      | 2939
+|                         | 8722              | 2995             |
+|===
+_TN = true negative, FN = false negative, TP = true positive, FP = false positive_
+
+NOTE: As the sample data may change when it is loaded into {kib}, the results of 
+the {classanalysis} can vary even if you use the same configuration as the 
+example.
 
 If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
 {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 

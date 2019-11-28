@@ -5,7 +5,7 @@
 
 |description |String |Describes the rule |Yes
 
-|enabled |Boolean |Indicates/determines if the rule is enabled |No, defaults to
+|enabled |Boolean |Determines whether the rule is enabled |No, defaults to
 `true`
 
 |false_positives |String[] |String array describing common reasons why the rule
@@ -27,7 +27,7 @@ from third-party security solutions |No, automatically created when it
 is not provided
 endif::[]
 
-|immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
+|immutable |Boolean |Determines whether the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
 defaults to `false`
 
 |index |String[] |Indices on which the rule functions |Yes
@@ -39,7 +39,7 @@ defaults to 5 minutes
 signal |Yes, for query-based rules only (optional for rules using the `filters` 
 field)
 
-|language |String |Indicates/determines the query language, which must be
+|language |String |Determines the query language, which must be
 `kuery` or `lucene` |Yes, for query-based rules only
 
 |output_index |String |Index in which signals found by the rule are saved |No, 

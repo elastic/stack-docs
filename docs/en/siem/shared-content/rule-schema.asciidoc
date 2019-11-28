@@ -1,0 +1,117 @@
+// tag::rules-api-json-schema[]
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|description |String |Describes the rule |Yes
+
+|enabled |Boolean |Indicates/determines if the rule is enabled |No, defaults to
+`true`
+
+|false_positives |String[] |String array describing common reasons why the rule
+may issue false-positive signals |No, defaults to an empty array
+
+// |filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to 
+// create a signal |Yes, for filter-based rules only
+
+|filters |Object[] |The {ref}/query-filter-context.html[query and filter 
+context] JSON array used to define when a signal is created from an alert or 
+event |Yes, for filter-based rules only
+
+|from |String |Time from which data is analyzed each time the rule executes,
+using a {ref}/common-options.html#date-math[date math range] |Yes
+
+// tag::rules-create-api[]
+|rule_id |String |Unique ID that can be used as a reference for rules converted
+from third-party security solutions |No, automatically created when it
+is not provided
+// end::rules-create-api[]
+
+|immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
+defaults to `false`
+
+|index |String[] |Indices on which the rule functions |Yes
+
+|interval |String |Frequency of rule execution, using a date math range |No,
+defaults to 5 minutes
+
+|query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
+signal |Yes, for query-based rules only (optional for rules using the `filters` 
+field)
+
+|language |String |Indicates/determines the query language, which must be
+`kuery` or `lucene` |Yes, for query-based rules only
+
+|output_index |String |Index in which signals found by the rule are saved |No, 
+if unspecified, signals are saved to the default system index *Frank: please 
+review*
+
+|saved_id |String |Kibana saved search used by the rule to create signals 
+|Yes, for query-based rules only
+
+|meta |Object |*Frank: need help* | No
+
+|risk_score |Integer |A numerical representation of the signal's risk, from 0 
+to 100 *Ben: waiting for Craig's explanation on mapping risk scores to 
+severity* |Yes
+
+|max_signals |Integer |Maximum number of signals the rule can create during a
+single execution |No, defaults to 100
+
+|name |String |Rule's name |Yes
+
+|severity |String |Severity level of signals produced by the rule, *must* be
+`low`, `medium`, `high`, or `critical` *Ben: waiting for Craig's explanation* 
+|Yes
+
+|tags |String[] |String array containing words and phrases to help categorize,
+filter, and search rules |No, defaults to an empty array
+
+|to |String |Time to which data is analyzed each time the rule executes, using a
+date math range |Yes
+
+|type |String |Data type on which the rule is based, must be `filter`, 
+`query`, or `saved_query` *Frank: I think we need to add a better 
+explanation. I'm not sure when filter would be used.* |Yes
+
+// tag::rules-update-api[]
+|threats |<<threats-object-update, threats[]>> |Object containing MITRE ATT&CK 
+information about the type of threat the rule monitors *Frank: need help* |No, 
+defaults to an empty array
+// end::rules-update-api[]
+
+// tag::rules-create-api[]
+|threats |<<threats-object-create, threats[]>> |Object containing MITRE ATT&CK 
+information about the type of threat the rule monitors *Frank: need help* |No, 
+defaults to an empty array
+// end::rules-create-api[]
+
+|references |String[] |String array containing notes about or references to 
+relevant information about the rule |No, defaults to an empty array
+
+|==============================================
+
+// tag::rules-update-api[]
+[[threats-object-update]]
+// end::rules-update-api[]
+// tag::rules-create-api[]
+[[threats-object-create]]
+// end::rules-create-api[]
+===== `threats` schema
+
+*Frank: need help with the table below. Add example.*
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|framework |String |Relevant MITRE ATT&CK framework |Yes
+
+|tactic |Object |Object containing ID, name, and reference strings of the 
+relevant MITRE ATT&CK type |Yes
+
+|technique |Object |Object containing ID, name, and reference strings of the 
+relevant PRE-MITRE ATT&CK technique |Yes
+
+|==============================================
+// end::rules-api-json-schema[]

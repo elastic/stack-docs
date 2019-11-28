@@ -11,85 +11,14 @@ Creates a new detection engine rule.
 
 A JSON object with these fields:
 
-
-// tag::rules-api-json-schema[]
-[width="100%",options="header"]
-|==============================================
-|Name |Type |Description |Required
-
-|description |String |Describes the rule |Yes
-
-|enabled |Boolean |Indicates/determines if the rule is enabled |No, defaults to
-`true`
-
-|false_positives |String[] |String array describing common reasons why the rule
-may issue false-positive signals |No, defaults to an empty array
-
-// |filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to 
-// create a signal |Yes, for filter-based rules only
-
-|filters |Object[] |The {ref}/query-filter-context.html[query and filter 
-context] JSON array used to define when a signal is created from an alert or 
-event |Yes, for filter-based rules only
-
-|from |String |Time from which data is analyzed each time the rule executes,
-using a {ref}/common-options.html#date-math[date math range] |Yes
-
-// tag::exlude-rule-id-field[]
-|rule_id |String |Unique ID that can be used as a reference for rules converted
-from third-party security solutions |No, automatically created when it
-is not provided
-// end::exlude-rule-id-field[]
-
-|immutable |Boolean |Indicates/determines if the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
-defaults to `false`
-
-|index |String[] |Indices on which the rule functions |Yes
-
-|interval |String |Frequency of rule execution, using a date math range |No,
-defaults to 5 minutes
-
-|query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal |Yes, for query-based rules only
-
-|language |String |Indicates/determines the query language, which must be
-`kuery` or `lucene` |Yes, for query-based rules only
-
-|saved_id |String |Kibana saved search used by the rule to create signals 
-|Yes, for saved-query-based rules only
-
-|risk_score |Integer |A numerical representation of the signal's risk, from 0 
-to 100 |Yes
-
-|max_signals |Integer |Maximum number of signals the rule can create during a
-single execution |No, defaults to 100
-
-|name |String |Rule's name |Yes
-
-|severity |String |Severity level of signals produced by the rule, *must* be
-`low`, `medium`, `high`, or `critical` *Ben: waiting for Craig's explanation* 
-|Yes
-
-|tags |String[] |String array containing words and phrases to help categorize,
-filter, and search rules |No, defaults to an empty array
-
-|to |String |Time to which data is analyzed each time the rule executes, using a
-date math range |Yes
-
-|type |String |Data type on which the rule is based, must be `filter`, 
-`query`, or `saved_query` |Yes *Frank: I think we need to add a better 
-explanation. I'm not sure when filter would be used.*
-
-|references |String[] |String array containing notes about or references to 
-relevant information about the rule |No, defaults to an empty array
-
-|==============================================
-// end::rules-api-json-schema[]
+include::shared-content/rule-schema.asciidoc[tags=rules-api-json-schema;!rules-update-api]
 
 NOTE: Rules can include both queries and filters. When both are used, make 
 sure all required fields are provided.
 
-===== Example request
+===== Example requests
+
+*Frank: I'd like to add an example for each `type`, including one that retrieves a saved query id and then creates a rule.*
 
 [source,js]
 --------------------------------------------------

@@ -259,8 +259,9 @@ The snippet below shows a part of a document with the annotated results:
 trying to predict with the {classanalysis}.
 <2> An array of values specifying the probability of the prediction for each 
 class. The probability is a value between 0 and 1. The higher the number, the 
-higher the probability that the datapoint belongs to the named class.The top 
-classes object contains the predicted classes with the highest probability.
+higher the probability that the datapoint belongs to the named class. The 
+`top_classes` object contains the predicted classes with the highest 
+probability.
 <3> The prediction. The field name is suffixed with `_prediction` by default. 
 You can specify the field name by defining `prediction_field_name` via the API. 
 <4> Indicates that this document was not used in the training set.
@@ -269,7 +270,7 @@ The example above shows that the analysis has predicted the probability of all
 possible classes. In this case, there are two classes: `true` and `false`. The 
 class names along with the probability of the given classes are displayed in the 
 `top_classes` object. The most probable class is the prediction. In the example 
-above, `false` has a `class_probability` of 0.93 while `true` has only 0.06, so 
+above, `false` has a `class_probability` of 0.94 while `true` has only 0.06, so 
 the prediction will be `false` which coincides with the ground truth contained 
 by the `FlightDelay` field. The class probability values help you understand how 
 sure the model is about the prediction. The higher number means that the model 
@@ -400,11 +401,11 @@ were misclassified (`actual_class` does not match `predicted_class`):
 `true` and `false`.
 <2> The number of documents in the dataset that belong to the actual class.
 <3> The name of the predicted class.
-<4> The number of documents belong to the actual class that are labelled as the 
+<4> The number of documents belong to the actual class that are labeled as the 
 predicted class. 
 
 There are 8778 documents in the testing proportion of the dataset that have the 
-`false` class. The model labelled 7509 documents (out of 8778) correctly as 
+`false` class. The model labeled 7509 documents (out of 8778) correctly as 
 `false` (true negative) and 1269 documents as `true` while those are actually 
 `false` (false positive). There are 2939 documents in the testing data that 
 have the `true` class. 1213 of them are predicted as `false` (false negative) 

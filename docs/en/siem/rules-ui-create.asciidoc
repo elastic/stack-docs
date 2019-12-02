@@ -1,0 +1,27 @@
+[[rules-ui-create]]
+[role="xpack"]
+== Managing detection engine rules
+
+On the Rules page, you can create, clone, delete, enable, import, and export 
+rules. Rules run periodically, and search the specified indices for documents 
+that meet their criteria during the specified time frame.
+
+[role="screenshot"]
+image::all-rules.png[]
+
+[float]
+=== Create a new rule
+
+. Go to *SIEM* -> *Detection Engine* -> *Manage rules*.
+. Click *Create new rule*.
++
+The *Create new rule* page is displayed.
+[role="screenshot"]
+image::create-new-rule.png[]
+. Set which indices the rule analyses for signals:
++
+.. Configured SIEM indices (*Management* -> *Advanced 
+setting* -> *siem:defaultIndex*).
+.. A custom list of indices.
+. Use the filter and query fields to create the criteria used to produce 
+signals. For example:

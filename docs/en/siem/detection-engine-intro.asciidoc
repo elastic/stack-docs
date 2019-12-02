@@ -1,14 +1,30 @@
 [[detection-engine-overview]]
 [role="xpack"]
-= Detection Engine Overview
+= Detection Engine
 
 [partintro]
 --
 
 //Ben: placeholder
-The detection engine uses rules to create signals from incoming events and 
-alerts. Signals are events and alerts that are considered important because 
-they met a rule's criteria, and they are  displayed on the dedicated Detection 
-Engine page.
+The detection engine automatically searches for threats and creates signals 
+when they are detected. These threats are detected using rules that define the 
+conditions required for a signal to be issued. The {siem-app} comes 
+preconfigured rules that search for suspicious activity on your network and 
+hosts. Additionally, you can <<rules-ui-create, create your own rules>> to meet your specific needs.
+
+[float]
+== Terminology
+
+To ensure all terms are well-defined:
+
+Signals::
+Alway refer to a {siem-soln} produced detection. That is, signals are never 
+received from third-party systems. When a detection engine rule's conditions 
+are met, the {siem-app} writes one or more signals to an Elasticsearch 
+`signals` index.
+
+Alerts and events::
+Always refer to data and detections {siem-soln} receives from data shippers and 
+third-party tools, such as {beats} and Elastic Endpoint Security.
 
 --

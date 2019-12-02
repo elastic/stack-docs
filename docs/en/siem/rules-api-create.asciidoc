@@ -25,31 +25,46 @@ sure all required fields are provided.
 --------------------------------------------------
 POST api/detection_engine/rules
 {
-  "type": "saved_query",
-  "index": [
-    "packetbeat-*"
-  ],
-  "language": "kuery",
-  "filters": [],
-  "output_index": ".siem-signals",
-  "query": "host.hostname : \"siem-es\" ",
-  "saved_id": "packetbeat",
-  "false_positives": [],
-  "references": [],
-  "risk_score": 21,
-  "name": "All packetbeat events",
-  "description": "Converts all packetbeat events from siem-es into signals",
-  "severity": "low",
-  "tags": [
-    "packetbeat"
-  ],
+  "rule_id": "ms_office_product_starting_a_process_in_a_user_directory_possible_payload",
+  "risk_score": 50,
+  "description": "MS Office product started a process in a user directory - possible payload",
+  "immutable": true,
   "interval": "5m",
-  "from": "now-300s",
-  "enabled": false,
+  "name": "MS Office started suspicious process",
+  "severity": "low",
+  "type": "query",
+  "from": "now-6m",
   "to": "now",
-  "meta": {
-    "from": "now-300s"
-  }
+  "query": "( (process.parent.name:winword.exe OR process.parent.name:excel.exe OR  process.parent.name:powerpnt.exe OR  process.parent.name:mspub.exe OR  process.parent.name:visio.exe OR  process.parent.name:outlook.exe) AND (process.args:*users*) )",
+  "language": "kuery",
+  "filters": [
+    {
+      "meta": {
+        "negate": false,
+        "type": "phrase",
+        "key": "event.action",
+        "value": "Process Create (rule: ProcessCreate)",
+        "params": {
+          "query": "Process Create (rule: ProcessCreate)"
+        },
+        "disabled": false,
+        "alias": null,
+        "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index"
+      },
+      "query": {
+        "match": {
+          "event.action": {
+            "query": "Process Create (rule: ProcessCreate)",
+            "type": "phrase"
+          }
+        }
+      },
+      "$state": {
+        "store": "appState"
+      }
+    }
+  ],
+  "enabled": false
 }
 --------------------------------------------------
 // KIBANA

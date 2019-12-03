@@ -24,4 +24,50 @@ image::create-new-rule.png[]
 setting* -> *siem:defaultIndex*).
 .. A custom list of indices.
 . Use the filter and query fields to create the criteria used to produce 
-signals. For example:
+signals. For example, a rule that detects when a Microsoft Office product 
+starts a process in a user folder uses the following query and filters:
+*Ben: add example*
+. Click *Continue*.
++
+The *About rule* pane is displayed.
+[role="screenshot"]
+image::about-rule-pane.png[]
+. Fill in the following fields:
+.. _Name_: The rule's name.
+.. _Description_: A description of what the rule does.
+.. _Severity_: Select the severity levels of signals created by the rule:
+... `Low`: Signals that are of interest but generally not considered to be 
+security incidents. Sometimes, a combination of low severity events can 
+indicate suspicious activity.
+... `Medium`: Signals that require investigation.
+... `High`: Signals that require an immediate investigation.
+... `Critical`: Signals that indicate a security incident has occurred.
+.. _Risk score_: *Ben: waiting for Craig for best practices on matching risk score with severity*
+.. _Reference URLs_ (optional): References to information that is relevant to 
+the rule. For example, links to the relevant Mitre URL.
+.. _False positives_ (optional): List of common scenarios that may produce 
+false-positive signals.
+.. _Tags_ (optional): Words and phrases that can be used to categorize, filter, 
+and search the rule.
+. Click *Continue*.
++
+The *Schedule rule* pane is displayed.
+[role="screenshot"]
+image::schedule-rule.png[]
+. Select how often the rule runs.
+. Optionally, add look-back time to the rule. When defined, the rule searches 
+indices with the additional time period.
++
+For example, if you set a rule to run every 5 minutes with an additional
+look-back time of 1 minute, the rule runs every 5 minutes but analyses the 
+documents added to indices during the last 6 minutes. This overlap helps ensure 
+signals are issued even when incoming host and network data is delayed.
+. Save the rule with or without activation.
+
+[float]
+== Manage existing rules
+
+. Go to *SIEM* -> *Detection Engine*.
+. Do one of the following:
+* Click the all actions icon (three dots), and select the required action.
+* In the *Rule* column, select all the rules you want to perform an action on, and then the required action from `Batch actions` menu.

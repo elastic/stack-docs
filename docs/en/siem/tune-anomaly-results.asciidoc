@@ -4,11 +4,10 @@
 
 To gain clearer insights into real threats, you can tune the anomaly results. The following procedures help to reduce the number of false positives: 
 
-* <<rarely-used-processes, Tune results for rare applications and 
-processes>>
-* <<define-rule-threshold, Define a numerical threshold for the rule>>
+* <<rarely-used-processes, Tune results for rare applications and processes>>
+* <<define-rule-threshold>>
 
-[rarely-used-processes]
+[[rarely-used-processes]]
 ==== Filter out anomalies from rarely used applications and processes
 
 When anomalies include results from a known process that only runs occasionally,
@@ -104,9 +103,39 @@ image::start-job-window.png[]
 +
 After a while, results will start to appear on the *Anomaly Explorer* page.
 
-[define-rule-threshold]
-==== Define a threshold for the rule
+[[define-rule-threshold]]
+==== Define an anomaly threshold for the job
 
-You can define a threshold for when a {ml} condition applies. This helps to reduce the number of false positives when an automated maintenance job is known to produce a burst of activity on your servers.
+Certain jobs use a high non-zero count function to look for unusual spikes in 
+process events. Some processes cause a burst of activity as a normal part of 
+their function, such as automation and housekeeping jobs running on server 
+fleets. However, sometimes a high-delta event count is unlikely to be the 
+result of routine behavior. In these cases, defining a minimum threshold for 
+when a high event count is considered an anomaly can be applied to the {ml} 
+jobs.
+
+Depending on your anomaly detection results, it may be useful to define a 
+minimum event count threshold for the `packetbeat_dns_tunneling` job:
+
 
 . Go to *Machine Learning* -> *Anomaly Detection* -> *Anomaly Explorer*.
+. Navigate to the job results for the `packetbeat_dns_tunneling` job. If the 
+job results are not listed, click *Edit job selection* and select 
+`packetbeat_dns_tunneling`.
+. In the *actions* column, click the gear icon and then select
+_Configure rules_.
++
+The *Create Rules* windows is displayed.
++
+[role="screenshot"]
+image::ml-rule-threshold.png[]
+. Select:
+.. _Add numeric conditions for when the rule applies_.
+.. The following `when` statement:
++
+_WHEN actual IS GREATER THAN <X>_
++
+Where `_<X>_` is the threshold above which anomalies are detected.
+. Click *Save*.
+. To apply the new threshold, rerun the job (*Job Management* -> *Actions* ->
+*Start datafeed*).

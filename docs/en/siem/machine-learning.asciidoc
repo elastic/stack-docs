@@ -273,19 +273,20 @@ local sources can also be due to malware or scanning activity.
 Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
-Windows_rare_user_type10_remote_login:: Unusual remote desktop protocol (RDP)
-logins can indicate account takeover or credentialed persistence using
-compromised accounts. RDP attacks such as BlueKeep also tend to use unusual
-usernames.
+Windows_rare_user_type10_remote_login:: Searches for unusual remote desktop 
+protocol (RDP) logins, which could indicate account takeover or credentialed 
+persistence using compromised accounts. RDP attacks such as BlueKeep also tend 
+to use unusual usernames.
 +
 Beats required on hosts:
 
 * Winlogbeat (Windows)
-Windows_rare_user_runas_event:: Unusual user context switches using the `runas`
-command or similar techniques can indicate account takeover or privilege
-escalation using compromised accounts. Privilege elevation using tools like
-`runas` is more common for domain and network administrators than professional
-workers who are not members of the technology department.
+Windows_rare_user_runas_event:: Searches for unusual user context switches 
+using the `runas` command or similar techniques, which could indicate account 
+takeover or privilege escalation using compromised accounts. Privilege 
+elevation using tools like `runas` is more common for domain and network 
+administrators than professionals who are not members of the technology 
+department.
 +
 Beats required on hosts:
 

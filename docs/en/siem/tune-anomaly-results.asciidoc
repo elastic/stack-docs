@@ -23,7 +23,7 @@ For example, to filter out results from a housekeeping process, named
 [[create-fiter-list]]
 ===== Create a filter list
 
-. Got to *Machine Learning* -> *Anomaly Detection* -> *Settings*.
+. Go to *Machine Learning* -> *Anomaly Detection* -> *Settings*.
 . Click *Filter Lists* and then *New*.
 +
 The *Create new filter list* pane is displayed.
@@ -55,11 +55,11 @@ image::rule-scope.png[]
 .. _Add a filter list to limit where the rule applies_.
 .. The _WHEN_ statement for the relevant detector (`process.name` in our
 example).
+.. The _IS IN_ statement.
+.. The filter you created as part of the <<create-fiter-list>> procedure.
 +
 TIP: For more information about detectors, see
 {stack-ov}/ml-jobs.html[Anomaly detection jobs].
-.. The _IS IN_ statement.
-.. The filter you created as part of the <<create-fiter-list>> procedure.
 
 . Click *Save*.
 
@@ -114,7 +114,7 @@ result of routine behavior. In these cases, defining a minimum threshold for
 when a high event count is considered an anomaly can be applied to the {ml} 
 jobs.
 
-Depending on your anomaly detection results, it may be useful to define a 
+Depending on your anomaly detection results, you may want to define a 
 minimum event count threshold for the `packetbeat_dns_tunneling` job:
 
 
@@ -125,13 +125,12 @@ job results are not listed, click *Edit job selection* and select
 . In the *actions* column, click the gear icon and then select
 _Configure rules_.
 +
-The *Create Rules* windows is displayed.
+The *Create Rule* window is displayed.
 +
 [role="screenshot"]
 image::ml-rule-threshold.png[]
-. Select:
-.. _Add numeric conditions for when the rule applies_.
-.. The following `when` statement:
+. Select _Add numeric conditions for when the rule applies_ and the following 
+`when` statement:
 +
 _WHEN actual IS GREATER THAN <X>_
 +

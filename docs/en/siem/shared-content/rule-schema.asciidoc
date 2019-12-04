@@ -51,17 +51,34 @@ review*
 
 |meta |Object |*Frank: need help* | No
 
-|risk_score |Integer |A numerical representation of the signal's risk, from 0 
-to 100 *Ben: waiting for Craig's explanation on mapping risk scores to 
-severity* |Yes
+|risk_score |Integer |A numerical representation of the signal's severity from 
+0 to 100, where:
+
+`21` represents low severity
+
+`47` represents medium severity
+
+`73` represents high severity
+
+`99` represents critical severity
+|Yes
 
 |max_signals |Integer |Maximum number of signals the rule can create during a
 single execution |No, defaults to 100
 
 |name |String |Rule's name |Yes
 
-|severity |String |Severity level of signals produced by the rule, *must* be
-`low`, `medium`, `high`, or `critical` *Ben: waiting for Craig's explanation* 
+|severity |String |Severity level of signals produced by the rule, which must 
+be one of the following:
+
+`low`: Signals that are of interest but generally not considered to be 
+security incidents
+
+`medium`: Signals that require investigation
+
+`high`: Signals that require an immediate investigation
+
+`critical`: Signals that indicate a security incident has occurred
 |Yes
 
 |tags |String[] |String array containing words and phrases to help categorize,

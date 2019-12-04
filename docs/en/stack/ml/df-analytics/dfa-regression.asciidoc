@@ -71,14 +71,20 @@ the {depvar} by combining the predictions from multiple base learners –
 algorithms that generalize from the dataset. The performance of an ensemble is 
 usually better than the performance of each individual base learner because the 
 individual learners will make different errors. These average out when their 
-predictions are combined. The ensemble learning technique that we use in the 
-{stack} is a type of boosting called extreme gradient boost (XGboost) which 
-combines decision trees with gradient boosting methodologies.
+predictions are combined.
+
+[discrete]
+[[dfa-regression-model]]
+===== {regression-cap} models
+
+The ensemble learning technique that we use in the {stack} is a type of boosting 
+called extreme gradient boost (XGboost) which combines decision trees with 
+gradient boosting methodologies.
 
 {regression-cap} works as a batch analysis. If new data comes into your index, 
 you must restart the {dfanalytics-job}.
 
- 
+
 [discrete]
 [[dfa-regression-evaluation]]
 ==== Measuring model performance

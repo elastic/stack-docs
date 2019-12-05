@@ -4,13 +4,14 @@
 
 For *Free Trial*, *https://www.elastic.co/cloud/elasticsearch-service/signup[Cloud]*
 and *https://www.elastic.co/subscriptions[Platinum License]* deployments,
-{kibana-ref}/xpack-ml.html[Machine Learning] functionality is available throughout the SIEM app. You can
-view the details of detected anomalies within the `Anomalies` table widget
-shown on the Hosts, Network and associated Details pages, or even narrow to
-the specific date range of an anomaly from the `Max Anomaly Score` details in
-the overview of the Host and IP Details pages. Each of these interfaces also
-offer the ability to drag and drop details of the anomaly to Timeline, such
-as the `Entity` itself, or any of the associated `Influencers`.
+{kibana-ref}/xpack-ml.html[Machine Learning] functionality is available 
+throughout the SIEM app. You can view the details of detected anomalies within 
+the `Anomalies` table widget shown on the Hosts, Network and associated Details 
+pages, or even narrow to the specific date range of an anomaly from the `Max 
+Anomaly Score` details in the overview of the Host and IP Details pages. Each 
+of these interfaces also offer the ability to drag and drop details of the 
+anomaly to Timeline, such as the `Entity` itself, or any of the associated 
+`Influencers`.
 
 [role="screenshot"]
 image::ml-ui.png[]
@@ -196,8 +197,8 @@ indicate unauthorized downloads or threat activity.
 Beats required on hosts:
 
 * Auditbeat (Linux)
-suspicious_login_activity_ecs:: Identifies an unusually high number of authentication
-attempts.
+suspicious_login_activity_ecs:: Identifies an unusually high number of 
+authentication attempts.
 +
 Beats required on hosts:
 
@@ -214,7 +215,8 @@ Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
 Packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
-indicate network activity with unusual domains is about to occur. This can be due
+indicate network activity with unusual domains is about to occur. This can be 
+due
 to initial access, persistence, command-and-control, or exfiltration activity.
 +
 For example, when a user clicks on a link in a phishing email or opens a malicious
@@ -271,19 +273,20 @@ local sources can also be due to malware or scanning activity.
 Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
-Windows_rare_user_type10_remote_login:: Unusual remote desktop protocol (RDP)
-logins can indicate account takeover or credentialed persistence using
-compromised accounts. RDP attacks such as BlueKeep also tend to use unusual
-usernames.
+Windows_rare_user_type10_remote_login:: Searches for unusual remote desktop 
+protocol (RDP) logins, which could indicate account takeover or credentialed 
+persistence using compromised accounts. RDP attacks such as BlueKeep also tend 
+to use unusual usernames.
 +
 Beats required on hosts:
 
 * Winlogbeat (Windows)
-Windows_rare_user_runas_event:: Unusual user context switches using the `runas`
-command or similar techniques can indicate account takeover or privilege
-escalation using compromised accounts. Privilege elevation using tools like
-`runas` is more common for domain and network administrators than professional
-workers who are not members of the technology department.
+Windows_rare_user_runas_event:: Searches for unusual user context switches 
+using the `runas` command or similar techniques, which could indicate account 
+takeover or privilege escalation using compromised accounts. Privilege 
+elevation using tools like `runas` is more common for domain and network 
+administrators than professionals who are not members of the technology 
+department.
 +
 Beats required on hosts:
 

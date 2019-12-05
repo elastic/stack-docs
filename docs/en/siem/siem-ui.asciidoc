@@ -208,7 +208,7 @@ might need to:
 * <<private-network>>
 
 NOTE: To see source and destination connections lines on the map, you must
-configure `source.geo` and `dest.geo` ECS fields for your indices.
+configure `source.geo` and `destination.geo` ECS fields for your indices.
 
 [float]
 [[geoip-data]]
@@ -216,7 +216,8 @@ configure `source.geo` and `dest.geo` ECS fields for your indices.
 
 If you are not using Beats to ship your data, add the relevant index patterns to
 Kibana (Management -> Index patterns) and the SIEM app (Management -> Advanced
-settings -> SIEM default index). When the ECS {ecs-ref}/ecs-geo.html[source.geo.location
+settings -> SIEM default index).
+When the ECS {ecs-ref}/ecs-geo.html[source.geo.location
 and destination.geo.location] fields are mapped, network data is displayed on
 the map.
 

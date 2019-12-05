@@ -73,16 +73,17 @@ usually better than the performance of each individual base learner because the
 individual learners will make different errors. These average out when their 
 predictions are combined.
 
+{regression-cap} works as a batch analysis. If new data comes into your index, 
+you must restart the {dfanalytics-job}.
+
+
 [discrete]
-[[dfa-regression-model]]
+[[dfa-regression-algorithm]]
 ===== {regression-cap} algorithms
 
 The ensemble learning technique that we use in the {stack} is a type of boosting 
 called extreme gradient boost (XGboost) which combines decision trees with 
 gradient boosting methodologies.
-
-{regression-cap} works as a batch analysis. If new data comes into your index, 
-you must restart the {dfanalytics-job}.
 
 
 [discrete]

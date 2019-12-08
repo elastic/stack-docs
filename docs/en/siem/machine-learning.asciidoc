@@ -24,8 +24,9 @@ For users with the `ml_admin` role, the `Anomaly Detection` interface within
 the main navigation header can be used for for viewing, starting, and stopping
 SIEM machine learning jobs.
 
-TIP: To add a custom job to the `Anomaly Detection` interface, add a `SIEM` tag to
-the job's `Group` field ({kib} -> {ml-cap} -> Create/Edit job -> Job details).
+TIP: To add a custom job to the `Anomaly Detection` interface, add a `SIEM` tag 
+to the job's `Group` field ({kib} -> {ml-cap} -> Create/Edit job -> Job 
+  details).
 
 [float]
 [[included-jobs]]
@@ -36,7 +37,8 @@ host and network anomalies. The jobs are displayed in the `Anomaly Detection`
 interface. They are available when:
 
 * You ship data using https://www.elastic.co/products/beats[Beats] and {kib} is 
-configured with the required index patterns (`auditbeat-*`, `filebeat-*`, `packetbeat-*`, or `winlogbeat-*` via {kib} -> Management -> Index Patterns).
+configured with the required index patterns (`auditbeat-*`, `filebeat-*`, 
+`packetbeat-*`, or `winlogbeat-*` via {kib} -> Management -> Index Patterns).
 * Your shipped data is ECS compliant and {kib} is configured with the data's 
 index patterns.
 
@@ -47,7 +49,8 @@ timeframe, previously analysed data is not processed again.
 
 <<prebuilt-ml-jobs>> describes all available {ml} jobs and lists 
 which beats are required on your hosts for each job. For information on tuning
-anomaly results to reduce the number of false positive, see <<tuning-anomaly-results>>.
+anomaly results to reduce the number of false positive, see
+<<tuning-anomaly-results>>.
 
 [float]
 [[view-anomolies]]
@@ -55,8 +58,9 @@ anomaly results to reduce the number of false positive, see <<tuning-anomaly-res
 To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
 the user must have the `ml_admin` or `ml_user` role.
 
-NOTE: To adjust the `score` threshold for which {ml-docs}/xpack-ml.html[anomalies]
-are shown, you can modify {kib} -> Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
+NOTE: To adjust the `score` threshold that determines which
+{ml-docs}/xpack-ml.html[anomalies] are shown, you can modify {kib} -> 
+Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
 
 [[prebuilt-ml-jobs]]
 === Prebuilt job reference
@@ -196,11 +200,10 @@ PowerShell script text blocks.
 +
 Beats required on hosts:
 
-* Winlogbeat
+* Winlogbeat (Windows)
 
 +
-NOTE: This job is not fully ECS compliant and can only be run when Winlogbeat 
-is used to ship data.
+NOTE: This job can only be run when Winlogbeat is used to ship data.
 
 windows_anomalous_service:: Searches for unusual Windows services that could 
 indicate execution of unauthorized services, malware, or persistence mechanisms.
@@ -214,8 +217,7 @@ Beats required on hosts:
 * Winlogbeat (Windows)
 
 +
-NOTE: This job is not fully ECS compliant and can only be run when Winlogbeat 
-is used to ship data.
+NOTE: This job can only be run when Winlogbeat is used to ship data.
 
 windows_anomalous_user_name_ecs::
 +
@@ -260,8 +262,7 @@ Beats required on hosts:
 * Auditbeat (Linux)
 
 +
-NOTE: This job is not fully ECS compliant and can only be run when Auditbeat 
-is used to ship data. 
+NOTE: This job can only be run when Auditbeat is used to ship data. 
 
 linux_anomalous_network_service:: Searches for unusual listening ports that
 could indicate execution of unauthorized services, backdoors, or persistence mechanisms.
@@ -271,18 +272,17 @@ Beats required on hosts:
 * Auditbeat (Linux)
 
 +
-NOTE: This job is not fully ECS compliant and can only be run when Auditbeat 
-is used to ship data.
+NOTE: This job can only be run when Auditbeat is used to ship data.
 
 linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests
 from hosts, which could indicate malware delivery and execution.
 +
-Wget and cURL are commonly used by Linux programs to download code and data. Most
-of the time, their usage is entirely normal. Generally, because they use a list of
-URLs, they repeatedly download from the same locations. However, Wget and cURL are
-sometimes used to deliver Linux exploit payloads, and threat actors use these tools
-to download additional software and code. For these reasons, unusual URLs can
-indicate unauthorized downloads or threat activity.
+Wget and cURL are commonly used by Linux programs to download code and data. 
+Most of the time, their usage is entirely normal. Generally, because they use a 
+list of URLs, they repeatedly download from the same locations. However, Wget 
+and cURL are sometimes used to deliver Linux exploit payloads, and threat 
+actors use these tools to download additional software and code. For these 
+reasons, unusual URLs can indicate unauthorized downloads or threat activity.
 +
 Beats required on hosts:
 
@@ -296,57 +296,88 @@ Required ECS fields:
 * host.name
 * process.name
 * process.title
-* event.action
 * agent.type
 
-suspicious_login_activity_ecs:: Identifies an unusually high number of authentication
-attempts.
+suspicious_login_activity_ecs:: Identifies an unusually high number of 
+authentication attempts.
 +
 Beats required on hosts:
 
 * Auditbeat (Windows and Linux)
 * Winlogbeat (Windows)
 
-Packetbeat_dns_tunneling:: Searches for unusually large numbers of DNS queries
++
+Required ECS fields:
+
+* source.ip
+* host.name
+* user.name
+* event.category
+* agent.type
+
+packetbeat_dns_tunneling:: Searches for unusually large numbers of DNS queries
 for a single top-level DNS domain, which is often used for DNS tunneling.
 +
-DNS tunneling can be used for command-and-control, persistence, or data exfiltration
-activity. For example, dnscat tends to generate many DNS questions for a top-level
-domain (TLD) as it uses the DNS protocol to tunnel data.
+DNS tunneling can be used for command-and-control, persistence, or data 
+exfiltration activity. For example, dnscat tends to generate many DNS questions 
+for a top-level domain (TLD) as it uses the DNS protocol to tunnel data.
 +
 Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
 
-Packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
++
+NOTE: This job can only be run when Packetbeat is used to ship data.
+
+packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
 indicate network activity with unusual domains is about to occur. This can be 
-due
-to initial access, persistence, command-and-control, or exfiltration activity.
+due to initial access, persistence, command-and-control, or exfiltration 
+activity.
 +
-For example, when a user clicks on a link in a phishing email or opens a malicious
-document, a request may be sent to an uncommon domain to download and run a payload.
-When malware is already running, it may send requests to an uncommon
-DNS domain the malware uses for command-and-control communication.
-+
-Beats required on hosts:
-
-* Packetbeat (Windows and Linux)
-
-Packetbeat_rare_server_domain:: Searches for rare and unusual DNS queries that
-indicate network activity with unusual domains is about to occur. This can be due
-to initial access, persistence, command-and-control, or exfiltration activity.
-+
-For example, when a user clicks on a link in a phishing email or opens a malicious
-document, a request may be sent to an uncommon HTTP or TLS server to download and
-run a payload. When malware is already running, it may send requests to an uncommon
-DNS domain the malware uses for command-and-control communication.
+For example, when a user clicks on a link in a phishing email or opens a 
+malicious document, a request may be sent to an uncommon domain to download and 
+run a payload. When malware is already running, it may send requests to an
+uncommon DNS domain the malware uses for command-and-control communication.
 +
 Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
 
-Packetbeat_rare_urls:: Searches for rare and unusual URLs that indicate unusual web
-browsing activity. This can be due to initial access, persistence,
++
+Required ECS fields:
+
+* dns.question.name
+* dns.question.type
+* host.name
+* event.dataset
+* agent.type
+
+packetbeat_rare_server_domain:: Searches for rare and unusual DNS queries that
+indicate network activity with unusual domains is about to occur. This can be 
+due to initial access, persistence, command-and-control, or exfiltration 
+activity.
++
+For example, when a user clicks on a link in a phishing email or opens a 
+malicious document, a request may be sent to an uncommon HTTP or TLS server to 
+download and run a payload. When malware is already running, it may send 
+requests to an uncommon DNS domain the malware uses for command-and-control 
+communication.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+
++
+Required ECS fields:
+
+* destination.ip
+* source.ip
+* server.domain
+* host.name
+* agent.type
+
+packetbeat_rare_urls:: Searches for rare and unusual URLs that indicate unusual 
+web browsing activity. This can be due to initial access, persistence,
 command-and-control, or exfiltration activity.
 +
 For example, in a strategic web compromise or watering hole attack, when a
@@ -363,7 +394,15 @@ Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
 
-Packetbeat_rare_user_agent:: Searches for rare and unusual user agents that
++
+Required ECS fields:
+
+* destination.ip
+* url.full
+* host.name
+* agent.type
+
+packetbeat_rare_user_agent:: Searches for rare and unusual user agents that
 indicate web browsing activity by an unusual process other than a web browser.
 This can be due to persistence, command-and-control, or exfiltration activity.
 Uncommon user agents coming from remote sources to local destinations are often
@@ -380,7 +419,17 @@ local sources can also be due to malware or scanning activity.
 Beats required on hosts:
 
 * Packetbeat (Windows and Linux)
-Windows_rare_user_type10_remote_login:: Searches for unusual remote desktop 
+
++
+Required ECS fields:
+
+* destination.ip
+* host.name
+* event.dataset
+* user_agent.original
+* agent.type
+
+windows_rare_user_type10_remote_login:: Searches for unusual remote desktop 
 protocol (RDP) logins, which could indicate account takeover or credentialed 
 persistence using compromised accounts. RDP attacks such as BlueKeep also tend 
 to use unusual usernames.
@@ -388,7 +437,12 @@ to use unusual usernames.
 Beats required on hosts:
 
 * Winlogbeat (Windows)
-Windows_rare_user_runas_event:: Searches for unusual user context switches 
+
++
+NOTE: This job can only be run when Winlogbeat is used to ship data.
+
+
+windows_rare_user_runas_event:: Searches for unusual user context switches 
 using the `runas` command or similar techniques, which could indicate account 
 takeover or privilege escalation using compromised accounts. Privilege 
 elevation using tools like `runas` is more common for domain and network 
@@ -398,3 +452,12 @@ department.
 Beats required on hosts:
 
 * Winlogbeat (Windows)
+
++
+Required ECS fields:
+
+* process.name
+* host.name
+* user.name
+* event.code
+* agent.type

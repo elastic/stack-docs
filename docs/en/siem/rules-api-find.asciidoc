@@ -24,15 +24,21 @@ All parameters are optional:
 
 |`sort_order` |String |Determines the sort order, which can be `desc` or `asc`.
 
-|`filter` |String |Filters the returned results according to the value of the 
-specified field, using the `alert.attributes.<field name>:<field value>`syntax. 
-*Frank: what fields are available under alert.attributes?*
+|`filter` |String a|Filters the returned results according to the value of the 
+specified field, using the `alert.attributes.<field name>:<field value>` 
+syntax, where `<field name>` can be:
 
+* `name`
+* `enabled`
+* `tags`
+* `createdBy`
+* `interval`
+* `updatedBy`
 |==============================================
 
 ===== Example request
 
-Retrieves the first five rules with `windows` in their names, sorted in 
+Retrieves the first five rules with the word `windows` in their names, sorted in 
 ascending order:
 
 [source,js]

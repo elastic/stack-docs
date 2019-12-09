@@ -39,18 +39,6 @@ POST api/detection_engine/rules
   "language": "kuery",
   "filters": [
     {
-      "meta": {
-        "negate": false,
-        "type": "phrase",
-        "key": "event.action",
-        "value": "Process Create (rule: ProcessCreate)",
-        "params": {
-          "query": "Process Create (rule: ProcessCreate)"
-        },
-        "disabled": false,
-        "alias": null,
-        "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index"
-      },
       "query": {
         "match": {
           "event.action": {
@@ -65,6 +53,38 @@ POST api/detection_engine/rules
     }
   ],
   "enabled": false
+  "threats": [
+    {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+        "id": "TA0040",
+        "name": "impact",
+        "reference": "https://attack.mitre.org/tactics/TA0040/"
+      },
+      "techniques": [
+        {
+          "id": "T1499",
+          "name": "endpoint denial of service",
+          "reference": "https://attack.mitre.org/techniques/T1499/"
+        }
+      ]
+    },
+    {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+        "id": "T1020",
+        "name": "Automated Exfiltration",
+        "reference": "https://attack.mitre.org/techniques/T1020/"
+      },
+      "techniques": [
+        {
+          "id": "T1002",
+          "name": "Data Compressed",
+          "reference": "https://attack.mitre.org/techniques/T1002/"
+        }
+      ]
+    }
+  ]
 }
 --------------------------------------------------
 // KIBANA

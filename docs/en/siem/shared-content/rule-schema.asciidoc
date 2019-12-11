@@ -42,9 +42,9 @@ field)
 |language |String |Determines the query language, which must be
 `kuery` or `lucene` |Yes, for query-based rules only
 
-|output_index |String |Index in which signals found by the rule are saved |No, 
-if unspecified, signals are saved to the default system index *Frank: please 
-review*
+|output_index |String |Index to which signals detected by the rule are saved 
+|No, if unspecified signals are saved to, `.siem-signals-<space_name>` index, 
+where `<space_name>` is the name of the space in which the rule was created
 
 |saved_id |String |Kibana saved search used by the rule to create signals 
 |Yes, for query-based rules only

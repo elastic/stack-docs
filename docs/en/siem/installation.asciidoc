@@ -18,11 +18,19 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try the {es}
 Service for free].
 ==============
 
-* *{beats}* shippers (version 7.x or later) installed for each system you want to
-monitor
+* *{beats}* (version 7.x or later) or other data shippers installed for each 
+system you want to monitor.
 
-You might need to modify UI settings in {kib} to change default behaviors,
-such as the index pattern used to query the data. For more information, see {kib}.
+[IMPORTANT]
+==============
+If you use a third-party collector to ship data to the {siem-app}, you must 
+map its fields to the {ecs-ref}[Elastic Common Schema (ECS)]. Additionally, you 
+must add its index to the {siem-soln} {es} indices (*{kib}* -> 
+*Management* -> *Advanced Settings* -> *`siem:defaultIndex`*).
+
+{siem-soln} uses the {ecs-ref}/ecs-host.html[`host.name`] ECS field as the 
+primary key for identifying hosts.
+==============
 
 [float]
 [[install-beats]]
@@ -38,11 +46,6 @@ centralizing logs and files
 Windows event logs
 * https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
 network activity
-
-NOTE: The {ecs-ref}[Elastic Common Schema (ECS)] enables {siem-soln} to work
-with custom and third-party data sources in addition to
-those supported by Beats. It is important to note that {siem-soln} uses the
-{ecs-ref}/ecs-host.html[`host.name`] ECS field as the primary key for identifying hosts.
 
 You can install {beats} using a {kib}-based guide or directly from the command line.
 

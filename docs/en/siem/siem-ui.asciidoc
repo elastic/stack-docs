@@ -16,9 +16,10 @@ collapsible, resizable, moveable, and so forth.
 The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
 throughout the {siem-app} for searching and filtering.
 
-NOTE: The default index patterns for {siem-soln} events are `endgame-*`,
-`auditbeat-*`, `winlogbeat-*`, `filebeat-*`, and `packetbeat-*`. You can change
-the default index patterns in {kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
+NOTE: The default index glob patterns defined for {siem-soln} events are 
+`endgame-*`, `auditbeat-*`, `winlogbeat-*`, `filebeat-*`, and `packetbeat-*`. 
+You can change the default glob patterns in {kib} -> Management -> Advanced 
+Settings -> `siem:defaultIndex`.
 
 
 [float]
@@ -205,6 +206,7 @@ that aren't present?  Let us know. We welcome your input.
 Depending on your {kib} setup, to display and interact with data on the map you
 might need to:
 
+* <<kibana-index-pattern>>
 * <<geoip-data, Add geographical IP data to events>>
 * <<private-network>>
 
@@ -212,17 +214,40 @@ NOTE: To see source and destination connections lines on the map, you must
 configure `source.geo` and `destination.geo` ECS fields for your indices.
 
 [float]
+[[kibana-index-pattern]]
+==== Create {kib} index patterns
+
+To display map data, you must define
+{kib} {kibana-ref}/tutorial-define-index.html[index patterns] (*Management* -> 
+*Index Patterns*) with exactly the same names or glob patterns used to define 
+the {siem-soln} {es} indices.
+
+NOTE: The {siem-soln} {es} indices are defined in the `siem:defaultIndex` field 
+(*{kib}* -> *Management* -> *Advanced Settings* -> *`siem:defaultIndex`*).
+
+For example, if you define a {siem-soln} {es} `servers-europe-*` glob pattern, 
+to display map data for the matching indices you must also define a {kib} index 
+pattern named `servers-europe-*`. If you use a different {kib} index pattern, 
+such as `servers-*`, map data for the indices is *not* displayed.
+
+// =====================
+// Keeping this commented out because it will be true in the future...
+// To display data on the map, you must define {kib} index patterns 
+// (Management -> Index Patterns) that match all the {siem-soln} {es} indices you 
+// want to visualize. For more information, see
+// {kibana-ref}/tutorial-define-index.html[Define your index patterns].
+// =====================
+
+[float]
 [[geoip-data]]
 ==== Add geoIP data
 
-If you are not using Beats to ship your data, add the relevant index patterns to
-Kibana (Management -> Index patterns) and the SIEM app (Management -> Advanced
-settings -> SIEM default index).
-When the ECS {ecs-ref}/ecs-geo.html[source.geo.location
-and destination.geo.location] fields are mapped, network data is displayed on
+When the ECS {ecs-ref}/ecs-geo.html[source.geo.location and 
+destination.geo.location] fields are mapped, network data is displayed on
 the map.
 
-If you use Beats, configure a geoIP processor to add data to the relevant fields:
+If you use Beats, configure a geoIP processor to add data to the relevant 
+fields:
 
 [[geo-pipeleine]]
 . Define an ingest node pipeline that uses one or more `geoIP` processors to add
@@ -283,8 +308,8 @@ that contains the IP address to use for the geographical lookup, and
 `"ignore_missing": true` configures the pipeline to continue processing when
 it encounters an event that doesn't have the specified field.
 
-. In your Beats configuration files, add the pipeline to the `output.elasticsearch`
-tag:
+. In your Beats configuration files, add the pipeline to the 
+`output.elasticsearch`tag:
 +
 [source,yml]
 ----------------------------------

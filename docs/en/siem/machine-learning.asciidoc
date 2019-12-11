@@ -36,10 +36,10 @@ The SIEM app comes with prebuilt {ml} {anomaly-jobs} for automatically detecting
 host and network anomalies. The jobs are displayed in the `Anomaly Detection`
 interface. They are available when:
 
-* You ship data using https://www.elastic.co/products/beats[Beats] and {kib} is 
-configured with the required index patterns (`auditbeat-*`, `filebeat-*`, 
-`packetbeat-*`, or `winlogbeat-*` via {kib} -> Management -> Index Patterns).
-* Your shipped data is ECS compliant and {kib} is configured with the data's 
+* You ship data using https://www.elastic.co/products/beats[Beats], and
+{kib} is configured with the required index patterns
+(`auditbeat-*`, `filebeat-*`, `packetbeat-*`, or `winlogbeat-*` via {kib} -> Management -> Index Patterns).
+* Your shipped data is ECS-compliant, and {kib} is configured with the data's 
 index patterns.
 
 NOTE: Machine learning jobs look back and analyse two weeks of historical data 

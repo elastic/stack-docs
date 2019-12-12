@@ -1,0 +1,69 @@
+[role="xpack"]
+[[ml-dfa-phases]]
+=== How a {dfanalytics-job} works
+
+This page provides high-level background information on how {dfanalytics-jobs} 
+work, what kind of phases the jobs have, and what happens during the individual 
+phases.
+
+
+[discrete]
+==== The phases of a {dfanalytics-job}
+
+A {dfanalytics-job} has two states: started and stopped. Until its state 
+switches from started to stopped, the job goes through four phases regardless of 
+the {dfanalytics} type it performs. The phases are discrete steps of the 
+{dfanalytics-job} that is essentially a persistent {es} task. The four phases 
+are the following:
+
+* reindexing,
+* loading data,
+* analyzing,
+* writing results.
+
+Let's take a look at the phases one-by-one.
+
+
+[discrete]
+===== Reindexing
+
+During the reindexing phase the documents from the source index or indices are 
+copied to the destination index. If the destination index does not exist, then 
+the job creates it before reindexing by using default settings. If it is already 
+created, then the job will use the existing index. This provides flexibility for 
+you to create the destination index and define any settings or mappings that you 
+want to have in it. 
+
+If the destination index is built, the {dfanalytics-job} task calls the {es} 
+{ref}/docs-reindex.html[Reindex API] to launch the reindexing task. When you 
+call the {ref}/get-dfanalytics-stats.html[Get {dfanalytics-job} statistics API] 
+to check the progress and the job is in the reindexing phase, then the job calls 
+the {ref}/tasks.html[Task management API] to report back the state of the phase.
+
+
+[discrete]
+===== Loading data
+
+After the reindexing is finished, the job fetches the needed data from the 
+destination index, converts it into the format that the analysis process 
+expects, then sends it to the analysis process.
+
+
+[discrete]
+===== Analyzing
+
+When all the required data is loaded, the analyzing phase begins. The exact 
+process always depends on the type of {dfanalytics} – for example, 
+{classification} or {oldetection} – that is executed.
+
+
+[discrete]
+==== Writing results
+
+After the loaded data is analyzed, the analysis process sends back the results. 
+Only the additional fields that the analysis calculated are written back, the 
+ones that have been loaded in the loading data phase are not. The 
+{dfanalytics-job} matches the results with the data rows in the destination 
+index, merges them, and indexes them back to the destination index. When the 
+process is complete, the task is marked as completed and the {dfanalytics-job} 
+stops. Your data is ready to be evaluated.

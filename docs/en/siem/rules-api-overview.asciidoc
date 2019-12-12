@@ -11,12 +11,31 @@ seemingly harmless events.
 For more information on signals, and the difference between signals, events, 
 and alerts, see <<detection-engine-overview>>.
 
-The RESTful API supports the standard HTTP methods: `GET`, `POST`, `PUT`, and `DELETE`. It is accessed via `<kibana URL>/api/detection_engine/rules`, where `<kibana URL>` is the URL and port number of your Kibana instance.
+The RESTful API supports the standard HTTP methods: `GET`, `POST`, `PUT`, and `DELETE`. It is accessed via:
+
+`<kibana URL>/api/detection_engine/rules`
+
+Where `<kibana URL>` is the URL and port number of your Kibana instance.
 
 NOTE: By default, the Kibana server runs behind a proxy which adds a random 
 path component to its URL.
 {kibana-ref}/development-basepath.html[Considerations for basePath] describes 
 how to work with and disable the random path.
+
+[float]
+==== {kib} space API calls
+
+If you are making calls to a {kib} space *other than* the `Default` space, the 
+space identifier is part of the call's URL:
+
+`<kibana URL>/s/<space URL>/api/detection_engine/rules`
+
+Where `<space URL>` is the URL identifier for the space.
+
+NOTE: You can find space URL identifiers on
+{kibana-ref}/xpack-spaces.html[*Edit space*] pages (Management -> Spaces -> 
+<space name>) or by calling
+{kibana-ref}/spaces-api-get-all.html[`GET /api/spaces/space`].
 
 [float]
 === Kibana role requirements
@@ -52,13 +71,15 @@ The API methods are:
 All requests must contain these headers:
 
 * `Content-Type: application/json`
-* `kbn-xsrf: <value>`, where `<value>` can be any text (for example, `kbn-xsrf: kibana`)
+* `kbn-xsrf: <value>`, where `<value>` can be any alphanumeric string (for 
+example, `kbn-xsrf: kibana`)
 
-For example, the following call retrieves the first 20 detection engine rules:
+For example, the following call retrieves the first 20 detection engine rules 
+from the {kib} `siem` space:
 
 [source,js]
 --------------------------------------------------
-curl -X GET "<kibana URL>/api/detection_engine/rules/_find"
+curl -X GET "<kibana URL>/s/siem/api/detection_engine/rules/_find"
 -H 'kbn-xsrf: kibana' -H 'Content-Type: application/json'
 -u <username>:<password>
 --------------------------------------------------

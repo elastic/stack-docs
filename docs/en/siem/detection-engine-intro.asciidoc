@@ -37,6 +37,15 @@ received from third-party systems. When a detection engine rule's conditions
 are met, the {siem-app} writes one or more signals to an Elasticsearch 
 `signals` index.
 
+[NOTE]
+==============
+Signal indices are created for each {kib} space. The naming convention is:
+
+`.siem-signals-<space name>`
+
+For the default space, the signals index is named `.siem-signals-default`.
+==============
+
 Alerts and events::
 Always refer to data and detections {siem-soln} receives from data shippers and 
 third-party tools, such as Suricata and Elastic Endpoint Security.

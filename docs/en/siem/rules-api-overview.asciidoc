@@ -1,6 +1,6 @@
 [[rule-api-overview]]
 [role="xpack"]
-== SIEM rules API
+== SIEM detection engine APIs
 
 You can create rules that automatically turn events and alerts sent to the
 {siem-app} into signals, which are displayed on the Engine Detection page. 
@@ -11,9 +11,12 @@ seemingly harmless events.
 For more information on signals, and the difference between signals, events, 
 and alerts, see <<detection-engine-overview>>.
 
-The RESTful API supports the standard HTTP methods: `GET`, `POST`, `PUT`, and `DELETE`. It is accessed via:
+The RESTful APIs have these endpoints:
 
-`<kibana URL>/api/detection_engine/rules`
+* `<kibana URL>/api/detection_engine/rules` - Rule CRUD functions 
+* `<kibana URL>/api/detection_engine/index` - Signal index operations
+* `<kibana URL>/api/detection_engine/privileges` - Gets {kib} space privileges for the user 
+* `<kibana URL>/api/detection_engine/tags` - Aggregates and returns rule tags 
 
 Where `<kibana URL>` is the URL and port number of your Kibana instance.
 
@@ -26,7 +29,7 @@ how to work with and disable the random path.
 ==== {kib} space API calls
 
 If you are making calls to a {kib} space *other than* the `Default` space, the 
-space identifier is part of the call's URL:
+space identifier is part of the endpoint's URL:
 
 `<kibana URL>/s/<space URL>/api/detection_engine/rules`
 
@@ -60,13 +63,6 @@ to the Kibana UI, is required to access the API.
 === API calls
 
 All calls to the API are stateless. Each call must include all the information {siem-soln} needs to perform the request.
-
-The API methods are:
-
-* `GET`: Retrieves existing rules
-* `POST`: Creates new rules
-* `PUT`: Updates existing rules
-* `DELETE`: Deletes rules
 
 All requests must contain these headers:
 

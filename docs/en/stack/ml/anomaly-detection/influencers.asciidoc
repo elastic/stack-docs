@@ -1,0 +1,39 @@
+[role="xpack"]
+[[ml-influencers]]
+=== Influencers
+
+When anomalous events occur, we want to know why. To determine the cause,
+however, we often need a broader knowledge of the domain. If you have suspicions
+about which entities in your dataset are likely causing irregularities, you can 
+identify them as _influencers_ in your {anomaly-jobs}.
+
+That is to say, influencers are fields that you suspect contain information
+about someone or something that influences or contributes to anomalies in your
+data.
+
+Influencers can be any field in your data. If you use {dfeeds}, however, the
+field must exist in your {dfeed} query or aggregation; otherwise it is not
+included in the job analysis.
+////
+In the case of the {dfeed} query, influencers must exist in the results of the
+query in the same hit as the detector data.
+TBD: Why? 
+////
+Influencers do not need to be fields that are specified in your {anomaly-job}
+detectors, though they often are.
+
+Picking an influencer is strongly recommended for the following reasons:
+
+* It allows you to more easily assign blame for anomalies
+* It simplifies and aggregates the results
+
+//TBD: Are these benefits unique to jobs with multiple detectors?
+
+If you use {kib}, the job creation wizards can suggest which fields to use as
+influencers. The best influencer is the person or thing that you want to blame
+for the anomaly. In many cases, users or client IP addresses make excellent
+influencers.
+
+TIP: As a best practice, do not pick too many influencers. For example, you
+generally do not need more than three. If you pick many influencers, the results
+can be overwhelming and there is a small overhead to the analysis.

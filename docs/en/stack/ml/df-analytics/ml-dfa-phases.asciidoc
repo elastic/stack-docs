@@ -10,9 +10,8 @@ phases.
 [discrete]
 ==== The phases of a {dfanalytics-job}
 
-A {dfanalytics-job} has two states: started and stopped. Until its state 
-switches from started to stopped, the job goes through four phases regardless of 
-the {dfanalytics} type it performs. The phases are discrete steps of the 
+During its life cycle, a {dfanalytics-job} goes through four phases regardless 
+of the {dfanalytics} type it performs. The phases are discrete steps of the 
 {dfanalytics-job} that is essentially a persistent {es} task. The four phases 
 are the following:
 
@@ -34,11 +33,8 @@ created, then the job will use the existing index. This provides flexibility for
 you to create the destination index and define any settings or mappings that you 
 want to have in it. 
 
-If the destination index is built, the {dfanalytics-job} task calls the {es} 
-{ref}/docs-reindex.html[Reindex API] to launch the reindexing task. When you 
-call the {ref}/get-dfanalytics-stats.html[Get {dfanalytics-job} statistics API] 
-to check the progress and the job is in the reindexing phase, then the job calls 
-the {ref}/tasks.html[Task management API] to report back the state of the phase.
+Once the destination index is built, the {dfanalytics-job} task calls the {es} 
+{ref}/docs-reindex.html[Reindex API] to launch the reindexing task.
 
 
 [discrete]

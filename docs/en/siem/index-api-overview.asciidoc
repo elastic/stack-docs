@@ -5,9 +5,13 @@
 You use the index endpoint to create, get, delete a signal index in a {kib} 
 space.
 
-You can only create a signal index when the user role has `manage` privileges for both the {ref}/security-privileges.html[{es} cluster and the signals index].
+You can only create a signal index when the user role has `manage` privileges 
+for both the {ref}/security-privileges.html[{es} cluster and the signals index].
 
-NOTE: To make sure you can always create indices, use a glob pattern to match indices from multiple spaces. For example, `.siem-signals-*`.
+NOTE: To make sure administrators can always create indices, in the `Indices` 
+field on the *Create role* page use a glob pattern to match indices from 
+multiple spaces (*Management* -> *Roles* -> *Create role*). For example, `.siem-
+signals-*`.
 
 [float]
 ==== Create index

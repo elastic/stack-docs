@@ -1,0 +1,56 @@
+[[tags-api-overview]]
+[role="xpack"]
+=== Tags endpoint
+
+A convenience endpoint for aggregating and returning all rule tags.
+
+==== Get tags
+
+Gets all tags for all rules.
+
+[float]
+===== Request URL
+
+`GET /api/detection_engine/tags`
+
+[float]
+====== Example requests
+
+Gets tags for all rules in the {kib} default space:
+
+[source, js]
+--------------------------------------------------
+GET /api/detection_engine/tags
+--------------------------------------------------
+// KIBANA
+
+Gets tags for all rules in the {kib} `siem` space:
+
+[source, js]
+--------------------------------------------------
+GET /s/siem/api/detection_engine/tags
+--------------------------------------------------
+// KIBANA
+
+[float]
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+[float]
+====== Example response
+
+[source,json]
+--------------------------------------------------
+[
+  "zeek",
+  "suricata",
+  "windows",
+  "linux",
+  "network",
+  "initial access",
+  "remote access",
+  "phishing"
+]
+--------------------------------------------------

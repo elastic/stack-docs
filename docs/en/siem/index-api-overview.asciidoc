@@ -5,10 +5,9 @@
 You use the index endpoint to create, get, delete a signal index in a {kib} 
 space.
 
-You can only create a signal index when:
+You can only create a signal index when the user role has `manage` privileges for both the {ref}/security-privileges.html[{es} cluster and the signals index].
 
-NOTE: When a rule's criteria is met, a document is created and stored in the 
-signal index.
+NOTE: To make sure you can always create indices, use a glob pattern to match indices from multiple spaces. For example, `.siem-signals-*`.
 
 [float]
 ==== Create index
@@ -41,12 +40,12 @@ POST /s/siem/api/detection_engine/index
 [float]
 ==== Get index
 
-Gets the signal index name for the {kib} space if it exists.
+Gets the signal index name if it exists.
 
 [float]
 ===== Request URL
 
-`POST /api/detection_engine/index`
+`GET /api/detection_engine/index`
 
 [float]
 ====== Example request
@@ -89,3 +88,30 @@ Example response when no index exists:
   "message": "index for this space does not exist"
 }
 --------------------------------------------------
+
+[float]
+==== Delete index
+
+Deletes the signal index.
+
+[float]
+===== Request URL
+
+`DELETE /api/detection_engine/index`
+
+[float]
+====== Example request
+
+Deletes the signal index for the {kib} `siem` space.
+
+[source, js]
+--------------------------------------------------
+DELETE /s/siem/api/detection_engine/index
+--------------------------------------------------
+// KIBANA
+
+[float]
+===== Response code
+
+`200`:: 
+    Indicates a successful call.

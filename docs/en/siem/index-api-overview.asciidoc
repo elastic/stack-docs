@@ -16,7 +16,8 @@ signals-*`.
 [float]
 ==== Create index
 
-Creates a signal index.
+Creates a signal index. The naming convention for the index is
+`.siem-signals-<space name>`.
 
 [float]
 ===== Request URL
@@ -26,8 +27,7 @@ Creates a signal index.
 [float]
 ====== Example request
 
-Creates a signal index in the {kib} `siem` space. The naming convention for the 
-index is `.siem-signals-<space name>-*`.
+Creates a signal index in the {kib} `siem` space.
 
 [source, js]
 --------------------------------------------------
@@ -54,7 +54,7 @@ Gets the signal index name if it exists.
 [float]
 ====== Example request
 
-Gets the signal index for the {kib} `siem` space.
+Gets the signal index for the {kib} `siem` space:
 
 [source, js]
 --------------------------------------------------
@@ -106,7 +106,7 @@ Deletes the signal index.
 [float]
 ====== Example request
 
-Deletes the signal index for the {kib} `siem` space.
+Deletes the signal index for the {kib} `siem` space:
 
 [source, js]
 --------------------------------------------------

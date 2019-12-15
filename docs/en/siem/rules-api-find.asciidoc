@@ -19,8 +19,7 @@ All parameters are optional:
 
 |`per_page` |Integer |The number of rules to return per page.
 
-|`sort_field` |String |Determines which field is used to sort the results. 
-*Frank: does this only work on `enabled`?*
+|`sort_field` |String |Determines which field is used to sort the results.
 
 |`sort_order` |String |Determines the sort order, which can be `desc` or `asc`.
 
@@ -34,12 +33,15 @@ syntax, where `<field name>` can be:
 * `createdBy`
 * `interval`
 * `updatedBy`
+
+NOTE: Even though the rule JSON object uses `created_by` and `updated_by` 
+fields, you must use `createdBy` and `updatedBy` in filters.
 |==============================================
 
 ===== Example request
 
-Retrieves the first five rules with the word `windows` in their names, sorted in 
-ascending order:
+Retrieves the first five rules with the word `windows` in their names, sorted 
+in ascending order:
 
 [source,js]
 --------------------------------------------------

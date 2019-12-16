@@ -122,11 +122,22 @@ endif::[]
 
 |framework |String |Relevant MITRE ATT&CK framework. |Yes
 
-|tactic |Object |Object containing ID, name, and reference strings of the 
-relevant MITRE ATT&CK type. |Yes
+|tactic |Object a|Object containing information on the MITRE ATT&CK type:
 
-|technique |Object |Object containing ID, name, and reference strings of the 
-relevant MITRE ATT&CK technique. |Yes
+* `id` - string, required
+* `name` - string, required
+* `reference` - string, required
+
+|Yes
+
+|technique |Object a|Object containing information on the MITRE ATT&CK 
+technique:
+
+* `id` - string, required
+* `name` - string, required
+* `reference` - string, required
+
+|Yes
 
 |==============================================
 // end::rules-api-json-schema[]

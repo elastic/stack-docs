@@ -103,13 +103,10 @@ include::docker/create-certs.yml[]
 ----
 include::docker/elastic-docker-tls.yml[]
 ----
-<1> Bootstrap {es} with the password defined in `.env` to enable you to run 
-the `elasticsearch-setup-passwords` tool to set the passwords for the built-in users, 
-including the `elastic` and `kibana` users. 
-<2> Generate and apply a trial license that supports Transport Layer Security.
-<3> Enable Transport Layer Security to encrypt client communications.
-<4> Enable Transport Layer Security to encrypt internode communications.
-<5> Allow the use of self-signed certificates by not requiring hostname verification. 
+<1> Generate and apply a trial license that supports Transport Layer Security.
+<2> Enable Transport Layer Security to encrypt client communications.
+<3> Enable Transport Layer Security to encrypt internode communications.
+<4> Allow the use of self-signed certificates by not requiring hostname verification. 
 endif::[]
 --
 

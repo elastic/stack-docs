@@ -203,8 +203,8 @@ you can create a bind mount in the volumes section.
 ["source","yaml"]
 ----
     volumes:
-      - ./data01:/usr/share/elasticsearch/data
-      - ./certs:$CERTS_DIR
+      - data01:/usr/share/elasticsearch/data
+      - certs:$CERTS_DIR
       - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ----  
 
@@ -213,7 +213,7 @@ Similarly, to load {kib} settings from a file, you overwrite `/usr/share/kibana/
 ["source","yaml"]
 ----
     volumes:
-      - ./certs:$CERTS_DIR
+      - certs:$CERTS_DIR
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
 ----
 

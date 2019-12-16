@@ -2,7 +2,7 @@ version: '2.2'
 
 services:
   create_certs:
-    image: docker.elastic.co/elasticsearch/elasticsearch:{version}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
     container_name: create_certs
     command: >
       bash -c '
@@ -13,12 +13,17 @@ services:
         fi;
         chown -R 1000:0 /certs
       '
-    user: "0"
     working_dir: /usr/share/elasticsearch
     volumes: 
       - certs:/certs
       - .:/usr/share/elasticsearch/config/certificates
+    networks:
+      - elastic        
 
 volumes: 
   certs:
-    driver: local  
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

@@ -1,5 +1,4 @@
 [[index-api-overview]]
-[role="xpack"]
 === Index endpoint
 
 You use the index endpoint to create, get, and delete a signal index in a 
@@ -13,18 +12,15 @@ field on the *Create role* page use a glob pattern to match indices from
 multiple spaces (*Management* -> *Roles* -> *Create role*). For example, `.siem-
 signals-*`.
 
-[float]
 ==== Create index
 
 Creates a signal index. The naming convention for the index is
 `.siem-signals-<space name>`.
 
-[float]
 ===== Request URL
 
 `POST  /api/detection_engine/index`
 
-[float]
 ====== Example request
 
 Creates a signal index in the {kib} `siem` space.
@@ -35,23 +31,19 @@ POST /s/siem/api/detection_engine/index
 --------------------------------------------------
 // KIBANA
 
-[float]
 ===== Response code
 
 `200`:: 
     Indicates a successful call.
 
-[float]
 ==== Get index
 
 Gets the signal index name if it exists.
 
-[float]
 ===== Request URL
 
 `GET /api/detection_engine/index`
 
-[float]
 ====== Example request
 
 Gets the signal index for the {kib} `siem` space:
@@ -62,7 +54,6 @@ GET /s/siem/api/detection_engine/index
 --------------------------------------------------
 // KIBANA
 
-[float]
 ===== Response code
 
 `200`:: 
@@ -70,7 +61,6 @@ GET /s/siem/api/detection_engine/index
 `404`::
     Indicates no index exists.
     
-[float]
 ====== Example responses
 
 Example response when index exists:
@@ -93,17 +83,14 @@ Example response when no index exists:
 }
 --------------------------------------------------
 
-[float]
 ==== Delete index
 
 Deletes the signal index.
 
-[float]
 ===== Request URL
 
 `DELETE /api/detection_engine/index`
 
-[float]
 ====== Example request
 
 Deletes the signal index for the {kib} `siem` space:
@@ -114,7 +101,6 @@ DELETE /s/siem/api/detection_engine/index
 --------------------------------------------------
 // KIBANA
 
-[float]
 ===== Response code
 
 `200`:: 

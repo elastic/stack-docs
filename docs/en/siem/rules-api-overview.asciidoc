@@ -1,31 +1,28 @@
 [[rule-api-overview]]
 [role="xpack"]
-== SIEM detection engine API
+== Detection engine API
 
 You can create rules that automatically turn events and alerts sent to the
 {siem-app} into signals, which are displayed on the Engine Detection page. 
-Signals can be defined in numerous ways, from a single alert sent from a
-third-party system to detecting malicious intent from a complex series of 
-seemingly harmless events.
 
 For more information on signals, and the difference between signals, events, 
-and alerts, see <<detection-engine-overview>>.
+and alerts, see <<det-engine-terminology, detection engine terminology>>.
 
 The RESTful API has these endpoints:
 
 * `<kibana URL>/api/detection_engine/rules` - Detection engine rule CRUD 
 functions 
 * `<kibana URL>/api/detection_engine/index` - Signal index operations
+* `<kibana URL>/api/detection_engine/tags` - Aggregates and returns rule tags
 * `<kibana URL>/api/detection_engine/privileges` - Gets {kib} space privileges 
 for the user 
-* `<kibana URL>/api/detection_engine/tags` - Aggregates and returns rule tags 
 
 Where `<kibana URL>` is the URL and port number of your Kibana instance.
 
 NOTE: By default, the Kibana server runs behind a proxy which adds a random 
 path component to its URL.
 {kibana-ref}/development-basepath.html[Considerations for basePath] describes 
-how to work with and disable the random path.
+how to work with and disable the random path component.
 
 [float]
 ==== {kib} space API calls

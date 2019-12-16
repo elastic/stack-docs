@@ -3,107 +3,106 @@
 |==============================================
 |Name |Type |Description |Required
 
-|description |String |Describes the rule |Yes
+|description |String |The rule's description. |Yes
 
-|enabled |Boolean |Determines whether the rule is enabled |No, defaults to
-`true`
+|enabled |Boolean |Determines whether the rule is enabled. |No, defaults to
+`true`.
 
-|false_positives |String[] |String array describing common reasons why the rule
-may issue false-positive signals |No, defaults to an empty array
+|false_positives |String[] |String array used to describe common reasons why 
+the rule may issue false-positive signals. |No, defaults to an empty array.
 
 // |filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to 
 // create a signal |Yes, for filter-based rules only
 
 |filters |Object[] |The {ref}/query-filter-context.html[query and filter 
-context] JSON array used to define when a signal is created from an alert or 
-event |Yes, for filter-based rules only
+context] array used to define the conditions for when signals are created from 
+events. |Yes, for query- and filter-based rules only.
 
 |from |String |Time from which data is analyzed each time the rule executes,
-using a {ref}/common-options.html#date-math[date math range] |Yes
+using a {ref}/common-options.html#date-math[date math range]. |Yes
 
 ifeval::["{api-call}" == "create-rule"]
-|rule_id |String |Unique ID that can be used as a reference for rules converted
-from third-party security solutions |No, automatically created when it
-is not provided
+|rule_id |String |Unique ID used to identify rules. For example, when a rules 
+is converted from a third-party security solution. |No, automatically created 
+when it is not provided.
 endif::[]
 
-|immutable |Boolean |Determines whether the rule can be changed (preconfigured rules shipped with the {siem-app} are immutable) |No,
-defaults to `false`
+|immutable |Boolean |Determines whether the rule can be changed (preconfigured 
+rules shipped with the {siem-app} are immutable). |No, defaults to `false`.
 
-|index |String[] |Indices on which the rule functions |Yes
+|index |String[] |Indices on which the rule functions. |Yes
 
-|interval |String |Frequency of rule execution, using a date math range |No,
-defaults to 5 minutes
+|interval |String |Frequency of rule execution, using a date math range. |No,
+defaults to 5 minutes.
 
 |query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal |Yes, for query-based rules only (optional for rules using the `filters` 
-field)
+signal. |No, defaults to an empty string.
 
 |language |String |Determines the query language, which must be
-`kuery` or `lucene` |Yes, for query-based rules only
+`kuery` or `lucene`. |No, defaults to `kuery`.
 
-|output_index |String |Index to which signals detected by the rule are saved 
-|No, if unspecified signals are saved to, `.siem-signals-<space_name>` index, 
-where `<space_name>` is the name of the space in which the rule was created
+|output_index |String |Index to which signals detected by the rule are saved. 
+|No, if unspecified signals are saved to `.siem-signals-<space_name>` index, 
+where `<space_name>` is the name of the {kib} space in which the rule exists.
 
-|saved_id |String |Kibana saved search used by the rule to create signals 
-|Yes, for query-based rules only
+|saved_id |String |Kibana saved search used by the rule to create signals.
+|Yes, for `saved_query` rules only.
 
-|meta |Object |Placeholder for any metadata about the rule | No
+|meta |Object |Placeholder for metadata about the rule. | No
 
-|risk_score |Integer |A numerical representation of the signal's severity from 
+|risk_score |Integer a|A numerical representation of the signal's severity from 
 0 to 100, where:
 
-`21` represents low severity
+* `21` represents low severity
+* `47` represents medium severity
+* `73` represents high severity
+* `99` represents critical severity
 
-`47` represents medium severity
-
-`73` represents high severity
-
-`99` represents critical severity
 |Yes
 
 |max_signals |Integer |Maximum number of signals the rule can create during a
-single execution |No, defaults to 100
+single execution. |No, defaults to `100`.
 
-|name |String |Rule's name |Yes
+|name |String |The rule's name. |Yes
 
-|severity |String |Severity level of signals produced by the rule, which must 
+|severity |String a|Severity level of signals produced by the rule, which must 
 be one of the following:
 
-`low`: Signals that are of interest but generally not considered to be 
+* `low`: Signals that are of interest but generally not considered to be 
 security incidents
+* `medium`: Signals that require investigation
+* `high`: Signals that require immediate investigation
+* `critical`: Signals that indicate a security incident has occurred
 
-`medium`: Signals that require investigation
-
-`high`: Signals that require an immediate investigation
-
-`critical`: Signals that indicate a security incident has occurred
 |Yes
 
 |tags |String[] |String array containing words and phrases to help categorize,
-filter, and search rules |No, defaults to an empty array
+filter, and search rules. |No, defaults to an empty array.
 
 |to |String |Time to which data is analyzed each time the rule executes, using a
-date math range |Yes
+date math range. |Yes
 
-|type |String |Data type on which the rule is based, must be `query` or 
-`saved_query`|Yes
+|type |String a|Data type on which the rule is based, must be:
+
+* `query`: query-based conditions with or without additional filters
+* `saved_query`: saved search, identified in the `saved_id` field
+
+|Yes
 
 ifeval::["{api-call}" == "update-rule"]
 |threats |<<threats-object-update, threats[]>> |Object containing MITRE ATT&CK 
-information about the type of threat the rule monitors |No, 
-defaults to an empty array
+information about the type of threat the rule monitors. |No, 
+defaults to an empty array.
 endif::[]
 
 ifeval::["{api-call}" == "create-rule"]
 |threats |<<threats-object-create, threats[]>> |Object containing MITRE ATT&CK 
-information about the type of threat the rule monitors |No, 
-defaults to an empty array
+information about the type of threat the rule monitors. |No, 
+defaults to an empty array.
 endif::[]
 
 |references |String[] |String array containing notes about or references to 
-relevant information about the rule |No, defaults to an empty array
+relevant information about the rule. |No, defaults to an empty array.
 
 |==============================================
 
@@ -121,13 +120,13 @@ endif::[]
 |==============================================
 |Name |Type |Description |Required
 
-|framework |String |Relevant MITRE ATT&CK framework |Yes
+|framework |String |Relevant MITRE ATT&CK framework. |Yes
 
 |tactic |Object |Object containing ID, name, and reference strings of the 
-relevant MITRE ATT&CK type |Yes
+relevant MITRE ATT&CK type. |Yes
 
 |technique |Object |Object containing ID, name, and reference strings of the 
-relevant MITRE ATT&CK technique |Yes
+relevant MITRE ATT&CK technique. |Yes
 
 |==============================================
 // end::rules-api-json-schema[]

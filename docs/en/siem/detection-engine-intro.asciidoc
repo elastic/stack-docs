@@ -1,9 +1,6 @@
 [[detection-engine-overview]]
 [role="xpack"]
-= Detection Engine
-
-[partintro]
---
+== Detection engine
 
 The detection engine automatically searches for threats and creates signals 
 when they are detected. These threats are detected using rules that define the 
@@ -13,23 +10,22 @@ and hosts. Additionally, to meet your specific requirements,
 you can <<rules-ui-create, create your own rules>>.
 
 [float]
-== Signals
+=== Signals
 *Ben: check with Garrett*
 When a rule's criteria is matched, a signal is produced and displayed on the 
 Detection Engine page. To view all signals created by a specific rule, click 
 *Manage rules* and then the relevant rule in the All rules table.
 
 [float]
-== Rule activity
+=== Rule activity
 *Ben: check with Garrett*
 To see whether a rule is active, when it last ran, and how far back it searched 
 for signals during its last execution, view the Activity monitor table
 (*Manage rules* -> *Activity monitor*).
 
 [float]
-== Terminology
-
-To ensure all terms are well-defined:
+[[det-engine-terminology]]
+=== Terminology
 
 Signals::
 Alway refer to a {siem-soln} produced detection. That is, signals are never 
@@ -49,5 +45,3 @@ For the default space, the signals index is named `.siem-signals-default`.
 Alerts and events::
 Always refer to data and detections {siem-soln} receives from data shippers and 
 third-party tools, such as Suricata and Elastic Endpoint Security.
-
---

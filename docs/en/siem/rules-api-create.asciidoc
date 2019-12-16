@@ -17,74 +17,41 @@ include::shared-content/rule-schema.asciidoc[tag=rules-api-json-schema]
 NOTE: Rules can include both queries and filters. When both are used, make 
 sure all required fields are provided.
 
-===== Example requests
-
-*Frank: I'd like to add an example for each `type`, including one that retrieves a saved query id and then creates a rule.*
+===== Example request
 
 [source,js]
 --------------------------------------------------
 POST api/detection_engine/rules
 {
-  "rule_id": "ms_office_product_starting_a_process_in_a_user_directory_possible_payload",
+  "rule_id": "process_started_by_ms_office_program_possible_payload",
   "risk_score": 50,
-  "description": "MS Office product started a process in a user directory - possible payload",
+  "description": "Process started by MS Office program - possible payload",
   "immutable": true,
   "interval": "5m",
-  "name": "MS Office started suspicious process",
+  "name": "MS Office child process",
   "severity": "low",
+  "tags": [
+   "child process",
+   "ms office"
+   ],
   "type": "query",
   "from": "now-6m",
   "to": "now",
-  "query": "( (process.parent.name:winword.exe OR process.parent.name:excel.exe OR  process.parent.name:powerpnt.exe OR  process.parent.name:mspub.exe OR  process.parent.name:visio.exe OR  process.parent.name:outlook.exe) AND (process.args:*users*) )",
+  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
   "language": "kuery",
   "filters": [
-    {
+     {
       "query": {
-        "match": {
-          "event.action": {
-            "query": "Process Create (rule: ProcessCreate)",
-            "type": "phrase"
-          }
-        }
-      },
-      "$state": {
-        "store": "appState"
+         "match": {
+            "event.action": {
+               "query": "Process Create (rule: ProcessCreate)",
+               "type": "phrase"
+            }
+         }
       }
-    }
+     }
   ],
   "enabled": false
-  "threats": [
-    {
-      "framework": "MITRE ATT&CK",
-      "tactic": {
-        "id": "TA0040",
-        "name": "impact",
-        "reference": "https://attack.mitre.org/tactics/TA0040/"
-      },
-      "techniques": [
-        {
-          "id": "T1499",
-          "name": "endpoint denial of service",
-          "reference": "https://attack.mitre.org/techniques/T1499/"
-        }
-      ]
-    },
-    {
-      "framework": "MITRE ATT&CK",
-      "tactic": {
-        "id": "T1020",
-        "name": "Automated Exfiltration",
-        "reference": "https://attack.mitre.org/techniques/T1020/"
-      },
-      "techniques": [
-        {
-          "id": "T1002",
-          "name": "Data Compressed",
-          "reference": "https://attack.mitre.org/techniques/T1002/"
-        }
-      ]
-    }
-  ]
 }
 --------------------------------------------------
 // KIBANA
@@ -104,35 +71,41 @@ Example response:
 --------------------------------------------------
 {
   "created_by": "elastic",
-  "description": "Converts all packetbeat events from siem-es into signals",
+  "description": "Process started by MS Office program - possible payload",
   "enabled": false,
   "false_positives": [],
-  "filters": [],
-  "from": "now-300s",
-  "id": "7263532e-4797-4958-a185-b1dc904e6f54",
-  "immutable": false,
-  "index": [
-    "packetbeat-*"
+  "filters": [
+    {
+      "query": {
+        "match": {
+          "event.action": {
+            "query": "Process Create (rule: ProcessCreate)",
+            "type": "phrase"
+          }
+        }
+      }
+    }
   ],
+  "from": "now-6m",
+  "id": "36980617-ac06-4b4a-a3c4-c77713630ba3",
+  "immutable": true,
   "interval": "5m",
-  "rule_id": "c02b2b67-5f96-47b5-9d9a-534d355568a0",
+  "rule_id": "process_started_by_ms_office_program_possible_payload",
   "language": "kuery",
-  "output_index": ".siem-signals",
+  "output_index": ".siem-signals-default",
   "max_signals": 100,
-  "risk_score": 21,
-  "name": "All packetbeat events",
-  "query": "host.hostname : \"siem-es\" ",
+  "risk_score": 50,
+  "name": "MS Office child process",
+  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
   "references": [],
-  "saved_id": "packetbeat",
-  "meta": {
-    "from": "now-300s"
-  },
   "severity": "low",
   "updated_by": "elastic",
   "tags": [
-    "packetbeat"
+    "child process",
+    "ms office"
   ],
   "to": "now",
-  "type": "saved_query"
+  "type": "query",
+  "threats": []
 }
 --------------------------------------------------

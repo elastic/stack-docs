@@ -23,17 +23,30 @@ include::shared-content/rule-schema.asciidoc[tag=rules-api-json-schema]
 
 ===== Example request
 
-Updates the `name`, `description` and `query` fields:
+Updates the `threats` object:
 
 [source,js]
 --------------------------------------------------
 PUT api/detection_engine/rules
 {
-  "id": "5a154358-9c62-458f-948b-10aa2c966de7",
-  "name": "New rule name"
-  "description": "All events and alerts from London",
-  "type": "query"
-  "query": "geo.city.name: London"
+  "rule_id": "process_started_by_ms_office_program_possible_payload",
+  "threats": [
+   {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+         "id": "TA0001",
+         "reference": "https://attack.mitre.org/tactics/TA0001",
+         "name": "Initial Access"
+      },
+      "techniques": [
+         {
+            "id": "T1193",
+            "name": "Spearphishing Attachment",
+            "reference": "https://attack.mitre.org/techniques/T1193"
+         }
+      ]
+   }
+  ]
 }
 --------------------------------------------------
 // KIBANA
@@ -53,32 +66,58 @@ Example response:
 --------------------------------------------------
 {
   "created_by": "elastic",
-  "description": "All events and alerts from London",
+  "description": "Process started by MS Office program - possible payload",
   "enabled": false,
   "false_positives": [],
-  "filters": [],
-  "from": "now-300s",
-  "id": "5a154358-9c62-458f-948b-10aa2c966de7",
-  "immutable": false,
-  "index": [
-    "auditbeat-*"
+  "filters": [
+    {
+      "query": {
+        "match": {
+          "event.action": {
+            "query": "Process Create (rule: ProcessCreate)",
+            "type": "phrase"
+          }
+        }
+      }
+    }
   ],
+  "from": "now-6m",
+  "id": "36980617-ac06-4b4a-a3c4-c77713630ba3",
+  "immutable": true,
   "interval": "5m",
-  "rule_id": "45ead270-35a5-4a84-b710-5f399e4502ad",
+  "rule_id": "process_started_by_ms_office_program_possible_payload",
   "language": "kuery",
-  "output_index": ".siem-signals",
+  "output_index": ".siem-signals-default",
   "max_signals": 100,
-  "risk_score": 21,
-  "name": "New name",
-  "query": "geo.city.name: London",
+  "risk_score": 50,
+  "name": "MS Office child process",
+  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
   "references": [],
-  "meta": {
-    "from": "now-300s"
-  },
   "severity": "low",
   "updated_by": "elastic",
-  "tags": [],
+  "tags": [
+    "child process",
+    "ms office"
+  ],
   "to": "now",
-  "type": "query"
+  "type": "query",
+  "threats": [
+    {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+        "id": "TA0001",
+        "reference": "https://attack.mitre.org/tactics/TA0001",
+        "name": "Initial Access"
+      },
+      "techniques": [
+        {
+          "id": "T1193",
+          "name": "Spearphishing Attachment",
+          "reference": "https://attack.mitre.org/techniques/T1193"
+        }
+      ]
+    }
+  ]
 }
+
 --------------------------------------------------

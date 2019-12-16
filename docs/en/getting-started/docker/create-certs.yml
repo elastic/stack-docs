@@ -13,7 +13,6 @@ services:
         fi;
         chown -R 1000:0 /certs
       '
-    user: "0"
     working_dir: /usr/share/elasticsearch
     volumes: 
       - certs:/certs
@@ -22,3 +21,7 @@ services:
 volumes: 
   certs:
     driver: local  
+
+networks:
+  elastic:
+    driver: bridge

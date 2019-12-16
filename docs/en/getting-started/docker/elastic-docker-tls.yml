@@ -28,8 +28,8 @@ services:
         soft: -1
         hard: -1
     volumes: 
-      - data01:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
+      - ./data01:/usr/share/elasticsearch/data
+      - ./certs:$CERTS_DIR
     ports:
       - 9200:9200
     networks:
@@ -68,8 +68,8 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - data02:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
+      - ./data02:/usr/share/elasticsearch/data
+      - ./certs:$CERTS_DIR
     networks:
       - elastic
       
@@ -100,8 +100,8 @@ services:
         soft: -1
         hard: -1
     volumes: 
-      - data03:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
+      - ./data03:/usr/share/elasticsearch/data
+      - ./certs:$CERTS_DIR
     networks:
       - elastic
 // tag::kibana-config[]
@@ -122,7 +122,7 @@ services:
       SERVER_SSL_KEY: $CERTS_DIR/kib01/kib01.key
       SERVER_SSL_CERTIFICATE: $CERTS_DIR/kib01/kib01.crt
     volumes: 
-      - certs:$CERTS_DIR
+      - ./certs:$CERTS_DIR
     networks:
       - elastic    
 // end::kibana-config[]

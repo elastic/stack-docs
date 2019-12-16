@@ -11,14 +11,13 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"      
-      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD # <1>
-      - xpack.license.self_generated.type=trial # <2>
+      - xpack.license.self_generated.type=trial # <1>
       - xpack.security.enabled=true      
-      - xpack.security.http.ssl.enabled=true # <3>
+      - xpack.security.http.ssl.enabled=true # <2>
       - xpack.security.http.ssl.key=$CERTS_DIR/es01/es01.key
       - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
       - xpack.security.http.ssl.certificate=$CERTS_DIR/es01/es01.crt
-      - xpack.security.transport.ssl.enabled=true # <4>
+      - xpack.security.transport.ssl.enabled=true # <3>
       - xpack.security.transport.ssl.verification_mode=certificate # <5>
       - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
       - xpack.security.transport.ssl.certificate=$CERTS_DIR/es01/es01.crt
@@ -51,7 +50,6 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - xpack.license.self_generated.type=trial
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -83,7 +81,6 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - xpack.license.self_generated.type=trial
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true

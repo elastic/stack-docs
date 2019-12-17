@@ -76,7 +76,7 @@ endif::[]
 the location where the {es} certificates will be created.  
 * `create-certs.yml` is a Docker Compose file that launches a container to generate the certificates
 for {es} and {kib}.
-* `docker-elastic-tls.yml` is a Docker Compose file that brings up a three-node {es} cluster
+* `elastic-docker-tls.yml` is a Docker Compose file that brings up a three-node {es} cluster
 and a {kib} instance with TLS enabled.
 
 ifeval::["{release-state}"!="unreleased"]
@@ -98,7 +98,7 @@ include::docker/.env[]
 include::docker/create-certs.yml[]
 ----
 
-.`docker-elastic-tls.yml`:
+.`elastic-docker-tls.yml`:
 ["source","txt"]
 ----
 include::docker/elastic-docker-tls.yml[]
@@ -179,7 +179,7 @@ endif::[]
 --
 ["source","sh"]
 ----
-docker-compose down
+docker-compose -f elastic-docker-tls.yml down
 docker-compose -f elastic-docker-tls.yml up -d
 ----
 --

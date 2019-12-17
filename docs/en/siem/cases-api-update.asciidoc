@@ -1,0 +1,79 @@
+[[cases-api-update]]
+=== Update case
+
+Updates an existing case.
+
+==== Request URL
+
+`PATCH /api/cases/<case ID>`
+
+===== URL parts
+
+The URL must include the `case ID` of the case you are updating.
+
+==== Request body
+
+A JSON object containing:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`case` |Object a|Contains the updated case field values, which can be:
+
+* `title`: The case's title (string).
+* `description`: The case's description (string).
+* `state` Indicates whether the case is `open` or `closed`.
+* `tags`: String array containing words and phrases that help categorize cases.
+
+|Yes
+|`version` |String |The current case version (returned when calling
+<<cases-api-get-case>> or <<cases-api-get-all-cases>>) |Yes
+|==============================================
+
+===== Example request
+
+Updates the `description` and `tags` fields of case ID
+`c2ffcea0-57d0-11ea-95da-cb9f4a010e31`:
+
+[source,sh]
+--------------------------------------------------
+PATCH api/cases/c2ffcea0-57d0-11ea-95da-cb9f4a010e31
+{
+  "case":{ 
+    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
+    "tags": [
+      "phishing",
+      "social engineering",
+      "bubblegum"
+    ]
+  },
+  "version": "WzI4LDFd"
+}
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+==== Response payload
+
+The updated case with a new `version` value.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
+  "tags": [
+    "phishing",
+    "social engineering",
+    "bubblegum"
+  ],
+  "updated_at": "2020-02-25T16:11:12.637Z",
+  "version": "WzQwLDFd"
+}
+--------------------------------------------------

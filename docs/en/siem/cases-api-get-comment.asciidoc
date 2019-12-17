@@ -1,0 +1,49 @@
+[[cases-api-get-comment]]
+=== Get comment
+
+Gets the specified comment.
+
+==== Request URL
+
+`GET /api/cases/comment/<comment ID>`
+
+===== URL parts
+
+The URL must include the `comment ID` of the comment you are retrieving. To 
+retrieve all comment IDs, call <<cases-api-get-all-case-comments>>.
+
+===== Example request
+
+Retrieves comment ID `f118e4a0-57e1-11ea-95da-cb9f4a010e31`:
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/comments/f118e4a0-57e1-11ea-95da-cb9f4a010e31
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+==== Response payload
+
+The requested comment JSON object.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "comment_id": "f118e4a0-57e1-11ea-95da-cb9f4a010e31",
+  "version": "WzMsMV0=",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+  "created_at": "2020-02-25T15:17:31.057Z",
+  "created_by": {
+    "full_name": "Ms Moneypenny",
+    "username": "moneypenny"
+  },
+  "updated_at": "2020-02-26T14:59:06.749Z"
+}
+--------------------------------------------------

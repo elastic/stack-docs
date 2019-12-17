@@ -1,0 +1,27 @@
+[[cases-api-delete-comment]]
+=== Delete comment
+
+Deletes the specified comment.
+
+==== Request URL
+
+`DELETE /api/cases/comments/<comment ID>`
+
+===== URL parts
+
+The URL must include the `comment ID` of the comment you are deleting. 
+
+===== Example request
+
+Deletes comment ID `669364c0-2174-11ea-87ed-69e2fb63d9ed`:
+
+[source,sh]
+--------------------------------------------------
+DELETE api/cases/comments/669364c0-2174-11ea-87ed-69e2fb63d9ed
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.

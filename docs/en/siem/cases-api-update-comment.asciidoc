@@ -1,0 +1,58 @@
+[[cases-api-update-comment]]
+=== Update comment
+
+Updates an existing comment.
+
+==== Request URL
+
+`PATCH /api/cases/comment/<comment ID>`
+
+===== URL parts
+
+The URL must include the `comment ID` of the comment you are updating. To 
+retrieve all comment IDs, call <<cases-api-get-all-case-comments>>.
+
+==== Request body
+
+A JSON object with updated comment:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`comment` |String |The updated comment. |Yes
+|==============================================
+
+===== Example request
+
+Updates comment ID `f118e4a0-57e1-11ea-95da-cb9f4a010e3`:
+
+[source,sh]
+--------------------------------------------------
+PATCH api/cases/comment/f118e4a0-57e1-11ea-95da-cb9f4a010e3
+{
+  "comment": "That is nothing - Ethan Hunt answered a targeted social media
+  campaign promoting phishy pension schemes to IMF operatives. Even worse, he
+  likes baked beans."
+}
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+==== Response payload
+
+The updated comment and its timestamp.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+  "updated_at": "2020-02-27T09:33:39.803Z"
+}
+--------------------------------------------------

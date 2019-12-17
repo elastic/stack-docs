@@ -1,0 +1,108 @@
+[[cases-api-get-all-cases]]
+=== Get all cases
+
+Retrieves a paginated subset of cases. By default, the first page is returned 
+with 20 results per page.
+
+==== Request URL
+
+`GET /api/cases`
+
+===== URL query parameters
+
+All parameters are optional:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description
+
+|`page` |Integer |The page number to return.
+
+|`perPage` |Integer |The number of rules to return per page.
+
+|`sortField` |String |Determines which field is used to sort the results,
+`createdAt` or `updatedAt`.
+
+|`sortOrder` |String |Determines the sort order, which can be `desc` or `asc`.
+
+|`filter` |String a|Filters the returned results according to the value of the 
+specified field, using the `case-workflow.attributes.<field name>:<field value>` syntax, where `<field name>` can be:
+
+* `state`
+* `tags`
+
+|==============================================
+
+NOTE: Even though the JSON case object uses `created_at` and `updated_at`
+fields, you must use `createdAt` and `updatedAt` fields in the URL
+query.
+
+===== Example request
+
+Retrieves the first five cases with the `phishing` tag, in ascending order by 
+last update time.
+
+[source,sh]
+--------------------------------------------------
+GET api/cases?page=1&perPage=5&sortField=updatedAt&sortOrder=asc&filter=case-workflow.attributes.tags:phishing
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+==== Response payload
+
+A JSON object listing all cases.
+
+===== Response example
+
+[source,json]
+--------------------------------------------------
+{
+  "page": 1,
+  "per_page": 5,
+  "total": 2,
+  "cases": [
+    {
+      "case_id": "c2ffcea0-57d0-11ea-95da-cb9f4a010e31",
+      "version": "WzQ2LDFd",
+      "comments": [],
+      "created_at": "2020-02-25T13:14:32.264Z",
+      "created_by": {
+        "full_name": "Alan Hunley",
+        "username": "ahunley"
+      },
+      "updated_at": "2020-02-26T15:46:48.716Z",
+      "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
+      "title": "This case will self-destruct in 5 seconds",
+      "state": "open",
+      "tags": [
+        "phishing",
+        "social engineering",
+        "bubblegum"
+      ]
+    },
+    {
+      "case_id": "e1c61e40-58af-11ea-910e-c9f06dd752a6",
+      "version": "WzUyLDFd",
+      "comments": [],
+      "created_at": "2020-02-26T15:51:41.669Z",
+      "created_by": {
+        "full_name": "Rat Hustler",
+        "username": "rhustler"
+      },
+      "updated_at": "2020-02-26T16:21:16.693Z",
+      "title": "The Long Game",
+      "description": "Windows 95",
+      "tags": [
+        "windows",
+        "phishing"
+      ],
+      "state": "open"
+    }
+  ]
+}
+--------------------------------------------------

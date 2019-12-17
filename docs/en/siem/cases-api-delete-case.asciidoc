@@ -1,0 +1,27 @@
+[[cases-api-delete-case]]
+=== Delete case
+
+Deletes the specified case and all associated comments.
+
+==== Request URL
+
+`DELETE /api/cases/<case ID>`
+
+===== URL parts
+
+The URL must include the `case ID` of the case you are deleting. 
+
+===== Example request
+
+Deletes case ID `0a0fa050-20e4-11ea-8f80-690fedc74682`:
+
+[source,sh]
+--------------------------------------------------
+DELETE api/cases/0a0fa050-20e4-11ea-8f80-690fedc74682
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.

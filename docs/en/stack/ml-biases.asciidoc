@@ -1,5 +1,5 @@
 [[ml-biases]]
-=== Eliminating biases in {ml} processes
+=== Considering biases in {ml} processes
 
 {ml-cap} is meant to improve our everyday life in a wide palette of activities 
 across the globe. We use {ml} in science, healthcare, business, entertainment, 
@@ -10,31 +10,32 @@ of these social biases can make their way into the {ml} results more easily than
 we might think.
 
 There are various possible biases that can negatively influence the result of a 
-{ml} analysis. *These biases typically are not present in the {ml} algorithms 
-that are used*, but rather exist in the datasets themselves or in the way the 
-results are interpreted. These issues are part of a greater question about the 
-ethics behind technology and there's no one solution for everyone. However, 
-there are some basic practices you can use to reduce these biases.
+{ml} analysis. In this piece, we'll talk about statistical and social biases. 
+They can exist in the datasets used to train {ml} models or in the way the 
+predictions of these models are interpreted. These issues are part of a greater 
+question about the ethics behind technology and there's no one solution for 
+everyone. However, there are some basic practices you can use to reduce these 
+biases.
 
 
 [float]
 ==== Biases in datasets
 
-Built-in biases exist in the data that we use to train {ml} models. For example,
-our choice of which data to collect or analyze unwittingly reflect our ideas 
-about what is important or worthy of attention. But the bias could be also the 
-result of manual labeling when the dataset has been annotated with the "ground 
-truth", which is another opportunity to unwittingly introduce preconceptions or 
+Biases exist in the data that we use to train {ml} models. For example, our 
+choice of which data to collect or analyze reflect our ideas about what is 
+important or worthy of attention. But the bias could be also the result of 
+manual labeling when the dataset has been annotated with the "ground truth", 
+which is another opportunity to unwittingly introduce preconceptions or 
 prejudice. The model will inherently learn the bias, therefore the analysis will 
-be also infected, while technically the algorithm works exactly as intended.
+be also compromised, while technically the algorithm works exactly as intended. 
 
 It is impossible to avoid all the potential biases in the dataset. Eventually, 
 data is a representation of reality and, like any other type of representation, 
-it never perfectly concurs with its subject. However, you can and should 
-carefully scrutinize your dataset, ensure it's not selected in a predetermined 
-way and it matches the real world as close as possible. Involve people with 
-diverse backgrounds in the processes that require humans, it is also a solution 
-to minimize the chance of biases.
+it never perfectly captures all possible variables affecting a given phenomenon. 
+However, you can and should carefully scrutinize your dataset, ensure it's not 
+selected in a predetermined way and it matches the real world as close as 
+possible. Involve people with diverse backgrounds in the processes that require 
+humans, it is also a solution to minimize the chance of biases.
 
 
 [float]
@@ -49,6 +50,10 @@ It is safer to formulate the aim of the analysis in a way that does not contain
 the expected results, interpret the outcome of the analysis multiple times 
 with different persons, and perform tests as much as possible.
 
+Avoid "blind interpretation"; {ml} algorithms shouldn't be applied without a 
+thorough understand on the data and its shortcomings arrived at through an 
+analysis.
+
 
 [float]
 ==== Collective responsibility
@@ -57,9 +62,11 @@ The issue of biases that can affect {ml} related processes is far from solved.
 In fact, this is a field of ongoing disputes and there are no universal answers 
 for the emerging problems. Because of the various factors that can influence the 
 {ml} processes, avoiding bias-influenced analysis is a collective responsibility 
-of all the persons that participate in these processes; from the designer of the 
-dataset to the person who interprets the outcome of the analysis to the ones who 
-make decisions based on the data. Talk to your team about the real possibility 
+of all the persons that participate in these processes; from the designers of 
+the dataset to the people who interpret the outcome of the analysis to the ones 
+who make decisions based on the data and the companies that offer the platforms 
+to make these decisions. Talk to your team about whether or not {ml} solutions 
+are appropriate for your specific problem, then talk about the real possibility 
 of introducing and reinforcing biases at each step in the process. Make plans, 
 share techniques, and be open to reconsidering results that seem too good to be 
 true.

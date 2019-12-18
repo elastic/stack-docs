@@ -21,7 +21,7 @@ query results; since search hits cannot span multiple indices or documents,
 Influencers do not need to be fields that are specified in your {anomaly-job}
 detectors, though they often are. If you use aggregations in your {dfeed}, it is
 possible to use influencers that come from different indices than the detector
-fields. However, both indices must have the same timestamp field, which you
+fields. However, both indices must have a date field with the same name, which you
 specify in the `data_description`.`time_field` property for the {dfeed}.
 
 Picking an influencer is strongly recommended for the following reasons:
@@ -77,4 +77,3 @@ are generated for each type of result. The anomaly timeline in {kib} uses the
 bucket-level anomaly scores. The list of top influencers uses the
 influencer-level anomaly scores. The list of anomalies uses the record-level
 anomaly scores.
-

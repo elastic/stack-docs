@@ -1,31 +1,16 @@
-[role="xpack"]
-[[xpack-ml]]
-= Machine learning in the Elastic Stack
+= Machine Learning in the Elastic Stack
 
-[partintro]
---
-Machine learning is tightly integrated with the {stack}. Data is pulled
-from {es} for analysis and anomaly results are displayed in {kib} dashboards.
+:doctype:           book
+:forum:             https://discuss.elastic.co/c/x-pack
+:blog-ref:          https://www.elastic.co/blog/
+:wikipedia:         https://en.wikipedia.org/wiki
+:es-repo-dir:       {docdir}/../../../../../elasticsearch/docs/reference
 
-* <<ml-overview>>
-* <<ml-getting-started>>
-* <<ml-configuring>>
-* <<stopping-ml>>
-* <<ml-troubleshooting, Troubleshooting Machine Learning>>
-* <<ml-api-quickref>>
-* <<ml-functions>>
+include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
+include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
 
+include::ml-index.asciidoc[]
 
---
+include::troubleshooting.asciidoc[]
 
-include::overview.asciidoc[]
-
-include::getting-started.asciidoc[]
-
-include::{es-repo-dir}/ml/configuring.asciidoc[]
-
-include::{es-repo-dir}/ml/stopping-ml.asciidoc[]
-
-include::api-quickref.asciidoc[]
-
-include::{es-repo-dir}/ml/functions.asciidoc[]
+include::limitations.asciidoc[]

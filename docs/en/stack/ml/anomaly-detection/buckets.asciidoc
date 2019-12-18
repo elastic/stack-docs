@@ -5,8 +5,8 @@
 <titleabbrev>Buckets</titleabbrev>
 ++++
 
-The {ml-features} use the concept of a _bucket_ to divide the time series
-into batches for processing.
+The {ml-features} use the concept of a _bucket_ to divide the time series into
+batches for processing.
 
 The _bucket span_ is part of the configuration information for an {anomaly-job}.
 It defines the time interval that is used to summarize and model the data. This
@@ -15,9 +15,13 @@ characteristics. When you set the bucket span, take into account the granularity
 at which you want to analyze, the frequency of the input data, the typical
 duration of the anomalies, and the frequency at which alerting is required.
 
+[discrete]
+[[ml-bucket-results]]
+==== Bucket results
+
 When you view your {ml} results, each bucket has an anomaly score. This score is
 a statistically aggregated and normalized view of the combined anomalousness of
-all the record results in the bucket. 
+all the record results in the bucket.
 
 The {ml} analytics enhance the anomaly score for each bucket by considering
 contiguous buckets. This extra _multi-bucket analysis_ effectively uses a
@@ -35,9 +39,14 @@ In this example, you can see that some of the anomalies fall within the shaded
 blue area, which represents the bounds for the expected values. The bounds are
 calculated per bucket, but multi-bucket analysis is not limited by that scope.
 
-If you have more than one {anomaly-job}, you can also obtain overall bucket
+If you have more than one {anomaly-job}, you can also obtain _overall bucket_
 results, which combine and correlate anomalies from multiple jobs into an
 overall score. When you view the results for job groups in {kib}, it provides
 the overall bucket scores. For more information, see
-{ref}/ml-results-resource.html[Results resources] and
 {ref}/ml-get-overall-buckets.html[Get overall buckets API].
+
+Bucket results provide the top level, overall view of the {anomaly-job} and are
+ideal for alerts. For example, the bucket results might indicate that at 16:05
+the system was unusual. This information is a summary of all the anomalies,
+pinpointing when they occurred. When you identify an anomalous bucket, you can
+investigate further by examining the pertinent records.

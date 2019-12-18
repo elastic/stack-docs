@@ -5,9 +5,8 @@
 When anomalous events occur, we want to know why. To determine the cause,
 however, you often need a broader knowledge of the domain. If you have
 suspicions about which entities in your dataset are likely causing
-irregularities, you can  identify them as _influencers_ in your {anomaly-jobs}.
-
-That is to say, influencers are fields that you suspect contain information
+irregularities, you can identify them as influencers in your {anomaly-jobs}.
+That is to say, _influencers_ are fields that you suspect contain information
 about someone or something that influences or contributes to anomalies in your
 data.
 
@@ -27,8 +26,6 @@ Picking an influencer is strongly recommended for the following reasons:
 * It allows you to more easily assign blame for anomalies
 * It simplifies and aggregates the results
 
-//TBD: Are these benefits unique to jobs with multiple detectors?
-
 If you use {kib}, the job creation wizards can suggest which fields to use as
 influencers. The best influencer is the person or thing that you want to blame
 for the anomaly. In many cases, users or client IP addresses make excellent
@@ -37,3 +34,44 @@ influencers.
 TIP: As a best practice, do not pick too many influencers. For example, you
 generally do not need more than three. If you pick many influencers, the results
 can be overwhelming and there is a small overhead to the analysis.
+
+[discrete]
+[[ml-influencer-results]]
+==== Influencer results
+
+The influencer results show which entities were anomalous and when. One
+influencer result is written per bucket for each influencer that is considered
+anomalous. For jobs with more than one detector, these scores provide a powerful
+view of the most anomalous entities.
+
+For example, the `high_sum_total_sales` {anomaly-job} for the eCommerce orders
+sample data uses `customer_full_name.keyword` and `category.keyword` as
+influencers. You can examine the influencer results with the
+{ref}/ml-get-influencer.html[get influencers API]. Alternatively, you can use
+the *Anomaly Explorer* in {kib}:
+
+[role="screenshot"]
+image::images/influencers.jpg["Influencers in the {kib} Anomaly Explorer"]
+
+On the left is a list of the top influencers for all of the detected anomalies
+in that same time period. The list includes maximum anomaly scores, which in
+this case are aggregated for each influencer, for each bucket, across all
+detectors. There is also a total sum of the anomaly scores for each influencer.
+You can use this list to help you narrow down the contributing factors and focus
+on the most anomalous entities.
+
+You can also explore swim lanes that correspond to the values of an influencer.
+In this example, the swim lanes correspond to the values for the 
+`customer_full_name.keyword`. By default, the swim lanes are sorted according to
+which entity has the maximum anomaly score values. You can click on the sections
+in the swim lane to see details about the anomalies that occurred in that time
+interval.
+
+TIP: The anomaly scores that you see in each section of the *Anomaly Explorer*
+might differ slightly. This disparity occurs because for each {anomaly-job},
+there are bucket results, influencer results, and record results. Anomaly scores
+are generated for each type of result. The anomaly timeline in {kib} uses the
+bucket-level anomaly scores. The list of top influencers uses the
+influencer-level anomaly scores. The list of anomalies uses the record-level
+anomaly scores.
+

@@ -44,7 +44,7 @@ go to `http://localhost:5601/`.
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-multi-job.jpg["Create a new job from the server-metrics index"]
+image::images/ml-gs-multi-job.jpg["Create a new job from the server-metrics index"]
 --
 
 .. For the **Fields**, select `high mean(response)` and `sum(total)`. This
@@ -110,7 +110,7 @@ sum `total` values over time. For example:
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job2-split.jpg["Kibana charts for data split by service"]
+image::images/ml-gs-job2-split.jpg["Kibana charts for data split by service"]
 --
 
 . Provide a name for the job, for example `response_requests_by_app`. The job
@@ -140,7 +140,7 @@ event occurs outside of the model, that event is identified as an anomaly.
 You can use the **Anomaly Explorer** in {kib} to view the analysis results:
 
 [role="screenshot"]
-image::ml/images/ml-gs-job2-explorer.jpg["Job results in the Anomaly Explorer"]
+image::images/ml-gs-job2-explorer.jpg["Job results in the Anomaly Explorer"]
 
 You can explore the overall anomaly time line, which shows the maximum anomaly
 score for each section in the specified time period. You can change the time
@@ -165,7 +165,7 @@ the `host` field as an influencer, you can also optionally view the results in
 swim lanes for each host name:
 
 [role="screenshot"]
-image::ml/images/ml-gs-job2-explorer-host.jpg["Job results sorted by host"]
+image::images/ml-gs-job2-explorer-host.jpg["Job results sorted by host"]
 
 By default, the swim lanes are ordered by their maximum anomaly score values.
 You can click on the sections in the swim lane to see details about the
@@ -185,7 +185,7 @@ anomalies in that time period. For example, click on the red section in the swim
 lane for `server_2`:
 
 [role="screenshot"]
-image::ml/images/ml-gs-job2-explorer-anomaly.jpg["Job results for an anomaly"]
+image::images/ml-gs-job2-explorer-anomaly.jpg["Job results for an anomaly"]
 
 You can see exact times when anomalies occurred and which detectors or metrics
 caught the anomaly. Also note that because you split the data by the `service`
@@ -197,7 +197,7 @@ Below the charts, there is a table that provides more information, such as the
 typical and actual values and the influencers that contributed to the anomaly.
 
 [role="screenshot"]
-image::ml/images/ml-gs-job2-explorer-table.jpg["Job results table"]
+image::images/ml-gs-job2-explorer-table.jpg["Job results table"]
 
 Notice that there are anomalies for both detectors, that is to say for both the
 `high_mean(response)` and the `sum(total)` metrics in this time interval. The

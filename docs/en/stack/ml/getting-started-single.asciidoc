@@ -36,7 +36,7 @@ go to `http://localhost:5601/`.
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-single-job.jpg["Create a new job from the server-metrics index"]
+image::images/ml-gs-single-job.jpg["Create a new job from the server-metrics index"]
 --
 
 .. For the **Aggregation**, select `Sum`. This value specifies the analysis
@@ -97,7 +97,7 @@ you've got the time range set up, click the **Go** button. +
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job1-time.jpg["Setting the time range for the {dfeed}"]
+image::images/ml-gs-job1-time.jpg["Setting the time range for the {dfeed}"]
 --
 +
 --
@@ -117,7 +117,7 @@ job and create a job group.
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job1.jpg["A graph of the total number of requests over time"]
+image::images/ml-gs-job1.jpg["A graph of the total number of requests over time"]
 --
 
 As the job is created, the graph is updated to give a visual representation of
@@ -141,7 +141,7 @@ API reference information, see {ref}/ml-apis.html[Machine Learning APIs].
 After you create a job, you can see its status in the **Job Management** tab: +
 
 [role="screenshot"]
-image::ml/images/ml-gs-job1-manage1.jpg["Status information for the total-requests job"]
+image::images/ml-gs-job1-manage1.jpg["Status information for the total-requests job"]
 
 The following information is provided for each job:
 
@@ -211,7 +211,7 @@ For example, if you did not use the full data when you created the job, you can
 now process the remaining data by restarting the {dfeed}:
 
 . In the **Machine Learning** / **Job Management** tab, click the following
-button to start the {dfeed}: image:ml/images/ml-start-feed.jpg["Start {dfeed}"]
+button to start the {dfeed}: image:images/ml-start-feed.jpg["Start {dfeed}"]
 
 
 . Choose a start time and end time. For example,
@@ -222,7 +222,7 @@ otherwise you might miss anomalies. +
 +
 --
 [role="screenshot"]
-image::ml/images/ml-gs-job1-datafeed.jpg["Restarting a {dfeed}"]
+image::images/ml-gs-job1-datafeed.jpg["Restarting a {dfeed}"]
 --
 
 The {dfeed} state changes to `started`, the job state changes to `opened`,
@@ -233,7 +233,7 @@ TIP: If your data is being loaded continuously, you can continue running the job
 in real time. For this, start your {dfeed} and select **No end time**.
 
 If you want to stop the {dfeed} at this point, you can click the following
-button: image:ml/images/ml-stop-feed.jpg["Stop {dfeed}"]
+button: image:images/ml-stop-feed.jpg["Stop {dfeed}"]
 
 Now that you have processed all the data, let's start exploring the job results.
 
@@ -267,7 +267,7 @@ Single Metric Viewer::
 By default when you view the results for a single metric job, the
 **Single Metric Viewer** opens:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-analysis.jpg["Single Metric Viewer for total-requests job"]
+image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for total-requests job"]
 
 
 The blue line in the chart represents the actual data values. The shaded blue
@@ -299,7 +299,7 @@ anomaly data point. If you hover over the point, you can see more information
 about that data point. You can also see details in the **Anomalies** section
 of the viewer. For example:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for total-requests job"]
+image::images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for total-requests job"]
 
 For each anomaly you can see key details such as the time, the actual and
 expected ("typical") values, and their probability.
@@ -319,13 +319,13 @@ show all anomalies.
 You can see the same information in a different format by using the
 **Anomaly Explorer**:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-explorer.jpg["Anomaly Explorer for total-requests job"]
+image::images/ml-gs-job1-explorer.jpg["Anomaly Explorer for total-requests job"]
 
 
 Click one of the red sections in the swim lane to see details about the anomalies
 that occurred in that time interval. For example:
 [role="screenshot"]
-image::ml/images/ml-gs-job1-explorer-anomaly.jpg["Anomaly Explorer details for total-requests job"]
+image::images/ml-gs-job1-explorer-anomaly.jpg["Anomaly Explorer details for total-requests job"]
 
 After you have identified anomalies, often the next step is to try to determine
 the context of those situations. For example, are there other factors that are

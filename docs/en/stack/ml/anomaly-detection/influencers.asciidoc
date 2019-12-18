@@ -12,14 +12,17 @@ data.
 
 Influencers can be any field in your data. If you use {dfeeds}, however, the
 field must exist in your {dfeed} query or aggregation; otherwise it is not
-included in the job analysis.
-////
-In the case of the {dfeed} query, influencers must exist in the results of the
-query in the same hit as the detector data.
-TBD: Why? 
-////
+included in the job analysis. If you use a query in your {dfeed}, there is an
+additional requirement: influencer fields must exist in the query results in the
+same hit as the detector fields. {dfeeds-cap} process data by paging through the
+query results; since search hits cannot span multiple indices or documents,
+{dfeeds} have the same limitation. 
+
 Influencers do not need to be fields that are specified in your {anomaly-job}
-detectors, though they often are.
+detectors, though they often are. If you use aggregations in your {dfeed}, it is
+possible to use influencers that come from different indices than the detector
+fields. However, both indices must have the same timestamp field, which you
+specify in the `data_description`.`time_field` property for the {dfeed}.
 
 Picking an influencer is strongly recommended for the following reasons:
 

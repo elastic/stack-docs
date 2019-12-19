@@ -56,23 +56,7 @@ duplicates if they have the same `function`, `field_name`, `by_field_name`,
 [[influencers]]
 ===== Influencers
 
-When you create an {anomaly-job}, you can specify _influencers_, which are also 
-sometimes referred to as _key fields_. Picking an influencer is strongly
-recommended for the following reasons:
-
-* It allows you to more easily assign blame for the anomaly
-* It simplifies and aggregates the results
-
-The best influencer is the person or thing that you want to blame for the
-anomaly. In many cases, users or client IP addresses make excellent influencers.
-Influencers can be any field in your data; they do not need to be fields that
-are specified in your detectors, though they often are.
-
-As a best practice, do not pick too many influencers. For example, you generally
-do not need more than three. If you pick many influencers, the results can be
-overwhelming and there is a small overhead to the analysis.
-
-The job creation wizards in {kib} can suggest which fields to use as influencers.
+See <<ml-influencers>>.
 
 [[model-memory-limits]]
 ===== Model memory limits

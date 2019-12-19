@@ -71,7 +71,7 @@ do not need to manually map the fields.
 
 The following prebuilt jobs are available:
 
-[horizontal]
+//[horizontal]
 rare_process_by_host_windows_ecs::
 +
 rare_process_by_host_linux_ecs:: Identifies rare processes that do not usually 
@@ -202,7 +202,6 @@ Beats required on hosts:
 
 * Winlogbeat (Windows)
 
-+
 NOTE: You can only run this job when Winlogbeat is used to ship data.
 
 windows_anomalous_service:: Searches for unusual Windows services that could 
@@ -216,7 +215,6 @@ Beats required on hosts:
 
 * Winlogbeat (Windows)
 
-+
 NOTE: You can only run this job when Winlogbeat is used to ship data.
 
 windows_anomalous_user_name_ecs::
@@ -261,7 +259,6 @@ Beats required on hosts:
 
 * Auditbeat (Linux)
 
-+
 NOTE: You can only run this job when Auditbeat is used to ship data. 
 
 linux_anomalous_network_service:: Searches for unusual listening ports that
@@ -271,7 +268,6 @@ Beats required on hosts:
 
 * Auditbeat (Linux)
 
-+
 NOTE: You can only run this job when Auditbeat is used to ship data.
 
 linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests
@@ -327,7 +323,20 @@ Beats required on hosts:
 * Packetbeat (Windows and Linux)
 
 +
-NOTE: You can only run this job when Packetbeat is used to ship data.
+Required ECS fields:
+
+* destination.ip
+* dns.question.registered_domain
+* dns.question.name
+* host.name
+* event.dataset
+* agent.type
+
+NOTE: This {ml} job uses the Packetbeat
+{packetbeat-ref}/exported-fields-dns.html[`dns.question.etld_plus_one`] field, 
+which is not defined in ECS. Instead, map your network data to the
+{ecs-ref}/ecs-dns.html[`dns.question.registered_domain`] ECS 
+field.
 
 packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
 indicate network activity with unusual domains is about to occur. This can be 
@@ -438,9 +447,7 @@ Beats required on hosts:
 
 * Winlogbeat (Windows)
 
-+
 NOTE: You can only run this job when Winlogbeat is used to ship data.
-
 
 windows_rare_user_runas_event:: Searches for unusual user context switches 
 using the `runas` command or similar techniques, which could indicate account 

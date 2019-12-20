@@ -1,0 +1,61 @@
+[role="xpack"]
+[[ml-dfa-phases]]
+=== How a {dfanalytics-job} works
+
+A {dfanalytics-job} is essentially a persistent {es} task. During its life 
+cycle, it goes through four phases:
+
+* reindexing,
+* loading data,
+* analyzing,
+* writing results.
+
+Let's take a look at the phases one-by-one.
+
+
+[discrete]
+==== Reindexing
+
+During the reindexing phase the documents from the source index or indices are 
+copied to the destination index. If you want to define settings or mappings, 
+create the index before you start the job. Otherwise, the job creates it using 
+default settings.
+
+Once the destination index is built, the {dfanalytics-job} task calls the {es} 
+{ref}/docs-reindex.html[Reindex API] to launch the reindexing task.
+
+
+[discrete]
+==== Loading data
+
+After the reindexing is finished, the job fetches the needed data from the 
+destination index. It converts the data into the format that the analysis process 
+expects, then sends it to the analysis process.
+
+
+[discrete]
+==== Analyzing
+
+When all the required data is loaded, the analyzing phase begins. The exact 
+process always depends on the type of {dfanalytics} – for example, 
+{classification} or {oldetection} – that is executed. This is the phase when the 
+job generates a {ml} model for analyzing the dataset.
+
+
+[discrete]
+==== Writing results
+
+After the loaded data is analyzed, the analysis process sends back the results. 
+Only the additional fields that the analysis calculated are written back, the 
+ones that have been loaded in the loading data phase are not. The 
+{dfanalytics-job} matches the results with the data rows in the destination 
+index, merges them, and indexes them back to the destination index. When the 
+process is complete, the task is marked as completed and the {dfanalytics-job} 
+stops. Your data is ready to be evaluated.
+
+
+Check the <<ml-dfa-concepts>> section if you'd like to know more about the 
+various {dfanalytics} types.
+
+Check the <<ml-dfanalytics-evaluate>> section if you are interested in the 
+evaluation of the {dfanalytics} results.

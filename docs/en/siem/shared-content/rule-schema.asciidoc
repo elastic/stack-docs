@@ -90,15 +90,15 @@ date math range. |Yes
 |Yes
 
 ifeval::["{api-call}" == "update-rule"]
-|threats |<<threats-object-update, threats[]>> |Object containing MITRE ATT&CK 
-information about the type of threat the rule monitors. |No, 
-defaults to an empty array.
+|threats |<<threats-object-update, threats[]>> |Object containing attack 
+information about the type of threat the rule monitors, see
+{ecs-ref}/ecs-threat.html[ECS threat fields]. |No, defaults to an empty array.
 endif::[]
 
 ifeval::["{api-call}" == "create-rule"]
-|threats |<<threats-object-create, threats[]>> |Object containing MITRE ATT&CK 
-information about the type of threat the rule monitors. |No, 
-defaults to an empty array.
+|threats |<<threats-object-create, threats[]>> |Object containing attack 
+information about the type of threat the rule monitors, see
+{ecs-ref}/ecs-threat.html[ECS threat fields]. |No, defaults to an empty array.
 endif::[]
 
 |references |String[] |String array containing notes about or references to 
@@ -120,9 +120,9 @@ endif::[]
 |==============================================
 |Name |Type |Description |Required
 
-|framework |String |Relevant MITRE ATT&CK framework. |Yes
+|framework |String |Relevant attack framework. |Yes
 
-|tactic |Object a|Object containing information on the MITRE ATT&CK type:
+|tactic |Object a|Object containing information on the attack type:
 
 * `id` - string, required
 * `name` - string, required
@@ -130,7 +130,7 @@ endif::[]
 
 |Yes
 
-|technique |Object a|Object containing information on the MITRE ATT&CK 
+|technique |Object a|Object containing information on the attack 
 technique:
 
 * `id` - string, required

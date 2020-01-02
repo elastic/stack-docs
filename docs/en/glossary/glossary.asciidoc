@@ -59,7 +59,8 @@ ifdef::xpack-terms[]
 
 {anomaly-jobs-cap} contain the configuration information and metadata
 necessary to perform an analytics task. See
-{stack-ov}/ml-jobs.html[{ml-jobs-cap}].
+{ml-docs}/ml-jobs.html[{ml-jobs-cap}] and the
+{ref}/ml-put-job.html[create {anomaly-job} API].
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -188,7 +189,7 @@ ifdef::xpack-terms[]
 [[glossary-ccr]] {ccr} (CCR)::
 
 The {ccr} feature enables you to replicate indices in remote clusters to your
-local cluster. For more information, see {stack-ov}/xpack-ccr.html[{ccr-cap}].  
+local cluster. For more information, see {ref}/xpack-ccr.html[{ccr-cap}].  
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -213,7 +214,11 @@ endif::xpack-terms[]
 ifdef::xpack-terms[]
 [[glossary-dataframe-job]] {dfanalytics-job} ::
 
-TBD
+{dfanalytics-jobs-cap} contain the configuration information and metadata
+necessary to perform {ml} analytics tasks on a source index and store the
+outcome in a destination index. See
+{ml-docs}//ml-dfa-overview[{dfanalytics-cap} overview] and the
+{ref}/put-dfanalytics.html[create {dfanalytics-job} API].
 //Source: X-Pack
 endif::xpack-terms[]
 ifdef::xpack-terms[]
@@ -419,8 +424,9 @@ ifdef::xpack-terms[]
 [[glossary-ml-job]][[glossary-job]] job ::
 
 Machine learning jobs contain the configuration information and metadata
-necessary to perform an analytics task. There are two types: {anomaly-jobs} and
-{dfanalytics-jobs}.
+necessary to perform an analytics task. There are two types:
+<<glossary-anomaly-detection-job,{anomaly-jobs}>> and
+<<glossary-dataframe-job,{dfanalytics-jobs}>>.
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -658,10 +664,11 @@ by making sure that only authorized hosts become part of the installation.
 endif::cloud-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-rollup-job]] rollup job::
+[[glossary-rollup-job]] {rollup-job}::
 
-Rollup jobs contain the configuration information and metadata necessary to roll
-up specific indices. See {ref}/xpack-rollup.html[Rolling up historical data].
+A {rollup-job} contains all the details about how the job should run, when it
+indexes documents, and what future queries will be able to execute against the
+rollup index. See {ref}/xpack-rollup.html[Rolling up historical data].
 //Source: X-Pack
 endif::xpack-terms[]
 ifdef::elasticsearch-terms[]

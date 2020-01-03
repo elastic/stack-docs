@@ -1,0 +1,36 @@
+[role="xpack"]
+[[ml-rules]]
+=== Custom rules
+
+By default, as described in <<ml-analyzing>>, anomaly detection is unsupervised 
+and the {ml} models have no awareness of the domain of your data. As a result, 
+{anomaly-jobs} might identify events that are statistically significant but are 
+uninteresting when you know the larger context. Machine learning custom rules
+enable you to customize anomaly detection. 
+
+_Custom rules_ instruct anomaly detectors to change their behavior based on 
+domain-specific knowledge that you provide. When you create a rule, you can  
+specify conditions, scope, and actions. When the conditions of a rule are 
+satisfied, its actions are triggered. 
+
+For example, if you have an anomaly detector that is analyzing CPU usage, you 
+might decide you are only interested in anomalies where the CPU usage is greater 
+than a certain threshold. You can define a rule with conditions and actions that 
+instruct the detector to refrain from generating {ml} results when there are 
+anomalous events related to low CPU usage. You might also decide to add a scope 
+for the rule, such that it applies only to certain machines. The scope is 
+defined by using {ml} filters. 
+
+_Filters_ contain a list of values that you can use to include or exclude events 
+from the {ml} analysis. You can use the same filter in multiple {anomaly-jobs}. 
+
+If you are analyzing web traffic, you might create a filter that contains a list 
+of IP addresses. For example, maybe they are IP addresses that you trust to 
+upload data to your website or to send large amounts of data from behind your 
+firewall. You can define the scope of a rule such that it triggers only when a 
+specific field in your data matches one of the values in the filter. 
+Alternatively, you can make it trigger only when the field value does not match 
+one of the filter values. You therefore have much greater control over which 
+anomalous events affect the {ml} model and appear in the {ml} results. 
+
+For more information, see <<ml-configuring-detector-custom-rules>>. 

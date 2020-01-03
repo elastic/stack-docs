@@ -1,39 +1,14 @@
-[role="xpack"]
-[[xpack-ml]]
-= Machine learning in the {stack}
+= Machine Learning in the Elastic Stack
 
-[partintro]
---
-Machine learning is tightly integrated with the {stack}. Data is pulled
-from {es} for analysis and anomaly results are displayed in {kib} dashboards.
+:doctype:           book
+:forum:             https://discuss.elastic.co/c/x-pack
+:blog-ref:          https://www.elastic.co/blog/
+:wikipedia:         https://en.wikipedia.org/wiki
+:es-repo-dir:       {docdir}/../../../../../elasticsearch/docs/reference
+:stack-repo-dir:    {docdir}
+include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
+include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
 
-* <<ml-overview>>
-* <<ml-getting-started>>
-* <<ml-configuring>>
-* <<stopping-ml>>
-* <<ml-troubleshooting, Troubleshooting Machine Learning>>
-* <<ml-api-quickref>>
-* <<ml-functions>>
+include::anomaly-detection/index.asciidoc[]
 
-
---
-
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/overview.asciidoc
-include::overview.asciidoc[]
-
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/getting-started.asciidoc
-include::getting-started.asciidoc[]
-
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ml/configuring.asciidoc
-include::{es-repo-dir}/ml/configuring.asciidoc[]
-
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ml/stopping-ml.asciidoc
-include::{es-repo-dir}/ml/stopping-ml.asciidoc[]
-
-:edit_url: https://github.com/elastic/stack-docs/edit/{branch}/docs/en/stack/ml/api-quickref.asciidoc
-include::api-quickref.asciidoc[]
-
-:edit_url: https://github.com/elastic/elasticsearch/edit/{branch}/docs/reference/ml/functions.asciidoc
-include::{es-repo-dir}/ml/functions.asciidoc[]
-
-
+include::df-analytics/index.asciidoc[]

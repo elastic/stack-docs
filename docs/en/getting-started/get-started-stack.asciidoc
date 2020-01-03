@@ -1,8 +1,8 @@
 [[get-started-elastic-stack]]
 == Getting started with the {stack}
 
-Looking for an {stack} ("ELK") guide that shows how to set up the {stack} and 
-get up and running quickly? You're on the right place! First you install the 
+Looking for an {stack} ("ELK") guide that shows how to set up the {stack} and
+get up and running quickly? You're on the right place! First you install the
 core products:
 
 * <<install-elasticsearch,{es}>>
@@ -21,8 +21,8 @@ laptop.
 IMPORTANT: Implementing security is a critical step in setting up the {stack}.
 To get up and running quickly with a sample installation, you skip those steps
 right now. Before sending sensitive data across the network, make sure you
-{stack-ov}/elasticsearch-security.html[secure the {stack}] and enable
-{stack-ov}/encrypting-communications.html[encrypted communications].
+{ref}/elasticsearch-security.html[secure the {stack}] and enable
+{ref}/encrypting-communications.html[encrypted communications].
 
 [float]
 [[install-prereqs]]
@@ -939,8 +939,8 @@ For example:
 
 Rather than sending the whole command-line argument to {es}, you might want to
 send just the command's path. One way to do that is by using a Grok filter.
-Learning Grok is beyond the scope of this getting started guide, but if you want 
-to learn more, see the 
+Learning Grok is beyond the scope of this getting started guide, but if you want
+to learn more, see the
 {logstash-ref}/plugins-filters-grok.html[Grok filter plugin] documentation.
 
 To extract the path, add the following Grok filter between the input and output
@@ -1020,15 +1020,15 @@ Next, you'll want to set up the {stack} {security-features} and activate your
 trial license so you can unlock the full capabilities of the {stack}. To learn
 how, read:
 
-* {stack-ov}/elasticsearch-security.html[Securing the {stack}]
+* {ref}/elasticsearch-security.html[Securing the {stack}]
 * {stack-ov}/license-management.html[License Management]
 
-Want to get up and running quickly with infrastructure metrics monitoring and
-centralized log analytics? Try out the
-{infra-guide}/infrastructure-ui-overview.html[Infrastructure] and
-{infra-guide}/logs-ui-overview.html[Logs] UIs
-in {kib}. For setup details, see the {infra-guide}/index.html[Infrastructure
-Monitoring Guide].
+Want to get up and running quickly with metrics monitoring and
+centralized log analytics? Try out the Metrics app and the Logs app in {kib}.
+For more details, see the {metrics-guide}[Metrics Monitoring Guide]
+and the {logs-guide}[Logs Monitoring Guide].
+
+
 
 Later, when you're ready to set up a production environment, also see the
 {stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade

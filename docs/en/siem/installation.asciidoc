@@ -18,11 +18,19 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try the {es}
 Service for free].
 ==============
 
-* *{beats}* shippers (version 7.x or later) installed for each system you want to
-monitor
+* *{beats}* (version 7.x or later) or other data shippers installed for each 
+system you want to monitor.
 
-You might need to modify UI settings in {kib} to change default behaviors,
-such as the index pattern used to query the data. For more information, see {kib}.
+[IMPORTANT]
+==============
+If you use a third-party collector to ship data to the {siem-app}, you must 
+map its fields to the {ecs-ref}[Elastic Common Schema (ECS)]. Additionally, you 
+must add its index to the {siem-soln} {es} indices (*{kib}* -> 
+*Management* -> *Advanced Settings* -> *`siem:defaultIndex`*).
+
+{siem-soln} uses the {ecs-ref}/ecs-host.html[`host.name`] ECS field as the 
+primary key for identifying hosts.
+==============
 
 [float]
 [[install-beats]]
@@ -34,14 +42,10 @@ configure Beats on the systems from which you want to ingest security events:
 * https://www.elastic.co/products/beats/filebeat[{filebeat}] for forwarding and
 centralizing logs and files
 * https://www.elastic.co/products/beats/auditbeat[{auditbeat}] for collecting security events
-* https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}] for centralizing 
+* https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}] for centralizing
 Windows event logs
 * https://www.elastic.co/products/beats/packetbeat[{packetbeat}] for analyzing
-network packets 
-
-NOTE: {siem-soln} also works with custom and third-party data sources in addition to
-those supported by Beats. {ecs-ref}[Elastic Common Schema (ECS)] makes this
-possible. 
+network activity
 
 You can install {beats} using a {kib}-based guide or directly from the command line.
 
@@ -87,13 +91,18 @@ To populate *Hosts* data, enable these {auditbeat} modules:
 * {auditbeat-ref}/auditbeat-module-file_integrity.html[File integrity module (FIM) - Linux, macOS, Win]
 
 
-To populate *Network* data, enable these {filebeat} modules:
+To populate *Network* data, enable the relevant {packetbeat} protocols
+and {filebeat} modules:
 
-* https://www.elastic.co/products/beats/filebeat[{filebeat}]
-* {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
-* {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
-* {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
-* {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
-* {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
-* {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
-* {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]
+* https://www.elastic.co/products/beats/packetbeat[{packetbeat}]:
+** {packetbeat-ref}/packetbeat-dns-options.html[DNS]
+** {packetbeat-ref}/configuration-tls.html[TLS]
+** {packetbeat-ref}/configuration-protocols.html[Other supported protocols]
+* https://www.elastic.co/products/beats/filebeat[{filebeat}]:
+** {filebeat-ref}/filebeat-module-zeek.html[Zeek NMS module]
+** {filebeat-ref}/filebeat-module-suricata.html[Suricata IDS module]
+** {filebeat-ref}/filebeat-module-iptables.html[Iptables/Ubiquiti module]
+** {filebeat-ref}/filebeat-module-coredns.html[CoreDNS module]
+** {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
+** {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
+** {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]

@@ -1,0 +1,92 @@
+[[install-infrastructure-monitoring]]
+[role="xpack"]
+== Setting up {metrics} monitoring
+
+To set up {metrics} monitoring, you need:
+
+* An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic license
+// Add a link to what constitutes a basic license. And is this any different for the cloud?
+
+* Appropriate {beats} shippers (version 6.5 or later) installed and enabled on each system you want to
+monitor
+
+If your data uses nonstandard fields, you may also need to modify some default configuration settings.
+
+[float]
+=== Get Elasticsearch and Kibana
+
+To get started, you can use our hosted {es} Service on Elastic Cloud (recommended for new users), or you can install {es} and {kib} locally.
+
+[float]
+==== Use our hosted service
+
+The hosted {es} Service is available on both AWS and GCP.
+https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {es} Service for free].
+
+[float]
+==== Install {es} and {kib} locally
+
+Alternatively, you can {stack-gs}/get-started-elastic-stack.html[install {es} and {kib} locally].
+Follow the instructions to install {es}, and to install and start {kib}.
+
+[float]
+[[install-beats-for-infra-UI]]
+=== Install {beats} shippers
+
+To start collecting metrics data, you need to install and configure the {metricbeat} {beats} shipper.
+
+You can install and configure {beats} shippers for most kinds of data directly from {kib}, or you can install {beats} yourself.
+
+[float]
+==== Install {beats} from {kib}
+
+To install {beats} from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
+In the *Add Data to Kibana* section, click *Add metric data*.
+Now follow the instructions for the type of data you want to collect.
+The instructions walk you through the steps required to download, install and configure the appropriate Beats modules for your data.
+
+[role="screenshot"]
+image::images/add-data.png[]
+
+[float]
+==== Install {beats} yourself
+
+If your data source doesn't have a {beats} module, or if you want to install {beats} the old fashioned way, follow the instructions in {metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started] and enable modules for the metrics you want to collect.
+
+[float]
+=== Enable modules
+However you install {beats}, you need to enable the appropriate modules in {metricbeat} to start collecting metrics data.
+
+// ++ I think some of this is still necessary even if you've followed the instructions to install Beats from Kibana.
+// ++ The instructions there explain how to enable the module. Below, we enable more stuff.
+// ++ What about if you are using Cloud? Is anything different?
+
+To populate the *Hosts* view with metrics data, enable:
+
+* {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} `system` module] (enabled by default)
+* {metricbeat-ref}/add-host-metadata.html[{metricbeat} `add_host_metadata` processor] (enabled by default)
+* {metricbeat-ref}/add-cloud-metadata.html[{metricbeat} `add_cloud_metadata` processor] (enabled by default)
+
+To populate the *Docker* view with metrics data, enable:
+
+* {metricbeat-ref}/metricbeat-module-docker.html[{metricbeat} `docker` module]
+* {metricbeat-ref}/add-docker-metadata.html[{metricbeat} `add_docker_metadata` processor]
+
+To populate the *Kubernetes* view with metrics data, enable:
+
+* {metricbeat-ref}/metricbeat-module-kubernetes.html[{metricbeat} `kubernetes` module]
+* {metricbeat-ref}/add-kubernetes-metadata.html[{metricbeat} `add_kubernetes_metadata` processor]
+
+[float]
+=== Configure your data sources
+
+If your metrics data has nonstandard fields, you may need to modify some configuration settings in {kib}, such as the index pattern used to query the data, and the timestamp field used for sorting.
+You can use the *Settings* tab in the {kibana-ref}/infra-ui.html[{metrics-app}] to modify some common settings.
+Alternatively, see {kibana-ref}/infrastructure-ui-settings-kb.html[{metrics} settings] for a complete list of metrics configuration settings.
+
+[float]
+=== More about container monitoring
+
+If you're monitoring Docker containers or Kubernetes pods, you can use autodiscover to automatically change the configuration settings in response to changes in your containers.
+This ensures you don't stop collecting data when your container configuration changes.
+To learn how to do this, see {metricbeat-ref}/configuration-autodiscover.html[{metricbeat} autodiscover configuration]

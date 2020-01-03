@@ -23,7 +23,7 @@ the trial, or https://www.elastic.co/subscriptions/[purchase a subscription].
 
 [float]
 [[installing-license]]
-== Updating Your license
+== Updating your license
 
 You can update your license at runtime without shutting down your nodes. License
 updates take effect immediately. The license is provided as a _JSON_ file that
@@ -31,7 +31,7 @@ you install in {kib} or by using the {ref}/update-license.html[update license AP
 
 TIP: If you are using a basic or trial license, {security-features} are disabled
 by default. In all other licenses, {security-features} are enabled by default;
-you must {stack-ov}/security-getting-started.html[secure the {stack}] or disable
+you must {ref}/security-getting-started.html[secure the {stack}] or disable
 the {security-features}. 
 
 --
@@ -47,30 +47,46 @@ These error messages tell you when the license expires and what features will be
 disabled if you fail to update the license.
 
 [float]
+[[expiration-kibana]]
+=== Kibana
+* Users can still log into {kib}.
+* It is still usable for data exploration and visualization, but some features
+are disabled.
+* The license management UI is available to easily upgrade your license. See
+<<installing-license>> and
+{kibana-ref}/managing-licenses.html[License management].
+
+[float]
+[[expiration-watcher]]
 === Watcher
-* PUT / GET watch APIs will be disabled, DELETE watch API will continue to work
-* Watches will execute and write to the history
-* The actions of the watches will not execute
+* The PUT and GET watch APIs are disabled. The DELETE watch API continues to work.
+* Watches execute and write to the history.
+* The actions of the watches do not execute.
 
 [float]
+[[expiration-monitoring]]
 === Monitoring
-* The agent will stop collecting cluster and indices metrics
-* The agent will stop automatically cleaning indices older than `xpack.monitoring.history.duration`
+* The agent stops collecting cluster and indices metrics.
+* The agent stops automatically cleaning indices older than
+`xpack.monitoring.history.duration`.
 
 [float]
+[[expiration-graph]]
 === Graph
-* Graph explore APIs will be disabled
+* Graph explore APIs are disabled.
 
 [float]
+[[expiration-reporting]]
 === Reporting
-* Reporting will no longer be available in {kib}
-* Report generation urls will stop working
-* Existing reports will no longer be accessible
+* Reporting is no longer be available in {kib}.
+* Report generation URLs stop working.
+* Existing reports are no longer accessible.
 
 [float]
+[[expiration-security]]
 === Security
-* Cluster health, cluster stats and indices stats operations will be blocked
-* All data operations (read and write) will continue to work
+* Cluster health, cluster stats, and indices stats operations are blocked.
+* All data operations (read and write) continue to work.
 
 Once the license expires, calls to the cluster health, cluster stats, and index
 stats APIs fail with a `security_exception` and return a 403 HTTP status code.
@@ -98,17 +114,19 @@ This message enables automatic monitoring systems to easily detect the license
 failure without immediately impacting other users.
 
 [float]
+[[expiration-ml]]
 === Machine learning
 * APIs to create jobs, open jobs, send data to jobs, create {dfeeds}, and start
-{dfeeds} will be disabled
-* All started {dfeeds} will be stopped. All open jobs will be closed
-* Existing job results will continue to be available by using {kib} or APIs
+{dfeeds} are disabled.
+* All started {dfeeds} are stopped. All open jobs are closed.
+* Existing job results continue to be available by using {kib} or APIs.
 
 [float]
-=== Logstash Pipeline Management
-* Will not be able to create new pipelines and edit or delete existing pipelines from the UI
-* Will be able to list and view existing pipelines from the UI
-* Will be able to run Logstash instances which are registered to listen to existing pipelines
+[[expiration-logstash]]
+=== Logstash pipeline management
+* Cannot create new pipelines or edit or delete existing pipelines from the UI.
+* Cannot list or view existing pipelines from the UI.
+* Cannot run Logstash instances which are registered to listen to existing pipelines.
 
 IMPORTANT: You should update your license as soon as possible. You are
 essentially flying blind when running with an expired license. Access to the

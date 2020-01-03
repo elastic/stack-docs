@@ -1,0 +1,161 @@
+[role="xpack"]
+[[ml-dfanalytics-evaluate]]
+=== Evaluating {dfanalytics}
+
+experimental[]
+
+Using the {dfanalytics} features to gain insights from a data set is an 
+iterative process. You might need to experiment with different analyses, 
+parameters, and ways to transform data before you arrive at a result that satisfies 
+your use case. A valuable companion to this process is the 
+{ref}/evaluate-dfanalytics.html[{evaluatedf-api}], which enables you to evaluate 
+the {dfanalytics} performance against a marked up data set. It helps you 
+understand error distributions and identifies the points where the {dfanalytics} 
+model performs well or less trustworthily.
+
+The {evaluatedf-api} is designed for providing a general evaluation mechanism 
+for the different kinds of {dfanalytics}. For example, you can evaluate the 
+results of an {oldetection} analysis by using {binarysc}.
+
+To evaluate the {dfanalytics} with this API, you need to annotate your index 
+that contains the results of the analysis with a field that marks each 
+document with the ground truth. For example, in case of {oldetection}, 
+the field must indicate whether the given data point really is an outlier or 
+not. The {evaluatedf-api} evaluates the performance of the {dfanalytics} against 
+this manually provided ground truth.
+
+[discrete]
+[[ml-dfanalytics-binary-soft-classification]]
+==== {binarysc-cap} evaluation
+
+This evaluation type is suitable for analyses which calculate a probability that 
+each data point in a data set is a member of a class or not. The {binarysc} 
+evaluation type offers the following metrics to evaluate the model performance:
+
+* confusion matrix
+* precision
+* recall
+* receiver operating characteristic (ROC) curve.
+
+[discrete]
+[[ml-dfanalytics-confusion-matrix]]
+===== Confusion matrix
+
+A confusion matrix provides four measures of how well the {dfanalytics} worked 
+on your data set:
+
+* True positives (TP): Class members that the analysis identified as class 
+members.
+* True negatives (TN): Not class members that the analysis identified as not 
+class members.
+* False positives (FP): Not class members that the analysis misidentified as 
+class members.
+* False negatives (FN): Class members that the analysis misidentified as not 
+class members.
+
+Although, the {evaluatedf-api} can compute the confusion matrix out of the 
+analysis results, these results are not binary values (class member/not 
+class member), but a number between 0 and 1 (which called the {olscore} in case 
+of {oldetection}). This value captures how likely it is for a data 
+point to be a member of a certain class. It means that it is up to the user who 
+is evaluating the results to decide what is the threshold or cutoff point at 
+which the data point will be considered as a member of the given class. For 
+example, in the case of {oldetection} the user can say that all the data points 
+with an {olscore} higher than 0.5 will be considered as outliers.
+
+To take this complexity into account, the {evaluatedf-api} returns the confusion 
+matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
+
+[discrete]
+[[ml-dfanalytics-precision-recall]]
+===== Precision and recall
+
+A confusion matrix is a useful measure, but it could be hard to compare the 
+results across the different algorithms. Precision and recall values
+summarize the algorithm performance as a single number that makes it easier to 
+compare the evaluation results.
+
+Precision shows how many of the data points that the algorithm identified as 
+class members were actually class members. It is the number of true positives 
+divided by the sum of the true positives and false positives (TP/(TP+FP)).
+
+Recall answers a slightly different question. This value shows how many of the 
+data points that are actual class members were identified correctly as class 
+members. It is the number of true positives divided by the sum of the true 
+positives and false negatives (TP/(TP+FN)).
+
+As was the case for the confusion matrix, you also need to define different 
+threshold levels for computing precision and recall.
+
+[discrete]
+[[ml-dfanalytics-roc]]
+===== Receiver operating characteristic curve
+
+The receiver operating characteristic (ROC) curve is a plot that represents the 
+performance of the binary classification process at different thresholds. It 
+compares the rate of true positives against the rate of false positives at the 
+different threshold levels to create the curve. From this plot, you can compute 
+the area under the curve (AUC) value, which is a number between 0 and 1. The 
+closer to 1, the better the algorithm performance.
+
+The {evaluatedf-api} can return the false positive rate (`fpr`) and the true 
+positive rate (`tpr`) at the different threshold levels, so you can visualize 
+the algorithm performance by using these values.
+
+
+[discrete]
+[[ml-dfanalytics-regression-evaluation]]
+==== {regression-cap} evaluation
+
+This evaluation type is suitable for evaluating {regression} models. The 
+{regression} evaluation type offers the following metrics to evaluate the model 
+performance:
+
+* Mean squared error (MSE)
+* R-squared (R^2^)
+
+
+[discrete]
+[[ml-dfanalytics-mse]]
+===== Mean squared error
+
+The API provides a MSE by computing the average squared sum of the difference 
+between the true value and the value that the {regression} model predicted. 
+(Avg (predicted value-actual value)^2^). You can use the MSE to measure how well 
+the {reganalysis} model is performing.
+
+
+[discrete]
+[[ml-dfanalytics-r-sqared]]
+===== R-squared
+
+Another evaluation metrics for {reganalysis} is R-squared (R^2^). It represents 
+the goodness of fit and measures how much of the variation in the data the 
+predictions are able to explain. The value of R^2^ are less than or equal to 1, 
+where 1 indicates that the predictions and true values are equal. A value of 0 
+is obtained when all the predictions are set to the mean of the true values. A 
+value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
+(about 30%) closer to true values than their mean.
+
+
+[discrete]
+[[ml-dfanalytics-classification]]
+==== {classification-cap} evaluation
+
+This evaluation type is suitable for evaluating {classification} models. In the 
+{version} version of the {stack}, {classification} evaluation handles two 
+classes. The {classification} evaluation offers the following metrics to 
+evaluate the model performance:
+
+* Multi-class confusion matrix
+
+
+[discrete]
+[[ml-dfanalytics-mccm]]
+===== Multi-class confusion matrix
+
+The multi-class confusion matrix contains the number of occurrences where the 
+analysis classified data points correctly with their actual class as well as the 
+number of occurrences where it misclassified them with another class. The 
+multi-class confusion matrix provides a summary about the performance of the 
+{classification} analysis.

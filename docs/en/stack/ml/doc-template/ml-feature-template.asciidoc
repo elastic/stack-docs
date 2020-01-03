@@ -1,0 +1,203 @@
+////
+Feature documentation structure:
+
+Titles between <> are placeholders. The rest of the titles mark parts of the 
+chapter that must be used in its exact form to provide uniformity across 
+chapters.
+
+<Index> (TOC)
+  Overview
+    <Overview subsection 1>
+    <Overview subsection 2>
+    ...
+  Concepts (TOC)
+    <Concept 1>
+    <Concept 2>
+    ...
+  Configuring <feature>
+    <Configuration subsection 1>
+    <Configuration subsection 2>
+    ...
+  API quick reference
+  Examples (TOC)
+    <Configuration example 1>
+    <Configuration example 2>
+    ...
+  Limitations
+  Troubleshooting
+////    
+    
+    
+
+[role="xpack"]
+[[ml-<feature>]]
+= <Feature>
+
+////
+(Required) The index page consists of a brief (one or two-sentence-long) 
+description of the feature or functionality and a table of contents where the 
+list items are links to the subpages. The goal of this page is to provide a 
+summary of the chapter and guide the reader to the appropriate subsections.
+////
+
+
+
+[role="xpack"]
+[[ml-<feature>-overview]]
+== Overview
+
+////
+(Required) The conceptual overview summarizes the idea and machinery behind the 
+feature and the main reasons why to use it. The aim of this summary is to inform 
+the user about the main functions, to familiarize the domain language, basic 
+terms, and to provide some context about the possible fields of usage (short 
+examples, use cases).
+////
+
+[discrete]
+[ml-<feature>-<title of subsection>]
+=== <Title of the subsection>
+
+////
+The overview page may contain further subsections that thematize important 
+concepts related to the feature, for example feature influence for outlier 
+detection. If you want to refer to a concept (by using a link) elsewhere in the 
+documentation, then it is considered important.
+////
+
+
+
+[role="xpack"]
+[[ml-<feature>-concepts]]
+== Concepts
+
+////
+(Optional) This section explains the fundamental concepts of the feature. It 
+might be overlapping with the overview subsections (see below). A rule of thumb 
+could be adding a Concepts section when there are more than two items that needs 
+explanation longer than a couple of paragraphs. For example datafeeds or buckets 
+in the anomaly detection documentation.
+The Concepts main page consists of a TOC that links to the individual concept 
+pages.
+////
+
+[role="xpack"]
+[[ml-<feature>-<concept>]]
+=== <Concept name>
+
+
+<Description of the concept.>
+
+
+
+
+[role="xpack"]
+[[ml-<feature>-configuration]]
+
+== Configuring <feature>
+
+////
+(Optional) This page could be either a TOC of subpages that explain 
+configuration topics or a single page that contains the explanation depending on 
+the amount of content you want to add. This section contains minimal, getting 
+started type configuration content. It may refer to more detailed configuration 
+examples in the “Examples” section (if appropriate).
+////
+
+[role="xpack"]
+[[ml-<feature>-configuration-<subtitle>]]
+
+=== <Configuration subpage title>
+
+
+<Configuration description. Use gerunds in the title to avoid the repetition of 
+“How to…”, for example Configuring XYZ or Using ZYX.>
+
+
+
+[role="xpack"]
+[[ml-<feature>-api-quickref]]
+== API quick reference
+
+////
+(Required) This page contains the base URL of the feature endpoint and the links 
+to the API documentation.
+////
+
+All {ml} <feature> endpoints have the following base:
+
+[source,js]
+----
+/_ml/
+----
+
+The main resources can be accessed with a variety of endpoints:
+<List of endpoints>
+
+
+
+[role="xpack"]
+[[<feature>-examples]]
+== <Feature> examples
+
+////
+(Optional) The examples main page consists of a TOC with links to the respective sub-pages. 
+The example sub-pages contain advanced examples for different configuration 
+scenarios.
+////
+
+
+[role="xpack"]
+[[configuring-<name>]]
+== <Configuration example title>
+
+<Description.>
+
+
+
+[role="xpack"]
+[[ml-<feature>-limitations]]
+== <Feature> limitations
+
+////
+(Optional) List and description of known issues, limitations of the feature. It 
+is a single page until such time as the number of limitations becomes large, 
+then group them logically.
+////
+
+The following limitations and known problems apply to the {version} release of 
+the Elastic <feature name>:
+
+[float]
+[[<limitation>-limitations]]
+=== <Limitation> limitation
+
+<Description.>
+
+
+
+[role="xpack"]
+[[ml-<feature>-troubleshooting]]
+== Troubleshooting <feature>
+
+////
+(Optional) A high-level overview of common problems and provides guidance on how 
+to avoid/workaround frequently experienced issues. It is a single page until 
+such time as the number of items becomes large, then group them logically.
+////
+
+Use the information in this section to troubleshoot common problems and find
+answers for frequently asked questions.
+
+[[ml-<problem>]]
+=== <Problem title>
+
+<Description.>
+
+*Symptoms:*
+
+<List of symptoms>
+
+*Resolution:*
+
+<Description.>

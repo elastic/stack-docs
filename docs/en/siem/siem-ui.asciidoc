@@ -16,9 +16,10 @@ collapsible, resizable, moveable, and so forth.
 The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
 throughout the {siem-app} for searching and filtering.
 
-NOTE: The default index patterns for {siem-soln} events are `auditbeat-*`, `winlogbeat-*`,
-`filebeat-*`, and `packetbeat-*`. You can change the default index patterns in
-{kib} -> Management -> Advanced Settings -> `siem:defaultIndex`.
+NOTE: The default index glob patterns defined for {siem-soln} events are 
+`endgame-*`, `auditbeat-*`, `winlogbeat-*`, `filebeat-*`, and `packetbeat-*`. 
+You can change the default glob patterns in {kib} -> Management -> Advanced 
+Settings -> `siem:defaultIndex`.
 
 
 [float]
@@ -48,46 +49,82 @@ Timeline for further investigation.
 [role="screenshot"]
 image::hosts-ui.png[]
 
-Interactive table widgets let you drill down for deeper insights:
+Interactive widgets let you drill down for deeper insights:
 
 * Hosts
-* Unique IPs
 * User Authentications (success and failures)
-* Uncommon Processes
+* Unique IPs
+
+There are also tabs for viewing and investigating specific types of data:
+
+* All hosts
+* Authentications
+* Uncommon processes
+* Anomalies
 * Events
 
 
 *Hosts Detail* shows information for a selected host, including
 Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
-versions, machine type, and so forth.
+versions, machine type, and so forth. Additionally, it contains all the widgets
+and tabs relevant for the selected host.
 
 [float]
 [[network-ui]]
 === Network
 
-The Network view provides key network activity metrics, facilitates
-investigation time enrichment, and provides network event tables that enable
-interaction with the Timeline. You can drag and drop items of interest from the
-Network view to Timeline for further investigation.
+The Network view provides key network activity metrics and an interactive map,
+facilitates investigation time enrichment, and provides network event tables that
+enable interaction with the Timeline. You can drag and drop items of interest from
+the Network view to Timeline for further investigation.
 
 [role="screenshot"]
 image::network-ui.png[]
 
-Interactive table widgets let you drill down for deeper insights:
+Interactive widgets let you drill down for deeper insights:
 
-* Top Talkers
-* Top DNS Domains
-* IP Details
-* Domains
-* Users
-* Transport Layer Security certs
+* Network events
+* DNS queries
+* Unique flow IDs
+* TLS handshakes
+* Unique private IPs
 
+There are also tabs for viewing and investigating specific types of data:
+
+* Flows
+** Source IPs
+** Destination IPs
+** Source Countries
+** Destination Countries
+* DNS
+* TLS
+* Anomalies
+
+[float]
+[[map-ui]]
+=== Map
+The map provides a visual overview of your network traffic. It is interactive,
+so you can start exploring data directly from the map. Hover over source and
+destination points to see more information, such as hostnames and IP addresses.
+To drill down, click a point and use the filter icon to add a field to the
+filter bar or drag a field to the Timeline. You can also click a hostname
+to jump to the SIEM Host page, or an IP address to open the relevant network details.
+
+Just as you can start an investigation using the map, the map refreshes to show
+relevant data when you run a query or update the time frame.
+
+TIP: To add and remove layers, click on the more options icon in the top right
+corner of the map.
+
+<<conf-map-ui>> describes how to add map data and set up interactions.
 
 [float]
 [[timelines-ui]]
 === Timelines
 
-Use timelines as your workspace for alert investigations or threat hunting. 
+Use timelines as your workspace for alert investigations or threat hunting.
+Data from multiple indices can be added to a timeline, which enables investigating
+complex threats, such as lateral movement of malware across hosts in your network.
 
 You can drag objects of interest into the Timeline Event Viewer to create
 exactly the query filter you need to get to the bottom of an alert. You can drag
@@ -109,7 +146,7 @@ can link to timelines from a ticketing system.
 
 [float]
 [[raw]]
-==== See raw event data 
+==== See raw event data
 
 Many security events in Timeline are presented in an easy-to-follow rendered
 view, which enables quicker analyst understanding. You can click and expand
@@ -118,7 +155,7 @@ form, as as {es} JSON.
 
 [float]
 [[narrow-expand]]
-==== Narrow or expand your query 
+==== Narrow or expand your query
 
 You can specify logical `AND` and `OR` operations with an item's placement in
 the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
@@ -127,7 +164,7 @@ whether your placement is on target to create an `AND` or `OR` filters.
 
 [float]
 [[pivot]]
-==== Pivot your data 
+==== Pivot on a data point 
 
 Click a filter to access additional operations such as exclude, temporarily
 disable, or delete items from the query. For example, you can change an included
@@ -136,8 +173,9 @@ item so that it is excluded.
 [float]
 [[row-renderer]]
 ==== Get more context for each event
+
 As you build and modify your queries, you can see the results of your
-interactions in the details pane below. 
+interactions in the details pane below.
 
 As your query takes shape, an easy-to-follow rendered view appears for events. It
 shows relevant contextual information that helps tell the backstory of the
@@ -146,12 +184,12 @@ drop area for further introspection.
 
 [float]
 [[other]]
-==== Other actions 
+==== Other actions
 
 The Timeline is flexible and highly interactive.  As you would expect, the
 {siem-app} lets you:
 
-* add, remove, reorder, or resize Timeline columns. 
+* add, remove, reorder, or resize Timeline columns
 * save, open, and list Timelines
 * add notes to individual events
 * add investigation notes for the whole Timeline
@@ -161,3 +199,155 @@ Try clicking to expand or collapse items, or dragging and dropping them to other
 areas to see what happens. Are there interactions that you would expect to see
 that aren't present?  Let us know. We welcome your input.
 
+[[conf-map-ui]]
+=== Configuring map data
+
+Depending on your {kib} setup, to display and interact with data on the map you
+might need to:
+
+* <<kibana-index-pattern>>
+* <<geoip-data, Add geographical IP data to events>>
+* <<private-network>>
+
+NOTE: To see source and destination connections lines on the map, you must
+configure `source.geo` and `destination.geo` ECS fields for your indices.
+
+[float]
+[[kibana-index-pattern]]
+==== Create {kib} index patterns
+
+To display map data, you must define
+{kib} {kibana-ref}/tutorial-define-index.html[index patterns] (*Management* -> 
+*Index Patterns*) with exactly the same names or glob patterns used to define 
+the {siem-soln} {es} indices.
+
+NOTE: The {siem-soln} {es} indices are defined in the `siem:defaultIndex` field 
+(*{kib}* -> *Management* -> *Advanced Settings* -> *`siem:defaultIndex`*).
+
+For example, if you define a {siem-soln} {es} `servers-europe-*` glob pattern, 
+to display map data for the matching indices you must also define a {kib} index 
+pattern named `servers-europe-*`. If you use a different {kib} index pattern, 
+such as `servers-*`, map data for the indices is *not* displayed.
+
+// =====================
+// Keeping this commented out because it will be true in the future...
+// To display data on the map, you must define {kib} index patterns 
+// (Management -> Index Patterns) that match all the {siem-soln} {es} indices you 
+// want to visualize. For more information, see
+// {kibana-ref}/tutorial-define-index.html[Define your index patterns].
+// =====================
+
+[float]
+[[geoip-data]]
+==== Add geoIP data
+
+When the ECS {ecs-ref}/ecs-geo.html[source.geo.location and 
+destination.geo.location] fields are mapped, network data is displayed on
+the map.
+
+If you use Beats, configure a geoIP processor to add data to the relevant 
+fields:
+
+[[geo-pipeleine]]
+. Define an ingest node pipeline that uses one or more `geoIP` processors to add
+location information to events. For example, use the Console in {kib} to create
+the following pipeline:
++
+--
+[source,json]
+----
+PUT _ingest/pipeline/geoip-info
+{
+  "description": "Add geoip info",
+  "processors": [
+    {
+      "geoip": {
+        "field": "client.ip",
+        "target_field": "client.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "source.ip",
+        "target_field": "source.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "destination.ip",
+        "target_field": "destination.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "server.ip",
+        "target_field": "server.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "host.ip",
+        "target_field": "host.geo",
+        "ignore_missing": true
+      }
+    }
+  ]
+}
+----
+//CONSOLE
+--
++
+In this example, the pipeline ID is `geoip-info`. `field` specifies the field
+that contains the IP address to use for the geographical lookup, and
+`target_field` is the field that will hold the geographical information.
+`"ignore_missing": true` configures the pipeline to continue processing when
+it encounters an event that doesn't have the specified field.
+
+. In your Beats configuration files, add the pipeline to the 
+`output.elasticsearch`tag:
++
+[source,yml]
+----------------------------------
+  output.elasticsearch:
+    hosts: ["localhost:9200"]
+    pipeline: geoip-info <1>
+----------------------------------
+<1> The value of this field must be the same as the ingest pipeline name in
+<<geo-pipeleine, step 1>> (`geoip-info` in this example).
+
+[float]
+[[private-network]]
+==== Map your internal network
+
+If you want to add your network’s internal IP addresses to the map, define geo
+location fields under the `processors` tag in the Beats configuration files
+on your hosts:
+
+[source,yml]
+----------------------------------
+  processors:
+   - add_host_metadata:
+   - add_cloud_metadata: ~
+   - add_fields:
+       when.network.source.ip: <private/IP address> <1>
+       fields:
+         source.geo.location:
+           lat: <latitude coordinate>
+           lon: <longitude coordinate>
+       target: ''
+   - add_fields:
+       when.network.destination.ip: <private/IP address>
+       fields:
+         destination.geo.location:
+           lat: <latitude coordinate>
+           lon: <longitude coordinate>
+       target: ''
+----------------------------------
+<1> For the IP address, you can use either `private` or CIDR notation.
+
+TIP: You can also enrich your data with other
+{packetbeat-ref}/add-host-metadata.html[host fields].

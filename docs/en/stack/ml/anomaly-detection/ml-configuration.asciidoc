@@ -1,0 +1,37 @@
+[role="xpack"]
+[[ml-configuration]]
+== Configure {anomaly-detect}
+
+If you want to use {ml-features}, there must be at least one {ml} node in
+your cluster and all master-eligible nodes must have {ml} enabled. By default,
+all nodes are {ml} nodes. For more information about these settings, see 
+{ref}/modules-node.html#ml-node[{ml} nodes].
+
+To use the {ml-features} to analyze your data, you can create an {anomaly-job}
+and send your data to that job.
+
+//* If your data is stored in {es}:
+
+//** You can create a {dfeed}, which retrieves data from {es} for analysis.
+//** You can use {kib} to expedite the creation of jobs and {dfeeds}.
+
+//* If your data is not stored in {es}, you can
+//{ref}/ml-post-data.html[POST data] from any source directly to an API.
+
+The results of {ml} analysis are stored in {es} and you can use {kib} to help
+you visualize and explore the results.
+
+//For a tutorial that walks you through these configuration steps,
+//see <<ml-getting-started>>.
+
+* <<create-jobs>>
+* <<stopping-ml>>
+
+After you learn how to create and stop {anomaly-detect} jobs, you can check the 
+<<anomaly-examples>> for more advanced settings and scenarios.
+
+include::create-jobs.asciidoc[]
+
+include::job-tips.asciidoc[]
+
+include::stopping-ml.asciidoc[]

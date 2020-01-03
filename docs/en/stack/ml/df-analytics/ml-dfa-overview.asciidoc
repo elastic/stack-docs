@@ -1,0 +1,37 @@
+[role="xpack"]
+[[ml-dfa-overview]]
+== Overview
+
+{dfanalytics-cap} enable you to perform different analyses of your data and 
+annotate it with the results. By doing this, it provides additional insights 
+into the data. <<dfa-outlier-detection,{oldetection-cap}>> identifies unusual 
+data points in the dataset. <<dfa-regression,{regression-cap}>> makes 
+predictions on your data after it determines certain relationships among your 
+data points.
+
+The process leaves the source index intact, it creates a new index that contains 
+a copy of the source data and the annotated data. You can slice and dice the 
+data extended with the results as you normally do with any other data set. Read 
+<<ml-dfa-phases>> for more information.
+
+You can evaluate the {dfanalytics} performance by using the {evaluatedf-api} 
+against a marked up data set. It helps you understand error distributions and 
+identifies the points where the {dfanalytics} model performs well or less 
+trustworthily.
+
+For the available types of {dfanalytics} and the evaluation methods, consult the 
+table below.
+
+
+[width="50%"]
+.{dfanalytics-cap} overview table
+|===
+| {dfanalytics-cap} type    | Learning type | Evaluation type
+
+| {oldetection}             | unsupervised  | {binarysc}
+| {regression}              | supervised    | {regression}
+| {classification}          | supervised    | {classification}
+|===
+
+
+include::ml-dfa-phases.asciidoc[]

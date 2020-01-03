@@ -98,7 +98,16 @@ that don't contain a results field are not included in the {reganalysis}.
 === {classification-cap} field types
 
 {classification-cap} supports fields that have numeric, boolean, text, keyword, 
-or ip data types. It is also tolerant of missing values. Fields that are supported are 
-included in the analysis, other fields are ignored. Documents where included 
-fields contain an array are also ignored. Documents in the destination index 
-that don't contain a results field are not included in the {classanalysis}.
+or ip data types. It is also tolerant of missing values. Fields that are 
+supported are included in the analysis, other fields are ignored. Documents 
+where included fields contain an array are also ignored. Documents in the 
+destination index that don't contain a results field are not included in the 
+{classanalysis}.
+
+[float]
+[[dfa-inference-nested-limitation]]
+=== Deeply nested objects affect {infer} performance
+
+If the data that you run inference agains contains deeply nested documents, the 
+performance of the operation might be slightly slower. Consider using as simple 
+mapping as possible for the best performance profile.

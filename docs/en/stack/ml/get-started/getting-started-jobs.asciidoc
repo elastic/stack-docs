@@ -1,0 +1,52 @@
+[role="xpack"]
+[[ml-gs-jobs]]
+== Create sample {ml} jobs in {kib}
+++++
+<titleabbrev>Create jobs</titleabbrev>
+++++
+
+Now that we have taken a quick look at the type of data that is stored in the 
+`kibana_sample_data_logs` index, let's create some {ml} jobs to start analyzing
+the data.
+
+The {kib} sample data sets include some pre-configured {ml} jobs for you to play
+with. You can use either of the following methods to add the jobs:
+
+* After you load the sample web logs data set on the {kib} home page, click
+*View data* > *ML jobs*.
+* In the Machine Learning app, when you select the `kibana_sample_data_logs`
+index pattern in the *Data Visualizer* or the *Anomaly Detection* job wizards,
+it recommends that you create a job using its known configuration. Select the
+*Kibana sample data web logs* configuration.
+
+
+[role="screenshot"]
+image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
+
+The wizard recommends three jobs: `low_request_rate`, `response_code_rates`, and
+`url_scanning`. You can tell by the job descriptions that even though these jobs
+use the same data, they are seeking three different types of anomalous behavior.
+
+//For the purposes of this tutorial, we do not want to start the {dfeed} or use
+//the full data set immediately. Click the check boxes to deselect these options.
+
+Click *Create Jobs*. When all three jobs and {dfeeds} have been created and
+started, you receive a summary: 
+
+[role="screenshot"]
+image::images/ml-gs-create-web-jobs-2.jpg["Create jobs for the sample web logs"]
+
+{dfeeds-cap} retrieve data from {es} indices for analysis by {anomaly-job} jobs.
+For more information about these concepts, see <<ml-jobs>> and <<ml-dfeeds>>.
+
+//TO-DO: Take a closer look at one of these jobs to clarify what its purpose is.
+
+The next step is to view the results and see what types of insights these {ml}
+jobs have generated! 
+
+[TIP]
+--
+This tutorial uses {kib} to create jobs and view results, but you can
+alternatively use APIs to accomplish most tasks.
+For API reference information, see {ref}/ml-apis.html[Machine learning APIs].
+--

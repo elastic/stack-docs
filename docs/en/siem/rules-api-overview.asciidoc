@@ -3,7 +3,8 @@
 == Detection engine API
 
 You can create rules that automatically turn events and alerts sent to the
-{siem-app} into signals, which are displayed on the Engine Detection page. 
+{siem-app} into signals. These signals are displayed on the Engine Detection 
+page. 
 
 For more information on signals, and the difference between signals, events, 
 and alerts, see <<det-engine-terminology, detection engine terminology>>.
@@ -44,14 +45,12 @@ NOTE: You can find space URL identifiers on
 [float]
 === Kibana role requirements
 
-To create and run rules, you must use a user role for your Kibana space with 
-at least:
+To create and run rules, the user role for the {kib} space must have:
 
 * the {ref}/security-privileges.html[`manage_api_key` privilege].
 * `read`, `write`, `create`, and `view_index_metadata` privileges for the 
 signals index (the system index used for storing signals created from rules).
-* `all` privileges for {kibana-ref}/xpack-spaces.html[`SIEM`, `Actions`, and 
-`Alerting`] features.
+* `all` privileges for {kibana-ref}/xpack-spaces.html[`SIEM` features].
 
 
 [float]

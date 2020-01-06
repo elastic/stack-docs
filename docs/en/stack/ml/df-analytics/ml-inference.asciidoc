@@ -1,0 +1,47 @@
+[role="xpack"]
+[[ml-inference]]
+=== {infer-cap}
+
+experimental[]
+
+{infer-cap} is a {ml} feature that enables you to use supervised {ml} processes 
+– like <<dfa-regression>> or <<dfa-classification>> – not only as a batch 
+analysis but in a continuous fashion. This means that {infer} makes it possible 
+to use trained {ml} models against incoming data.
+
+For instance, suppose you have an online service and you would like to predict 
+whether a customer is likely to churn. You have an index with historical data – 
+information on the customer behavior throughout the years in your business – and 
+a {classification} model that is trained on this data. The new information comes 
+into a destination index of a {ctransform}. With {infer}, you can perform the 
+{classanalysis} against the new data with the same input fields that you've 
+trained the model on, and get a prediction.
+
+Let's take a closer look at the machinery behind {infer}.
+
+
+[discrete]
+==== Trained {ml} models as functions
+
+When you create a {dfanalytics-job} that executes a supervised process, you need 
+to train a {ml} model on a training dataset to be able to make predictions on 
+data points that the model has never seen. The models that are created by 
+{dfanalytics} are stored as {es} documents in internal indices. In other words, 
+the characteristics of your trained models are saved and ready to be used as 
+functions.
+
+
+[discrete]
+==== {infer-cap} processor
+
+{infer-cap} is a processor specified in an {ref}/pipeline.html[ingest pipeline]. 
+It uses a stored {dfanalytics} model to infer against the data that is being 
+ingested in the pipeline. The model is used on the 
+{ref}/ingest.html[ingest node]. {infer-cap} pre-processes the data by using the 
+model and provides a prediction. After the process, the pipeline continues 
+executing (if there is any other processor in the pipeline), finally the new 
+data together with the results are indexed into the destination index.
+
+Check the {ref}/inference-processor.html[{infer} processor] and 
+{ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
+learn more about the feature.

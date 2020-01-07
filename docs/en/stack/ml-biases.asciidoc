@@ -10,8 +10,10 @@ of these social biases can make their way into the {ml} results more easily than
 we might think.
 
 There are various possible biases that can negatively influence the result of a 
-{ml} analysis. In this piece, we'll talk about statistical and social biases. 
-They can exist in the datasets used to train {ml} models or in the way the 
+{ml} analysis. In this piece, we'll talk about statistical and social biases 
+(without addressing the numerous subtypes of them individually), and not about 
+the possible biases in the {ml} algorithms themselves. Statistical and social 
+biases can exist in the datasets used to train {ml} models or in the way the 
 predictions of these models are interpreted. These issues are part of a greater 
 question about the ethics behind technology and there's no one solution for 
 everyone. However, there are some basic practices you can use to reduce these 
@@ -53,6 +55,18 @@ with different persons, and perform tests as much as possible.
 Avoid "blind interpretation"; {ml} algorithms shouldn't be applied without a 
 thorough understand on the data and its shortcomings arrived at through an 
 analysis.
+
+
+[float]
+==== Self-reinforcing feedback loops
+
+For example, predictive policing usecases. Suppose a certain city is using 
+{ml} technologies to predict where most crimes are likely to occur. The dataset 
+is likely to be skewed, for example, towards less wealthy areas. The {ml} system 
+predicts that these areas are likely to have more crime, which leads to an 
+increased surveillance and data collection, which further increases the bias in 
+the dataset towards this area, which in turn leads the algorithm to predict 
+higher probability of crime in this area and so on.
 
 
 [float]

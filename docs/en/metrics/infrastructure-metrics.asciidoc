@@ -3,50 +3,19 @@
 
 == Infrastructure metrics
 
-// ++ More explanation needed. Beats provides these metrics automatically, but other solutions for collecting metrics or logs will need to provide these values.
-The metrics listed below are provided by the {beats} shippers.
-Each system type requires their corresponding identity field to be in the same event document:
+This section contains detailed information about each of the metricsets the {metrics-app} supports. The metrics listed below are provided by the {beats} shippers.
 
-* Hosts require `host.name`
-* Docker containers require `container.id`
-* Kubernetes pods require `kubernetes.pod.uid`
+* <<host-metricset, Hosts>>
+* <<docker-metricset, Docker Containers>>
+* <<kibernetes-metricset, Kubernetes Pods>>
+* <<aws-ec2-metricset, AWS EC2 Instances>>
+* <<aws-s3-metricset, AWS S3 Buckets>>
+* <<aws-rds-metricset, AWS RDS Databases>>
+* <<aws-sqs-metricset, AWS SQS Queues>>
+
+[float]
+=== Additional field details
 
 The `event.dataset` field is required to display data properly in some views. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the metricset name.
 
-[float]
-=== Host Metrics
-
-*CPU Usage*:: Average of `system.cpu.user.pct` added to the average of `system.cpu.system.pct` divided by `system.cpu.cores`
-
-*Memory Usage*:: Average of `system.memory.actual.used.pct`
-
-*Load*:: Average of `system.load.5`
-
-*Inbound Traffic*:: Derivative of the maximum of `system.network.in.bytes` scaled to a 1 second rate
-
-*Outbound Traffic*:: Derivative of the maximum of `system.network.out.bytes` scaled to a 1 second rate
-
-*Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate.
-This metric relies on the same indices as the logs.
-
-[float]
-=== Docker Container Metrics
-
-*CPU Usage*:: Average of `docker.cpu.total.pct`
-
-*Memory Usage*:: Average of `docker.memory.usage.pct`
-
-*Inbound Traffic*:: Derivative of the maximum of `docker.network.in.bytes` scaled to a 1 second rate
-
-*Outbound Traffic*:: Derivative of the maximum of `docker.network.out.bytes` scaled to a 1 second rate
-
-[float]
-=== Kubernetes Pod Metrics
-
-*CPU Usage*:: Average of `kubernetes.pod.cpu.usage.node.pct`
-
-*Memory Usage*:: Average of `kubernetes.pod.memory.usage.node.pct`
-
-*Inbound Traffic*:: Derivative of the maximum of `kubernetes.pod.network.rx.bytes` scaled to a 1 second rate
-
-*Outbound Traffic*:: Derivative of the maximum of `kubernetes.pod.network.tx.bytes` scaled to a 1 second rate
+All the charts use the `metricset.period` to determine the optimal time interval for each metric. If `metricset.period` is not available then it falls back to 1 minute intervals.

@@ -1,0 +1,19 @@
+[[docker-metricset]]
+[role="xpack"]
+
+== Docker Container Fields
+
+*ID*:: `container.id`
+*Name*:: `container.name`
+*IP Address*:: `container.ip_address`
+
+[float]
+=== Docker Container Metrics
+
+*CPU Usage*:: Average of `docker.cpu.total.pct`
+
+*Memory Usage*:: Average of `docker.memory.usage.pct`
+
+*Inbound Traffic*:: Derivative of the maximum of `docker.network.in.bytes` scaled to a 1 second rate
+
+*Outbound Traffic*:: Derivative of the maximum of `docker.network.out.bytes` scaled to a 1 second rate

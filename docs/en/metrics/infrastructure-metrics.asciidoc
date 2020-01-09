@@ -19,3 +19,17 @@ This section contains detailed information about each of the metricsets the {met
 The `event.dataset` field is required to display data properly in some views. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the metricset name.
 
 All the charts use the `metricset.period` to determine the optimal time interval for each metric. If `metricset.period` is not available then it falls back to 1 minute intervals.
+
+include::host-metricset.asciidoc[]
+
+include::docker-metricset.asciidoc[]
+
+include::kubernetes-metricset.asciidoc[]
+
+include::aws-ec2-metricset.asciidoc[]
+
+include::aws-s3-metricset.asciidoc[]
+
+include::aws-sqs-metricset.asciidoc[]
+
+include::aws-rds-metricset.asciidoc[]

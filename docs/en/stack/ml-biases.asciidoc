@@ -41,6 +41,18 @@ humans, it is also a solution to minimize the chance of biases.
 
 
 [float]
+==== Self-reinforcing feedback loops
+
+For example, predictive policing usecases. Suppose a certain city is using 
+{ml} technologies to predict where most crimes are likely to occur. The dataset 
+is likely to be skewed, for example, towards less wealthy areas. The {ml} system 
+predicts that these areas are likely to have more crime, which leads to an 
+increased surveillance and data collection, which further increases the bias in 
+the dataset towards this area, which in turn leads the algorithm to predict 
+higher probability of crime in this area and so on.
+
+
+[float]
 ==== Biases in interpretation
 
 When we interpret data, we can also be biased. For example, when we might want 
@@ -55,18 +67,6 @@ with different persons, and perform tests as much as possible.
 Avoid "blind interpretation"; {ml} algorithms shouldn't be applied without a 
 thorough understand on the data and its shortcomings arrived at through an 
 analysis.
-
-
-[float]
-==== Self-reinforcing feedback loops
-
-For example, predictive policing usecases. Suppose a certain city is using 
-{ml} technologies to predict where most crimes are likely to occur. The dataset 
-is likely to be skewed, for example, towards less wealthy areas. The {ml} system 
-predicts that these areas are likely to have more crime, which leads to an 
-increased surveillance and data collection, which further increases the bias in 
-the dataset towards this area, which in turn leads the algorithm to predict 
-higher probability of crime in this area and so on.
 
 
 [float]

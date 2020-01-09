@@ -1,0 +1,19 @@
+[[kubernetes-metricset]]
+[role="xpack"]
+
+=== Kubernetes Pod Fields
+
+*ID*:: `kubernetes.pod.uid`
+*Name*:: `kubernetes.pod.name`
+*IP Address*:: `kubernetes.pod.ip`
+
+[float]
+=== Kubernetes Pod Metrics
+
+*CPU Usage*:: Average of `kubernetes.pod.cpu.usage.node.pct`
+
+*Memory Usage*:: Average of `kubernetes.pod.memory.usage.node.pct`
+
+*Inbound Traffic*:: Derivative of the maximum of `kubernetes.pod.network.rx.bytes` scaled to a 1 second rate
+
+*Outbound Traffic*:: Derivative of the maximum of `kubernetes.pod.network.tx.bytes` scaled to a 1 second rate

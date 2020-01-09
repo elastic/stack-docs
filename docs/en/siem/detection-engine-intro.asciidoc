@@ -3,10 +3,10 @@
 == Detection engine
 
 The detection engine automatically searches for threats and creates signals 
-when they are detected. These threats are detected using rules that define the 
-conditions required for a signal to be issued. The {siem-app} comes 
-preconfigured with rules that search for suspicious activity on your network 
-and hosts. Additionally, you can <<rules-ui-create, create your own rules>>.
+when they are detected. Detection engine rules define the conditions for 
+creating signals. The {siem-app} comes preconfigured with rules that search for 
+suspicious activity on your network and hosts. Additionally, you can
+<<rules-ui-create, create your own rules>>.
 
 [float]
 [[det-engine-terminology]]
@@ -18,6 +18,13 @@ received from third-party systems. When a detection engine rule's conditions
 are met, the {siem-app} writes one or more signals to an Elasticsearch 
 `signals` index.
 
+[NOTE]
+==============
+Signal indices are created for each {kib} space. The naming convention is:
+`.siem-signals-<space name>`. For the default space, the signals index is named 
+`.siem-signals-default`.
+==============
+
 Alerts and events::
 Always refer to data and detections {siem-soln} receives from data shippers and 
 third-party tools, such as Suricata and Elastic Endpoint Security.
@@ -25,13 +32,27 @@ third-party tools, such as Suricata and Elastic Endpoint Security.
 [float]
 === Signals
 
-When a rule's conditions are met, a signal is produced and displayed on the 
-Detection Engine page. To view all signals created by a specific rule, click 
-*Manage rules* and then the relevant rule in the All rules table.
+All signals are displayed on the Detection Engine page. To view signals created 
+by a rule, click *Manage rules* and then the relevant rule in the All rules 
+table.
 
-[NOTE]
-==============
-Signal indices are created for each {kib} space. The naming convention is:
-`.siem-signals-<space name>`. For the default space, the signals index is named 
-`.siem-signals-default`.
-==============
+[float]
+==== Open and closed signals
+
+You can close signals to indicate they do not need any further investigation. 
+By default, the All signals table displays only open signals. To view closed 
+signals, click *Closed signals*.
+
+To open and close signals, either:
+
+* Click the *Close/Open signal* icon
+* Select the signals you want to open or close and then click *Batch actions*
+-> *Close/Open selected*
+
+[float]
+==== Send signals to the Timeline
+
+To investigate signals in the Timeline, either:
+
+* Click the *View in timeline* icon
+* Select the signals you want to view in the Timeline and then click *Batch actions* -> *View selected in timeline*

@@ -2,11 +2,11 @@
 [role="xpack"]
 === Managing detection engine rules
 
-Rules run periodically, and search the specified indices for 
+Rules run periodically and search the specified indices for 
 documents that meet their criteria. On the Rules page, you can:
 
 * <<create-rule-ui, Create rules>>
-* <<manage-rules-ui, Clone, delete, disable, and enable rules>>
+* <<manage-rules-ui, Clone, delete, activate/deactivate, and run rules>>
 * <<import-export-rules-ui>>
 
 [role="screenshot"]
@@ -34,7 +34,7 @@ starts a process in a user folder uses the following query and filters:
 * _Add filter_:
 ** *Field*: `event.action`
 ** *Operator*: `is`
-** *Value* : `Process Create (rule: ProcessCreate)`
+** *Value*: `Process Create (rule: ProcessCreate)`
 . Click *Continue*.
 +
 The *About rule* pane is displayed.
@@ -51,10 +51,15 @@ indicate suspicious activity.
 ... `High`: Signals that require an immediate investigation.
 ... `Critical`: Signals that indicate a security incident has occurred.
 .. _Risk score_: A numerical value between 0 and 100 that correlates with the _Severity_ level. General guidelines are:
-... `21` represents low severity.
-... `47` represents medium severity.
-... `73` represents high severity.
-... `99` represents critical severity.
+* `21` represents low severity.
+* `47` represents medium severity.
+* `73` represents high severity.
+* `99` represents critical severity.
+.. _Timeline template_ (optional): Select a timeline template used when a 
+signal created by the rule is sent to the timeline.
++
+TIP: Before you create rules, create and save relevant
+<<timelines-ui,timelines>> so they can be selected here. 
 .. _Reference URLs_ (optional): References to information that is relevant to 
 the rule. For example, links to the relevant MITRE framework URL.
 .. _False positives_ (optional): List of common scenarios that may produce 
@@ -78,12 +83,16 @@ signals are issued even when incoming host and network data is delayed.
 . Save the rule with or without activation.
 
 [[manage-rules-ui]]
-==== Manage existing rules
+==== Modify existing rules
+
+You can clone, edit, activate/deactivate, and delete rules, and run them manually:
 
 . Go to *SIEM* -> *Detection Engine*.
 . Do one of the following:
-* Click the actions icon (three dots), and select the required action.
-* In the *Rule* column, select all the rules you want to perform an action on, and then the required action from `Batch actions` menu.
+* Click the actions icon (three dots) and then select the required action.
+* In the *Rule* column, select all the rules you want to perform an action on, 
+and then the required action from `Batch actions` menu.
+. To activate or deactivate a rule, click the Activate toggle button.
 
 
 [[import-export-rules-ui]]

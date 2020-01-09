@@ -1,0 +1,24 @@
+[[host-metricset]]
+[role="xpack"]
+
+=== Hosts Fields
+
+*ID*:: `host.name`
+*Name*:: `host.name`
+*IP Address*:: `host.ip`
+
+[float]
+=== Host Metrics
+
+*CPU Usage*:: Average of `system.cpu.user.pct` added to the average of `system.cpu.system.pct` divided by `system.cpu.cores`
+
+*Memory Usage*:: Average of `system.memory.actual.used.pct`
+
+*Load*:: Average of `system.load.5`
+
+*Inbound Traffic*:: Derivative of the maximum of `system.network.in.bytes` scaled to a 1 second rate
+
+*Outbound Traffic*:: Derivative of the maximum of `system.network.out.bytes` scaled to a 1 second rate
+
+*Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate.
+This metric relies on the same indices as the logs.

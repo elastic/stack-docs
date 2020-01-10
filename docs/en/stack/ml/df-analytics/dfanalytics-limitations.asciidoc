@@ -108,14 +108,8 @@ destination index that don't contain a results field are not included in the
 [[dfa-inference-nested-limitation]]
 === Deeply nested objects affect {infer} performance
 
-<<<<<<< HEAD
-If the data that you run inference agains contains documents that have a series 
+If the data that you run inference against contains documents that have a series 
 of combinations of dot delimited and nested fields (for example: 
 `{"a.b": "c", "a": {"b": "c"},...}`), the performance of the operation might be 
 slightly slower. Consider using as simple mapping as possible for the best 
 performance profile.
-=======
-If the data that you run inference against contains deeply nested documents, the 
-performance of the operation might be slightly slower. Consider using as simple 
-mapping as possible for the best performance profile.
->>>>>>> a911eade1c09f2dee7318e9c2959b528ef9e44bd

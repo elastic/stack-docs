@@ -17,8 +17,8 @@ The bucket span is the time interval that {ml} analytics use to summarize and
 model data for your job. When you create an {anomaly-job} in {kib}, you can
 choose to estimate a bucket span value based on your data characteristics. 
 
-NOTE: The bucket span must contain a valid time interval. For more information, 
-see {ref}/ml-job-resource.html#ml-analysisconfig[Analysis configuration objects].
+NOTE: The bucket span must contain a valid time interval. See
+{ref}/common-options.html#time-units[Time units].
 
 If you choose a value that is larger than one day or is significantly different 
 than the estimated value, you receive an informational message. For more 
@@ -99,8 +99,3 @@ If you are using {ece} or the hosted Elasticsearch Service on Elastic Cloud,
 that cannot be allocated to any {ml} nodes in the cluster. If you find that you 
 cannot increase `model_memory_limit` for your {ml} jobs, the solution is to 
 increase the size of the {ml} nodes in your cluster.
-
-For more information about the `model_memory_limit` property and the 
-`xpack.ml.max_model_memory_limit` setting, see 
-{ref}/ml-job-resource.html#ml-analysisconfig[Analysis limits] and 
-{ref}/ml-settings.html[Machine learning settings].

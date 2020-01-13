@@ -3,17 +3,17 @@
 
 {ml-cap} is meant to improve our everyday life in a wide palette of activities 
 across the globe. We use {ml} in science, healthcare, business, entertainment, 
-and many other fields. We make decisions based on {ml} results. It is therefore 
-crucial to keep in mind the possible biases that can corrupt results, endanger 
-fairness, and jeopardize the success of even the best-intended initiative. Some 
-of these social biases can make their way into the {ml} results more easily than 
-we might think.
+and many other fields. We make decisions based on {ml} results. It is, 
+therefore, crucial to keep in mind the possible biases that can corrupt results, 
+endanger fairness, and jeopardize the success of even the best-intended 
+initiative. Some of these biases can make their way into the {ml} results more 
+easily than we might think.
 
-There are various possible biases that can negatively influence the result of a 
-{ml} analysis. In this piece, we'll talk about statistical and social biases 
-(without addressing the numerous subtypes of them individually), and not about 
-the possible biases in the {ml} algorithms themselves. Statistical and social 
-biases can exist in the datasets used to train {ml} models or in the way the 
+Various possible biases can negatively influence the result of a {ml} analysis. 
+In this piece, we'll talk about statistical and social biases (without 
+addressing the numerous subtypes of them individually), and not about the 
+possible biases in the {ml} algorithms themselves. Statistical and social biases 
+can exist in the datasets used to train {ml} models or in the way the 
 predictions of these models are interpreted. These issues are part of a greater 
 question about the ethics behind technology and there's no one solution for 
 everyone. However, there are some basic practices you can use to reduce these 
@@ -25,9 +25,15 @@ biases.
 
 Biases exist in the data that we use to train {ml} models. For example, our 
 choice of which data to collect or analyze reflect our ideas about what is 
-important or worthy of attention. But the bias could be also the result of 
-manual labeling when the dataset has been annotated with the "ground truth", 
-which is another opportunity to unwittingly introduce preconceptions or 
+important or worthy of attention. It is also possible that someone else has 
+collected the data for you. In the cases when you rely on others to do the data
+collection, you need to be even more aware of the possible consequences and 
+understand how the data has been collected and selected. Cleaning up "messy 
+data" is also an operation when the dataset could be biased. Messiness couldn't 
+be only the result of human error in the design or the collection process, but 
+instead an immanent characteristic of the real world. The bias can be also the 
+result of manual labeling when the dataset has been annotated with the "ground 
+truth", which is another opportunity to unwittingly introduce preconceptions or 
 prejudice. The model will inherently learn the bias, therefore the analysis will 
 be also compromised, while technically the algorithm works exactly as intended. 
 
@@ -43,30 +49,32 @@ humans, it is also a solution to minimize the chance of biases.
 [float]
 ==== Self-reinforcing feedback loops
 
-For example, predictive policing usecases. Suppose a certain city is using 
-{ml} technologies to predict where most crimes are likely to occur. The dataset 
-is likely to be skewed, for example, towards less wealthy areas. The {ml} system 
-predicts that these areas are likely to have more crime, which leads to an 
-increased surveillance and data collection, which further increases the bias in 
-the dataset towards this area, which in turn leads the algorithm to predict 
-higher probability of crime in this area and so on.
+{ml-cap} systems often receive some kind of feedback on the prediction that they 
+have made in order to adjust the model and make more sophisticated and accurate 
+predictions. However, feedback can also reinforce preconceptions. A good example 
+of self-reinforcing feedback loops might be the predictive policing use cases. 
+Suppose a certain city is using {ml} technologies to predict where most crimes 
+are likely to occur. The dataset is likely to be skewed, for example, towards 
+less wealthy areas. The {ml} model predicts that the probability of a criminal 
+act is higher in these areas, which leads to increased surveillance and data 
+collection, which further increases the bias in the dataset towards this area, 
+which in turn leads the model to predict a higher probability of crime in this 
+area and so on. Eventually, feedback that is supposed to increase the accuracy 
+of prediction could easily intensify the effects of the biases in the dataset.
 
 
 [float]
 ==== Biases in interpretation
 
-When we interpret data, we can also be biased. For example, when we might want 
+When we interpret data, we can also be biased. For instance, when we might want 
 to validate a hypothesis based on the results of an analysis. In these cases, 
 the outcome of the analysis or the decision that is based on the analysis can be 
-inaccurate even if the dataset itself is carefully designed.
-
-It is safer to formulate the aim of the analysis in a way that does not contain 
-the expected results, interpret the outcome of the analysis multiple times 
-with different persons, and perform tests as much as possible.
-
-Avoid "blind interpretation"; {ml} algorithms shouldn't be applied without a 
-thorough understand on the data and its shortcomings arrived at through an 
-analysis.
+inaccurate even if the dataset itself is carefully designed. It is safer to 
+formulate the aim of the analysis in a way that does not contain the expected 
+results, interpret the outcome of the analysis multiple times with different 
+persons, and perform tests as much as possible. Also, try to avoid "blind 
+interpretation"; {ml} algorithms shouldn't be applied without a thorough 
+understanding of the data and its shortcomings arrived at through an analysis.
 
 
 [float]
@@ -75,12 +83,14 @@ analysis.
 The issue of biases that can affect {ml} related processes is far from solved. 
 In fact, this is a field of ongoing disputes and there are no universal answers 
 for the emerging problems. Because of the various factors that can influence the 
-{ml} processes, avoiding bias-influenced analysis is a collective responsibility 
-of all the persons that participate in these processes; from the designers of 
-the dataset to the people who interpret the outcome of the analysis to the ones 
-who make decisions based on the data and the companies that offer the platforms 
-to make these decisions. Talk to your team about whether or not {ml} solutions 
-are appropriate for your specific problem, then talk about the real possibility 
-of introducing and reinforcing biases at each step in the process. Make plans, 
-share techniques, and be open to reconsidering results that seem too good to be 
-true.
+{ml} processes, reducing biases in an analysis is a collective responsibility of 
+all the persons that participate in these processes; from the designers of the 
+dataset to the people who interpret the outcome of the analysis to the ones who 
+make decisions based on the data and the companies that offer the platforms to 
+make these decisions. Talk to your team about whether or not {ml} solutions are 
+appropriate for your specific problem. It is essential to take into account that 
+in certain cases applying {ml} techniques to people is inappropriate and even 
+dangerous; for example using people's facial features to predict ethnicity, race 
+or sexual orientation. Talk about the real possibility of introducing and 
+reinforcing biases at each step in the process. Make plans, share techniques, 
+and be open to reconsidering results that seem too good to be true.

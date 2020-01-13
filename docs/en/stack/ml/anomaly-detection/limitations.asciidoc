@@ -103,7 +103,7 @@ Missing fields might be expected due to the structure of the data and therefore
 do not generate poor results.
 
 For more information about `missing_field_count`,
-see {ref}/ml-jobstats.html#ml-datacounts[Data Counts Objects].
+see the {ref}/ml-get-job-stats.html[get {anomaly-job} statistics API].
 
 
 [float]
@@ -145,9 +145,6 @@ this additional model information for every bucket might be problematic. If you
 are not certain that you need this option or if you experience performance
 issues, edit your job configuration to disable this option.
 
-For more information, see
-{ref}/ml-job-resource.html#ml-apimodelplotconfig[Model Plot Config].
-
 Likewise, when you create a single or multi-metric job in {kib}, in some cases
 it uses aggregations on the data that it retrieves from {es}. One of the
 benefits of summarizing data this way is that {es} automatically distributes
@@ -160,8 +157,6 @@ The {ml} analytics are designed to be aggregation-aware and the likely increase
 in performance that is gained by pre-aggregating the data makes the potentially
 poorer precision worthwhile. If you want to view or change the aggregations
 that are used in your job, refer to the `aggregations` property in your {dfeed}.
-
-For more information, see {ref}/ml-datafeed-resource.html[Datafeed Resources].
 
 [float]
 === Security integration

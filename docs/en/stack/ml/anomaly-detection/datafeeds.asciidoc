@@ -9,11 +9,9 @@ for analysis, which is the simpler and more common scenario.
 If you create {anomaly-jobs} in {kib}, you must use {dfeeds}. When you create a
 job, you select an index pattern and {kib} configures the {dfeed} for you under
 the covers. If you use APIs instead, you can create a {dfeed} by using the
-{ref}/ml-put-datafeed.html[create {dfeeds} API] after you create an
-{anomaly-job}. You can associate only one {dfeed} with each job.
-
-For a description of all the {dfeed} properties, see
-{ref}/ml-datafeed-resource.html[Datafeed resources].
+create {dfeeds} API after you create an {anomaly-job}. You can associate only
+one {dfeed} with each job. For a description of all the {dfeed} properties, see
+the {ref}/ml-put-datafeed.html[create {dfeeds} API].
 
 To start retrieving data from {es}, you must start the {dfeed}. When you start
 it, you can optionally specify start and end times. If you do not specify an

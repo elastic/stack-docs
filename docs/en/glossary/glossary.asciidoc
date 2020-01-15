@@ -42,8 +42,17 @@ include::{es-repo-dir}/glossary.asciidoc[tag=analysis-def]
 --
 
 endif::elasticsearch-terms[]
-ifdef::cloud-terms[]
+ifdef::xpack-terms[]
+[[glossary-anomaly-detection-job]] {anomaly-job} ::
 
+{anomaly-jobs-cap} contain the configuration information and metadata
+necessary to perform an analytics task. See
+{ml-docs}/ml-jobs.html[{ml-jobs-cap}] and the
+{ref}/ml-put-job.html[create {anomaly-job} API].
++
+//Source: X-Pack
+endif::xpack-terms[]
+ifdef::cloud-terms[]
 [[glossary-zone]] availability zone ::
 
 Contains resources available to a {ece} installation that are isolated from
@@ -57,7 +66,6 @@ entire availability zone. Also see
 //Source: Cloud
 endif::cloud-terms[]
 ifdef::cloud-terms[]
-
 [[glossary-beats-runner]] beats runner ::
 
 Used to send Filebeat and Metricbeat information to the logging cluster.
@@ -70,7 +78,7 @@ ifdef::xpack-terms[]
 
 The {ml-features} use the concept of a bucket to divide the time
 series into batches for processing. The _bucket span_ is part of the
-configuration information for a job. It defines the time interval that is used
+configuration information for {anomaly-jobs}. It defines the time interval that is used
 to summarize and model the data. This is typically between 5 minutes to 1 hour
 and it depends on your data characteristics. When you set the bucket span,
 take into account the granularity at which you want to analyze, the frequency
@@ -190,11 +198,21 @@ Alternatively you can post data from any source directly to a {ml} API.
 //Source: X-Pack
 endif::xpack-terms[]
 ifdef::xpack-terms[]
+[[glossary-dataframe-job]] {dfanalytics-job} ::
+
+{dfanalytics-jobs-cap} contain the configuration information and metadata
+necessary to perform {ml} analytics tasks on a source index and store the
+outcome in a destination index. See
+{ml-docs}//ml-dfa-overview.html[{dfanalytics-cap} overview] and the
+{ref}/put-dfanalytics.html[create {dfanalytics-job} API].
+//Source: X-Pack
+endif::xpack-terms[]
+ifdef::xpack-terms[]
 
 [[glossary-ml-detector]] detector ::
 
-As part of the configuration information that is associated with an
-{anomaly-job}, detectors define the type of analysis that needs to be done. They
+As part of the configuration information that is associated with {anomaly-jobs},
+detectors define the type of analysis that needs to be done. They
 also specify which fields to analyze. You can have more than one detector in a
 job, which is more efficient than running multiple jobs against the same data.
 +
@@ -368,11 +386,12 @@ file, syslog, redis, and beats.
 endif::logstash-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-ml-job]] job ::
+[[glossary-ml-job]][[glossary-job]] job ::
 
-Machine learning jobs contain the configuration information and metadata
-necessary to perform an analytics task. There are two types: {anomaly-jobs} and
-{dfanalytics-jobs}.
+{ml-cap} jobs contain the configuration information and metadata
+necessary to perform an analytics task. There are two types:
+<<glossary-anomaly-detection-job,{anomaly-jobs}>> and
+<<glossary-dataframe-job,{dfanalytics-jobs}>>. See also <<glossary-rollup-job>>.
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -565,6 +584,15 @@ by making sure that only authorized hosts become part of the installation.
 +
 //Source: Cloud
 endif::cloud-terms[]
+ifdef::xpack-terms[]
+
+[[glossary-rollup-job]] {rollup-job}::
+
+A {rollup-job} contains all the details about how the job should run, when it
+indexes documents, and what future queries will be able to execute against the
+rollup index. See {ref}/xpack-rollup.html[Rolling up historical data].
+//Source: X-Pack
+endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
 
 [[glossary-routing]] routing ::

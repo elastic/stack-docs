@@ -110,14 +110,16 @@ destination index that don't contain a results field are not included in the
 
 If your training data is very imbalanced, then {classanalysis} may not provide 
 good predictions. Training tries to mitigate the effects of imbalanced 
-training data by maximizing the minimum recall of any class. For imbalanced training data, this means that it
-will try to balance the proportion of values it correctly labels in the minority and majority class.
-However, this process can result in a slight degradation of the overall 
-accuracy. Try to avoid highly imbalanced situations. It is required at least 50 
-examples for each class in order to get better results. If your training dataset 
-is very imbalanced, fine-tune the data, for example, by downsampling the 
-majority classes. Consider investigating methods to change data that fit your 
-use case the most.
+training data by maximizing the minimum recall of any class. For imbalanced 
+training data, this means that it will try to balance the proportion of values 
+it correctly labels in the minority and majority class. However, this process 
+can result in a slight degradation of the overall accuracy. Try to avoid highly 
+imbalanced situations. We recommend having at least 50 examples of each class 
+and a ratio of no more than 10 to 1 for the majority to minority class labels in 
+the training data. If your training dataset is very imbalanced, consider 
+downsampling the majority class, upsampling the minority class or – if it's 
+possible – gather more data. Consider investigating methods to change data that 
+fit your use case the most.
 
 [float]
 [[dfa-inference-nested-limitation]]

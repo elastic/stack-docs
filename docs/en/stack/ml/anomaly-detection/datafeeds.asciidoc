@@ -6,11 +6,21 @@
 sent from some other source via an API. _{dfeeds-cap}_ retrieve data from {es}
 for analysis, which is the simpler and more common scenario.
 
-If you create {anomaly-jobs} in {kib}, you must use {dfeeds}. When you create a
-job, you select an index pattern and {kib} configures the {dfeed} for you under
-the covers. If you use APIs instead, you can create a {dfeed} by using the
-create {dfeeds} API after you create an {anomaly-job}. You can associate only
-one {dfeed} with each job. For a description of all the {dfeed} properties, see
+You can associate only one {dfeed} with each {anomaly-job}. The {dfeed} contains
+a query that runs at a defined interval (`frequency`). By default, this interval
+is calculated relative to the <<ml-buckets,bucket span>> of the {anomaly-job}.
+If you are concerned about delayed data, you can add a delay before the query
+runs at each interval. See <<ml-delayed-data-detection>>.
+
+{dfeeds-cap} can also aggregate data before sending it to the {anomaly-job}.
+There are some limitations, however, and aggregations should generally be used
+only for low cardinality data. See <<ml-configuring-aggregation>>.
+//TBD: Comment on interplay between date_histogram aggregation's interval and the
+//frequency/bucket span/query delay?
+
+If you create {anomaly-jobs} in {kib}, you _must_ use {dfeeds}. When you create
+an {anomaly-job}, you select an index pattern and {kib} configures the {dfeed}
+for you under the covers. For a description of all the {dfeed} properties, see
 the {ref}/ml-put-datafeed.html[create {dfeeds} API].
 
 To start retrieving data from {es}, you must start the {dfeed}. When you start

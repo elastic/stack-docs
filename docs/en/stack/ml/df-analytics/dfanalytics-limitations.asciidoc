@@ -98,7 +98,25 @@ that don't contain a results field are not included in the {reganalysis}.
 === {classification-cap} field types
 
 {classification-cap} supports fields that have numeric, boolean, text, keyword, 
-or ip data types. It is also tolerant of missing values. Fields that are supported are 
-included in the analysis, other fields are ignored. Documents where included 
-fields contain an array are also ignored. Documents in the destination index 
-that don't contain a results field are not included in the {classanalysis}.
+or ip data types. It is also tolerant of missing values. Fields that are 
+supported are included in the analysis, other fields are ignored. Documents 
+where included fields contain an array are also ignored. Documents in the 
+destination index that don't contain a results field are not included in the 
+{classanalysis}.
+
+[float]
+[[dfa-classification-imbalanced-classes]]
+=== Imbalanced class sizes affect {classification} performance
+
+If your training data is very imbalanced, then {classanalysis} may not provide 
+good predictions. Training tries to mitigate the effects of imbalanced 
+training data by maximizing the minimum recall of any class. For imbalanced 
+training data, this means that it will try to balance the proportion of values 
+it correctly labels in the minority and majority class. However, this process 
+can result in a slight degradation of the overall accuracy. Try to avoid highly 
+imbalanced situations. We recommend having at least 50 examples of each class 
+and a ratio of no more than 10 to 1 for the majority to minority class labels in 
+the training data. If your training dataset is very imbalanced, consider 
+downsampling the majority class, upsampling the minority class or – if it's 
+possible – gather more data. Consider investigating methods to change data that 
+fit your use case the most.

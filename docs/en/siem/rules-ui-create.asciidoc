@@ -1,6 +1,6 @@
 [[rules-ui-create]]
 [role="xpack"]
-=== Managing detection engine rules
+=== Managing signal detection rules
 
 Rules run periodically and search the specified indices for 
 documents that meet their criteria. On the Rules page, you can:
@@ -15,22 +15,18 @@ image::all-rules.png[]
 [[create-rule-ui]]
 ==== Create a new rule
 
-. Go to *SIEM* -> *Detection Engine* -> *Manage rules*.
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
 +
 The *Create new rule* page is displayed.
 [role="screenshot"]
 image::create-new-rule.png[]
-. Set which indices the rule analyzes for signals:
-+
-.. Configured SIEM indices (*Management* -> *Advanced 
-setting* -> *siem:defaultIndex*).
-.. A custom list of indices.
+. Define which {es} indices the rule analyzes for signals:
 . Use the filter and query fields to create the criteria used for detecting 
 signals. For example, a rule that detects when a Microsoft Office product 
 starts a process in a user folder uses the following query and filters:
 
-* _Custom query_ `field: process.parent.name: EXCEL.EXE or process.parent.name: MSPUB.EXE or process.parent.name: OUTLOOK.EXE or process.parent.name: POWERPNT.EXE or process.parent.name: VISIO.EXE or process.parent.name: WINWORD.EXE`
+* _Custom query_ `process.parent.name: EXCEL.EXE or process.parent.name: MSPUB.EXE or process.parent.name: OUTLOOK.EXE or process.parent.name: POWERPNT.EXE or process.parent.name: VISIO.EXE or process.parent.name: WINWORD.EXE`
 * _Add filter_:
 ** *Field*: `event.action`
 ** *Operator*: `is`
@@ -60,11 +56,12 @@ signal created by the rule is sent to the timeline.
 +
 TIP: Before you create rules, create and save relevant
 <<timelines-ui,timelines>> so they can be selected here. 
+
 .. _Reference URLs_ (optional): References to information that is relevant to 
 the rule. For example, links to the relevant MITRE framework URL.
 .. _False positives_ (optional): List of common scenarios that may produce 
 false-positive signals.
-.. _MITRE ATT&CK_ (optional): Relevant MITRE framework tactics and techniques.
+.. _MITRE ATT&CK^TM^_ (optional): Relevant MITRE framework tactics and techniques.
 .. _Tags_ (optional): Words and phrases used to categorize, filter, and search 
 the rule.
 . Click *Continue*.
@@ -87,7 +84,7 @@ signals are issued even when incoming host and network data is delayed.
 
 You can clone, edit, activate/deactivate, and delete rules, and run them manually:
 
-. Go to *SIEM* -> *Detection Engine*.
+. Go to *SIEM* -> *Detections*.
 . Do one of the following:
 * Click the actions icon (three dots) and then select the required action.
 * In the *Rule* column, select all the rules you want to perform an action on, 
@@ -98,10 +95,10 @@ and then the required action from `Batch actions` menu.
 [[import-export-rules-ui]]
 ==== Import and export rules
 
-. Go to *SIEM* -> *Detection Engine* -> *Manage rules*.
+. Go to *SIEM* -> *Detections* -> *Manage rules*.
 . To import rules:
 .. Click *Import rule*.
-.. Drag and drop files containing the detection engine rules.
+.. Drag and drop files containing the signal detection rules.
 +
 NOTE: Imported rules must be ndjson files.
 

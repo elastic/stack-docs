@@ -1,17 +1,18 @@
 [[detection-engine-overview]]
 [role="xpack"]
-== Detection engine
+== Detections
 
-The detection engine automatically searches for threats and creates signals 
-when they are detected. Detection engine rules define the conditions for 
-creating signals. The {siem-app} comes
+The SIEM Detections feature automatically searches for threats and creates 
+signals when they are detected. Signal detection rules define the conditions 
+for creating signals. The {siem-app} comes
 <<prebuilt-rules, preconfigured with rules>> that search for suspicious 
 activity on your network and hosts. Additionally, you can
 <<rules-ui-create, create your own rules>>.
 
 [IMPORTANT]
 ==============
-See for a list of the required {kib} privileges required for using the detection engine, viewing signals, and creating rules.
+See the <<detections-permissions, {kib} privileges required>> for using 
+Detections, viewing signals, and creating rules.
 ==============
 
 [float]
@@ -19,10 +20,9 @@ See for a list of the required {kib} privileges required for using the detection
 === Terminology
 
 Signals::
-Always refer to a {siem-soln} produced detection. That is, signals are never 
-received from third-party systems. When a detection engine rule's conditions 
-are met, the {siem-app} writes one or more signals to an Elasticsearch 
-`signals` index.
+Always refer to a {siem-soln} produced detections. Signals are never 
+received from third-party systems. When a rule's conditions are met, the
+{siem-app} writes one or more signals to an Elasticsearch `signals` index.
 
 [NOTE]
 ==============
@@ -32,21 +32,21 @@ Signal indices are created for each {kib} space. The naming convention is:
 ==============
 
 Alerts and events::
-Always refer to data and detections {siem-soln} receives from data shippers and 
-third-party tools, such as Suricata and Elastic Endpoint Security.
+Always refer to data the {siem-app} receives from data shippers and third-party 
+tools, such as Suricata and Elastic Endpoint Security.
 
 [float]
 === Signals
 
-All signals are displayed on the Detection Engine page. To view signals created 
-by a rule, click *Manage rules* and then the relevant rule in the All rules 
-table.
+All signals are displayed on the Detections page. To view signals created 
+by a rule, click *Manage signal detection rules* and then the relevant rule in 
+the All rules table.
 
 [float]
 ==== Open and closed signals
 
 You can close signals to indicate they do not need any further investigation. 
-By default, the All signals table displays only open signals. To view closed 
+By default, the All signals table displays open signals. To view closed 
 signals, click *Closed signals*.
 
 To open and close signals, either:
@@ -61,4 +61,19 @@ To open and close signals, either:
 To investigate signals in the Timeline, either:
 
 * Click the *View in timeline* icon
-* Select the signals you want to view in the Timeline and then click *Batch actions* -> *View selected in timeline*
+* Select the signals you want to view in the Timeline and then click
+*Batch actions* -> *View selected in timeline*
+
+[float]
+[[detections-permissions]]
+=== {kib} privileges for Detections
+
+[IMPORTANT]
+==============
+The Detections page cannot be viewed until a user with the `create_index` 
+privilege for the {kib} space opens the page.
+==============
+
+To view signals and detection rules, you must have:
+
+To create and modify detection rules, you must have:

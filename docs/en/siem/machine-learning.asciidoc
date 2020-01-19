@@ -72,6 +72,179 @@ do not need to manually map the fields.
 The following prebuilt jobs are available:
 
 //[horizontal]
+linux_anomalous_network_port_activity_ecs:: Identifies unusual destination port
+activity that could indicate command-and-control, persistence mechanism, or data
+exfiltration activity.
++
+Rarely used destination port activity is generally unusual in Linux fleets and 
+can indicate unauthorized access or threat actor activity.
++
+Beats required on hosts:
+
+* Auditbeat (Linux)
+
+NOTE: You can only run this job when Auditbeat is used to ship data.
+
+linux_anomalous_network_service:: Searches for unusual listening ports that
+could indicate execution of unauthorized services, backdoors, or persistence mechanisms.
++
+Beats required on hosts:
+
+* Auditbeat (Linux)
+
+NOTE: You can only run this job when Auditbeat is used to ship data.
+
+linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests
+from hosts, which could indicate malware delivery and execution.
++
+Wget and cURL are commonly used by Linux programs to download code and data. 
+Most of the time, their usage is entirely normal. Generally, because they use a 
+list of URLs, they repeatedly download from the same locations. However, Wget 
+and cURL are sometimes used to deliver Linux exploit payloads, and threat 
+actors use these tools to download additional software and code. For these 
+reasons, unusual URLs can indicate unauthorized downloads or threat activity.
++
+Beats required on hosts:
+
+* Auditbeat (Linux)
+
++
+Required ECS fields:
+
+* destination.ip
+* destination.port
+* host.name
+* process.name
+* process.title
+* agent.type
+
+packetbeat_dns_tunneling:: Searches for unusually large numbers of DNS queries
+for a single top-level DNS domain, which is often used for DNS tunneling.
++
+DNS tunneling can be used for command-and-control, persistence, or data 
+exfiltration activity. For example, dnscat tends to generate many DNS questions 
+for a top-level domain (TLD) as it uses the DNS protocol to tunnel data.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+
++
+Required ECS fields:
+
+* destination.ip
+* dns.question.registered_domain
+* dns.question.name
+* host.name
+* event.dataset
+* agent.type
+
+NOTE: This {ml} job uses the Packetbeat
+{packetbeat-ref}/exported-fields-dns.html[`dns.question.etld_plus_one`] field, 
+which is not defined in ECS. Instead, map your network data to the
+{ecs-ref}/ecs-dns.html[`dns.question.registered_domain`] ECS 
+field.
+
+packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
+indicate network activity with unusual domains is about to occur. This can be 
+due to initial access, persistence, command-and-control, or exfiltration 
+activity.
++
+For example, when a user clicks on a link in a phishing email or opens a 
+malicious document, a request may be sent to an uncommon domain to download and 
+run a payload. When malware is already running, it may send requests to an
+uncommon DNS domain the malware uses for command-and-control communication.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+
++
+Required ECS fields:
+
+* dns.question.name
+* dns.question.type
+* host.name
+* event.dataset
+* agent.type
+
+packetbeat_rare_server_domain:: Searches for rare and unusual DNS queries that
+indicate network activity with unusual domains is about to occur. This can be 
+due to initial access, persistence, command-and-control, or exfiltration 
+activity.
++
+For example, when a user clicks on a link in a phishing email or opens a 
+malicious document, a request may be sent to an uncommon HTTP or TLS server to 
+download and run a payload. When malware is already running, it may send 
+requests to an uncommon DNS domain the malware uses for command-and-control 
+communication.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+
++
+Required ECS fields:
+
+* destination.ip
+* source.ip
+* server.domain
+* host.name
+* agent.type
+
+packetbeat_rare_urls:: Searches for rare and unusual URLs that indicate unusual 
+web browsing activity. This can be due to initial access, persistence,
+command-and-control, or exfiltration activity.
++
+For example, in a strategic web compromise or watering hole attack, when a
+trusted website is compromised to target a particular sector or organization,
+targeted users may receive emails with uncommon URLs for trusted websites. These
+URLs can be used to download and run a payload. When malware is already running,
+it may send requests to uncommon URLs on trusted websites the malware uses for
+command-and-control communication. When rare URLs are observed being requested
+for a local web server by a remote source, these can be due to web scanning,
+enumeration or attack traffic, or they can be due to bots and web scrapers which
+are part of common Internet background traffic.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+
++
+Required ECS fields:
+
+* destination.ip
+* url.full
+* host.name
+* agent.type
+
+packetbeat_rare_user_agent:: Searches for rare and unusual user agents that
+indicate web browsing activity by an unusual process other than a web browser.
+This can be due to persistence, command-and-control, or exfiltration activity.
+Uncommon user agents coming from remote sources to local destinations are often
+the result of scanners, bots, and web scrapers which are part of common Internet
+background traffic.
++
+Much of this is noise, but more targeted attacks on websites
+using tools like Burp or SQLmap can sometimes be discovered by spotting uncommon
+user agents. Uncommon user agents in traffic from local sources to remote
+destinations can be any number of things, including harmless programs like
+weather monitoring or stock-trading programs. However, uncommon user agents from
+local sources can also be due to malware or scanning activity.
++
+Beats required on hosts:
+
+* Packetbeat (Windows and Linux)
+
++
+Required ECS fields:
+
+* destination.ip
+* host.name
+* event.dataset
+* user_agent.original
+* agent.type
+
 rare_process_by_host_windows_ecs::
 +
 rare_process_by_host_linux_ecs:: Identifies rare processes that do not usually 
@@ -93,6 +266,23 @@ Required ECS fields:
 * process.name
 * user.name
 * event.action
+* agent.type
+
+suspicious_login_activity_ecs:: Identifies an unusually high number of 
+authentication attempts.
++
+Beats required on hosts:
+
+* Auditbeat (Windows and Linux)
+* Winlogbeat (Windows)
+
++
+Required ECS fields:
+
+* source.ip
+* host.name
+* user.name
+* event.category
 * agent.type
 
 windows_anomalous_network_activity_ecs::
@@ -248,207 +438,6 @@ Required ECS fields:
 * event.action
 * agent.type
 
-linux_anomalous_network_port_activity_ecs:: Identifies unusual destination port
-activity that could indicate command-and-control, persistence mechanism, or data
-exfiltration activity.
-+
-Rarely used destination port activity is generally unusual in Linux fleets and 
-can indicate unauthorized access or threat actor activity.
-+
-Beats required on hosts:
-
-* Auditbeat (Linux)
-
-NOTE: You can only run this job when Auditbeat is used to ship data. 
-
-linux_anomalous_network_service:: Searches for unusual listening ports that
-could indicate execution of unauthorized services, backdoors, or persistence mechanisms.
-+
-Beats required on hosts:
-
-* Auditbeat (Linux)
-
-NOTE: You can only run this job when Auditbeat is used to ship data.
-
-linux_anomalous_network_url_activity_ecs:: Searches for unusual web URL requests
-from hosts, which could indicate malware delivery and execution.
-+
-Wget and cURL are commonly used by Linux programs to download code and data. 
-Most of the time, their usage is entirely normal. Generally, because they use a 
-list of URLs, they repeatedly download from the same locations. However, Wget 
-and cURL are sometimes used to deliver Linux exploit payloads, and threat 
-actors use these tools to download additional software and code. For these 
-reasons, unusual URLs can indicate unauthorized downloads or threat activity.
-+
-Beats required on hosts:
-
-* Auditbeat (Linux)
-
-+
-Required ECS fields:
-
-* destination.ip
-* destination.port
-* host.name
-* process.name
-* process.title
-* agent.type
-
-suspicious_login_activity_ecs:: Identifies an unusually high number of 
-authentication attempts.
-+
-Beats required on hosts:
-
-* Auditbeat (Windows and Linux)
-* Winlogbeat (Windows)
-
-+
-Required ECS fields:
-
-* source.ip
-* host.name
-* user.name
-* event.category
-* agent.type
-
-packetbeat_dns_tunneling:: Searches for unusually large numbers of DNS queries
-for a single top-level DNS domain, which is often used for DNS tunneling.
-+
-DNS tunneling can be used for command-and-control, persistence, or data 
-exfiltration activity. For example, dnscat tends to generate many DNS questions 
-for a top-level domain (TLD) as it uses the DNS protocol to tunnel data.
-+
-Beats required on hosts:
-
-* Packetbeat (Windows and Linux)
-
-+
-Required ECS fields:
-
-* destination.ip
-* dns.question.registered_domain
-* dns.question.name
-* host.name
-* event.dataset
-* agent.type
-
-NOTE: This {ml} job uses the Packetbeat
-{packetbeat-ref}/exported-fields-dns.html[`dns.question.etld_plus_one`] field, 
-which is not defined in ECS. Instead, map your network data to the
-{ecs-ref}/ecs-dns.html[`dns.question.registered_domain`] ECS 
-field.
-
-packetbeat_rare_dns_question:: Searches for rare and unusual DNS queries that
-indicate network activity with unusual domains is about to occur. This can be 
-due to initial access, persistence, command-and-control, or exfiltration 
-activity.
-+
-For example, when a user clicks on a link in a phishing email or opens a 
-malicious document, a request may be sent to an uncommon domain to download and 
-run a payload. When malware is already running, it may send requests to an
-uncommon DNS domain the malware uses for command-and-control communication.
-+
-Beats required on hosts:
-
-* Packetbeat (Windows and Linux)
-
-+
-Required ECS fields:
-
-* dns.question.name
-* dns.question.type
-* host.name
-* event.dataset
-* agent.type
-
-packetbeat_rare_server_domain:: Searches for rare and unusual DNS queries that
-indicate network activity with unusual domains is about to occur. This can be 
-due to initial access, persistence, command-and-control, or exfiltration 
-activity.
-+
-For example, when a user clicks on a link in a phishing email or opens a 
-malicious document, a request may be sent to an uncommon HTTP or TLS server to 
-download and run a payload. When malware is already running, it may send 
-requests to an uncommon DNS domain the malware uses for command-and-control 
-communication.
-+
-Beats required on hosts:
-
-* Packetbeat (Windows and Linux)
-
-+
-Required ECS fields:
-
-* destination.ip
-* source.ip
-* server.domain
-* host.name
-* agent.type
-
-packetbeat_rare_urls:: Searches for rare and unusual URLs that indicate unusual 
-web browsing activity. This can be due to initial access, persistence,
-command-and-control, or exfiltration activity.
-+
-For example, in a strategic web compromise or watering hole attack, when a
-trusted website is compromised to target a particular sector or organization,
-targeted users may receive emails with uncommon URLs for trusted websites. These
-URLs can be used to download and run a payload. When malware is already running,
-it may send requests to uncommon URLs on trusted websites the malware uses for
-command-and-control communication. When rare URLs are observed being requested
-for a local web server by a remote source, these can be due to web scanning,
-enumeration or attack traffic, or they can be due to bots and web scrapers which
-are part of common Internet background traffic.
-+
-Beats required on hosts:
-
-* Packetbeat (Windows and Linux)
-
-+
-Required ECS fields:
-
-* destination.ip
-* url.full
-* host.name
-* agent.type
-
-packetbeat_rare_user_agent:: Searches for rare and unusual user agents that
-indicate web browsing activity by an unusual process other than a web browser.
-This can be due to persistence, command-and-control, or exfiltration activity.
-Uncommon user agents coming from remote sources to local destinations are often
-the result of scanners, bots, and web scrapers which are part of common Internet
-background traffic.
-+
-Much of this is noise, but more targeted attacks on websites
-using tools like Burp or SQLmap can sometimes be discovered by spotting uncommon
-user agents. Uncommon user agents in traffic from local sources to remote
-destinations can be any number of things, including harmless programs like
-weather monitoring or stock-trading programs. However, uncommon user agents from
-local sources can also be due to malware or scanning activity.
-+
-Beats required on hosts:
-
-* Packetbeat (Windows and Linux)
-
-+
-Required ECS fields:
-
-* destination.ip
-* host.name
-* event.dataset
-* user_agent.original
-* agent.type
-
-windows_rare_user_type10_remote_login:: Searches for unusual remote desktop 
-protocol (RDP) logins, which could indicate account takeover or credentialed 
-persistence using compromised accounts. RDP attacks such as BlueKeep also tend 
-to use unusual usernames.
-+
-Beats required on hosts:
-
-* Winlogbeat (Windows)
-
-NOTE: You can only run this job when Winlogbeat is used to ship data.
-
 windows_rare_user_runas_event:: Searches for unusual user context switches 
 using the `runas` command or similar techniques, which could indicate account 
 takeover or privilege escalation using compromised accounts. Privilege 
@@ -467,4 +456,15 @@ Required ECS fields:
 * host.name
 * user.name
 * event.code
-* agent.type
+* agent.type 
+
+windows_rare_user_type10_remote_login:: Searches for unusual remote desktop 
+protocol (RDP) logins, which could indicate account takeover or credentialed 
+persistence using compromised accounts. RDP attacks such as BlueKeep also tend 
+to use unusual usernames.
++
+Beats required on hosts:
+
+* Winlogbeat (Windows)
+
+NOTE: You can only run this job when Winlogbeat is used to ship data.

@@ -15,8 +15,6 @@ runs at each interval. See <<ml-delayed-data-detection>>.
 {dfeeds-cap} can also aggregate data before sending it to the {anomaly-job}.
 There are some limitations, however, and aggregations should generally be used
 only for low cardinality data. See <<ml-configuring-aggregation>>.
-//TBD: Comment on interplay between date_histogram aggregation's interval and the
-//frequency/bucket span/query delay?
 
 If you create {anomaly-jobs} in {kib}, you _must_ use {dfeeds}. When you create
 an {anomaly-job}, you select an index pattern and {kib} configures the {dfeed}

@@ -12,79 +12,41 @@ The following prebuilt rules are available:
 
 500 Response on Admin page:: 500 Response on Admin page
 
+Adding the Hidden File Attribute with via attrib.exe:: Adversaries can add the 'hidden' attribute to files to hide them from the user in an attempt to evade detection
+
+Adobe Hijack Persistence:: Detects writing executable files that will be automatically launched by Adobe on launch.
+
+Audio Capture via PowerShell:: An adversary can leverage a computer's peripheral devices or applications to capture audio recordings for the purpose of listening into sensitive conversations to gather information.
+
+Audio Capture via SoundRecorder:: An adversary can leverage a computer's peripheral devices or applications to capture audio recordings for the purpose of listening into sensitive conversations to gather information.
+
+Bypass UAC via CMSTP:: Identifies User Account Control (UAC) bypass via cmstp.  Attackers bypass UAC to stealthily execute code with elevated permissions.
+
+Bypass UAC via Event Viewer:: Identifies User Account Control (UAC) bypass via eventvwr.  Attackers bypass UAC to stealthily execute code with elevated permissions.
+
+Bypass UAC via SDCLT:: Identifies User Account Control (UAC) bypass via cmstp.  Attackers bypass UAC to stealthily execute code with elevated permissions.
+
+Clearing Windows Event Logs:: Identifies attempts to clear Windows event log stores. This is often done by attackers in an attempt evade detection or destroy forensic evidence on a system.
+
 Command shell started by Internet Explorer:: Command shell started by Internet Explorer
 
 Command shell started by Powershell:: Command shell started by Powershell
 
 Command shell started by Svchost:: Command shell started by Svchost
 
-EQL -  MsBuild Making Network Connections:: EQL -  MsBuild Making Network Connections
+DLL Search Order Hijack:: Detects writing DLL files to known locations associated with Windows files vulnerable to DLL search order hijacking.
 
-EQL -  Unusual Network Connection via RunDLL32:: EQL -  Unusual Network Connection via RunDLL32
+Delete Volume USN Journal with fsutil:: Identifies use of the fsutil command to delete the volume USNJRNL. This technique is used by attackers to eliminate evidence of files created during post-exploitation activities.
 
-EQL -  Unusual Process Network Connection:: EQL -  Unusual Process Network Connection
+Deleting Backup Catalogs with wbadmin:: Identifies use of the wbadmin command to delete the backup catalog. Ransomware and other malware may do this to prevent system recovery.
 
-EQL - Adding the Hidden File Attribute with via attrib.exe:: EQL - Adding the Hidden File Attribute with via attrib.exe
+Direct Outbound SMB Connection:: Identifies unexpected processes making network connections over port 445. Windows File Sharing is typically implemented over Server Message Block (SMB), which communicates between hosts using port 445. When legitimate, these network connections are established by the kernel. Processes making 445/tcp connections may be port scanners, exploits, or suspicious user-level processes moving laterally.
 
-EQL - Adobe Hijack Persistence:: EQL - Adobe Hijack Persistence
+Disable Windows Firewall Rules with Netsh:: Identifies use of the netsh command to disable or weaken the local firewall. Attackers will use this command line tool to disable the firewall during troubleshooting or to enable network mobility.
 
-EQL - Audio Capture via PowerShell:: EQL - Audio Capture via PowerShell
+EQL - Suspicious PDF Reader Child Process:: Identifies suspicious child processes of PDF reader applications. These child processes are often launched via exploitation of PDF applications or social engineering.
 
-EQL - Audio Capture via SoundRecorder:: EQL - Audio Capture via SoundRecorder
-
-EQL - Bypass UAC via CMSTP:: EQL - Bypass UAC via CMSTP
-
-EQL - Clearing Windows Event Logs:: EQL - Clearing Windows Event Logs
-
-EQL - DLL Search Order Hijack:: EQL - DLL Search Order Hijack
-
-EQL - Delete Volume USN Journal with fsutil:: EQL - Delete Volume USN Journal with fsutil
-
-EQL - Deleting Backup Catalogs with wbadmin:: EQL - Deleting Backup Catalogs with wbadmin
-
-EQL - Direct Outbound SMB Connection:: EQL - Direct Outbound SMB Connection
-
-EQL - Disable Windows Firewall Rules with Netsh:: EQL - Disable Windows Firewall Rules with Netsh
-
-EQL - Encoding or Decoding Files via CertUtil:: EQL - Encoding or Decoding Files via CertUtil
-
-EQL - Local Scheduled Task Commands:: EQL - Local Scheduled Task Commands
-
-EQL - Local Service Commands:: EQL - Local Service Commands
-
-EQL - Modification of Boot Configuration:: EQL - Modification of Boot Configuration
-
-EQL - MsXsl Making Network Connections:: EQL - MsXsl Making Network Connections
-
-EQL - Mshta Making Network Connections:: EQL - Mshta Making Network Connections
-
-EQL - PsExec Lateral Movement Command:: EQL - PsExec Lateral Movement Command
-
-EQL - Suspicious MS Office Child Process:: EQL - Suspicious MS Office Child Process
-
-EQL - Suspicious MS Outlook Child Process:: EQL - Suspicious MS Outlook Child Process
-
-EQL - Suspicious PDF Reader Child Process:: EQL - Suspicious PDF Reader Child Process
-
-EQL - System Shells via Services:: EQL - System Shells via Services
-
-EQL - Unusual Parent-Child Relationship :: EQL - Unusual Parent-Child Relationship 
-
-EQL - User Account Creation:: EQL - User Account Creation
-
-EQL - User Added to Administrator Group:: EQL - User Added to Administrator Group
-
-EQL - Volume Shadow Copy Deletion via VssAdmin:: EQL - Volume Shadow Copy Deletion via VssAdmin
-
-EQL - Volume Shadow Copy Deletion via WMIC:: EQL - Volume Shadow Copy Deletion via WMIC
-
-EQL - WMIC Command Lateral Movement:: EQL - WMIC Command Lateral Movement
-
-EQL - Windows Script Executing PowerShell:: EQL - Windows Script Executing PowerShell
-
-EQL -Bypass UAC Event Viewer:: EQL -Bypass UAC Event Viewer
-
-EQL -Bypass UAC Via sdclt:: EQL -Bypass UAC Via sdclt
+Encoding or Decoding Files via CertUtil:: Identifies the use of certutil.exe to encode or decode data. CertUtil is a native Windows component which is part of Certificate Services. CertUtil is often abused by attackers to encode or decode base64 data for stealthier command and control or exfiltration.
 
 Linux Network - Anomalous Process Using HTTP/S Ports:: Linux Network - Anomalous Process Using HTTP/S Ports
 
@@ -96,8 +58,6 @@ Linux: Hping Activity:: Linux: Hping Activity
 
 Linux: Iodine Activity:: Linux: Iodine Activity
 
-Linux: Kernel Module Activity:: Linux: Kernel Module Activity
-
 Linux: Mknod Activity:: Linux: Mknod Activity
 
 Linux: Netcat Network Activity:: Linux: Netcat Network Connection
@@ -106,73 +66,85 @@ Linux: Nmap Activity:: Linux: Nmap Activity
 
 Linux: Nping Activity:: Linux: Nping Activity
 
-Linux: Process Started in Temp Directory:: Linux: Process Started in Temp Directory
-
 Linux: Ptrace Activity:: Linux: Ptrace Activity
 
 Linux: Rawshark Activity:: Linux: Rawshark Activity
 
 Linux: SSH Port Forwarding:: Detect ssh processes with the `-R` flag which can be used to forward a port on a local system to the local system so that someone on the remote system can connect to the local system. This is often used by attackers to create encrypted tunnels through firewalls for pivoting and persistence.
 
-Linux: Shell Activity By Web Server:: Linux: Shell Activity By Web Server
+Linux: Shell Activity By Web Server:: Identifies suspicious commands executed via a web server, which may suggest a vulnerability and remote shell access.
 
 Linux: Strace Activity:: Linux: Strace Activity
 
 Linux: Tcpdump Activity:: Linux: Tcpdump Activity
 
+Linux: User Discovery Via The Whoami Commmand:: The 'whoami' command was executed on a Linux host. This is often used by tools and persistence mechanisms to test for privlieged access.
+
 Linux: Web Download:: Linux: Web Download
 
-Linux: Whoami Commmand:: Linux: Whoami Commmand
+Linux: Whoami Commmand:: Linux: socat activity
 
-Network - DNS Directly to the Internet	:: Network - DNS Directly to the Internet	
+Local Scheduled Task Commands:: A scheduled task can be used by an adversary to establish persistence, move laterally, and/or escalate privileges.
 
-Network - FTP (File Transfer Protocol) Activity to the Internet	:: Network - FTP (File Transfer Protocol) Activity to the Internet	
+Local Service Commands:: Identifies use of sc.exe to create, modify, or start services on remote hosts. This could be indicative of adversary lateral movement but will be noisy if commonly done by admins.
 
-Network - IRC (Internet Relay Chat) Protocol Activity to the Internet	:: Network - IRC (Internet Relay Chat) Protocol Activity to the Internet	
+Modification of Boot Configuration:: Identifies use of the bcdedit command to delete boot configuration data. This tactic is sometimes used as by malware or an attacker as a destructive technique.
 
-Network - NAT Traversal Port Activity	:: Network - NAT Traversal Port Activity	
+MsBuild Making Network Connections:: Identifies MsBuild.exe making outbound network connections. This may indicate adversarial activity as MsBuild is often leveraged by adversaries to execute code and evade detection.
 
-Network - PPTP (Point to Point Tunneling Protocol) Activity	:: Network - PPTP (Point to Point Tunneling Protocol) Activity	
+MsXsl Making Network Connections:: Identifies MsXsl.exe making outbound network connections. This may indicate adversarial activity as MsXsl is often leveraged by adversaries to execute malicious scripts and evade detection.
 
-Network - Port 26 Activity	:: Network - Port 26 Activity	
+Mshta Making Network Connections:: Identifies Mshta.exe making outbound network connections. This may indicate adversarial activity as Mshta is often leveraged by adversaries to execute malicious scripts and evade detection.
+
+Network - DNS Directly to the Internet:: Network - DNS Directly to the Internet	
+
+Network - FTP (File Transfer Protocol) Activity to the Internet:: Network - FTP (File Transfer Protocol) Activity to the Internet	
+
+Network - IRC (Internet Relay Chat) Protocol Activity to the Internet:: Network - IRC (Internet Relay Chat) Protocol Activity to the Internet	
+
+Network - NAT Traversal Port Activity:: Network - NAT Traversal Port Activity	
+
+Network - PPTP (Point to Point Tunneling Protocol) Activity:: Network - PPTP (Point to Point Tunneling Protocol) Activity	
+
+Network - Port 26 Activity:: Network - Port 26 Activity	
 
 Network - Port 8000 Activity:: Network - Port 8000 Activity
 
-Network - Port 8000 Activity to the Internet	:: Network - Port 8000 Activity to the Internet	
+Network - Port 8000 Activity to the Internet:: Network - Port 8000 Activity to the Internet	
 
-Network - Proxy Port Activity to the Internet	:: Network - Proxy Port Activity to the Internet	
+Network - Proxy Port Activity to the Internet:: Network - Proxy Port Activity to the Internet	
 
-Network - RDP (Remote Desktop Protocol) from the Internet	:: Network - RDP (Remote Desktop Protocol) from the Internet	
+Network - RDP (Remote Desktop Protocol) from the Internet:: Network - RDP (Remote Desktop Protocol) from the Internet	
 
-Network - RDP (Remote Desktop Protocol) to the Internet	:: Network - RDP (Remote Desktop Protocol) to the Internet	
+Network - RDP (Remote Desktop Protocol) to the Internet:: Network - RDP (Remote Desktop Protocol) to the Internet	
 
-Network - RPC (Remote Procedure Call) from the Internet	:: Network - RPC (Remote Procedure Call) from the Internet	
+Network - RPC (Remote Procedure Call) from the Internet:: Network - RPC (Remote Procedure Call) from the Internet	
 
-Network - RPC (Remote Procedure Call) to the Internet	:: Network - RPC (Remote Procedure Call) to the Internet	
+Network - RPC (Remote Procedure Call) to the Internet:: Network - RPC (Remote Procedure Call) to the Internet	
 
-Network - SMB (Windows File Sharing) Activity to the Internet	:: Network - SMB (Windows File Sharing) Activity to the Internet	
+Network - SMB (Windows File Sharing) Activity to the Internet:: Network - SMB (Windows File Sharing) Activity to the Internet	
 
-Network - SMTP to the Internet	:: Network - SMTP to the Internet	
+Network - SMTP to the Internet:: Network - SMTP to the Internet	
 
-Network - SQL Server Port Activity to the Internet	:: Network - SQL Server Port Activity to the Internet	
+Network - SQL Server Port Activity to the Internet:: Network - SQL Server Port Activity to the Internet	
 
-Network - SSH (Secure Shell) from the Internet	:: Network - SSH (Secure Shell) from the Internet	
+Network - SSH (Secure Shell) from the Internet:: Network - SSH (Secure Shell) from the Internet	
 
-Network - SSH (Secure Shell) to the Internet	:: Network - SSH (Secure Shell) to the Internet	
+Network - SSH (Secure Shell) to the Internet:: Network - SSH (Secure Shell) to the Internet	
 
-Network - Telnet Port Activity	:: Network - Telnet Port Activity	
+Network - Telnet Port Activity:: Network - Telnet Port Activity	
 
-Network - Tor Activity to the Internet	:: Network - Tor Activity to the Internet	
+Network - Tor Activity to the Internet:: Network - Tor Activity to the Internet	
 
-Network - VNC (Virtual Network Computing) From the Internet	:: Network - VNC (Virtual Network Computing) From the Internet	
+Network - VNC (Virtual Network Computing) From the Internet:: Network - VNC (Virtual Network Computing) From the Internet	
 
-Network - VNC (Virtual Network Computing) To the Internet	:: Network - VNC (Virtual Network Computing) To the Internet	
+Network - VNC (Virtual Network Computing) To the Internet:: Network - VNC (Virtual Network Computing) To the Internet	
 
 Null user agent:: Null user agent
 
 PSexec activity:: PSexec activity
 
-Possible Bluekeep Inbound RDP Exploitation Attempt (CVE-2019-0708):: ET EXPLOIT [NCC GROUP] Possible Bluekeep Inbound RDP Exploitation Attempt (CVE-2019-0708)
+Persistence via Kernel Module Modification:: Identifies loadable kernel module errors, often indicative of potential persistence attempts.
 
 Process Execution via WMI:: Process Execution via WMI
 
@@ -180,227 +152,35 @@ Process started by Acrobat reader - possible payload:: Process started by Acroba
 
 Process started by MS Office program - possible payload:: Process started by MS Office program - possible payload
 
+PsExec Lateral Movement Command:: Identifies use of the SysInternals tool PsExec to execute commands on a remote host. This is an indication of lateral movement and may detect adversaries.
+
 SQLmap user agent:: SQLmap user agent
 
-Suricata ATTACK [PTsecurity] Apache Tomcat RCE on Windows (CVE-2019-0232):: ATTACK [PTsecurity] Apache Tomcat RCE on Windows (CVE-2019-0232)
+Suspicious MS Office Child Process:: Identifies suspicious child processes of frequently targeted Microsoft Office applications (Word, PowerPoint, Excel). These child processes are often launched during exploitation of Office applications or from documents with malicious macros.
 
-Suricata ATTACK [PTsecurity] Arbitrary PHP RCE in Drupal 8 < 8.5.11,8.6.10 (CVE-2019-6340):: ATTACK [PTsecurity] Arbitrary PHP RCE in Drupal 8 < 8.5.11,8.6.10 (CVE-2019-6340)
-
-Suricata ATTACK [PTsecurity] Oracle Weblogic _async deserialization RCE Attempt (CVE-2019-2725):: ATTACK [PTsecurity] Oracle Weblogic _async deserialization RCE Attempt (CVE-2019-2725)
-
-Suricata ATTACK [PTsecurity] Oracle Weblogic file upload RCE (CVE-2019-2618):: ATTACK [PTsecurity] Oracle Weblogic file upload RCE (CVE-2019-2618)
-
-Suricata ATTACK [PTsecurity] Possible Apache Axis RCE via SSRF (CVE-2019-0227):: ATTACK [PTsecurity] Possible Apache Axis RCE via SSRF (CVE-2019-0227)
-
-Suricata Base64 Encoded Invoke-Command Powershell Execution:: Suricata Base64 Encoded Invoke-Command Powershell Execution
-
-Suricata Base64 Encoded New-Object Powershell Execution:: Suricata Base64 Encoded New-Object Powershell Execution
-
-Suricata Base64 Encoded Start-Process Powershell Execution:: Suricata Base64 Encoded Start-Process Powershell Execution
-
-Suricata Category - A suspicious string was detected:: Suricata Category - A suspicious string was detected
-
-Suricata Category - Attempted Administrator Privilege Gain:: Suricata Category - Attempted Administrator Privilege Gain
-
-Suricata Category - Attempted Denial of Service:: Suricata Category - Attempted Denial of Service
-
-Suricata Category - Attempted Information Leak:: Suricata Category - Attempted Information Leak
-
-Suricata Category - Attempted Login with Suspicious Username:: Suricata Category - Attempted Login with Suspicious Username
-
-Suricata Category - Attempted User Privilege Gain:: Suricata Category - Attempted User Privilege Gain
-
-Suricata Category - Client Using Unusual Port:: Suricata Category - Client Using Unusual Port
-
-Suricata Category - Crypto Currency Mining Activity:: Suricata Category - Crypto Currency Mining Activity
-
-Suricata Category - Decode of an RPC Query:: Suricata Category - Decode of an RPC Query
-
-Suricata Category - Default Username and Password Login Attempt:: Suricata Category - Default Username and Password Login Attempt
-
-Suricata Category - Denial of Service:: Suricata Category - Denial of Service
-
-Suricata Category - Denial of Service Attack:: Suricata Category - Denial of Service Attack
-
-Suricata Category - Executable code was detected:: Suricata Category - Executable code was detected
-
-Suricata Category - Exploit Kit Activity:: Suricata Category - Exploit Kit Activity
-
-Suricata Category - External IP Address Retrieval:: Suricata Category - External IP Address Retrieval
-
-Suricata Category - Generic ICMP event:: Suricata Category - Generic ICMP event
-
-Suricata Category - Generic Protocol Command Decode:: Suricata Category - Generic Protocol Command Decode
-
-Suricata Category - Information Leak:: Suricata Category - Information Leak
-
-Suricata Category - Large Scale Information Leak:: Suricata Category - Large Scale Information Leak
-
-Suricata Category - Malware Command and Control Activity:: Suricata Category - Malware Command and Control Activity
-
-Suricata Category - Misc Activity:: Suricata Category - Misc Activity
-
-Suricata Category - Misc Attack:: Suricata Category - Misc Attack
-
-Suricata Category - Network Scan Detected:: Suricata Category - Network Scan Detected
-
-Suricata Category - Network Trojan Detected:: Suricata Category - Network Trojan Detected
-
-Suricata Category - Non-Standard Protocol or Event:: Suricata Category - Non-Standard Protocol or Event
-
-Suricata Category - Not Suspicious Traffic:: Suricata Category - Not Suspicious Traffic
-
-Suricata Category - Observed C2 Domain:: Suricata Category - Observed C2 Domain
-
-Suricata Category - Possible Social Engineering Attempted:: Suricata Category - Possible Social Engineering Attempted
-
-Suricata Category - Possibly Unwanted Program:: Suricata Category - Possibly Unwanted Program
-
-Suricata Category - Potential Corporate Privacy Violation:: Suricata Category - Potential Corporate Privacy Violation
-
-Suricata Category - Potentially Bad Traffic:: Suricata Category - Potentially Bad Traffic
-
-Suricata Category - Potentially Vulnerable Web Application Access:: Suricata Category - Potentially Vulnerable Web Application Access
-
-Suricata Category - Successful Administrator Privilege Gain:: Suricata Category - Successful Administrator Privilege Gain
-
-Suricata Category - Successful Credential Theft:: Suricata Category - Successful Credential Theft
-
-Suricata Category - Successful User Privilege Gain:: Suricata Category - Successful User Privilege Gain
-
-Suricata Category - Suspicious Filename Detected:: Suricata Category - Suspicious Filename Detected
-
-Suricata Category - System Call Detected:: Suricata Category - System Call Detected
-
-Suricata Category - TCP Connection Detected:: Suricata Category - TCP Connection Detected
-
-Suricata Category - Targeted Malicious Activity:: Suricata Category - Targeted Malicious Activity
-
-Suricata Category - Unknown Traffic:: Suricata Category - Unknown Traffic
-
-Suricata Category - Unsuccessful User Privilege Gain:: Suricata Category - Unsuccessful User Privilege Gain
-
-Suricata Category - Web Application Attack:: Suricata Category - Web Application Attack
-
-Suricata CobaltStrike Artifact in an DNS Request:: Suricata CobaltStrike Artifact in an DNS Request
-
-Suricata Commonly Abused DNS Domain Detected:: Suricata Commonly Abused DNS Domain Detected
-
-Suricata DNS Traffic on Unusual Port:: Suricata DNS Traffic on Unusual Port (TCP or UDP)
-
-Suricata DNS Traffic on Unusual UDP Port:: Suricata DNS Traffic on Unusual UDP Port
-
-Suricata Directory Reversal Characters in an HTTP Request:: Suricata Directory Reversal Characters in an HTTP Request
-
-Suricata Directory Traversal Characters in HTTP Response:: Suricata Directory Traversal Characters in HTTP Response
-
-Suricata Directory Traversal Characters in an HTTP Request Header:: Suricata Directory Traversal Characters in an HTTP Request Header
-
-Suricata Directory Traversal in Downloaded Zip File:: Suricata Directory Traversal in Downloaded Zip File
-
-Suricata Double Encoded Characters in a URI:: Suricata Double Encoded Characters in a URI
-
-Suricata Double Encoded Characters in an HTTP POST:: Suricata Double Encoded Characters in an HTTP POST
-
-Suricata ET EXPLOIT Attempted Remote Command Injection Outbound (CVE-2019-3929):: ET EXPLOIT Attempted Remote Command Injection Outbound (CVE-2019-3929)
-
-Suricata ET EXPLOIT Enigma Network Management Systems v65.0.0 CVE-2019-16072 (Outbound):: ET EXPLOIT Enigma Network Management Systems v65.0.0 CVE-2019-16072 (Outbound)
-
-Suricata ET EXPLOIT IE Scripting Engine Memory Corruption Vulnerability (CVE-2019-0752):: ET EXPLOIT IE Scripting Engine Memory Corruption Vulnerability (CVE-2019-0752)
-
-Suricata ET EXPLOIT Linear eMerge E3 Unauthenticated Command Injection Inbound (CVE-2019-7256):: ET EXPLOIT Linear eMerge E3 Unauthenticated Command Injection Inbound (CVE-2019-7256)
-
-Suricata ET EXPLOIT Possible Cisco RV320 RCE Attempt (CVE-2019-1652):: ET EXPLOIT Possible Cisco RV320 RCE Attempt (CVE-2019-1652)
-
-Suricata ET EXPLOIT Possible Citrix Application Delivery Controller Arbitrary Code Execution Attempt (CVE-2019-19781) M2:: ET EXPLOIT Possible Citrix Application Delivery Controller Arbitrary Code Execution Attempt (CVE-2019-19781) M2
-
-Suricata ET EXPLOIT Possible EXIM DoS (CVE-2019-16928):: ET EXPLOIT Possible EXIM DoS (CVE-2019-16928)
-
-Suricata ET EXPLOIT Possible EXIM RCE Inbound (CVE-2019-15846):: ET EXPLOIT Possible EXIM RCE Inbound (CVE-2019-15846)
-
-Suricata ET EXPLOIT Possible Exim 4.87-4.91 RCE Attempt Inbound (CVE-2019-10149:: ET EXPLOIT Possible Exim 4.87-4.91 RCE Attempt Inbound (CVE-2019-10149
-
-Suricata ET EXPLOIT Possible Zoom Client Auto-Join (CVE-2019-13450:: ET EXPLOIT Possible Zoom Client Auto-Join (CVE-2019-13450
-
-Suricata ET EXPLOIT Possible rConfig 3.9.2 Remote Code Execution PoC (CVE-2019-16662):: ET EXPLOIT Possible rConfig 3.9.2 Remote Code Execution PoC (CVE-2019-16662)
-
-Suricata ET EXPLOIT Pulse Secure SSL VPN - Arbitrary File Read (CVE-2019-11510):: ET EXPLOIT Pulse Secure SSL VPN - Arbitrary File Read (CVE-2019-11510)
-
-Suricata ET EXPLOIT VMware VeloCloud Authorization Bypass (CVE-2019-5533):: ET EXPLOIT VMware VeloCloud Authorization Bypass (CVE-2019-5533)
-
-Suricata ET EXPLOIT Yachtcontrol Webservers RCE CVE-2019-17270:: ET EXPLOIT Yachtcontrol Webservers RCE CVE-2019-17270
-
-Suricata ET EXPLOIT vBulletin 5.x Unauthenticated Remote Code Execution (CVE-2019-16759):: ET EXPLOIT vBulletin 5.x Unauthenticated Remote Code Execution (CVE-2019-16759)
-
-Suricata ET WEB_CLIENT Attempted RCE in Wordpress Social Warfare Plugin Inbound (CVE-2019-9978:: ET WEB_CLIENT Attempted RCE in Wordpress Social Warfare Plugin Inbound (CVE-2019-9978
-
-Suricata ET WEB_CLIENT Possible Confluence SSTI Exploitation Attempt - Leads to RCE/LFI (CVE-2019-3396):: ET WEB_CLIENT Possible Confluence SSTI Exploitation Attempt - Leads to RCE/LFI (CVE-2019-3396)
-
-Suricata ET WEB_SERVER Possible PHP Remote Code Execution CVE-2019-11043 PoC (Inbound):: ET WEB_SERVER Possible PHP Remote Code Execution CVE-2019-11043 PoC (Inbound)
-
-Suricata ET WEB_SERVER Webmin RCE CVE-2019-15107:: ET WEB_SERVER Webmin RCE CVE-2019-15107
-
-Suricata ET WEB_SPECIFIC_APPS Appointment Hour Booking - WordPress Plugin - Stored XSS (CVE-2019-13505):: ET WEB_SPECIFIC_APPS Appointment Hour Booking - WordPress Plugin - Stored XSS (CVE-2019-13505)
-
-Suricata ET WEB_SPECIFIC_APPS Atlassian Crowd Plugin Upload Attempt (CVE-2019-11580):: ET WEB_SPECIFIC_APPS Atlassian Crowd Plugin Upload Attempt (CVE-2019-11580)
-
-Suricata ET WEB_SPECIFIC_APPS Atlassian JIRA Template Injection RCE (CVE-2019-11581:: ET WEB_SPECIFIC_APPS Atlassian JIRA Template Injection RCE (CVE-2019-11581
-
-Suricata ET WEB_SPECIFIC_APPS Cisco Prime Infrastruture RCE - CVE-2019-1821:: ET WEB_SPECIFIC_APPS Cisco Prime Infrastruture RCE - CVE-2019-1821
-
-Suricata ET WEB_SPECIFIC_APPS Jenkins Chained Exploits CVE-2018-1000861 and CVE-2019-1003000:: ET WEB_SPECIFIC_APPS Jenkins Chained Exploits CVE-2018-1000861 and CVE-2019-1003000
-
-Suricata ET WEB_SPECIFIC_APPS Jenkins RCE CVE-2019-1003000:: ET WEB_SPECIFIC_APPS Jenkins RCE CVE-2019-1003000
-
-Suricata ET WEB_SPECIFIC_APPS Rails Arbitrary File Disclosure Attempt:: ET WEB_SPECIFIC_APPS Rails Arbitrary File Disclosure Attempt
-
-Suricata FTP Traffic on Unusual Port, Internet Destination:: Suricata FTP Traffic on Unusual Port, Internet Destination
-
-Suricata HTTP Traffic On Unusual Port, Internet Destination:: Suricata HTTP Traffic On Unusual Port, Internet Destination
-
-Suricata IMAP Traffic on Unusual Port, internet Destination:: Suricata IMAP Traffic on Unusual Port, internet Destination
-
-Suricata LaZagne Artifact in an HTTP POST:: Suricata LaZagne Artifact in an HTTP POST
-
-Suricata Mimikatz Artifacts in an HTTP POST:: Suricata Mimikatz Artifacts in an HTTP POST
-
-Suricata Mimikatz String Detected in HTTP Response:: Suricata Mimikatz String Detected in HTTP Response
-
-Suricata Possible Cobalt Strike Malleable C2 Null Response:: Suricata Possible Cobalt Strike Malleable C2 Null Response
-
-Suricata Possible SQL Injection - SQL Commands in HTTP Transactions:: Suricata Possible SQL Injection - SQL Commands in HTTP Transactions
-
-Suricata RPC Traffic on HTTP Ports:: Suricata RPC Traffic on HTTP Ports
-
-Suricata SSH Traffic Not on Port 22, Internet Destination:: Suricata SSH Traffic Not on Port 22, Internet Destination
-
-Suricata Serialized PHP Detected:: Suricata Serialized PHP Detected
-
-Suricata TLS Traffic on Unusual Port, Internet Destination:: Suricata TLS Traffic on Unusual Port, Internet Destination
-
-Suricata Windows Executable Served by JPEG Web Content:: Suricata Windows Executable Served by JPEG Web Content
-
-Suricata eval PHP Function in an HTTP Request:: Suricata eval PHP Function in an HTTP Request
-
-Suricata non-DNS Traffic on TCP Port 53:: Suricata non-DNS Traffic on TCP Port 53
-
-Suricata non-DNS Traffic on UDP Port 53:: Suricata non-DNS Traffic on UDP Port 53
-
-Suricata non-FTP Traffic on Port 21:: Suricata non-FTP Traffic on Port 21
-
-Suricata non-HTTP Traffic on TCP Port 80:: Suricata non-HTTP Traffic on TCP Port 80
-
-Suricata non-IMAP Traffic on Port 1443 (IMAP):: Suricata non-IMAP Traffic on Port 1443 (IMAP)
-
-Suricata non-SMB Traffic on TCP Port 139 (SMB):: Suricata non-SMB Traffic on TCP Port 139 (SMB)
-
-Suricata non-SSH Traffic on Port 22:: Suricata non-SSH Traffic on Port 22
-
-Suricata non-TLS on TLS Port:: Suricata non-TLS on TLS Port
-
-Suricata shell_exec PHP Function in an HTTP POST:: Suricata shell_exec PHP Function in an HTTP POST
+Suspicious MS Outlook Child Process:: Identifies suspicious child processes of Microsoft Outlook. These child processes are often associated with spear phishing activity.
 
 Suspicious process started by a script:: Suspicious process started by a script
+
+System Shells via Services:: Windows services typically run as SYSTEM and can be used as a privilege escalation opportunity. Malware or penetration testers may run a shell as a service to gain SYSTEM permissions.
+
+Unusual Network Connection via RunDLL32:: Identifies unusual instances of Rundll32.exe making outbound network connections. This may indicate adversarial activity and may identify malicious DLLs.
+
+Unusual Parent-Child Relationship :: Identifies Windows programs run from unexpected parent processes. This could indicate masquerading or other strange activity on a system.
+
+Unusual Process Execution - Temp:: Identifies processes running in a temporary folder. This is sometimes done by adversaries to hide malware.
+
+Unusual Process Network Connection:: Identifies network activity from unexpected system applications. This may indicate adversarial activity as these applications are often leveraged by adversaries to execute code and evade detection.
+
+User Account Creation:: Identifies attempts to create new local users. This is sometimes done by attackers to increase access to a system or domain.
+
+User Added to Administrator Group:: Identifies attempts to add a user to an administrative group with the "net.exe" command. This is sometimes done by attackers to increase access of a compromised account or create new account.
+
+Volume Shadow Copy Deletion via VssAdmin:: Identifies use of vssadmin.exe for shadow copy deletion on endpoints.  This commonly occurs in tandem with ransomware or other destructive attacks.
+
+Volume Shadow Copy Deletion via WMIC:: Identifies use of wmic for shadow copy deletion on endpoints. This commonly occurs in tandem with ransomware or other destructive attacks.
+
+WMIC Command Lateral Movement:: Identifies use of wmic.exe to run commands on remote hosts. This could be indicative of adversary lateral movement but will be noisy if commonly done by admins.
 
 WinDump activity:: WinDump activity
 
@@ -472,6 +252,8 @@ Windows Remote Management Execution:: Windows Remote Management Execution
 
 Windows Scheduled Task Activity:: Windows Scheduled Task Activity
 
+Windows Script Executing PowerShell:: Identifies a PowerShell process launched by either CScript or WScript. Observing Windows scripting processes executing a PowerShell script, may be indicative of malicious activity.
+
 Windows Signed Binary Proxy Execution:: Windows Signed Binary Proxy Execution
 
 Windows Signed Binary Proxy Execution Download:: Windows Signed Binary Proxy Execution Download
@@ -509,101 +291,3 @@ Windows: Powershell Connecting to the Internet:: Windows: Powershell Connecting 
 Windows: Register Server Program Connecting to the Internet:: Windows: Register Server Program Connecting to the Internet
 
 Windows: Script Interpreter Connecting to the Internet:: Windows: Script Interpreter Connecting to the Internet
-
-Zeek Notice CaptureLoss::Too_Much_Loss:: Detected Zeek capture loss exceeds the percentage threshold
-
-Zeek Notice Conn::Content_Gap:: Data has sequence hole; perhaps due to filtering.
-
-Zeek Notice Conn::Retransmission_Inconsistency:: Possible evasion; usually just chud.
-
-Zeek Notice DNS::External_Name:: Raised when a non-local name is found to be pointing at a local host.
-
-Zeek Notice FTP::Bruteforcing:: Indicates a host bruteforcing FTP logins by watching for too many rejected usernames or failed passwords.
-
-Zeek Notice FTP::Site_Exec_Success:: Indicates that a successful response to a “SITE EXEC” command/arg pair was seen.
-
-Zeek Notice HTTP::SQL_Injection_Attacker:: Indicates that a host performing SQL injection attacks was detected.
-
-Zeek Notice HTTP::SQL_Injection_Victim:: Indicates that a host was seen to have SQL injection attacks against it. This is tracked by IP address as opposed to hostname.
-
-Zeek Notice Heartbleed::SSL_Heartbeat_Attack:: Indicates that a host performed a heartbleed attack or scan.
-
-Zeek Notice Heartbleed::SSL_Heartbeat_Attack_Success:: Indicates that a host performing a heartbleed attack was probably successful.
-
-Zeek Notice Heartbleed::SSL_Heartbeat_Many_Requests:: Indicates we saw many heartbeat requests without a reply. Might be an attack.
-
-Zeek Notice Heartbleed::SSL_Heartbeat_Odd_Length:: Indicates we saw heartbeat requests with odd length. Probably an attack or scan.
-
-Zeek Notice Intel::Notice:: This notice is generated when an intelligence indicator is denoted to be notice-worthy.
-
-Zeek Notice Notice::Tally:: Zeek notice reporting a count of how often a notice occurred.
-
-Zeek Notice PacketFilter::Cannot_BPF_Shunt_Conn:: Limitations in BPF make shunting some connections with BPF impossible. This notice encompasses those various cases.
-
-Zeek Notice PacketFilter::Compile_Failure:: This notice is generated if a packet filter cannot be compiled.
-
-Zeek Notice PacketFilter::Dropped_Packets:: Indicates packets were dropped by the packet filter.
-
-Zeek Notice PacketFilter::Install_Failure:: Generated if a packet filter fails to install.
-
-Zeek Notice PacketFilter::No_More_Conn_Shunts_Available:: Indicative that PacketFilter::max_bpf_shunts connections are already being shunted with BPF filters and no more are allowed.
-
-Zeek Notice PacketFilter::Too_Long_To_Compile_Filter:: Generated when a notice takes too long to compile.
-
-Zeek Notice ProtocolDetector::Protocol_Found:: Indicates a protocol was detected on a non-standard port.
-
-Zeek Notice ProtocolDetector::Server_Found:: Indicates a server was detected on a non-standard port for the protocol.
-
-Zeek Notice SMTP::Blocklist_Blocked_Host:: The originator’s address is seen in the block list error message. This is useful to detect local hosts sending SPAM with a high positive rate.
-
-Zeek Notice SMTP::Blocklist_Error_Message:: An SMTP server sent a reply mentioning an SMTP block list.
-
-Zeek Notice SMTP::Suspicious_Origination:: SMTP message orignated from country or network configured to be suspicious.
-
-Zeek Notice SSH::Interesting_Hostname_Login:: Generated if a login originates or responds with a host where the reverse hostname lookup resolves to a name matched by the SSH::interesting_hostnames regular expression.
-
-Zeek Notice SSH::Login_By_Password_Guesser:: Indicates that a host previously identified as a "password guesser" has now had a successful login attempt.
-
-Zeek Notice SSH::Password_Guessing:: Indicates that a host has been identified as crossing the SSH::password_guesses_limit threshold with failed logins.
-
-Zeek Notice SSH::Watched_Country_Login:: SSH login was seen to or from a "watched" country based on the SSH::watched_countries variable
-
-Zeek Notice SSL::Certificate_Expired:: Indicates that a certificate’s NotValidAfter date has lapsed and the certificate is now invalid.
-
-Zeek Notice SSL::Certificate_Expires_Soon:: Indicates that a certificate is going to expire within SSL::notify_when_cert_expiring_in.
-
-Zeek Notice SSL::Certificate_Not_Valid_Yet:: Indicates that a certificate’s NotValidBefore date is future dated.
-
-Zeek Notice SSL::Invalid_Ocsp_Response:: This indicates that the OCSP response was not deemed to be valid.
-
-Zeek Notice SSL::Invalid_Server_Cert:: This notice indicates that the result of validating the certificate along with its full certificate chain was invalid.
-
-Zeek Notice SSL::Old_Version:: Indicates that a server is using a potentially unsafe version
-
-Zeek Notice SSL::Weak_Cipher:: Indicates that a server is using a potentially unsafe cipher
-
-Zeek Notice SSL::Weak_Key:: Indicates that a server is using a potentially unsafe key.
-
-Zeek Notice Scan::Address_Scan:: Address scans detect that a host appears to be scanning some number of destinations on a single port.
-
-Zeek Notice Scan::Port_Scan:: Port scans detect that an attacking host appears to be scanning a single victim host on several ports.
-
-Zeek Notice Signatures::Count_Signature:: The same signature has triggered multiple times for a host.
-
-Zeek Notice Signatures::Multiple_Sig_Responders:: Host has triggered the same signature on multiple hosts.
-
-Zeek Notice Signatures::Multiple_Signatures:: Host has triggered many signatures on the same host.
-
-Zeek Notice Signatures::Sensitive_Signature:: Generic notice type for notice-worthy signature matches.
-
-Zeek Notice Signatures::Signature_Summary:: Summarize the number of times a host triggered a signature.
-
-Zeek Notice Software::Software_Version_Change:: Indicates that an interesting software application changed versions on a host.
-
-Zeek Notice Software::Vulnerable_Version:: Indicates that a vulnerable version of software was detected.
-
-Zeek Notice TeamCymruMalwareHashRegistry::Match:: The hash value of a file transferred over HTTP matched in the malware hash registry.
-
-Zeek Notice Traceroute::Detected:: Indicates that a host was seen running traceroutes.
-
-Zeek Notice Weird::Activity:: Generic unusual but notice-worthy weird activity.

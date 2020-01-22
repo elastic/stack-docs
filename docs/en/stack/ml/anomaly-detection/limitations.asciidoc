@@ -249,4 +249,13 @@ In 6.6 and later releases, the {ref}/ml-get-job.html[get jobs API] and the
 jobs. Likewise, the {ref}/ml-get-datafeed.html[get {dfeeds} API] and the
 {ref}/ml-get-datafeed-stats.html[get {dfeed} statistics API] return a maximum of
 10,000 {dfeeds}.
- 
+
+[float]
+[[ml-limitations-nanos]]
+=== Date nanoseconds data types are not supported
+// https://github.com/elastic/elasticsearch/issues/49889
+
+When you create an {anomaly-job}, you cannot use a field with the
+{ref}/date_nanos.html[`date_nanos` data type] as the `time_field` in the
+`data_description` object. This limitation applies irrespective of whether you
+create jobs in {kib} or by using APIs.

@@ -2,8 +2,21 @@
 [[ml-lang-ident]]
 === {lang-ident-cap}
 
-{lang-ident-cap} is an {infer} trained model that you can use out of the box. 
-It enables you to determine on which language a certain text is written.
+experimental[]
+
+{lang-ident-cap} `model_id`: `lang_ident_model_1`
+
+{lang-ident-cap} is an {infer} trained model that you can use to determine on 
+which language a certain text is written. You can reference the {lang-ident} 
+model in an {ref}//inference-processor.html[{infer} processor] of an ingest 
+pipeline by using its `model_id`. The input filed name is `text` by default. If 
+you want to run {lang-ident} on an other field, you have to  
+
+The longer the text passed into the {lang-ident} model, the more likely it is 
+able to correctly identify the language. In certain cases, the model can detect 
+the source language even if it is not written in the script that the language 
+traditionally use. These languages are marked in the supported languages table 
+(see below) with the `Latn` subtag.
 
 
 [[ml-lang-ident-supported-languages]]
@@ -64,34 +77,36 @@ script.
 
 In the following example, we feed the {lang-ident} trained model with a short 
 Hungarian text that contains diacritics and a couple of English words. Yet, the 
-model identifies the text correctly as Hungarian with very high probability.
+model identifies the text correctly as Hungarian with high probability.
 
 [source,js]
 ----------------------------------
 POST _ingest/pipeline/_simulate
 {
-	"pipeline": {
-		"processors": [
+   "pipeline":{
+      "processors":[
+         {
+            "inference":{
+               "model_id":"lang_ident_model_1", <1>
+               "inference_config":{
+                  "classification":{
+                     "num_top_classes":5 <2>
+                  }
+               },
+               "field_mappings":{
+
+               }
+            }
+         }
+      ]
+   },
+   "docs":[
       {
-			  "inference": {
-				  "model_id": "lang_ident_model_1", <1>
-				  "inference_config": {
-					  "classification": {
-						  "num_top_classes": 5 <2>
-					  }
-				  },
-				  "field_mappings": {}
-			  }
+         "_source":{ <3>
+            "text":"Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Szerintem annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
+         }
       }
-    ]
-	},
-	"docs": [
-    {
-		  "_source": { <3>
-			  "text": "Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Szerintem annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
-		  }
-	  }
-  ]
+   ]
 }
 ----------------------------------
 //NOTCONSOLE

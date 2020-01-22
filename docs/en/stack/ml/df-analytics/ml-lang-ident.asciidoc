@@ -103,7 +103,7 @@ POST _ingest/pipeline/_simulate
    "docs":[
       {
          "_source":{ <3>
-            "text":"Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Szerintem annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
+            "text":"Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
          }
       }
    ]
@@ -130,7 +130,7 @@ The request returns the following response:
         "_type" : "_doc",
         "_id" : "_id",
         "_source" : {
-          "text" : "Sziasztok! Ez egy nagyon rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Szerintem annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz.",
+          "text" : "Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz.",
           "ml" : {
             "inference" : {
               "top_classes" : [ <1>

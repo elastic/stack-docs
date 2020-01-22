@@ -7,10 +7,7 @@ and search in {es}. When you consider your own data, however, it's important to
 take a moment and think about where the {ml-features} will be most
 impactful.
 
-The first consideration is that it must be time series data. The {ml-features}
-are designed to model and detect anomalies in time series data.
-
-The second consideration, especially when you are first learning to use {ml},
+The first consideration, especially when you are first learning to use {ml},
 is the importance of the data and how familiar you are with it. Ideally, it is
 information that contains key performance indicators (KPIs) for the health,
 security, or success of your business or system. It is information that you need
@@ -19,19 +16,24 @@ dashboards that you're already using to watch this data. The better you know the
 data, the quicker you will be able to create {ml} jobs that generate useful
 insights.
 
+The second consideration is what type of analysis you want to perform. The
+{ml-features} provide both <<xpack-ml,{anomaly-detect}>> and
+<<ml-dfanalytic,{dfanalytics}>>. This tutorial covers {anomaly-detect}, which
+is designed to model and detect anomalies in time series data.
+
 The final consideration is where the data is located. This tutorial assumes you
 are using sample data that is stored in {es}. It uses wizards that expedite the
-creation of _{dfeeds}_, which pass data to {ml} jobs. If your own data is
+creation of _{dfeeds}_, which pass data to {anomaly-jobs}. If your own data is
 outside of {es}, analysis is still possible by using the
 {ref}/ml-post-data.html[post data to jobs API].
 
-IMPORTANT: If you want to create {ml} jobs in {kib}, you must use {dfeeds}.
+IMPORTANT: If you want to create {anomaly-jobs} in {kib}, you must use {dfeeds}.
 That is to say, you must store your input data in {es}. When you create
 a job, you select an existing index pattern and {kib} configures the {dfeed}
 for you under the covers.
 
 
-[float]
+[discrete]
 [[ml-gs-sampledata]]
 === Obtain a sample data set
 

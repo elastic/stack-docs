@@ -2,7 +2,8 @@
 [[ml-lang-ident]]
 === {lang-ident-cap}
 
-{lang-ident-cap} 
+{lang-ident-cap} is an {infer} trained model that you can use out of the box. 
+It enables you to determine on which language a certain text is written.
 
 
 [[ml-lang-ident-supported-languages]]
@@ -56,3 +57,111 @@ script.
 | hi-Latn | Hindi              | no      | Norwegian      |         |   
 | hmn     | Hmong              | ny      | Chichewa       |         |   
 |===
+
+
+[[ml-lang-ident-example]]
+==== Example of {lang-ident}
+
+In the following example, we feed the {lang-ident} trained model with a short 
+Hungarian text that contains diacritics and a couple of English words. Yet, the 
+model identifies the text correctly as Hungarian with very high probability.
+
+[source,js]
+----------------------------------
+POST _ingest/pipeline/_simulate
+{
+	"pipeline": {
+		"processors": [
+      {
+			  "inference": {
+				  "model_id": "lang_ident_model_1", <1>
+				  "inference_config": {
+					  "classification": {
+						  "num_top_classes": 5 <2>
+					  }
+				  },
+				  "field_mappings": {}
+			  }
+      }
+    ]
+	},
+	"docs": [
+    {
+		  "_source": { <3>
+			  "text": "Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Szerintem annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
+		  }
+	  }
+  ]
+}
+----------------------------------
+//NOTCONSOLE
+
+<1> The ID of the {lang-ident} trained model.
+<2> It defines the number of categories for which the predicted probabilities 
+are reported. In this example, 5 classes (in this case, languages) with the 
+highest probability will be reported.
+<3> The source object that contains the text to identify.
+
+
+The request returns the following response:
+
+[source,js]
+----------------------------------
+{
+  "docs" : [
+    {
+      "doc" : {
+        "_index" : "_index",
+        "_type" : "_doc",
+        "_id" : "_id",
+        "_source" : {
+          "text" : "Sziasztok! Ez egy nagyon rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Szerintem annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz.",
+          "ml" : {
+            "inference" : {
+              "top_classes" : [ <1>
+                {
+                  "class_name" : "hu",
+                  "class_probability" : 0.9999936063740517,
+                  "class_score" : 0.9999936063740517
+                },
+                {
+                  "class_name" : "lv",
+                  "class_probability" : 2.5020248433413966E-6,
+                  "class_score" : 2.5020248433413966E-6
+                },
+                {
+                  "class_name" : "is",
+                  "class_probability" : 1.0150420723037688E-6,
+                  "class_score" : 1.0150420723037688E-6
+                },
+                {
+                  "class_name" : "ga",
+                  "class_probability" : 6.67935962773335E-7,
+                  "class_score" : 6.67935962773335E-7
+                },
+                {
+                  "class_name" : "tr",
+                  "class_probability" : 5.591166324774555E-7,
+                  "class_score" : 5.591166324774555E-7
+                }
+              ],
+              "predicted_value" : "hu", <2>
+              "model_id" : "lang_ident_model_1"
+            }
+          }
+        },
+        "_ingest" : {
+          "timestamp" : "2020-01-22T14:25:14.644912Z"
+        }
+      }
+    }
+  ]
+}
+----------------------------------
+//NOTCONSOLE
+
+<1> An array of values specifying the probability of the prediction for the most 
+probable languages. The number of reported languages is defined by 
+`num_top_classes`.
+<2> The predicted value is the ISO identifier of the language with the highest 
+probability.

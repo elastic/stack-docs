@@ -7,15 +7,15 @@ beta[]
 
 The SIEM Detections feature automatically searches for threats and creates 
 signals when they are detected. Signal detection rules define the conditions 
-for creating signals. The {siem-app} comes
-<<prebuilt-rules, preconfigured with rules>> that search for suspicious 
+for creating signals. The {siem-app} comes with
+<<prebuilt-rules, prebuilt rules>> that search for suspicious 
 activity on your network and hosts. Additionally, you can
 <<rules-ui-create, create your own rules>>.
 
 [IMPORTANT]
 ==============
-See the <<detections-permissions, {kib} privileges required>> for using 
-Detections, viewing signals, and creating rules.
+See which <<detections-permissions, {kib} privileges>> are required for viewing 
+signals and creating rules.
 ==============
 
 [float]
@@ -35,15 +35,17 @@ Signal indices are created for each {kib} space. The naming convention is:
 ==============
 
 Alerts and events::
-Always refer to data the {siem-app} receives from data shippers and third-party 
+Always refer to data the {siem-app} receives from data shippers and external 
 tools, such as Suricata and Elastic Endpoint Security.
 
 [float]
-=== Signals
+=== Signals and external alerts
 
 All signals are displayed on the Detections page. To view signals created 
 by a rule, click *Manage signal detection rules* and then the relevant rule in 
 the All rules table.
+
+To view alerts from external data shippers, click *Third-party alert*.
 
 [float]
 ==== Open and closed signals
@@ -69,7 +71,7 @@ To investigate signals in the Timeline, either:
 
 [float]
 [[detections-permissions]]
-=== {kib} privileges for Detections
+=== {kib} privileges required for Detections
 
 [IMPORTANT]
 ==============

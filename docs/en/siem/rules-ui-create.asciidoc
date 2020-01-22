@@ -2,15 +2,42 @@
 [role="xpack"]
 === Managing signal detection rules
 
-Rules run periodically and search the specified indices for 
-documents that meet their criteria. On the Rules page, you can:
+beta[]
 
-* <<create-rule-ui, Create rules>>
-* <<manage-rules-ui, Clone, delete, activate/deactivate, and run rules>>
+Rules run periodically and search the specified indices for 
+documents that meet their criteria.
+
+IMPORTANT:: If for any reason a rule fails to run, the {siem-app} tries to run 
+it again at its next scheduled run time and an error is displayed in the 
+*Failure History* table on the rule's page (*SIEM* -> *Detections* ->
+*Manage signal detection rules* -> <rule name>).
+
+On the Rules page, you can:
+
+* <<load-prebuilt-rules>>
+* <<create-rule-ui, Create your own rules>>
+* <<manage-rules-ui, Clone, delete, activate, and deactivate rules>>
 * <<import-export-rules-ui>>
 
 [role="screenshot"]
 image::all-rules.png[]
+
+[[load-prebuilt-rules]]
+==== Load prebuilt Elastic rules
+
+You can load the {siem-app}'s prebuilt rules whenever you want, either when you 
+first visit the *Signal detection rules* page or by clicking
+*Load Elastic prebuilt rules* later on.
+
+If you delete any of the prebuilt rules, a button appears that enables 
+reloading all the deleted prebuilt rules.
+
+[NOTE]
+==============
+None of the prebuilt rules are activated by default. You must manually activate 
+any rules you want to run. If you want to modify a prebuilt rule, you must 
+first duplicate it and then make your changes to the duplicated rule.
+==============
 
 [[create-rule-ui]]
 ==== Create a new rule
@@ -78,13 +105,17 @@ look-back time of 1 minute, the rule runs every 5 minutes but analyses the
 documents added to indices during the last 6 minutes. This overlap helps ensure 
 signals are issued even when incoming host and network data is delayed.
 . Save the rule with or without activation.
++
+NOTE: When you activate a rule it is queued and its schedule is determined by 
+its initial run time. If you activate a rule that runs every 5 minutes at 14:02 
+but it does not run until 14:04, it will run again at 14:09.
 
 [[manage-rules-ui]]
 ==== Modify existing rules
 
-You can clone, edit, activate/deactivate, and delete rules, and run them manually:
+You can clone, edit, activate, deactivate, and delete rules:
 
-. Go to *SIEM* -> *Detections*.
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Do one of the following:
 * Click the actions icon (three dots) and then select the required action.
 * In the *Rule* column, select all the rules you want to perform an action on, 
@@ -95,7 +126,7 @@ and then the required action from `Batch actions` menu.
 [[import-export-rules-ui]]
 ==== Import and export rules
 
-. Go to *SIEM* -> *Detections* -> *Manage rules*.
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . To import rules:
 .. Click *Import rule*.
 .. Drag and drop files containing the signal detection rules.

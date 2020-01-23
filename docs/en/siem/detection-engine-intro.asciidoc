@@ -14,7 +14,7 @@ activity on your network and hosts. Additionally, you can
 
 [IMPORTANT]
 ==============
-See which <<detections-permissions, {kib} privileges>> are required for viewing 
+See <<detections-permissions, {kib} and index privileges>> required for viewing 
 signals and creating rules.
 ==============
 
@@ -41,14 +41,14 @@ tools, such as Suricata and Elastic Endpoint Security.
 [float]
 === Signals and external alerts
 
-All signals are displayed on the Detections page. To view signals created 
+The Detections page displays all signals and alerts. To view signals created 
 by a rule, click *Manage signal detection rules* and then the relevant rule in 
 the All rules table.
 
-To view alerts from external data shippers, click *Third-party alert*.
+To view alerts from external data shippers, click *External alerts*.
 
 [float]
-==== Open and closed signals
+==== Open and close signals
 
 You can close signals to indicate they do not need any further investigation. 
 By default, the All signals table displays open signals. To view closed 
@@ -56,9 +56,9 @@ signals, click *Closed signals*.
 
 To open and close signals, either:
 
-* Click the *Close/Open signal* icon
+* Click the *Close/Open signal* icon.
 * Select the signals you want to open or close and then click *Batch actions*
--> *Close/Open selected*
+-> *Close/Open selected*.
 
 [float]
 ==== Send signals to the Timeline
@@ -71,11 +71,11 @@ To investigate signals in the Timeline, either:
 
 [float]
 [[detections-permissions]]
-=== {kib} privileges required for Detections
+=== {kib} and index privileges required for Detections
 
 [IMPORTANT]
 ==============
-The Detections page cannot be viewed until a user with the `create_index` 
+You cannot view the Detections page until a user with the `create_index` 
 privilege for the {kib} space visits the page.
 ==============
 

@@ -10,13 +10,22 @@ experimental[]
 which language a certain text is written. You can reference the {lang-ident} 
 model in an {ref}//inference-processor.html[{infer} processor] of an ingest 
 pipeline by using its `model_id`. The input filed name is `text` by default. If 
-you want to run {lang-ident} on an other field, you have to  
+you want to run {lang-ident} on an field with a different name, then you have to 
+map your field name to `text` in the ingest processor.
 
-The longer the text passed into the {lang-ident} model, the more likely it is 
-able to correctly identify the language. In certain cases, the model can detect 
-the source language even if it is not written in the script that the language 
-traditionally use. These languages are marked in the supported languages table 
-(see below) with the `Latn` subtag.
+The longer the text passed into the {lang-ident} model, the more accurate the 
+model will be to identify the language. It is fairly accurate on shorter samples 
+(for example, 50 character-long streams) at certain languages, but languages 
+that are very similar to each other are hard to identify based on a very short 
+character stream.
+
+{lang-ident-cap} takes into account Unicode boundaries when the feature set is 
+built. If the text has diacritical marks then the model uses that information 
+for identifying the language of the text.  In certain cases, the model can 
+detect the source language even if it is not written in the script that the 
+language traditionally uses. These languages are marked in the supported 
+languages table (see below) with the `Latn` subtag. {lang-ident-cap} supports 
+Unicode input.
 
 
 [[ml-lang-ident-supported-languages]]

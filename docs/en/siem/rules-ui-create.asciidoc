@@ -7,8 +7,8 @@ beta[]
 Rules run periodically and search the specified indices for 
 documents that meet their criteria.
 
-IMPORTANT:: If for any reason a rule fails to run, the {siem-app} tries to reun 
-it at its next scheduled run time and an error is displayed in the 
+IMPORTANT:: If a rule fails to run, the {siem-app} tries to 
+rerun it at its next scheduled run time and an error is displayed in the 
 *Failure History* table on the rule's page (*SIEM* -> *Detections* ->
 *Manage signal detection rules* -> <rule name>).
 
@@ -98,7 +98,7 @@ The *Schedule rule* pane is displayed.
 [role="screenshot"]
 image::schedule-rule.png[]
 . Select how often the rule runs.
-. Optionally, add look-back time to the rule. When defined, the rule searches 
+. Optionally, add `look-back` time to the rule. When defined, the rule searches 
 indices with the additional time.
 +
 For example, if you set a rule to run every 5 minutes with an additional
@@ -107,9 +107,9 @@ documents added to indices during the last 6 minutes. This overlap helps ensure
 signals are issued even when incoming data is delayed.
 . Save the rule with or without activation.
 +
-NOTE: When you activate a rule it is queued, and its schedule is determined by 
-its initial run time. If you activate a rule that runs every 5 minutes at 
-14:02, but it does not run until 14:04, it will run again at 14:09.
+NOTE: When you activate a rule, it is queued and its schedule is determined by 
+its initial run time. For example, if you activate a rule that runs every 5 
+minutes at 14:02, but it does not run until 14:04, it will run again at 14:09.
 
 [[manage-rules-ui]]
 ==== Modify existing rules

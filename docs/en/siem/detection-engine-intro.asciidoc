@@ -23,7 +23,7 @@ signals and creating rules.
 === Terminology
 
 Signals::
-Always refer to a {siem-soln} produced detections. Signals are never 
+Always refer to {siem-soln} produced detections. Signals are never 
 received from third-party systems. When a rule's conditions are met, the
 {siem-app} writes one or more signals to an Elasticsearch `signals` index.
 
@@ -77,10 +77,35 @@ To investigate a signal in the Timeline, click the *View in timeline* icon.
 [[detections-permissions]]
 === {kib} and index privileges required for Detections
 
-[IMPORTANT]
+Depending on your privileges and whether a `.siem-signals-<space name>` index 
+has been created for the {kib} space, you might see an error message when you 
+try to open the *Detections* page.
+
+[float]
+==== `Let’s set up your detection engine` message
+
+If you see this message, a user with these privileges must open the *Detections*
+page before you can view signals and rules:
+
+* The `manage_api_key` cluster privilege (see
+{ref}/security-privileges.html[Security privileges]).
+* The `create_index` privilege for the {kib} space (see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
+* {kib} space `All` privileges for the `SIEM` feature (see
+{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+
+[float]
+==== `Detection engine permissions required` message
+
+If you see this message, you do not have the required privileges to view the 
+*Detections* page and you should contact your {kib} administrator.
+
+[NOTE]
 ==============
-You cannot view the Detections page until a user with the `create_index` 
-privilege for the {kib} space visits the page.
+If you are using a local {es} deployment, make sure the 
+`xpack.security.enabled` setting in the `elasticsearch.yml` 
+configuration file is set to `true`. For more information, see 
+{ref}/settings.html[Configuring {es}] and
+{ref}/security-settings.html[Security settings in {es}].
 ==============
 
 To view signals and detection rules, you must have at least:
@@ -88,14 +113,14 @@ To view signals and detection rules, you must have at least:
 * `read` permissions for the `.siem-signals-<space name>` index, where
 `<space name>` is the name of the {kib} space you are using to view Detections
 (see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
-* {kib} space `Read` privileges for the `SIEM` and `Saved Objects Management` 
-features (see {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+* {kib} space `Read` privileges for the `SIEM` feature (see
+{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
 
 To create and modify detection rules, you must have:
 
 * The `manage_api_key` cluster privilege (see {ref}/security-privileges.html[Security privileges]).
-* {kib} space `All` privileges for the `SIEM` and `Saved Objects Management` 
-features (see {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+* {kib} space `All` privileges for the `SIEM` feature (see
+{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
 * Write permissions for the `.siem-signals-<space name>` index, such as 
 `create` `create_doc`, `write`, `index`, and `all`
 (see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).

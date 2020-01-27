@@ -23,14 +23,14 @@ include::shared-content/rule-schema.asciidoc[tag=rules-api-json-schema]
 
 ===== Example request
 
-Updates the `threats` object:
+Updates the `threat` object:
 
 [source,js]
 --------------------------------------------------
 PUT api/detection_engine/rules
 {
   "rule_id": "process_started_by_ms_office_program_possible_payload",
-  "threats": [
+  "threat": [
    {
       "framework": "MITRE ATT&CK",
       "tactic": {
@@ -102,7 +102,7 @@ Example response:
     "ms office"
   ],
   "type": "query",
-  "threats": [
+  "threat": [
     {
       "framework": "MITRE ATT&CK",
       "tactic": {

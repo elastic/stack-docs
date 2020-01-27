@@ -7,9 +7,9 @@ beta[]
 Rules run periodically and search the specified indices for 
 documents that meet their criteria.
 
-IMPORTANT:: If a rule fails to run, the {siem-app} tries to 
+IMPORTANT: If a rule fails to run, the {siem-app} tries to 
 rerun it at its next scheduled run time and an error is displayed in the 
-*Failure History* table on the rule's page (*SIEM* -> *Detections* ->
+*Failure History* table on the *Rule details* page (*SIEM* -> *Detections* ->
 *Manage signal detection rules* -> <rule name>).
 
 On the Rules page, you can:
@@ -35,7 +35,8 @@ reloading all the deleted prebuilt rules.
 [NOTE]
 ==============
 By default, prebuilt rules are not activated. If you want to modify a prebuilt 
-rule, you must first duplicate it and then make your changes to the duplicated rule.
+rule, you must first duplicate it and then make your changes to the duplicated 
+rule.
 ==============
 
 [[create-rule-ui]]
@@ -49,7 +50,11 @@ The *Create new rule* page is displayed.
 image::create-new-rule.png[]
 . Define which {es} indices the rule analyzes for signals.
 . Use the filter and query fields to create the criteria used for detecting 
-signals. For example, a rule that detects when a Microsoft Office product 
+signals.
++
+NOTE: You can use {kib} saved queries (save icon) and queries from saved timelines (`Import query from saved timeline`) as rule conditions.
++
+For example, a rule that detects when a Microsoft Office product 
 starts a process in a user folder uses the following query and filters:
 
 * _Custom query_ `process.parent.name: EXCEL.EXE or process.parent.name: MSPUB.EXE or process.parent.name: OUTLOOK.EXE or process.parent.name: POWERPNT.EXE or process.parent.name: VISIO.EXE or process.parent.name: WINWORD.EXE`
@@ -98,18 +103,27 @@ The *Schedule rule* pane is displayed.
 [role="screenshot"]
 image::schedule-rule.png[]
 . Select how often the rule runs.
-. Optionally, add `look-back` time to the rule. When defined, the rule searches 
-indices with the additional time.
+. Optionally, add `Additional look-back time` to the rule. When defined, the 
+rule searches indices with the additional time.
 +
 For example, if you set a rule to run every 5 minutes with an additional
 look-back time of 1 minute, the rule runs every 5 minutes but analyses the 
-documents added to indices during the last 6 minutes. This overlap helps ensure 
-signals are issued even when incoming data is delayed.
+documents added to indices during the last 6 minutes.
++
+[IMPORTANT]
+==============
+It is recommended to set the `Additional look-back time` to at 
+least 1 minute. This ensures there are no missing signals when a rule does not 
+run exactly at its scheduled time.
+
+The {siem-app} performs deduplication. Duplicate signals discovered during the 
+`Additional look-back time` are *not* stored.
+==============
 . Save the rule with or without activation.
 +
 NOTE: When you activate a rule, it is queued and its schedule is determined by 
 its initial run time. For example, if you activate a rule that runs every 5 
-minutes at 14:02, but it does not run until 14:04, it will run again at 14:09.
+minutes at 14:03 but it does not run until 14:04, it will run again at 14:09.
 
 [[manage-rules-ui]]
 ==== Modify existing rules

@@ -1,0 +1,155 @@
+[[rules-ui-create]]
+[role="xpack"]
+=== Managing signal detection rules
+
+beta[]
+
+Rules run periodically and search the specified indices for 
+documents that meet their criteria.
+
+IMPORTANT: If a rule fails to run, the {siem-app} tries to 
+rerun it at its next scheduled run time and an error is displayed in the 
+*Failure History* table on the *Rule details* page (*SIEM* -> *Detections* ->
+*Manage signal detection rules* -> <rule name>).
+
+On the Rules page, you can:
+
+* <<load-prebuilt-rules>>
+* <<create-rule-ui, Create your own rules>>
+* <<manage-rules-ui, Clone, delete, activate, and deactivate rules>>
+* <<import-export-rules-ui>>
+
+[role="screenshot"]
+image::all-rules.png[]
+
+[[load-prebuilt-rules]]
+==== Load prebuilt Elastic rules
+
+To load the {siem-app}'s prebuilt rules, click *Load Elastic prebuilt rules* 
+on the *Signal detection rules* page (*SIEM* -> *Detections* ->
+*Manage signal detection rules*).
+
+If you delete any of the prebuilt rules, a button appears that enables 
+reloading all the deleted prebuilt rules.
+
+[NOTE]
+==============
+By default, prebuilt rules are not activated. If you want to modify a prebuilt 
+rule, you must first duplicate it and then make your changes to the duplicated 
+rule.
+==============
+
+[[create-rule-ui]]
+==== Create a new rule
+
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
+. Click *Create new rule*.
++
+The *Create new rule* page is displayed.
+[role="screenshot"]
+image::create-new-rule.png[]
+. Define which {es} indices the rule analyzes for signals.
+. Use the filter and query fields to create the criteria used for detecting 
+signals.
++
+NOTE: You can use {kib} saved queries (save icon) and queries from saved timelines (`Import query from saved timeline`) as rule conditions.
++
+For example, a rule that detects when a Microsoft Office product 
+starts a process in a user folder uses the following query and filters:
+
+* _Custom query_ `process.parent.name: EXCEL.EXE or process.parent.name: MSPUB.EXE or process.parent.name: OUTLOOK.EXE or process.parent.name: POWERPNT.EXE or process.parent.name: VISIO.EXE or process.parent.name: WINWORD.EXE`
+* _Add filter_:
+** *Field*: `event.action`
+** *Operator*: `is`
+** *Value*: `Process Create (rule: ProcessCreate)`
+. Click *Continue*.
++
+The *About rule* pane is displayed.
+[role="screenshot"]
+image::about-rule-pane.png[]
+. Fill in the following fields:
+.. _Name_: The rule's name.
+.. _Description_: A description of what the rule does.
+.. _Severity_: Select the severity levels of signals created by the rule:
+* `Low`: Signals that are of interest but generally not considered to be 
+security incidents. Sometimes, a combination of low severity events can 
+indicate suspicious activity.
+* `Medium`: Signals that require investigation.
+* `High`: Signals that require an immediate investigation.
+* `Critical`: Signals that indicate a security incident has occurred.
+.. _Risk score_: A numerical value between 0 and 100 that correlates with the _Severity_ level. General guidelines are:
+* `21` represents low severity.
+* `47` represents medium severity.
+* `73` represents high severity.
+* `99` represents critical severity.
+.. For additional options, click *Advanced settings* and fill in any of 
+these fields: 
+... _Timeline template_ (optional): Select a timeline template used when you 
+send a signal created by the rule to the timeline.
++
+TIP: Before you create rules, create and save relevant
+<<timelines-ui,timelines>> so they can be selected here. 
+
+... _Reference URLs_ (optional): References to information that is relevant to 
+the rule. For example, links to relevant background information.
+... _False positives_ (optional): List of common scenarios that may produce 
+false-positive signals.
+... _MITRE ATT&CK^TM^_ (optional): Relevant MITRE framework tactics and techniques.
+... _Tags_ (optional): Words and phrases used to categorize, filter, and search 
+the rule.
+. Click *Continue*.
++
+The *Schedule rule* pane is displayed.
+[role="screenshot"]
+image::schedule-rule.png[]
+. Select how often the rule runs.
+. Optionally, add `Additional look-back time` to the rule. When defined, the 
+rule searches indices with the additional time.
++
+For example, if you set a rule to run every 5 minutes with an additional
+look-back time of 1 minute, the rule runs every 5 minutes but analyses the 
+documents added to indices during the last 6 minutes.
++
+[IMPORTANT]
+==============
+It is recommended to set the `Additional look-back time` to at 
+least 1 minute. This ensures there are no missing signals when a rule does not 
+run exactly at its scheduled time.
+
+The {siem-app} performs deduplication. Duplicate signals discovered during the 
+`Additional look-back time` are *not* stored.
+==============
+. Save the rule with or without activation.
++
+NOTE: When you activate a rule, it is queued and its schedule is determined by 
+its initial run time. For example, if you activate a rule that runs every 5 
+minutes at 14:03 but it does not run until 14:04, it will run again at 14:09.
+
+[[manage-rules-ui]]
+==== Modify existing rules
+
+You can clone, edit, activate, deactivate, and delete rules:
+
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
+. Do one of the following:
+* Click the actions icon (three dots) and then select the required action.
+* In the *Rule* column, select all the rules you want to act on, and then the 
+required action from the `Batch actions` menu.
+. To activate or deactivate a rule, click the Activate toggle button.
+
+
+[[import-export-rules-ui]]
+==== Import and export rules
+
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
+. To import rules:
+.. Click *Import rule*.
+.. Drag-and-drop files containing the signal detection rules.
++
+NOTE: Imported rules must be in a `ndjson` file.
+
+. To export rules:
+.. In the *All rules* table, select the rules you want to export.
+.. Select *Batch actions* -> *Export selected*.
++
+NOTE: You cannot export prebuilt rules.

@@ -81,20 +81,11 @@ Depending on your privileges and whether a `.siem-signals-<space name>` index
 has been created for the {kib} space, you might see an error message when you 
 try to open the *Detections* page.
 
-[NOTE]
-==============
-If you are using a local {es} deployment and cannot access the {siem-app}, make 
-sure the `xpack.security.enabled` setting in the `elasticsearch.yml` 
-configuration file is set to `true`. For more information, see 
-{ref}/settings.html[Configuring {es}] and
-{ref}/security-settings.html[Security settings in {es}].
-==============
-
 [float]
 ==== `Let’s set up your detection engine` message
 
 If you see this message, a user with these privileges must open the *Detections*
-page before you can view the page:
+page before you can view signals and rules:
 
 * The `manage_api_key` cluster privilege (see
 {ref}/security-privileges.html[Security privileges]).
@@ -107,6 +98,15 @@ page before you can view the page:
 
 If you see this message, you do not have the required privileges to view the 
 *Detections* page and you should contact your {kib} administrator.
+
+[NOTE]
+==============
+If you are using a local {es} deployment, make sure the 
+`xpack.security.enabled` setting in the `elasticsearch.yml` 
+configuration file is set to `true`. For more information, see 
+{ref}/settings.html[Configuring {es}] and
+{ref}/security-settings.html[Security settings in {es}].
+==============
 
 To view signals and detection rules, you must have at least:
 

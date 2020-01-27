@@ -1,0 +1,101 @@
+[[detection-engine-overview]]
+[role="xpack"]
+
+== Detections (Beta)
+
+beta[]
+
+The SIEM Detections feature automatically searches for threats and creates 
+signals when they are detected. Signal detection rules define the conditions 
+for creating signals. The {siem-app} comes with
+<<prebuilt-rules, prebuilt rules>> that search for suspicious 
+activity on your network and hosts. Additionally, you can
+<<rules-ui-create, create your own rules>>.
+
+[IMPORTANT]
+==============
+See <<detections-permissions, {kib} and index privileges>> required for viewing 
+signals and creating rules.
+==============
+
+[float]
+[[det-engine-terminology]]
+=== Terminology
+
+Signals::
+Always refer to a {siem-soln} produced detections. Signals are never 
+received from third-party systems. When a rule's conditions are met, the
+{siem-app} writes one or more signals to an Elasticsearch `signals` index.
+
+[NOTE]
+==============
+Signal indices are created for each {kib} space. The naming convention is:
+`.siem-signals-<space name>`. For the default space, the signals index is named 
+`.siem-signals-default`.
+==============
+
+Alerts and events::
+Always refer to data the {siem-app} receives from data shippers and external 
+tools, such as Suricata and Elastic Endpoint Security.
+
+[float]
+=== Signals and external alerts
+
+The Detections page displays all signals and alerts. To view signals created 
+by a rule, you can:
+
+* Filter for a specific rule in the KQL bar (for example,
+`signal.rule.name :"SSH (Secure Shell) from the Internet"`).
+* View signals in the *Rule details* page (click
+*Manage signal detection rules* -> rule name in the *All rules* table).
+
+NOTE: KQL autocomplete for `.siem-signals-*` indices is available on the 
+*Detections* and *Rule details* pages, and in timelines where `All events` or 
+`Signal events` are selected. 
+
+To view alerts from external data shippers, click *External alerts*.
+
+[float]
+==== Open and close signals
+
+You can close signals to indicate they do not need any further investigation. 
+By default, the All signals table displays open signals. To view closed 
+signals, click *Closed signals*.
+
+To open and close signals, either:
+
+* Click the *Close/Open signal* icon.
+* Select the signals you want to open or close and then click 
+*Close/Open selected*.
+
+[float]
+==== Send signals to the Timeline
+
+To investigate a signal in the Timeline, click the *View in timeline* icon.
+
+[float]
+[[detections-permissions]]
+=== {kib} and index privileges required for Detections
+
+[IMPORTANT]
+==============
+You cannot view the Detections page until a user with the `create_index` 
+privilege for the {kib} space visits the page.
+==============
+
+To view signals and detection rules, you must have at least:
+
+* `read` permissions for the `.siem-signals-<space name>` index, where
+`<space name>` is the name of the {kib} space you are using to view Detections
+(see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
+* {kib} space `Read` privileges for the `SIEM` and `Saved Objects Management` 
+features (see {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+
+To create and modify detection rules, you must have:
+
+* The `manage_api_key` cluster privilege (see {ref}/security-privileges.html[Security privileges]).
+* {kib} space `All` privileges for the `SIEM` and `Saved Objects Management` 
+features (see {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+* Write permissions for the `.siem-signals-<space name>` index, such as 
+`create` `create_doc`, `write`, `index`, and `all`
+(see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).

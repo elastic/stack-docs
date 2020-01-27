@@ -2,13 +2,11 @@
 [role="xpack"]
 == Get up and running
 
-beta[]
 
-You need:
+To use the {siem-app}, you need an *Elasticsearch* cluster and *Kibana* 
+(version 7.2 or later) with a basic license. See
+{stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
 
-* An *Elasticsearch* cluster and *Kibana* (version 7.2 or later) with a basic
-license. See {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
-+
 [TIP]
 ==============
 You can skip installing {es} and {kib} by using our
@@ -18,14 +16,20 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try the {es}
 Service for free].
 ==============
 
-* *{beats}* (version 7.x or later) or other data shippers installed for each 
-system you want to monitor.
+To ingest data, you can use:
+
+* *{beats}* shippers (version 7.x or later) installed for each system you want 
+to monitor.
+
+* *https://www.elastic.co/products/endpoint-security[Elastic Endpoint Security]*, which ships events and security alerts directly to {es}.
+
+* Third-party collectors configured to ship ECS-compliant data.
 
 [IMPORTANT]
 ==============
 If you use a third-party collector to ship data to the {siem-app}, you must 
-map its fields to the {ecs-ref}[Elastic Common Schema (ECS)]. Additionally, you 
-must add its index to the {siem-soln} {es} indices (*{kib}* -> 
+map its fields to the {ecs-ref}[Elastic Common Schema (ECS)]. Additionally, 
+you must add its index to the {siem-soln} {es} indices (*{kib}* -> 
 *Management* -> *Advanced Settings* -> *`siem:defaultIndex`*).
 
 {siem-soln} uses the {ecs-ref}/ecs-host.html[`host.name`] ECS field as the 

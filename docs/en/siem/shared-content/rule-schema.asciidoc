@@ -92,13 +92,13 @@ filter, and search rules. |No, defaults to an empty array.
 |Yes
 
 ifeval::["{api-call}" == "update-rule"]
-|threats |<<threats-object-update, threats[]>> |Object containing attack 
+|threat |<<threats-object-update, threat[]>> |Object containing attack 
 information about the type of threat the rule monitors, see
 {ecs-ref}/ecs-threat.html[ECS threat fields]. |No, defaults to an empty array.
 endif::[]
 
 ifeval::["{api-call}" == "create-rule"]
-|threats |<<threats-object-create, threats[]>> |Object containing attack 
+|threat |<<threats-object-create, threat[]>> |Object containing attack 
 information about the type of threat the rule monitors, see
 {ecs-ref}/ecs-threat.html[ECS threat fields]. |No, defaults to an empty array.
 endif::[]
@@ -116,7 +116,7 @@ ifeval::["{api-call}" == "create-rule"]
 [[threats-object-create]]
 endif::[]
 
-===== `threats` schema
+===== `threat` schema
 
 NOTE: Only threats described using the MITRE ATT&CK^TM^ framework are displayed 
 in the UI (*SIEM* -> *Detections* -> *Manage signal detection rules* ->

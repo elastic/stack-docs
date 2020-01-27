@@ -2,8 +2,6 @@
 [role="xpack"]
 == SIEM UI
 
-beta[]
-
 After you have your {siem-soln} data sources <<install-siem,up and running>> and
 security events are streaming to {es}, check out the {siem-app} in {kib}. You
 can view and analyze security events, investigate previous threat detections, or
@@ -64,7 +62,7 @@ There are also tabs for viewing and investigating specific types of data:
 * Events
 
 
-*Hosts Detail* shows information for a selected host, including
+*Host details* shows information for a selected host, including
 Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
 versions, machine type, and so forth. Additionally, it contains all the widgets
 and tabs relevant for the selected host.
@@ -74,9 +72,9 @@ and tabs relevant for the selected host.
 === Network
 
 The Network view provides key network activity metrics and an interactive map,
-facilitates investigation time enrichment, and provides network event tables that
-enable interaction with the Timeline. You can drag and drop items of interest from
-the Network view to Timeline for further investigation.
+facilitates investigation time enrichment, and provides network event tables 
+that enable interaction with the Timeline. You can drag and drop items of 
+interest from the Network view to Timeline for further investigation.
 
 [role="screenshot"]
 image::network-ui.png[]
@@ -108,7 +106,8 @@ so you can start exploring data directly from the map. Hover over source and
 destination points to see more information, such as hostnames and IP addresses.
 To drill down, click a point and use the filter icon to add a field to the
 filter bar or drag a field to the Timeline. You can also click a hostname
-to jump to the SIEM Host page, or an IP address to open the relevant network details.
+to jump to the SIEM Host page, or an IP address to open the relevant network 
+details.
 
 Just as you can start an investigation using the map, the map refreshes to show
 relevant data when you run a query or update the time frame.
@@ -117,6 +116,23 @@ TIP: To add and remove layers, click on the more options icon in the top right
 corner of the map.
 
 <<conf-map-ui>> describes how to add map data and set up interactions.
+
+[float]
+[[detection-engine-ui]]
+=== Detections
+
+The Detections page provides an overview of all the signals created by 
+signal detection rules. It is also the place where you can enable prebuilt 
+rules and create new rules. <<detection-engine-overview>> provides a detailed 
+description of Detections and how to use it.
+
+[role="screenshot"]
+image::detection-engine.png[]
+
+The `Signal count` histogram shows the detection rate of signals 
+according to various attributes, including `Risk scores`, `Severities`, and 
+`Top event categories`. The `All signals` table helps with investigations, 
+allowing you to search, filter, and aggregate all {siem-soln} signals.
 
 [float]
 [[timelines-ui]]
@@ -178,8 +194,8 @@ item so that it is excluded.
 As you build and modify your queries, you can see the results of your
 interactions in the details pane below.
 
-As your query takes shape, an easy-to-follow rendered view appears for events. It
-shows relevant contextual information that helps tell the backstory of the
+As your query takes shape, an easy-to-follow rendered view appears for events. 
+It shows relevant contextual information that helps tell the backstory of the
 event. If you see a particular item that interests you, you can drag it to the
 drop area for further introspection.
 
@@ -213,7 +229,6 @@ might need to:
 NOTE: To see source and destination connections lines on the map, you must
 configure `source.geo` and `destination.geo` ECS fields for your indices.
 
-[float]
 [[kibana-index-pattern]]
 ==== Create {kib} index patterns
 
@@ -238,7 +253,6 @@ such as `servers-*`, map data for the indices is *not* displayed.
 // {kibana-ref}/tutorial-define-index.html[Define your index patterns].
 // =====================
 
-[float]
 [[geoip-data]]
 ==== Add geoIP data
 
@@ -320,7 +334,6 @@ it encounters an event that doesn't have the specified field.
 <1> The value of this field must be the same as the ingest pipeline name in
 <<geo-pipeleine, step 1>> (`geoip-info` in this example).
 
-[float]
 [[private-network]]
 ==== Map your internal network
 

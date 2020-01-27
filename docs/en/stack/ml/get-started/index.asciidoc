@@ -1,8 +1,6 @@
 [[getting-started]]
-= Get started with {ml}
+== Get started with {ml}
 
-[partintro]
---
 Ready to take {ml} for a test drive? Follow this getting started tutorial to:
 
 * Create {anomaly-jobs} for the {kib} sample data
@@ -18,9 +16,52 @@ and want to see how it works with the rest of the stack, you might want to jump
 to the {stack-gs}/get-started-elastic-stack.html[{stack} tutorial] where you'll
 set up a system monitoring solution with {es}, {kib}, {beats}, and {ls}.
 
+[discrete]
+[[quickstart-prerequisites]]
+=== Prerequisites
+
+Before you can play with the {ml-features}, you must verify that your
+environment is <<setup,set up>> properly for this tutorial:
+
+. Install {es} and {kib}.
++
+--
+{es} stores the data and the analysis results. {kib} provides a helpful user 
+interface for creating and viewing jobs.
+
+[TIP]
+==========
+You can run {es} and {kib} on your own hardware, or use our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on {ecloud}.
+The {ess} is available on both AWS and GCP.
+https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {ess} for free].
+==========
 --
 
-include::getting-started-enable-ml.asciidoc[]
+. Obtain a https://www.elastic.co/subscriptions[license] that includes the
+{ml-features}. 
++
+--
+By default, when you install {stack} products, they apply basic licenses with no 
+expiration dates. To try out {ml-features}, start a 30-day trial. See
+{kibana-ref}/managing-licenses.html[License managment].
+--
+
+. If the {es} {security-features} are enabled in your cluster, you need a user
+that has appropriate authority to perform the steps in this tutorial. 
++
+--
+[[ml-gs-users]]
+By default, you can perform all of the steps in this tutorial by using the
+built-in `elastic` super user. If you are performing these steps in a production
+environment, take extra care because `elastic` has the `superuser` role and you
+could inadvertently make significant changes to the system. You can
+alternatively assign the `machine_learning_admin` and `kibana_admin` roles to a
+user ID of your choice. For more information, see
+{ref}/built-in-roles.html[Built-in roles] and
+{ref}/security-privileges.html[Security privileges].
+
+--
 
 include::getting-started-data.asciidoc[]
 

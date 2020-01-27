@@ -42,8 +42,16 @@ tools, such as Suricata and Elastic Endpoint Security.
 === Signals and external alerts
 
 The Detections page displays all signals and alerts. To view signals created 
-by a rule, click *Manage signal detection rules* and then the relevant rule in 
-the All rules table.
+by a rule, you can:
+
+* Filter for a specific rule in the KQL bar (for example,
+`signal.rule.name :"SSH (Secure Shell) from the Internet"`).
+* View signals in the *Rule details* page (click
+*Manage signal detection rules* -> rule name in the *All rules* table).
+
+NOTE: KQL autocomplete for `.siem-signals-*` indices is available on the 
+*Detections* and *Rule details* pages, and in timelines where `All events` or 
+`Signal events` are selected. 
 
 To view alerts from external data shippers, click *External alerts*.
 
@@ -57,17 +65,13 @@ signals, click *Closed signals*.
 To open and close signals, either:
 
 * Click the *Close/Open signal* icon.
-* Select the signals you want to open or close and then click *Batch actions*
--> *Close/Open selected*.
+* Select the signals you want to open or close and then click 
+*Close/Open selected*.
 
 [float]
 ==== Send signals to the Timeline
 
-To investigate signals in the Timeline, either:
-
-* Click the *View in timeline* icon
-* Select the signals you want to view in the Timeline and then click
-*Batch actions* -> *View selected in timeline*
+To investigate a signal in the Timeline, click the *View in timeline* icon.
 
 [float]
 [[detections-permissions]]

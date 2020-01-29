@@ -4,4 +4,1709 @@
 
 beta[]
 
+<<<<<<< HEAD
 // Placeholder
+=======
+The following prebuilt rules are available:
+
+Adding Hidden File Attribute via Attrib::
+Adversaries can add the `hidden` attribute to files to hide them from the user 
+in an attempt to evade detection.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Adobe Hijack Persistence::
+Detects writing executable files that are automatically launched when an Adobe 
+product is started.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Adversary Behavior - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Adversary behavior detected.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Endpoint
+
+
+Audio Capture via PowerShell::
+To try and listen to sensitive conversations, adversaries can leverage a 
+computer's peripheral devices or applications to capture audio recordings.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Audio Capture via SoundRecorder::
+To try and listen to sensitive conversations, adversaries can leverage a 
+computer's peripheral devices or applications to capture audio recordings.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Background Intelligent Transfer Service (BITS) connecting to the Internet::
+Adversaries may abuse the Background Intelligent Transfer Service (BITS) to
+download, execute, or clean up after performing a malicious action.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Bypass UAC via cmstp::
+Identifies User Account Control (UAC) bypasses using `cmstp.exe`. Attackers 
+bypass UAC to stealthily execute code with elevated permissions.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Bypass UAC via Event Viewer::
+Identifies User Account Control (UAC) bypasses using `eventvwr.exe`. Attackers 
+bypass UAC to stealthily execute code with elevated permissions.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Bypass UAC via sdclt::
+Identifies User Account Control (UAC) bypasses using `sdclt.exe`.  Attackers 
+bypass UAC to stealthily execute code with elevated permissions.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Certutil Network Connection::
+Identifies when `certutil.exe` makes a network connection. Adversaries can 
+abuse `certutil.exe` to download a certificate or malware from a remote URL.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Clearing Windows Event Logs::
+Identifies attempts to clear Windows event log stores. This is often done by
+attackers in an attempt to evade detection or destroy forensic evidence on a
+system.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Command Prompt Network Connection::
+Identifies when `cmd.exe` makes a network connection. Adversaries can abuse 
+`cmd.exe` to download or execute malware from a remote URL.
++
+*Potential false positives*
++
+Administrators may use the command prompt for regular administrative tasks. It's
+important to baseline your environment for network connections being made from
+the command prompt to determine any abnormal use of this tool.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Cred Dumping - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Credential dumping detected.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+Cred Dumping - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Credential dumping prevented.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Endpoint
+
+
+Cred Manipulation - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Credential manipulation detected.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+Cred Manipulation - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Credential manipulation prevented.
++
+*Severity*: `medium`
++
+*Tags*
+
+
+
+DLL Search Order Hijack::
+Detects writing `.dll` files to Windows file system locations that are known to 
+be vulnerable to DLL search order hijacking.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+DNS Activity to the Internet::
+This rule detects when an internal network client sends DNS traffic directly 
+to the Internet. This is atypical behavior for a managed network, and can be 
+indicative of malware, exfiltration, command and control, or, simply, 
+misconfiguration. This DNS activity also impacts your organization's 
+ability to provide enterprise monitoring and logging of DNS, and opens your 
+network to a variety of abuses and malicious communications.
++
+*Potential false positives*
++
+Exclude DNS servers from this rule as this is expected behavior. 
+Endpoints usually query local DNS servers defined in their DHCP scopes, but
+this may be overridden if a user configures their endpoint to use a remote DNS
+server. This is uncommon in managed enterprise networks because it could
+break intranet name resolution when split horizon DNS is utilized. Some
+consumer VPN services and browser plug-ins may send DNS traffic to remote
+Internet destinations. In that case, such devices or networks can be excluded
+from this rule when this is expected behavior.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+Delete Volume USN Journal with Fsutil::
+Identifies use of `fsutil.exe` to delete the `USNJRNL` volume. This 
+technique is used by attackers to eliminate evidence of files created during 
+post-exploitation activities.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Deleting Backup Catalogs with Wbadmin::
+Identifies use of `wbadmin.exe` to delete the backup catalog. Ransomware and
+other malware may do this to prevent system recovery.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Direct Outbound SMB Connection::
+Identifies unexpected processes making network connections over port 445.
+Windows File Sharing is typically implemented over Server Message Block (SMB),
+which communicates between hosts using port 445. When legitimate, these network
+connections are established by the kernel. Processes making 445/tcp connections
+may be port scanners, exploits, or suspicious user-level processes moving
+laterally.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Disable Windows Firewall Rules via Netsh::
+Identifies use of `netsh.exe` to disable or weaken the local firewall.
+Attackers use this command line tool to disable the firewall during
+troubleshooting or to enable network mobility.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Encoding or Decoding Files via CertUtil::
+Identifies the use of `certutil.exe` to encode or decode data. CertUtil is a
+native Windows component which is part of Certificate Services. CertUtil is
+often abused by attackers to encode or decode base64 data for stealthier command
+and control, and exfiltration.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Execution via Regsvcs/Regasm::
+Adversaries can use `regsvcs.exe` and `regasm.exe` to proxy execution of code
+through a trusted Windows utility.
++
+*Potential false positives*
++
+Administrators may use the command prompt for regular administrative tasks. It's
+important to baseline your environment for network connections being made from
+the command prompt to determine any abnormal use of this tool.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Execution via Scrcons::
+Identifies use of `scrcons.exe`, which is a Windows Management Instrumentation
+(WMI) Standard Event Consumer scripting application.
++
+*Potential false positives*
++
+Windows Management Instrumentation (WMI) processes can be used for an array of
+administrative tasks. It's important to baseline your environment to
+determine any abnormal use of this tool.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Execution via Signed Binary::
+Binaries signed with trusted digital certificates can execute on Windows systems
+protected by digital signature validation. Adversaries may use these binaries to
+_live off the land_ and execute malicious files that could bypass application
+whitelisting and signature validation.
++
+*Potential false positives*
++
+Security testing may produce events like this. Activity of this kind performed
+by non-engineers and ordinary users is unusual.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Exploit - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Exploit detected.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+Exploit - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Exploit prevented.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Endpoint
+
+
+FTP (File Transfer Protocol) Activity to the Internet::
+This rule detects events that may indicate the use of FTP network connections
+to the Internet. The File Transfer Protocol (FTP) has been around in its current
+form since the 1980s. It can be a common and efficient procedure on your
+network to send and receive files. Because of this, adversaries will also often 
+use this protocol to ex-filtrate data from your network or download new tools. 
+Additionally, FTP is a plain-text protocol which, if intercepted, may expose 
+usernames and passwords. FTP activity involving servers subject to regulations 
+or compliance standards may be unauthorized.
++
+*Potential false positives*
++
+FTP servers should be excluded from this rule as this is expected behavior. 
+Some business workflows may use FTP for data exchange. These workflows
+often have expected characteristics such as users, sources, and destinations. 
+FTP activity involving an unusual source or destination may be more suspicious. 
+FTP activity involving a production server that has no known associated FTP 
+workflow or business requirement is often suspicious.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+Hping Process Activity::
+Hping ran on a Linux host. Hping is a FOSS command-line packet analyzer and has
+the ability to construct network packets for a wide variety of network security
+testing applications, including scanning and firewall auditing.
++
+*Potential false positives*
++
+Normal use of hping is uncommon apart from security testing and research. Use by
+non-security engineers is very uncommon.
++
+*Severity*: `high`
++
+*Tags*
+
+* Linux
+
+
+IPSEC NAT Traversal Port Activity::
+This rule detects events that could be describing IPSEC NAT Traversal traffic.
+IPSEC is a VPN technology that allows one system to talk to another using
+encrypted tunnels. NAT Traversal enables these tunnels to communicate over the
+Internet where one of the sides is behind a NAT router gateway. This may be
+common on your network, but this technique is also used by threat actors to
+avoid detection.
++
+*Potential false positives*
++
+Some networks may utilize these protocols but usage that is unfamiliar to local
+network administrators can be unexpected and suspicious. Because this port is in
+the ephemeral range, this rule may false under certain conditions, such as when 
+an application server with a public IP address replies to a client which has 
+used a UDP port in the range by coincidence. This is uncommon but such servers 
+can be excluded.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+IRC (Internet Relay Chat) Protocol Activity to the Internet::
+This signal detects events that use common ports for Internet Relay Chat (IRC) 
+to the Internet. IRC is a common protocol that can be used for chat and file
+transfers. This protocol is also a good candidate for remote control of
+malware and data transfers to and from a network.
++
+*Potential false positives*
++
+IRC activity may be normal behavior for developers and engineers but is unusual
+for non-engineering end users. IRC activity involving an unusual source or
+destination may be more suspicious. IRC activity involving a production server
+is often suspicious. Because these ports are in the ephemeral range, this rule
+may false under certain conditions, such as when a NAT-ed web server replies to 
+a client which has used a port in the range by coincidence. In this case, these
+servers can be excluded. Some legacy applications may use these ports,
+but this is very uncommon and usually only appears in local traffic using
+private IPs, which does not match this rule's conditions.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+Indirect Command Execution::
+Various Windows utilities may be used to execute commands, possibly without
+invoking `cmd.exe`, including the Program Compatibility Assistant 
+(`pcalua.exe`) and `forfiles.exe`.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Internet Explorer spawning cmd.exe::
+Identifies a suspicious parent-child process relationship with `cmd.exe` 
+spawning form Internet Explorer.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Ld.so Process Activity::
+The dynamic linker, `ld.so`, runs in a privileged context and can be used to
+escape restrictive environments by spawning a shell to elevate privileges or 
+move laterally.
++
+*Potential false positives*
++
+`ld.so` is a dual-use tool that can be used for benign or malicious activity. 
+Some normal use of this command may originate from developers or 
+administrators. Use of `ld.so` by non-engineers or ordinary users is uncommon.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+Local Scheduled Task Commands::
+A scheduled task can be used by an adversary to establish persistence, move
+laterally, and escalate privileges.
++
+*Potential false positives*
++
+Legitimate scheduled tasks may be created during installation of new software.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Local Service Commands::
+Identifies use of `sc.exe` to create, modify, or start services on remote hosts.
+This could be indicative of adversary lateral movement, but will be noisy if
+commonly done by admins.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Malware - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Malware detected.
++
+*Severity*: `critical`
++
+*Tags*
+
+* Endpoint
+
+
+Malware - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Malware prevented.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+Mknod Process Activity::
+The Linux `mknod` program is sometimes used in the command payload of a remote
+command injection (RCI) and other exploits. It is used to export a command 
+shell when the traditional version of `netcat` is not available to the payload.
++
+*Potential false positives*
++
+Mknod is a Linux system program. Some normal use of this program, at varying
+levels of frequency, may originate from scripts, automation tools, and
+frameworks. Usage by web servers is more likely to be suspicious.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+Modification of Boot Configuration::
+Identifies use of `bcdedit.exe` to delete boot configuration data. This tactic 
+is sometimes used by malware or an attacker as a destructive technique.
++
+*Severity*: `high`
++
+*Tags*
+
+* Windows
+
+
+MsBuild Making Network Connections::
+Identifies `MSBuild.exe` making outbound network connections. This may indicate
+adversarial activity as MSBuild is often leveraged by adversaries to execute
+code and evade detection.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Net command via SYSTEM account::
+Identifies attempts to create new users via the SYSTEM account.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Netcat Network Activity::
+A `netcat` process is engaging in network activity on a Linux host. Netcat is
+often used as a persistence mechanism by exporting a reverse shell or by serving
+a shell on a listening port. Netcat is also sometimes used for data
+exfiltration.
++
+*Potential false positives*
++
+Netcat is a dual-use tool that can be used for benign or malicious activity.
+Netcat is included in some Linux distributions so its presence is not
+necessarily suspicious. Some normal use of this program, while uncommon, may
+originate from scripts, automation tools, and frameworks.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Linux
+
+
+Network Connection via Compiled HTML File::
+Compiled HTML files (`.chm`) are commonly distributed as part of the Microsoft
+HTML Help system. Adversaries may conceal malicious code in a CHM file and
+deliver it to a victim for execution. CHM content is loaded by the HTML Help
+executable program (`hh.exe`).
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Network Connection via MsXsl::
+Identifies `msxsl.exe` making a network connection. This may indicate 
+adversarial activity as `msxsl.exe` is often leveraged by adversaries to 
+execute malicious scripts and evade detection.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Network Connection via Mshta::
+Identifies `mshta.exe` making a network connection. This may indicate 
+adversarial activity as `mshta.exe` is often leveraged by adversaries to 
+execute malicious scripts and evade detection.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Network Connection via Regsvr::
+Identifies the native Windows tools `regsvr32.exe` and `regsvr64.exe` making a
+network connection.  This may be indicative of an attacker bypassing
+whitelisting or running arbitrary scripts via a signed Microsoft binary.
++
+*Potential false positives*
++
+Security testing may produce events like this. Activity of this kind performed
+by non-engineers and ordinary users is unusual.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+Network Connection via Signed Binary::
+Binaries signed with trusted digital certificates can execute on Windows systems
+protected by digital signature validation. Adversaries may use these binaries to
+_live off the land_ and execute malicious files that could bypass application
+whitelisting and signature validation.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Network Sniffing via Tcpdump::
+The `tcpdump` program ran on a Linux host. `tcpdump` is a network monitoring or
+packet sniffing tool that can be used to capture insecure credentials or data
+in motion. Sniffing can also be used to discover details of network services as
+a prelude to lateral movement or defense evasion.
++
+*Potential false positives*
++
+Some normal use of this command may originate from server or network
+administrators engaged in network troubleshooting.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+Nmap Process Activity::
+`Nmap` was executed on a Linux host. `Nmap` is a FOSS tool for network scanning 
+and security testing. It can map and discover networks, and identify listening 
+services and operating systems. It is sometimes used to gather information in 
+support of exploitation, execution or lateral movement.
++
+*Potential false positives*
++
+Security testing tools and frameworks may run `Nmap` in the course of security
+auditing. Some normal use of this command may originate from security engineers
+and network or server administrators. Use of nmap by ordinary users is uncommon.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+Nping Process Activity::
+`Nping` ran on a Linux host. `Nping` is part of the `Nmap` tool suite and has 
+the ability to construct raw packets for a wide variety of security testing
+applications, including denial of service testing.
++
+*Potential false positives*
++
+Some normal use of this command may originate from security engineers and
+network or server administrators, but this is usually not routine or 
+unannounced. Use of `Nping` by non-engineers or ordinary users is uncommon.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Linux
+
+
+PPTP (Point to Point Tunneling Protocol) Activity::
+This rule detects events that may indicate use of a PPTP VPN connection. Some
+threat actors use these types of connections to tunnel their traffic while
+avoiding detection.
++
+*Potential false positives*
++
+Some networks may utilize PPTP protocols but this is uncommon as more modern VPN
+technologies are available. Usage that is unfamiliar to local network
+administrators can be unexpected and suspicious. Torrenting applications may use
+this port. Because this port is in the ephemeral range, this rule may false
+under certain conditions, such as when an application server replies to a
+client that used this port by coincidence. This is uncommon but such
+servers can be excluded.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+Permission Theft - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Permission theft detected.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+Permission Theft - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Permission theft prevented.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Endpoint
+
+
+Persistence via Kernel Module Modification::
+Identifies loadable kernel module errors, which are often indicative of 
+potential persistence attempts.
++
+*Potential false positives*
++
+Security tools and device drivers may run these programs in order to load
+legitimate kernel modules. Use of these programs by ordinary users is uncommon.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+Potential Application Shimming via Sdbinst::
+The Application Shim was created to allow for backward compatibility of software
+as the operating system codebase changes over time. This Windows functionality
+has been abused by attackers to stealthily gain persistence and execute 
+arbitrary code in legitimate Windows processes.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Potential DNS Tunneling via Iodine::
+Iodine is a tool for tunneling Internet protocol version 4 (IPV4) traffic over
+the DNS protocol to circumvent firewalls, network security groups, and
+network access lists while evading detection.
++
+*Potential false positives*
++
+Normal use of Iodine is uncommon apart from security testing and research. Use
+by non-security engineers is very uncommon.
++
+*Severity*: `high`
++
+*Tags*
+
+* Linux
+
+
+Potential Download via Signed Binary::
+Binaries signed with trusted digital certificates can execute on Windows systems
+protected by digital signature validation. Adversaries may use these binaries to
+_live off the land_ and execute malicious files that could bypass application
+whitelisting and signature validation.
++
+*Potential false positives*
++
+Security testing may produce events like this. Activity of this kind performed
+by non-engineers and ordinary users is unusual.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Potential Evasion via Filter Manager::
+The Filter Manager Control Program (`fltMC.exe`) binary may be abused by
+adversaries to unload a filter driver and evade defenses.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Potential Modification of Accessibility Binaries::
+Windows contains accessibility features that may be launched with a key
+combination before a user has logged in. An adversary can modify the way these
+programs are launched to get a command prompt or use a backdoor without logging 
+in to the system.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Potential Shell via Web Server::
+Identifies suspicious commands executed via a web server, which may suggest a
+vulnerability and remote shell access.
++
+*Potential false positives*
++
+Network monitoring or management products may have a web server component that
+runs shell commands as part of normal behavior.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Linux
+
+
+PowerShell spawning cmd.exe::
+Identifies a suspicious parent child process relationship with `cmd.exe`
+descending from `PowerShell.exe`.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Process Activity via Compiled HTML File::
+Compiled HTML files (`.chm`) are commonly distributed as part of the Microsoft
+HTML Help system. Adversaries may conceal malicious code in a CHM file and
+deliver it to a victim for execution. CHM content is loaded by the HTML Help
+executable program (`hh.exe`).
++
+*Potential false positives*
++
+The HTML Help executable program (`hh.exe`) runs whenever a user clicks a 
+compiled help (`.chm`) file or a menu item that opens the help file inside the 
+Help Viewer. This is not always malicious, but adversaries may abuse this 
+technology to conceal malicious code.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Process Discovery via Tasklist::
+Adversaries may attempt to get information about running processes on a system.
++
+*Potential false positives*
++
+Administrators may use the `tasklist` command to display a list of currently
+running processes. By itself, it does not indicate malicious activity. After
+obtaining a foothold, it's possible adversaries may use discovery commands, like
+`tasklist`, to get information about running processes.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Process Injection - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Process injection detected.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+Process Injection - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Process injection prevented.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Endpoint
+
+
+Proxy Port Activity to the Internet::
+This rule detects events that may describe network events using a proxy to 
+access the Internet. It includes popular HTTP proxy ports and SOCKS proxy 
+ports. Typically, environments use an internal IP address for a proxy server. 
+It can also be used to circumvent network controls and detection mechanisms.
++
+*Potential false positives*
++
+Some proxied applications may use these ports, but this usually occurs in local
+traffic using private IPs, which this rule does not match. Proxies are widely
+used as a security technology, but in enterprise environments this is usually
+local traffic, which this rule does not match. If required, Internet proxy 
+services using these ports can be whitelisted. Also, some screen recording 
+applications may use these ports.
++
+Proxy port activity involving an unusual source or destination may be more 
+suspicious. Some cloud environments may use this port when VPNs or direct 
+connects are not in use and cloud instances are accessed across the Internet. 
+Because these ports are in the ephemeral range, this rule may false under 
+certain conditions, such as when a NATed web server replies to a client which 
+has used a port in the range by coincidence. In this case, such servers can be 
+excluded.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+PsExec Network Connection::
+Identifies use of the SysInternals tool, `PsExec.exe`, making a network 
+connection. This could be an indication of lateral movement.
++
+*Potential false positives*
++
+PsExec is a dual-use tool that can be used for benign or malicious activity.
+It's important to baseline your environment to determine the amount of noise to
+expect from this tool.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+RDP (Remote Desktop Protocol) from the Internet::
+This signal detects network events that may indicate the use of RDP traffic from
+the Internet. RDP is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
++
+*Potential false positives*
++
+Some network security policies allow RDP directly from the Internet, but usage
+that is unfamiliar to server or network owners can be unexpected and suspicious.
+RDP services may be exposed directly to the Internet in some networks, such as
+cloud environments. In such cases, only RDP gateways, bastions, or jump servers
+may be expected to expose RDP directly to the Internet, and they can be 
+exempted from this rule. RDP may be required by some workflows, such as remote 
+access and support for specialized software products and servers. Such 
+workflows are usually known and not unexpected.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+RDP (Remote Desktop Protocol) to the Internet::
+This signal detects network events that may indicate the use of RDP traffic to
+the Internet. RDP is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
++
+*Potential false positives*
++
+RDP connections may be made directly to Internet destinations to access
+Windows cloud server instances, but such connections are usually made only by
+engineers. In such cases, only RDP gateways, bastions, or jump servers may be
+expected Internet destinations, and they can be exempted from this rule. RDP 
+may be required by some workflows, such as remote access and support for 
+specialized software products and servers. Such workflows are usually known and 
+not unexpected. Usage that is unfamiliar to server or network owners can be
+unexpected and suspicious.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+RPC (Remote Procedure Call) from the Internet::
+This signal detects network events that may indicate the use of RPC traffic from
+the Internet. RPC is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
++
+*Severity*: `high`
++
+*Tags*
+
+* network
+
+
+RPC (Remote Procedure Call) to the Internet::
+This signal detects network events that may indicate the use of RPC traffic to
+the Internet. RPC is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
++
+*Severity*: `high`
++
+*Tags*
+
+* network
+
+
+Ransomware - Detected - Elastic Endpoint::
+Elastic Endpoint Security Alert - Ransomware detected.
++
+*Severity*: `critical`
++
+*Tags*
+
+* Endpoint
+
+
+Ransomware - Prevented - Elastic Endpoint::
+Elastic Endpoint Security Alert - Ransomware prevented.
++
+*Severity*: `high`
++
+*Tags*
+
+* Endpoint
+
+
+SMB (Windows File Sharing) Activity to the Internet::
+This rule detects network events that may indicate the use of Windows file
+sharing (also called SMB or CIFS) traffic to the Internet. SMB is commonly used
+within networks to share files, printers, and other system resources amongst
+trusted systems. It should almost never be directly exposed to the Internet, as
+it is frequently targeted and exploited by threat actors as an initial access or
+back-door vector or for data exfiltration.
++
+*Severity*: `high`
++
+*Tags*
+
+* network
+
+
+SMTP on Port 26/TCP::
+This rule detects events that may indicate use of SMTP on TCP port 26. This
+port is commonly used by several popular mail transfer agents to deconflict with
+the default SMTP port 25. This port has also been used by a malware family
+called BadPatch for command and control of Windows systems.
++
+*Potential false positives*
++
+Servers that process email traffic may cause false positives and should be
+excluded from this rule as this is expected behavior.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+SMTP to the Internet::
+This rule detects events that may describe SMTP traffic from internal hosts to
+a host across the Internet. In an enterprise network, there is typically a
+dedicated internal host that performs this function. It is also frequently 
+abused by threat actors for command and control, and data exfiltration.
++
+*Potential false positives*
++
+NATed servers that process email traffic may false and should be excluded from
+this rule as this is expected behavior. Consumer and personal devices may send 
+email traffic to remote Internet destinations. In this case, such devices or 
+networks can be excluded from this rule if this is expected behavior.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+SQL Traffic to the Internet::
+This rule detects events that may describe database traffic (MS SQL, Oracle,
+MySQL, and Postgresql) across the Internet. Databases should almost never be
+directly exposed to the Internet, as they are frequently targeted by threat
+actors to gain initial access to network resources.
++
+*Potential false positives*
++
+Because these ports are in the ephemeral range, this rule may false under
+certain conditions, such as when a NATed web server replies to a client which 
+used a port in the range by coincidence. In this case, such servers can be
+excluded. Some cloud environments may use this port when VPNs or direct 
+connects are not in use and database instances are accessed directly
+across the Internet.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+SSH (Secure Shell) from the Internet::
+This signal detects network events that may indicate the use of SSH traffic from
+the Internet. SSH is commonly used by system administrators to remotely control
+a system using the command-line shell. If it is exposed to the Internet, it
+should be done with strong security controls as it is frequently targeted and
+exploited by threat actors as an initial access or back-door vector.
++
+*Potential false positives*
++
+Some network security policies allow SSH directly from the Internet, but usage
+that is unfamiliar to server or network owners can be unexpected and suspicious.
+SSH services may be exposed directly to the Internet in some networks, such as
+cloud environments. In such cases, only SSH gateways, bastions, or jump servers
+may be expected to expose SSH directly to the Internet, and they can be 
+exempted from this rule. SSH may be required by some workflows such as remote 
+access and support for specialized software products and servers. Such 
+workflows are usually known and not unexpected.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+SSH (Secure Shell) to the Internet::
+This signal detects network events that may indicate the use of SSH traffic from
+the Internet. SSH is commonly used by system administrators to remotely control
+a system using the command-line shell. If it is exposed to the Internet, it
+should be done with strong security controls as it is frequently targeted and
+exploited by threat actors as an initial access or back-door vector.
++
+*Potential false positives*
++
+SSH connections may be made directly to Internet destinations to access
+Linux cloud server instances, but such connections are usually made only by
+engineers. In such cases, only SSH gateways, bastions, or jump servers may be
+expected Internet destinations, and they can be exempted from this rule. SSH 
+may be required by some workflows, such as remote access and support for 
+specialized software products and servers. Such workflows are usually known and 
+not unexpected. Usage that is unfamiliar to server or network owners can be
+unexpected and suspicious.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+Socat Process Activity::
+A Socat process is running on a Linux host. Socat is often used as a persistence
+mechanism by exporting a reverse shell, or by serving a shell on a listening
+port. Socat is also sometimes used for lateral movement.
++
+*Potential false positives*
++
+Socat is a dual-use tool that can be used for benign or malicious activity. Some
+normal use of this program, at varying levels of frequency, may originate from
+scripts, automation tools, and frameworks. Usage by web servers is more likely 
+to be suspicious.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Linux
+
+
+Strace Process Activity::
+Strace runs in a privileged context and can be used to escape restrictive
+environments by instantiating a shell in order to elevate privileges or move
+laterally.
++
+*Potential false positives*
++
+Strace is a dual-use tool that can be used for benign or malicious activity.
+Some normal use of this command may originate from developers or SREs engaged in
+debugging or system call tracing.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+Suspicious MS Office Child Process::
+Identifies suspicious child processes of frequently targeted Microsoft Office
+applications (Word, PowerPoint, Excel). These child processes are often launched
+during exploitation of Office applications or from documents with malicious
+macros.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Suspicious MS Outlook Child Process::
+Identifies suspicious child processes of Microsoft Outlook. These child
+processes are often associated with spear phishing activity.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Suspicious PDF Reader Child Process::
+Identifies suspicious child processes of PDF reader applications. These child
+processes are often launched via exploitation of PDF applications or social
+engineering.
++
+*Severity*: `high`
++
+*Tags*
+
+* Windows
+
+
+Suspicious Process Spawning from Script Interpreter::
+Identifies a suspicious process being spawned from a script interpreter, which
+could be indicative of a potential phishing attack.
++
+*Potential false positives*
++
+Security testing may produce events like this. Activity of this kind performed
+by non-engineers and ordinary users is unusual.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Suspicious Script Object Execution::
+Identifies `scrobj.dll` loaded into unusual Microsoft processes. This may 
+indicate a malicious scriptlet is being executed in the target process.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Svchost spawning cmd.exe::
+Identifies a suspicious parent-child process relationship with `cmd.exe`
+descending from `svchost.exe`.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+System Shells via Services::
+Windows services typically run as SYSTEM and can be used as a privilege
+escalation opportunity. Malware or penetration testers may run a shell as a
+service to gain SYSTEM permissions.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+TCP Port 8000 Activity to the Internet::
+TCP Port 8000 is commonly used in development environments of web server
+software. It generally should not be exposed directly to the Internet. If you
+are running software like this on the Internet, you should consider placing it
+behind a reverse proxy.
++
+*Potential false positives*
++
+Because this port is in the ephemeral range, this rule may false under certain
+conditions, such as when a NATed web server replies to a client which has used a
+port in the range by coincidence. In this case, such servers can be excluded. 
+Some applications may use this port but this is very uncommon and usually 
+appears in local traffic using private IPs, which this rule does not
+match. Some cloud environments, particularly development environments, may use
+this port when VPNs or direct connects are not in use and cloud instances are
+accessed across the Internet.
++
+*Severity*: `low`
++
+*Tags*
+
+* network
+
+
+Telnet Port Activity::
+This rule detects network events that may indicate the use of Telnet traffic.
+Telnet is commonly used by system administrators to remotely control older or
+embedded systems using the command-line shell. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector. As a plain-text
+protocol, it may also expose sensitive information.
++
+*Potential false positives*
++
+IoT (Internet of Things) devices and networks may use telnet and can be excluded
+if desired. Some business workflows may use Telnet for administration of older
+devices. These often have a predictable behavior. Telnet activity involving an
+unusual source or destination may be more suspicious. Telnet activity involving
+a production server that has no known associated Telnet workflow or business
+requirement is often suspicious.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+Tor Activity to the Internet::
+This rule detects network events that may indicate the use of Tor traffic to
+the Internet. Tor is a network protocol that sends traffic through a series of
+encrypted tunnels used to conceal a user's location and network usage. Tor may 
+be used by threat actors as an alternate communication pathway to conceal the 
+actor's identity and avoid detection.
++
+*Potential false positives*
++
+Tor client activity is uncommon in managed enterprise networks but may be common
+in unmanaged or public networks, where few security policies apply. Because 
+these ports are in the ephemeral range, this rule may false under certain 
+conditions, such as when a NATed web server replies to a client which has used 
+one of these ports by coincidence. In this case, such servers can be excluded.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+Trusted Developer Application Usage::
+Identifies possibly suspicious activity using trusted Windows developer
+activity.
++
+*Potential false positives*
++
+These programs may be used by Windows developers but use by non-engineers is
+unusual.
++
+*Severity*: `low`
++
+*Tags*
+
+* D-SA
+* Windows
+
+
+Unusual Network Connection via RunDLL32::
+Identifies unusual instances of `rundll32.exe` making outbound network
+connections. This may indicate adversarial activity, and may identify malicious
+DLLs.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Unusual Parent-Child Relationship::
+Identifies Windows programs run from unexpected parent processes. This could
+indicate masquerading or other strange activity on a system.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+Unusual Process Execution - Temp::
+Identifies processes running in a temporary folder. This is sometimes done by
+adversaries to hide malware.
++
+*Potential false positives*
++
+Build systems, like Jenkins, may start processes in the `/tmp` directory. These 
+can be exempted by name or by username.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Linux
+
+
+Unusual Process Network Connection::
+Identifies network activity from unexpected system applications. This may
+indicate adversarial activity as these applications are often leveraged by
+adversaries to execute code and evade detection.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+User Account Creation::
+Identifies attempts to create new local users. This is sometimes done by
+attackers to increase access to a system or domain.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+User Added to Administrator Group::
+Identifies attempts to add a user to an administrative group with the `net.exe`
+command. This is sometimes done by attackers to increase access of a compromised
+account or create new account.
++
+*Severity*: `medium`
++
+*Tags*
+
+* Windows
+
+
+User Discovery via Whoami::
+The `whoami` application was executed on a Linux host. This is often used by 
+tools and persistence mechanisms to test for privileged access.
++
+*Potential false positives*
++
+Security testing tools and frameworks may run this command. Some normal use of
+this command may originate from automation tools and frameworks.
++
+*Severity*: `low`
++
+*Tags*
+
+* Linux
+
+
+VNC (Virtual Network Computing) from the Internet::
+This signal detects network events that may indicate the use of VNC traffic from
+the Internet. VNC is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
++
+*Potential false positives*
++
+VNC connections may be received directly to Linux cloud server instances, but
+such connections are usually made only by engineers. VNC is less common than SSH
+or RDP, but may be required by some workflows, such as remote access and support
+for specialized software products or servers. Such workflows are usually known
+and not unexpected. Usage that is unfamiliar to server or network owners can be
+unexpected and suspicious.
++
+*Severity*: `high`
++
+*Tags*
+
+* network
+
+
+VNC (Virtual Network Computing) to the Internet::
+This signal detects network events that may indicate the use of VNC traffic to
+the Internet. VNC is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
++
+*Potential false positives*
++
+VNC connections may be made directly to Linux cloud server instances, but such
+connections are usually made only by engineers. VNC is less common than SSH or
+RDP, but may be required by some workflows, such as remote access and support 
+for specialized software products or servers. Such workflows are usually known 
+and not unexpected. Usage that is unfamiliar to server or network owners can be
+unexpected and suspicious.
++
+*Severity*: `medium`
++
+*Tags*
+
+* network
+
+
+Volume Shadow Copy Deletion via VssAdmin::
+Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints.  This
+commonly occurs in tandem with ransomware or other destructive attacks.
++
+*Severity*: `high`
++
+*Tags*
+
+* Windows
+
+
+Volume Shadow Copy Deletion via WMIC::
+Identifies use of `wmic.exe` for shadow copy deletion on endpoints. This 
+commonly occurs in tandem with ransomware or other destructive attacks.
++
+*Severity*: `high`
++
+*Tags*
+
+* Windows
+
+
+WMIC Command Lateral Movement::
+Identifies use of `wmic.exe` to run commands on remote hosts. This could be
+indicative of adversary lateral movement, but will be noisy if commonly done by
+admins.
++
+*Potential false positives*
++
+The WMIC utility provides a command-line interface for WMI, which can be used
+for an array of administrative tasks. It's important to baseline your
+environment to determine any abnormal use of this tool.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Web Application Suspicious Activity: No User Agent::
+A request to a web application server contained no identifying user agent
+string.
++
+*Potential false positives*
++
+Some normal applications and scripts may contain no user agent. Most legitimate
+web requests from the Internet contain a user agent string. Requests from web
+browsers almost always contain a user agent string. If the source is unexpected,
+the user unauthorized, or the request unusual, these may indicate suspicious
+or malicious activity.
++
+*Severity*: `medium`
++
+*Tags*
+
+* APM
+
+
+Web Application Suspicious Activity: POST Request Declined::
+A POST request to web application returned a 403 response, which indicates the
+web application declined to process the request because the action requested is
+not allowed.
++
+*Potential false positives*
++
+Security scans and tests may result in these errors. Misconfigured or buggy
+applications may produce large numbers of these errors. If the source is
+unexpected, the user unauthorized, or the request unusual, these may indicate
+suspicious or malicious activity.
++
+*Severity*: `medium`
++
+*Tags*
+
+* APM
+
+
+Web Application Suspicious Activity: Unauthorized Method::
+A request to web application returned a 405 response which indicates the web
+application declined to process the request because the HTTP method is not
+allowed for the resource.
++
+*Potential false positives*
++
+Security scans and tests may result in these errors. Misconfigured or buggy
+applications may produce large numbers of these errors. If the source is
+unexpected, the user unauthorized, or the request unusual, these may indicate
+suspicious or malicious activity.
++
+*Severity*: `medium`
++
+*Tags*
+
+* APM
+
+
+Web Application Suspicious Activity: sqlmap User Agent::
+This is an example of how to detect an unwanted web client user agent. This
+search matches the user agent for `sqlmap 1.3.11,` which is a popular FOSS tool 
+for testing web applications for SQL injection vulnerabilities.
++
+*Potential false positives*
++
+This rule does not indicate that a SQL injection attack occurred, only that
+the `sqlmap` tool was used. Security scans and tests may result in these errors.
+If the source is not an authorized security tester, this is generally suspicious
+or malicious activity.
++
+*Severity*: `medium`
++
+*Tags*
+
+* APM
+
+
+Whoami Process Activity::
+Identifies use of `whoami.exe`, which displays user, group, and privilege
+information for the user who is currently logged on to the local system.
++
+*Potential false positives*
++
+Some normal use of this program, at varying levels of frequency, may originate
+from scripts, automation tools and frameworks. Usage by non-engineers and
+ordinary users is unusual.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+
+
+Windows Script Executing PowerShell::
+Identifies a PowerShell process launched by either `cscript.exe` or 
+`wscript.exe`. Windows scripting processes executing a PowerShell script may be 
+indicative of malicious activity.
++
+*Severity*: `low`
++
+*Tags*
+
+* Windows
+>>>>>>> e115128... starts builtin rules reference

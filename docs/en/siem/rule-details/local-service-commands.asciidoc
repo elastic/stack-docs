@@ -1,0 +1,37 @@
+[[local-service-commands]]
+=== Local Service Commands
+
+Identifies use of `sc.exe` to create, modify, or start services on remote hosts.
+This could be indicative of adversary lateral movement, but will be noisy if
+commonly done by admins.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:sc.exe and process.args:("create" or "config" or
+"failure" or "start")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Remote Services
+** ID: T1021
+** Reference URL: https://attack.mitre.org/techniques/T1021/

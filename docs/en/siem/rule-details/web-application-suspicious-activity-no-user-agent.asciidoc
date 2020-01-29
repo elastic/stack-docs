@@ -1,0 +1,53 @@
+[[web-application-suspicious-activity-no-user-agent]]
+=== Web Application Suspicious Activity: No User Agent
+
+A request to a web application server contained no identifying user agent
+string.
+
+*Severity*: medium
+
+*Tags*:
+
+* APM
+
+*Version*: 1
+
+==== Potential false positives
+
+Some normal applications and scripts may contain no user agent. Most legitimate
+web requests from the Internet contain a user agent string. Requests from web
+browsers almost always contain a user agent string. If the source is unexpected,
+the user unauthorized, or the request unusual, these may indicate suspicious
+or malicious activity.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+url.path: *
+----------------------------------
+
+==== Rule filters
+
+[source,js]
+----------------------------------
+{
+    "$state": {
+        "store": "appState"
+    },
+    "exists": {
+        "field": "user_agent.original"
+    },
+    "meta": {
+        "disabled": false,
+        "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+        "key": "user_agent.original",
+        "negate": true,
+        "type": "exists",
+        "value": "exists"
+    }
+}
+----------------------------------
+

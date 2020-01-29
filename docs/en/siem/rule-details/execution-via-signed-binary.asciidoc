@@ -1,0 +1,53 @@
+[[execution-via-signed-binary]]
+=== Execution via Signed Binary
+
+Binaries signed with trusted digital certificates can execute on Windows systems
+protected by digital signature validation. Adversaries may use these binaries to
+_live off the land_ and execute malicious files that could bypass application
+whitelisting and signature validation.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Security testing may produce events like this. Activity of this kind performed
+by non-engineers and ordinary users is unusual.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and http and (process.name:certutil.exe or
+process.name:msiexec.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Signed Binary Proxy Execution
+** ID: T1218
+** Reference URL: https://attack.mitre.org/techniques/T1218/
+
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Signed Binary Proxy Execution
+** ID: T1218
+** Reference URL: https://attack.mitre.org/techniques/T1218/

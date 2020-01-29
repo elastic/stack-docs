@@ -1,0 +1,38 @@
+[[indirect-command-execution]]
+=== Indirect Command Execution
+
+Various Windows utilities may be used to execute commands, possibly without
+invoking `cmd.exe`, including the Program Compatibility Assistant 
+(`pcalua.exe`) and `forfiles.exe`.
+
+*Severity*: low
+
+*Tags*:
+
+* D-SA
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and process.parent.name:pcalua.exe or
+(process.name:bash.exe or process.name:forfiles.exe or
+process.name:pcalua.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Indirect Command Execution
+** ID: T1202
+** Reference URL: https://attack.mitre.org/techniques/T1202/

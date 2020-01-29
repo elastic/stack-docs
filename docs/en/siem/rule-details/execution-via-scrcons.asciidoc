@@ -1,0 +1,41 @@
+[[execution-via-scrcons]]
+=== Execution via Scrcons
+
+Identifies use of `scrcons.exe`, which is a Windows Management Instrumentation
+(WMI) Standard Event Consumer scripting application.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Windows Management Instrumentation (WMI) processes can be used for an array of
+administrative tasks. It's important to baseline your environment to
+determine any abnormal use of this tool.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:scrcons.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Windows Management Instrumentation
+** ID: T1047
+** Reference URL: https://attack.mitre.org/techniques/T1047/

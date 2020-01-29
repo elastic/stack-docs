@@ -1,0 +1,36 @@
+[[audio-capture-via-powershell]]
+=== Audio Capture via PowerShell
+
+To try and listen to sensitive conversations, adversaries can leverage a 
+computer's peripheral devices or applications to capture audio recordings.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"powershell.exe" and process.args:"WindowsAudioDevice-
+Powershell-Cmdlet"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Collection
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0009/
+* Technique:
+** Name: Audio Capture
+** ID: T1123
+** Reference URL: https://attack.mitre.org/techniques/T1123/

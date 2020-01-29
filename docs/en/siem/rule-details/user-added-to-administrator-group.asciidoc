@@ -1,0 +1,38 @@
+[[user-added-to-administrator-group]]
+=== User Added to Administrator Group
+
+Identifies attempts to add a user to an administrative group with the `net.exe`
+command. This is sometimes done by attackers to increase access of a compromised
+account or create new account.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+ event.action:"Process Create (rule: ProcessCreate)" and
+process.name:("net.exe" or "net1.exe") and not
+process.parent.name:"net.exe" and process.args:("group" and "admin"
+and "/add")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: Account Manipulation
+** ID: T1098
+** Reference URL: https://attack.mitre.org/techniques/T1098/

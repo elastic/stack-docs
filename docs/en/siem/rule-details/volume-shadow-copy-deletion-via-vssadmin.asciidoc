@@ -1,0 +1,35 @@
+[[volume-shadow-copy-deletion-via-vssadmin]]
+=== Volume Shadow Copy Deletion via VssAdmin
+
+Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints.  This
+commonly occurs in tandem with ransomware or other destructive attacks.
+
+*Severity*: high
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+ event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Inhibit System Recovery
+** ID: T1490
+** Reference URL: https://attack.mitre.org/techniques/T1490/

@@ -1,0 +1,46 @@
+[[pptp-point-to-point-tunneling-protocol-activity]]
+=== PPTP (Point to Point Tunneling Protocol) Activity
+
+This rule detects events that may indicate use of a PPTP VPN connection. Some
+threat actors use these types of connections to tunnel their traffic while
+avoiding detection.
+
+*Severity*: low
+
+*Tags*:
+
+* network
+
+*Version*: 1
+
+==== Potential false positives
+
+Some networks may utilize PPTP protocols but this is uncommon as more modern VPN
+technologies are available. Usage that is unfamiliar to local network
+administrators can be unexpected and suspicious. Torrenting applications may use
+this port. Because this port is in the ephemeral range, this rule may false
+under certain conditions, such as when an application server replies to a
+client that used this port by coincidence. This is uncommon but such
+servers can be excluded.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and destination.port: 1723
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Commonly Used Port
+** ID: T1043
+** Reference URL: https://attack.mitre.org/techniques/T1043/

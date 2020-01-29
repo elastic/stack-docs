@@ -1,0 +1,38 @@
+[[encoding-or-decoding-files-via-certutil]]
+=== Encoding or Decoding Files via CertUtil
+
+Identifies the use of `certutil.exe` to encode or decode data. CertUtil is a
+native Windows component which is part of Certificate Services. CertUtil is
+often abused by attackers to encode or decode base64 data for stealthier command
+and control, and exfiltration.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"certutil.exe" and process.args:("-encode" or
+"/encode" or "-decode" or "/decode")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Deobfuscate/Decode Files or Information
+** ID: T1140
+** Reference URL: https://attack.mitre.org/techniques/T1140/

@@ -1,0 +1,23 @@
+[[permission-theft-detected-elastic-endpoint]]
+=== Permission Theft - Detected - Elastic Endpoint
+
+Elastic Endpoint Security Alert - Permission theft detected.
+
+*Severity*: high
+
+*Tags*:
+
+* Endpoint
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.kind:alert and event.module:endgame and
+event.action:token_protection_event and
+endgame.metadata.type:detection
+----------------------------------
+

@@ -1,0 +1,41 @@
+[[persistence-via-kernel-module-modification]]
+=== Persistence via Kernel Module Modification
+
+Identifies loadable kernel module errors, which are often indicative of 
+potential persistence attempts.
+
+*Severity*: low
+
+*Tags*:
+
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Security tools and device drivers may run these programs in order to load
+legitimate kernel modules. Use of these programs by ordinary users is uncommon.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name: (insmod or kmod or modprobe or rmod) and
+event.action:executed
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/techniques/TA0003/
+* Technique:
+** Name: Kernel Modules and Extensions
+** ID: T1215
+** Reference URL: https://attack.mitre.org/techniques/T1215/

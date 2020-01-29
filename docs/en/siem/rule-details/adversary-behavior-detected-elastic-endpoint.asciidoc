@@ -1,0 +1,22 @@
+[[adversary-behavior-detected-elastic-endpoint]]
+=== Adversary Behavior - Detected - Elastic Endpoint
+
+Elastic Endpoint Security Alert - Adversary behavior detected.
+
+*Severity*: medium
+
+*Tags*:
+
+* Endpoint
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.kind:alert and event.module:endgame and
+event.action:rules_engine_event
+----------------------------------
+

@@ -1,0 +1,51 @@
+[[smb-windows-file-sharing-activity-to-the-internet]]
+=== SMB (Windows File Sharing) Activity to the Internet
+
+This rule detects network events that may indicate the use of Windows file
+sharing (also called SMB or CIFS) traffic to the Internet. SMB is commonly used
+within networks to share files, printers, and other system resources amongst
+trusted systems. It should almost never be directly exposed to the Internet, as
+it is frequently targeted and exploited by threat actors as an initial access or
+back-door vector or for data exfiltration.
+
+*Severity*: high
+
+*Tags*:
+
+* network
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and destination.port: (139 or 445) and (
+network.direction: outbound or ( source.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) and not destination.ip:
+(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Initial Access
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Exploit Public-Facing Application
+** ID: T1190
+** Reference URL: https://attack.mitre.org/techniques/T1190/
+
+
+* Tactic:
+** Name: Exfiltration
+** ID: TA0010
+** Reference URL: https://attack.mitre.org/tactics/TA0010/
+* Technique:
+** Name: Exfiltration Over Alternative Protocol
+** ID: T1048
+** Reference URL: https://attack.mitre.org/techniques/T1048/

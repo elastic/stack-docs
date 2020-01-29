@@ -1,0 +1,28 @@
+[[unusual-process-execution-temp]]
+=== Unusual Process Execution - Temp
+
+Identifies processes running in a temporary folder. This is sometimes done by
+adversaries to hide malware.
+
+*Severity*: medium
+
+*Tags*:
+
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Build systems, like Jenkins, may start processes in the `/tmp` directory. These 
+can be exempted by name or by username.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.working_directory: /tmp and event.action:executed
+----------------------------------
+

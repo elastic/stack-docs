@@ -1,0 +1,30 @@
+[[nping-process-activity]]
+=== Nping Process Activity
+
+`Nping` ran on a Linux host. `Nping` is part of the `Nmap` tool suite and has 
+the ability to construct raw packets for a wide variety of security testing
+applications, including denial of service testing.
+
+*Severity*: medium
+
+*Tags*:
+
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Some normal use of this command may originate from security engineers and
+network or server administrators, but this is usually not routine or 
+unannounced. Use of `Nping` by non-engineers or ordinary users is uncommon.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name: nping and event.action:executed
+----------------------------------
+

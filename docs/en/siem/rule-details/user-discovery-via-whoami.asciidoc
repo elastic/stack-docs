@@ -1,0 +1,40 @@
+[[user-discovery-via-whoami]]
+=== User Discovery via Whoami
+
+The `whoami` application was executed on a Linux host. This is often used by 
+tools and persistence mechanisms to test for privileged access.
+
+*Severity*: low
+
+*Tags*:
+
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Security testing tools and frameworks may run this command. Some normal use of
+this command may originate from automation tools and frameworks.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name: whoami and event.action:executed
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Discovery
+** ID: TA0007
+** Reference URL: https://attack.mitre.org/tactics/TA0007/
+* Technique:
+** Name: System Owner/User Discovery
+** ID: T1033
+** Reference URL: https://attack.mitre.org/techniques/T1033/

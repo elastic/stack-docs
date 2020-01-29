@@ -1,0 +1,52 @@
+[[psexec-network-connection]]
+=== PsExec Network Connection
+
+Identifies use of the SysInternals tool, `PsExec.exe`, making a network 
+connection. This could be an indication of lateral movement.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+PsExec is a dual-use tool that can be used for benign or malicious activity.
+It's important to baseline your environment to determine the amount of noise to
+expect from this tool.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:psexec.exe and event.action:"Network connection detected
+(rule: NetworkConnect)"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Service Execution
+** ID: T1035
+** Reference URL: https://attack.mitre.org/techniques/T1035/
+
+
+* Tactic:
+** Name: Lateral Movement
+** ID: TA0008
+** Reference URL: https://attack.mitre.org/tactics/TA0008/
+* Technique:
+** Name: Service Execution
+** ID: T1035
+** Reference URL: https://attack.mitre.org/techniques/T1035/

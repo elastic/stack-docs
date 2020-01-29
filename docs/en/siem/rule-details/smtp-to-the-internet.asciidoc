@@ -1,0 +1,57 @@
+[[smtp-to-the-internet]]
+=== SMTP to the Internet
+
+This rule detects events that may describe SMTP traffic from internal hosts to
+a host across the Internet. In an enterprise network, there is typically a
+dedicated internal host that performs this function. It is also frequently 
+abused by threat actors for command and control, and data exfiltration.
+
+*Severity*: low
+
+*Tags*:
+
+* network
+
+*Version*: 1
+
+==== Potential false positives
+
+NATed servers that process email traffic may false and should be excluded from
+this rule as this is expected behavior. Consumer and personal devices may send 
+email traffic to remote Internet destinations. In this case, such devices or 
+networks can be excluded from this rule if this is expected behavior.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and destination.port: (25 or 465 or 587) and (
+network.direction: outbound or ( source.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) and not destination.ip:
+(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Commonly Used Port
+** ID: T1043
+** Reference URL: https://attack.mitre.org/techniques/T1043/
+
+
+* Tactic:
+** Name: Exfiltration
+** ID: TA0010
+** Reference URL: https://attack.mitre.org/tactics/TA0010/
+* Technique:
+** Name: Exfiltration Over Alternative Protocol
+** ID: T1048
+** Reference URL: https://attack.mitre.org/techniques/T1048/

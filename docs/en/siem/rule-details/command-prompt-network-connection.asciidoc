@@ -1,0 +1,53 @@
+[[command-prompt-network-connection]]
+=== Command Prompt Network Connection
+
+Identifies when `cmd.exe` makes a network connection. Adversaries can abuse 
+`cmd.exe` to download or execute malware from a remote URL.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Administrators may use the command prompt for regular administrative tasks. It's
+important to baseline your environment for network connections being made from
+the command prompt to determine any abnormal use of this tool.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:cmd.exe and event.action:"Network connection detected
+(rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not
+destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Command-Line Interface
+** ID: T1059
+** Reference URL: https://attack.mitre.org/techniques/T1059/
+
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Remote File Copy
+** ID: T1105
+** Reference URL: https://attack.mitre.org/techniques/T1105/

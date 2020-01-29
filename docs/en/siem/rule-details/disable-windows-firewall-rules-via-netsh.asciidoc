@@ -1,0 +1,37 @@
+[[disable-windows-firewall-rules-via-netsh]]
+=== Disable Windows Firewall Rules via Netsh
+
+Identifies use of `netsh.exe` to disable or weaken the local firewall.
+Attackers use this command line tool to disable the firewall during
+troubleshooting or to enable network mobility.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"netsh.exe" and process.args:("firewall" and "set" and
+"disable") or process.args:("advfirewall" and "state" and "off")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Disabling Security Tools
+** ID: T1089
+** Reference URL: https://attack.mitre.org/techniques/T1089/

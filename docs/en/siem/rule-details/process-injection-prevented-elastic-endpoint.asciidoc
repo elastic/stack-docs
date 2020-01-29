@@ -1,0 +1,23 @@
+[[process-injection-prevented-elastic-endpoint]]
+=== Process Injection - Prevented - Elastic Endpoint
+
+Elastic Endpoint Security Alert - Process injection prevented.
+
+*Severity*: medium
+
+*Tags*:
+
+* Endpoint
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.kind:alert and event.module:endgame and
+event.action:kernel_shellcode_event and
+endgame.metadata.type:prevention
+----------------------------------
+

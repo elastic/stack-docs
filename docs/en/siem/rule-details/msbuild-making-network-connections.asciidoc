@@ -1,0 +1,36 @@
+[[msbuild-making-network-connections]]
+=== MsBuild Making Network Connections
+
+Identifies `MSBuild.exe` making outbound network connections. This may indicate
+adversarial activity as MSBuild is often leveraged by adversaries to execute
+code and evade detection.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+ event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:msbuild.exe and not destination.ip:("127.0.0.1" or "::1")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Trusted Developer Utilities
+** ID: T1127
+** Reference URL: https://attack.mitre.org/techniques/T1127/

@@ -1,0 +1,37 @@
+[[system-shells-via-services]]
+=== System Shells via Services
+
+Windows services typically run as SYSTEM and can be used as a privilege
+escalation opportunity. Malware or penetration testers may run a shell as a
+service to gain SYSTEM permissions.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+ event.action:"Process Create (rule: ProcessCreate)" and
+process.parent.name:"services.exe" and process.name:("cmd.exe" or
+"powershell.exe")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: New Service
+** ID: T1050
+** Reference URL: https://attack.mitre.org/techniques/T1050/

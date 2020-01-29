@@ -1,0 +1,37 @@
+[[adobe-hijack-persistence]]
+=== Adobe Hijack Persistence
+
+Detects writing executable files that are automatically launched when an Adobe 
+product is started.
+
+*Severity*: low
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+file.path:("C:\Program Files (x86)\Adobe\Acrobat Reader
+DC\Reader\AcroCEF\RdrCEF.exe" or "C:\Program Files\Adobe\Acrobat
+Reader DC\Reader\AcroCEF\RdrCEF.exe") and event.action:"File created
+(rule: FileCreate)" and not process.name:msiexeec.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: File System Permissions Weakness
+** ID: T1044
+** Reference URL: https://attack.mitre.org/techniques/T1044/

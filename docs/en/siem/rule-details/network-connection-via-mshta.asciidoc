@@ -1,0 +1,36 @@
+[[network-connection-via-mshta]]
+=== Network Connection via Mshta
+
+Identifies `mshta.exe` making a network connection. This may indicate 
+adversarial activity as `mshta.exe` is often leveraged by adversaries to 
+execute malicious scripts and evade detection.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:"mshta.exe" and not process.name:"mshta.exe"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Mshta
+** ID: T1170
+** Reference URL: https://attack.mitre.org/techniques/T1170/

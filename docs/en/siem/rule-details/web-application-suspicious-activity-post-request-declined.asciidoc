@@ -1,0 +1,31 @@
+[[web-application-suspicious-activity-post-request-declined]]
+=== Web Application Suspicious Activity: POST Request Declined
+
+A POST request to web application returned a 403 response, which indicates the
+web application declined to process the request because the action requested is
+not allowed.
+
+*Severity*: medium
+
+*Tags*:
+
+* APM
+
+*Version*: 1
+
+==== Potential false positives
+
+Security scans and tests may result in these errors. Misconfigured or buggy
+applications may produce large numbers of these errors. If the source is
+unexpected, the user unauthorized, or the request unusual, these may indicate
+suspicious or malicious activity.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+http.response.status_code:403 and http.request.method:post
+----------------------------------
+

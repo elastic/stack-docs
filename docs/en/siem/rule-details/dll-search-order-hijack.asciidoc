@@ -1,0 +1,54 @@
+[[dll-search-order-hijack]]
+=== DLL Search Order Hijack
+
+Detects writing `.dll` files to Windows file system locations that are known to 
+be vulnerable to DLL search order hijacking.
+
+*Severity*: medium
+
+*Tags*:
+
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+ event.action:"File created (rule: FileCreate)" and not
+winlog.user.identifier:("S-1-5-18" or "S-1-5-19" or "S-1-5-20") and
+file.path:("C\Windows\ehome\cryptbase.dll" or
+"C\Windows\System32\Sysprep\cryptbase.dll" or
+"C\Windows\System32\Sysprep\cryptsp.dll" or
+"C\Windows\System32\Sysprep\rpcrtremote.dll" or
+"C\Windows\System32\Sysprep\uxtheme.dll" or
+"C\Windows\System32\Sysprep\dwmapi.dll" or
+"C\Windows\System32\Sysprep\shcore.dll" or
+"C\Windows\System32\Sysprep\oleacc.dll" or
+"C\Windows\System32\ntwdblib.dll")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Bypass User Account Control
+** ID: T1088
+** Reference URL: https://attack.mitre.org/techniques/T1088/
+
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Bypass User Account Control
+** ID: T1088
+** Reference URL: https://attack.mitre.org/techniques/T1088/

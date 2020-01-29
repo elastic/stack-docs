@@ -1,0 +1,42 @@
+[[execution-via-regsvcs-regasm]]
+=== Execution via Regsvcs/Regasm
+
+Adversaries can use `regsvcs.exe` and `regasm.exe` to proxy execution of code
+through a trusted Windows utility.
+
+*Severity*: low
+
+*Tags*:
+
+* D-SA
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Administrators may use the command prompt for regular administrative tasks. It's
+important to baseline your environment for network connections being made from
+the command prompt to determine any abnormal use of this tool.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and (process.name:regasm.exe or process.name:regsvcs.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Regsvcs/Regasm
+** ID: T1121
+** Reference URL: https://attack.mitre.org/techniques/T1121/

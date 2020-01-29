@@ -1,0 +1,22 @@
+[[ransomware-detected-elastic-endpoint]]
+=== Ransomware - Detected - Elastic Endpoint
+
+Elastic Endpoint Security Alert - Ransomware detected.
+
+*Severity*: critical
+
+*Tags*:
+
+* Endpoint
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.kind:alert and event.module:endgame and
+event.action:ransomware_event and endgame.metadata.type:detection
+----------------------------------
+

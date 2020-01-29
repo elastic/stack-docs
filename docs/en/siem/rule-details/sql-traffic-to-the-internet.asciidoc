@@ -1,0 +1,50 @@
+[[sql-traffic-to-the-internet]]
+=== SQL Traffic to the Internet
+
+This rule detects events that may describe database traffic (MS SQL, Oracle,
+MySQL, and Postgresql) across the Internet. Databases should almost never be
+directly exposed to the Internet, as they are frequently targeted by threat
+actors to gain initial access to network resources.
+
+*Severity*: medium
+
+*Tags*:
+
+* network
+
+*Version*: 1
+
+==== Potential false positives
+
+Because these ports are in the ephemeral range, this rule may false under
+certain conditions, such as when a NATed web server replies to a client which 
+used a port in the range by coincidence. In this case, such servers can be
+excluded. Some cloud environments may use this port when VPNs or direct 
+connects are not in use and database instances are accessed directly
+across the Internet.
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and destination.port: (1433 or 1521 or 3336 or
+5432) and ( network.direction: outbound or ( source.ip:
+(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and not
+destination.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) )
+)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Commonly Used Port
+** ID: T1043
+** Reference URL: https://attack.mitre.org/techniques/T1043/

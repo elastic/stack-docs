@@ -1,0 +1,23 @@
+[[cred-manipulation-prevented-elastic-endpoint]]
+=== Cred Manipulation - Prevented - Elastic Endpoint
+
+Elastic Endpoint Security Alert - Credential manipulation prevented.
+
+*Severity*: medium
+
+*Tags*:
+
+* Endpoint
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.kind:alert and event.module:endgame and
+event.action:token_manipulation_event and
+endgame.metadata.type:prevention
+----------------------------------
+

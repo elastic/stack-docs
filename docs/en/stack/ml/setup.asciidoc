@@ -31,30 +31,27 @@ API requests but cannot run {ml} jobs. For more information, see
 [[setup-privileges]]
 === Security privileges
 
-The {es} {security-features} provide built-in roles and privileges that make it
-easier to control which users can manage or view {ml} objects such as jobs,
-{dfeeds}, results, and model snapshots. 
+The {es} {security-features} provide {ref}/built-in-roles.html[built-in roles]
+and {ref}/security-privileges.html[privileges] that make it easier to control
+which users can manage or view {ml} objects such as jobs, {dfeeds}, results, and
+model snapshots. 
 
 To _view_ the configuration, status, and results of the {ml-features}, you
 must have:
 
 [%interactive]
-* [ ] `machine_learning_user` or `machine_learning_admin`
-{ref}/built-in-roles.html[built-in roles]
-* [ ] `read` and `view_index_metadata`
-{ref}/security-privileges.html#privileges-list-indices[index privileges] on the
-indices that contain the source data
-* [ ] `read` index privileges on the destination indices
-(for {dfanalytics-jobs} only)
+* [ ] `machine_learning_user` or `machine_learning_admin` built-in roles
+* [ ] `read` and `view_index_metadata` index privileges on source indices
+* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
+  only)
 
 To _manage_ {ml-features}, you must have:
 
 [%interactive]
-* [ ] `machine_learning_admin` {ref}/built-in-roles.html[built-in role]
-* [ ] `read` and `view_index_metadata` index privileges on the indices that
-contain the source data
-* [ ] `read`, `manage`, and `index` index privileges on the destination indices
-(for {dfanalytics-jobs} only)
+* [ ] `machine_learning_admin` built-in role
+* [ ] `read` and `view_index_metadata` index privileges on source indices
+* [ ] `read`, `manage`, and `index` index privileges on destination indices (for
+  {dfanalytics-jobs} only)
 
 If you use {ml-features} in {kib}, you must also have:
 
@@ -64,5 +61,45 @@ If you use {ml-features} in {kib}, you must also have:
 * [ ] `monitor` and `manage_ingest_pipelines` cluster privileges and `read`,
 `manage`, and `index` index privileges for the destination index when you upload
 files to the *Data Visualizer*
-* [ ] `monitor` cluster privilege and `monitor` index privilege for the
-destination index when you use the *{dfanalytics-cap}* tab
+* [ ] `monitor` cluster privilege to manage {dfanalytics-jobs}
+
+[discrete]
+==== Alternative layout
+
+If {stack} {security-features} are enabled, the following roles and privileges
+are required to use {ml-features}:
+
+|===
+2+| Required roles or privileges | Description
+
+.2+| Built-in role | `machine_learning_admin` | Required to manage {ml-features}
+
+| `machine_learning_user` | Minimal authority necessary to view {ml}
+configuration, status, and results.
+
+.3+| Index privileges | `read` and `view_index_metadata` | Required on source
+indices to manage {dfanalytics-jobs}
+
+| `read`, `manage`, and `index` | Required on destination indices to manage
+{dfanalytics-jobs} 
+
+| `read` | Required on destination indices to view the results of
+{dfanalytics-jobs} 
+
+|===
+
+There are additional authorization requirements when you use {ml-features} in
+{kib}:
+
+|===
+2+| Required roles or privileges | Description
+
+.2+| Cluster privileges | `monitor` and `manage_ingest_pipelines` | Required to
+upload files to the *Data Visualizer*
+
+| `monitor` | Required to manage {dfanalytics-jobs}
+
+| Index privileges | `read`, `manage`, and `index` | Required on
+destination indices to upload files to the *Data Visualizer*
+
+|===

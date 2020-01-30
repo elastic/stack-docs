@@ -38,28 +38,31 @@ easier to control which users can manage or view {ml} objects such as jobs,
 To have view the configuration, status, and results of the {ml-features}, you
 must have:
 
-* `machine_learning_user` {ref}/built-in-roles.html[built-in role]
-* `read` and `view_index_metadata`
+[%interactive]
+* [ ] `machine_learning_user` {ref}/built-in-roles.html[built-in role]
+* [ ] `read` and `view_index_metadata`
 {ref}/security-privileges.html#privileges-list-indices[index privileges] on the
 indices that contain the source data
-* `read` index privileges on the destination indices
+* [ ] `read` index privileges on the destination indices
 (for {dfanalytics-jobs} only)
 
 To manage {ml-features}, you must have:
 
-* `machine_learning_admin` or `machine_learning_user`
+[%interactive]
+* [ ] `machine_learning_admin` or `machine_learning_user`
 {ref}/built-in-roles.html[built-in roles]
-* `read` and `view_index_metadata` index privileges on the indices that
+* [ ] `read` and `view_index_metadata` index privileges on the indices that
 contain the source data
-* `read`, `manage`, and `index` index privileges on the destination indices
+* [ ] `read`, `manage`, and `index` index privileges on the destination indices
 (for {dfanalytics-jobs} only)
 
 If you use {ml-features} in {kib}, you must also have:
 
-* `kibana_user` built-in role or a custom role that
+[%interactive]
+* [ ] `kibana_user` built-in role or a custom role that
 {kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
-* `monitor` and `manage_ingest_pipelines` cluster privileges and `read`,
+* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges and `read`,
 `manage`, and `index` index privileges for the destination index when you upload
 files to the *Data Visualizer*
-* `monitor` cluster privilege and `monitor` index privilege for the
+* [ ] `monitor` cluster privilege and `monitor` index privilege for the
 destination index when you use the *{dfanalytics-cap}* tab

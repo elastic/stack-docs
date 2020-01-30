@@ -35,22 +35,22 @@ The {es} {security-features} provide built-in roles and privileges that make it
 easier to control which users can manage or view {ml} objects such as jobs,
 {dfeeds}, results, and model snapshots. 
 
-To have view the configuration, status, and results of the {ml-features}, you
+To _view_ the configuration, status, and results of the {ml-features}, you
 must have:
 
 [%interactive]
-* [ ] `machine_learning_user` {ref}/built-in-roles.html[built-in role]
+* [ ] `machine_learning_user` or `machine_learning_admin`
+{ref}/built-in-roles.html[built-in roles]
 * [ ] `read` and `view_index_metadata`
 {ref}/security-privileges.html#privileges-list-indices[index privileges] on the
 indices that contain the source data
 * [ ] `read` index privileges on the destination indices
 (for {dfanalytics-jobs} only)
 
-To manage {ml-features}, you must have:
+To _manage_ {ml-features}, you must have:
 
 [%interactive]
-* [ ] `machine_learning_admin` or `machine_learning_user`
-{ref}/built-in-roles.html[built-in roles]
+* [ ] `machine_learning_admin` {ref}/built-in-roles.html[built-in role]
 * [ ] `read` and `view_index_metadata` index privileges on the indices that
 contain the source data
 * [ ] `read`, `manage`, and `index` index privileges on the destination indices

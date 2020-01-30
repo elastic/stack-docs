@@ -170,27 +170,6 @@ permissions that were associated with the original roles. For more information,
 see <<ml-dfeeds>>.
 
 [float]
-=== Forecasts cannot be created for population jobs
-
-If you use an `over_field_name` property in your job (that is to say, it's a
-_population job_), you cannot create a forecast. If you try to create a forecast
-for this type of job, an error occurs. For more information about forecasts,
-see <<ml-forecasting>>.
-
-[float]
-=== Forecasts cannot be created for jobs that use geographic, rare, or time functions
-
-If you use any of the following analytical functions in your job, you cannot
-create a forecast:
-
-* `lat_long`
-* `rare` and `freq_rare`
-* `time_of_day` and `time_of_week`
-
-If you try to create a forecast for this type of job, an error occurs. For more
-information about any of these functions, see <<ml-functions>>.
-
-[float]
 === Jobs must be stopped before upgrades
 
 You must stop any {ml} jobs that are running before you start the upgrade
@@ -255,3 +234,33 @@ When you create an {anomaly-job}, you cannot use a field with the
 {ref}/date_nanos.html[`date_nanos` data type] as the `time_field` in the
 `data_description` object. This limitation applies irrespective of whether you
 create jobs in {kib} or by using APIs.
+
+[discrete]
+[[ml-forecast-limitations]]
+=== Forecast limitations
+
+There are some limitations that affect your ability to create a forecast:
+
+* You can generate only three forecasts concurrently. There is no limit to the
+number of forecasts that you retain. Existing forecasts are not overwritten when
+you create new forecasts. Rather, they are automatically deleted when they expire.
+* If you use an `over_field_name` property in your {anomaly-job} (that is to say,
+it's a _population job_), you cannot create a forecast.
+* If you use any of the following analytical functions in your {anomaly-job},
+you cannot create a forecast:
+** `lat_long`
+** `rare` and `freq_rare`
+** `time_of_day` and `time_of_week`
++
+--
+For more information about any of these functions, see <<ml-functions>>.
+--
+* Forecasts run concurrently with real-time {ml} analysis. That is to say, {ml}
+analysis does not stop while forecasts are generated. Forecasts can have an
+impact on {anomaly-jobs}, however, especially in terms of memory usage. For this
+reason, forecasts run only if the model memory status is acceptable.
+* The {anomaly-job} must be open when you create a forecast. Otherwise, an error
+occurs.
+* If there is insufficient data to generate any meaningful predictions, an
+error occurs. In general, forecasts that are created early in the learning phase
+of the data analysis are less accurate.

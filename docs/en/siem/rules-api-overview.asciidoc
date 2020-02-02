@@ -70,9 +70,9 @@ All calls to the API are stateless. Each call must include all the information {
 
 All requests must contain these headers:
 
-* `Content-Type: application/json`
 * `kbn-xsrf: <value>`, where `<value>` can be any alphanumeric string (for 
 example, `kbn-xsrf: kibana`)
+* `Content-Type: application/json` (when the request contains a JSON payload)
 
 For example, the following call retrieves the first 20 signal detection rules 
 from the {kib} `siem` space:

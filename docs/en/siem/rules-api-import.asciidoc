@@ -14,7 +14,7 @@ The request must include:
 
 For example, using cURL:
 
-[source,js]
+[source,console]
 --------------------------------------------------
 curl -X POST "<KibanaURL>/api/detection_engine/rules/_import"
 -u <username>:<password> -H 'kbn-xsrf: true'
@@ -38,7 +38,7 @@ curl -X POST "<KibanaURL>/api/detection_engine/rules/_import"
 Imports the rules in the `detection_rules.ndjson` file and overwrites 
 existing rules with the same `rule_id` values:
 
-[source,js]
+[source,console]
 --------------------------------------------------
 curl -X POST "api/detection_engine/rules/_import?overwrite=true"
 -H 'kbn-xsrf: true' -H 'Content-Type: multipart/form-data'

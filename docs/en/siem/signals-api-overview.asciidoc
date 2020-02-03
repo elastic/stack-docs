@@ -28,7 +28,7 @@ Gets aggregated results of all open signals with a risk score equal to or
 greater than 70. It also returns the timestamps of the oldest and 
 newest signals that meet the query's criteria.
 
-[source,js]
+[source,console]
 --------------------------------------------------
 POST api/detection_engine/signals/search
 {
@@ -138,7 +138,7 @@ A JSON object with either a `query` or `signals_id` field:
 
 Closes signal with signal IDs:
 
-[source,js]
+[source,console]
 --------------------------------------------------
 POST api/detection_engine/signals/status
 {
@@ -154,7 +154,7 @@ POST api/detection_engine/signals/status
 Closes signals that are over a month old and have a risk score less than or 
 equal to 20:
 
-[source,js]
+[source,json]
 --------------------------------------------------
 POST api/detection_engine/signals/status
 {

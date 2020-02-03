@@ -18,7 +18,8 @@ NOTE: You cannot export prepackaged rules.
 
 |`exclude_export_details` |Boolean |Determines whether a summary of the 
 exported rules is returned.|No, defaults to `false`.
-|`file_name` |String |File name for saving the exported rules. |No
+|`file_name` |String |File name for saving the exported rules. |No, defaults to 
+`export.ndjson`
 |==============================================
 
 TIP: When using cURL to export rules to a file, use the `-O` and `-J` options to save the rules to the file name specified in the URL.
@@ -32,7 +33,8 @@ you want to export:
 |==============================================
 |Name |Type |Description |Required
 
-|`objects` |String[] |Array of `rule_id` fields. |No
+|`objects` |String[] |Array of `rule_id` fields. |No, exports all rules when 
+unspecified.
 |==============================================
 
 
@@ -41,7 +43,7 @@ you want to export:
 Exports two rules without details and saves them to the `exported_rules.ndjson` 
 file:
 
-[source,js]
+[source,console]
 --------------------------------------------------
 POST api/detection_engine/rules/_export?exclude_export_details=true&file_name=exported_rules.ndjson
 {

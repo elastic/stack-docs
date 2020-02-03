@@ -1,5 +1,5 @@
-[[quickstart]]
-== Quickstart
+[[ml-getting-started]]
+== Tutorial: Getting started with {ml}
 
 Ready to take {ml} for a test drive? Follow this tutorial to:
 
@@ -17,7 +17,7 @@ to the {stack-gs}/get-started-elastic-stack.html[{stack} tutorial] where you'll
 set up a system monitoring solution with {es}, {kib}, {beats}, and {ls}.
 
 [discrete]
-[[quickstart-prerequisites]]
+[[getting-started-prereqs]]
 === Prerequisites
 
 Before you can play with the {ml-features}, you must verify that your
@@ -54,16 +54,14 @@ that has appropriate authority to perform the steps in this tutorial.
 [[ml-gs-users]]
 By default, you can perform all of the steps in this tutorial by using the
 built-in `elastic` super user. If you are performing these steps in a production
-environment, take extra care because `elastic` has the `superuser` role and you
-could inadvertently make significant changes to the system. You can
-alternatively assign the `machine_learning_admin` and `kibana_admin` roles to a
-user ID of your choice. For more information, see
-{ref}/built-in-roles.html[Built-in roles] and
-{ref}/security-privileges.html[Security privileges].
+environment, the `elastic` has the `superuser` role and you
+could inadvertently make significant changes to the system. Therefore it's
+wisest to play with this tutorial in a test or development environment. For more
+information, see <<setup-privileges>>.
 
 --
 
-include::quickstart-data.asciidoc[]
+include::getting-started-data.asciidoc[]
 
 include::getting-started-visualizer.asciidoc[]
 

@@ -8,6 +8,30 @@ You can only create a signal index when the user role has `manage` privileges
 for both the {ref}/security-privileges.html[{es} cluster and the
 `.siem-signals-<Kibana space>` index].
 
+When you create a signal index, the following
+{ref}/getting-started-index-lifecycle-management.html[{ilm} ({ilm-init})] 
+policy is created for the signal index:
+[source,js]
+--------------------------------------------------
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "min_age": "0ms",
+        "actions": {
+          "rollover": {
+            "max_size": "10gb",
+            "max_age": "7d"
+          }
+        }
+      }
+    }
+  }
+}
+--------------------------------------------------
+
+The `policy` and `rollover_alias` use the same name as the signal index.
+
 NOTE: To make sure administrators can always create indices, use a glob 
 pattern that matches indices from multiple spaces in the `Indices` field on 
 the *Create role* page (*Management* -> *Roles* -> *Create role*). For 
@@ -26,7 +50,7 @@ Creates a signal index. The naming convention for the index is
 
 Creates a signal index in the {kib} `siem` space.
 
-[source, js]
+[source,console]
 --------------------------------------------------
 POST s/siem/api/detection_engine/index
 --------------------------------------------------
@@ -49,7 +73,7 @@ Gets the signal index name if it exists.
 
 Gets the signal index for the {kib} `siem` space:
 
-[source, js]
+[source,console]
 --------------------------------------------------
 GET s/siem/api/detection_engine/index
 --------------------------------------------------

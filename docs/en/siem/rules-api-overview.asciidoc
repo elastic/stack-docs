@@ -20,9 +20,10 @@ functions
 file
 * `<kibana URL>/api/detection_engine/_export` - Exports rules to an ndjson file
 * `<kibana URL>/api/detection_engine/privileges` - Returns the user's 
-permissions for the {kib} space
-* `<kibana URL>/api/detection_engine/signals` - Aggregates and returns signals, 
-and updates their statuses
+{kib} space and signal index permissions, and whether the user is authenticated
+* `<kibana URL>/api/detection_engine/signals` - Aggregates, queries, and
+returns signals, and updates their statuses
+* `<kibana URL>/api/detection_engine/prepackaged` - Loads and retrieves the status of Elastic <<prebuilt-rules, prebuilt rules>>
 
 Where `<kibana URL>` is the URL and port number of your Kibana instance.
 
@@ -68,7 +69,7 @@ to the Kibana UI, is required to access the API.
 
 All calls to the API are stateless. Each call must include all the information {siem-soln} needs to perform the request.
 
-All requests must contain these headers:
+Requests must contain these headers:
 
 * `kbn-xsrf: <value>`, where `<value>` can be any alphanumeric string (for 
 example, `kbn-xsrf: kibana`)
@@ -80,6 +81,5 @@ from the {kib} `siem` space:
 [source,js]
 --------------------------------------------------
 curl -X GET "<kibana URL>/s/siem/api/detection_engine/rules/_find"
--H 'kbn-xsrf: kibana' -H 'Content-Type: application/json'
--u <username>:<password>
+-H 'kbn-xsrf: kibana' -u <username>:<password>
 --------------------------------------------------

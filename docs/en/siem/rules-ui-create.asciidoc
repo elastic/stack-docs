@@ -15,6 +15,7 @@ rerun it at its next scheduled run time and an error is displayed in the
 On the Rules page, you can:
 
 * <<load-prebuilt-rules>>
+* <<select-all-prebuilt-rules>>
 * <<create-rule-ui, Create your own rules>>
 * <<manage-rules-ui, Clone, delete, activate, and deactivate rules>>
 * <<import-export-rules-ui>>
@@ -25,9 +26,9 @@ image::all-rules.png[]
 [[load-prebuilt-rules]]
 ==== Load prebuilt Elastic rules
 
-To load the {siem-app}'s prebuilt rules, click *Load Elastic prebuilt rules* 
-on the *Signal detection rules* page (*SIEM* -> *Detections* ->
-*Manage signal detection rules*).
+To load the {siem-app}'s <<prebuilt-rules, prebuilt rules>>, click
+*Load Elastic prebuilt rules* on the *Signal detection rules* page (*SIEM* -> 
+*Detections* -> *Manage signal detection rules*).
 
 If you delete any of the prebuilt rules, a button appears that enables 
 reloading all the deleted prebuilt rules.
@@ -37,7 +38,22 @@ reloading all the deleted prebuilt rules.
 By default, prebuilt rules are not activated. If you want to modify a prebuilt 
 rule, you must first duplicate it and then make your changes to the duplicated 
 rule.
+
+All Elastic prebuilt rules are tagged with the word `Elastic`.
 ==============
+
+[[select-all-prebuilt-rules]]
+==== Select and duplicate all prebuilt rules
+
+. Select the *Elastic rules* tab.
+. Scroll to the bottom of the page.
+. Click the `Rows per page` menu, and then select _200 rows_.
+. When the page reloads, select all the rules.
+. Click _Bulk actions_ -> _Duplicate selected_.
+. Select the *Custom rules* tab.
+
+You can then modify the duplicated rules and, if required, delete the prebuilt 
+ones.
 
 [[create-rule-ui]]
 ==== Create a new rule
@@ -54,14 +70,20 @@ signals.
 +
 NOTE: You can use {kib} saved queries (save icon) and queries from saved timelines (`Import query from saved timeline`) as rule conditions.
 +
-For example, a rule that detects when a Microsoft Office product 
-starts a process in a user folder uses the following query and filters:
+For example, the following rule detects when the `vssadmin delete shadows`
+Windows command is executed:
 
-* _Custom query_ `process.parent.name: EXCEL.EXE or process.parent.name: MSPUB.EXE or process.parent.name: OUTLOOK.EXE or process.parent.name: POWERPNT.EXE or process.parent.name: VISIO.EXE or process.parent.name: WINWORD.EXE`
-* _Add filter_:
-** *Field*: `event.action`
-** *Operator*: `is`
-** *Value*: `Process Create (rule: ProcessCreate)`
+* _Index patterns_: `winlogbeat-*`
++
+Winlogbeat ships Windows event logs to the SIEM app.
+* _Custom query_: `event.action:"Process Create (rule: ProcessCreate)" and process.name:"vssadmin.exe" and process.args:("delete" and "shadows")`
++
+Searches the `winlogbeat-*` indices for `vssadmin.exe` executions with 
+the `delete` and `shadow` arguments, used to delete a volume's shadow copies.
++
+[role="screenshot"]
+image::rule-query-example.png[]
+
 . Click *Continue*.
 +
 The *About rule* pane is displayed.
@@ -76,12 +98,13 @@ security incidents. Sometimes, a combination of low severity events can
 indicate suspicious activity.
 * `Medium`: Signals that require investigation.
 * `High`: Signals that require an immediate investigation.
-* `Critical`: Signals that indicate a security incident has occurred.
+* `Critical`: Signals that indicate it is highly likely a security incident has 
+ occurred.
 .. _Risk score_: A numerical value between 0 and 100 that correlates with the _Severity_ level. General guidelines are:
-* `21` represents low severity.
-* `47` represents medium severity.
-* `73` represents high severity.
-* `99` represents critical severity.
+* `0` - `21` represents low severity.
+* `22` - `47` represents medium severity.
+* `48` - `73` represents high severity.
+* `74` - `100` represents critical severity.
 .. For additional options, click *Advanced settings* and fill in any of 
 these fields: 
 ... _Timeline template_ (optional): Select a timeline template used when you 
@@ -117,7 +140,7 @@ least 1 minute. This ensures there are no missing signals when a rule does not
 run exactly at its scheduled time.
 
 The {siem-app} performs deduplication. Duplicate signals discovered during the 
-`Additional look-back time` are *not* stored.
+`Additional look-back time` are *not* created.
 ==============
 . Save the rule with or without activation.
 +
@@ -136,7 +159,6 @@ You can clone, edit, activate, deactivate, and delete rules:
 * In the *Rule* column, select all the rules you want to act on, and then the 
 required action from the `Batch actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
-
 
 [[import-export-rules-ui]]
 ==== Import and export rules

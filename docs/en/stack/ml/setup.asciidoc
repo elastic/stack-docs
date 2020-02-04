@@ -71,21 +71,21 @@ If {stack} {security-features} are enabled, the following roles and privileges
 are required to use {ml-features}:
 
 |===
-2+| Required roles or privileges | Description
+| Required roles or privileges | Description
 
-.2+| Built-in role | `machine_learning_admin` | Required to manage {ml-features}
+| `machine_learning_admin` built-in role | Required to manage {ml-features}
 
-| `machine_learning_user` | Minimal authority necessary to view {ml}
-configuration, status, and results.
+| `machine_learning_user` built-in role | Minimal authority necessary to view
+{ml} configuration, status, and results.
 
-.3+| Index privileges | `read` and `view_index_metadata` | Required on source
+| `read` and `view_index_metadata` index privileges | Required on source
 indices to manage {dfanalytics-jobs}
 
-| `read`, `manage`, and `index` | Required on destination indices to manage
-{dfanalytics-jobs} 
+| `read`, `manage`, and `index` index privileges | Required on destination
+indices to manage {dfanalytics-jobs} 
 
-| `read` | Required on destination indices to view the results of
-{dfanalytics-jobs} 
+| `read` index privilege | Required on destination indices to view the results
+of {dfanalytics-jobs} 
 
 |===
 
@@ -93,14 +93,18 @@ There are additional authorization requirements when you use {ml-features} in
 {kib}:
 
 |===
-2+| Required roles or privileges | Description
+| Required roles or privileges | Description
 
-.2+| Cluster privileges | `monitor` and `manage_ingest_pipelines` | Required to
+| `kibana_admin` built-in role | Required to use {ml-features} in {kib}.
+Alternatively, use a custom role that
+{kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
+
+| `monitor` and `manage_ingest_pipelines` cluster privileges | Required to
 upload files to the *Data Visualizer*
 
-| `monitor` | Required to manage {dfanalytics-jobs}
+| `monitor` cluster privileges | Required to manage {dfanalytics-jobs}
 
-| Index privileges | `read`, `manage`, and `index` | Required on
+| `read`, `manage`, and `index` index privileges | Required on
 destination indices to upload files to the *Data Visualizer*
 
 |===

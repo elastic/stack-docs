@@ -56,12 +56,13 @@ To _manage_ {ml-features}, you must have:
 If you use {ml-features} in {kib}, you must also have:
 
 [%interactive]
-* [ ] `kibana_user` built-in role or a custom role that
+* [ ] `kibana_admin` built-in role or a custom role that
 {kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
-* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges and `read`,
-`manage`, and `index` index privileges for the destination index when you upload
-files to the *Data Visualizer*
 * [ ] `monitor` cluster privilege to manage {dfanalytics-jobs}
+* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges when you upload
+files in the *Data Visualizer*
+* [ ] `read`, `manage`, and `index` index privileges for the destination index
+when you upload files in the *Data Visualizer*
 
 [discrete]
 ==== Alternative layout

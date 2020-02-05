@@ -1,0 +1,44 @@
+[[tags-api-overview]]
+[role="xpack"]
+=== Tags endpoint
+
+Aggregates and returns all rule tags.
+
+==== Get tags
+
+Aggregates and returns all unique tags from all rules.
+
+===== Request URL
+
+`GET /api/detection_engine/tags`
+
+====== Example request
+
+Gets tags for all rules in the {kib} default space:
+
+[source,console]
+--------------------------------------------------
+GET api/detection_engine/tags
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+
+====== Example response
+
+[source,json]
+--------------------------------------------------
+[
+  "zeek",
+  "suricata",
+  "windows",
+  "linux",
+  "network",
+  "initial access",
+  "remote access",
+  "phishing"
+]
+--------------------------------------------------

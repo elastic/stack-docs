@@ -1,0 +1,240 @@
+[[rules-api-update]]
+=== Update rule
+
+Updates an existing signal detection rule.
+
+==== Request URL
+
+`PUT /api/detection_engine/rules`
+
+==== Request body
+
+A JSON object with:
+
+* The `id` or `rule_id` field of the rule you want to update.
+* The fields you want to modify.
+
+NOTE: You cannot modify the `id` or `rule_id` values.
+
+Any of these fields can be modified:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description
+
+|description |String |The rule's description.
+
+|enabled |Boolean |Determines whether the rule is enabled. 
+
+|false_positives |String[] |String array used to describe common reasons why 
+the rule may issue false-positive signals.
+
+// |filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to 
+// create a signal |Yes, for filter-based rules only
+
+|filters |Object[] |The {ref}/query-filter-context.html[query and filter 
+context] array used to define the conditions for when signals are created from 
+events.
+
+|from |String |Time from which data is analyzed each time the rule executes,
+using a {ref}/common-options.html#date-math[date math range]. For example, 
+`now-4200s` means the rule analyzes data from 70 minutes before its start 
+time.
+
+|index |String[] |Indices on which the rule functions.
+
+|interval |String |Frequency of rule execution, using a
+{ref}/common-options.html#date-math[date math range]. For example, `"1h"` 
+means the rule runs every hour.
+
+|query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
+signal.
+
+|language |String |Determines the query language, which must be
+`kuery` or `lucene`.
+
+|output_index |String |Index to which signals detected by the rule are saved. 
+
+|saved_id |String |Kibana saved search used by the rule to create signals.
+
+|meta |Object |Placeholder for metadata about the rule.
+
+|risk_score |Integer a|A numerical representation of the signal's severity from 
+0 to 100, where:
+
+* `0` - `21` represents low severity
+* `22` - `47` represents medium severity
+* `48` - `73` represents high severity
+* `74` - `100` represents critical severity
+
+|max_signals |Integer |Maximum number of signals the rule can create during a
+single execution.
+
+|name |String |The rule's name. 
+
+|severity |String a|Severity level of signals produced by the rule, which must 
+be one of the following:
+
+* `low`: Signals that are of interest but generally not considered to be 
+security incidents
+* `medium`: Signals that require investigation
+* `high`: Signals that require immediate investigation
+* `critical`: Signals that indicate it is highly likely a security incident has 
+occurred
+
+|tags |String[] |String array containing words and phrases to help categorize,
+filter, and search rules.
+
+// |to |String |Time to which data is analyzed each time the rule executes, using a
+// {ref}/common-options.html#date-math[date math range]. For example, `"now-300s"` 
+// means the rule analyzes data until 5 minutes before its starts time.
+
+|type |String a|Data type on which the rule is based:
+
+* `query`: query-based conditions with or without additional filters
+* `saved_query`: saved search, identified in the `saved_id` field
+
+|threat |<<threats-object-update, threat[]>> |Object containing attack 
+information about the type of threat the rule monitors, see
+{ecs-ref}/ecs-threat.html[ECS threat fields]. 
+
+|references |String[] |String array containing notes about or references to 
+relevant information about the rule.
+
+|version |Integer a|The rule's version number. If this is not provided, the 
+rule's version number is incremented by 1.
+
+Enabling and disabling the rule does not increment its version number.
+
+|==============================================
+
+
+[[threats-object-update]]
+===== `threat` schema
+
+NOTE: Only threats described using the MITRE ATT&CK^TM^ framework are displayed 
+in the UI (*SIEM* -> *Detections* -> *Manage signal detection rules* ->
+<rule name>).
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description
+
+|framework |String |Relevant attack framework.
+
+|tactic |Object a|Object containing information on the attack type:
+
+* `id` - string, required
+* `name` - string, required
+* `reference` - string, required
+
+|technique |Object a|Object containing information on the attack 
+technique:
+
+* `id` - string, required
+* `name` - string, required
+* `reference` - string, required
+
+|==============================================
+
+===== Example request
+
+Updates the `threat` object:
+
+[source,console]
+--------------------------------------------------
+PUT api/detection_engine/rules
+{
+  "rule_id": "process_started_by_ms_office_program_possible_payload",
+  "threat": [
+   {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+         "id": "TA0001",
+         "reference": "https://attack.mitre.org/tactics/TA0001",
+         "name": "Initial Access"
+      },
+      "technique": [
+         {
+            "id": "T1193",
+            "name": "Spearphishing Attachment",
+            "reference": "https://attack.mitre.org/techniques/T1193"
+         }
+      ]
+   }
+  ]
+}
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+==== Response payload
+
+The rule's updated JSON object, including the time the rule was updated and an 
+incremented version number.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "created_at": "2020-01-05T09:56:11.805Z",
+  "updated_at": "2020-01-05T09:59:59.129Z",
+  "created_by": "elastic",
+  "description": "Process started by MS Office program - possible payload",
+  "enabled": false,
+  "false_positives": [],
+  "filters": [
+    {
+      "query": {
+        "match": {
+          "event.action": {
+            "query": "Process Create (rule: ProcessCreate)",
+            "type": "phrase"
+          }
+        }
+      }
+    }
+  ],
+  "from": "now-6m",
+  "id": "4f228868-9928-47e4-9785-9a1a9b520c7f",
+  "interval": "5m",
+  "rule_id": "process_started_by_ms_office_program_possible_payload",
+  "language": "kuery",
+  "output_index": ".siem-signals-default",
+  "max_signals": 100,
+  "risk_score": 50,
+  "name": "MS Office child process",
+  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
+  "references": [],
+  "severity": "low",
+  "updated_by": "elastic",
+  "tags": [
+    "child process",
+    "ms office"
+  ],
+  "type": "query",
+  "threat": [
+    {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+        "id": "TA0001",
+        "reference": "https://attack.mitre.org/tactics/TA0001",
+        "name": "Initial Access"
+      },
+      "technique": [
+        {
+          "id": "T1193",
+          "name": "Spearphishing Attachment",
+          "reference": "https://attack.mitre.org/techniques/T1193"
+        }
+      ]
+    }
+  ],
+  "version": 2
+}
+--------------------------------------------------

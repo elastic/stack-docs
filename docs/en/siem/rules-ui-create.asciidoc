@@ -1,16 +1,24 @@
 [[rules-ui-create]]
 [role="xpack"]
-=== Managing signal detection rules
+== Managing signal detection rules
 
 beta[]
 
 Rules run periodically and search the specified indices for 
 documents that meet their criteria.
 
-IMPORTANT: If a rule fails to run, the {siem-app} tries to 
-rerun it at its next scheduled run time and an error is displayed in the 
-*Failure History* table on the *Rule details* page (*SIEM* -> *Detections* ->
+[IMPORTANT]
+==============
+After you activate a rule, periodically check the rule is running as expected. 
+When a rule fails to run, the {siem-app} tries to rerun it at its next 
+scheduled run time and an error is displayed in the *Failure History* table on 
+the *Rule details* page (*SIEM* -> *Detections* ->
 *Manage signal detection rules* -> <rule name>).
+
+If you see a 
+`gaps of <x> minutes, and could be missing signals within that time` error 
+message, see <<troubleshoot-signals>>.
+==============
 
 On the Rules page, you can:
 
@@ -19,12 +27,14 @@ On the Rules page, you can:
 * <<create-rule-ui, Create your own rules>>
 * <<manage-rules-ui, Clone, delete, activate, and deactivate rules>>
 * <<import-export-rules-ui>>
+* <<troubleshoot-signals>>
 
 [role="screenshot"]
 image::all-rules.png[]
 
+[float]
 [[load-prebuilt-rules]]
-==== Load prebuilt Elastic rules
+=== Load prebuilt Elastic rules
 
 To load the {siem-app}'s <<prebuilt-rules, prebuilt rules>>, click
 *Load Elastic prebuilt rules* on the *Signal detection rules* page (*SIEM* -> 
@@ -42,8 +52,9 @@ rule.
 All Elastic prebuilt rules are tagged with the word `Elastic`.
 ==============
 
+[float]
 [[select-all-prebuilt-rules]]
-==== Select and duplicate all prebuilt rules
+=== Select and duplicate all prebuilt rules
 
 . Select the *Elastic rules* tab.
 . Scroll to the bottom of the page.
@@ -55,8 +66,9 @@ All Elastic prebuilt rules are tagged with the word `Elastic`.
 You can then modify the duplicated rules and, if required, delete the prebuilt 
 ones.
 
+[float]
 [[create-rule-ui]]
-==== Create a new rule
+=== Create a new rule
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
@@ -148,8 +160,9 @@ NOTE: When you activate a rule, it is queued and its schedule is determined by
 its initial run time. For example, if you activate a rule that runs every 5 
 minutes at 14:03 but it does not run until 14:04, it will run again at 14:09.
 
+[float]
 [[manage-rules-ui]]
-==== Modify existing rules
+=== Modify existing rules
 
 You can clone, edit, activate, deactivate, and delete rules:
 
@@ -160,8 +173,9 @@ You can clone, edit, activate, deactivate, and delete rules:
 required action from the `Batch actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
 
+[float]
 [[import-export-rules-ui]]
-==== Import and export rules
+=== Import and export rules
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . To import rules:
@@ -175,3 +189,23 @@ NOTE: Imported rules must be in a `ndjson` file.
 .. Select *Batch actions* -> *Export selected*.
 +
 NOTE: You cannot export prebuilt rules.
+
+[float]
+[[troubleshoot-signals]]
+=== Troubleshoot missing signals
+
+When a rule fails to run close to its scheduled time, some signals may be 
+missing. There are a number of steps you can perform to try and resolve this 
+issue.
+
+If you are seeing `gaps of <x> minutes` error messages for a small number of 
+rules, you can increase those rules' `Additional look-back time`
+(*Signal detection rules* page -> the rule's actions icon ->
+*Edit rule settings* -> *Schedule* -> _Additional look-back time_).
+
+If you are seeing `gaps of <x> minutes` for a lot of rules:
+
+* If you restarted {kib} when many rules were activated, try deactivating them 
+and then reactivating them in small batches at staggered intervals. This 
+ensures {kib} does not attempt to run all the rules at the same time.
+* Consider adding another {kib} instance to your environment.

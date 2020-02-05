@@ -1,0 +1,34 @@
+[discrete]
+[[get-started-prereqs]]
+=== Prerequisites
+
+. Before you can play with the {ml-features}, you must install {es} and {kib}.
+{es} stores the data and the analysis results. {kib} provides a helpful user 
+interface for creating and viewing jobs.
++
+--
+[TIP]
+==========
+You can run {es} and {kib} on your own hardware, or use our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on {ecloud}.
+The {ess} is available on both AWS and GCP.
+https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {ess} for free].
+==========
+--
+
+. Verify that your environment is set up properly to use the {ml-features}. If
+the {es} {security-features} are enabled, you need a user that has authority to
+manage {anomaly-jobs}. See <<setup>>.
+
+. {kibana-ref}/add-sample-data.html[Add the sample data sets that ship with {kib}]. 
+
+.. Click the {kib} logo in the upper left hand corner of your browser to navigate
+to the {kib} home page.
+
+.. Click *Load a data set and a Kibana dashboard*.
+
+.. Pick a data set. In this tutorial, we use the *Sample eCommerce orders* and
+*Sample web logs*. While you're here, feel free to click *Add* on all of the
+available sample data sets.
+
+These data sets are now ready be analyzed in {ml} jobs in {kib}.

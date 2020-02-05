@@ -1,5 +1,5 @@
 [[ml-getting-started]]
-== Tutorial: Getting started with {ml}
+== Getting started with {ml}
 
 Ready to take {ml} for a test drive? Follow this tutorial to:
 
@@ -11,72 +11,13 @@ will hopefully be inspired to use it to detect anomalies in your own data.
 
 Need more context? Check out the
 {ref}/elasticsearch-intro.html[{es} introduction] to learn the lingo and
-understand the basics of how {es} works. If you're already familiar with {es}
-and want to see how it works with the rest of the stack, you might want to jump
-to the {stack-gs}/get-started-elastic-stack.html[{stack} tutorial] where you'll
-set up a system monitoring solution with {es}, {kib}, {beats}, and {ls}.
+understand the basics of how {es} works.
 
-[discrete]
-[[getting-started-prereqs]]
-=== Prerequisites
+include::get-started-prereqs.asciidoc[]
 
-Before you can play with the {ml-features}, you must verify that your
-environment is <<setup,set up>> properly for this tutorial:
+include::get-started-visualizer.asciidoc[]
 
-. Install {es} and {kib}.
-+
---
-{es} stores the data and the analysis results. {kib} provides a helpful user 
-interface for creating and viewing jobs.
+include::get-started-jobs.asciidoc[]
 
-[TIP]
-==========
-You can run {es} and {kib} on your own hardware, or use our
-https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on {ecloud}.
-The {ess} is available on both AWS and GCP.
-https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {ess} for free].
-==========
---
+include::get-started-results.asciidoc[]
 
-. Obtain a https://www.elastic.co/subscriptions[license] that includes the
-{ml-features}. 
-+
---
-By default, when you install {stack} products, they apply basic licenses with no 
-expiration dates. To try out {ml-features}, start a 30-day trial. See
-{kibana-ref}/managing-licenses.html[License managment].
---
-
-. If the {es} {security-features} are enabled in your cluster, you need a user
-that has appropriate authority to perform the steps in this tutorial. 
-+
---
-[[ml-gs-users]]
-By default, you can perform all of the steps in this tutorial by using the
-built-in `elastic` super user. If you are performing these steps in a production
-environment, the `elastic` has the `superuser` role and you
-could inadvertently make significant changes to the system. Therefore it's
-wisest to play with this tutorial in a test or development environment. For more
-information, see <<setup-privileges>>.
-
---
-
-include::getting-started-data.asciidoc[]
-
-include::getting-started-visualizer.asciidoc[]
-
-include::getting-started-jobs.asciidoc[]
-
-include::getting-started-results.asciidoc[]
-
-////
-include::getting-started-wizards.asciidoc[]
-
-include::getting-started-single.asciidoc[]
-
-include::getting-started-multi.asciidoc[]
-
-include::getting-started-forecast.asciidoc[]
-
-include::getting-started-next.asciidoc[]
-////

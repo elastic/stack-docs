@@ -14,7 +14,10 @@ activity on your network and hosts. Additionally, you can
 
 [IMPORTANT]
 ==============
-See <<detections-permissions, {kib} and index privileges>> required for viewing 
+To make sure you can access Detections and manage rules, see: 
+
+* <<detections-encryption-key, Add the `xpack.encryptedSavedObjects.encryptionKey` setting to the `kibana.yml` configuration file>> - *only required for local {kib} deployments*.
+* <<detections-permissions, {kib} and index privileges>> required for viewing 
 signals and creating rules.
 ==============
 
@@ -72,6 +75,28 @@ To open and close signals, either:
 ==== Send signals to the Timeline
 
 To investigate a signal in the Timeline, click the *View in timeline* icon.
+
+[float]
+[[detections-encryption-key]]
+=== Add the `xpack.encryptedSavedObjects.encryptionKey` setting
+
+NOTE: This is only required when using a local {kib} deployment. If you are 
+using our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service], you do 
+not need to add this setting.
+
+By default, each time {kib} starts a new encryption key is generated for 
+{kibana-ref}/managing-saved-objects.html[saved objects]. Signal detection rules 
+are based on saved objects and, without a persistent key, you cannot delete or 
+modify existing rules after restarting {kib}.
+
+To set a persistent key, add the `xpack.encryptedSavedObjects.encryptionKey` 
+setting with any alphanumeric value of at least 32 characters to the 
+`kibana.yml` {kibana-ref}/settings.html[configuration file]. For example:
+
+`xpack.encryptedSavedObjects.encryptionKey: 'fhjskhsdhd678ehkdfdlliverpoolfcr'`
+
+
 
 [float]
 [[detections-permissions]]

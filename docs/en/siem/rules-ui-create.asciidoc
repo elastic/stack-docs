@@ -1,6 +1,6 @@
 [[rules-ui-create]]
 [role="xpack"]
-=== Managing signal detection rules
+== Managing signal detection rules
 
 beta[]
 
@@ -32,8 +32,9 @@ On the Rules page, you can:
 [role="screenshot"]
 image::all-rules.png[]
 
+[float]
 [[load-prebuilt-rules]]
-==== Load prebuilt Elastic rules
+=== Load prebuilt Elastic rules
 
 To load the {siem-app}'s <<prebuilt-rules, prebuilt rules>>, click
 *Load Elastic prebuilt rules* on the *Signal detection rules* page (*SIEM* -> 
@@ -51,8 +52,9 @@ rule.
 All Elastic prebuilt rules are tagged with the word `Elastic`.
 ==============
 
+[float]
 [[select-all-prebuilt-rules]]
-==== Select and duplicate all prebuilt rules
+=== Select and duplicate all prebuilt rules
 
 . Select the *Elastic rules* tab.
 . Scroll to the bottom of the page.
@@ -64,8 +66,9 @@ All Elastic prebuilt rules are tagged with the word `Elastic`.
 You can then modify the duplicated rules and, if required, delete the prebuilt 
 ones.
 
+[float]
 [[create-rule-ui]]
-==== Create a new rule
+=== Create a new rule
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
@@ -157,8 +160,9 @@ NOTE: When you activate a rule, it is queued and its schedule is determined by
 its initial run time. For example, if you activate a rule that runs every 5 
 minutes at 14:03 but it does not run until 14:04, it will run again at 14:09.
 
+[float]
 [[manage-rules-ui]]
-==== Modify existing rules
+=== Modify existing rules
 
 You can clone, edit, activate, deactivate, and delete rules:
 
@@ -169,8 +173,9 @@ You can clone, edit, activate, deactivate, and delete rules:
 required action from the `Batch actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
 
+[float]
 [[import-export-rules-ui]]
-==== Import and export rules
+=== Import and export rules
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . To import rules:
@@ -185,8 +190,9 @@ NOTE: Imported rules must be in a `ndjson` file.
 +
 NOTE: You cannot export prebuilt rules.
 
+[float]
 [[troubleshoot-signals]]
-==== Troubleshoot missing signals
+=== Troubleshoot missing signals
 
 When a rule fails to run close to its scheduled time, some signals maybe 
 missing. There are a number of steps you can perform to try and resolve this 

@@ -1,0 +1,66 @@
+[[rules-api-export]]
+=== Exports rules
+
+Exports rules to an ndjson file.
+
+NOTE: You cannot export prepackaged rules.
+
+==== Request URL
+
+`POST /api/detection_engine/rules/_export`
+
+
+===== URL query parameters
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`exclude_export_details` |Boolean |Determines whether a summary of the 
+exported rules is returned.|No, defaults to `false`.
+|`file_name` |String |File name for saving the exported rules. |No, defaults to 
+`export.ndjson`
+|==============================================
+
+TIP: When using cURL to export rules to a file, use the `-O` and `-J` options to save the rules to the file name specified in the URL.
+
+==== Request body
+
+An optional JSON `objects` array containing the `rule_id` fields of the rules 
+you want to export:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`objects` |String[] |Array of `rule_id` fields. |No, exports all rules when 
+unspecified.
+|==============================================
+
+
+===== Example request
+
+Exports two rules without details and saves them to the `exported_rules.ndjson` 
+file:
+
+[source,console]
+--------------------------------------------------
+POST api/detection_engine/rules/_export?exclude_export_details=true&file_name=exported_rules.ndjson
+{
+  "objects": [
+    {
+      "rule_id":"343580b5-c811-447c-8d2d-2ccf052c6900"
+    },
+    {
+      "rule_id":"2938c9fa-53eb-4c04-b79c-33cbf041b18d"
+    }
+  ]
+}
+--------------------------------------------------
+// KIBANA
+
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

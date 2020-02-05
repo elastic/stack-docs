@@ -1,7 +1,7 @@
 [[detection-engine-overview]]
 [role="xpack"]
 
-== Detections (Beta)
+= Detections (Beta)
 
 beta[]
 
@@ -12,23 +12,29 @@ for creating signals. The {siem-app} comes with
 activity on your network and hosts. Additionally, you can
 <<rules-ui-create, create your own rules>>.
 
+You can manage detection rules and signals via the UI or the
+<<rule-api-overview, Detections API>>.
+
 [IMPORTANT]
 ==============
-To make sure you can access Detections and manage rules, see: 
+To make sure you can access Detections and manage rules: 
 
-* <<detections-encryption-key, Add the `xpack.encryptedSavedObjects.encryptionKey` setting to the `kibana.yml` configuration file>> - *only required for local {kib} deployments*.
-* <<detections-permissions, {kib} and index privileges>> required for viewing 
-signals and creating rules.
+* For *local {kib} deployments only*, <<detections-encryption-key, add the `xpack.encryptedSavedObjects.encryptionKey` setting to the `kibana.yml` configuration file>>.
+* Check you have the <<detections-permissions, {kib} and index privileges>> 
+required for viewing signals and creating rules.
 ==============
+
+[role="screenshot"]
+image::detections-ui.png[]
 
 [float]
 [[det-engine-terminology]]
-=== Terminology
+== Terminology
 
 Signals::
-Always refer to {siem-soln} produced detections. Signals are never 
-received from third-party systems. When a rule's conditions are met, the
-{siem-app} writes one or more signals to an Elasticsearch `signals` index.
+Always refer to {siem-soln} or Elastic Endpoint produced detections. Signals 
+are never received from third-party systems. When a rule's conditions are met, 
+the {siem-app} writes one or more signals to an Elasticsearch `signals` index.
 
 [NOTE]
 ==============
@@ -38,11 +44,11 @@ Signal indices are created for each {kib} space. The naming convention is:
 ==============
 
 Alerts and events::
-Always refer to data the {siem-app} receives from data shippers and external 
-tools, such as Suricata and Elastic Endpoint Security.
+Always refer to data the {siem-app} receives from third-party data shippers and 
+external tools, such as Suricata.
 
 [float]
-=== Signals and external alerts
+== Signals and external alerts
 
 The Detections page displays all signals and alerts. To view signals created 
 by a rule, you can:
@@ -59,7 +65,7 @@ NOTE: KQL autocomplete for `.siem-signals-*` indices is available on the
 To view alerts from external data shippers, click *External alerts*.
 
 [float]
-==== Open and close signals
+=== Open and close signals
 
 You can close signals to indicate they do not need any further investigation. 
 By default, the All signals table displays open signals. To view closed 
@@ -72,13 +78,13 @@ To open and close signals, either:
 *Close/Open selected*.
 
 [float]
-==== Send signals to the Timeline
+=== Send signals to the Timeline
 
 To investigate a signal in the Timeline, click the *View in timeline* icon.
 
 [float]
 [[detections-encryption-key]]
-=== Add the `xpack.encryptedSavedObjects.encryptionKey` setting
+== Add the `xpack.encryptedSavedObjects.encryptionKey` setting
 
 NOTE: This is only required when using a local {kib} deployment. If you are 
 using our
@@ -96,18 +102,16 @@ setting with any alphanumeric value of at least 32 characters to the
 
 `xpack.encryptedSavedObjects.encryptionKey: 'fhjskhsdhd678ehkdfdlliverpoolfcr'`
 
-
-
 [float]
 [[detections-permissions]]
-=== {kib} and index privileges required for Detections
+== {kib} and index privileges required for Detections
 
 Depending on your privileges and whether a `.siem-signals-<space name>` index 
 has been created for the {kib} space, you might see an error message when you 
 try to open the *Detections* page.
 
 [float]
-==== `Let’s set up your detection engine` message
+=== `Let’s set up your detection engine` message
 
 If you see this message, a user with these privileges must open the *Detections*
 page before you can view signals and rules:
@@ -119,7 +123,7 @@ page before you can view signals and rules:
 {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
 
 [float]
-==== `Detection engine permissions required` message
+=== `Detection engine permissions required` message
 
 If you see this message, you do not have the required privileges to view the 
 *Detections* page and you should contact your {kib} administrator.

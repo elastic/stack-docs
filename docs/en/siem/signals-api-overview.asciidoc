@@ -1,0 +1,217 @@
+[[signals-api-overview]]
+[role="xpack"]
+=== Signals endpoint
+
+The signals endpoint is for retrieving, aggregating, and updating signals. 
+For detailed information on how to retrieve and aggregate results from the 
+indices, see:
+
+* {ref}/getting-started-search.html[Start searching]
+* {ref}/search-aggregations.html[Aggregations]
+* {ref}/query-dsl.html[Query DSL]
+
+==== Get signals
+
+Aggregates and returns signals.
+
+===== Request URL
+
+`POST /api/detection_engine/signals/search`
+
+===== Request body
+
+A query DSL that determines which results are returned.
+
+====== Example request
+
+Gets aggregated results of all open signals with a risk score equal to or 
+greater than 70. It also returns the timestamps of the oldest and 
+newest signals that meet the query's criteria.
+
+[source,console]
+--------------------------------------------------
+POST api/detection_engine/signals/search
+{
+  "aggs": {
+    "latest": {
+      "max": {
+        "field": "@timestamp"
+      }
+    },
+    "oldest": {
+      "min": {
+        "field": "@timestamp"
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "signal.status": "open"
+          }
+        },
+        {
+          "range": {
+            "signal.rule.risk_score": {
+              "gte": 70
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 0
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+====== Response payload
+
+A JSON object with the aggregated values and requested signals.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "took": 3,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 8794,
+      "relation": "eq"
+    },
+    "max_score": null,
+    "hits": []
+  },
+  "aggregations": {
+    "oldest": {
+      "value": 1576601119930,
+      "value_as_string": "2019-12-17T16:45:19.930Z"
+    },
+    "latest": {
+      "value": 1576634706400,
+      "value_as_string": "2019-12-18T02:05:06.400Z"
+    }
+  }
+}
+--------------------------------------------------
+
+==== Set signal status
+
+Sets the status of one or more signals.
+
+===== Request URL
+
+`POST /api/detection_engine/signals/status`
+
+===== Request body
+
+A JSON object with either a `query` or `signals_id` field:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`signal_ids` |String[] |Array of rule IDs. |Yes, when the `query` field is not used.
+
+|`query` |Query DSL |Query that determines which signals are updated. |Yes, when the `signal_ids` field is not used.
+
+|`status` |String |The new status, which can be `open` or `closed`. |Yes.
+
+|==============================================
+
+====== Example requests
+
+Closes signal with signal IDs:
+
+[source,console]
+--------------------------------------------------
+POST api/detection_engine/signals/status
+{
+  "signal_ids": [
+    "694156bbe6a487e06d049bd6019bd49fec4172cfb33f5d81c3b4a977f0026fba", 
+    "f4d1c62c4e8946c835cb497329127803c09b955de49a8fa186be3899522667b0"
+  ],
+  "status": "closed"
+}
+--------------------------------------------------
+// KIBANA
+
+Closes signals that are over a month old and have a risk score less than or 
+equal to 20:
+
+[source,json]
+--------------------------------------------------
+POST api/detection_engine/signals/status
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "signal.rule.risk_score": {
+              "lte": 20
+            }
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "lte": "now-M"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "status": "closed"
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+====== Response payload
+
+A JSON object containing the number of updated signals.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "took": 9594,
+  "timed_out": false,
+  "total": 8794,
+  "updated": 8794,
+  "deleted": 0,
+  "batches": 9,
+  "version_conflicts": 0,
+  "noops": 0,
+  "retries": {
+    "bulk": 0,
+    "search": 0
+  },
+  "throttled_millis": 0,
+  "requests_per_second": -1,
+  "throttled_until_millis": 0,
+  "failures": []
+}
+--------------------------------------------------

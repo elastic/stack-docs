@@ -1,0 +1,80 @@
+[[prebuilt-rules-api]]
+[role="xpack"]
+=== Prepackaged rules
+
+The prepackaged endpoint is for retrieving rule statuses and loading Elastic 
+prebuilt detection rules.
+
+==== Load prepackaged rules
+
+Loads and updates Elastic prebuilt rules.
+
+NOTE: By default, all loaded prebuilt rules are disabled.
+
+===== Request URL
+
+`PUT /api/detection_engine/rules/prepackaged`
+
+====== Example request
+
+[source,console]
+--------------------------------------------------
+PUT api/detection_engine/rules/prepackaged
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+====== Response payload
+
+A JSON object listing the number of loaded and updated prebuilt rules.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "rules_installed": 112,
+  "rules_updated": 0
+}
+--------------------------------------------------
+
+==== Get rule status
+
+Returns rule statuses.
+
+===== Request URL
+
+`GET /api/detection_engine/rules/prepackaged/_status`
+
+====== Example request
+
+[source,console]
+--------------------------------------------------
+GET api/detection_engine/rules/prepackaged/_status
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+====== Response payload
+
+A JSON object listing rule statuses.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "rules_custom_installed": 0,
+  "rules_installed": 0,
+  "rules_not_installed": 112,
+  "rules_not_updated": 0
+}
+--------------------------------------------------

@@ -1,0 +1,99 @@
+[[rules-api-get]]
+=== Get rule
+
+Retrieves a single rule using the `rule_id` or `id` field.
+
+==== Request URL
+
+`GET /api/detection_engine/rules`
+
+===== URL query parameters
+
+The URL query must include one of the following:
+
+* `id` - `GET /api/detection_engine/rules?id=<id>`
+* `rule_id` - `GET /api/detection_engine/rules?rule_id=<rule_id>`
+
+===== Example request
+
+Retrieves the rule with an `id` value of `c41d170b-8ba6-4de6-b8ec-76440a35ace3`:
+
+[source,console]
+--------------------------------------------------
+GET api/detection_engine/rules?id=c41d170b-8ba6-4de6-b8ec-76440a35ace3
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.
+    
+==== Response payload
+
+The returned rule's JSON object.
+
+Example response:
+
+[source,json]
+--------------------------------------------------
+{
+  "created_at": "2020-02-03T11:19:04.259Z",
+  "updated_at": "2020-02-03T11:19:04.462Z",
+  "created_by": "elastic",
+  "description": "Process started by MS Office program in user folder",
+  "enabled": false,
+  "false_positives": [],
+  "filters": [
+    {
+      "query": {
+        "match": {
+          "event.action": {
+            "query": "Process Create (rule: ProcessCreate)",
+            "type": "phrase"
+          }
+        }
+      }
+    }
+  ],
+  "from": "now-4200s",
+  "id": "c41d170b-8ba6-4de6-b8ec-76440a35ace3",
+  "immutable": false,
+  "interval": "1h",
+  "rule_id": "process_started_by_ms_office_user_folder",
+  "language": "kuery",
+  "output_index": ".siem-signals-siem-test-ben",
+  "max_signals": 100,
+  "risk_score": 21,
+  "name": "Ben - MS Office child process",
+  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
+  "references": [],
+  "severity": "low",
+  "updated_by": "elastic",
+  "tags": [
+    "child process",
+    "ms office"
+  ],
+  "to": "now-300s",
+  "type": "query",
+  "threat": [
+    {
+      "framework": "MITRE ATT&CK",
+      "tactic": {
+        "id": "TA0001",
+        "reference": "https://attack.mitre.org/tactics/TA0001",
+        "name": "Initial Access"
+      },
+      "technique": [
+        {
+          "id": "T1193",
+          "name": "Spearphishing Attachment",
+          "reference": "https://attack.mitre.org/techniques/T1193"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
+
+--------------------------------------------------

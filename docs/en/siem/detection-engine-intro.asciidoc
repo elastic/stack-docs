@@ -12,13 +12,16 @@ for creating signals. The {siem-app} comes with
 activity on your network and hosts. Additionally, you can
 <<rules-ui-create, create your own rules>>.
 
+You can manage detection rules and signals via the UI or the
+<<rule-api-overview, Detections API>>.
+
 [IMPORTANT]
 ==============
-To make sure you can access Detections and manage rules, see: 
+To make sure you can access Detections and manage rules: 
 
-* <<detections-encryption-key, Add the `xpack.encryptedSavedObjects.encryptionKey` setting to the `kibana.yml` configuration file>> - *only required for local {kib} deployments*.
-* <<detections-permissions, {kib} and index privileges>> required for viewing 
-signals and creating rules.
+* For *local {kib} deployments only*, <<detections-encryption-key, add the `xpack.encryptedSavedObjects.encryptionKey` setting to the `kibana.yml` configuration file>>.
+* Check you have the <<detections-permissions, {kib} and index privileges>> 
+required for viewing signals and creating rules.
 ==============
 
 [float]
@@ -26,9 +29,9 @@ signals and creating rules.
 === Terminology
 
 Signals::
-Always refer to {siem-soln} produced detections. Signals are never 
-received from third-party systems. When a rule's conditions are met, the
-{siem-app} writes one or more signals to an Elasticsearch `signals` index.
+Always refer to {siem-soln} or Elastic Endpoint produced detections. Signals 
+are never received from third-party systems. When a rule's conditions are met, 
+the {siem-app} writes one or more signals to an Elasticsearch `signals` index.
 
 [NOTE]
 ==============
@@ -38,8 +41,8 @@ Signal indices are created for each {kib} space. The naming convention is:
 ==============
 
 Alerts and events::
-Always refer to data the {siem-app} receives from data shippers and external 
-tools, such as Suricata and Elastic Endpoint Security.
+Always refer to data the {siem-app} receives from third-party data shippers and 
+external tools, such as Suricata.
 
 [float]
 === Signals and external alerts

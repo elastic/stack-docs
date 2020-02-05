@@ -95,6 +95,10 @@ GET s/siem/api/detection_engine/index
   },
   "application": {}
   "is_authenticated": true <1>
+  "has_encryption_key": true <2>
 }
 --------------------------------------------------
 <1> Indicates whether the user can log in to the {es} deployment.
+<2> Indicates whether the 
+<<detections-encryption-key, `xpack.encryptedSavedObjects.encryptionKey`>> is
+set.

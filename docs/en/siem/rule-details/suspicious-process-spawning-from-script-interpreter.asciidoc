@@ -1,13 +1,26 @@
 [[suspicious-process-spawning-from-script-interpreter]]
-=== Suspicious Process Spawning from Script Interpreter
+=== Suspicious Process spawning from Script Interpreter
 
 Identifies a suspicious process being spawned from a script interpreter, which
 could be indicative of a potential phishing attack.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -16,7 +29,6 @@ could be indicative of a potential phishing attack.
 
 Security testing may produce events like this. Activity of this kind performed
 by non-engineers and ordinary users is unusual.
-
 
 ==== Rule query
 

@@ -4,12 +4,25 @@
 Identifies the use of `certutil.exe` to encode or decode data. CertUtil is a
 native Windows component which is part of Certificate Services. CertUtil is
 often abused by attackers to encode or decode base64 data for stealthier command
-and control, and exfiltration.
+and control or exfiltration.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: medium
 
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

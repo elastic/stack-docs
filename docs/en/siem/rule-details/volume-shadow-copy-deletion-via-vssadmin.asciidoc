@@ -1,13 +1,26 @@
 [[volume-shadow-copy-deletion-via-vssadmin]]
 === Volume Shadow Copy Deletion via VssAdmin
 
-Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints.  This
+Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints. This
 commonly occurs in tandem with ransomware or other destructive attacks.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: high
 
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

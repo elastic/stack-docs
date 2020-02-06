@@ -1,13 +1,26 @@
 [[deleting-backup-catalogs-with-wbadmin]]
 === Deleting Backup Catalogs with Wbadmin
 
-Identifies use of `wbadmin.exe` to delete the backup catalog. Ransomware and
+Identifies use of the `wbadmin.exe` to delete the backup catalog. Ransomware and
 other malware may do this to prevent system recovery.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

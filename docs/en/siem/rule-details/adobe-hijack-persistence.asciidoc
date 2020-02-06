@@ -1,13 +1,26 @@
 [[adobe-hijack-persistence]]
 === Adobe Hijack Persistence
 
-Detects writing executable files that are automatically launched when an Adobe 
-product is started.
+Detects writing executable files that will be automatically launched by Adobe on
+launch.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

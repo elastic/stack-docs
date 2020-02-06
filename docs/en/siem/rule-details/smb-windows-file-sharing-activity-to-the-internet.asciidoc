@@ -1,18 +1,34 @@
 [[smb-windows-file-sharing-activity-to-the-internet]]
 === SMB (Windows File Sharing) Activity to the Internet
 
-This rule detects network events that may indicate the use of Windows file
+Detects network events that may indicate the use of Windows file
 sharing (also called SMB or CIFS) traffic to the Internet. SMB is commonly used
 within networks to share files, printers, and other system resources amongst
 trusted systems. It should almost never be directly exposed to the Internet, as
 it is frequently targeted and exploited by threat actors as an initial access or
 back-door vector or for data exfiltration.
 
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
 *Severity*: high
+
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 

@@ -1,13 +1,26 @@
 [[adding-hidden-file-attribute-via-attrib]]
 === Adding Hidden File Attribute via Attrib
 
-Adversaries can add the `hidden` attribute to files to hide them from the user 
+Adversaries can add the `hidden` attribute to files to hide them from the user
 in an attempt to evade detection.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -17,7 +30,7 @@ in an attempt to evade detection.
 
 [source,js]
 ----------------------------------
- event.action:"Process Create (rule: ProcessCreate)" and
+event.action:"Process Create (rule: ProcessCreate)" and
 process.name:"attrib.exe" and process.args:"+h"
 ----------------------------------
 

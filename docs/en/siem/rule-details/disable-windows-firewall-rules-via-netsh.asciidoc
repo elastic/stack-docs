@@ -1,14 +1,27 @@
 [[disable-windows-firewall-rules-via-netsh]]
 === Disable Windows Firewall Rules via Netsh
 
-Identifies use of `netsh.exe` to disable or weaken the local firewall.
-Attackers use this command line tool to disable the firewall during
+Identifies use of the `netsh.exe` to disable or weaken the local firewall.
+Attackers will use this command line tool to disable the firewall during
 troubleshooting or to enable network mobility.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: medium
 
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

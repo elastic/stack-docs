@@ -3,12 +3,29 @@
 
 A request to web application returned a 405 response which indicates the web
 application declined to process the request because the HTTP method is not
-allowed for the resource.
+allowed for the resource
+
+*Rule indices*:
+
+* apm-*-transaction*
 
 *Severity*: medium
 
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://en.wikipedia.org/wiki/HTTP_405
+
 *Tags*:
 
+* Elastic
 * APM
 
 *Version*: 1
@@ -19,7 +36,6 @@ Security scans and tests may result in these errors. Misconfigured or buggy
 applications may produce large numbers of these errors. If the source is
 unexpected, the user unauthorized, or the request unusual, these may indicate
 suspicious or malicious activity.
-
 
 ==== Rule query
 

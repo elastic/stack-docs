@@ -1,13 +1,26 @@
 [[whoami-process-activity]]
 === Whoami Process Activity
 
-Identifies use of `whoami.exe`, which displays user, group, and privilege
+Identifies use of `whoami.exe` which displays user, group, and privileges
 information for the user who is currently logged on to the local system.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -17,7 +30,6 @@ information for the user who is currently logged on to the local system.
 Some normal use of this program, at varying levels of frequency, may originate
 from scripts, automation tools and frameworks. Usage by non-engineers and
 ordinary users is unusual.
-
 
 ==== Rule query
 

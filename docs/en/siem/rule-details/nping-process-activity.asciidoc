@@ -1,14 +1,31 @@
 [[nping-process-activity]]
 === Nping Process Activity
 
-`Nping` ran on a Linux host. `Nping` is part of the `Nmap` tool suite and has 
-the ability to construct raw packets for a wide variety of security testing
+Nping ran on a Linux host. Nping is part of the Nmap tool suite and has  the
+ability to construct raw packets for a wide variety of security testing
 applications, including denial of service testing.
+
+*Rule indices*:
+
+* auditbeat-*
 
 *Severity*: medium
 
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://en.wikipedia.org/wiki/Nmap
+
 *Tags*:
 
+* Elastic
 * Linux
 
 *Version*: 1
@@ -16,9 +33,8 @@ applications, including denial of service testing.
 ==== Potential false positives
 
 Some normal use of this command may originate from security engineers and
-network or server administrators, but this is usually not routine or 
+network or server administrators, but this is usually not routine or
 unannounced. Use of `Nping` by non-engineers or ordinary users is uncommon.
-
 
 ==== Rule query
 

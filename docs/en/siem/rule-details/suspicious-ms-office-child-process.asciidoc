@@ -6,10 +6,23 @@ applications (Word, PowerPoint, Excel). These child processes are often launched
 during exploitation of Office applications or from documents with malicious
 macros.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -19,7 +32,7 @@ macros.
 
 [source,js]
 ----------------------------------
- event.action:"Process Create (rule: ProcessCreate)" and
+event.action:"Process Create (rule: ProcessCreate)" and
 process.parent.name:("winword.exe" or "excel.exe" or "powerpnt.exe" or
 "eqnedt32.exe" or "fltldr.exe" or "mspub.exe" or "msaccess.exe") and
 process.name:("arp.exe" or "dsquery.exe" or "dsget.exe" or

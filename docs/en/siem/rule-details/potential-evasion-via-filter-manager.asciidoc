@@ -1,14 +1,26 @@
 [[potential-evasion-via-filter-manager]]
 === Potential Evasion via Filter Manager
 
-The Filter Manager Control Program (`fltMC.exe`) binary may be abused by
+The Filter Manager Control Program (fltMC.exe) binary may be abused by
 adversaries to unload a filter driver and evade defenses.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
-* D-SA
+* Elastic
 * Windows
 
 *Version*: 1
@@ -18,7 +30,7 @@ adversaries to unload a filter driver and evade defenses.
 
 [source,js]
 ----------------------------------
-event.code:1 and process.name:fltmc.exe
+event.code:1 and process.name:fltMC.exe
 ----------------------------------
 
 ==== Threat mapping

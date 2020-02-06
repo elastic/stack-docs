@@ -5,10 +5,23 @@ Identifies attempts to clear Windows event log stores. This is often done by
 attackers in an attempt to evade detection or destroy forensic evidence on a
 system.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

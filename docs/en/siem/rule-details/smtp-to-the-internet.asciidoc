@@ -1,26 +1,41 @@
 [[smtp-to-the-internet]]
 === SMTP to the Internet
 
-This rule detects events that may describe SMTP traffic from internal hosts to
-a host across the Internet. In an enterprise network, there is typically a
-dedicated internal host that performs this function. It is also frequently 
-abused by threat actors for command and control, and data exfiltration.
+Detects events that may describe SMTP traffic from internal hosts to a
+host across the Internet. In an enterprise network, there is typically a
+dedicated internal host that performs this function. It is also frequently
+abused by threat actors for command and control, or data exfiltration.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
 ==== Potential false positives
 
 NATed servers that process email traffic may false and should be excluded from
-this rule as this is expected behavior. Consumer and personal devices may send 
-email traffic to remote Internet destinations. In this case, such devices or 
-networks can be excluded from this rule if this is expected behavior.
-
+this rule as this is expected behavior for them. Consumer and personal devices
+may send email traffic to remote Internet destinations. In this case, such
+devices or networks can be excluded from this rule if this is expected behavior.
 
 ==== Rule query
 

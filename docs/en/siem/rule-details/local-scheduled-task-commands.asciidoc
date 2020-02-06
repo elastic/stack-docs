@@ -2,12 +2,25 @@
 === Local Scheduled Task Commands
 
 A scheduled task can be used by an adversary to establish persistence, move
-laterally, and escalate privileges.
+laterally, and/or escalate privileges.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -16,13 +29,12 @@ laterally, and escalate privileges.
 
 Legitimate scheduled tasks may be created during installation of new software.
 
-
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
- event.action:"Process Create (rule: ProcessCreate)" and
+event.action:"Process Create (rule: ProcessCreate)" and
 process.name:schtasks.exe and process.args:("/create" or "-create" or
 "/S" or "-s" or "/run" or "-run" or "/change" or "-change")
 ----------------------------------

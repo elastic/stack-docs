@@ -22,8 +22,9 @@ structure (_{dataframe}_). In general, you often need to
 {ref}/transforms.html[transform] the data into an entity-centric index before 
 you analyze the data.
 
-This is an example source document from the dataset:
-
+.Example source document
+[%collapsible]
+====
 ```
 {
   "_index": "kibana_sample_data_flights",
@@ -70,6 +71,7 @@ This is an example source document from the dataset:
   }
 }
 ```
+====
 
 
 {regression-cap} is a supervised machine learning analysis and therefore needs 
@@ -96,9 +98,15 @@ To predict the number of minutes delayed for each flight:
 . Create a {dfanalytics-job}.
 +
 --
-Use the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API as you can see 
-in the following example:
+You can use the wizard on the *Machine Learning* > *Data Frame Analaytics*
+tab in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
+[role="screenshot"]
+image::images/flights-regression-job.jpg["Creating a {dfanalytics-job} in {kib}"]
+
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 PUT _ml/data_frame/analytics/model-flight-delays
@@ -151,38 +159,44 @@ exclude fields that either contain erroneous data or describe the
 <7> Specifies a memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. This makes it possible to prevent job 
 execution if the available memory on the node is limited.
+====
 --
 
-. Start the job.
+. Start the job in {kib} or use the
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API.
 +
 --
-Use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API to start the 
-job. It will stop automatically when the analysis is complete.
-
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 POST _ml/data_frame/analytics/model-flight-delays/_start
 --------------------------------------------------
 // TEST[skip:TBD]
-
+====
 
 The job takes a few minutes to run. Runtime depends on the local hardware and 
 also on the number of documents and fields that analyzed. The more fields and 
-documents, the longer the job runs.
+documents, the longer the job runs. It stops automatically when the analysis is
+complete.
 --
 
-. Check the job stats to follow the progress by using the 
+. Check the job stats to follow the progress in {kib} or use the 
 {ref}/get-dfanalytics-stats.html[get {dfanalytics-jobs} statistics API].
 +
 --
+[role="screenshot"]
+image::images/flights-regression-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
 
-
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 GET _ml/data_frame/analytics/model-flight-delays/_stats
 --------------------------------------------------
 // TEST[skip:TBD]
-
 
 The API call returns the following response: 
 
@@ -215,8 +229,8 @@ The API call returns the following response:
     }
   ]
 }
-----  
-
+----
+====
 
 The job has four phases. When all the phases have completed, the job stops and 
 the results are ready to view and evaluate.
@@ -227,9 +241,17 @@ the results are ready to view and evaluate.
 ==== Viewing {regression} results
 
 Now you have a new index that contains a copy of your source data with 
-predictions for your dependent variable. Use the standard {es} search command to 
-view the results in the destination index:
+predictions for your dependent variable.
 
+[role="screenshot"]
+image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
+
+Alternatively, you can use the standard {es} search command to 
+view the results in the destination index.
+
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 GET df-flight-delays/_search
@@ -258,7 +280,7 @@ The snippet below shows a part of a document with the annotated results:
 trying to predict with the {reganalysis}.
 <2> The prediction. The field name is suffixed with `_prediction`.
 <3> Indicates that this document was not used in the training set.
-
+====
 
 [[flightdata-regression-evaluate]]
 ==== Evaluating results
@@ -271,8 +293,11 @@ ground truth and the prediction is stored as `ml.FlightDelayMin_prediction`.
 +
 --
 First, we want to know the training error that represents how well the model 
-performed on the training dataset:
+performed on the training dataset.
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
@@ -301,10 +326,14 @@ POST _ml/data_frame/_evaluate
 <2> We calculate the training error by only evaluating the training data.
 <3> The ground truth label.
 <4> Predicted value.
+====
 
 Next, we calculate the generalization error that represents how well the model 
-performed on previously unseen data:
+performed on previously unseen data.
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
@@ -346,6 +375,7 @@ The evaluate {dfanalytics} API returns the following response:
   }
 }
 ----
+====
 
 For more information about the evaluation metrics, see 
 <<dfa-regression-evaluation>>.

@@ -95,11 +95,15 @@ predictions.
 
 To predict the number of minutes delayed for each flight:
 
-. Create a {dfanalytics-job}. You can use the wizard on the *Machine Learning* >
-*Data Frame Analaytics* tab in {kib} or the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.image:images/flights-regression-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%",float="right"]
+. Create a {dfanalytics-job}.
 +
 --
+[.left.text-left]
+image::images/flights-regression-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%"]
+
+You can use the wizard on the *Machine Learning* > *Data Frame Analaytics* tab
+in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
+
 .. Choose `regression` as the job type.
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Add the name of the destination index that will contain the results of the

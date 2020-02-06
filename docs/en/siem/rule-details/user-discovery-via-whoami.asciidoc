@@ -1,13 +1,26 @@
 [[user-discovery-via-whoami]]
 === User Discovery via Whoami
 
-The `whoami` application was executed on a Linux host. This is often used by 
+The `whoami` application was executed on a Linux host. This is often used by
 tools and persistence mechanisms to test for privileged access.
+
+*Rule indices*:
+
+* auditbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Linux
 
 *Version*: 1
@@ -16,7 +29,6 @@ tools and persistence mechanisms to test for privileged access.
 
 Security testing tools and frameworks may run this command. Some normal use of
 this command may originate from automation tools and frameworks.
-
 
 ==== Rule query
 

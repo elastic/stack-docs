@@ -1,13 +1,30 @@
 [[persistence-via-kernel-module-modification]]
 === Persistence via Kernel Module Modification
 
-Identifies loadable kernel module errors, which are often indicative of 
+Identifies loadable kernel module errors, which are often indicative of
 potential persistence attempts.
+
+*Rule indices*:
+
+* auditbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.hackers-arise.com/single-post/2017/11/03/Linux-for-Hackers-Part-10-Loadable-Kernel-Modules-LKM
+
 *Tags*:
 
+* Elastic
 * Linux
 
 *Version*: 1
@@ -16,7 +33,6 @@ potential persistence attempts.
 
 Security tools and device drivers may run these programs in order to load
 legitimate kernel modules. Use of these programs by ordinary users is uncommon.
-
 
 ==== Rule query
 

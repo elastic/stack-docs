@@ -1,29 +1,44 @@
 [[vnc-virtual-network-computing-to-the-internet]]
 === VNC (Virtual Network Computing) to the Internet
 
-This signal detects network events that may indicate the use of VNC traffic to
-the Internet. VNC is commonly used by system administrators to remotely control
-a system for maintenance or to use shared resources. It should almost never be
+Detects network events that may indicate the use of VNC traffic to the
+Internet. VNC is commonly used by system administrators to remotely control a
+system for maintenance or to use shared resources. It should almost never be
 directly exposed to the Internet, as it is frequently targeted and exploited by
 threat actors as an initial access or back-door vector.
 
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
 ==== Potential false positives
 
-VNC connections may be made directly to Linux cloud server instances, but such
+VNC connections may be made directly to Linux cloud server instances but such
 connections are usually made only by engineers. VNC is less common than SSH or
-RDP, but may be required by some workflows, such as remote access and support 
-for specialized software products or servers. Such workflows are usually known 
-and not unexpected. Usage that is unfamiliar to server or network owners can be
-unexpected and suspicious.
-
+RDP but may be required by some work flows such as remote access and support
+for specialized software products or servers. Such work-flows are usually
+known and not unexpected. Usage that is unfamiliar to server or network
+owners can be unexpected and suspicious.
 
 ==== Rule query
 

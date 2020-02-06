@@ -1,17 +1,33 @@
 [[rpc-remote-procedure-call-from-the-internet]]
 === RPC (Remote Procedure Call) from the Internet
 
-This signal detects network events that may indicate the use of RPC traffic from
+Detects network events that may indicate the use of RPC traffic from
 the Internet. RPC is commonly used by system administrators to remotely control
 a system for maintenance or to use shared resources. It should almost never be
 directly exposed to the Internet, as it is frequently targeted and exploited by
 threat actors as an initial access or back-door vector.
 
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
 *Severity*: high
+
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 

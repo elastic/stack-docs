@@ -2,13 +2,26 @@
 === Windows Script Executing PowerShell
 
 Identifies a PowerShell process launched by either `cscript.exe` or 
-`wscript.exe`. Windows scripting processes executing a PowerShell script may be 
-indicative of malicious activity.
+`wscript.exe`. Observing Windows scripting processes executing a PowerShell 
+script, may be indicative of malicious activity.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

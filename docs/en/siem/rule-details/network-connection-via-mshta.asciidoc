@@ -5,10 +5,27 @@ Identifies `mshta.exe` making a network connection. This may indicate
 adversarial activity as `mshta.exe` is often leveraged by adversaries to 
 execute malicious scripts and evade detection.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.fireeye.com/blog/threat-research/2017/05/cyber-espionage-apt32.html
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -19,7 +36,7 @@ execute malicious scripts and evade detection.
 [source,js]
 ----------------------------------
 event.action:"Network connection detected (rule: NetworkConnect)" and
-process.name:"mshta.exe" and not process.name:"mshta.exe"
+process.name:"mshta.exe"
 ----------------------------------
 
 ==== Threat mapping

@@ -1,15 +1,31 @@
 [[pptp-point-to-point-tunneling-protocol-activity]]
 === PPTP (Point to Point Tunneling Protocol) Activity
 
-This rule detects events that may indicate use of a PPTP VPN connection. Some
+Detects events that may indicate use of a PPTP VPN connection. Some
 threat actors use these types of connections to tunnel their traffic while
 avoiding detection.
 
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
@@ -19,10 +35,9 @@ Some networks may utilize PPTP protocols but this is uncommon as more modern VPN
 technologies are available. Usage that is unfamiliar to local network
 administrators can be unexpected and suspicious. Torrenting applications may use
 this port. Because this port is in the ephemeral range, this rule may false
-under certain conditions, such as when an application server replies to a
-client that used this port by coincidence. This is uncommon but such
-servers can be excluded.
-
+under certain conditions, such as when an application server replies to a client
+that used this port by coincidence. This is uncommon but such servers can be
+excluded.
 
 ==== Rule query
 

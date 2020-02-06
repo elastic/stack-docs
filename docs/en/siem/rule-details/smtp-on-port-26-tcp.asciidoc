@@ -1,16 +1,37 @@
 [[smtp-on-port-26-tcp]]
 === SMTP on Port 26/TCP
 
-This rule detects events that may indicate use of SMTP on TCP port 26. This
-port is commonly used by several popular mail transfer agents to deconflict with
-the default SMTP port 25. This port has also been used by a malware family
-called BadPatch for command and control of Windows systems.
+Detects events that may indicate use of SMTP on TCP port 26. This port
+is commonly used by several popular mail transfer agents to deconflict with the
+default SMTP port 25. This port has also been used by a malware family called
+BadPatch for command and control of Windows systems.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://unit42.paloaltonetworks.com/unit42-badpatch/
+* https://isc.sans.edu/forums/diary/Next+up+whats+up+with+TCP+port+26/25564/
+
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
@@ -18,7 +39,6 @@ called BadPatch for command and control of Windows systems.
 
 Servers that process email traffic may cause false positives and should be
 excluded from this rule as this is expected behavior.
-
 
 ==== Rule query
 

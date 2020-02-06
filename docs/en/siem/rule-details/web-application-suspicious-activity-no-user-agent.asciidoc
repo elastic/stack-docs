@@ -4,10 +4,27 @@
 A request to a web application server contained no identifying user agent
 string.
 
+*Rule indices*:
+
+* apm-*-transaction*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://en.wikipedia.org/wiki/User_agent
 
 *Tags*:
 
+* Elastic
 * APM
 
 *Version*: 1
@@ -17,9 +34,8 @@ string.
 Some normal applications and scripts may contain no user agent. Most legitimate
 web requests from the Internet contain a user agent string. Requests from web
 browsers almost always contain a user agent string. If the source is unexpected,
-the user unauthorized, or the request unusual, these may indicate suspicious
-or malicious activity.
-
+the user unauthorized, or the request unusual, these may indicate suspicious or
+malicious activity.
 
 ==== Rule query
 

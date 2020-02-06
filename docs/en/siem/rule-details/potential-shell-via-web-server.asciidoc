@@ -4,10 +4,27 @@
 Identifies suspicious commands executed via a web server, which may suggest a
 vulnerability and remote shell access.
 
+*Rule indices*:
+
+* auditbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://pentestlab.blog/tag/web-shell/
 
 *Tags*:
 
+* Elastic
 * Linux
 
 *Version*: 1
@@ -17,13 +34,12 @@ vulnerability and remote shell access.
 Network monitoring or management products may have a web server component that
 runs shell commands as part of normal behavior.
 
-
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
-process.name: bash and (user.name: apache or www) and
+process.name: bash and user.name: (apache or www or "wwww-data") and
 event.action:executed
 ----------------------------------
 

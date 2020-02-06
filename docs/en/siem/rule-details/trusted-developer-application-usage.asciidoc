@@ -4,11 +4,23 @@
 Identifies possibly suspicious activity using trusted Windows developer
 activity.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* D-SA
+* Elastic
 * Windows
 
 *Version*: 1
@@ -17,7 +29,6 @@ activity.
 
 These programs may be used by Windows developers but use by non-engineers is
 unusual.
-
 
 ==== Rule query
 

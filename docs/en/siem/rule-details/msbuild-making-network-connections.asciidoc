@@ -1,14 +1,27 @@
 [[msbuild-making-network-connections]]
 === MsBuild Making Network Connections
 
-Identifies `MSBuild.exe` making outbound network connections. This may indicate
-adversarial activity as MSBuild is often leveraged by adversaries to execute
+Identifies `MsBuild.exe` making outbound network connections. This may indicate
+adversarial activity as MsBuild is often leveraged by adversaries to execute
 code and evade detection.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: medium
 
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -19,7 +32,7 @@ code and evade detection.
 [source,js]
 ----------------------------------
  event.action:"Network connection detected (rule: NetworkConnect)" and
-process.name:msbuild.exe and not destination.ip:("127.0.0.1" or "::1")
+process.name:MSBuild.exe and not destination.ip:("127.0.0.1" or "::1")
 ----------------------------------
 
 ==== Threat mapping

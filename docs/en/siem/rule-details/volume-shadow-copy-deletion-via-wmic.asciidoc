@@ -4,10 +4,23 @@
 Identifies use of `wmic.exe` for shadow copy deletion on endpoints. This 
 commonly occurs in tandem with ransomware or other destructive attacks.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: high
+
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -18,7 +31,7 @@ commonly occurs in tandem with ransomware or other destructive attacks.
 [source,js]
 ----------------------------------
  event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"wmic.exe" and process.args:("shadowcopy" and "delete")
+process.name:"WMIC.exe" and process.args:("shadowcopy" and "delete")
 ----------------------------------
 
 ==== Threat mapping

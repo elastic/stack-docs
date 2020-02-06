@@ -1,18 +1,34 @@
 [[ipsec-nat-traversal-port-activity]]
 === IPSEC NAT Traversal Port Activity
 
-This rule detects events that could be describing IPSEC NAT Traversal traffic.
+Detects events that could be describing IPSEC NAT Traversal traffic.
 IPSEC is a VPN technology that allows one system to talk to another using
 encrypted tunnels. NAT Traversal enables these tunnels to communicate over the
 Internet where one of the sides is behind a NAT router gateway. This may be
 common on your network, but this technique is also used by threat actors to
 avoid detection.
 
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
@@ -20,11 +36,10 @@ avoid detection.
 
 Some networks may utilize these protocols but usage that is unfamiliar to local
 network administrators can be unexpected and suspicious. Because this port is in
-the ephemeral range, this rule may false under certain conditions, such as when 
-an application server with a public IP address replies to a client which has 
-used a UDP port in the range by coincidence. This is uncommon but such servers 
+the ephemeral range, this rule may false under certain conditions, such as when
+an application server with a public IP address replies to a client which has
+used a UDP port in the range by coincidence. This is uncommon but such servers
 can be excluded.
-
 
 ==== Rule query
 

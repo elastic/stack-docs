@@ -1,14 +1,27 @@
 [[delete-volume-usn-journal-with-fsutil]]
 === Delete Volume USN Journal with Fsutil
 
-Identifies use of `fsutil.exe` to delete the `USNJRNL` volume. This 
-technique is used by attackers to eliminate evidence of files created during 
+Identifies use of the `fsutil.exe` to delete the `USNJRNL` volume. This 
+technique is used by attackers to eliminate evidence of files created during
 post-exploitation activities.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

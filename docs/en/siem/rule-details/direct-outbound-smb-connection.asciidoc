@@ -8,10 +8,23 @@ connections are established by the kernel. Processes making 445/tcp connections
 may be port scanners, exploits, or suspicious user-level processes moving
 laterally.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

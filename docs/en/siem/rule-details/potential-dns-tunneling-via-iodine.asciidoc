@@ -2,13 +2,30 @@
 === Potential DNS Tunneling via Iodine
 
 Iodine is a tool for tunneling Internet protocol version 4 (IPV4) traffic over
-the DNS protocol to circumvent firewalls, network security groups, and
-network access lists while evading detection.
+the DNS protocol to circumvent firewalls, network security groups, and network
+access lists while evading detection.
+
+*Rule indices*:
+
+* auditbeat-*
 
 *Severity*: high
 
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://code.kryo.se/iodine/
+
 *Tags*:
 
+* Elastic
 * Linux
 
 *Version*: 1
@@ -17,7 +34,6 @@ network access lists while evading detection.
 
 Normal use of Iodine is uncommon apart from security testing and research. Use
 by non-security engineers is very uncommon.
-
 
 ==== Rule query
 

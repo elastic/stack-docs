@@ -32,9 +32,9 @@ image::detections-ui.png[]
 == Terminology
 
 Signals::
-Always refer to {siem-soln} or Elastic Endpoint produced detections. Signals 
-are never received from third-party systems. When a rule's conditions are met, 
-the {siem-app} writes one or more signals to an Elasticsearch `signals` index.
+Always refer to {siem-soln} produced detections. Signals are never received 
+from third-party systems. When a rule's conditions are met, the {siem-app} 
+writes one or more signals to an Elasticsearch `signals` index.
 
 [NOTE]
 ==============
@@ -44,8 +44,8 @@ Signal indices are created for each {kib} space. The naming convention is:
 ==============
 
 Alerts and events::
-Always refer to data the {siem-app} receives from third-party data shippers and 
-external tools, such as Suricata.
+Always refer to data the {siem-app} receives from external systems, such as 
+Elastic Endpoint and Suricata.
 
 [float]
 == Signals and external alerts

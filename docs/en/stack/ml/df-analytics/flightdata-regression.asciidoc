@@ -95,14 +95,28 @@ predictions.
 
 To predict the number of minutes delayed for each flight:
 
-. Create a {dfanalytics-job}.
+. Create a {dfanalytics-job}. You can use the wizard on the *Machine Learning* >
+*Data Frame Analaytics* tab in {kib} or the
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.image:images/flights-regression-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%",float="right"]
 +
 --
-You can use the wizard on the *Machine Learning* > *Data Frame Analaytics*
-tab in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
-
-[role="screenshot"]
-image::images/flights-regression-job.jpg["Creating a {dfanalytics-job} in {kib}"]
+.. Choose `regression` as the job type.
+.. Choose `kibana_sample_data_flights` as the source index.
+.. Add the name of the destination index that will contain the results of the
+analysis. It will contain a copy of the source index data where each document is
+annotated with the results. If the index does not exist, it will be created
+automatically.
+.. Choose `FlightDelayMin` as the dependent variable, which is the field that we
+want to predict with the {reganalysis}.
+.. Choose a training percent of `90` which means it randomly selects 90% of the
+source data for training.
+.. Add `Cancelled`, `FlightDelay`, and `FlightDelayType` to the list of excluded
+fields. These fields will be excluded from the analysis. It is recommended to 
+exclude fields that either contain erroneous data or describe the 
+`dependent_variable`.
+.. Use the default memory limit for the job. If the job requires more than this 
+amount of memory, it fails to start. If the available memory on the node is
+limited, this setting makes it possible to prevent job execution.
 
 .API example
 [%collapsible]

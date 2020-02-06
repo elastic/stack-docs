@@ -5,10 +5,23 @@ Identifies network activity from unexpected system applications. This may
 indicate adversarial activity as these applications are often leveraged by
 adversaries to execute code and evade detection.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -18,7 +31,7 @@ adversaries to execute code and evade detection.
 
 [source,js]
 ----------------------------------
- event.action:"Network connection detected (rule: NetworkConnect)" and
+event.action:"Network connection detected (rule: NetworkConnect)" and
 process.name:(bginfo.exe or cdb.exe or cmstp.exe or csi.exe or dnx.exe
 or fsi.exe or ieexec.exe or iexpress.exe or
 Microsoft.Workflow.Compiler.exe or odbcconf.exe or rcsi.exe or

@@ -1,13 +1,26 @@
-[[unusual-parent-child-relationship]]
-=== Unusual Parent-Child Relationship
+[[unusual-parent-child-relationship-]]
+=== Unusual Parent-Child Relationship 
 
 Identifies Windows programs run from unexpected parent processes. This could
 indicate masquerading or other strange activity on a system.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -17,7 +30,7 @@ indicate masquerading or other strange activity on a system.
 
 [source,js]
 ----------------------------------
- event.action:"Process Create (rule: ProcessCreate)" and
+event.action:"Process Create (rule: ProcessCreate)" and
 process.parent.executable:* and ( (process.name:"smss.exe" and
 not process.parent.name:("System" or "smss.exe")) or
 (process.name:"csrss.exe" and not process.parent.name:("smss.exe" or

@@ -4,10 +4,23 @@
 Identifies suspicious child processes of Microsoft Outlook. These child
 processes are often associated with spear phishing activity.
 
+*Rule indices*:
+
+* winlogbeat-*
+
 *Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1
@@ -17,7 +30,7 @@ processes are often associated with spear phishing activity.
 
 [source,js]
 ----------------------------------
- event.action:"Process Create (rule: ProcessCreate)" and
+event.action:"Process Create (rule: ProcessCreate)" and
 process.parent.name:"outlook.exe" and process.name:("arp.exe" or
 "dsquery.exe" or "dsget.exe" or "gpresult.exe" or "hostname.exe" or
 "ipconfig.exe" or "nbtstat.exe" or "net.exe" or "net1.exe" or

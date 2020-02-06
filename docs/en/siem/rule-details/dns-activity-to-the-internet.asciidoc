@@ -1,32 +1,52 @@
 [[dns-activity-to-the-internet]]
 === DNS Activity to the Internet
 
-This rule detects when an internal network client sends DNS traffic directly 
-to the Internet. This is atypical behavior for a managed network, and can be 
-indicative of malware, exfiltration, command and control, or, simply, 
-misconfiguration. This DNS activity also impacts your organization's 
-ability to provide enterprise monitoring and logging of DNS, and opens your 
-network to a variety of abuses and malicious communications.
+Detects when an internal network client sends DNS traffic directly to
+the Internet. This is atypical behavior for a managed network, and can be
+indicative of malware, exfiltration, command and control, or, simply,
+misconfiguration. This DNS activity also impacts your organization's ability to
+provide enterprise monitoring and logging of DNS, and opens your network to a
+variety of abuses and malicious communications.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
 
 *Severity*: medium
 
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.us-cert.gov/ncas/alerts/TA15-240A
+* https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-81-2.pdf
+
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
 ==== Potential false positives
 
-Exclude DNS servers from this rule as this is expected behavior. 
-Endpoints usually query local DNS servers defined in their DHCP scopes, but
-this may be overridden if a user configures their endpoint to use a remote DNS
-server. This is uncommon in managed enterprise networks because it could
-break intranet name resolution when split horizon DNS is utilized. Some
-consumer VPN services and browser plug-ins may send DNS traffic to remote
-Internet destinations. In that case, such devices or networks can be excluded
-from this rule when this is expected behavior.
-
+Exclude DNS servers from this rule as this is expected behavior. Endpoints
+usually query local DNS servers defined in their DHCP scopes, but this may be
+overridden if a user configures their endpoint to use a remote DNS server. This
+is uncommon in managed enterprise networks because it could break intranet name
+resolution when split horizon DNS is utilized. Some consumer VPN services and
+browser plug-ins may send DNS traffic to remote Internet destinations. In that
+case, such devices or networks can be excluded from this rule when this is
+expected behavior.
 
 ==== Rule query
 

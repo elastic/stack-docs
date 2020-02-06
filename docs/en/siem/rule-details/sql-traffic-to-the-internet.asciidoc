@@ -1,28 +1,43 @@
 [[sql-traffic-to-the-internet]]
 === SQL Traffic to the Internet
 
-This rule detects events that may describe database traffic (MS SQL, Oracle,
+Detects events that may describe database traffic (MS SQL, Oracle,
 MySQL, and Postgresql) across the Internet. Databases should almost never be
 directly exposed to the Internet, as they are frequently targeted by threat
 actors to gain initial access to network resources.
 
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
-* network
+* Elastic
+* Network
 
 *Version*: 1
 
 ==== Potential false positives
 
 Because these ports are in the ephemeral range, this rule may false under
-certain conditions, such as when a NATed web server replies to a client which 
-used a port in the range by coincidence. In this case, such servers can be
-excluded. Some cloud environments may use this port when VPNs or direct 
-connects are not in use and database instances are accessed directly
-across the Internet.
-
+certain conditions such as when a NATed web server replies to a client which
+has used a port in the range by coincidence. In this case, such servers can
+be excluded if desired. Some cloud environments may use this port when VPNs
+or direct connects are not in use and database instances are accessed
+directly across the Internet.
 
 ==== Rule query
 

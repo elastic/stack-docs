@@ -4,19 +4,31 @@
 Identifies processes running in a temporary folder. This is sometimes done by
 adversaries to hide malware.
 
+*Rule indices*:
+
+* auditbeat-*
+
 *Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
 
 *Tags*:
 
+* Elastic
 * Linux
 
 *Version*: 1
 
 ==== Potential false positives
 
-Build systems, like Jenkins, may start processes in the `/tmp` directory. These 
+Build systems, like Jenkins, may start processes in the `/tmp` directory. These
 can be exempted by name or by username.
-
 
 ==== Rule query
 

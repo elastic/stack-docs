@@ -2,13 +2,26 @@
 === Unusual Network Connection via RunDLL32
 
 Identifies unusual instances of `rundll32.exe` making outbound network
-connections. This may indicate adversarial activity, and may identify malicious
+connections. This may indicate adversarial activity and may identify malicious
 DLLs.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

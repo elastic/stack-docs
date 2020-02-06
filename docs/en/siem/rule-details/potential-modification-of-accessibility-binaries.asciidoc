@@ -3,14 +3,26 @@
 
 Windows contains accessibility features that may be launched with a key
 combination before a user has logged in. An adversary can modify the way these
-programs are launched to get a command prompt or use a backdoor without logging 
-in to the system.
+programs are launched to get a command prompt or backdoor without logging in to
+the system.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
-* D-SA
+* Elastic
 * Windows
 
 *Version*: 1

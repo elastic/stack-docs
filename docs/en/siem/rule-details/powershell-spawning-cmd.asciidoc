@@ -1,13 +1,26 @@
-[[powershell-spawning-cmd.exe]]
-=== PowerShell spawning cmd.exe
+[[powershell-spawning-cmd]]
+=== PowerShell spawning Cmd
 
 Identifies a suspicious parent child process relationship with `cmd.exe`
-descending from `PowerShell.exe`.
+descending from `PowerShell`.
+
+*Rule indices*:
+
+* winlogbeat-*
 
 *Severity*: low
 
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
 *Tags*:
 
+* Elastic
 * Windows
 
 *Version*: 1

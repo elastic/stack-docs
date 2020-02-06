@@ -1,0 +1,19 @@
+tag::feature-importance[]
+Feature importance is calculated for supervised {ml} processes such as 
+{regression} and {classification}. This value provides further insight into the 
+results of a {dfanalytics} and therefore helps interpret these results. As we 
+mentioned, there are multiple features of a data point that are analyzed during 
+{dfanalytics}. These features are responsible for a particular prediction to 
+varying degrees. Feature importance shows on what degree a given feature of a 
+datapoint contributes to the prediction. The feature importance value of a 
+feature can be either positive or negative depending on its effect on the 
+prediction; the value is negative if the feature reduces the prediction value 
+and positive if the feature increases the prediction value. The magnitude of the 
+feature importance value shows how significant is the effect of the given 
+feature on the prediction both locally (for a given datapoint) or generally (for 
+the whole dataset).
+
+Feature importance in the {stack} is calculated using the SHAP (SHapley Additive 
+exPlanations) method as described in
+https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf[Lundberg, S. M., & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. In NeurIPS 2017.].
+end::feature-importance[]

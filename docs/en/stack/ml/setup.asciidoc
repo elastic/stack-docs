@@ -59,52 +59,16 @@ If you use {ml-features} in {kib}, you must also have:
 * [ ] `kibana_admin` built-in role or a custom role that
 {kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
 * [ ] `monitor` cluster privilege to manage {dfanalytics-jobs}
-* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges when you upload
-files in the *Data Visualizer*
+
+If you use job wizard in {kib} to create categorization {anomaly-jobs}, you must
+also have:
+
+[%interactive]
+* [ ] `manage` cluster privileges
+
+If you use the *Data Visualizer* to upload files in {kib}, you must also have:
+
+[%interactive]
+* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges
 * [ ] `read`, `manage`, and `index` index privileges for the destination index
-when you upload files in the *Data Visualizer*
 
-[discrete]
-==== Alternative layout
-
-If {stack} {security-features} are enabled, the following roles and privileges
-are required to use {ml-features}:
-
-|===
-| Required roles or privileges | Description
-
-| `machine_learning_admin` built-in role | Required to manage {ml-features}
-
-| `machine_learning_user` built-in role | Minimal authority necessary to view
-{ml} configuration, status, and results.
-
-| `read` and `view_index_metadata` index privileges | Required on source
-indices to manage {dfanalytics-jobs}
-
-| `read`, `manage`, and `index` index privileges | Required on destination
-indices to manage {dfanalytics-jobs} 
-
-| `read` index privilege | Required on destination indices to view the results
-of {dfanalytics-jobs} 
-
-|===
-
-There are additional authorization requirements when you use {ml-features} in
-{kib}:
-
-|===
-| Required roles or privileges | Description
-
-| `kibana_admin` built-in role | Required to use {ml-features} in {kib}.
-Alternatively, use a custom role that
-{kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
-
-| `monitor` and `manage_ingest_pipelines` cluster privileges | Required to
-upload files to the *Data Visualizer*
-
-| `monitor` cluster privileges | Required to manage {dfanalytics-jobs}
-
-| `read`, `manage`, and `index` index privileges | Required on
-destination indices to upload files to the *Data Visualizer*
-
-|===

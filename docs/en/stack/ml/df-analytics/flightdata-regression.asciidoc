@@ -98,11 +98,10 @@ To predict the number of minutes delayed for each flight:
 . Create a {dfanalytics-job}.
 +
 --
-[.left.text-left]
-image::images/flights-regression-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%"]
-
 You can use the wizard on the *Machine Learning* > *Data Frame Analaytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
+
+image::images/flights-regression-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%",role="screenshot left",align="text-left"]
 
 .. Choose `regression` as the job type.
 .. Choose `kibana_sample_data_flights` as the source index.
@@ -131,9 +130,9 @@ PUT _ml/data_frame/analytics/model-flight-delays
 {
   "source": {
     "index": [
-      "kibana_sample_data_flights" <1>
+      "kibana_sample_data_flights"
     ],
-    "query": { <2>
+    "query": { <1>
       "range": {
         "DistanceKilometers": { 
           "gt": 0
@@ -142,41 +141,29 @@ PUT _ml/data_frame/analytics/model-flight-delays
     }
   },
   "dest": {
-    "index": "df-flight-delays"  <3>
+    "index": "df-flight-delays"
   },
   "analysis": {
     "regression": {
-      "dependent_variable": "FlightDelayMin",  <4>
-      "training_percent": 90  <5>
+      "dependent_variable": "FlightDelayMin",
+      "training_percent": 90
     }
   },
   "analyzed_fields": {
     "includes": [],
-    "excludes": [    <6>
+    "excludes": [
       "Cancelled",
       "FlightDelay",
       "FlightDelayType"
     ]
   },
-  "model_memory_limit": "100mb" <7>
+  "model_memory_limit": "100mb"
 }
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 
-<1> The source index to analyze.
-<2> This query removes erroneous data from the analysis to improve its quality.
-<3> The index that will contain the results of the analysis; it will consist of 
-a copy of the source index data where each document is annotated with the 
-results.
-<4> Specifies the continuous variable we want to predict with the {reganalysis}.
-<5> Specifies the approximate proportion of data that is used for training. In 
-this example we randomly select 90% of the source data for training.
-<6> Specifies fields to be excluded from the analysis. It is recommended to 
-exclude fields that either contain erroneous data or describe the 
-`dependent_variable`.
-<7> Specifies a memory limit for the job. If the job requires more than this 
-amount of memory, it fails to start. This makes it possible to prevent job 
-execution if the available memory on the node is limited.
+<1> This optional query removes erroneous data from the analysis to improve its
+quality.
 ====
 --
 
@@ -184,6 +171,11 @@ execution if the available memory on the node is limited.
 {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API.
 +
 --
+The job takes a few minutes to run. Runtime depends on the local hardware and 
+also on the number of documents and fields that analyzed. The more fields and 
+documents, the longer the job runs. It stops automatically when the analysis is
+complete.
+
 .API example
 [%collapsible]
 ====
@@ -193,11 +185,6 @@ POST _ml/data_frame/analytics/model-flight-delays/_start
 --------------------------------------------------
 // TEST[skip:TBD]
 ====
-
-The job takes a few minutes to run. Runtime depends on the local hardware and 
-also on the number of documents and fields that analyzed. The more fields and 
-documents, the longer the job runs. It stops automatically when the analysis is
-complete.
 --
 
 . Check the job stats to follow the progress in {kib} or use the 
@@ -206,6 +193,10 @@ complete.
 --
 [role="screenshot"]
 image::images/flights-regression-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
+
+The job has four phases (reindexing, loading data, analyzing, and writing
+results). When all the phases have completed, the job stops and the results are
+ready to view and evaluate.
 
 .API example
 [%collapsible]
@@ -249,14 +240,10 @@ The API call returns the following response:
 }
 ----
 ====
-
-The job has four phases. When all the phases have completed, the job stops and 
-the results are ready to view and evaluate.
 --
 
-
 [[flightdata-regression-results]]
-==== Viewing {regression} results
+==== Viewing and evaluating {regression} results
 
 Now you have a new index that contains a copy of your source data with 
 predictions for your dependent variable.
@@ -264,8 +251,14 @@ predictions for your dependent variable.
 [role="screenshot"]
 image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
 
-Alternatively, you can use the standard {es} search command to 
-view the results in the destination index.
+In this example, the table shows a column for the dependent variable
+(`FlightDelayMin`), which contains the ground truth values that we are trying to
+predict with the {reganalysis}. It also shows a column for the prediction values
+(`ml.FlightDelayMin_prediction`) and a column that indicates whether the
+document was used in the training set (`ml.is_training`).
+
+If you do not use {kib}, you can see the same information by using the standard
+{es} search command to view the results in the destination index.
 
 .API example
 [%collapsible]
@@ -276,8 +269,6 @@ GET df-flight-delays/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
-
-
 The snippet below shows a part of a document with the annotated results:
 
 [source,console-result]
@@ -286,32 +277,42 @@ The snippet below shows a part of a document with the annotated results:
           "DestRegion" : "UK",
           "OriginAirportID" : "LHR",
           "DestCityName" : "London",
-          "FlightDelayMin" : 66,      <1>
+          "FlightDelayMin" : 66,
           "ml" : {
-            "FlightDelayMin_prediction" : 62.527,   <2>
-            "is_training" : false   <3>
+            "FlightDelayMin_prediction" : 62.527,
+            "is_training" : false
           }
           ...
 ----
-
-<1> The `dependent_variable` with the ground truth value. This is what we are 
-trying to predict with the {reganalysis}.
-<2> The prediction. The field name is suffixed with `_prediction`.
-<3> Indicates that this document was not used in the training set.
 ====
 
+
 [[flightdata-regression-evaluate]]
-==== Evaluating results
+Though you can look at individual results and compare the predicted value
+(`ml.FlightDelayMin_prediction`) to the actual value (`FlightDelayMins`), there
+are also metrics that you can use to evaluate the success of your {regression}
+model as a whole.
 
-The results can be evaluated for documents which contain both the ground truth 
-field and the prediction. In the example below, `FlightDelayMins` contains the 
-ground truth and the prediction is stored as `ml.FlightDelayMin_prediction`.
+The _training error_ metrics that you see in {kib} represent how well the
+model performed on the training dataset. The _generalization error_ metrics
+represent how well the model performed on previously unseen data (that is to
+say, documents that were not used as training data).
 
-. Use the {dfanalytics} evaluate API to evaluate the results.
-+
---
-First, we want to know the training error that represents how well the model 
-performed on the training dataset.
+For more information about the interpreting the evaluation metrics, see
+<<ml-dfanalytics-regression-evaluation>>.
+
+////
+TBD: Can we provide tips for what are good MSE or R-squared values? For example:
+A MSE of zero means that the models predicts the dependent variable with
+perfect accuracy. This is the ideal, but is typically not possible. Likewise, an
+R-squared value of 1 indicates that all of the variance in the dependent variable
+can be predicted from the feature variables. Typically, you compare the MSE and
+R-squared values from multiple {regression} models to find the best balance or
+fit for your data.
+////
+
+You can alternatively generate these metrics with the
+{ref}/evaluate-dfanalytics.html[{dfanalytics} evaluate API].
 
 .API example
 [%collapsible]
@@ -340,18 +341,29 @@ POST _ml/data_frame/_evaluate
 --------------------------------------------------
 // TEST[skip:TBD]
 
-<1> The destination index which is the output of the analysis job.
-<2> We calculate the training error by only evaluating the training data.
-<3> The ground truth label.
-<4> Predicted value.
-====
+<1> The destination index which is the output of the {dfanalysis-job}.
+<2> We calculate the training error by evaluating only the training data.
+<3> The field that contains the actual (ground truth) value.
+<4> The field that contains the predicted value.
 
-Next, we calculate the generalization error that represents how well the model 
-performed on previously unseen data.
+The API returns a response like this:
 
-.API example
-[%collapsible]
-====
+[source,console-result]
+----  
+{
+  "regression" : {
+    "mean_squared_error" : {
+      "error" : 3759.7242253334207
+    },
+    "r_squared" : {
+      "value" : 0.5853159777330623
+    }
+  }
+}
+----
+
+Next, we calculate the generalization error:
+
 [source,console]
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
@@ -376,29 +388,9 @@ POST _ml/data_frame/_evaluate
 --------------------------------------------------
 // TEST[skip:TBD]
 <1> We evaluate only the documents that are not part of the training data.
-
-
-The evaluate {dfanalytics} API returns the following response:
-
-[source,console-result]
-----  
-{
-  "regression" : {
-    "mean_squared_error" : {
-      "error" : 3759.7242253334207
-    },
-    "r_squared" : {
-      "value" : 0.5853159777330623
-    }
-  }
-}
-----
 ====
 
-For more information about the evaluation metrics, see 
-<<dfa-regression-evaluation>>.
 
-If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
-{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 
-{dfanalytics-jobs}, the destination indices remain intact.
---
+If you don't want to keep the {dfanalytics-job}, you can delete it. For example,
+use {kib} or the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API].
+When you delete  {dfanalytics-jobs}, the destination indices remain intact.

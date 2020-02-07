@@ -243,10 +243,13 @@ The API call returns the following response:
 --
 
 [[flightdata-regression-results]]
-==== Viewing and evaluating {regression} results
+==== Viewing {regression} results
 
 Now you have a new index that contains a copy of your source data with 
 predictions for your dependent variable.
+
+When you view the {regression} results in {kib}, it shows the contents of the
+destination index in a tabular format:
 
 [role="screenshot"]
 image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
@@ -255,7 +258,9 @@ In this example, the table shows a column for the dependent variable
 (`FlightDelayMin`), which contains the ground truth values that we are trying to
 predict with the {reganalysis}. It also shows a column for the prediction values
 (`ml.FlightDelayMin_prediction`) and a column that indicates whether the
-document was used in the training set (`ml.is_training`).
+document was used in the training set (`ml.is_training`). You can filter the
+table to show only testing or training data and you can select which fields are
+shown in the table.
 
 If you do not use {kib}, you can see the same information by using the standard
 {es} search command to view the results in the destination index.
@@ -288,15 +293,15 @@ The snippet below shows a part of a document with the annotated results:
 
 
 [[flightdata-regression-evaluate]]
-Though you can look at individual results and compare the predicted value
-(`ml.FlightDelayMin_prediction`) to the actual value (`FlightDelayMins`), there
-are also metrics that you can use to evaluate the success of your {regression}
-model as a whole.
+==== Evaluating {regression} results
 
-The _training error_ metrics that you see in {kib} represent how well the
-model performed on the training dataset. The _generalization error_ metrics
-represent how well the model performed on previously unseen data (that is to
-say, documents that were not used as training data).
+Though you can look at individual results and compare the predicted value
+(`ml.FlightDelayMin_prediction`) to the actual value (`FlightDelayMins`), you
+typically need to evaluate the success of the {regression} model as a whole.
+
+{kib} provides _training error_ metrics, which represent how well the model
+performed on the training dataset. It also provides _generalization error_
+metrics, which represent how well the model performed on testing data.
 
 For more information about the interpreting the evaluation metrics, see
 <<ml-dfanalytics-regression-evaluation>>.

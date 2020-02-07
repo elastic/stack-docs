@@ -172,9 +172,9 @@ quality.
 +
 --
 The job takes a few minutes to run. Runtime depends on the local hardware and 
-also on the number of documents and fields that analyzed. The more fields and 
-documents, the longer the job runs. It stops automatically when the analysis is
-complete.
+also on the number of documents and fields that are analyzed. The more fields
+and documents, the longer the job runs. It stops automatically when the analysis
+is complete.
 
 .API example
 [%collapsible]
@@ -303,18 +303,15 @@ typically need to evaluate the success of the {regression} model as a whole.
 performed on the training dataset. It also provides _generalization error_
 metrics, which represent how well the model performed on testing data.
 
-For more information about the interpreting the evaluation metrics, see
-<<ml-dfanalytics-regression-evaluation>>.
-
-////
-TBD: Can we provide tips for what are good MSE or R-squared values? For example:
 A MSE of zero means that the models predicts the dependent variable with
 perfect accuracy. This is the ideal, but is typically not possible. Likewise, an
 R-squared value of 1 indicates that all of the variance in the dependent variable
-can be predicted from the feature variables. Typically, you compare the MSE and
+can be explained by the feature variables. Typically, you compare the MSE and
 R-squared values from multiple {regression} models to find the best balance or
 fit for your data.
-////
+
+For more information about the interpreting the evaluation metrics, see
+<<ml-dfanalytics-regression-evaluation>>.
 
 You can alternatively generate these metrics with the
 {ref}/evaluate-dfanalytics.html[{dfanalytics} evaluate API].
@@ -358,10 +355,10 @@ The API returns a response like this:
 {
   "regression" : {
     "mean_squared_error" : {
-      "error" : 3759.7242253334207
+      "error" : 3006.517622042659
     },
     "r_squared" : {
-      "value" : 0.5853159777330623
+      "value" : 0.6794200914263231
     }
   }
 }

@@ -9,7 +9,7 @@ different fields in your data, then making further predictions based on these
 relationships.
 
 For example, suppose we are interested in finding the relationship between 
-apartment size and monthly rent in a city. Our imaginary dataset consists of 
+apartment size and monthly rent in a city. Our imaginary data set consists of 
 three data points:
 
 |===
@@ -19,16 +19,17 @@ three data points:
 | 63        | 2300
 |===
 
-After the model determines the relationship between the
-apartment size and the rent, it can make predictions such as the 
-monthly rent of a hundred square meter-size apartment.
+After the model determines the relationship between the apartment size and the
+rent, it can make predictions such as the monthly rent of a hundred square
+meter-size apartment.
 
 This is a simple example. Usually {regression} problems are multi-dimensional, 
 so the relationships that {reganalysis} tries to find are between multiple 
-fields. To extend our example, a more complex 
-{reganalysis} could take into account additional factors such as the location 
-of the apartment in the city, on which floor it is, and whether the apartment 
-has a riverside view or not and so on.
+fields. To extend our example, a more complex {reganalysis} could take into
+account additional factors such as the location of the apartment in the city, on
+which floor it is, and whether the apartment has a riverside view or not, and so
+on. All of these factors can be considered _features_; they are measurable
+properties or characteristics of the phenomenon we're studying.
 
 
 [discrete]
@@ -58,16 +59,16 @@ Arrays are not supported.
 ==== Training the {regression} model
 
 {regression-cap} is a supervised {ml} method, which means that you need to 
-supply a labeled training dataset that has some {feature-vars} and a {depvar}. 
-The {regression} algorithm identifies the relationships between the feature and the 
-{depvar}. Once you've trained the model on your training dataset, you can reuse 
-the knowledge that the model has learned about the relationships between the 
-data points to make certain inferences about new data points.
+supply a labeled training data set that has some {feature-vars} and a {depvar}. 
+The {regression} algorithm identifies the relationships between the
+{feature-vars} and the {depvar}. Once you've trained the model on your training
+data set, you can reuse the knowledge that the model has learned to make
+inferences about new data.
 
 The relationships between the {feature-vars} and the {depvar} are described as a 
 mathematical function. {reganalysis-cap} tries to find the best prediction for 
 the {depvar} by combining the predictions from multiple base learners – 
-algorithms that generalize from the dataset. The performance of an ensemble is 
+algorithms that generalize from the data set. The performance of an ensemble is 
 usually better than the performance of each individual base learner because the 
 individual learners will make different errors. These average out when their 
 predictions are combined.
@@ -95,18 +96,18 @@ include::{docdir}/shared-ml-concepts.asciidoc[tag=feature-importance]
 [[dfa-regression-evaluation]]
 ==== Measuring model performance
 
-You can measure how well the model has performed on your training dataset by 
+You can measure how well the model has performed on your training data set by 
 using the `regression` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The mean squared 
-error (MSE) value that the evaluation provides you on the training dataset is 
+error (MSE) value that the evaluation provides you on the training data set is 
 the _training error_. Training the {regression} model means finding the 
 combination of model parameters that produces the lowest possible training 
 error.
 
 Another crucial measurement is how well your model performs on unseen 
 data points. To assess how well the trained model will perform on data it has 
-never seen before, you must set aside a proportion of the training dataset for 
-testing. This split of the dataset is the testing dataset. Once the model has 
+never seen before, you must set aside a proportion of the training data set for 
+testing. This split of the data set is the testing data set. Once the model has 
 been trained, you can let the model 
 predict the value of the data points it has never seen before and compare the 
 prediction to the actual value. This test provides an estimate of a quantity 
@@ -114,9 +115,9 @@ known as the _model generalization error_.
 
 Two concepts describe how well the {regression} algorithm was able to learn the 
 relationship between the {feature-vars} and the {depvar}. _Underfitting_ is when 
-the model cannot capture the complexity of the dataset. _Overfitting_ is when 
+the model cannot capture the complexity of the data set. _Overfitting_ is when 
 the model is too specific to the training data set and is capturing details 
 which do not generalize to new data. A model that overfits the data has a 
-low MSE value on the training dataset and a high MSE value on the testing 
-dataset. For more information about the evaluation metrics, see 
+low MSE value on the training data set and a high MSE value on the testing 
+data set. For more information about the evaluation metrics, see 
 <<ml-dfanalytics-regression-evaluation>>.

@@ -220,15 +220,15 @@ parent-child process relationship with cmd.exe descending from `svchost.exe` |[E
 
 |<<tcp-port-8000-activity-to-the-internet, TCP Port 8000 Activity to the Internet>> |TCP Port 8000 is commonly used for development environments of web server software. It generally should not be exposed directly to the Internet. If you are running software like this on the Internet, you should consider placing it behind a reverse proxy.|[Elastic] [Network] |1
 
-|<<telnet-port-activity, Telnet Port Activity>> |Detects network events that may indicate the use of Telnet traffic. Telnet is commonly used by system administrators to remotely control older or embed ed systems using the command line shell. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector. As a plain-text protocol, it may also expose usernames and passwords to anyone capable of observing the traffic.|[Elastic] [Network] |1
+|<<telnet-port-activity, Telnet Port Activity>> |Detects network events that may indicate the use of Telnet traffic. Telnet is commonly used by system administrators to remotely control older or embedded systems using the command line shell. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector. As a plain-text protocol, it may also expose usernames and passwords to anyone capable of observing the traffic.|[Elastic] [Network] |1
 
 |<<tor-activity-to-the-internet, Tor Activity to the Internet>> |Detects network events that may indicate the use of Tor traffic to the Internet. Tor is a network protocol that sends traffic through a series of encrypted tunnels used to conceal a user's location and usage. Tor may be used by threat actors as an alternate communication pathway to conceal the actor's identity and avoid detection.|[Elastic] [Network] |1
 
-|<<trusted-developer-application-usage, Trusted Developer Application Usage>> |Identifies possibly suspicious activity using trusted Windows developer activity. |[Elastic] [Windows] |1
+|<<trusted-developer-application-usage, Trusted Developer Application Usage>> |Identifies possibly suspicious activity using a trusted Windows developer utility program. |[Elastic] [Windows] |1
 
 |<<unusual-network-connection-via-rundll32, Unusual Network Connection via RunDLL32>> |Identifies unusual instances of `rundll32.exe` making outbound network connections. This may indicate adversarial activity and may identify malicious DLLs. |[Elastic] [Windows] |1
 
-|<<unusual-parent-child-relationship-, Unusual Parent-Child Relationship >> |Identifies Windows programs run from unexpected parent processes. This could indicate masquerading or other strange activity on a system. |[Elastic] [Windows] |1
+|<<unusual-parent-child-relationship-, Unusual Parent-Child Relationship >> |Identifies Windows programs run by unexpected parent processes. This could indicate masquerading or other strange activity on a system. |[Elastic] [Windows] |1
 
 |<<unusual-process-execution-temp, Unusual Process Execution - Temp>> |Identifies processes running in a temporary folder. This is sometimes done by adversaries to hide malware. |[Elastic] [Linux] |1
 

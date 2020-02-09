@@ -57,8 +57,9 @@ identify and investigate suspicious activity:
 === Data sources
 
 SIEM can ingest and analyze data from a variety of sources, including Elastic
-Endpoint Security, Beats and Beats modules, and third-party collectors mapped to
-the {ecs-ref}[Elastic Common Schema (ECS)]. 
+Endpoint Security, Beats and Beats modules, 
+{apm-get-started-ref}/transactions.html[APM transactions], and third-party 
+collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)]. 
 
 [float]
 [[hosts-data-sources]]
@@ -102,6 +103,15 @@ the {ecs-ref}[Elastic Common Schema (ECS)].
 
 The Sensor Management Platform (SMP) ships all relevant host and network data
 directly to the {siem-app}.
+
+[float]
+[[apm-transactions-data]]
+==== APM transactions
+
+By default, the {siem-app} monitors {apm-get-started-ref}/overview.html[APM] 
+`apm-*-transaction*` indices. To add additional APM indices, update the 
+index patterns in the `siem:defaultIndex` setting ({kib} -> Management -> 
+Advanced Settings -> `siem:defaultIndex`).
 
 [float]
 [[ecs]]

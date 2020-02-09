@@ -29,7 +29,7 @@ items you want to dig into, and drag and drop them to the Timeline. Those items
 are waiting for you when you are ready to start your investigation.
 
 [role="screenshot"]
-image::overview-ui.png[]
+image::images/overview-ui.png[]
 
 [float]
 [[hosts-ui]]
@@ -41,7 +41,7 @@ Viewer. You can drag and drop items of interest from the Hosts view tables to
 Timeline for further investigation.
 
 [role="screenshot"]
-image::hosts-ui.png[]
+image::images/hosts-ui.png[]
 
 Interactive widgets let you drill down for deeper insights:
 
@@ -51,12 +51,13 @@ Interactive widgets let you drill down for deeper insights:
 
 There are also tabs for viewing and investigating specific types of data:
 
-* All hosts
-* Authentications
-* Uncommon processes
-* Anomalies
-* Events
-* <<det-engine-terminology, External alerts>>
+* All hosts: high-level host information
+* Authentications: authentication events
+* Uncommon processes: uncommon processes running on hosts
+* Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
+* Events: all host events
+* <<det-engine-terminology, External alerts>>: alerts received from 
+external monitoring tools, such as Suricata
 
 
 *Host details* shows information for a selected host, including
@@ -74,7 +75,7 @@ that enable interaction with the Timeline. You can drag and drop items of
 interest from the Network view to Timeline for further investigation.
 
 [role="screenshot"]
-image::network-ui.png[]
+image::images/network-ui.png[]
 
 Interactive widgets let you drill down for deeper insights:
 
@@ -86,15 +87,14 @@ Interactive widgets let you drill down for deeper insights:
 
 There are also tabs for viewing and investigating specific types of data:
 
-* Flows
-** Source IPs
-** Destination IPs
-** Source Countries
-** Destination Countries
-* DNS
-* TLS
-* Anomalies
-* <<det-engine-terminology, External alerts>>
+* Flows: source and destination IP addresses and countries
+* DNS: DNS network queries
+* HTTP: received HTTP requests (HTTP requests for applications using
+{apm-get-started-ref}/overview.html[APM] are monitored by default)
+* TLS: handshake details
+* Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
+* <<det-engine-terminology, External alerts>>: alerts received from 
+external monitoring tools, such as Suricata
 
 [float]
 [[map-ui]]
@@ -125,7 +125,7 @@ rules and create new rules. <<detection-engine-overview>> provides a detailed
 description of Detections and how to use it.
 
 [role="screenshot"]
-image::detections-ui.png[]
+image::images/detections-ui.png[]
 
 The `Signal count` histogram shows the detection rate of signals 
 according to various attributes, including `Risk scores`, `Severities`, and 
@@ -152,7 +152,7 @@ available for review by other analysts and incident response teams.
 
 
 [role="screenshot"]
-image::timeline-ui.png[]
+image::images/timeline-ui.png[]
 
 Add notes for your own use and to communicate your workflow and findings to
 others. You can share a timeline, or pass it off to another person or team. You

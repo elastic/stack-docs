@@ -1,0 +1,87 @@
+[[rdp-remote-desktop-protocol-from-the-internet]]
+=== RDP (Remote Desktop Protocol) from the Internet
+
+Detects network events that may indicate the use of RDP traffic from
+the Internet. RDP is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Network
+
+*Version*: 1
+
+==== Potential false positives
+
+Some network security policies allow RDP directly from the Internet but usage
+that is unfamiliar to server or network owners can be unexpected and
+suspicious. RDP services may be exposed directly to the Internet in some
+networks such as cloud environments. In such cases, only RDP gateways, bastions
+or jump servers may be expected expose RDP directly to the Internet and can be
+exempted from this rule. RDP may be required by some workflows such as remote
+access and support for specialized software products and servers. Such work-
+flows are usually known and not unexpected.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and destination.port: 3389 and (
+network.direction: inbound or ( not source.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) and destination.ip:
+(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Commonly Used Port
+** ID: T1043
+** Reference URL: https://attack.mitre.org/techniques/T1043/
+
+
+* Tactic:
+** Name: Lateral Movement
+** ID: TA0008
+** Reference URL: https://attack.mitre.org/tactics/TA0008/
+* Technique:
+** Name: Remote Services
+** ID: T1021
+** Reference URL: https://attack.mitre.org/techniques/T1021/
+
+
+* Tactic:
+** Name: Initial Access
+** ID: TA0001
+** Reference URL: https://attack.mitre.org/tactics/TA0001/
+* Technique:
+** Name: Exploit Public-Facing Application
+** ID: T1190
+** Reference URL: https://attack.mitre.org/techniques/T1190/

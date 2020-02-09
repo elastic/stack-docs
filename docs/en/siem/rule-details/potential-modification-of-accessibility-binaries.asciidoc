@@ -1,0 +1,63 @@
+[[potential-modification-of-accessibility-binaries]]
+=== Potential Modification of Accessibility Binaries
+
+Windows contains accessibility features that may be launched with a key
+combination before a user has logged in. An adversary can modify the way these
+programs are launched to get a command prompt or backdoor without logging in to
+the system.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and process.parent.name:winlogon.exe and
+(process.name:atbroker.exe or process.name:displayswitch.exe or
+process.name:magnify.exe or process.name:narrator.exe or
+process.name:osk.exe or process.name:sethc.exe or
+process.name:utilman.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: Accessibility Features
+** ID: T1015
+** Reference URL: https://attack.mitre.org/techniques/T1015/
+
+
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Accessibility Features
+** ID: T1015
+** Reference URL: https://attack.mitre.org/techniques/T1015/

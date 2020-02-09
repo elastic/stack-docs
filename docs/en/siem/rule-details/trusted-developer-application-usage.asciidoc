@@ -1,0 +1,62 @@
+[[trusted-developer-application-usage]]
+=== Trusted Developer Application Usage
+
+Identifies possibly suspicious activity using a trusted Windows developer 
+utility program.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+These programs may be used by Windows developers but use by non-engineers is
+unusual.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and (process.name:MSBuild.exe or process.name:msxsl.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Trusted Developer Utilities
+** ID: T1127
+** Reference URL: https://attack.mitre.org/techniques/T1127/
+
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Trusted Developer Utilities
+** ID: T1127
+** Reference URL: https://attack.mitre.org/techniques/T1127/

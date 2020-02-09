@@ -1,0 +1,50 @@
+[[user-account-creation]]
+=== User Account Creation
+
+Identifies attempts to create new local users. This is sometimes done by
+attackers to increase access to a system or domain.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:("net.exe" or "net1.exe") and not
+process.parent.name:"net.exe" and process.args:("user" and ("/add" or
+"/ad"))
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: Create Account
+** ID: T1136
+** Reference URL: https://attack.mitre.org/techniques/T1136/

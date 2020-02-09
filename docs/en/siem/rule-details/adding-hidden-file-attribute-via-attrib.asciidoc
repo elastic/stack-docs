@@ -1,0 +1,58 @@
+[[adding-hidden-file-attribute-via-attrib]]
+=== Adding Hidden File Attribute via Attrib
+
+Adversaries can add the `hidden` attribute to files to hide them from the user
+in an attempt to evade detection.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"attrib.exe" and process.args:"+h"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Hidden Files and Directories
+** ID: T1158
+** Reference URL: https://attack.mitre.org/techniques/T1158/
+
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: Hidden Files and Directories
+** ID: T1158
+** Reference URL: https://attack.mitre.org/techniques/T1158/

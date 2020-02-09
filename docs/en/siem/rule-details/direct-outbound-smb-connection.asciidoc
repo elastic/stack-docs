@@ -1,0 +1,53 @@
+[[direct-outbound-smb-connection]]
+=== Direct Outbound SMB Connection
+
+Identifies unexpected processes making network connections over port 445.
+Windows File Sharing is typically implemented over Server Message Block (SMB),
+which communicates between hosts using port 445. When legitimate, these network
+connections are established by the kernel. Processes making 445/tcp connections
+may be port scanners, exploits, or suspicious user-level processes moving
+laterally.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+destination.port:445 and not process.pid:4 and not
+destination.ip:("127.0.0.1" or "::1")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Lateral Movement
+** ID: TA0008
+** Reference URL: https://attack.mitre.org/tactics/TA0008/
+* Technique:
+** Name: Exploitation of Remote Services
+** ID: T1210
+** Reference URL: https://attack.mitre.org/techniques/T1210/

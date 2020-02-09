@@ -1,0 +1,46 @@
+[[strace-process-activity]]
+=== Strace Process Activity
+
+Strace runs in a privileged context and can be used to escape restrictive
+environments by instantiating a shell in order to elevate privileges or move
+laterally.
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://en.wikipedia.org/wiki/Strace
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Strace is a dual-use tool that can be used for benign or malicious activity.
+Some normal use of this command may originate from developers or SREs engaged in
+debugging or system call tracing.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name: strace and event.action:executed
+----------------------------------
+

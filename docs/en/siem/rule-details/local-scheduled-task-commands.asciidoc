@@ -1,0 +1,53 @@
+[[local-scheduled-task-commands]]
+=== Local Scheduled Task Commands
+
+A scheduled task can be used by an adversary to establish persistence, move
+laterally, and/or escalate privileges.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Legitimate scheduled tasks may be created during installation of new software.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:schtasks.exe and process.args:("/create" or "-create" or
+"/S" or "-s" or "/run" or "-run" or "/change" or "-change")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: Scheduled Task
+** ID: T1053
+** Reference URL: https://attack.mitre.org/techniques/T1053/

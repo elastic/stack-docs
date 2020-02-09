@@ -1,0 +1,61 @@
+[[network-connection-via-compiled-html-file]]
+=== Network Connection via Compiled HTML File
+
+Compiled HTML files (`.chm`) are commonly distributed as part of the Microsoft
+HTML Help system. Adversaries may conceal malicious code in a CHM file and
+deliver it to a victim for execution. CHM content is loaded by the HTML Help
+executable program (`hh.exe`).
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:hh.exe and event.action:"Network connection detected
+(rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not
+destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Compiled HTML File
+** ID: T1223
+** Reference URL: https://attack.mitre.org/techniques/T1223/
+
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Compiled HTML File
+** ID: T1223
+** Reference URL: https://attack.mitre.org/techniques/T1223/

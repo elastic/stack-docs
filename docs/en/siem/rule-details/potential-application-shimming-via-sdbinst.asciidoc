@@ -1,0 +1,59 @@
+[[potential-application-shimming-via-sdbinst]]
+=== Potential Application Shimming via Sdbinst
+
+The Application Shim was created to allow for backward compatibility of software
+as the operating system codebase changes over time. This Windows functionality
+has been abused by attackers to stealthily gain persistence and arbitrary code
+execution in legitimate Windows processes.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and process.name:sdbinst.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Persistence
+** ID: TA0003
+** Reference URL: https://attack.mitre.org/tactics/TA0003/
+* Technique:
+** Name: Application Shimming
+** ID: T1138
+** Reference URL: https://attack.mitre.org/techniques/T1138/
+
+
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Application Shimming
+** ID: T1138
+** Reference URL: https://attack.mitre.org/techniques/T1138/

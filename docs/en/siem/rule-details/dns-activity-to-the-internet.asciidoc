@@ -1,0 +1,74 @@
+[[dns-activity-to-the-internet]]
+=== DNS Activity to the Internet
+
+Detects when an internal network client sends DNS traffic directly to
+the Internet. This is atypical behavior for a managed network, and can be
+indicative of malware, exfiltration, command and control, or, simply,
+misconfiguration. This DNS activity also impacts your organization's ability to
+provide enterprise monitoring and logging of DNS, and opens your network to a
+variety of abuses and malicious communications.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format])
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.us-cert.gov/ncas/alerts/TA15-240A
+* https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-81-2.pdf
+
+*Tags*:
+
+* Elastic
+* Network
+
+*Version*: 1
+
+==== Potential false positives
+
+Exclude DNS servers from this rule as this is expected behavior. Endpoints
+usually query local DNS servers defined in their DHCP scopes, but this may be
+overridden if a user configures their endpoint to use a remote DNS server. This
+is uncommon in managed enterprise networks because it could break intranet name
+resolution when split horizon DNS is utilized. Some consumer VPN services and
+browser plug-ins may send DNS traffic to remote Internet destinations. In that
+case, such devices or networks can be excluded from this rule when this is
+expected behavior.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+destination.port:53 and ( network.direction: outbound or (
+source.ip:(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and
+not destination.ip:( 169.254.169.254/32 or 127.0.0.53/32 or 10.0.0.0/8
+or 172.16.0.0/12 or 192.168.0.0/16 or 224.0.0.251 or ff02\:\:fb or
+255.255.255.255 ) ) )
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Commonly Used Port
+** ID: T1043
+** Reference URL: https://attack.mitre.org/techniques/T1043/

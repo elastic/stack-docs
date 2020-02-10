@@ -2,17 +2,17 @@
 [role="xpack"]
 == SIEM UI
 
-The {siem-app} is a highly interactive workspace designed for security 
-analysts. It provides a clear, detailed overview of events from your 
-environment, and you can use the interactive UI to drill down into areas of 
+The {siem-app} is a highly interactive workspace designed for security
+analysts. It provides a clear, detailed overview of events from your
+environment, and you can use the interactive UI to drill down into areas of
 interest.
 
 The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
 throughout the {siem-app} for searching and filtering.
 
-NOTE: The default index glob patterns defined for {siem-soln} events are 
+NOTE: The default index glob patterns defined for {siem-soln} events are
 `endgame-*`, `auditbeat-*`, `winlogbeat-*`, `filebeat-*`, `packetbeat-*`,
-and `apm-*-transaction*`. You can change the default glob patterns in {kib} -> 
+and `apm-*-transaction*`. You can change the default glob patterns in {kib} ->
 Management -> Advanced Settings -> `siem:defaultIndex`.
 
 
@@ -20,16 +20,59 @@ Management -> Advanced Settings -> `siem:defaultIndex`.
 [[siem-overview-ui]]
 === Overview
 
-The Overview page provides a high-level view into security events available
+The Overview page provides a high-level view of security events available
 for analysis, and can help surface problems with data ingestion.
 
-Notice the *Timeline* on the right of the {siem-ui}. It is always available for
-starting an investigation, whether in its collapsed or expanded state. Identify
-items you want to dig into, and drag and drop them to the Timeline. Those items
-are waiting for you when you are ready to start your investigation.
+All histograms and graphs on the overview page contain an **Inspect** button. Use inspect to receive details on count statistics, and to copy the JSON request and response set by the SIEM UI.
+
+
+[float]
+[[search-overview]]
+==== Search
+
+Search for individual SIEM items with the benefit of *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* in the SIEM search bar. A date/time filter set to `Last 24 hours` is enabled by default, but can be changed to any time range. If you want to filter your search results with other fields, select **Add Filter**, followed by the field from which to filter and the operator (such `is not` or `is between`) for your query.
+
+To save specific filters and queries, click the Save icon and then **Save current query**.
+
+[float]
+[[timelines-overview]]
+==== Timelines
+
+Select the collapsable *Timeline* button on the right of the {siem-ui} to start an investigation. Identify
+items you want from a specific event. See the <<timelines-ui,Timelines>> section for more information.
+
+The most recent timelines you've accessed appear in **Recent Timelines**.
+
+[float]
+[[signals-count]]
+==== Signals count
+
+The signals histogram displays a count of all the Signals detected by the {siem-app} within a set time frame. In the **Stack by** dropdown, select specific parameters for which to visualize the signal count. For example, stack by `user.name` for the graph to visualize the number of signals attributed to a specific user.
+
+To create signal detection rules, see <<rules-ui-create,Managing Signal Detection Rules>>.
+
+[float]
+[[external-alerts-count]]
+==== External alerts count
+
+The external alerts histogram displays a count within a certain timeframe. You can stack by two parameters: `event-category` and `event.module`.
+
+
+[float]
+[[events-count]]
+==== Events count
+
+The events count histogram displays a count of all events within a set time frame. You can stack by `event.action`, `event.dataset`, and the `event.module`.
+
+
+[float]
+[[host-and-network-events]]
+==== Host and network events
+
+View event and host counts specific to Elastic data shippers and apps, such as **Auditbeats** or **Elastic Endpoint Security**. Expand each category for specific counts of hosts or network events related to the category.
 
 [role="screenshot"]
-image::images/overview-ui.png[]
+image::overview-ui.png[]
 
 [float]
 [[hosts-ui]]
@@ -56,7 +99,7 @@ There are also tabs for viewing and investigating specific types of data:
 * Uncommon processes: uncommon processes running on hosts
 * Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
 * Events: all host events
-* <<det-engine-terminology, External alerts>>: alerts received from 
+* <<det-engine-terminology, External alerts>>: alerts received from
 external monitoring tools, such as Elastic Endpoint Security
 
 
@@ -70,8 +113,8 @@ and tabs relevant for the selected host.
 === Network
 
 The Network view provides key network activity metrics and an interactive map,
-facilitates investigation time enrichment, and provides network event tables 
-that enable interaction with the Timeline. You can drag and drop items of 
+facilitates investigation time enrichment, and provides network event tables
+that enable interaction with the Timeline. You can drag and drop items of
 interest from the Network view to Timeline for further investigation.
 
 [role="screenshot"]
@@ -93,7 +136,7 @@ There are also tabs for viewing and investigating specific types of data:
 {apm-app-ref}/apm-getting-started.html[Elastic APM] are monitored by default)
 * TLS: handshake details
 * Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
-* <<det-engine-terminology, External alerts>>: alerts received from 
+* <<det-engine-terminology, External alerts>>: alerts received from
 external monitoring tools, such as Elastic Endpoint Security
 
 [float]
@@ -104,7 +147,7 @@ so you can start exploring data directly from the map. Hover over source and
 destination points to see more information, such as hostnames and IP addresses.
 To drill down, click a point and use the filter icon to add a field to the
 filter bar or drag a field to the Timeline. You can also click a hostname
-to jump to the SIEM Host page, or an IP address to open the relevant network 
+to jump to the SIEM Host page, or an IP address to open the relevant network
 details.
 
 Just as you can start an investigation using the map, the map refreshes to show
@@ -119,17 +162,17 @@ corner of the map.
 [[detection-engine-ui]]
 === Detections
 
-The Detections page provides an overview of all the signals created by 
-signal detection rules. It is also the place where you can enable prebuilt 
-rules and create new rules. <<detection-engine-overview>> provides a detailed 
+The Detections page provides an overview of all the signals created by
+signal detection rules. It is also the place where you can enable prebuilt
+rules and create new rules. <<detection-engine-overview>> provides a detailed
 description of Detections and how to use it.
 
 [role="screenshot"]
 image::images/detections-ui.png[]
 
-The `Signal count` histogram shows the detection rate of signals 
-according to various attributes, including `Risk scores`, `Severities`, and 
-`Top event categories`. The `All signals` table helps with investigations, 
+The `Signal count` histogram shows the detection rate of signals
+according to various attributes, including `Risk scores`, `Severities`, and
+`Top event categories`. The `All signals` table helps with investigations,
 allowing you to search, filter, and aggregate all {siem-soln} signals.
 
 [float]
@@ -163,11 +206,11 @@ can link to timelines from a ticketing system.
 ==== Focus on signals or raw events
 
 Many security events in Timeline are presented in an easy-to-follow rendered
-view, which enables quicker analyst understanding. Using the drop-down options 
-by the KQL bar, you can select whether <<det-engine-terminology, signals>>, 
+view, which enables quicker analyst understanding. Using the drop-down options
+by the KQL bar, you can select whether <<det-engine-terminology, signals>>,
 other raw events, or both are displayed in the Timeline.
 
-You can click and expand events from within Timeline to see the underlying 
+You can click and expand events from within Timeline to see the underlying
 event data, either in tabular form, as as {es} JSON.
 
 [float]
@@ -181,7 +224,7 @@ whether your placement is on target to create an `AND` or `OR` filters.
 
 [float]
 [[pivot]]
-==== Pivot on a data point 
+==== Pivot on a data point
 
 Click a filter to access additional operations such as exclude, temporarily
 disable, or delete items from the query. For example, you can change an included
@@ -194,7 +237,7 @@ item so that it is excluded.
 As you build and modify your queries, you can see the results of your
 interactions in the details pane below.
 
-As your query takes shape, an easy-to-follow rendered view appears for events. 
+As your query takes shape, an easy-to-follow rendered view appears for events.
 It shows relevant contextual information that helps tell the backstory of the
 event. If you see a particular item that interests you, you can drag it to the
 drop area for further introspection.
@@ -233,25 +276,25 @@ configure `source.geo` and `destination.geo` ECS fields for your indices.
 ==== Create {kib} index patterns
 
 To display map data, you must define {kib}
-{kibana-ref}/tutorial-define-index.html[index patterns] (*Management* -> 
+{kibana-ref}/tutorial-define-index.html[index patterns] (*Management* ->
 *Index Patterns*) that match the names or glob patterns used to define
 {siem-soln} {es} indices.
 
-NOTE: The {siem-soln} {es} indices are defined in the `siem:defaultIndex` field 
+NOTE: The {siem-soln} {es} indices are defined in the `siem:defaultIndex` field
 (*{kib}* -> *Management* -> *Advanced Settings* -> *`siem:defaultIndex`*).
 
-For example, if you define a {siem-soln} {es} `servers-europe-*` glob pattern, 
-to display map data for the matching indices you must also define a {kib} index 
+For example, if you define a {siem-soln} {es} `servers-europe-*` glob pattern,
+to display map data for the matching indices you must also define a {kib} index
 pattern that matches `servers-europe-*`, such as `servers-*`.
 
 [[geoip-data]]
 ==== Add geoIP data
 
-When the ECS {ecs-ref}/ecs-geo.html[source.geo.location and 
+When the ECS {ecs-ref}/ecs-geo.html[source.geo.location and
 destination.geo.location] fields are mapped, network data is displayed on
 the map.
 
-If you use Beats, configure a geoIP processor to add data to the relevant 
+If you use Beats, configure a geoIP processor to add data to the relevant
 fields:
 
 [[geo-pipeleine]]
@@ -313,7 +356,7 @@ that contains the IP address to use for the geographical lookup, and
 `"ignore_missing": true` configures the pipeline to continue processing when
 it encounters an event that doesn't have the specified field.
 
-. In your Beats configuration files, add the pipeline to the 
+. In your Beats configuration files, add the pipeline to the
 `output.elasticsearch`tag:
 +
 [source,yml]

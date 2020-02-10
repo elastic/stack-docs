@@ -1,0 +1,64 @@
+[[network-sniffing-via-tcpdump]]
+=== Network Sniffing via Tcpdump
+
+The Tcpdump program ran on a Linux host. Tcpdump is a network monitoring or
+packet sniffing tool that can be used to capture insecure credentials or data in
+motion. Sniffing can also be used to discover details of network services as a
+prelude to lateral movement or defense evasion.
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Some normal use of this command may originate from server or network
+administrators engaged in network troubleshooting.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name: tcpdump and event.action:executed
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Credential Access
+** ID: TA0006
+** Reference URL: https://attack.mitre.org/tactics/TA0006/
+* Technique:
+** Name: Network Sniffing
+** ID: T1040
+** Reference URL: https://attack.mitre.org/techniques/T1040/
+
+
+* Tactic:
+** Name: Discovery
+** ID: TA0007
+** Reference URL: https://attack.mitre.org/tactics/TA0007/
+* Technique:
+** Name: Network Sniffing
+** ID: T1040
+** Reference URL: https://attack.mitre.org/techniques/T1040/

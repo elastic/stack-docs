@@ -1,0 +1,50 @@
+[[windows-script-executing-powershell]]
+=== Windows Script Executing PowerShell
+
+Identifies a PowerShell process launched by either `cscript.exe` or 
+`wscript.exe`. Observing Windows scripting processes executing a PowerShell 
+script, may be indicative of malicious activity.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.parent.name:("wscript.exe" or "cscript.exe") and
+process.name:"powershell.exe"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Spearphishing Attachment
+** ID: T1193
+** Reference URL: https://attack.mitre.org/techniques/T1193/

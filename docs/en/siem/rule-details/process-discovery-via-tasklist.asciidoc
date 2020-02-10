@@ -1,0 +1,53 @@
+[[process-discovery-via-tasklist]]
+=== Process Discovery via Tasklist
+
+Adversaries may attempt to get information about running processes on a system.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Administrators may use the tasklist command to display a list of currently
+running processes. By itself, it does not indicate malicious activity. After
+obtaining a foothold, it's possible adversaries may use discovery commands like
+tasklist to get information about running processes.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and process.name:tasklist.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Discovery
+** ID: TA0007
+** Reference URL: https://attack.mitre.org/tactics/TA0007/
+* Technique:
+** Name: Process Discovery
+** ID: T1057
+** Reference URL: https://attack.mitre.org/techniques/T1057/

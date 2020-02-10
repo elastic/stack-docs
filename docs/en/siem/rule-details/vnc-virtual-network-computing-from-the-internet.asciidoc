@@ -1,0 +1,76 @@
+[[vnc-virtual-network-computing-from-the-internet]]
+=== VNC (Virtual Network Computing) from the Internet
+
+Detects network events that may indicate the use of VNC traffic from
+the Internet. VNC is commonly used by system administrators to remotely control
+a system for maintenance or to use shared resources. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
+*Severity*: high
+
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Network
+
+*Version*: 1
+
+==== Potential false positives
+
+VNC connections may be received directly to Linux cloud server instances but
+such connections are usually made only by engineers. VNC is less common than SSH
+or RDP but may be required by some workflows such as remote access and support
+for specialized software products or servers. Such workflows are usually known
+and not unexpected. Usage that is unfamiliar to server or network owners can be
+unexpected and suspicious.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and (destination.port >= 5800 and
+destination.port <= 5810) and ( network.direction: inbound or (
+not source.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and
+destination.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) )
+)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Remote Access Tools
+** ID: T1219
+** Reference URL: https://attack.mitre.org/techniques/T1219/
+
+
+* Tactic:
+** Name: Initial Access
+** ID: TA0001
+** Reference URL: https://attack.mitre.org/tactics/TA0001/
+* Technique:
+** Name: Exploit Public-Facing Application
+** ID: T1190
+** Reference URL: https://attack.mitre.org/techniques/T1190/

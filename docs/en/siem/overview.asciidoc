@@ -57,8 +57,9 @@ identify and investigate suspicious activity:
 === Data sources
 
 SIEM can ingest and analyze data from a variety of sources, including Elastic
-Endpoint Security, Beats and Beats modules, and third-party collectors mapped to
-the {ecs-ref}[Elastic Common Schema (ECS)]. 
+Endpoint Security, Beats and Beats modules, 
+{apm-app-ref}/transactions.html[APM transactions], and third-party 
+collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)]. 
 
 [float]
 [[hosts-data-sources]]
@@ -95,6 +96,10 @@ the {ecs-ref}[Elastic Common Schema (ECS)].
 ** {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
 ** {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
 ** {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]
+** {filebeat-ref}/filebeat-module-aws.html[AWS module]
+** {filebeat-ref}/filebeat-module-cef.html[CEF module]
+** {filebeat-ref}/filebeat-module-googlecloud.html[Google Cloud module]
+** {filebeat-ref}/filebeat-module-netflow.html[NetFlow module]
 
 [float]
 [[endpoint-security-platform]]
@@ -102,6 +107,15 @@ the {ecs-ref}[Elastic Common Schema (ECS)].
 
 The Sensor Management Platform (SMP) ships all relevant host and network data
 directly to the {siem-app}.
+
+[float]
+[[apm-transactions-data]]
+==== APM transactions
+
+By default, the {siem-app} monitors {apm-app-ref}/apm-getting-started.html[APM] 
+`apm-*-transaction*` indices. To add additional APM indices, update the 
+index patterns in the `siem:defaultIndex` setting ({kib} -> Management -> 
+Advanced Settings -> `siem:defaultIndex`).
 
 [float]
 [[ecs]]

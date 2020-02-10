@@ -1,0 +1,66 @@
+[[process-activity-via-compiled-html-file]]
+=== Process Activity via Compiled HTML File
+
+Compiled HTML files (`.chm`) are commonly distributed as part of the Microsoft
+HTML Help system. Adversaries may conceal malicious code in a CHM file and
+deliver it to a victim for execution. CHM content is loaded by the HTML Help
+executable program (`hh.exe`).
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+The HTML Help executable program (`hh.exe`) runs whenever a user clicks a 
+compiled help (`.chm`) file or menu item that opens the help file inside the 
+Help Viewer. This is not always malicious, but adversaries may abuse this 
+technology to conceal malicious code.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and process.name:hh.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Compiled HTML File
+** ID: T1223
+** Reference URL: https://attack.mitre.org/techniques/T1223/
+
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Compiled HTML File
+** ID: T1223
+** Reference URL: https://attack.mitre.org/techniques/T1223/

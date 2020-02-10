@@ -1,0 +1,53 @@
+[[whoami-process-activity]]
+=== Whoami Process Activity
+
+Identifies use of `whoami.exe` which displays user, group, and privileges
+information for the user who is currently logged on to the local system.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Some normal use of this program, at varying levels of frequency, may originate
+from scripts, automation tools and frameworks. Usage by non-engineers and
+ordinary users is unusual.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:whoami.exe and event.code:1
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Discovery
+** ID: TA0007
+** Reference URL: https://attack.mitre.org/tactics/TA0007/
+* Technique:
+** Name: System Owner/User Discovery
+** ID: T1033
+** Reference URL: https://attack.mitre.org/techniques/T1033/

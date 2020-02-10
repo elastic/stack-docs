@@ -1,0 +1,47 @@
+[[svchost-spawning-cmd]]
+=== Svchost spawning cmd.exe
+
+Identifies a suspicious parent-child process relationship with `cmd.exe`
+descending from `svchost.exe`
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.parent.name:svchost.exe and process.name:cmd.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Command-Line Interface
+** ID: T1059
+** Reference URL: https://attack.mitre.org/techniques/T1059/

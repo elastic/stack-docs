@@ -1,0 +1,50 @@
+[[unusual-network-connection-via-rundll32]]
+=== Unusual Network Connection via RunDLL32
+
+Identifies unusual instances of `rundll32.exe` making outbound network
+connections. This may indicate adversarial activity and may identify malicious
+DLLs.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:rundll32.exe and event.action:"Network connection
+detected (rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and
+not destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Rundll32
+** ID: T1085
+** Reference URL: https://attack.mitre.org/techniques/T1085/

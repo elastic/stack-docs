@@ -1,0 +1,84 @@
+[[rule-api-overview]]
+[role="xpack"]
+== Detections API
+
+beta[]
+
+You can create rules that automatically turn events and alerts sent to the
+{siem-app} into signals. These signals are displayed on the Detections page. 
+
+For more information on signals, and the difference between signals, events, 
+and alerts, see <<det-engine-terminology, detections terminology>>.
+
+The API has these endpoints:
+
+* `<kibana URL>/api/detection_engine/rules` - Signal detection rules CRUD 
+functions 
+* `<kibana URL>/api/detection_engine/index` - Signal index operations
+* `<kibana URL>/api/detection_engine/tags` - Aggregates and returns rule tags
+* `<kibana URL>/api/detection_engine/_import` - Imports rules from an ndjson 
+file
+* `<kibana URL>/api/detection_engine/_export` - Exports rules to an ndjson file
+* `<kibana URL>/api/detection_engine/privileges` - Returns the user's 
+{kib} space and signal index permissions, and whether the user is authenticated
+* `<kibana URL>/api/detection_engine/signals` - Aggregates, queries, and
+returns signals, and updates their statuses
+* `<kibana URL>/api/detection_engine/prepackaged` - Loads and retrieves the status of Elastic <<prebuilt-rules, prebuilt rules>>
+
+Where `<kibana URL>` is the URL and port number of your Kibana instance.
+
+NOTE: In dev mode, the Kibana server runs behind a proxy which adds a random 
+path component to its URL.
+{kibana-ref}/development-basepath.html[Considerations for basePath] describes 
+how to work with and disable the random path component.
+
+[float]
+=== {kib} space API calls
+
+If you are making calls to a {kib} space *other than* the `Default` space, the 
+space identifier is part of the endpoint's URL:
+
+`<kibana URL>/s/<space URL>/api/detection_engine/rules`
+
+Where `<space URL>` is the URL identifier for the space.
+
+NOTE: You can find space URL identifiers on
+{kibana-ref}/xpack-spaces.html[*Edit space*] pages (Management -> Spaces -> 
+<space name>) or by calling
+{kibana-ref}/spaces-api-get-all.html[`GET /api/spaces/space`].
+
+[float]
+=== Kibana role requirements
+
+To create and run rules, the user role for the {kib} space must have:
+
+* the {ref}/security-privileges.html[`manage_api_key` privilege].
+* `read`, `write`, `create`, and `view_index_metadata` privileges for the 
+signals index (the system index used for storing signals created from rules).
+* `all` privileges for {kibana-ref}/xpack-spaces.html[`SIEM` features].
+
+[float]
+=== Authentication
+
+Token-based authentication, using the same username and password used to log in
+to the Kibana UI, is required to access the API.
+
+[float]
+=== API calls
+
+All calls to the API are stateless. Each call must include all the information {siem-soln} needs to perform the request.
+
+Requests must contain these headers:
+
+* `kbn-xsrf: <value>`, where `<value>` can be any alphanumeric string (for 
+example, `kbn-xsrf: kibana`)
+* `Content-Type: application/json` (when the request contains a JSON payload)
+
+For example, the following call retrieves the first 20 signal detection rules 
+from the {kib} `siem` space:
+
+[source,js]
+--------------------------------------------------
+curl -X GET "<kibana URL>/s/siem/api/detection_engine/rules/_find"
+-H 'kbn-xsrf: kibana' -u <username>:<password>
+--------------------------------------------------

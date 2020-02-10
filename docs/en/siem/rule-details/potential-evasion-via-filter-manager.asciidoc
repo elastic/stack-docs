@@ -1,0 +1,47 @@
+[[potential-evasion-via-filter-manager]]
+=== Potential Evasion via Filter Manager
+
+The Filter Manager Control Program (fltMC.exe) binary may be abused by
+adversaries to unload a filter driver and evade defenses.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.code:1 and process.name:fltMC.exe
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: File and Directory Permissions Modification
+** ID: T1222
+** Reference URL: https://attack.mitre.org/techniques/T1222/

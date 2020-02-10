@@ -1,0 +1,47 @@
+[[socat-process-activity]]
+=== Socat Process Activity
+
+A Socat process is running on a Linux host. Socat is often used as a persistence
+mechanism by exporting a reverse shell, or by serving a shell on a listening
+port. Socat is also sometimes used for lateral movement.
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/#method-2-using-socat
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+==== Potential false positives
+
+Socat is a dual-use tool that can be used for benign or malicious activity. Some
+normal use of this program, at varying levels of frequency, may originate from
+scripts, automation tools, and frameworks. Usage by web servers is more likely
+to be suspicious.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:socat and not process.args:"-V" and event.action:executed
+----------------------------------
+

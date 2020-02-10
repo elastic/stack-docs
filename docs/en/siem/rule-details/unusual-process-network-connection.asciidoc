@@ -1,0 +1,52 @@
+[[unusual-process-network-connection]]
+=== Unusual Process Network Connection
+
+Identifies network activity from unexpected system applications. This may
+indicate adversarial activity as these applications are often leveraged by
+adversaries to execute code and evade detection.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:(bginfo.exe or cdb.exe or cmstp.exe or csi.exe or dnx.exe
+or fsi.exe or ieexec.exe or iexpress.exe or
+Microsoft.Workflow.Compiler.exe or odbcconf.exe or rcsi.exe or
+xwizard.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Trusted Developer Utilities
+** ID: T1127
+** Reference URL: https://attack.mitre.org/techniques/T1127/

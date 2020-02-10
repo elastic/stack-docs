@@ -1,0 +1,84 @@
+[[telnet-port-activity]]
+=== Telnet Port Activity
+
+Detects network events that may indicate the use of Telnet traffic.
+Telnet is commonly used by system administrators to remotely control older or
+embedded systems using the command line shell. It should almost never be
+directly exposed to the Internet, as it is frequently targeted and exploited by
+threat actors as an initial access or back-door vector. As a plain-text
+protocol, it may also expose usernames and passwords to anyone capable of
+observing the traffic.
+
+*Rule indices*:
+
+* auditbeat-*
+* filebeat-*
+* packetbeat-*
+* winlogbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Network
+
+*Version*: 1
+
+==== Potential false positives
+
+IoT (Internet of Things) devices and networks may use telnet and can be excluded
+if desired. Some business workflows may use Telnet for administration of
+older devices. These often have a predictable behavior. Telnet activity
+involving an unusual source or destination may be more suspicious. Telnet
+activity involving a production server that has no known associated Telnet
+workflow or business requirement is often suspicious.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+network.transport: tcp and destination.port: 23
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Command and Control
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Commonly Used Port
+** ID: T1043
+** Reference URL: https://attack.mitre.org/techniques/T1043/
+
+
+* Tactic:
+** Name: Lateral Movement
+** ID: TA0008
+** Reference URL: https://attack.mitre.org/tactics/TA0008/
+* Technique:
+** Name: Remote Services
+** ID: T1021
+** Reference URL: https://attack.mitre.org/techniques/T1021/
+
+
+* Tactic:
+** Name: Initial Access
+** ID: TA0011
+** Reference URL: https://attack.mitre.org/tactics/TA0011/
+* Technique:
+** Name: Exploit Public-Facing Application
+** ID: T1190
+** Reference URL: https://attack.mitre.org/techniques/T1190/

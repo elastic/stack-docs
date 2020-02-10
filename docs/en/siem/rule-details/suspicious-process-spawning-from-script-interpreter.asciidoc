@@ -1,0 +1,67 @@
+[[suspicious-process-spawning-from-script-interpreter]]
+=== Suspicious Process spawning from Script Interpreter
+
+Identifies a suspicious process being spawned from a script interpreter, which
+could be indicative of a potential phishing attack.
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+==== Potential false positives
+
+Security testing may produce events like this. Activity of this kind performed
+by non-engineers and ordinary users is unusual.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+(process.parent.name:cmd.exe or process.parent.name:cscript.exe or
+process.parent.name:mshta.exe or process.parent.name:powershell.exe or
+process.parent.name:rundll32.exe or process.parent.name:wscript.exe or
+process.parent.name:wmiprvse.exe) and (process.name:bitsadmin.exe or
+process.name:certutil.exe or mshta.exe or process.name:nslookup.exe or
+process.name:schtasks.exe) and event.code:1
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Scripting
+** ID: T1064
+** Reference URL: https://attack.mitre.org/techniques/T1064/
+
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Scripting
+** ID: T1064
+** Reference URL: https://attack.mitre.org/techniques/T1064/

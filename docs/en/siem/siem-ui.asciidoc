@@ -25,13 +25,17 @@ for analysis, and can help surface problems with data ingestion.
 
 All histograms and graphs on the overview page contain an **Inspect** button. Use inspect to receive details on count statistics, and to copy the JSON request and response set by the SIEM UI.
 
+
+[float]
+[[search-overview]]
 ==== Search
 
 Search for individual SIEM items with the benefit of *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* in the SIEM search bar. A date/time filter set to `Last 24 hours` is enabled by default, but can be changed to any time range. If you want to filter your search results with other fields, select **Add Filter**, followed by the field from which to filter and the operator (such `is not` or `is between`) for your query.
 
 To save specific filters and queries, click the Save icon and then **Save current query**.
 
-
+[float]
+[[timelines-overview]]
 ==== Timelines
 
 Select the collapsable *Timelines* button on the right of the {siem-ui} is for
@@ -40,20 +44,30 @@ items you want from a specific event, ranging from the `user.name` for which the
 
 The most recent timelines you've accessed appear in **Recent Timelines**.
 
+[float]
+[[signals-count]]
 ==== Signals count
 
 The signals histogram displays a count of all the Signals detected by the {siem-app} within a set time frame. In the **Stack by** dropdown, select specific parameters for which to visualize the signal count. For example, stack by `user.name` for the graph to visualize the number of signals attributed to a specific user.
 
 To create signal detection rules, see <<rules-ui-create,Managing Signal Detection Rules>>.
 
+[float]
+[[external-alerts-count]]
 ==== External alerts count
 
 The external alerts histogram displays a count of within a certain timeframe. You can stack by two parameters: `event-category` and `event.module`.
 
+
+[float]
+[[events-count]]
 ==== Events count
 
 The events count histogram displays a count of all events within a set time frame. You can stack by `event.action`, `event.dataset`, and the `event.module`.
 
+
+[float]
+[[host-and-network-events]]
 ==== Host and network events
 
 View event and host counts specific to Elastic data shippers and apps, such as **Auditbeats** or **Elastic Endpoint Security**. Expand each category for specific counts of hosts or network events related to the category.

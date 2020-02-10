@@ -9,29 +9,13 @@ The goal of <<dfa-outlier-detection,{oldetection}>> is to find the most unusual
 documents in an index. Let's try to detect unusual customer behavior in the 
 {kibana-ref}/add-sample-data.html[eCommerce sample data set]. 
 
-. Obtain a license that includes the {ml-features}.
+. Verify that your environment is set up properly to use {ml-features}. 
+If the {es} {security-features} are enabled, you need a user that has authority
+to create and manage {dfanalytics-jobs}. See <<setup>>.
 +
 --
-include::{docdir}/get-started-trial.asciidoc[]
---
-
-. If the {es} {security-features} are enabled, obtain a user ID with sufficient
-privileges to complete these steps. 
-+
---
-You need `manage_data_frame_transforms` cluster privileges to preview and create
-{transforms}. Members of the built-in `data_frame_transforms_admin`
-role have these privileges.
-
-You must also be a member of the `machine_learning_admin` built-in role to
-create and manage {dfanalytics-jobs}.
-
-You also need `read` and `view_index_metadata` index privileges on the source
-indices and `read`, `create_index`, and `index` privileges on the destination
-indices. 
-
-For more information, see {ref}/security-privileges.html[Security privileges]
-and {ref}/built-in-roles.html[Built-in roles].
+Since we'll be creating {transforms}, you also need
+`manage_data_frame_transforms` cluster privileges.
 --
 
 . Create a {transform} that generates an entity-centric index with numeric or
@@ -52,9 +36,13 @@ You can preview the {transform} before you create it in {kib}:
 [role="screenshot"]
 image::images/ecommerce-transform-preview.jpg["Creating a {transform} in {kib}"]
 
-Alternatively, you can preview and create the {transform} with the following
-APIs:
+Alternatively, you can use the
+{ref}/preview-transform.html[preview {transform} API] and the
+{ref}/put-transform.html[create {transform} API].
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 POST _data_frame/transforms/_preview
@@ -132,6 +120,7 @@ PUT _data_frame/transforms/ecommerce-customer-sales
 }
 --------------------------------------------------
 // TEST[skip:set up sample data]
+====
 
 For more details about creating {transforms}, see
 {ref}/ecommerce-transforms.html[Transforming the eCommerce sample data].
@@ -147,15 +136,17 @@ cluster while it runs. If you're experiencing an excessive load, however, you
 can stop it.
 
 You can start, stop, and manage {transforms} in {kib}. Alternatively, you can
-use the {ref}/start-data-frame-transform.html[start {transforms}] API. For
-example:
+use the {ref}/start-data-frame-transform.html[start {transforms}] API.
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 POST _data_frame/transforms/ecommerce-customer-sales/_start
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
-
+====
 --
 
 . Create a {dfanalytics-job} to detect outliers in the new entity-centric index.
@@ -168,8 +159,11 @@ There is a wizard for creating {dfanalytics-jobs} on the
 image::images/ecommerce-outlier-job.jpg["Create a {dfanalytics-job} in {kib}"]
 
 Alternatively, you can use the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. For example:
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 PUT _ml/data_frame/analytics/ecommerce
@@ -190,6 +184,7 @@ PUT _ml/data_frame/analytics/ecommerce
 }
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
+====
 --
 
 . Start the {dfanalytics-job}.
@@ -198,14 +193,17 @@ PUT _ml/data_frame/analytics/ecommerce
 You can start, stop, and manage {dfanalytics-jobs} on the
 *Machine Learning* > *Analytics* page in {kib}. Alternatively, you can use the
 {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and
-{ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs. For
-example:
+{ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs.
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 POST _ml/data_frame/analytics/ecommerce/_start
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
+====
 --
 
 . View the results of the {oldetection} analysis.
@@ -232,8 +230,11 @@ for Wagdi Shaw indicates that the sum of the product prices was the most
 influential feature in determining that Wagdi is an outlier.
 
 If you want to see the exact feature influence values, you can retrieve them
-from the index that is associated with your {dfanalytics-job}. For example:
+from the index that is associated with your {dfanalytics-job}.
 
+.API example
+[%collapsible]
+====
 [source,console]
 --------------------------------------------------
 GET ecommerce-outliers/_search?q="Wagdi Shaw"
@@ -254,6 +255,7 @@ The search results include the following {oldetection} scores:
 ...
 --------------------------------------------------
 // NOTCONSOLE
+====
 --
 
 Now that you've found unusual behavior in the sample data set, consider how you

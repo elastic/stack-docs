@@ -215,7 +215,7 @@ The API call returns the following response:
     }
   ]
 }
-----  
+----
 
 
 The job has four phases. When all the phases have completed, the job stops and 
@@ -347,8 +347,13 @@ The evaluate {dfanalytics} API returns the following response:
 }
 ----
 
-For more information about the evaluation metrics, see 
-<<dfa-regression-evaluation>>.
+A mean squared error (MSE) of zero means that the models predicts the dependent 
+variable with perfect accuracy. This is the ideal, but is typically not possible. 
+Likewise, an R-squared value of 1 indicates that all of the variance in the 
+dependent variable can be explained by the feature variables. Typically, you 
+compare the MSE and R-squared values from multiple {regression} models to find
+the best balance or fit for your data. For more information about the evaluation
+metrics, see <<dfa-regression-evaluation>>.
 
 If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
 {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 

@@ -59,7 +59,7 @@ The events count histogram displays a count of all events within a set time fram
 View event and host counts specific to Elastic data shippers and apps, such as **Auditbeats** or **Elastic Endpoint Security**. Expand each category for specific counts of hosts or network events related to the category.
 
 [role="screenshot"]
-image::images/overview-ui.png[]
+image::overview-ui.png[]
 
 [float]
 [[hosts-ui]]
@@ -71,7 +71,7 @@ Viewer. You can drag and drop items of interest from the Hosts view tables to
 Timeline for further investigation.
 
 [role="screenshot"]
-image::images/hosts-ui.png[]
+image::hosts-ui.png[]
 
 Interactive widgets let you drill down for deeper insights:
 
@@ -81,13 +81,11 @@ Interactive widgets let you drill down for deeper insights:
 
 There are also tabs for viewing and investigating specific types of data:
 
-* All hosts: high-level host details
-* Authentications: authentication events
-* Uncommon processes: uncommon processes running on hosts
-* Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
-* Events: all host events
-* <<det-engine-terminology, External alerts>>: alerts received from 
-external monitoring tools, such as Elastic Endpoint Security
+* All hosts
+* Authentications
+* Uncommon processes
+* Anomalies
+* Events
 
 
 *Host details* shows information for a selected host, including
@@ -105,7 +103,7 @@ that enable interaction with the Timeline. You can drag and drop items of
 interest from the Network view to Timeline for further investigation.
 
 [role="screenshot"]
-image::images/network-ui.png[]
+image::network-ui.png[]
 
 Interactive widgets let you drill down for deeper insights:
 
@@ -117,14 +115,14 @@ Interactive widgets let you drill down for deeper insights:
 
 There are also tabs for viewing and investigating specific types of data:
 
-* Flows: source and destination IP addresses and countries
-* DNS: DNS network queries
-* HTTP: received HTTP requests (HTTP requests for applications using
-{apm-app-ref}/apm-getting-started.html[Elastic APM] are monitored by default)
-* TLS: handshake details
-* Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
-* <<det-engine-terminology, External alerts>>: alerts received from 
-external monitoring tools, such as Elastic Endpoint Security
+* Flows
+** Source IPs
+** Destination IPs
+** Source Countries
+** Destination Countries
+* DNS
+* TLS
+* Anomalies
 
 [float]
 [[map-ui]]
@@ -155,7 +153,7 @@ rules and create new rules. <<detection-engine-overview>> provides a detailed
 description of Detections and how to use it.
 
 [role="screenshot"]
-image::images/detections-ui.png[]
+image::detection-engine.png[]
 
 The `Signal count` histogram shows the detection rate of signals
 according to various attributes, including `Risk scores`, `Severities`, and
@@ -181,7 +179,7 @@ available for review by other analysts and incident response teams.
 
 
 [role="screenshot"]
-image::images/timeline-ui.png[]
+image::timeline-ui.png[]
 
 Add notes for your own use and to communicate your workflow and findings to
 others. You can share a timeline, or pass it off to another person or team. You

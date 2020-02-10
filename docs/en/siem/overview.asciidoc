@@ -58,7 +58,7 @@ identify and investigate suspicious activity:
 
 SIEM can ingest and analyze data from a variety of sources, including Elastic
 Endpoint Security, Beats and Beats modules, 
-{apm-get-started-ref}/transactions.html[APM transactions], and third-party 
+{apm-app-ref}/transactions.html[APM transactions], and third-party 
 collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)]. 
 
 [float]
@@ -96,6 +96,10 @@ collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)].
 ** {filebeat-ref}/filebeat-module-envoyproxy.html[Envoy proxy module (Kubernetes)]
 ** {filebeat-ref}/filebeat-module-panw.html[Palo Alto Networks firewall module]
 ** {filebeat-ref}//filebeat-module-cisco.html[Cisco ASA firewall module]
+** {filebeat-ref}/filebeat-module-aws.html[AWS module]
+** {filebeat-ref}/filebeat-module-cef.html[CEF module]
+** {filebeat-ref}/filebeat-module-googlecloud.html[Google Cloud module]
+** {filebeat-ref}/filebeat-module-netflow.html[NetFlow module]
 
 [float]
 [[endpoint-security-platform]]
@@ -108,7 +112,7 @@ directly to the {siem-app}.
 [[apm-transactions-data]]
 ==== APM transactions
 
-By default, the {siem-app} monitors {apm-get-started-ref}/overview.html[APM] 
+By default, the {siem-app} monitors {apm-app-ref}/apm-getting-started.html[APM] 
 `apm-*-transaction*` indices. To add additional APM indices, update the 
 index patterns in the `siem:defaultIndex` setting ({kib} -> Management -> 
 Advanced Settings -> `siem:defaultIndex`).

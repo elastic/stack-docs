@@ -3,7 +3,7 @@
 == SIEM UI
 
 The {siem-app} is a highly interactive workspace designed for security
-analysts. It provides a clear, detailed overview of events from your
+analysts. It provides a clear overview of events from your
 environment, and you can use the interactive UI to drill down into areas of
 interest.
 
@@ -23,14 +23,14 @@ Management -> Advanced Settings -> `siem:defaultIndex`.
 The Overview page provides a high-level view of security events available
 for analysis, and can help surface problems with data ingestion.
 
-All histograms and graphs on the overview page contain an **Inspect** button. Use inspect to receive details on count statistics, and to copy the JSON request and response set by the SIEM UI.
+TIP: All histograms and graphs on the overview page contain an **Inspect** button so users may better understand that data surfaced through the {siem-app}.
 
 
 [float]
 [[search-overview]]
 ==== Search
 
-Search for individual SIEM items with the benefit of *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* in the SIEM search bar. A date/time filter set to `Last 24 hours` is enabled by default, but can be changed to any time range. If you want to filter your search results with other fields, select **Add Filter**, followed by the field from which to filter and the operator (such `is not` or `is between`) for your query.
+Filter for signals, events, process and other important security information  with the benefit of *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* in the SIEM search bar. A date/time filter set to `Last 24 hours` is enabled by default, but can be changed to any time range. If you want to filter your search results with other fields, select **Add Filter**, followed by the field from which to filter and the operator (such `is not` or `is between`) for your query.
 
 To save specific filters and queries, click the Save icon and then **Save current query**.
 
@@ -38,8 +38,7 @@ To save specific filters and queries, click the Save icon and then **Save curren
 [[timelines-overview]]
 ==== Timelines
 
-Select the collapsable *Timeline* button on the right of the {siem-ui} to start an investigation. Identify
-items you want from a specific event. See the <<timelines-ui,Timelines>> section for more information.
+Select the collapsable *Timeline* button on the right of the {siem-ui} to start an investigation. See the <<timelines-ui,Timelines>> section for more information.
 
 The most recent timelines you've accessed appear in **Recent Timelines**.
 
@@ -55,14 +54,17 @@ To create signal detection rules, see <<rules-ui-create,Managing Signal Detectio
 [[external-alerts-count]]
 ==== External alerts count
 
-The external alerts histogram displays a count within a certain time frame. You can stack by two parameters: `event-category` and `event.module`.
+The external alerts histogram displays a count within a certain time frame. You can stack by two parameters: `event-category` or `event.module`.
+
+[role="screenshot"]
+image::overview-ui.png[]
 
 
 [float]
 [[events-count]]
 ==== Events count
 
-The events count histogram displays a count of all events within a set time frame. You can stack by `event.action`, `event.dataset`, and the `event.module`.
+The events count histogram displays a count of all events within a set time frame. You can stack by `event.action`, `event.dataset`, or `event.module`.
 
 
 [float]
@@ -72,7 +74,7 @@ The events count histogram displays a count of all events within a set time fram
 View event and host counts specific to Elastic data shippers and apps, such as **Auditbeats** or **Elastic Endpoint Security**. Expand each category for specific counts of hosts or network events related to the category.
 
 [role="screenshot"]
-image::overview-ui.png[]
+image::events-count.png[]
 
 
 [float]

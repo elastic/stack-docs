@@ -17,11 +17,8 @@ You can manage detection rules and signals via the UI or the
 
 [IMPORTANT]
 ==============
-To make sure you can access Detections and manage rules: 
-
-* For *local {kib} deployments only*, <<detections-encryption-key, add the `xpack.encryptedSavedObjects.encryptionKey` setting to the `kibana.yml` configuration file>>.
-* Check you have the <<detections-permissions, {kib} and index privileges>> 
-required for viewing signals and creating rules.
+To make sure you can access Detections and manage rules, see 
+<<detections-prerequisites>>.
 ==============
 
 [role="screenshot"]
@@ -83,38 +80,49 @@ To open and close signals, either:
 To investigate a signal in the Timeline, click the *View in timeline* icon.
 
 [float]
-[[detections-encryption-key]]
-== Add the `xpack.encryptedSavedObjects.encryptionKey` setting
+[[detections-prerequisites]]
+== Detections configuration and index privilege prerequisites
 
-NOTE: This is only required when using a local {kib} deployment. If you are 
-using our
-https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service], you do 
-not need to add this setting.
+If you are using an *on-premises* {stack} deployment:
 
-By default, each time {kib} starts a new encryption key is generated for 
-{kibana-ref}/managing-saved-objects.html[saved objects]. Signal detection rules 
-are based on saved objects and, without a persistent key, you cannot delete or 
-modify existing rules after restarting {kib}.
+* In the `elasticsearch.yml` configuration file, set the 
+`xpack.security.enabled` setting to `true`. For more information, see 
+{ref}/settings.html[Configuring {es}] and
+{ref}/security-settings.html[Security settings in {es}].
+* In the `kibana.yml` {kibana-ref}/settings.html[configuration file], add the 
+`xpack.encryptedSavedObjects.encryptionKey` setting with any alphanumeric value 
+of at least 32 characters. For example:
++
+`xpack.encryptedSavedObjects.encryptionKey: 'fhjskloppd678ehkdfdlliverpoolfcr'`
 
-To set a persistent key, add the `xpack.encryptedSavedObjects.encryptionKey` 
-setting with any alphanumeric value of at least 32 characters to the 
-`kibana.yml` {kibana-ref}/settings.html[configuration file]. For example:
+[[detections-permissions]]
+For *all* deployments (on-premises and hosted):
 
-`xpack.encryptedSavedObjects.encryptionKey: 'fhjskhsdhd678ehkdfdlliverpoolfcr'`
+* To view signals and detection rules, you must have at least:
+** `read` permissions for the `.siem-signals-<space name>` index, where
+`<space name>` is the name of the {kib} space you are using to view Detections
+(see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
+** {kib} space `Read` privileges for the `SIEM` feature (see
+{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+* To create and modify detection rules, you must have:
+** The `manage_api_key` cluster privilege (see {ref}/security-privileges.html[Security privileges]).
+** {kib} space `All` privileges for the `SIEM` feature (see
+{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
+** Write permissions for the `.siem-signals-<space name>` index, such as 
+`create` `create_doc`, `write`, `index`, and `all`
+(see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
 
 [float]
-[[detections-permissions]]
-== {kib} and index privileges required for Detections
+=== Resolving UI error messages
 
 Depending on your privileges and whether a `.siem-signals-<space name>` index 
-has been created for the {kib} space, you might see an error message when you 
-try to open the *Detections* page.
+has already been created for the {kib} space, you might see an error message 
+when you try to open the *Detections* page.
 
-[float]
-=== `Let’s set up your detection engine` message
+*`Let’s set up your detection engine`*
 
-If you see this message, a user with these privileges must open the *Detections*
-page before you can view signals and rules:
+If you see this message, a user with these privileges must visit the 
+*Detections* page before you can view signals and rules:
 
 * The `manage_api_key` cluster privilege (see
 {ref}/security-privileges.html[Security privileges]).
@@ -122,34 +130,17 @@ page before you can view signals and rules:
 * {kib} space `All` privileges for the `SIEM` feature (see
 {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
 
-[float]
-=== `Detection engine permissions required` message
+NOTE: For *on-premises* {stack} deployments only, this message may be displayed 
+when the
+<<detections-prerequisites, `xpack.encryptedSavedObjects.encryptionKey`>> 
+setting has not been added to the `kibana.yml` file.
 
-If you see this message, you do not have the required privileges to view the 
-*Detections* page and you should contact your {kib} administrator.
+*`Detection engine permissions required`*
 
-[NOTE]
-==============
-If you are using a local {es} deployment, make sure the 
-`xpack.security.enabled` setting in the `elasticsearch.yml` 
-configuration file is set to `true`. For more information, see 
-{ref}/settings.html[Configuring {es}] and
-{ref}/security-settings.html[Security settings in {es}].
-==============
+If you see this message, you do not have the
+<<detections-permissions, required privileges>> to view the *Detections* page 
+and you should contact your {kib} administrator.
 
-To view signals and detection rules, you must have at least:
-
-* `read` permissions for the `.siem-signals-<space name>` index, where
-`<space name>` is the name of the {kib} space you are using to view Detections
-(see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
-* {kib} space `Read` privileges for the `SIEM` feature (see
-{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
-
-To create and modify detection rules, you must have:
-
-* The `manage_api_key` cluster privilege (see {ref}/security-privileges.html[Security privileges]).
-* {kib} space `All` privileges for the `SIEM` feature (see
-{kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
-* Write permissions for the `.siem-signals-<space name>` index, such as 
-`create` `create_doc`, `write`, `index`, and `all`
-(see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
+NOTE: For *on-premises* {stack} deployments only, this message may be displayed 
+when the <<detections-prerequisites, `xpack.security.enabled`>> setting is 
+not enabled in the `elasticsearch.yml` file.

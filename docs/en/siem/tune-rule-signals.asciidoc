@@ -1,0 +1,26 @@
+[[tuning-detection-signals]]
+== Tuning detection rule signals
+
+In the {siem-app}, detection rules can be tuned to produce the best possible 
+set of actionable signals:
+
+* Disable detection rules when they match expected behavior, workflows, and 
+allowed policies, and when they rarely produce actionable signals.
+* <<manage-rules-ui, Clone and modify>> detection rule queries so they ignore 
+authorized policies and workflows, thereby reducing the noise level while still 
+retaining actionable signals.
+* Clone and modify detection rule risk scores using branching logic to map 
+higher risk scores to higher priority workflows.
+
+[float]
+=== Filter out uncommon application signals
+
+Organizations frequently use uncommon and in-house applications. Often, these 
+can trigger unwanted signals. To stop a rule matching on an application, you 
+need to modify the rule's logic so it ignores the application's name.
+
+For example, to prevent the <<unusual-process-network-connection>> rule from
+from signals from an in-house application, named `pingthenet.exe`:
+
+. Go to *SIEM* -> *Detections* -> *Signal detection rules*.
+. 

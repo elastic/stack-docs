@@ -18,7 +18,7 @@ You can manage detection rules and signals via the UI or the
 [IMPORTANT]
 ==============
 To make sure you can access Detections and manage rules, see 
-<<detections-prerequisites>>.
+<<detections-permissions>>.
 ==============
 
 [role="screenshot"]
@@ -80,7 +80,7 @@ To open and close signals, either:
 To investigate a signal in the Timeline, click the *View in timeline* icon.
 
 [float]
-[[detections-prerequisites]]
+[[detections-permissions]]
 == Detections configuration and index privilege prerequisites
 
 If you are using an *on-premises* {stack} deployment:
@@ -95,7 +95,6 @@ of at least 32 characters. For example:
 +
 `xpack.encryptedSavedObjects.encryptionKey: 'fhjskloppd678ehkdfdlliverpoolfcr'`
 
-[[detections-permissions]]
 For *all* deployments (on-premises and hosted):
 
 * To view signals and detection rules, you must have at least:
@@ -113,7 +112,7 @@ For *all* deployments (on-premises and hosted):
 (see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
 
 [float]
-=== Resolving UI error messages
+=== Resolve UI error messages
 
 Depending on your privileges and whether a `.siem-signals-<space name>` index 
 has already been created for the {kib} space, you might see an error message 
@@ -132,7 +131,7 @@ If you see this message, a user with these privileges must visit the
 
 NOTE: For *on-premises* {stack} deployments only, this message may be displayed 
 when the
-<<detections-prerequisites, `xpack.encryptedSavedObjects.encryptionKey`>> 
+<<detections-permissions, `xpack.encryptedSavedObjects.encryptionKey`>> 
 setting has not been added to the `kibana.yml` file.
 
 *`Detection engine permissions required`*
@@ -142,5 +141,5 @@ If you see this message, you do not have the
 and you should contact your {kib} administrator.
 
 NOTE: For *on-premises* {stack} deployments only, this message may be displayed 
-when the <<detections-prerequisites, `xpack.security.enabled`>> setting is 
+when the <<detections-permissions, `xpack.security.enabled`>> setting is 
 not enabled in the `elasticsearch.yml` file.

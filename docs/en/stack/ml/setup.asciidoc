@@ -31,16 +31,37 @@ API requests but cannot run {ml} jobs. For more information, see
 [[setup-privileges]]
 === Security privileges
 
-The {es} {security-features} provide `machine_learning_admin` and
-`machine_learning_user` {ref}/built-in-roles.html[built-in roles] and
-`manage_ml` and `monitor_ml` {ref}/security-privileges.html[cluster privileges].
-These roles and privileges make it easier to control which users can manage or
-view {ml} objects such as jobs, {dfeeds}, results, and model snapshots.
+The {es} {security-features} provide {ref}/built-in-roles.html[built-in roles]
+and {ref}/security-privileges.html[privileges] that make it easier to control
+which users can manage or view {ml} objects such as jobs, {dfeeds}, results, and
+model snapshots. 
 
-Some actions might require additional authority. For example, if you are viewing
-the results of {anomaly-jobs}, you must also have `read` index privileges on the
-index that stores the results. If you are creating {dfanalytics-jobs}, you must
-have specific privileges with respect to the source and destination indices.
-For more information, see the prerequisites for each
-{ref}/ml-apis.html[{anomaly-detect} API] and
-{ref}/ml-df-analytics-apis.html[{dfanalytics} API].
+To _view_ the configuration, status, and results of the {ml-features}, you
+must have:
+
+[%interactive]
+* [ ] `machine_learning_user` or `machine_learning_admin` built-in roles
+* [ ] `read` and `view_index_metadata` index privileges on source indices
+* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
+  only)
+
+To _manage_ {ml-features}, you must have:
+
+[%interactive]
+* [ ] `machine_learning_admin` built-in role
+* [ ] `read` and `view_index_metadata` index privileges on source indices
+* [ ] `read`, `manage`, and `index` index privileges on destination indices (for
+  {dfanalytics-jobs} only)
+
+If you use {ml-features} in {kib}, you must also have:
+
+[%interactive]
+* [ ] `kibana_admin` built-in role or a custom role that
+{kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
+* [ ] `monitor` cluster privilege to manage {dfanalytics-jobs}
+
+If you use the *Data Visualizer* to upload files in {kib}, you must also have:
+
+[%interactive]
+* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges
+* [ ] `read`, `manage`, and `index` index privileges for the destination index

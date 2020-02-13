@@ -76,7 +76,7 @@ that start child processes.
 * Applications that work with file shares, such as backup programs, and use the 
 server message block (SMB) protocol.
 
-To reduce signal noise for authorized processes, you can do any of the these:
+To reduce signal noise for authorized activity, you can do any of the these:
 
 * Add a condition or filter to the rules that exclude specific servers, such as 
 the relevant host names, agent names, or other shared identifier. 
@@ -86,7 +86,7 @@ For example, `and not host.name : "server-name"`.
 For example, `and not user.name : "security-tester"`.
 
 Another useful technique is to assign lower risk scores to rules triggered by 
-authorized . This enables detection while keeping the resulting signals 
+authorized activity. This enables detection while keeping the resulting signals 
 out of high-priority work queues. Use these steps:
 
 . Duplicate the same rule twice.

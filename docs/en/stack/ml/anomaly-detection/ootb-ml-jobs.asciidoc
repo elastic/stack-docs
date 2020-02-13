@@ -1,9 +1,12 @@
 [role="xpack"]
 [[ootb-ml-jobs]]
-== Prebuilt {anomaly-detect} jobs
+== Prebuilt {anomaly-jobs}
 
-This page lists the available prebuilt {anomaly-jobs}. Every 
-module item in the list contains a name, a short description, information about 
+{anomaly-jobs-cap} contain the configuration information and metadata necessary 
+to perform an analytics task. {kib} can recognize certain types of data and 
+provide specialized wizards for that context. This page lists the available 
+prebuilt {anomaly-jobs} that you can use via {kib}. Every module item in the 
+list contains a name, a short description, information about 
 the {ml-docs}/ml-buckets.html#ml-buckets[`bucket_span`] and the 
 {ml-docs}/ml-functions.html[analysis function] as well as the influencers – the 
 entities that have contributed to, or are to blame for, the anomalies – of the 
@@ -13,65 +16,91 @@ entities that have contributed to, or are to blame for, the anomalies – of the
 [float]
 [[ootb-ml-jobs-apache]]
 === Apache
-These {anomaly-job} wizards appear in {kib} if you use {filebeat-ref}/index.html[{filebeat}] to ship access logs from your https://httpd.apache.org/[Apache] HTTP servers to {es} and store it using fields and datatypes from the Elastic Common Schema (ECS).
+
+These {anomaly-job} wizards appear in {kib} if you use 
+{filebeat-ref}/index.html[{filebeat}] to ship access logs from your 
+https://httpd.apache.org/[Apache] HTTP servers to {es} and store it using fields 
+and datatypes from the Elastic Common Schema (ECS).
+
 low_request_rate_ecs::
-Detects low request rates in HTTP access log.
-+
---
+
+* For HTTP web access logs where `event.dataset` is `apache.access`.
+* Models the event rate of HTTP requests. 
+* Detects unusually low counts of HTTP requests compared to the previous event 
+rate.
+
+This job can be created if web access log data exists matching the defined 
+filter.
+
 Bucket span: 15m.
 
 Function: `low_count`.
---
+
 
 source_ip_request_rate_ecs::
-Detects source IPs with unusually high request rates in the HTTP access log.
-+
---
+
+* For HTTP web access logs where `event.dataset` is `apache.access`.
+* Models the event rate of HTTP requests by source IP.
+* Detects source IPs with unusually high request rates in the HTTP access log 
+  compared to the previous rate.
+
+This job can be created if web access log data exists matching the defined 
+filter.
+
+Influencers:
+
+* `source.address`
+
 Bucket span: 1h.
 
 Function: `high_count`.
 
+
+source_ip_url_count_ecs::
+
+* For HTTP web access logs where `event.dataset` is `apache.access`.
+* Models the event rate of HTTP requests by source IP.
+* Detects source IPs with unusually high distinct count of URLs in the HTTP 
+access log.
+
 Influencers:
 
 * `source.address`
---
 
-source_ip_url_count_ecs::
-Detects source IPs with unusually high distinct count of URLs in the HTTP access 
-log.
-+
---
 Bucket span: 1h.
 
 Function: `high_distinct_count`.
 
-Influencers:
-
-* `source.address`
---
 
 status_code_rate_ecs::
-Detects unusual status code rates in the HTTP access log.
-+
---
-Bucket span: 15m.
 
-Function: `count`.
+* For HTTP web access logs where `event.dataset` is `apache.access`.
+* Models the occurrences of HTTP response status codes (`partition_field_name` 
+  is `http.response.status_code`).
+* Detects unusual status code rates in the HTTP access log compared to previous 
+  rates.
 
 Influencers:
 
 * `http.response.status_code` 
 * `source.address`
---
+
+Bucket span: 15m.
+
+Function: `count`.
+
 
 visitor_rate_ecs::
-Detects unusual visitor rates in the HTTP access log.
-+
---
+
+* For HTTP web access logs where `event.dataset` is `apache.access`.
+* Models visitor rates.
+* Detects unusual visitor rates in the HTTP access log ompared to previous 
+  rates.
+
 Bucket span: 15m.
 
 Function: `non_zero_count`.
---
+
 
 [float]
 [[ootb-ml-jobs-apm]]
@@ -79,12 +108,10 @@ Function: `non_zero_count`.
 
 abnormal_span_durations_jsbase::
 abnormal_span_durations_nodejs::
-Searches for spans that are taking longer than usual to process.
-+
---
-Bucket span: 15m.
 
-Function: `high_mean`.
+* For APM data where `agent.name` is `js-base` or `nodejs`.
+* Models the duration of spans (`partition_field_name` is `span.type`).
+* Detects for spans that are taking longer than usual to process.
 
 Influencers:
 
@@ -92,31 +119,37 @@ Influencers:
 * `span.name`
 * `span.type` 
 * `trace.id`
---
 
-abnormal_trace_durations_nodejs::
-Identifies trace transactions that are processing more slowly than usual.
-+
---
 Bucket span: 15m.
 
 Function: `high_mean`.
+
+
+abnormal_trace_durations_nodejs::
+
+* For APM data where `agent.name` is `nodejs`.
+* Models the duration of trace transactions.
+* Detects trace transactions that are processing slower than usual.
 
 Influencers:
 
 * `service.name` 
 * `trace.id`
 * `transaction.name` 
---
 
-anomalous_error_rate_for_user_agents_jsbase::
-Detects user agents that are encountering errors at an above normal rate. This 
-can help detect browser compatibility issues.
-+
---
 Bucket span: 15m.
 
-Function: `high_non_zero_count`.
+Function: `high_mean`.
+
+
+anomalous_error_rate_for_user_agents_jsbase::
+
+* For APM data where `agent.name` is `js-base`.
+* Models the error rate of user agents (`partition_field_name` is 
+  `user_agent.name`).
+* Detects user agents that are encountering errors at an above normal rate.
+  
+This job can help detect browser compatibility issues.
 
 Influencers:
 
@@ -124,108 +157,134 @@ Influencers:
 * `error.exception.message.keyword`
 * `error.page.url`
 * `service.name`
---
+
+Bucket span: 15m.
+
+Function: `high_non_zero_count`.
+
 
 decreased_throughput_jsbase::
 decreased_throughput_nodejs::
-Identifies periods during which the application is processing fewer requests 
-than normal.
-+
---
-Bucket span: 15m.
 
-Function: `low_count`.
+* For APM data where `agent.name` is `js-base` or `nodejs`.
+* Models the transaction rate of the application.
+* Detects periods during which the application is processing fewer requests 
+than normal.
 
 Influencers:
 
 * `service.name`
 * `transaction.name`
---
 
-high_count_by_user_agent_jsbase::
-Detects user agents that are making requests at a suspiciously high rate. This 
-is useful in identifying bots.
-+
---
 Bucket span: 15m.
 
-Function: `high_non_zero_count`.
+Function: `low_count`.
+
+
+high_count_by_user_agent_jsbase::
+
+* For APM data where `agent.name` is `js-base`.
+* Models the request rate of user agents (`partition_field_name` is 
+  `user_agent.name`).
+* Detects user agents that are making requests at a suspiciously high rate.
+
+This job is useful in identifying bots.
 
 Influencers:
 
 * `service.name`
 * `user_agent.name`
---
+
+Bucket span: 15m.
+
+Function: `high_non_zero_count`.
+
 
 high_mean_response_time::
-Detects anomalies in high mean of transaction duration.
-+
---
+
+* For transaction data where `processor.event` is `transaction` and 
+`transaction.type` is `request`.
+* Models response time duration of transactions.
+* Detects anomalies in high mean of transaction duration.
+
 Bucket span: 15m.
 
 Function: `high_mean`.
---
 
 
 [float]
 [[ootb-ml-jobs-auditbeat]]
 === Auditbeat
-> These {anomaly-job} wizards appear in {kib} if you use {auditbeat-ref}/index.html[{auditbeat}] to audit process activity on your systems.
+
+These {anomaly-job} wizards appear in {kib} if you use 
+{auditbeat-ref}/index.html[{auditbeat}] to audit process activity on your 
+systems.
+
 docker_high_count_process_events_ecs::
-Detects unusual increases in process execution rates in Docker containers.
-+
---
+
+* For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
+`docker`.
+* Models process execution rates (`partition_field_name` is `container.name`).
+* Detects unusual increases in process execution rates in Docker containers.
+
+Influencers:
+
+* `container.name`
+* `process.executable`
+
 Bucket span: 1h.
 
 Function: `high_count`.
 
+
+docker_rare_process_activity_ecs::
+
+* For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
+`docker`.
+* Models occurrences of process execution (`partition_field_name` is 
+  `container.name`).
+* Detects rare process executions in Docker containers.
+
 Influencers:
 
 * `container.name`
 * `process.executable`
---
 
-docker_rare_process_activity_ecs::
-Detects rare process executions in Docker containers.
-+
---
 Bucket span: 1h.
 
 Function: `rare`.
 
-Influencers:
-
-* `container.name`
-* `process.executable`
---
 
 hosts_high_count_process_events_ecs::
-Detects unusual increases in process execution rates.
-+
---
+
+* For Auditbeat data where `event.module` is `auditd`.
+* Models process execution rates (`partition_field_name` is `host.name`).
+* Detects unusual increases in process execution rates.
+
+Influencers:
+
+* `host.name`
+* `process.executable`
+
 Bucket span: 1h.
 
 Function: `high_non_zero_count`.
 
+
+hosts_rare_process_activity_ecs::
+
+* For Auditbeat data where `event.module` is `auditd`.
+* Models process execution rates (`partition_field_name` is `host.name`).
+* Detects rare process executions on hosts.
+
 Influencers:
 
 * `host.name`
 * `process.executable`
---
 
-hosts_rare_process_activity_ecs::
-Detects rare process executions on hosts.
-+
---
 Bucket span: 1h.
 
 Function: `rare`.
-
-Influencers:
-
-* `host.name`
-* `process.executable`
---
 
 
 [float]
@@ -233,139 +292,177 @@ Influencers:
 === Logs UI
 
 log_entry_categories_count::
-Detects anomalies in count of log entries by category.
-+
---
-Bucket span: 15m.
 
-Function: `count`.
+* For log entry categories via the Logs UI.
+* Models the occurrences of log events (`partition_field_name` is 
+  `event.dataset`).
+* Detects anomalies in count of log entries by category.
 
 Influencers:
 
 * `event.dataset`
 * `mlcategory`
---
 
-log_entry_rate::
-Detects anomalies in the log entry ingestion rate.
-+
---
 Bucket span: 15m.
 
 Function: `count`.
 
+
+log_entry_rate::
+
+* For log entries via the Logs UI.
+* Models ingestion rates (`partition_field_name` is `event.dataset`). 
+* Detects anomalies in the log entry ingestion rate.
+
 Influencers:
 
 * `event.dataset`
---
+
+Bucket span: 15m.
+
+Function: `count`.
+
 
 [float]
 [[ootb-ml-jobs-metricbeat]]
 === Metricbeat
-These {anomaly-job} wizards appear in {kib} if you use the {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to monitor your servers.
+
+These {anomaly-job} wizards appear in {kib} if you use the 
+{metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to 
+monitor your servers.
+
 high_mean_cpu_iowait_ecs::
-Detects unusual increases in cpu time spent in iowait.
-+
---
+
+* For {metricbeat} data where `event.dataset` is `system.cpu` and 
+  `system.filesystem`.
+* Models CPU time spent in iowait (`partition_field_name` is `host.name`).
+* Detects unusual increases in cpu time spent in iowait.
+
+Influencers:
+
+* `host.name`
+
 Bucket span: 10m.
 
 Function: `high_mean`.
 
+
+max_disk_utilization_ecs::
+
+* For {metricbeat} data where `event.dataset` is `system.cpu` and 
+  `system.filesystem`.
+* Models disc utilization (`partition_field_name` is `host.name`).
+* Detects unusual increases in disk utilization.
+
 Influencers:
 
 * `host.name`
---
 
-max_disk_utilization_ecs::
-Detects unusual increases in disk utilization.
-+
---
 Bucket span: 10m.
 
 Function: `max`.
 
-Influencers:
-
-* `host.name`
---
 
 metricbeat_outages_ecs::
-Detects unusual decreases in Metricbeat documents.
-+
---
-Bucket span: 10m.
 
-Function: `low_count`.
+* For {metricbeat} data where `event.dataset` is `system.cpu` and 
+  `system.filesystem`.
+* Models counts of {metricbeat} documents 
+  (`partition_field_name` is `event.dataset`).
+* Detects unusual decreases in {metricbeat} documents.
 
 Influencers:
 
 * `event.dataset`
---
+
+Bucket span: 10m.
+
+Function: `low_count`.
 
 
 [float]
 [[ootb-ml-jobs-nginx]]
 === Nginx
- These {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship access logs from your 
-http://nginx.org/[Nginx] HTTP servers to {es} and store it using fields and datatypes from the Elastic Common Schema (ECS).
+
+These {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship access 
+logs from your http://nginx.org/[Nginx] HTTP servers to {es} and store it using 
+fields and datatypes from the Elastic Common Schema (ECS).
+
 low_request_rate_ecs::
-Detects low request rates in HTTP access log.
-+
---
+
+* For HTTP web access logs where `event.dataset` is `nginx.access`.
+* Models the event rate of http requests. 
+* Detects unusually low counts of HTTP requests compared to the previous event 
+rate.
+
+This job can be created if web access log data exists matching the defined 
+filter.
+
 Bucket span: 15m.
 
 Function: `low_count`.
---
+
 
 source_ip_request_rate_ecs::
-Detects source IPs with unusually high request rates in the HTTP access log. 
-+
---
+
+* For HTTP web access logs where `event.dataset` is `nginx.access`.
+* Models the event rate of HTTP requests by source IP.
+* Detects source IPs with unusually high request rates in the HTTP access log 
+  compared to the previous rate. 
+
+Influencers:
+
+* `source.address`
+
 Bucket span: 1h.
 
 Function: `high_count`.
 
+
+source_ip_url_count_ecs::
+
+* For HTTP web access logs where `event.dataset` is `nginx.access`.
+* Models the event rate of HTTP requests by source IP.
+* Detects source IPs with unusually high distinct count of URLs in the HTTP 
+  access log.
+
 Influencers:
 
 * `source.address`
---
 
-source_ip_url_count_ecs::
-Detects source IPs with unusually high distinct count of URLs in the HTTP access 
-log.
-+
---
 Bucket span: 1h.
 
 Function: `high_distinct_count`.
 
-Influencers:
-
-* `source.address`
---
 
 status_code_rate_ecs::
-Detects unusual status code rates in the HTTP access log.
-+
---
-Bucket span: 15m.
 
-Function: `count`.
+* For HTTP web access logs where `event.dataset` is `nginx.access`.
+* Models the occurrences of HTTP response status codes (`partition_field_name` 
+  is `http.response.status_code`).
+* Detects unusual status code rates in the HTTP access log compared to previous 
+  rates.
 
 Influencers:
 
 * `http.response.status_code` 
 * `source.address`
---
+
+Bucket span: 15m.
+
+Function: `count`.
+
 
 visitor_rate_ecs::
-Detects unusual visitor rates in the HTTP access log.
-+
---
+
+* For HTTP web access logs where `event.dataset` is `nginx.access`.
+* Models visitor rates.
+* Detects unusual visitor rates in the HTTP access log ompared to previous 
+  rates.
+
 Bucket span: 15m.
 
 Function: `non_zero_count`.
---
 
 
 [float]
@@ -374,19 +471,18 @@ Function: `non_zero_count`.
 
 linux_anomalous_network_activity_ecs::
 windows_anomalous_network_activity_ecs::
-Looks for unusual processes using the network which could indicate 
-command-and-control, lateral movement, persistence, or data exfiltration 
+
+* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* Models the occurrences of processes that cause network activity.
+* Detects network activity caused by processes that occur rarely compared to 
+  other processes.
+
+Looks for unusual processes using the network which could indicate
+command-and-control, lateral movement, persistence, or data exfiltration
 activity.
-+
---
-Bucket span: 15m.
 
-Function: `rare`.
-
-Beats required on host:
-
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
+This job can be created if auditbeat or winlogbeat data exists, matching the 
+defined filter, and is available via the SIEM application.
 
 Influencers:
 
@@ -394,20 +490,24 @@ Influencers:
 * `host.name` 
 * `process.name`
 * `user.name`
---
+
+Bucket span: 15m.
+
+Function: `rare`.
+
 
 linux_anomalous_network_port_activity_ecs::
+
+* For network activity logs where `agent.type` is `auditbeat`.
+* Models destination port activity.
+* Detects destination port activity that occurs rarely compared to other port 
+  activities.
+
 Looks for unusual destination port activity that could indicate 
 command-and-control, persistence mechanism, or data exfiltration activity.
-+
---
-Bucket span: 15m.
 
-Function: `rare`.
-
-Beats required on host:
-
-* Auditbeat 
+This job can be created if auditbeat data exists, matching the defined filter, 
+and is available via the SIEM application.
 
 Influencers:
 
@@ -415,344 +515,358 @@ Influencers:
 * `host.name` 
 * `process.name`
 * `user.name`
---
 
-linux_anomalous_network_service::
-Looks for unusual listening ports that could indicate execution of unauthorized 
-services, backdoors, or persistence mechanisms.
-+
---
 Bucket span: 15m.
 
 Function: `rare`.
 
-Beats required on host:
 
-* Auditbeat 
+linux_anomalous_network_service::
+
+* For network activity logs where `agent.type` is `auditbeat`.
+* Models listening port activity.
+* Detects unusual listening port activity that occurs rarely compared to 
+  other port activities.
+
+Looks for unusual listening ports that could indicate execution of unauthorized 
+services, backdoors, or persistence mechanisms.
+
+This job can be created if auditbeat data exists, matching the defined filter, 
+and is available via the SIEM application.
 
 Influencers:
 
 * `host.name` 
 * `process.name`
 * `user.name`
---
+
+Bucket span: 15m.
+
+Function: `rare`.
+
 
 linux_anomalous_network_url_activity_ecs::
+
+* For network activity logs where `agent.type` is `auditbeat`.
+* Models the occurrences of URL requests.
+* Detects unusual web URL request that is rare compared to other web URL 
+  requests.
+
 Looks for an unusual web URL request from a Linux instance. Curl and wget web 
 request activity is very common but unusual web requests from a Linux server can 
 sometimes be malware delivery or execution.
-+
---
-Bucket span: 15m.
 
-Function: `rare`.
-
-Beats required on host:
-
-* Auditbeat 
+This job can be created if auditbeat data exists, matching the defined filter, 
+and is available via the SIEM application.
 
 Influencers:
 
 * `destination.ip`
 * `destination.port` 
 * `host.name`
---
+
+Bucket span: 15m.
+
+Function: `rare`.
+
 
 linux_anomalous_process_all_hosts_ecs::
 windows_anomalous_process_all_hosts_ecs::
+
+* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* Models the occurrences of processes on all hosts.
+* Detects processes that occur rarely compared to other processes to all 
+  Linux/Windows hosts.
+
 Looks for processes that are unusual to all Linux/Windows hosts. Such unusual 
 processes may indicate unauthorized services, malware, or persistence 
 mechanisms.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
 
 Influencers:
 
 * `host.name` 
 * `process.name`
 * `user.name`
---
+
+Bucket span: 15m.
+
+Function: `rare`.
+
 
 linux_anomalous_user_name_ecs::
 windows_anomalous_user_name_ecs::
+
+* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users.
+
 Rare and unusual users that are not normally active may indicate unauthorized 
 changes or activity by an unauthorized user which may be credentialed access or 
 lateral movement.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
 
 Influencers:
 
 * `host.name` 
 * `process.name`
 * `user.name`
---
 
-packetbeat_dns_tunneling::
-Looks for unusual DNS activity that could indicate command-and-control or data 
-exfiltration activity.
-+
---
 Bucket span: 15m.
 
-Function: `high_info_content`.
+Function: `rare`.
 
-Beats required on host:
 
-* Packetbeat
+packetbeat_dns_tunneling::
+
+* For network activity logs where `agent.type` is `packetbeat`.
+* Models occurrances of DNS activity.
+* Detects unusual DNS activity.
+
+Looks for unusual DNS activity that could indicate command-and-control or data 
+exfiltration activity.
 
 Influencers:
 
 * `destination.ip`
 * `dns.question.etld_plus_one`
 * `host.name`
---
 
-packetbeat_rare_dns_question::
-Looks for unusual DNS activity that could indicate command-and-control activity.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Packetbeat
-
-Influencers:
-
-* `host.name`
---
-
-packetbeat_rare_server_domain::
-Looks for unusual HTTP or TLS destination domain activity that could indicate 
-execution, persistence, command-and-control or data exfiltration activity.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Packetbeat
-
-Influencers:
-
-* `destination.ip`
-* `host.name`
-* `source.ip`
---
-
-packetbeat_rare_urls::
-Looks for unusual web browsing URL activity that could indicate execution, 
-persistence, command-and-control or data exfiltration activity.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Packetbeat
-
-Influencers:
-
-* `destination.ip`
-* `host.name`
---
-
-packetbeat_rare_user_agent::
-Looks for unusual HTTP user agent activity that could indicate execution, 
-persistence, command-and-control or data exfiltration activity.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Packetbeat
-
-Influencers:
-
-* `destination.ip`
-* `host.name`
---
-
-rare_process_by_host_linux_ecs::
-rare_process_by_host_windows_ecs::
-Detect unusually rare processes on Linux/Windows.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Auditbeat (Linux) 
-* Winlogbeat (Windows)
-
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
---
-
-suspicious_login_activity_ecs::
-Detect unusually high number of authentication attempts.
-+
---
-Bucket span: 15m.
-
-Function: `high_non_zero_count`.
-
-Beats required on host:
-
-* Auditbeat
-
-Influencers:
-
-* `host.name` 
-* `source.ip`
-* `user.name`
---
-
-windows_anomalous_path_activity_ecs::
-Looks for activity in unusual paths that may indicate execution of malware or 
-persistence mechanisms. Windows payloads often execute from user profile paths.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Winlogbeat (Windows)
-
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
---
-
-windows_anomalous_process_creation::
-Looks for unusual process relationships which may indicate execution of malware 
-or persistence mechanisms.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Winlogbeat (Windows)
-
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
---
-
-windows_anomalous_script::
-Looks for unusual powershell scripts that may indicate execution of malware, or 
-persistence mechanisms.
-+
---
 Bucket span: 15m.
 
 Function: `high_info_content`.
 
-Beats required on host:
 
-* Winlogbeat (Windows)
+packetbeat_rare_dns_question::
+
+* For network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of DNS activity.
+* Detects DNS activity that is rare compared to other DNS activities.
+
+Looks for unusual DNS activity that could indicate command-and-control activity.
+
+Influencers:
+
+* `host.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+packetbeat_rare_server_domain::
+
+* For network activity logs where `agent.type` is `packetbeat`.
+* Models HTTP or TLS domain activity.
+* Detects HTTP or TLS domain activity that is rarely occurs compared to other 
+  activities.
+
+Looks for unusual HTTP or TLS destination domain activity that could indicate 
+execution, persistence, command-and-control or data exfiltration activity.
+
+Influencers:
+
+* `destination.ip`
+* `host.name`
+* `source.ip`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+packetbeat_rare_urls::
+
+* For network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of web browsing URL activity.
+* Detects URL activity that rarely occurs compared to other URL activities.
+
+Looks for unusual web browsing URL activity that could indicate execution, 
+persistence, command-and-control or data exfiltration activity.
+
+Influencers:
+
+* `destination.ip`
+* `host.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+packetbeat_rare_user_agent::
+
+* For network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of HTTP user agent activity.
+* Detects HTTP user agent activity that occurs rarely compared to other HTTP 
+  user agent activities.
+
+Looks for unusual HTTP user agent activity that could indicate execution, 
+persistence, command-and-control or data exfiltration activity.
+
+Influencers:
+
+* `destination.ip`
+* `host.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+rare_process_by_host_linux_ecs::
+rare_process_by_host_windows_ecs::
+
+* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* Models occurrences of process activities on the host. 
+* Detect unusually rare processes compared to other processes on Linux/Windows.
+
+Influencers:
+
+* `host.name` 
+* `process.name`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+suspicious_login_activity_ecs::
+
+* For network activity logs where `agent.type` is `auditbeat`.
+* Models occurrences of authentication attempts (`partition_field_name` is 
+  `host.name`).
+* Detects unusually high number of authentication attempts.
+
+Influencers:
+
+* `host.name` 
+* `source.ip`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `high_non_zero_count`.
+
+
+windows_anomalous_path_activity_ecs::
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of processes in paths.
+* Detects activity in unusual paths.
+
+Activities in unusual paths may indicate execution of malware or persistence 
+mechanisms. Windows payloads often execute from user profile paths.
+
+Influencers:
+
+* `host.name` 
+* `process.name`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+windows_anomalous_process_creation::
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of process creation activities (`partition_field_name` is 
+  `process.parent.name`).
+* Detects process relationships that are rare compared to other process 
+  relationships.
+
+Looks for unusual process relationships which may indicate execution of malware 
+or persistence mechanisms.
+
+Influencers:
+
+* `host.name` 
+* `process.name`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+
+
+windows_anomalous_script::
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of powershell script activities.
+* Detects unusual powershell script execution compared to other powershell 
+  script activities.
+
+Looks for unusual powershell scripts that may indicate execution of malware, or 
+persistence mechanisms.
 
 Influencers:
 
 * `host.name` 
 * `user.name`
 * `winlog.event_data.Path`
---
 
-windows_anomalous_service::
-Looks for rare and unusual Windows services which may indicate execution of 
-unauthorized services, malware, or persistence mechanisms.
-+
---
 Bucket span: 15m.
 
-Function: `rare`.
+Function: `high_info_content`.
 
-Beats required on host:
 
-* Winlogbeat (Windows)
+windows_anomalous_service::
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of Windows service activities.
+* Detects Windows service activities that occur rarely compared to other Windows 
+  service activities.
+
+Looks for rare and unusual Windows services which may indicate execution of 
+unauthorized services, malware, or persistence mechanisms.
 
 Influencers:
 
 * `host.name` 
 * `winlog.event_data.ServiceName`
---
+
+Bucket span: 15m.
+
+Function: `rare`.
+
 
 windows_rare_user_runas_event::
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of user context switches.
+* Detects user context switches that occur rarely compared to other user context 
+  switches.
+
 Unusual user context switches can be due to privilege escalation.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Winlogbeat (Windows)
 
 Influencers:
 
 * `host.name` 
 * `process.name`
 * `user.name`
---
+
+Bucket span: 15m.
+
+Function: `rare`.
+
 
 windows_rare_user_type10_remote_login::
-Looks for unusual user rermote logins. Unusual RDP (remote desktop protocol) 
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of user remote login activities.
+* Detects user remote login activities that occur rarely compared to other 
+  user remote login activities.
+
+Looks for unusual user remote logins. Unusual RDP (remote desktop protocol) 
 user logins can indicate account takeover or credentialed access.
-+
---
-Bucket span: 15m.
-
-Function: `rare`.
-
-Beats required on host:
-
-* Winlogbeat (Windows)
 
 Influencers:
 
 * `host.name` 
 * `process.name`
 * `user.name`
---
+
+Bucket span: 15m.
+
+Function: `rare`.

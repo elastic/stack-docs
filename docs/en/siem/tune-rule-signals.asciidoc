@@ -12,15 +12,97 @@ retaining actionable signals.
 * Clone and modify detection rule risk scores using branching logic to map 
 higher risk scores to higher priority workflows.
 
+For details about tuning rules for specific categories, see:
+
+* <<tune-windows-rules>>
+* <<tune-linux-rules>>
+* <<tune-network-rules>>
+
 [float]
+[[filter-rule-process]]
 === Filter out uncommon application signals
 
 Organizations frequently use uncommon and in-house applications. Often, these 
 can trigger unwanted signals. To stop a rule matching on an application, you 
 need to modify the rule's logic so it ignores the application's name.
 
-For example, to prevent the <<unusual-process-network-connection>> rule from
-from signals from an in-house application, named `pingthenet.exe`:
+For example, to prevent the <<unusual-process-execution-temp>> rule from
+from signals from an in-house application, named `myautomatedbuild`:
 
-. Go to *SIEM* -> *Detections* -> *Signal detection rules*.
-. 
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
+. Search for the `Unusual Process Execution - Temp` rule, and then:
+.. Click the actions icon on the rule's row (three dots).
+.. Select _Duplicate rule_
++
+A duplicate rule is created, named `Unusual Process Execution - Temp [Duplicate]`.
+Search for the new rule, and then:
+.. Click the actions icon on the rule's row (three dots).
+.. Select _Edit rule settings_
++
+The *Edit rule settings* page is displayed.
+[role="screenshot"]
+image::images/edit-dect-rule.png[]
++
+TIP: At the top of the *All rules* table, click `Custom rules` to display only 
+your rules.
+
+. Do *one* of these:
+* In the _Custom query_ field, add this condition:
++
+`and not process.name: "myautomatedbuild"`
++
+[role="screenshot"]
+image::images/edit-dect-rule-query.png[]
+* Click _Add filter_, and then define a `process.name is not myautomatedbuild` 
+condition.
++
+[role="screenshot"]
+image::images/edit-dect-rule-filter.png[]
+. Save the new rule and disable the original rule. If you want, you can delete 
+the original rule.
+
+[float]
+[[tune-windows-rules]]
+=== Tune Windows rules
+
+Authorized security testing, system tools, management frameworks, and
+administrative activity may trigger Windows detection rules. These include:
+
+* Ongoing and automated security testing and research.
+* System and software management processes running scripts, including scripts 
+that start child processes.
+* Administrators and management frameworks that create users, schedule tasks, make `psexec` connections, and run WMI commands.
+* Legitimate scripts using the `whoami` command.
+* Applications that work with file shares, such as backup programs, and use the 
+server message block (SMB) protocol.
+
+To reduce signal noise for authorized processes, you can do any of the these:
+
+* Add a condition or filter to the rules that exclude specific servers, such as 
+the relevant host names, agent names, or other shared identifier. 
+For example, `and not host.name : "server-name"`.
+* Add a condition or filter to the rules that <<filter-rule-process, exclude specific processes>>. For example, `and not host.name : "process-name"`.
+* Add a condition or filter to the rules that exclude a shared user identifier. 
+For example, `and not user.name : "security-tester"`.
+
+Another useful technique is to assign lower risk scores to rules triggered by 
+authorized . This enables detection while keeping the resulting signals 
+out of high-priority work queues. Use these steps:
+
+. Duplicate the same rule twice.
+. In the first duplication of the rule, exclude the relevant user or process 
+names (`and not user.name : "user-name"` or `and not process.name : "process-name"`).
+. In the second duplication of the rule:
+* Lower the `Risk score` (*Edit rule settings* -> *About* tab).
+* Change the rule's query or filter so it only matches the user or process 
+names excluded in the first duplication
+(`and user.name : "user-name"` or `and process.name : "process-name"`).
+. Disable the original rule.
+
+[float]
+[[tune-linux-rules]]
+=== Tune Linux rules
+
+[float]
+[[tune-network-rules]]
+=== Tune network rules

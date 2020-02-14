@@ -146,18 +146,17 @@ organizations, each network conforming to different security policies,
 standards, and regulations. When normal network activity triggers signals, 
 network rules can be disabled or modified. For example:
 
-* To exclude outbound traffic from a specific host to a specific service, 
-add a `not source.ip` statement with the relevant IP address, and a 
-`destination.port` statement with the relevant port number
-(`not source.ip : 196.1.0.12 and destination.port : 445`).
-* To exclude an entire source subnet, add a `not source.ip` statement with 
-the relevant CIDR notation (`not source.ip : 192.168.0.0/16`).
-* To exclude a destination IP for a given destination port, add a
+* To exclude a specific source, add a `not source.ip` statement with the 
+relevant IP address, and a `destination.port` statement with the relevant port 
+number (`not source.ip : 196.1.0.12 and destination.port : 445`).
+* To exclude source network traffic for an entire subnet, add a `not source.ip` 
+statement with the relevant CIDR notation (`not source.ip : 192.168.0.0/16`).
+* To exclude a destination IP for a specific destination port, add a
 `not destination.ip` statement with the IP address, and a `destination.port` 
 statement with the port number
 (`not destination.ip : 38.160.150.31 and destination.port : 445`)
-* To exclude a destination subnet for a given destination port, add a
-`not destination.ip` statement with the CIDR notation, and a ‘destination.port’ 
+* To exclude a destination subnet for a specific destination port, add a
+`not destination.ip` statement using CIDR notation, and a ‘destination.port’ 
 statement with the port number
 (`not destination.ip : 172.16.0.0/12 and destination.port : 445`).
 
@@ -170,10 +169,11 @@ for legitimate network activity:
 [horizontal]
 <<dns-activity-to-the-internet>>:: Personal devices, brought to work or used while working remotely, can query arbitrary DNS servers.
 <<ftp-file-transfer-protocol-activity-to-the-internet>>:: FTP is sometimes used with external sources.
-<<smtp-to-the-internet>>:: Marketing and business development workflows often 
+<<smtp-to-the-internet>>:: Marketing and development workflows often 
 use SMTP email traffic. Additionally, personal devices, brought to work or used 
 while working remotely, may use consumer email services.
-<<sql-traffic-to-the-internet>>:: Although uncommon, accessing databases over the internet may be part of development workflows.
+<<sql-traffic-to-the-internet>>:: Although uncommon, accessing databases over 
+the internet may be part of development workflows.
 <<tcp-port-8000-activity-to-the-internet>>:: Frequently used port while 
 developing and testing web services.
 

@@ -397,7 +397,7 @@ filter.
 Bucket span: 15m.
 
 Function: `low_count`.
-
+////
 
 source_ip_request_rate_ecs::
 
@@ -405,7 +405,7 @@ source_ip_request_rate_ecs::
 * Models the event rate of HTTP requests by source IP.
 * Detects source IPs with unusually high request rates in the HTTP access log 
   compared to the previous rate. 
-
+////
 Influencers:
 
 * `source.address`
@@ -413,7 +413,7 @@ Influencers:
 Bucket span: 1h.
 
 Function: `high_count`.
-
+////
 
 source_ip_url_count_ecs::
 
@@ -421,7 +421,7 @@ source_ip_url_count_ecs::
 * Models the event rate of HTTP requests by source IP.
 * Detects source IPs with unusually high distinct count of URLs in the HTTP 
   access log.
-
+////
 Influencers:
 
 * `source.address`
@@ -429,7 +429,7 @@ Influencers:
 Bucket span: 1h.
 
 Function: `high_distinct_count`.
-
+////
 
 status_code_rate_ecs::
 
@@ -438,7 +438,7 @@ status_code_rate_ecs::
   is `http.response.status_code`).
 * Detects unusual status code rates in the HTTP access log compared to previous 
   rates.
-
+////
 Influencers:
 
 * `http.response.status_code` 
@@ -447,7 +447,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `count`.
-
+////
 
 visitor_rate_ecs::
 
@@ -455,11 +455,11 @@ visitor_rate_ecs::
 * Models visitor rates.
 * Detects unusual visitor rates in the HTTP access log ompared to previous 
   rates.
-
+////
 Bucket span: 15m.
 
 Function: `non_zero_count`.
-
+////
 
 [float]
 [[ootb-ml-jobs-siem]]

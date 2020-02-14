@@ -504,7 +504,7 @@ command-and-control, persistence mechanism, or data exfiltration activity.
 
 This job can be created if auditbeat data exists, matching the defined filter, 
 and is available via the SIEM application.
-
+////
 Influencers:
 
 * `destination.ip`
@@ -515,7 +515,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 linux_anomalous_network_service::
 
@@ -529,7 +529,7 @@ services, backdoors, or persistence mechanisms.
 
 This job can be created if auditbeat data exists, matching the defined filter, 
 and is available via the SIEM application.
-
+////
 Influencers:
 
 * `host.name` 
@@ -539,7 +539,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 linux_anomalous_network_url_activity_ecs::
 
@@ -553,7 +553,7 @@ request activity is very common but unusual web requests from a Linux server can
 sometimes be malware delivery or execution.
 
 and is available via the SIEM application.
-
+////
 Influencers:
 
 * `destination.ip`
@@ -563,7 +563,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 linux_anomalous_process_all_hosts_ecs::
 windows_anomalous_process_all_hosts_ecs::
@@ -576,7 +576,7 @@ windows_anomalous_process_all_hosts_ecs::
 Looks for processes that are unusual to all Linux/Windows hosts. Such unusual 
 processes may indicate unauthorized services, malware, or persistence 
 mechanisms.
-
+////
 Influencers:
 
 * `host.name` 
@@ -586,7 +586,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 linux_anomalous_user_name_ecs::
 windows_anomalous_user_name_ecs::
@@ -598,7 +598,7 @@ windows_anomalous_user_name_ecs::
 Rare and unusual users that are not normally active may indicate unauthorized 
 changes or activity by an unauthorized user which may be credentialed access or 
 lateral movement.
-
+////
 Influencers:
 
 * `host.name` 
@@ -608,7 +608,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 packetbeat_dns_tunneling::
 

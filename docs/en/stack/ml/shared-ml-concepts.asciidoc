@@ -15,5 +15,15 @@ generally (for the whole data set).
 
 Feature importance in the {stack} is calculated using the SHAP (SHapley Additive 
 exPlanations) method as described in
-https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf[Lundberg, S. M., & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. In NeurIPS 2017.].
+https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf[Lundberg, S. M., & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. In NeurIPS 2017].
+
+By default, feature importance values are not calculated. To generate this
+information, when you create a {dfanalytics-job} you must specify the 
+`num_top_feature_importance_values` property. The feature importance values are
+stored in the destination index in fields prefixed by `ml.feature_importance`.
+
+NOTE: The number of feature importance values for each document might be less
+than the `num_top_feature_importance_values` property value. For example, it
+returns only features had a positive or negative effect on the prediction.
+
 end::feature-importance[]

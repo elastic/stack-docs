@@ -618,7 +618,7 @@ packetbeat_dns_tunneling::
 
 Looks for unusual DNS activity that could indicate command-and-control or data 
 exfiltration activity.
-
+////
 Influencers:
 
 * `destination.ip`
@@ -628,7 +628,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `high_info_content`.
-
+////
 
 packetbeat_rare_dns_question::
 
@@ -637,7 +637,7 @@ packetbeat_rare_dns_question::
 * Detects DNS activity that is rare compared to other DNS activities.
 
 Looks for unusual DNS activity that could indicate command-and-control activity.
-
+////
 Influencers:
 
 * `host.name`
@@ -645,7 +645,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 packetbeat_rare_server_domain::
 
@@ -656,7 +656,7 @@ packetbeat_rare_server_domain::
 
 Looks for unusual HTTP or TLS destination domain activity that could indicate 
 execution, persistence, command-and-control or data exfiltration activity.
-
+////
 Influencers:
 
 * `destination.ip`
@@ -666,7 +666,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 packetbeat_rare_urls::
 
@@ -676,7 +676,7 @@ packetbeat_rare_urls::
 
 Looks for unusual web browsing URL activity that could indicate execution, 
 persistence, command-and-control or data exfiltration activity.
-
+////
 Influencers:
 
 * `destination.ip`
@@ -685,7 +685,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 packetbeat_rare_user_agent::
 
@@ -696,7 +696,7 @@ packetbeat_rare_user_agent::
 
 Looks for unusual HTTP user agent activity that could indicate execution, 
 persistence, command-and-control or data exfiltration activity.
-
+////
 Influencers:
 
 * `destination.ip`
@@ -705,7 +705,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 rare_process_by_host_linux_ecs::
 rare_process_by_host_windows_ecs::
@@ -713,7 +713,7 @@ rare_process_by_host_windows_ecs::
 * For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
 * Models occurrences of process activities on the host. 
 * Detect unusually rare processes compared to other processes on Linux/Windows.
-
+////
 Influencers:
 
 * `host.name` 
@@ -723,7 +723,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `rare`.
-
+////
 
 suspicious_login_activity_ecs::
 
@@ -731,7 +731,7 @@ suspicious_login_activity_ecs::
 * Models occurrences of authentication attempts (`partition_field_name` is 
   `host.name`).
 * Detects unusually high number of authentication attempts.
-
+////
 Influencers:
 
 * `host.name` 
@@ -741,7 +741,7 @@ Influencers:
 Bucket span: 15m.
 
 Function: `high_non_zero_count`.
-
+////
 
 windows_anomalous_path_activity_ecs::
 
@@ -751,7 +751,7 @@ windows_anomalous_path_activity_ecs::
 
 Activities in unusual paths may indicate execution of malware or persistence 
 mechanisms. Windows payloads often execute from user profile paths.
-
+////
 Influencers:
 
 * `host.name` 

@@ -26,7 +26,7 @@ low_request_rate_ecs::
 
 * For HTTP web access logs where `event.dataset` is `apache.access`.
 * Models the event rate of HTTP requests. 
-* Detects unusually low counts of HTTP requests compared to the previous event 
+* Detects unusually low counts of HTTP requests compared to the previous event (using the <<ml-count,`low_count` function>>)
 rate.
 
 filter.

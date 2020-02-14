@@ -130,3 +130,17 @@ of combinations of dot delimited and nested fields (for example:
 `{"a.b": "c", "a": {"b": "c"},...}`), the performance of the operation might be 
 slightly slower. Consider using as simple mapping as possible for the best 
 performance profile.
+
+[float]
+[[dfa-feature-importance-limitation]]
+=== Analytics runtime performance may slow down with feature importance
+
+For complex models – those with deep trees and many leaves – the calculation of 
+feature importance takes extra time. Feature importance is calculated at the end 
+of the analysis and therefore the job may appear to be stuck at 99% for several 
+hours.
+
+If a reduction in runtime is important to you, please try strategies such as 
+disabling feature importance, using a smaller training percent, setting 
+hyperparameter values and/or only selecting fields for analysis that are 
+relevant.

@@ -19,9 +19,8 @@ For details about tuning rules for specific categories, see:
 * <<tune-network-rules>>
 
 IMPORTANT: Due to the different way {beats} record network traffic direction, 
-network detection rules may currently produce false-positive
-signals. <<fix-network-rules>> explains how to resolve this issue. For more 
-background information, see the
+network detection rules may produce noise. <<fix-network-rules>> explains how 
+to resolve this issue. For more background information, see the
 {ecs-ref}/ecs-network.html[ECS network.direction field].
 
 [float]
@@ -196,10 +195,9 @@ lot, use the `windows_anomalous_user_name_ecs`,
 
 [float]
 [[fix-network-rules]]
-=== Reduce false positives for network rules
+=== Reduce noise for network rules
 
-To reduce false-positive signals for network rules, duplicate the network rules 
-and *either*:
+To reduce noise for network rules, duplicate the network rules and *either*:
 
 * Remove all rule index patterns, except for the `filebeat-*` index pattern.
 * Remove the `network.direction: outbound` statement from the query. The rule

@@ -77,10 +77,10 @@ The following sections help you understand and interpret the results of a
 [[dfa-classification-class-probability]]
 ===== `class_probability`
 
-The value of `class_probability` shows how likely it is that a given datapoint belongs 
-to a certain class. It is a value between 0 and 1. The higher the number, the 
-higher the probability that the data point belongs to the named class. For 
-further details, see the
+The value of `class_probability` shows how likely it is that a given datapoint 
+belongs to a certain class. It is a value between 0 and 1. The higher the 
+number, the higher the probability that the data point belongs to the named 
+class. For further details, see the
 {ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
 section in the {classification} example.
 
@@ -104,8 +104,8 @@ scoreClass1 = 0.5 / probabilityAtWhichToAssignClassOne * probabilityClass1
 `probabilityAtWhichToAssignClassOne` **is chosen to maximise the minimum 
 recall**. It is useful for example in case of highly imbalanced data. If 
 `class 0` is much more frequent in the training data than `class 1`, then it 
-means that you can achieve the best accuracy when every datapoint is considered 
-as `class 0`. This is equivalent to zero recall for `class 1`. Instead of this 
+can mean that you achieve the best accuracy by assigning `class 0` to every 
+datapoint. This is equivalent to zero recall for `class 1`. Instead of this 
 behavior, the default scheme of the {stack} {classanalysis} is to choose 
 `probabilityAtWhichToAssignClassOne < 0.5` and accept a higher rate of actual 
 `class 0` predicted `class 1` errors, or in other words, a slight degradation of 

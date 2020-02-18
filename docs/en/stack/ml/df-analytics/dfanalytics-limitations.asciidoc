@@ -29,7 +29,7 @@ That index must be deleted separately.
 [[dfa-update-limitations]]
 === {dfanalytics-jobs-cap} cannot be updated
 
-You cannot update {dfanalytics-cap} configurations. Instead, delete the 
+You cannot update {dfanalytics} configurations. Instead, delete the 
 {dfanalytics-job} and create a new one.
 
 [float]
@@ -44,20 +44,20 @@ dedicated for {ml} processes. For general {ml} settings, see
 [[dfa-time-limitations]]
 === {dfanalytics-jobs-cap} runtime may vary
 
-The runtime of the {dfanalytics-jobs} depends on numerous factors, such as the 
-number of data points in the dataset, the type of analytics, the number of 
+The runtime of {dfanalytics-jobs} depends on numerous factors, such as the
+number of data points in the data set, the type of analytics, the number of 
 fields that are included in the analysis, the supplied 
 {ref}/put-dfanalytics.html#ml-hyperparam-optimization[hyperparameters], the 
-type of analyzed fields and so on. For this reason, a general runtime value that 
+type of analyzed fields, and so on. For this reason, a general runtime value that 
 applies to all or most of the situations does not exist. The runtime of a 
 {dfanalytics-job} may take from a couple of minutes up to 35 hours in extreme 
 cases.
 
-The runtime increases with the increasing number of analyzed fields in a nearly 
-linear fashion. For datasets of more than 100 000 points, we recommend to start 
-with a low training percent and run a few {dfanalytics-jobs} to see how the 
-runtime scales with the increased number of data points and how the quality of 
-results scales with increased training percentage.
+The runtime increases with an increasing number of analyzed fields in a nearly 
+linear fashion. For data sets of more than 100,000 points, start with a low
+training percent. Run a few {dfanalytics-jobs} to see how the runtime scales
+with the increased number of data points and how the quality of results scales
+with an increased training percentage.
 
 [float]
 [[dfa-missing-fields-limitations]]
@@ -105,7 +105,7 @@ destination index that don't contain a results field are not included in the
 [[dfa-classification-imbalanced-classes]]
 === Imbalanced class sizes affect {classification} performance
 
-If your training data is very imbalanced, then {classanalysis} may not provide 
+If your training data is very imbalanced, {classanalysis} may not provide 
 good predictions. Try to avoid highly imbalanced situations. We recommend having 
 at least 50 examples of each class and a ratio of no more than 10 to 1 for the 
 majority to minority class labels in the training data. If your training dataset 

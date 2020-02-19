@@ -160,10 +160,10 @@ statement with the port number
 (`not destination.ip : 172.16.0.0/12 and destination.port : 445`).
 
 [float]
-==== False positives for common network traffic
+==== Noise from common network traffic
 
-These network rules may need tuning as they can produce false-positive signals 
-for legitimate network activity:
+These network rules may need tuning to reduce noise from legitimate network
+activity:
 
 [horizontal]
 <<dns-activity-to-the-internet>>:: Personal devices, brought to work or used while working remotely, can query arbitrary DNS servers.
@@ -177,12 +177,12 @@ the internet may be part of development workflows.
 developing and testing web services.
 
 [float]
-==== False positives for common cloud-based network traffic
+==== Noise from common cloud-based network traffic
 
 In cloud-based organizations, such as Elastic, remote workers access services 
 over the internet. The security policies of home networks probably differ from 
 the security policies of managed corporate networks, and these rules might need 
-tuning to reduce signals for legitimate administrative activities: 
+tuning to reduce noise from legitimate administrative activities: 
 
 * <<rdp-remote-desktop-protocol-from-the-internet>>
 * <<ssh-secure-shell-from-the-internet>>

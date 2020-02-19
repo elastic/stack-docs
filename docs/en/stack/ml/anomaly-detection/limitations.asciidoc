@@ -264,3 +264,14 @@ occurs.
 * If there is insufficient data to generate any meaningful predictions, an
 error occurs. In general, forecasts that are created early in the learning phase
 of the data analysis are less accurate.
+
+[float]
+[[ml-frozen-limitations]]
+=== Frozen indices are not supported
+
+{ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
+{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
+{kib} or by using APIs. This limitation exists because it's currently not
+possible to specify the `ignore_throttled` query parameter for search requests
+in {dfeeds} or jobs. See
+{ref}/searching_a_frozen_index.html[Searching a frozen index].

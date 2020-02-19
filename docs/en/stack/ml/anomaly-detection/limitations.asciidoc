@@ -260,3 +260,14 @@ When you create an {anomaly-job}, you cannot use a field with the
 {ref}/date_nanos.html[`date_nanos` data type] as the `time_field` in the
 `data_description` object. This limitation applies irrespective of whether you
 create jobs in {kib} or by using APIs.
+
+[float]
+[[ml-frozen-limitations]]
+=== Frozen indices are not supported
+
+{ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
+{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
+{kib} or by using APIs. This limitation exists because it's currently not
+possible to specify the `ignore_throttled` query parameter for search requests
+in {dfeeds} or jobs. See
+{ref}/searching_a_frozen_index.html[Searching a frozen index].

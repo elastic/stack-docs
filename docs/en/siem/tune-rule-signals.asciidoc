@@ -1,14 +1,14 @@
 [[tuning-detection-signals]]
 == Tuning detection rules
 
-In the {siem-app}, detection rules can be tuned to produce the best possible 
+In the {siem-app}, detection rules can be tuned to produce the best possible
 set of actionable signals. To reduce the noise level, you can:
 
-* Disable detection rules when they match expected behavior, workflows, and 
-allowed policies, and when they rarely produce actionable signals.
-* <<manage-rules-ui, Clone and modify>> detection rule queries so they ignore 
-authorized policies and workflows, thereby reducing the noise level while still 
-retaining actionable signals.
+* Disable detection rules that rarely produce actionable signals because they 
+match local expected behavior, workflows, or policy exceptions.
+* <<manage-rules-ui, Clone and modify>> detection rule queries so they are
+aligned with local policy exceptions. This reduces noise while retaining
+actionable signals.
 * Clone and modify detection rule risk scores, and use branching logic to map 
 higher risk scores to higher priority workflows.
 
@@ -20,16 +20,16 @@ For details about tuning rules for specific categories, see:
 
 IMPORTANT: Due to the different way {beats} record network traffic direction, 
 network detection rules may produce noise. <<fix-network-rules>> explains how 
-to resolve this issue. For more background information, see the
+to resolve this. For more background information, see the
 {ecs-ref}/ecs-network.html[ECS network.direction field].
 
 [float]
 [[filter-rule-process]]
 === Filter out uncommon application signals
 
-Organizations frequently use uncommon and in-house applications. Often, these 
-can trigger unwanted signals. To stop a rule matching on an application, you 
-need to modify the rule's logic so it ignores the application's name.
+Organizations frequently use uncommon and in-house applications. Occasionally,
+these can trigger unwanted signals. To stop a rule matching on an application, 
+you need to modify the rule's logic so it ignores the application's name.
 
 For example, to prevent the <<unusual-process-execution-temp>> rule from
 producing signals for an in-house application named `myautomatedbuild`:
@@ -74,10 +74,11 @@ Authorized security testing, system tools, management frameworks, and
 administrative activity may trigger detection rules. These legitimate 
 activities include:
 
-* Ongoing and automated security testing and research.
+* Authorized security research.
 * System and software management processes running scripts, including scripts 
 that start child processes.
-* Administrative and management frameworks that create users, schedule tasks, make `psexec` connections, and run WMI commands.
+* Administrative and management frameworks that create users, schedule tasks, 
+make `psexec` connections, and run WMI commands.
 * Legitimate scripts using the `whoami` command.
 * Applications that work with file shares, such as backup programs, and use the 
 server message block (SMB) protocol.
@@ -166,8 +167,10 @@ These network rules may need tuning to reduce noise from legitimate network
 activity:
 
 [horizontal]
-<<dns-activity-to-the-internet>>:: Personal devices, brought to work or used while working remotely, can query arbitrary DNS servers.
-<<ftp-file-transfer-protocol-activity-to-the-internet>>:: FTP is sometimes used with external sources.
+<<dns-activity-to-the-internet>>:: Personal devices, brought to work or used 
+while working remotely, can query arbitrary DNS servers.
+<<ftp-file-transfer-protocol-activity-to-the-internet>>:: FTP is sometimes used 
+with external sources.
 <<smtp-to-the-internet>>:: Marketing and business workflows often 
 use SMTP email traffic. Additionally, personal devices, brought to work or used 
 while working remotely, may use consumer email services.
@@ -179,10 +182,10 @@ developing and testing web services.
 [float]
 ==== Noise from common cloud-based network traffic
 
-In cloud-based organizations, such as Elastic, remote workers access services 
-over the internet. The security policies of home networks probably differ from 
-the security policies of managed corporate networks, and these rules might need 
-tuning to reduce noise from legitimate administrative activities: 
+In cloud-based organizations, remote workers access services over the internet.
+The security policies of home networks probably differ from the security
+policies of managed corporate networks, and these rules might need tuning to
+reduce noise from legitimate administrative activities:
 
 * <<rdp-remote-desktop-protocol-from-the-internet>>
 * <<ssh-secure-shell-from-the-internet>>
@@ -205,7 +208,7 @@ then relies on CIDR notation to match traffic direction. The CIDR matches
 (`source.ip` and `destination.ip`) can be changed to match your network's 
 configuration.
 
-The following rules should be modified:
+The following rules can be modified:
 
 * <<dns-activity-to-the-internet>>
 * <<ftp-file-transfer-protocol-activity-to-the-internet>>

@@ -291,11 +291,13 @@ The snippet below shows a part of a document with the annotated results:
           "ml" : {
             "top_classes" : [ <1>
               {
-                "class_probability" : 0.939335365058496,
+                "class_probability" : 0.939335365058496, <2>
+                "class_score" : 0.6757432490367542, <3>
                 "class_name" : "false"
               },
               {
                 "class_probability" : 0.06066463494150393,
+                "class_score" : 0.06835090015710144,
                 "class_name" : "true"
               }
             ],
@@ -303,12 +305,16 @@ The snippet below shows a part of a document with the annotated results:
             "is_training" : false
           }
 ----
-<1> An array of values specifying the probability of the prediction for each 
-class. The probability is a value between 0 and 1. The higher the number, the 
-higher the probability that the data point belongs to the named class. The 
-`top_classes` object contains the predicted classes with the highest 
-probability. In this example, `false` has a `class_probability` of 0.94 while
-`true` has only 0.06, so the prediction will be `false`.
+<1> An array of values specifying the probability of the prediction and the 
+`class_score` for each class. The `top_classes` object contains the predicted 
+classes with the highest probability.
+<2> The probability is a value between 0 and 1. The higher the number, the 
+higher the probability that the data point belongs to the named class.  In this 
+example, `false` has a `class_probability` of 0.94 while `true` has only 0.06, 
+so the prediction will be `false`.
+<3> The value of `class_score` controls the probability at which a class label 
+is assigned to a datapoint. It works as a function of probability to maximise 
+the minimum recall of any class.
 ====
 
 [[flightdata-classification-evaluate]]

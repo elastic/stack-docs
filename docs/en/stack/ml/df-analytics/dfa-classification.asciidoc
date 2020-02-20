@@ -65,9 +65,58 @@ boosted tree regression model which combines multiple weak models into a
 composite one. We use decision trees to learn to predict the probability that 
 a data point belongs to a certain class.
 
+
+[discrete]
+[[dfa-classification-interpret]]
+==== Interpreting {classification} results
+
+The following sections help you understand and interpret the results of a 
+{classanalysis}.
+
+[discrete]
+[[dfa-classification-class-probability]]
+===== `class_probability`
+
+The value of `class_probability` shows how likely it is that a given datapoint 
+belongs to a certain class. It is a value between 0 and 1. The higher the 
+number, the higher the probability that the data point belongs to the named 
+class. This information is stored in the `top_classes` array for each document in your destination index. See the
+{ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
+section in the {classification} example.
+
+
+[discrete]
+[[dfa-classification-class-score]]
+===== `class_score`
+
+The value of `class_score` controls the probability at which a class label is 
+assigned to a datapoint. In normal case – that you maximize the number of 
+correct labels – a class label is assigned when its predicted probability is 
+greater than 0.5. The `class_score` makes it possible to change this behavior, 
+so it can be less than or greater than 0.5. For example, suppose our two classes 
+are denoted `class 0` and `class 1`, then the value of `class_score` is always 
+non-negative and its definition is:
+
+```
+class_score(class 0) = 0.5 / (1.0 - k) * probability(class 0)
+class_score(class 1) = 0.5 / k * probability(class 1)
+```
+
+Here, `k` is a positive constant less than one. It represents the predicted 
+probability of `class 1` for a datapoint at which to label it `class 1` and is 
+chosen to maximise the minimum recall of any class. This is useful for example 
+in case of highly imbalanced data. If `class 0` is much more frequent in the 
+training data than `class 1`, then it can mean that you achieve the best 
+accuracy by assigning `class 0` to every datapoint. This is equivalent to zero 
+recall for `class 1`. Instead of this behavior, the default scheme of the 
+{stack} {classanalysis} is to choose `k < 0.5` and accept a higher rate of 
+actual `class 0` predicted `class 1` errors, or in other words, a slight 
+degradation of the overall accuracy.
+
+
 [discrete]
 [[dfa-classification-feature-importance]]
-==== Feature importance
+===== Feature importance
 
 include::{docdir}/shared-ml-concepts.asciidoc[tag=feature-importance]
 

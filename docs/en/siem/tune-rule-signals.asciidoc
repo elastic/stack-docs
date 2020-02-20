@@ -1,0 +1,233 @@
+[[tuning-detection-signals]]
+== Tuning detection rules
+
+In the {siem-app}, detection rules can be tuned to produce the best possible
+set of actionable signals. To reduce the noise level, you can:
+
+* Disable detection rules that rarely produce actionable signals because they 
+match local expected behavior, workflows, or policy exceptions.
+* <<manage-rules-ui, Clone and modify>> detection rule queries so they are
+aligned with local policy exceptions. This reduces noise while retaining
+actionable signals.
+* Clone and modify detection rule risk scores, and use branching logic to map 
+higher risk scores to higher priority workflows.
+
+For details about tuning rules for specific categories, see:
+
+* <<tune-authorized-processes>>
+* <<tune-windows-rules>>
+* <<tune-network-rules>>
+
+IMPORTANT: Due to the different way {beats} record network traffic direction, 
+network detection rules may produce noise. <<fix-network-rules>> explains how 
+to resolve this. For more background information, see the
+{ecs-ref}/ecs-network.html[ECS network.direction field].
+
+[float]
+[[filter-rule-process]]
+=== Filter out uncommon application signals
+
+Organizations frequently use uncommon and in-house applications. Occasionally,
+these can trigger unwanted signals. To stop a rule matching on an application, 
+you need to modify the rule's logic so it ignores the application's name.
+
+For example, to prevent the <<unusual-process-execution-temp>> rule from
+producing signals for an in-house application named `myautomatedbuild`:
+
+. Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
+. Search for the `Unusual Process Execution - Temp` rule, and then:
+.. Click the actions icon on the rule's row (three dots).
+.. Select _Duplicate rule_
++
+A duplicate rule is created, named `Unusual Process Execution - Temp [Duplicate]`.
+. Search for the new rule, and then:
+.. Click the actions icon on the rule's row (three dots).
+.. Select _Edit rule settings_
++
+TIP: At the top of the *All rules* table, click `Custom rules` to display only 
+your rules.
++
+The *Edit rule settings* page is displayed.
+[role="screenshot"]
+image::images/edit-dect-rule.png[]
+
+. Do *one* of these:
+* In the _Custom query_ field, add this condition:
++
+`and not process.name: "myautomatedbuild"`
++
+[role="screenshot"]
+image::images/edit-dect-rule-query.png[]
+* Click _Add filter_, and then define a `process.name is not myautomatedbuild` 
+condition.
++
+[role="screenshot"]
+image::images/edit-dect-rule-filter.png[]
+. Save the new rule and disable the original rule. If you want, you can delete 
+the original rule.
+
+[float]
+[[tune-authorized-processes]]
+=== Tune rules detecting authorized processes
+
+Authorized security testing, system tools, management frameworks, and
+administrative activity may trigger detection rules. These legitimate 
+activities include:
+
+* Authorized security research.
+* System and software management processes running scripts, including scripts 
+that start child processes.
+* Administrative and management frameworks that create users, schedule tasks, 
+make `psexec` connections, and run WMI commands.
+* Legitimate scripts using the `whoami` command.
+* Applications that work with file shares, such as backup programs, and use the 
+server message block (SMB) protocol.
+
+To reduce signal noise for authorized activity, you can do any of the these:
+
+* Add a statement or filter to the rules that exclude specific servers, such as 
+the relevant host names, agent names, or other common identifier. 
+For example, `and not host.name : "server-name"`.
+* Add a statement or filter to the rules that <<filter-rule-process, exclude specific processes>>. For example, `and not process.name : "process-name"`.
+* Add a statement or filter to the rules that exclude a common user. 
+For example, `and not user.name : "security-tester"`.
+
+Another useful technique is to assign lower risk scores to rules triggered by 
+authorized activity. This enables detection while keeping the resulting signals 
+out of high-priority workflows. Use these steps:
+
+. Duplicate the same rule twice.
+. In the first duplication of the rule, exclude the relevant user or process 
+names (`and not user.name : "user-name"` or `and not process.name : "process-name"`).
+. In the second duplication of the rule:
+* Lower the `Risk score` (*Edit rule settings* -> *About* tab).
+* Change the rule's query or filter so it only matches the user or process 
+names excluded in the first duplication
+(`and user.name : "user-name"` or `and process.name : "process-name"`).
+. Disable the original rule.
+
+[float]
+[[tune-windows-rules]]
+=== Tune Windows child process and PowerShell rules
+
+Normal user activity may sometimes trigger one or more of these these rules:
+
+* <<powershell-spawning-cmd>>
+* <<suspicious-ms-office-child-process>>
+* <<suspicious-ms-outlook-child-process>>
+* <<suspicious-process-spawning-from-script-interpreter>>
+* <<suspicious-process-spawning-from-script-interpreter>>
+* <<system-shells-via-services>>
+* <<unusual-parent-child-relationship>>
+* <<windows-script-executing-powershell>>
+ 
+While all rules can be adjusted as needed, use care when adding exceptions to 
+these rules. Exceptions could result in an undetected client side execution, or 
+a persistence or malware threat going unnoticed.
+
+Examples of when these rules may create noise include:
+
+* Receiving and opening email-attached Microsoft Office files, which 
+include active content such as macros or scripts, from a trusted third-party 
+source.
+* Authorized technical support personnel who provide remote workers with
+scripts to gather troubleshooting information.
+
+In these cases, exceptions can be added to the rules using the relevant 
+`process.name`, `user.name`, and `host.name` conditions. Additionally, 
+you can create duplicate rules with lower risk scores.
+
+[float]
+[[tune-network-rules]]
+=== Tune network rules
+
+The definition of normal network behavior varies widely across different
+organizations, each network conforming to different security policies, 
+standards, and regulations. When normal network activity triggers signals, 
+network rules can be disabled or modified. For example:
+
+* To exclude a specific source, add a `not source.ip` statement with the 
+relevant IP address, and a `destination.port` statement with the relevant port 
+number (`not source.ip : 196.1.0.12 and destination.port : 445`).
+* To exclude source network traffic for an entire subnet, add a `not source.ip` 
+statement with the relevant CIDR notation (`not source.ip : 192.168.0.0/16`).
+* To exclude a destination IP for a specific destination port, add a
+`not destination.ip` statement with the IP address, and a `destination.port` 
+statement with the port number
+(`not destination.ip : 38.160.150.31 and destination.port : 445`)
+* To exclude a destination subnet for a specific destination port, add a
+`not destination.ip` statement using CIDR notation, and a ‘destination.port’ 
+statement with the port number
+(`not destination.ip : 172.16.0.0/12 and destination.port : 445`).
+
+[float]
+==== Noise from common network traffic
+
+These network rules may need tuning to reduce noise from legitimate network
+activity:
+
+[horizontal]
+<<dns-activity-to-the-internet>>:: Personal devices, brought to work or used 
+while working remotely, can query arbitrary DNS servers.
+<<ftp-file-transfer-protocol-activity-to-the-internet>>:: FTP is sometimes used 
+with external sources.
+<<smtp-to-the-internet>>:: Marketing and business workflows often 
+use SMTP email traffic. Additionally, personal devices, brought to work or used 
+while working remotely, may use consumer email services.
+<<sql-traffic-to-the-internet>>:: Although uncommon, accessing databases over 
+the internet may be part of development workflows.
+<<tcp-port-8000-activity-to-the-internet>>:: Frequently used port while 
+developing and testing web services.
+
+[float]
+==== Noise from common cloud-based network traffic
+
+In cloud-based organizations, remote workers sometimes access services over the 
+internet. The security policies of home networks probably differ from the 
+security policies of managed corporate networks, and these rules might need 
+tuning to reduce noise from legitimate administrative activities:
+
+* <<rdp-remote-desktop-protocol-from-the-internet>>
+* <<ssh-secure-shell-from-the-internet>>
+* <<ssh-secure-shell-to-the-internet>>
+
+TIP: If your organization is widely distributed and the workforce travels a 
+lot, use the `windows_anomalous_user_name_ecs`, 
+`linux_anomalous_user_name_ecs`, and `suspicious_login_activity_ecs`
+<<machine-learning, {ml}>> jobs to detect suspicious authentication activity.
+
+[float]
+[[fix-network-rules]]
+=== Reduce noise for network rules
+
+To reduce noise for network rules, duplicate the network rules and *either*:
+
+* Remove all rule index patterns, except for the `filebeat-*` index pattern.
+* Remove the `network.direction: outbound` statement from the query. The rule
+then relies on CIDR notation to match traffic direction. The CIDR matches 
+(`source.ip` and `destination.ip`) can be changed to match your network's 
+configuration.
+
+The following rules can be modified:
+
+* <<dns-activity-to-the-internet>>
+* <<ftp-file-transfer-protocol-activity-to-the-internet>>
+* <<ipsec-nat-traversal-port-activity>>
+* <<irc-internet-relay-chat-protocol-activity-to-the-internet>>
+* <<pptp-point-to-point-tunneling-protocol-activity>>
+* <<proxy-port-activity-to-the-internet>>
+* <<rdp-remote-desktop-protocol-from-the-internet>>
+* <<rdp-remote-desktop-protocol-to-the-internet>>
+* <<rpc-remote-procedure-call-from-the-internet>>
+* <<rpc-remote-procedure-call-to-the-internet>>
+* <<smb-windows-file-sharing-activity-to-the-internet>>
+* <<smtp-on-port-26-tcp>>
+* <<smtp-to-the-internet>>
+* <<sql-traffic-to-the-internet>>
+* <<ssh-secure-shell-from-the-internet>>
+* <<ssh-secure-shell-to-the-internet>>
+* <<tcp-port-8000-activity-to-the-internet>>
+* <<telnet-port-activity>>
+* <<tor-activity-to-the-internet>>
+* <<vnc-virtual-network-computing-from-the-internet>>
+* <<vnc-virtual-network-computing-to-the-internet>>

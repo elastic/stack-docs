@@ -29,46 +29,43 @@ That index must be deleted separately.
 [[dfa-update-limitations]]
 === {dfanalytics-jobs-cap} cannot be updated
 
-You cannot update {dfanalytics-cap} configurations. Instead, delete the 
+You cannot update {dfanalytics} configurations. Instead, delete the 
 {dfanalytics-job} and create a new one.
 
 [float]
 [[dfa-dataframe-size-limitations]]
-=== {dataframe-cap} memory limitation
+=== {dfanalytics-cap} memory limitation
 
-{dfanalytics-cap} can analyze {dataframes} that fit into the memory limit 
-dedicated for {ml} processes. For general {ml} settings, see 
-{ref}/ml-settings.html[{ml-cap} settings in {es}].
+{dfanalytics-cap} can only perform analyses that fit into the memory available 
+for {ml}. Overspill to disk is not currently possible. For general {ml} 
+settings, see {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
 [float]
 [[dfa-time-limitations]]
 === {dfanalytics-jobs-cap} runtime may vary
 
-The runtime of the {dfanalytics-jobs} depends on numerous factors, such as the 
-number of data points in the dataset, the type of analytics, the number of 
+The runtime of {dfanalytics-jobs} depends on numerous factors, such as the
+number of data points in the data set, the type of analytics, the number of 
 fields that are included in the analysis, the supplied 
 {ref}/put-dfanalytics.html#ml-hyperparam-optimization[hyperparameters], the 
-type of analyzed fields and so on. For example, running an analysis on a dataset 
-with many numerical fields will take longer than running an analysis on a 
-dataset that contains mainly categorical fields. Hyperparameters specified by 
-the user also lower the runtime. For this reason, a general runtime value that 
+type of analyzed fields, and so on. For this reason, a general runtime value that 
 applies to all or most of the situations does not exist. The runtime of a 
 {dfanalytics-job} may take from a couple of minutes up to 35 hours in extreme 
 cases.
 
-The runtime increases with the increasing number of analyzed fields in a nearly 
-linear fashion. For datasets of more than 100 000 points, we recommend to start 
-with a low training percent and run a few {dfanalytics-jobs} to see how the 
-runtime scales with the increased number of data points and how the quality of 
-results scales with increased training percentage.
+The runtime increases with an increasing number of analyzed fields in a nearly 
+linear fashion. For data sets of more than 100,000 points, start with a low
+training percent. Run a few {dfanalytics-jobs} to see how the runtime scales
+with the increased number of data points and how the quality of results scales
+with an increased training percentage.
 
 [float]
 [[dfa-missing-fields-limitations]]
 === Documents with missing values in analyzed fields are skipped
 
 If there are missing values in feature fields (fields that are subjects of the 
-{dfanalytics}), then the document that contains the fields with the missing 
-values will be skipped during the analysis.
+{dfanalytics}), the document that contains these fields is skipped 
+during the analysis.
 
 [float]
 [[dfa-od-field-type-docs-limitations]]
@@ -79,9 +76,9 @@ don't support missing values (see also <<dfa-missing-fields-limitations>>),
 therefore fields that have data types other than numeric or boolean are ignored. 
 Documents where included fields contain missing values, null values, or an array 
 are also ignored. Therefore a destination index may contain documents that don't 
-have an {olscore}. These documents are still reindexed from the source index to 
-the destination index, but they are not included in the {oldetection} analysis 
-and therefore no {olscore} is computed.
+have an {olscore}. These documents are still reindexed from the source index to the 
+destination index, but they are not included in the {oldetection} analysis and 
+therefore no {olscore} is computed.
 
 [float]
 [[dfa-regression-field-type-docs-limitations]]
@@ -108,18 +105,12 @@ destination index that don't contain a results field are not included in the
 [[dfa-classification-imbalanced-classes]]
 === Imbalanced class sizes affect {classification} performance
 
-If your training data is very imbalanced, then {classanalysis} may not provide 
-good predictions. Training tries to mitigate the effects of imbalanced 
-training data by maximizing the minimum recall of any class. For imbalanced 
-training data, this means that it will try to balance the proportion of values 
-it correctly labels in the minority and majority class. However, this process 
-can result in a slight degradation of the overall accuracy. Try to avoid highly 
-imbalanced situations. We recommend having at least 50 examples of each class 
-and a ratio of no more than 10 to 1 for the majority to minority class labels in 
-the training data. If your training dataset is very imbalanced, consider 
-downsampling the majority class, upsampling the minority class or – if it's 
-possible – gather more data. Consider investigating methods to change data that 
-fit your use case the most.
+If your training data is very imbalanced, {classanalysis} may not provide 
+good predictions. Try to avoid highly imbalanced situations. We recommend having 
+at least 50 examples of each class and a ratio of no more than 10 to 1 for the 
+majority to minority class labels in the training data. If your training data set 
+is very imbalanced, consider downsampling the majority class, upsampling the 
+minority class, or gathering more data.
 
 [float]
 [[dfa-inference-nested-limitation]]
@@ -130,3 +121,17 @@ of combinations of dot delimited and nested fields (for example:
 `{"a.b": "c", "a": {"b": "c"},...}`), the performance of the operation might be 
 slightly slower. Consider using as simple mapping as possible for the best 
 performance profile.
+
+[float]
+[[dfa-feature-importance-limitation]]
+=== Analytics runtime performance may significantly slow down with feature importance computation
+
+For complex models (such as those with many deep trees), the calculation of 
+feature importance takes significantly more time. Feature importance is 
+calculated at the end of the analysis and therefore the job may appear to be 
+stuck at 99% for several hours.
+
+If a reduction in runtime is important to you, try strategies such as disabling 
+feature importance, using a smaller {transform}, setting 
+{ref}/put-dfanalytics.html#ml-hyperparam-optimization[hyperparameter] values, or 
+only selecting fields that are relevant for analysis.

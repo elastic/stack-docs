@@ -199,7 +199,7 @@ information. |[Elastic] [Endpoint] |1
 
 |<<ssh-secure-shell-from-the-internet, SSH (Secure Shell) from the Internet>> |Detects network events that may indicate the use of SSH traffic from the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |1
 
-|<<ssh-secure-shell-to-the-internet, SSH (Secure Shell) to the Internet>> |Detects network events that may indicate the use of SSH traffic from the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |1
+|<<ssh-secure-shell-to-the-internet, SSH (Secure Shell) to the Internet>> |Detects network events that may indicate the use of SSH traffic to the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |1
 
 |<<socat-process-activity, Socat Process Activity>> |A Socat process is running on a Linux host. Socat is often used as a persistence mechanism by exporting a reverse shell, or by serving a shell on a listening port. Socat is also sometimes used for lateral movement. |[Elastic] [Linux] |1
 
@@ -228,7 +228,7 @@ parent-child process relationship with cmd.exe descending from `svchost.exe` |[E
 
 |<<unusual-network-connection-via-rundll32, Unusual Network Connection via RunDLL32>> |Identifies unusual instances of `rundll32.exe` making outbound network connections. This may indicate adversarial activity and may identify malicious DLLs. |[Elastic] [Windows] |1
 
-|<<unusual-parent-child-relationship-, Unusual Parent-Child Relationship >> |Identifies Windows programs run by unexpected parent processes. This could indicate masquerading or other strange activity on a system. |[Elastic] [Windows] |1
+|<<unusual-parent-child-relationship, Unusual Parent-Child Relationship >> |Identifies Windows programs run by unexpected parent processes. This could indicate masquerading or other strange activity on a system. |[Elastic] [Windows] |1
 
 |<<unusual-process-execution-temp, Unusual Process Execution - Temp>> |Identifies processes running in a temporary folder. This is sometimes done by adversaries to hide malware. |[Elastic] [Linux] |1
 

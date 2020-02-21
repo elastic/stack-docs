@@ -5,9 +5,8 @@
 <titleabbrev>Create jobs</titleabbrev>
 ++++
 
-Now that we have taken a quick look at the type of data that is stored in the 
-`kibana_sample_data_logs` index, let's create some {ml} jobs to start analyzing
-the data.
+Now that you're familiar with the data in the `kibana_sample_data_logs` index,
+you can create some {ml} jobs to analyze it.
 
 The {kib} sample data sets include some pre-configured {anomaly-jobs} for you to
 play with. You can use either of the following methods to add the jobs:
@@ -24,33 +23,49 @@ image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
 
 Accept the default values and click *Create Jobs*.
 
-When all the jobs and {dfeeds} are created and started, you receive a summary: 
-
-[role="screenshot"]
-image::images/ml-gs-create-web-jobs-2.jpg["Create jobs for the sample web logs"]
-
-The wizard creates three jobs and three {dfeeds}. <<ml-dfeeds,{dfeeds-cap}>>
-retrieve data from {es} indices and provide it {anomaly-jobs} for analysis. If
-you want to see all of the configuration details for these jobs and {dfeeds},
-you can do so on the *Machine Learning* > *Anomaly Detection* > *Job Management*
-page. For the purposes of this tutorial, however, we'll just do a quick overview
-of the goal of each job:
-
-* `low_request_rate` uses the <<ml-count,`low_count` function>> to
-find unusually low request rates.
-* `response_code_rates` uses the <<ml-count,`count` function>> and
-partitions the analysis by `response.keyword` values to find unusual event rates
-by HTTP response code.
-* `url_scanning` uses the <<ml-distinct-count,`high_distinct_count` function>>
-and performs <<ml-configuring-pop,population analysis>> on the `clientip` field
-to find client IPs accessing an unusually high distinct count of URLs.
-
-The next step is to view the results and see what types of insights these {ml}
-jobs have generated! 
+The wizard creates three jobs and three {dfeeds}.
 
 [TIP]
---
-This tutorial uses {kib} to create jobs and view results, but you can
-alternatively use APIs to accomplish most tasks.
-For API reference information, see {ref}/ml-apis.html[Machine learning APIs].
---
+====
+Before you dive into the {ml} results, here's a quick summary of some important
+concepts: 
+
+{dfeeds}::
+{dfeeds-cap} retrieve data from {es} indices and provide it to {anomaly-jobs}
+for analysis.
+
+buckets::
+{anomaly-jobs-cap} use buckets to divide up a time series into batches for
+processing.
+
+detectors::
+{anomaly-jobs-cap} contain one or more _detectors_, which define the type of
+analysis that occurs (for example, `max`, `average`, or `rare` analytical
+functions) and the fields that are analyzed. Some of the analytical functions
+look for single anomalous data points. For example, `max` identifies the maximum
+value that is seen within a bucket. Others perform some aggregation over the
+length of the bucket. For example, `mean` calculates the mean of all the data
+points seen within the bucket. For descriptions of all the functions, see
+<<ml-functions>>.
+
+You can read more about these concepts in <<ml-buckets>>, <<ml-dfeeds>>, and
+<<ml-jobs>>.
+====
+
+If you want to see all of the configuration details for a job, you can do so on
+the *Machine Learning* > *Anomaly Detection* > *Job Management* page. For the
+purposes of this tutorial, however, here's a quick overview of the goal of each
+job:
+
+* `low_request_rate` uses the `low_count` function to find unusually low request
+rates
+* `response_code_rates` uses the `count` function and partitions the analysis by
+`response.keyword` values to find unusual event rates by HTTP response code
+* `url_scanning` uses the `high_distinct_count` function and performs
+<<ml-configuring-pop,population analysis>> on the `clientip` field
+to find client IPs accessing an unusually high distinct count of URLs
+
+All three jobs use a bucket span of 1 hour.
+
+The next step is to view the results and see what types of insights these jobs
+have generated!

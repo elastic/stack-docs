@@ -106,7 +106,7 @@ Function: `non_zero_count`.
 abnormal_span_durations_jsbase::
 abnormal_span_durations_nodejs::
 
-* For APM data where `agent.name` is `js-base` or `nodejs`.
+* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is `js-base` or `nodejs`).
 * Models the duration of spans (`partition_field_name` is `span.type`).
 * Detects for spans that are taking longer than usual to process (using the 
   <<ml-metric-mean,`high_mean` function>>).
@@ -126,7 +126,7 @@ Function: `high_mean`.
 
 abnormal_trace_durations_nodejs::
 
-* For APM data where `agent.name` is `nodejs`.
+* For data from {apm-node-agents} (where `agent.name` is `nodejs`).
 * Models the duration of trace transactions.
 * Detects trace transactions that are processing slower than usual (using the 
   <<ml-metric-mean,`high_mean` function>>).
@@ -145,7 +145,7 @@ Function: `high_mean`.
 
 anomalous_error_rate_for_user_agents_jsbase::
 
-* For APM data where `agent.name` is `js-base`.
+* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
 * Models the error rate of user agents (`partition_field_name` is 
   `user_agent.name`).
 * Detects user agents that are encountering errors at an above normal rate 
@@ -169,7 +169,7 @@ Function: `high_non_zero_count`.
 decreased_throughput_jsbase::
 decreased_throughput_nodejs::
 
-* For APM data where `agent.name` is `js-base` or `nodejs`.
+* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is `js-base` or `nodejs`).
 * Models the transaction rate of the application.
 * Detects periods during which the application is processing fewer requests 
 than normal (using the <<ml-count,`low_count` function>>).
@@ -187,7 +187,7 @@ Function: `low_count`.
 
 high_count_by_user_agent_jsbase::
 
-* For APM data where `agent.name` is `js-base`.
+* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
 * Models the request rate of user agents (`partition_field_name` is 
   `user_agent.name`).
 * Detects user agents that are making requests at a suspiciously high rate 
@@ -312,6 +312,7 @@ Function: `rare`.
 
 // tag::logs-jobs[]
 These {anomaly-jobs} appear by default in the {kibana-ref}/xpack-logs.html[Logs app] in {kib}. 
+
 log_entry_categories_count::
 
 * For log entry categories via the Logs UI.

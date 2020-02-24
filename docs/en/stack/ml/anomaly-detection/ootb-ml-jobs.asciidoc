@@ -101,13 +101,16 @@ Function: `non_zero_count`.
 [float]
 [[ootb-ml-jobs-apm]]
 === APM
-These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or an APM Server stored in {es}.
+
+These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or 
+an APM Server stored in {es}.
 
 // tag::apm-jobs[]
-abnormal_span_durations_jsbase::
+abnormal_span_durations_rumjs::
 abnormal_span_durations_nodejs::
 
-* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is `js-base` or `nodejs`).
+* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is 
+  `rum-js` or `nodejs`).
 * Models the duration of spans (`partition_field_name` is `span.type`).
 * Detects for spans that are taking longer than usual to process (using the 
   <<ml-metric-mean,`high_mean` function>>).
@@ -144,9 +147,9 @@ Bucket span: 15m.
 Function: `high_mean`.
 ////
 
-anomalous_error_rate_for_user_agents_jsbase::
+anomalous_error_rate_for_user_agents_rumjs::
 
-* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
+* For data from {apm-rum-agents} (where `agent.name` is `rum-js`).
 * Models the error rate of user agents (`partition_field_name` is 
   `user_agent.name`).
 * Detects user agents that are encountering errors at an above normal rate 
@@ -167,10 +170,11 @@ Bucket span: 15m.
 Function: `high_non_zero_count`.
 ////
 
-decreased_throughput_jsbase::
+decreased_throughput_rumjs::
 decreased_throughput_nodejs::
 
-* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is `js-base` or `nodejs`).
+* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is 
+  `rum-js` or `nodejs`).
 * Models the transaction rate of the application.
 * Detects periods during which the application is processing fewer requests 
 than normal (using the <<ml-count,`low_count` function>>).
@@ -186,9 +190,9 @@ Bucket span: 15m.
 Function: `low_count`.
 ////
 
-high_count_by_user_agent_jsbase::
+high_count_by_user_agent_rumjs::
 
-* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
+* For data from {apm-rum-agents} (where `agent.name` is `rum-js`).
 * Models the request rate of user agents (`partition_field_name` is 
   `user_agent.name`).
 * Detects user agents that are making requests at a suspiciously high rate 

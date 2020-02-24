@@ -610,7 +610,7 @@ Function: `rare`.
 linux_anomalous_process_all_hosts_ecs::
 windows_anomalous_process_all_hosts_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* For host activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes to all 
   Linux/Windows hosts (using the <<ml-rare,`rare` function>>).
@@ -634,7 +634,7 @@ Function: `rare`.
 linux_anomalous_user_name_ecs::
 windows_anomalous_user_name_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* For host activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
   (using the <<ml-rare,`rare` function>>).
@@ -763,7 +763,7 @@ Function: `rare`.
 rare_process_by_host_linux_ecs::
 rare_process_by_host_windows_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* For host activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
 * Models occurrences of process activities on the host. 
 * Detect unusually rare processes compared to other processes on Linux/Windows 
   (using the <<ml-rare,`rare` function>>).
@@ -782,7 +782,7 @@ Function: `rare`.
 
 suspicious_login_activity_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat`.
+* For host activity logs where `agent.type` is `auditbeat`.
 * Models occurrences of authentication attempts (`partition_field_name` is 
   `host.name`).
 * Detects unusually high number of authentication attempts (using the 
@@ -802,7 +802,7 @@ Function: `high_non_zero_count`.
 
 windows_anomalous_path_activity_ecs::
 
-* For network activity logs where `agent.type` is `winlogbeat`.
+* For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of processes in paths.
 * Detects activity in unusual paths (using the <<ml-rare,`rare` function>>).
 
@@ -823,7 +823,7 @@ Function: `rare`.
 
 windows_anomalous_process_creation::
 
-* For network activity logs where `agent.type` is `winlogbeat`.
+* For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process creation activities (`partition_field_name` is 
   `process.parent.name`).
 * Detects process relationships that are rare compared to other process 
@@ -846,7 +846,7 @@ Function: `rare`.
 
 windows_anomalous_script::
 
-* For network activity logs where `agent.type` is `winlogbeat`.
+* For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of powershell script activities.
 * Detects unusual powershell script execution compared to other powershell 
   script activities (using the 
@@ -869,7 +869,7 @@ Function: `high_info_content`.
 
 windows_anomalous_service::
 
-* For network activity logs where `agent.type` is `winlogbeat`.
+* For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of Windows service activities.
 * Detects Windows service activities that occur rarely compared to other Windows 
   service activities (using the <<ml-rare,`rare` function>>).
@@ -890,7 +890,7 @@ Function: `rare`.
 
 windows_rare_user_runas_event::
 
-* For network activity logs where `agent.type` is `winlogbeat`.
+* For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user context switches.
 * Detects user context switches that occur rarely compared to other user context 
   switches (using the <<ml-rare,`rare` function>>).
@@ -911,7 +911,7 @@ Function: `rare`.
 
 windows_rare_user_type10_remote_login::
 
-* For network activity logs where `agent.type` is `winlogbeat`.
+* For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user remote login activities.
 * Detects user remote login activities that occur rarely compared to other 
   user remote login activities (using the <<ml-rare,`rare` function>>).

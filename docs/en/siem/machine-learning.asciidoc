@@ -79,7 +79,9 @@ exfiltration activity.
 Rarely used destination port activity is generally unusual in Linux fleets and 
 can indicate unauthorized access or threat actor activity.
 +
-Beats required on hosts:
+*{ml-cap} function*: {ml-docs}/ml-rare-functions.html#ml-rare[Rare]
++
+*Beats required on hosts*:
 
 * Auditbeat (Linux)
 
@@ -88,7 +90,9 @@ NOTE: You can only run this job when Auditbeat is used to ship data.
 linux_anomalous_network_service:: Searches for unusual listening ports that
 could indicate execution of unauthorized services, backdoors, or persistence mechanisms.
 +
-Beats required on hosts:
+*{ml-cap} function*: {ml-docs}/ml-rare-functions.html#ml-rare[Rare]
++
+*Beats required on hosts*:
 
 * Auditbeat (Linux)
 
@@ -104,12 +108,14 @@ and cURL are sometimes used to deliver Linux exploit payloads, and threat
 actors use these tools to download additional software and code. For these 
 reasons, unusual URLs can indicate unauthorized downloads or threat activity.
 +
-Beats required on hosts:
+*{ml-cap} function*: {ml-docs}/ml-rare-functions.html#ml-rare[Rare]
++
+*Beats required on hosts*:
 
 * Auditbeat (Linux)
 
 +
-Required ECS fields:
+*Required ECS fields*:
 
 * destination.ip
 * destination.port

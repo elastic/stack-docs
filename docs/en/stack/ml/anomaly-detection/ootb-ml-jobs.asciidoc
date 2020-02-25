@@ -512,12 +512,17 @@ Function: `non_zero_count`.
 // tag::siem-jobs[]
 These {anomaly-jobs} appear by default in the Anomaly Detection interface of the 
 {siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
-automatically detect file system and network anomalies on your hosts.
+automatically detect file system and network anomalies on your hosts. The list 
+below contains the jobs organized by `agent.type` (Auditbeat, Packetbeat, and 
+Winlogbeat).
+
+[float]
+[[ootb-ml-jobs-siem-audit]]
+==== SIEM - Auditbeat
 
 linux_anomalous_network_activity_ecs::
-windows_anomalous_network_activity_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* For network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the <<ml-rare,`rare` function>>).
@@ -608,16 +613,14 @@ Function: `rare`.
 ////
 
 linux_anomalous_process_all_hosts_ecs::
-windows_anomalous_process_all_hosts_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* For host activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes to all 
   Linux/Windows hosts (using the <<ml-rare,`rare` function>>).
 
-Looks for processes that are unusual to all Linux/Windows hosts. Such unusual 
-processes may indicate unauthorized services, malware, or persistence 
-mechanisms.
+Looks for processes that are unusual to all Linux hosts. Such unusual processes 
+may indicate unauthorized services, malware, or persistence mechanisms.
 
 ////
 Influencers:
@@ -632,9 +635,8 @@ Function: `rare`.
 ////
 
 linux_anomalous_user_name_ecs::
-windows_anomalous_user_name_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
+* For host activity logs where `agent.type` is `auditbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
   (using the <<ml-rare,`rare` function>>).
@@ -654,6 +656,50 @@ Bucket span: 15m.
 
 Function: `rare`.
 ////
+
+rare_process_by_host_linux_ecs::
+
+* For host activity logs where `agent.type` is `auditbeat`.
+* Models occurrences of process activities on the host. 
+* Detect unusually rare processes compared to other processes on Linux (using 
+  the <<ml-rare,`rare` function>>).
+
+////
+Influencers:
+
+* `host.name` 
+* `process.name`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+////
+
+suspicious_login_activity_ecs::
+
+* For host activity logs where `agent.type` is `auditbeat`.
+* Models occurrences of authentication attempts (`partition_field_name` is 
+  `host.name`).
+* Detects unusually high number of authentication attempts (using the 
+  <<ml-nonzero-count,`high_non_zero_count` function>>).
+
+////
+Influencers:
+
+* `host.name` 
+* `source.ip`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `high_non_zero_count`.
+////
+
+
+[float]
+[[ootb-ml-jobs-siem-packet]]
+==== SIEM - Packetbeat
 
 packetbeat_dns_tunneling::
 
@@ -760,13 +806,44 @@ Bucket span: 15m.
 Function: `rare`.
 ////
 
-rare_process_by_host_linux_ecs::
-rare_process_by_host_windows_ecs::
+[float]
+[[ootb-ml-jobs-siem-winlog]]
+==== SIEM - Winlogbeat
 
-* For host activity logs where `agent.type` is `auditbeat` or `winlogbeat`.
-* Models occurrences of process activities on the host. 
-* Detect unusually rare processes compared to other processes on Linux/Windows 
-  (using the <<ml-rare,`rare` function>>).
+windows_anomalous_network_activity_ecs::
+
+* For network activity logs where `agent.type` is `winlogbeat`.
+* Models the occurrences of processes that cause network activity.
+* Detects network activity caused by processes that occur rarely compared to 
+  other processes (using the <<ml-rare,`rare` function>>).
+
+Looks for unusual processes using the network which could indicate
+command-and-control, lateral movement, persistence, or data exfiltration
+activity.
+
+////
+Influencers:
+
+* `destination.ip`
+* `host.name` 
+* `process.name`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
+////
+
+windows_anomalous_process_all_hosts_ecs::
+
+* For host activity logs where `agent.type` is `winlogbeat`.
+* Models the occurrences of processes on all hosts.
+* Detects processes that occur rarely compared to other processes to all 
+  Linux/Windows hosts (using the <<ml-rare,`rare` function>>).
+
+Looks for processes that are unusual to all Windows hosts. Such unusual 
+processes may indicate unauthorized services, malware, or persistence 
+mechanisms.
 
 ////
 Influencers:
@@ -780,24 +857,46 @@ Bucket span: 15m.
 Function: `rare`.
 ////
 
-suspicious_login_activity_ecs::
+windows_anomalous_user_name_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat`.
-* Models occurrences of authentication attempts (`partition_field_name` is 
-  `host.name`).
-* Detects unusually high number of authentication attempts (using the 
-  <<ml-nonzero-count,`high_non_zero_count` function>>).
+* For host activity logs where `agent.type` is `winlogbeat`.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the <<ml-rare,`rare` function>>).
+
+Rare and unusual users that are not normally active may indicate unauthorized 
+changes or activity by an unauthorized user which may be credentialed access or 
+lateral movement.
 
 ////
 Influencers:
 
 * `host.name` 
-* `source.ip`
+* `process.name`
 * `user.name`
 
 Bucket span: 15m.
 
-Function: `high_non_zero_count`.
+Function: `rare`.
+////
+
+rare_process_by_host_windows_ecs::
+
+* For host activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of process activities on the host. 
+* Detect unusually rare processes compared to other processes on Windows (using 
+  the <<ml-rare,`rare` function>>).
+
+////
+Influencers:
+
+* `host.name` 
+* `process.name`
+* `user.name`
+
+Bucket span: 15m.
+
+Function: `rare`.
 ////
 
 windows_anomalous_path_activity_ecs::

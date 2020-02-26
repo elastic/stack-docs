@@ -43,25 +43,24 @@ If you slide the time selector from the beginning of the data to the end of the
 data, you can see how the model improves as it processes more data. At the
 beginning, the expected range of values is pretty broad and the model is not
 capturing the periodicity in the data. But it quickly learns and begins to
-reflect the daily variation.
+reflect the patterns in your data.
 
 Any data points outside the range that was predicted by the model are marked
-as anomalies. When you have high volumes of real-life data, many anomalies
-might be found. These vary in probability from very likely to highly unlikely,
-that is to say, from not particularly anomalous to highly anomalous. There
-can be none, one or two, or tens, sometimes hundreds of anomalies found within
-each bucket. There can be many thousands found per job. In order to provide
-a sensible view of the results, an _anomaly score_ is calculated for each bucket
-time interval. The anomaly score is a value from 0 to 100, which indicates
-the significance of the observed anomaly compared to previously seen anomalies.
-The highly anomalous values are shown in red and the low scored values are
-indicated in blue. An interval with a high anomaly score is significant and
-requires investigation.
+as anomalies. When you have high volumes of real-life data, your {anomaly-job}
+might find many anomalies. These vary in probability from very likely to highly
+unlikely, that is to say, from not particularly anomalous to highly anomalous.
+There can be none, one or two, or tens, sometimes hundreds of anomalies found
+within each bucket. There can be many thousands found per job. In order to
+provide a sensible view of the results, an _anomaly score_ is calculated for
+each bucket time interval. The anomaly score is a value from 0 to 100, which
+indicates the significance of the observed anomaly compared to previously seen
+anomalies. The highly anomalous values are shown in red and the low scored
+values are indicated in blue. An interval with a high anomaly score is
+significant and requires investigation.
 
 Slide the time selector to a section of the time series that contains a red
-anomaly data point. If you hover over the point, you can see more information
-about that data point. You can also see details in the **Anomalies** section
-of the viewer. For example:
+anomaly data point. If you hover over the point, you can see more information.
+You can also see details in the **Anomalies** section of the viewer. For example:
 
 [role="screenshot"]
 image::images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for low_request_rate job"]

@@ -23,22 +23,13 @@ image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
 
 Accept the default values and click *Create Jobs*.
 
-The wizard creates three jobs and three {dfeeds}.
+The wizard creates three jobs and three {dfeeds}. <<ml-dfeeds,{dfeeds-cap}>>
+retrieve data from {es} indices and provide it to {anomaly-jobs} for analysis.
+When you think about how {anomaly-jobs} process data, it's also important to
+understand the concept of <<ml-buckets,buckets>>, which are used to divide a
+time series into batches for processing. All three jobs for the sample web logs
+use a bucket span of 1 hour.
 
-[TIP]
-====
-Before you dive into the {ml} results, here's a quick summary of some important
-concepts: 
-
-{dfeeds}::
-{dfeeds-cap} retrieve data from {es} indices and provide it to {anomaly-jobs}
-for analysis.
-
-buckets::
-{anomaly-jobs-cap} use buckets to divide up a time series into batches for
-processing.
-
-detectors::
 {anomaly-jobs-cap} contain one or more _detectors_, which define the type of
 analysis that occurs (for example, `max`, `average`, or `rare` analytical
 functions) and the fields that are analyzed. Some of the analytical functions
@@ -48,24 +39,18 @@ length of the bucket. For example, `mean` calculates the mean of all the data
 points seen within the bucket. For descriptions of all the functions, see
 <<ml-functions>>.
 
-You can read more about these concepts in <<ml-buckets>>, <<ml-dfeeds>>, and
-<<ml-jobs>>.
-====
-
-If you want to see all of the configuration details for a job, you can do so on
-the *Machine Learning* > *Anomaly Detection* > *Job Management* page. For the
-purposes of this tutorial, however, here's a quick overview of the goal of each
-job:
+If you want to see all of the configuration details for your jobs and {dfeeds},
+you can do so on the *Machine Learning* > *Anomaly Detection* > *Job Management*
+page. For the purposes of this tutorial, however, here's a quick overview of the
+goal of each job:
 
 * `low_request_rate` uses the `low_count` function to find unusually low request
 rates
 * `response_code_rates` uses the `count` function and partitions the analysis by
 `response.keyword` values to find unusual event rates by HTTP response code
-* `url_scanning` uses the `high_distinct_count` function and performs
-<<ml-configuring-pop,population analysis>> on the `clientip` field
-to find client IPs accessing an unusually high distinct count of URLs
-
-All three jobs use a bucket span of 1 hour.
+* `url_scanning` uses the `high_distinct_count` function and performs population
+analysis on the `clientip` field to find client IPs accessing an unusually high
+distinct count of URLs
 
 The next step is to view the results and see what types of insights these jobs
 have generated!

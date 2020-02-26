@@ -1,14 +1,22 @@
 [role="xpack"]
 [[ootb-ml-jobs]]
-== Prebuilt {anomaly-jobs}
+== Supplied {anomaly-detect} configurations
 
 {anomaly-jobs-cap} contain the configuration information and metadata necessary 
 to perform an analytics task. {kib} can recognize certain types of data and 
-provide specialized wizards for that context. This page lists the available 
-prebuilt {anomaly-jobs} that you can use via {kib}.
+provide specialized wizards for that context. This page lists the categories of 
+the {anomaly-jobs} that are ready to use via {kib}.
+
+* <<ootb-ml-jobs-apache>>
+* <<ootb-ml-jobs-apm>>
+* <<ootb-ml-jobs-auditbeat>>
+* <<ootb-ml-jobs-logs-ui>>
+* <<ootb-ml-jobs-metricbeat>>
+* <<ootb-ml-jobs-nginx>>
+* <<ootb-ml-jobs-siem>>
 
 
-[float]
+
 [[ootb-ml-jobs-apache]]
 === Apache
 
@@ -98,7 +106,7 @@ Function: `non_zero_count`.
 ////
 // end::apache-jobs[]
 
-[float]
+
 [[ootb-ml-jobs-apm]]
 === APM
 These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or an APM Server stored in {es}.
@@ -222,7 +230,7 @@ Function: `high_mean`.
 ////
 // end::apm-jobs[]
 
-[float]
+
 [[ootb-ml-jobs-auditbeat]]
 === Auditbeat
 
@@ -307,7 +315,7 @@ Function: `rare`.
 ////
 // end::auditbeat-jobs[]
 
-[float]
+
 [[ootb-ml-jobs-logs-ui]]
 === Logs UI
 
@@ -351,7 +359,7 @@ Function: `count`.
 ////
 // end::logs-jobs[]
 
-[float]
+
 [[ootb-ml-jobs-metricbeat]]
 === Metricbeat
 
@@ -416,7 +424,7 @@ Function: `low_count`.
 ////
 // end::metricbeat-jobs[]
 
-[float]
+
 [[ootb-ml-jobs-nginx]]
 === Nginx
 
@@ -505,7 +513,7 @@ Function: `non_zero_count`.
 ////
 // end::nginx-jobs[]
 
-[float]
+
 [[ootb-ml-jobs-siem]]
 === SIEM
 

@@ -76,14 +76,14 @@ ifdef::xpack-terms[]
 
 [[glossary-ml-bucket]] bucket ::
 
-The {ml-features} use the concept of a bucket to divide the time
-series into batches for processing. The _bucket span_ is part of the
-configuration information for {anomaly-jobs}. It defines the time interval that is used
-to summarize and model the data. This is typically between 5 minutes to 1 hour
-and it depends on your data characteristics. When you set the bucket span,
-take into account the granularity at which you want to analyze, the frequency
-of the input data, the typical duration of the anomalies, and the frequency at
-which alerting is required.
+The {ml-features} use the concept of a bucket to divide the time series into
+batches for processing. The _bucket span_ is part of the configuration
+information for {anomaly-jobs}. It defines the time interval that is used to
+summarize and model the data. This is typically between 5 minutes to 1 hour and
+it depends on your data characteristics. When you set the bucket span, take into
+account the granularity at which you want to analyze, the frequency of the input
+data, the typical duration of the anomalies, and the frequency at which alerting
+is required.
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -191,9 +191,9 @@ ifdef::xpack-terms[]
 
 [[glossary-ml-datafeed]] datafeed ::
 
-{anomaly-jobs-cap} can analyze either a one-off batch of data or
-continuously in real time. {dfeeds-cap} retrieve data from {es} for analysis.
-Alternatively you can post data from any source directly to a {ml} API.
+{anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
+real time. {dfeeds-cap} retrieve data from {es} for analysis. Alternatively, you
+can post data from any source directly to a {ml} API.
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -212,9 +212,9 @@ ifdef::xpack-terms[]
 [[glossary-ml-detector]] detector ::
 
 As part of the configuration information that is associated with {anomaly-jobs},
-detectors define the type of analysis that needs to be done. They
-also specify which fields to analyze. You can have more than one detector in a
-job, which is more efficient than running multiple jobs against the same data.
+detectors define the type of analysis that needs to be done. They also specify
+which fields to analyze. You can have more than one detector in a job, which is
+more efficient than running multiple jobs against the same data.
 +
 //Source: X-Pack
 endif::xpack-terms[]
@@ -394,6 +394,15 @@ order to index <<glossary-event,event>> data.
 +
 //Source: Logstash
 endif::logstash-terms[]
+ifdef::xpack-terms[]
+[[glossary-influencer]] influencer ::
+
+Influencers are entities that might have contributed to an anomaly in a specific
+bucket in an {anomaly-job}. For more information, see
+{ml-docs}/ml-influencers.html[Influencers].
++
+//Source: X-Pack
+endif::xpack-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-input-plugin]] input plugin ::

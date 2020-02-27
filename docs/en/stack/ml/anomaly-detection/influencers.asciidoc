@@ -43,9 +43,12 @@ can be overwhelming and there is a small overhead to the analysis.
 ==== Influencer results
 
 The influencer results show which entities were anomalous and when. One
-influencer result is written per bucket for each influencer that is considered
-anomalous. For jobs with more than one detector, these scores provide a powerful
-view of the most anomalous entities.
+influencer result is written per bucket for each influencer that affects the
+anomalousness of the bucket. The {ml} analytics determine the impact of an
+influencer by performing a series of experiments that remove all data points
+with a specific influencer value and check whether the bucket is still anomalous.
+For jobs with more than one detector, influencer scores provide a powerful view
+of the most anomalous entities.
 
 For example, the `high_sum_total_sales` {anomaly-job} for the eCommerce orders
 sample data uses `customer_full_name.keyword` and `category.keyword` as

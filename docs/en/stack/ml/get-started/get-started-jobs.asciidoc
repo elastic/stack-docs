@@ -23,21 +23,26 @@ image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
 
 Accept the default values and click *Create Jobs*.
 
-The wizard creates three jobs and three {dfeeds}. <<ml-dfeeds,{dfeeds-cap}>>
-retrieve data from {es} indices and provide it to {anomaly-jobs} for analysis.
-When you think about how {anomaly-jobs} process data, it's also important to
-understand the concept of <<ml-buckets,buckets>>, which are used to divide a
-time series into batches for processing. All three jobs for the sample web logs
-use a bucket span of 1 hour.
+The wizard creates three jobs and three {dfeeds}.
 
-{anomaly-jobs-cap} contain one or more _detectors_, which define the type of
+.Datafeeds, buckets, and detectors
+****
+A _{dfeed}_ retrieves time series data from {es} and provides it to an
+{anomaly-job} for analysis.
+
+The job uses _buckets_ to divide the time series into batches for processing.
+For example, all three sample web log jobs use a bucket span of 1 hour.
+
+Each {anomaly-job} contains one or more _detectors_, which define the type of
 analysis that occurs (for example, `max`, `average`, or `rare` analytical
 functions) and the fields that are analyzed. Some of the analytical functions
 look for single anomalous data points. For example, `max` identifies the maximum
 value that is seen within a bucket. Others perform some aggregation over the
 length of the bucket. For example, `mean` calculates the mean of all the data
-points seen within the bucket. For descriptions of all the functions, see
-<<ml-functions>>.
+points seen within the bucket.
+
+For more information, see <<ml-dfeeds>>, <<ml-buckets>>, and <<ml-functions>>.
+****
 
 If you want to see all of the configuration details for your jobs and {dfeeds},
 you can do so on the *Machine Learning* > *Anomaly Detection* > *Job Management*

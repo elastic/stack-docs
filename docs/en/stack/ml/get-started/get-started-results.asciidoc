@@ -24,15 +24,16 @@ There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 [[ml-gs-results-smv]]
 === Explore results in the Single Metric Viewer
 
-Let's start by looking at the simplest sample job (`low_request_rate`) in the
-**Single Metric Viewer**:
+One of the sample jobs (`low_request_rate`), is a _single metric job_; it has a
+single detector and limited job properties. Let's start by looking at this
+simple job in the **Single Metric Viewer**:
 
 [role="screenshot"]
 image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for low_request_rate job"]
 
 This view contains a chart that represents the actual and expected values over
-time. It is available only for jobs that analyze a single time series and that
-have `model_plot_config` enabled.
+time. It is available only if the job has `model_plot_config` enabled and can
+display only a single time series.
 
 The blue line in the chart represents the actual data values. The shaded blue
 area represents the bounds for the expected values. The area between the upper
@@ -88,3 +89,11 @@ the context of those situations. For example, are there other factors that are
 contributing to the problem? Are the anomalies confined to particular
 applications or servers? You can begin to troubleshoot these situations by
 layering additional jobs or creating multi-metric jobs.
+
+////
+[discrete]
+[[ml-gs-results-ae]]
+=== Explore results in the Anomaly Explorer
+
+//TBD
+////

@@ -135,3 +135,29 @@ If a reduction in runtime is important to you, try strategies such as disabling
 feature importance, using a smaller {transform}, setting 
 {ref}/put-dfanalytics.html#ml-hyperparam-optimization[hyperparameter] values, or 
 only selecting fields that are relevant for analysis.
+
+[float]
+[[dfa-inference-multi-field]]
+=== Analytics training on multi-field values may affect {infer}
+
+{dfanalytics-jobs-cap} dynamically select the best field when multi-field
+values are included. For example, if a multi-field `foo` is included for training,
+the `foo.keyword` is actually used. This poses a complication for {infer} with
+the inference processor. Documents supplied to ingest pipelines are not mapped. Consequently,
+only the field `foo` is present. This means that a model trained with the field `foo.keyword`
+does not take the field `foo` into account.
+
+You can work around this limitation by using the `field_mappings` parameter in the inference processor.
+
+Example:
+```
+{
+  "inference": {
+    "model_id": "my_model_with_multi-fields",
+    "field_mappings": {
+      "foo": "foo.keyword"
+    },
+    "inference_config": { "regression": {} }
+  }
+}
+```

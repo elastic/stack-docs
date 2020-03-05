@@ -524,16 +524,6 @@ below contains the jobs organized by `agent.type` (Auditbeat, Packetbeat, and
 Winlogbeat).
 
 // tag::siem-jobs[]
-ifeval::[{docname} == "ootb-ml-jobs"]
-:rare-func-ref: <<ml-rare,`rare` function>> 
-:nonzero-count-func-ref: <<ml-nonzero-count,`high_non_zero_count` function>>
-:info-content-func-ref: <<ml-info-content,`high_info_content` function>>
-endif::[]
-ifeval::[{docname} != "ootb-ml-jobs"]
-:rare-func-ref: {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function] 
-:nonzero-count-func-ref: {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]
-:info-content-func-ref: {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]
-endif::[]
 [float]
 [[ootb-ml-jobs-siem-audit]]
 ==== SIEM - Auditbeat
@@ -543,7 +533,7 @@ linux_anomalous_network_activity_ecs::
 * For network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
-  other processes (using the {rare-func-ref}).
+  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual processes using the network which could indicate
 command-and-control, lateral movement, persistence, or data exfiltration
@@ -567,7 +557,7 @@ linux_anomalous_network_port_activity_ecs::
 * For network activity logs where `agent.type` is `auditbeat`.
 * Models destination port activity.
 * Detects destination port activity that occurs rarely compared to other port 
-  activities (using the {rare-func-ref}).
+  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual destination port activity that could indicate 
 command-and-control, persistence mechanism, or data exfiltration activity.
@@ -590,7 +580,7 @@ linux_anomalous_network_service::
 * For network activity logs where `agent.type` is `auditbeat`.
 * Models listening port activity.
 * Detects unusual listening port activity that occurs rarely compared to 
-  other port activities (using the {rare-func-ref}).
+  other port activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual listening ports that could indicate execution of unauthorized 
 services, backdoors, or persistence mechanisms.
@@ -612,7 +602,7 @@ linux_anomalous_network_url_activity_ecs::
 * For network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of URL requests.
 * Detects unusual web URL request that is rare compared to other web URL 
-  requests (using the {rare-func-ref}).
+  requests (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for an unusual web URL request from a Linux instance. Curl and wget web 
 request activity is very common but unusual web requests from a Linux server can 
@@ -635,7 +625,7 @@ linux_anomalous_process_all_hosts_ecs::
 * For host activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes to all 
-  Linux/Windows hosts (using the {rare-func-ref}).
+  Linux/Windows hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for processes that are unusual to all Linux hosts. Such unusual processes 
 may indicate unauthorized services, malware, or persistence mechanisms.
@@ -657,7 +647,7 @@ linux_anomalous_user_name_ecs::
 * For host activity logs where `agent.type` is `auditbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {rare-func-ref}).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Rare and unusual users that are not normally active may indicate unauthorized 
 changes or activity by an unauthorized user which may be credentialed access or 
@@ -680,7 +670,7 @@ rare_process_by_host_linux_ecs::
 * For host activity logs where `agent.type` is `auditbeat`.
 * Models occurrences of process activities on the host. 
 * Detect unusually rare processes compared to other processes on Linux (using 
-  the {rare-func-ref}).
+  the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 ////
 Influencers:
@@ -700,7 +690,7 @@ suspicious_login_activity_ecs::
 * Models occurrences of authentication attempts (`partition_field_name` is 
   `host.name`).
 * Detects unusually high number of authentication attempts (using the 
-  {nonzero-count-func-ref}).
+  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
 
 ////
 Influencers:
@@ -724,7 +714,7 @@ packetbeat_dns_tunneling::
 * For network activity logs where `agent.type` is `packetbeat`.
 * Models occurrances of DNS activity.
 * Detects unusual DNS activity (using the 
-  {info-content-func-ref}).
+  {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
 Looks for unusual DNS activity that could indicate command-and-control or data 
 exfiltration activity.
@@ -746,7 +736,7 @@ packetbeat_rare_dns_question::
 * For network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of DNS activity.
 * Detects DNS activity that is rare compared to other DNS activities (using the 
-  {rare-func-ref}).
+  {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual DNS activity that could indicate command-and-control activity.
 
@@ -765,7 +755,7 @@ packetbeat_rare_server_domain::
 * For network activity logs where `agent.type` is `packetbeat`.
 * Models HTTP or TLS domain activity.
 * Detects HTTP or TLS domain activity that is rarely occurs compared to other 
-  activities (using the {rare-func-ref}).
+  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual HTTP or TLS destination domain activity that could indicate 
 execution, persistence, command-and-control or data exfiltration activity.
@@ -787,7 +777,7 @@ packetbeat_rare_urls::
 * For network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of web browsing URL activity.
 * Detects URL activity that rarely occurs compared to other URL activities 
-  (using the {rare-func-ref}).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual web browsing URL activity that could indicate execution, 
 persistence, command-and-control or data exfiltration activity.
@@ -808,7 +798,7 @@ packetbeat_rare_user_agent::
 * For network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of HTTP user agent activity.
 * Detects HTTP user agent activity that occurs rarely compared to other HTTP 
-  user agent activities (using the {rare-func-ref}).
+  user agent activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual HTTP user agent activity that could indicate execution, 
 persistence, command-and-control or data exfiltration activity.
@@ -833,7 +823,7 @@ windows_anomalous_network_activity_ecs::
 * For network activity logs where `agent.type` is `winlogbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
-  other processes (using the {rare-func-ref}).
+  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual processes using the network which could indicate
 command-and-control, lateral movement, persistence, or data exfiltration
@@ -857,7 +847,7 @@ windows_anomalous_process_all_hosts_ecs::
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes to all 
-  Linux/Windows hosts (using the {rare-func-ref}).
+  Linux/Windows hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for processes that are unusual to all Windows hosts. Such unusual 
 processes may indicate unauthorized services, malware, or persistence 
@@ -880,7 +870,7 @@ windows_anomalous_user_name_ecs::
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {rare-func-ref}).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Rare and unusual users that are not normally active may indicate unauthorized 
 changes or activity by an unauthorized user which may be credentialed access or 
@@ -903,7 +893,7 @@ rare_process_by_host_windows_ecs::
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process activities on the host. 
 * Detect unusually rare processes compared to other processes on Windows (using 
-  the {rare-func-ref}).
+  the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 ////
 Influencers:
@@ -921,7 +911,7 @@ windows_anomalous_path_activity_ecs::
 
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of processes in paths.
-* Detects activity in unusual paths (using the {rare-func-ref}).
+* Detects activity in unusual paths (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Activities in unusual paths may indicate execution of malware or persistence 
 mechanisms. Windows payloads often execute from user profile paths.
@@ -944,7 +934,7 @@ windows_anomalous_process_creation::
 * Models occurrences of process creation activities (`partition_field_name` is 
   `process.parent.name`).
 * Detects process relationships that are rare compared to other process 
-  relationships (using the {rare-func-ref}).
+  relationships (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual process relationships which may indicate execution of malware 
 or persistence mechanisms.
@@ -967,7 +957,7 @@ windows_anomalous_script::
 * Models occurrences of powershell script activities.
 * Detects unusual powershell script execution compared to other powershell 
   script activities (using the 
-  {info-content-func-ref}).
+  {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
 Looks for unusual powershell scripts that may indicate execution of malware, or 
 persistence mechanisms.
@@ -989,7 +979,7 @@ windows_anomalous_service::
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of Windows service activities.
 * Detects Windows service activities that occur rarely compared to other Windows 
-  service activities (using the {rare-func-ref}).
+  service activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for rare and unusual Windows services which may indicate execution of 
 unauthorized services, malware, or persistence mechanisms.
@@ -1010,7 +1000,7 @@ windows_rare_user_runas_event::
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user context switches.
 * Detects user context switches that occur rarely compared to other user context 
-  switches (using the {rare-func-ref}).
+  switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Unusual user context switches can be due to privilege escalation.
 
@@ -1031,7 +1021,7 @@ windows_rare_user_type10_remote_login::
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user remote login activities.
 * Detects user remote login activities that occur rarely compared to other 
-  user remote login activities (using the {rare-func-ref}).
+  user remote login activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual user remote logins. Unusual RDP (remote desktop protocol) 
 user logins can indicate account takeover or credentialed access.

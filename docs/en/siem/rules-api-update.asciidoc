@@ -3,9 +3,16 @@
 
 Updates an existing signal detection rule.
 
+You can use `PUT` or `PATCH` methods to update rules, where:
+
+* `PUT` replaces the original rule and deletes fields that are not specified.
+* `PATCH` updates the specified fields.
+
 ==== Request URL
 
 `PUT /api/detection_engine/rules`
+
+`PATCH /api/detection_engine/rules`
 
 ==== Request body
 
@@ -14,50 +21,59 @@ A JSON object with:
 * The `id` or `rule_id` field of the rule you want to update.
 * The fields you want to modify.
 
-NOTE: You cannot modify the `id` or `rule_id` values.
+IMPORTANT: If you call `PUT` to update a rule, all unspecified fields are
+deleted. You cannot modify the `id` or `rule_id` values.
 
-Any of these fields can be modified:
+For `PATCH` calls, any of the fields can be modified, whereas for `PUT` calls,
+some fields are required. 
 
 [width="100%",options="header"]
 |==============================================
-|Name |Type |Description
+|Name |Type |Description |Required (`PUT` calls)
 
-|description |String |The rule's description.
+|description |String |The rule's description. |Yes
 
-|enabled |Boolean |Determines whether the rule is enabled. 
+|enabled |Boolean |Determines whether the rule is enabled. |No, defaults to
+`true`.
 
 |false_positives |String[] |String array used to describe common reasons why 
-the rule may issue false-positive signals.
+the rule may issue false-positive signals. |No, defaults to an empty array.
 
 // |filter |Object |{kibana-ref}/field-filter.html[Filter] used by the rule to 
 // create a signal |Yes, for filter-based rules only
 
 |filters |Object[] |The {ref}/query-filter-context.html[query and filter 
 context] array used to define the conditions for when signals are created from 
-events.
+events. |No, defaults to an empty array.
 
 |from |String |Time from which data is analyzed each time the rule executes,
 using a {ref}/common-options.html#date-math[date math range]. For example, 
 `now-4200s` means the rule analyzes data from 70 minutes before its start 
-time.
+time. |No, defaults to `now-6m` (analyzes data from 6 minutes before the start 
+time).
 
-|index |String[] |Indices on which the rule functions.
+|index |String[] |Indices on which the rule functions. |No, defaults to the
+{siem-soln} indices defined on the {kib} Advanced Setting page (*Kibana* → 
+*Management* → *Advanced Settings* → `siem:defaultIndex`).
 
 |interval |String |Frequency of rule execution, using a
 {ref}/common-options.html#date-math[date math range]. For example, `"1h"` 
-means the rule runs every hour.
+means the rule runs every hour. |No, defaults to `5m` (5 minutes).
 
 |query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal.
+signal. |No, defaults to an empty string.
 
 |language |String |Determines the query language, which must be
-`kuery` or `lucene`.
+`kuery` or `lucene`. |No, defaults to `kuery`.
 
 |output_index |String |Index to which signals detected by the rule are saved. 
+|No, if unspecified signals are saved to `.siem-signals-<space_name>` index, 
+where `<space_name>` is the name of the {kib} space in which the rule exists.
 
 |saved_id |String |Kibana saved search used by the rule to create signals.
+|Yes, for `saved_query` rules only.
 
-|meta |Object |Placeholder for metadata about the rule.
+|meta |Object |Placeholder for metadata about the rule. |No
 
 |risk_score |Integer a|A numerical representation of the signal's severity from 
 0 to 100, where:
@@ -67,10 +83,12 @@ signal.
 * `48` - `73` represents high severity
 * `74` - `100` represents critical severity
 
-|max_signals |Integer |Maximum number of signals the rule can create during a
-single execution.
+|Yes
 
-|name |String |The rule's name. 
+|max_signals |Integer |Maximum number of signals the rule can create during a
+single execution. |No, defaults to `100`.
+
+|name |String |The rule's name. |Yes
 
 |severity |String a|Severity level of signals produced by the rule, which must 
 be one of the following:
@@ -82,8 +100,10 @@ security incidents
 * `critical`: Signals that indicate it is highly likely a security incident has 
 occurred
 
+|Yes
+
 |tags |String[] |String array containing words and phrases to help categorize,
-filter, and search rules.
+filter, and search rules. |No, defaults to an empty array.
 
 // |to |String |Time to which data is analyzed each time the rule executes, using a
 // {ref}/common-options.html#date-math[date math range]. For example, `"now-300s"` 
@@ -94,17 +114,22 @@ filter, and search rules.
 * `query`: query-based conditions with or without additional filters
 * `saved_query`: saved search, identified in the `saved_id` field
 
+|Yes
+
 |threat |<<threats-object-update, threat[]>> |Object containing attack 
 information about the type of threat the rule monitors, see
-{ecs-ref}/ecs-threat.html[ECS threat fields]. 
+{ecs-ref}/ecs-threat.html[ECS threat fields]. |No, defaults to an empty array.
 
 |references |String[] |String array containing notes about or references to 
-relevant information about the rule.
+relevant information about the rule. |No, defaults to an empty array.
 
 |version |Integer a|The rule's version number. If this is not provided, the 
 rule's version number is incremented by 1.
 
-Enabling and disabling the rule does not increment its version number.
+`PATCH` calls enabling and disabling the rule do not increment its version
+number.
+
+|No
 
 |==============================================
 
@@ -143,7 +168,7 @@ Updates the `threat` object:
 
 [source,console]
 --------------------------------------------------
-PUT api/detection_engine/rules
+PATCH api/detection_engine/rules
 {
   "rule_id": "process_started_by_ms_office_program_possible_payload",
   "threat": [

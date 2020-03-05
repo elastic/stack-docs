@@ -18,10 +18,9 @@ For details about tuning prebuilt rules for specific categories, see:
 * <<tune-windows-rules>>
 * <<tune-network-rules>>
 
-IMPORTANT: Due to the different way {beats} record network traffic direction, 
-network detection rules may produce noise. <<fix-network-rules>> explains how 
-to resolve this. For more background information, see the
-{ecs-ref}/ecs-network.html[ECS network.direction field].
+IMPORTANT: If you are using version 7.6.0 of the {stack}, see
+<<fix-network-rules>>. From version 7.6.1, the network rules have already been
+optimized.
 
 [float]
 [[filter-rule-process]]
@@ -199,6 +198,8 @@ lot, use the `windows_anomalous_user_name_ecs`,
 [float]
 [[fix-network-rules]]
 === Reduce noise for network rules
+
+NOTE: This is only required if you are using version 7.6.0 of the {stack}.
 
 To reduce noise for network rules, duplicate the network rules and *either*:
 

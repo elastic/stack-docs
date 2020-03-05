@@ -117,9 +117,16 @@ A JSON array containing the deleted rules.
 
 Updates multiple rules.
 
+You can use `PUT` or `PATCH` methods to bulk update rules, where:
+
+* `PUT` replaces the original rule and deletes fields that are not specified.
+* `PATCH` updates the specified fields.
+
 ===== Request URL
 
 `PUT  /api/detection_engine/rules/_bulk_update`
+
+`PATCH /api/detection_engine/rules/_bulk_update`
 
 ===== Request body
 
@@ -128,13 +135,18 @@ A JSON array where each element includes:
 * The `id` or `rule_id` field of the rule you want to update.
 * The <<rules-api-update, fields>> you want to modify.
 
-NOTE: You cannot modify the `id` or `rule_id` values.
+IMPORTANT: If you call `PUT` to update rules, all unspecified fields are
+deleted. You cannot modify the `id` or `rule_id` values.
+
+For `PATCH` calls, any of the fields can be modified. For `PUT` calls,
+some fields are required (see <<rules-api-update>> for a list of required
+fields). 
 
 ====== Example request
 
 [source,console]
 --------------------------------------------------
-PUT api/detection_engine/rules/_bulk_update
+PATCH api/detection_engine/rules/_bulk_update
 [
   {
     "threat": [

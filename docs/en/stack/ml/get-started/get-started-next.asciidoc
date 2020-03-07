@@ -4,14 +4,10 @@
 
 By completing this tutorial, you've learned how you can detect anomalous
 behavior in a simple set of sample data. You created single and multi-metric
-jobs in {kib}, which creates and opens jobs and creates and starts {dfeeds} for
+jobs in {kib}, which opens jobs and creates and starts {dfeeds} for
 you under the covers. You examined the results of the {ml} analysis in the
 **Single Metric Viewer** and **Anomaly Explorer** in {kib}. You also
 extrapolated the future behavior of a job by creating a forecast.
-
-If you want to learn about advanced job options, you might be interested in
-the following video tutorial:
-https://www.elastic.co/videos/machine-learning-lab-3-detect-outliers-in-a-population[Machine Learning Lab 3 - Detect Outliers in a Population].
 
 If you intend to use {ml} APIs in your applications, a good next step might be
 to learn about the APIs by retrieving information about these sample jobs.
@@ -27,9 +23,10 @@ GET _ml/datafeeds
 
 For more information about the {ml} APIs, see <<ml-api-quickref>>.
 
-Ultimately, the next step is to start applying {ml} to your own data.
-As mentioned in <<ml-gs-data>>, there are three things to consider when you're
-thinking about where {ml} will be most impactful:
+If you want to find more sample jobs, see <<ootb-ml-jobs>>.
+
+There are three things to consider when you're
+thinking about where {anomaly-detect} will be most impactful:
 
 . It must be time series data.
 . It should be information that contains key performance indicators for the
@@ -50,6 +47,9 @@ key performance indicators. After you examine these simple analysis results,
 you will have a better idea of what the influencers might be. You can create
 multi-metric jobs and split the data or create more complex analysis functions
 as necessary. For examples of more complicated configuration options, see
-<<ml-configuring>>.
+<<ml-configuration>>.
 
-If you encounter problems, see <<ml-troubleshooting>>.
+If you encounter problems, we're here to help. If you are an existing Elastic
+customer with a support contract, please create a ticket in the
+http://support.elastic.co[Elastic Support portal]. Or post in the
+https://discuss.elastic.co/[Elastic forum].

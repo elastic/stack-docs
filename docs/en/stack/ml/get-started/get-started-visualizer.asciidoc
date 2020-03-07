@@ -1,0 +1,74 @@
+[role="xpack"]
+[[ml-gs-visualizer]]
+=== Explore the data in {kib}
+
+To get the best results from {ml} analytics, you must understand your data. You
+must know its data types and the range and distribution of values. The
+{data-viz} enables you to explore the fields in your data: 
+
+. Open {kib} in your web browser. If you are running {kib} locally,
+go to `http://localhost:5601/`.
++
+--
+TIP: The {kib} {ml-features} use pop-ups. You must configure your
+web browser so that it does not block pop-up windows or create an
+exception for your {kib} URL.
+
+--
+
+. Click *Machine Learning* in the side navigation.
+
+. Select the *{data-viz}* tab.
+
+. Click *Select index* and choose the `kibana_sample_data_logs` index pattern.
+
+. Use the time filter to select a time period that you're interested in
+exploring. Alternatively, click
+*Use full kibana_sample_data_logs data* to view the full time range of data.
+
+. Optional: Change the sample size, which is the number of documents per shard
+that are used in the visualizations. There is a relatively small number of
+documents in the sample data, so you can choose a value of `all`. For larger
+data sets, keep in mind that using a large sample size increases query run times
+and increases the load on the cluster.
+
+The {data-viz} lists the fields in two sections. The first section contains
+the numeric ("metric") fields. The second section contains non-metric fields
+(such as `keyword`, `text`, `date`, `boolean`, `ip`, and `geo_point` data types).
+
+For metric fields, the {data-viz} indicates how many documents contain
+the field in the selected time period. It also provides information about the
+minimum, median, and maximum values, the number of distinct values, and their
+distribution. You can use the distribution chart to get a better idea of how
+the values in the data are clustered. Alternatively, you can view the top values
+for metric fields. For example:
+
+[role="screenshot"]
+image::images/ml-gs-data-topmetrics.jpg["{data-viz} output for top values in {kib}"]
+
+For `date` fields, the {data-viz} provides the earliest and latest field
+values and the number and percentage of documents that contain the field
+during the selected time period. For `text` fields, it provides example values
+from the selected time period. For example:
+
+[role="screenshot"]
+image::images/ml-gs-data-dates.jpg["{data-viz} output for date fields in {kib}"]
+
+TIP: Make note of these dates, since they are relative to when you added the
+sample data and we'll use that information later in the tutorial.
+
+For `keyword` and `ip` fields, the {data-viz} provides the number of distinct
+values, a list of the top values, and the number and percentage of documents
+that contain the field during the selected time period. For example:
+
+[role="screenshot"]
+image::images/ml-gs-data-keywords.jpg["{data-viz} output for keyword and ip fields in {kib}"]
+
+Likewise, for `geo_point` fields, the {data-viz} provides the number of
+distinct values, a list of example values, and the number and percentage of
+documents that contain the field during the selected time period. For example:
+
+image::images/ml-gs-data-geo.jpg["{data-viz} output for geo_point fields in {kib}",width="50%",role="screenshot left"]
+
+In this tutorial, we will create {anomaly-jobs} that use many of these different
+data types.

@@ -24,7 +24,9 @@ the {anomaly-jobs} that are ready to use via {kib}.
 These {anomaly-job} wizards appear in {kib} if you use 
 {filebeat-ref}/index.html[{filebeat}] to ship access logs from your 
 https://httpd.apache.org/[Apache] HTTP servers to {es} and store it using fields 
-and datatypes from the Elastic Common Schema (ECS).
+and datatypes from the Elastic Common Schema (ECS). For more details, see the
+{dfeed} and job definitions in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apache_ecs/ml[GitHub].
 
 low_request_rate_ecs::
 
@@ -33,12 +35,6 @@ low_request_rate_ecs::
 * Detects unusually low counts of HTTP requests compared to the previous event 
   rate (using the <<ml-count,`low_count` function>>).
 
-////
-Bucket span: 15m.
-
-Function: `low_count`.
-////
-
 source_ip_request_rate_ecs::
 
 * For HTTP web access logs where `event.dataset` is `apache.access`.
@@ -46,32 +42,12 @@ source_ip_request_rate_ecs::
 * Detects source IPs with unusually high request rates in the HTTP access log 
   compared to the previous rate (using the <<ml-count,`high_count` function>>).
 
-////
-Influencers:
-
-* `source.address`
-
-Bucket span: 1h.
-
-Function: `high_count`.
-////
-
 source_ip_url_count_ecs::
 
 * For HTTP web access logs where `event.dataset` is `apache.access`.
 * Models the event rate of HTTP requests by source IP.
 * Detects source IPs with unusually high distinct count of URLs in the HTTP 
 access log (using the <<ml-distinct-count,`high_distinct_count` function>>).
-
-////
-Influencers:
-
-* `source.address`
-
-Bucket span: 1h.
-
-Function: `high_distinct_count`.
-////
 
 status_code_rate_ecs::
 
@@ -81,17 +57,6 @@ status_code_rate_ecs::
 * Detects unusual status code rates in the HTTP access log compared to previous 
   rates (using the <<ml-count,`count` function>>).
 
-////
-Influencers:
-
-* `http.response.status_code` 
-* `source.address`
-
-Bucket span: 15m.
-
-Function: `count`.
-////
-
 visitor_rate_ecs::
 
 * For HTTP web access logs where `event.dataset` is `apache.access`.
@@ -99,17 +64,12 @@ visitor_rate_ecs::
 * Detects unusual visitor rates in the HTTP access log ompared to previous 
   rates (using the <<ml-nonzero-count,`non_zero_count` function>>).
 
-////
-Bucket span: 15m.
-
-Function: `non_zero_count`.
-////
-// end::apache-jobs[]
-
-
 [[ootb-ml-jobs-apm]]
 === APM
-These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or an APM Server stored in {es}.
+These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or
+an APM Server stored in {es}. For more details, see the {dfeed} and job
+definitions in the `apm_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
 // tag::apm-jobs[]
 abnormal_span_durations_jsbase::
@@ -120,37 +80,12 @@ abnormal_span_durations_nodejs::
 * Detects for spans that are taking longer than usual to process (using the 
   <<ml-metric-mean,`high_mean` function>>).
 
-////
-Influencers:
-
-* `service.name` 
-* `span.name`
-* `span.type` 
-* `trace.id`
-
-Bucket span: 15m.
-
-Function: `high_mean`.
-////
-
 abnormal_trace_durations_nodejs::
 
 * For data from {apm-node-agents} (where `agent.name` is `nodejs`).
 * Models the duration of trace transactions.
 * Detects trace transactions that are processing slower than usual (using the 
   <<ml-metric-mean,`high_mean` function>>).
-
-////
-Influencers:
-
-* `service.name` 
-* `trace.id`
-* `transaction.name` 
-
-Bucket span: 15m.
-
-Function: `high_mean`.
-////
 
 anomalous_error_rate_for_user_agents_jsbase::
 
@@ -162,19 +97,6 @@ anomalous_error_rate_for_user_agents_jsbase::
   
 This job can help detect browser compatibility issues.
 
-////
-Influencers:
-
-* `user_agent.name`
-* `error.exception.message.keyword`
-* `error.page.url`
-* `service.name`
-
-Bucket span: 15m.
-
-Function: `high_non_zero_count`.
-////
-
 decreased_throughput_jsbase::
 decreased_throughput_nodejs::
 
@@ -182,17 +104,6 @@ decreased_throughput_nodejs::
 * Models the transaction rate of the application.
 * Detects periods during which the application is processing fewer requests 
 than normal (using the <<ml-count,`low_count` function>>).
-
-////
-Influencers:
-
-* `service.name`
-* `transaction.name`
-
-Bucket span: 15m.
-
-Function: `low_count`.
-////
 
 high_count_by_user_agent_jsbase::
 
@@ -204,17 +115,6 @@ high_count_by_user_agent_jsbase::
 
 This job is useful in identifying bots.
 
-////
-Influencers:
-
-* `service.name`
-* `user_agent.name`
-
-Bucket span: 15m.
-
-Function: `high_non_zero_count`.
-////
-
 high_mean_response_time::
 
 * For transaction data where `processor.event` is `transaction` and 
@@ -223,11 +123,6 @@ high_mean_response_time::
 * Detects anomalies in high mean of transaction duration (using the 
   <<ml-metric-mean,`high_mean` function>>).
 
-////
-Bucket span: 15m.
-
-Function: `high_mean`.
-////
 // end::apm-jobs[]
 
 
@@ -237,7 +132,9 @@ Function: `high_mean`.
 // tag::auditbeat-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use 
 {auditbeat-ref}/index.html[{auditbeat}] to audit process activity on your 
-systems.
+systems. For more details, see the {dfeed} and job definitions in the
+`auditbeat_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
 docker_high_count_process_events_ecs::
 
@@ -246,17 +143,6 @@ docker_high_count_process_events_ecs::
 * Models process execution rates (`partition_field_name` is `container.name`).
 * Detects unusual increases in process execution rates in Docker containers 
   (using the <<ml-count,`high_count` function>>).
-
-////
-Influencers:
-
-* `container.name`
-* `process.executable`
-
-Bucket span: 1h.
-
-Function: `high_count`.
-////
 
 docker_rare_process_activity_ecs::
 
@@ -267,34 +153,12 @@ docker_rare_process_activity_ecs::
 * Detects rare process executions in Docker containers (using the 
   <<ml-rare,`rare` function>>).
 
-////
-Influencers:
-
-* `container.name`
-* `process.executable`
-
-Bucket span: 1h.
-
-Function: `rare`.
-////
-
 hosts_high_count_process_events_ecs::
 
 * For Auditbeat data where `event.module` is `auditd`.
 * Models process execution rates (`partition_field_name` is `host.name`).
 * Detects unusual increases in process execution rates (using the 
   <<ml-nonzero-count,`high_non_zero_count` function>>).
-
-////
-Influencers:
-
-* `host.name`
-* `process.executable`
-
-Bucket span: 1h.
-
-Function: `high_non_zero_count`.
-////
 
 hosts_rare_process_activity_ecs::
 
@@ -303,16 +167,6 @@ hosts_rare_process_activity_ecs::
 * Detects rare process executions on hosts (using the 
   <<ml-rare,`rare` function>>).
 
-////
-Influencers:
-
-* `host.name`
-* `process.executable`
-
-Bucket span: 1h.
-
-Function: `rare`.
-////
 // end::auditbeat-jobs[]
 
 
@@ -320,7 +174,10 @@ Function: `rare`.
 === Logs UI
 
 // tag::logs-jobs[]
-These {anomaly-jobs} appear by default in the {kibana-ref}/xpack-logs.html[Logs app] in {kib}. 
+These {anomaly-jobs} appear by default in the
+{kibana-ref}/xpack-logs.html[Logs app] in {kib}. For more details, see the
+{dfeed} and job definitions in the `logs_ui_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
 log_entry_categories_count::
 
@@ -330,33 +187,13 @@ log_entry_categories_count::
 * Detects anomalies in count of log entries by category (using the 
   <<ml-count,`count` function>>).
 
-////
-Influencers:
-
-* `event.dataset`
-* `mlcategory`
-
-Bucket span: 15m.
-
-Function: `count`.
-////
-
 log_entry_rate::
 
 * For log entries via the Logs UI.
 * Models ingestion rates (`partition_field_name` is `event.dataset`). 
 * Detects anomalies in the log entry ingestion rate (using the 
   <<ml-count,`low_count` function>>).
-
-////
-Influencers:
-
-* `event.dataset`
-
-Bucket span: 15m.
-
-Function: `count`.
-////
+  
 // end::logs-jobs[]
 
 
@@ -366,7 +203,8 @@ Function: `count`.
 // tag::metricbeat-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use the 
 {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to 
-monitor your servers.
+monitor your servers. For more details, see the
+{dfeed} and job definitions in https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml[GitHub].
 
 high_mean_cpu_iowait_ecs::
 
@@ -376,16 +214,6 @@ high_mean_cpu_iowait_ecs::
 * Detects unusual increases in cpu time spent in iowait (using the 
   <<ml-metric-mean,`high_mean` function>>).
 
-////
-Influencers:
-
-* `host.name`
-
-Bucket span: 10m.
-
-Function: `high_mean`.
-////
-
 max_disk_utilization_ecs::
 
 * For {metricbeat} data where `event.dataset` is `system.cpu` and 
@@ -393,16 +221,6 @@ max_disk_utilization_ecs::
 * Models disc utilization (`partition_field_name` is `host.name`).
 * Detects unusual increases in disk utilization (using the 
   <<ml-metric-max,`max` function>>).
-
-////
-Influencers:
-
-* `host.name`
-
-Bucket span: 10m.
-
-Function: `max`.
-////
 
 metricbeat_outages_ecs::
 
@@ -413,15 +231,6 @@ metricbeat_outages_ecs::
 * Detects unusual decreases in {metricbeat} documents (using the 
   <<ml-count,`low_count` function>>).
 
-////
-Influencers:
-
-* `event.dataset`
-
-Bucket span: 10m.
-
-Function: `low_count`.
-////
 // end::metricbeat-jobs[]
 
 
@@ -431,7 +240,9 @@ Function: `low_count`.
 // tag::nginx-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship access 
 logs from your http://nginx.org/[Nginx] HTTP servers to {es} and store it using 
-fields and datatypes from the Elastic Common Schema (ECS).
+fields and datatypes from the Elastic Common Schema (ECS). For more details, see
+the {dfeed} and job definitions in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml[GitHub].
 
 low_request_rate_ecs::
 
@@ -440,12 +251,6 @@ low_request_rate_ecs::
 * Detects unusually low counts of HTTP requests compared to the previous event 
   rate (using the <<ml-count,`low_count` function>>).
 
-////
-Bucket span: 15m.
-
-Function: `low_count`.
-////
-
 source_ip_request_rate_ecs::
 
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
@@ -453,32 +258,12 @@ source_ip_request_rate_ecs::
 * Detects source IPs with unusually high request rates in the HTTP access log 
   compared to the previous rate (using the <<ml-count,`high_count` function>>). 
 
-////
-Influencers:
-
-* `source.address`
-
-Bucket span: 1h.
-
-Function: `high_count`.
-////
-
 source_ip_url_count_ecs::
 
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
 * Models the event rate of HTTP requests by source IP.
 * Detects source IPs with unusually high distinct count of URLs in the HTTP 
   access log (using the <<ml-distinct-count,`high_distinct_count` function>>).
-
-////
-Influencers:
-
-* `source.address`
-
-Bucket span: 1h.
-
-Function: `high_distinct_count`.
-////
 
 status_code_rate_ecs::
 
@@ -488,17 +273,6 @@ status_code_rate_ecs::
 * Detects unusual status code rates in the HTTP access log compared to previous 
   rates (using the <<ml-count,`count` function>>).
 
-////
-Influencers:
-
-* `http.response.status_code` 
-* `source.address`
-
-Bucket span: 15m.
-
-Function: `count`.
-////
-
 visitor_rate_ecs::
 
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
@@ -506,11 +280,6 @@ visitor_rate_ecs::
 * Detects unusual visitor rates in the HTTP access log ompared to previous 
   rates (using the <<ml-nonzero-count,`non_zero_count` function>>).
 
-////
-Bucket span: 15m.
-
-Function: `non_zero_count`.
-////
 // end::nginx-jobs[]
 
 
@@ -519,14 +288,18 @@ Function: `non_zero_count`.
 
 These {anomaly-jobs} appear by default in the Anomaly Detection interface of the 
 {siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
-automatically detect file system and network anomalies on your hosts. The list 
-below contains the jobs organized by `agent.type` (Auditbeat, Packetbeat, and 
-Winlogbeat).
+automatically detect file system and network anomalies on your hosts. The list
+below contains the jobs organized by `agent.type` ({auditbeat}, {packetbeat},
+and {winlogbeat}).
 
 // tag::siem-jobs[]
+For more details, see the
+{dfeed} and job definitions in the `siem_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+
 [float]
 [[ootb-ml-jobs-siem-audit]]
-==== SIEM - Auditbeat
+==== SIEM - {auditbeat}
 
 linux_anomalous_network_activity_ecs::
 
@@ -539,19 +312,6 @@ Looks for unusual processes using the network which could indicate
 command-and-control, lateral movement, persistence, or data exfiltration
 activity.
 
-////
-Influencers:
-
-* `destination.ip`
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 linux_anomalous_network_port_activity_ecs::
 
 * For network activity logs where `agent.type` is `auditbeat`.
@@ -562,19 +322,6 @@ linux_anomalous_network_port_activity_ecs::
 Looks for unusual destination port activity that could indicate 
 command-and-control, persistence mechanism, or data exfiltration activity.
 
-////
-Influencers:
-
-* `destination.ip`
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 linux_anomalous_network_service::
 
 * For network activity logs where `agent.type` is `auditbeat`.
@@ -584,18 +331,6 @@ linux_anomalous_network_service::
 
 Looks for unusual listening ports that could indicate execution of unauthorized 
 services, backdoors, or persistence mechanisms.
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 linux_anomalous_network_url_activity_ecs::
 
@@ -608,18 +343,6 @@ Looks for an unusual web URL request from a Linux instance. Curl and wget web
 request activity is very common but unusual web requests from a Linux server can 
 sometimes be malware delivery or execution.
 
-////
-Influencers:
-
-* `destination.ip`
-* `destination.port` 
-* `host.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 linux_anomalous_process_all_hosts_ecs::
 
 * For host activity logs where `agent.type` is `auditbeat`.
@@ -629,18 +352,6 @@ linux_anomalous_process_all_hosts_ecs::
 
 Looks for processes that are unusual to all Linux hosts. Such unusual processes 
 may indicate unauthorized services, malware, or persistence mechanisms.
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 linux_anomalous_user_name_ecs::
 
@@ -653,36 +364,12 @@ Rare and unusual users that are not normally active may indicate unauthorized
 changes or activity by an unauthorized user which may be credentialed access or 
 lateral movement.
 
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 rare_process_by_host_linux_ecs::
 
 * For host activity logs where `agent.type` is `auditbeat`.
 * Models occurrences of process activities on the host. 
 * Detect unusually rare processes compared to other processes on Linux (using 
   the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 suspicious_login_activity_ecs::
 
@@ -692,22 +379,9 @@ suspicious_login_activity_ecs::
 * Detects unusually high number of authentication attempts (using the 
   {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
 
-////
-Influencers:
-
-* `host.name` 
-* `source.ip`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `high_non_zero_count`.
-////
-
-
 [float]
 [[ootb-ml-jobs-siem-packet]]
-==== SIEM - Packetbeat
+==== SIEM - {packetbeat}
 
 packetbeat_dns_tunneling::
 
@@ -719,18 +393,6 @@ packetbeat_dns_tunneling::
 Looks for unusual DNS activity that could indicate command-and-control or data 
 exfiltration activity.
 
-////
-Influencers:
-
-* `destination.ip`
-* `dns.question.etld_plus_one`
-* `host.name`
-
-Bucket span: 15m.
-
-Function: `high_info_content`.
-////
-
 packetbeat_rare_dns_question::
 
 * For network activity logs where `agent.type` is `packetbeat`.
@@ -739,16 +401,6 @@ packetbeat_rare_dns_question::
   {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Looks for unusual DNS activity that could indicate command-and-control activity.
-
-////
-Influencers:
-
-* `host.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 packetbeat_rare_server_domain::
 
@@ -760,18 +412,6 @@ packetbeat_rare_server_domain::
 Looks for unusual HTTP or TLS destination domain activity that could indicate 
 execution, persistence, command-and-control or data exfiltration activity.
 
-////
-Influencers:
-
-* `destination.ip`
-* `host.name`
-* `source.ip`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 packetbeat_rare_urls::
 
 * For network activity logs where `agent.type` is `packetbeat`.
@@ -781,17 +421,6 @@ packetbeat_rare_urls::
 
 Looks for unusual web browsing URL activity that could indicate execution, 
 persistence, command-and-control or data exfiltration activity.
-
-////
-Influencers:
-
-* `destination.ip`
-* `host.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 packetbeat_rare_user_agent::
 
@@ -803,20 +432,9 @@ packetbeat_rare_user_agent::
 Looks for unusual HTTP user agent activity that could indicate execution, 
 persistence, command-and-control or data exfiltration activity.
 
-////
-Influencers:
-
-* `destination.ip`
-* `host.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 [float]
 [[ootb-ml-jobs-siem-winlog]]
-==== SIEM - Winlogbeat
+==== SIEM - {winlogbeat}
 
 windows_anomalous_network_activity_ecs::
 
@@ -829,19 +447,6 @@ Looks for unusual processes using the network which could indicate
 command-and-control, lateral movement, persistence, or data exfiltration
 activity.
 
-////
-Influencers:
-
-* `destination.ip`
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 windows_anomalous_process_all_hosts_ecs::
 
 * For host activity logs where `agent.type` is `winlogbeat`.
@@ -852,18 +457,6 @@ windows_anomalous_process_all_hosts_ecs::
 Looks for processes that are unusual to all Windows hosts. Such unusual 
 processes may indicate unauthorized services, malware, or persistence 
 mechanisms.
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 windows_anomalous_user_name_ecs::
 
@@ -876,36 +469,12 @@ Rare and unusual users that are not normally active may indicate unauthorized
 changes or activity by an unauthorized user which may be credentialed access or 
 lateral movement.
 
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 rare_process_by_host_windows_ecs::
 
 * For host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process activities on the host. 
 * Detect unusually rare processes compared to other processes on Windows (using 
   the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 windows_anomalous_path_activity_ecs::
 
@@ -915,18 +484,6 @@ windows_anomalous_path_activity_ecs::
 
 Activities in unusual paths may indicate execution of malware or persistence 
 mechanisms. Windows payloads often execute from user profile paths.
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 windows_anomalous_process_creation::
 
@@ -939,18 +496,6 @@ windows_anomalous_process_creation::
 Looks for unusual process relationships which may indicate execution of malware 
 or persistence mechanisms.
 
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 windows_anomalous_script::
 
 * For host activity logs where `agent.type` is `winlogbeat`.
@@ -962,18 +507,6 @@ windows_anomalous_script::
 Looks for unusual powershell scripts that may indicate execution of malware, or 
 persistence mechanisms.
 
-////
-Influencers:
-
-* `host.name` 
-* `user.name`
-* `winlog.event_data.Path`
-
-Bucket span: 15m.
-
-Function: `high_info_content`.
-////
-
 windows_anomalous_service::
 
 * For host activity logs where `agent.type` is `winlogbeat`.
@@ -984,17 +517,6 @@ windows_anomalous_service::
 Looks for rare and unusual Windows services which may indicate execution of 
 unauthorized services, malware, or persistence mechanisms.
 
-////
-Influencers:
-
-* `host.name` 
-* `winlog.event_data.ServiceName`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
-
 windows_rare_user_runas_event::
 
 * For host activity logs where `agent.type` is `winlogbeat`.
@@ -1003,18 +525,6 @@ windows_rare_user_runas_event::
   switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Unusual user context switches can be due to privilege escalation.
-
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 
 windows_rare_user_type10_remote_login::
 
@@ -1026,15 +536,4 @@ windows_rare_user_type10_remote_login::
 Looks for unusual user remote logins. Unusual RDP (remote desktop protocol) 
 user logins can indicate account takeover or credentialed access.
 
-////
-Influencers:
-
-* `host.name` 
-* `process.name`
-* `user.name`
-
-Bucket span: 15m.
-
-Function: `rare`.
-////
 // end::siem-jobs[]

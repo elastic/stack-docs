@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-gs-results]]
-=== View the sample web log job results
+=== View {anomaly-detect} results
 
 After the {dfeeds} are started and the {anomaly-jobs} have processed some data,
 you can view the results in {kib}.
@@ -22,11 +22,12 @@ There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 
 [discrete]
 [[ml-gs-results-smv]]
-=== Explore results in the Single Metric Viewer
+=== Single metric job results
 
-One of the sample jobs (`low_request_rate`), is a _single metric job_; it has a
-single detector and limited job properties. Let's start by looking at this
-simple job in the **Single Metric Viewer**:
+One of the sample jobs (`low_request_rate`), is a _single metric {anomaly-job}_.
+It has a single detector that uses the `low_count` function and limited job
+properties. Let's start by looking at this simple job in the
+**Single Metric Viewer**:
 
 [role="screenshot"]
 image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for low_request_rate job"]
@@ -49,16 +50,12 @@ patterns in your data.
 .Anomaly scores
 ****
 Any data points outside the range that was predicted by the model are marked
-as anomalies. When you have high volumes of real-life data, your {anomaly-job}
-might find many anomalies. These vary in probability from very likely to highly
-unlikely--that is to say, from not particularly anomalous to highly anomalous.
-There can be none, one, or hundreds of anomalies found within each bucket. There
-can be many thousands found per job. In order to provide a sensible view of the
-results, an _anomaly score_ is calculated for each bucket time interval. The
-anomaly score is a value from 0 to 100, which indicates the significance of the
-observed anomaly compared to previously seen anomalies. The highly anomalous
-values are shown in red and the low scored values are indicated in blue. An
-interval with a high anomaly score is significant and requires investigation.
+as anomalies. In order to provide a sensible view of the results, an
+_anomaly score_ is calculated for each bucket time interval. The anomaly score
+is a value from 0 to 100, which indicates the significance of the anomaly
+compared to previously seen anomalies. The highly anomalous values are shown in
+red and the low scored values are indicated in blue. An interval with a high
+anomaly score is significant and requires investigation.
 ****
 
 Slide the time selector to a section of the time series that contains a red
@@ -91,18 +88,34 @@ layering additional jobs or creating multi-metric jobs.
 
 [discrete]
 [[ml-gs-results-ae]]
-=== Explore results in the Anomaly Explorer
+=== Advanced or multi-metric job results
 
-The `low_request_rate` job has a single detector that uses the `low_count`
-function. You might also want to track other metrics like average response time
-or the maximum number of denied requests. Instead of creating jobs for each of
-those metrics, you can combine them in _multi-metric jobs_.
+Conceptually, you can think of _multi-metric {anomaly-jobs}_ as running multiple
+independent single metric jobs. By bundling them together in a multi-metric job,
+however, you can see an overall score and shared influencers for all the metrics
+and all the entities in the job. Multi-metric jobs therefore scale better than
+having many independent single metric jobs. They also provide better results
+when you have influencers that are shared across the detectors.
 
-You can also use multi-metric jobs to split a single time series into multiple
-time series based on a categorical field. For example, the `response_code_rates`
-job splits the data based on the `response.keyword`. When you view the results
-in the **Anomaly Explorer**, you can see separate swim lanes for the `404` and
-`200` responses:
+.Influencers
+****
+When you create an {anomaly-job}, you can identify fields as _influencers_.
+These are fields that you think contain information about someone or something
+that influences or contributes to anomalies. There are influencers in both the
+`response_code_rates` and `url_scanning` jobs.
+
+As a best practice, do not pick too many influencers. For example, you generally
+do not need more than three. If you pick many influencers, the results can be
+overwhelming and there is a small overhead to the analysis. For more details,
+see <<ml-influencers>>.
+
+****
+
+You can also configure your {anomaly-jobs} to split a single time series into
+multiple time series based on a categorical field. For example, the
+`response_code_rates` job splits the data based on the `response.keyword`. When
+you view the results in the **Anomaly Explorer**, you can see separate swim
+lanes for the `404` and `200` responses:
 
 [role="screenshot"]
 image::images/ml-gs-job2-explorer.jpg["Anomaly explorer for response_code_rates job"]
@@ -111,29 +124,6 @@ In this scenario, the analysis is segmented such that you have completely
 different baselines for each distinct value of the _partition field_. By looking
 at temporal patterns on a per entity basis, you might spot things that might
 have otherwise been hidden in the lumped view.
-
-// TO-DO: Clarify difference between this partition field behaviour and the other jobs' over fields.
-
-Conceptually, you can think of multi-metric jobs as running multiple independent
-single metric jobs. By bundling them together in a multi-metric job, however,
-you can see an overall score and shared influencers for all the metrics and all
-the entities in the job. Multi-metric jobs therefore scale better than having
-many independent single metric jobs and provide better results when you have
-influencers that are shared across the detectors.
-
-.Influencers
-****
-When you create an {anomaly-job}, you can identify fields as _influencers_.
-These are fields that you think contain information about someone or something
-that influences or contributes to anomalies. In the `response_code_rates` job,
-there are two influencers: `clientip` and `response.keyword`.
-
-As a best practice, do not pick too many influencers. For example, you generally
-do not need more than three. If you pick many influencers, the results can be
-overwhelming and there is a small overhead to the analysis. For more details,
-see <<ml-influencers>>.
-
-****
 
 On the left side of the **Anomaly Explorer**, there is a list of the top
 influencers for all of the detected anomalies in that same time period. The list
@@ -150,9 +140,12 @@ swim lane for the `response.keyword` value of `200`:
 image::images/ml-gs-job2-explorer-anomaly.jpg["Anomaly charts for the response_code_rates job"]
 
 You can see exact times when anomalies occurred. If there are multiple detectors
-or metrics in the job, you can see which caught the anomaly. Below the charts,
-there is a table that provides more information, such as the typical and actual
-values and the influencers that contributed to the anomaly. For example:
+or metrics in the job, you can see which caught the anomaly. You can also switch
+to viewing this time series in the **Single Metric Viewer**.
+
+Below the charts, there is a table that provides more information, such as the
+typical and actual values and the influencers that contributed to the anomaly.
+For example:
 
 [role="screenshot"]
 image::images/ml-gs-job2-explorer-table.jpg["Anomaly tables for the response_code_rates job"]
@@ -169,6 +162,27 @@ generated for each type of result. The anomaly timeline uses the bucket-level
 anomaly scores. The list of top influencers uses the influencer-level anomaly
 scores. The list of anomalies uses the record-level anomaly scores.
 
-By investigating multiple metrics in a single job, you might see relationships
-between events in your data that would otherwise be overlooked.
+[discrete]
+[[ml-gs-results-population]]
+=== Population job results
 
+If you examine the results from the `url_scanning` {anomaly-job} in the
+**Anomaly Explorer**, you'll notice its charts have a different format. For
+example:
+
+[role="screenshot"]
+image::images/ml-gs-job3-explorer.jpg["Anomaly charts for the url_scanning job"]
+
+_Population {anomaly-jobs}_ detect activity that is unusual compared to the
+behavior of a specified population, which is defined by the _over field_. In
+this case, the metrics for each client IP are analyzed relative to other client
+IPs in each bucket and the `30.156.16.164` client IP is behaving abnormally.
+
+If you add the sample eCommerce orders data set, it contains another example of
+a population job. The metrics for each customer are analyzed relative to other
+customers in each bucket. In this example, `Abd Burton` made anomalous purchases:
+
+[role="screenshot"]
+image::images/ml-gs-job4-explorer.jpg["Anomaly charts for the high_sum_total_sales job"]
+
+For more information, see <<ml-configuring-pop>>.

@@ -286,11 +286,9 @@ visitor_rate_ecs::
 [[ootb-ml-jobs-siem]]
 === SIEM
 
-These {anomaly-jobs} appear by default in the Anomaly Detection interface of the 
-{siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
-automatically detect file system and network anomalies on your hosts. The list
-below contains the jobs organized by `agent.type` ({auditbeat}, {packetbeat},
-and {winlogbeat}).
+These {anomaly-jobs} appear by default in the Anomaly Detection interface of
+the {siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
+automatically detect file system and network anomalies on your hosts.
 
 // tag::siem-jobs[]
 For more details, see the
@@ -301,7 +299,7 @@ linux_anomalous_network_activity_ecs::
 +
 windows_anomalous_network_activity_ecs::
 
-Identifies Windows/Linux processes that do not usually use the network but have
+Identifies OS processes that do not usually use the network but have
 unexpected network activity, which can indicate command-and-control, lateral
 movement, persistence, or data exfiltration activity.
 +
@@ -317,12 +315,12 @@ Job details:::
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `destination.ip`
 * `host.name`
@@ -347,9 +345,9 @@ Job details:::
   activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 +
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
+* {auditbeat} (Linux)
 
 +
 NOTE: You can only run this job when Auditbeat is used to ship data.
@@ -366,9 +364,9 @@ Job details:::
 * Detects listening port activity that occurs rarely compared to 
   other port activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
+* {auditbeat} (Linux)
 
 +
 NOTE: You can only run this job when Auditbeat is used to ship data.
@@ -392,11 +390,11 @@ Job details:::
 * Detects a web URL request that is rare compared to other web URL 
   requests (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
+* {auditbeat} (Linux)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `destination.ip`
 * `destination.port`
@@ -409,8 +407,8 @@ linux_anomalous_process_all_hosts_ecs::
 +
 windows_anomalous_process_all_hosts_ecs::
 
-Searches for rare processes running on multiple Windows/Linux hosts in an
-entire fleet or network.
+Searches for rare processes running on multiple hosts in an entire fleet or
+network.
 +
 This reduces the detection of false positives since automated maintenance
 processes usually only run occasionally on a single machine but are common to
@@ -421,14 +419,14 @@ Job details:::
 * Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all 
-  Linux/Windows hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `host.name`
 * `process.name`
@@ -464,12 +462,12 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `host.name`
 * `process.name`
@@ -493,11 +491,11 @@ Job details:::
 * Detects unusual DNS activity (using the 
   {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Packetbeat (Windows and Linux)
+* {packetbeat} (Windows and Linux)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `destination.ip`
 * `dns.question.registered_domain` 
@@ -507,7 +505,7 @@ Required ECS fields:::
 * `agent.type`
 
 +
-NOTE: This {ml} job uses the Packetbeat
+NOTE: This job uses the Packetbeat
 {packetbeat-ref}/exported-fields-dns.html[`dns.question.etld_plus_one`] field, 
 which is not defined in ECS. Instead, map your network data to the
 {ecs-ref}/ecs-dns.html[`dns.question.registered_domain`] ECS field.
@@ -530,12 +528,12 @@ Job details:::
 * Detects DNS activity that is rare compared to other DNS activities (using the 
   {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Packetbeat (Windows and Linux)
+* {packetbeat} (Windows and Linux)
 
 +
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `host.name`
 * `dns.question.name`
@@ -562,11 +560,11 @@ Job details:::
 * Detects HTTP or TLS domain activity that is rare compared to other 
   activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Packetbeat (Windows and Linux)
+* {packetbeat} (Windows and Linux)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `destination.ip`
 * `source.ip`
@@ -597,11 +595,11 @@ Job details:::
 * Detects URL activity that rarely occurs compared to other URL activities 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Packetbeat (Windows and Linux)
+* {packetbeat} (Windows and Linux)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `destination.ip`
 * `host.name`
@@ -630,11 +628,11 @@ Job details:::
 * Detects HTTP user agent activity that occurs rarely compared to other HTTP 
   user agent activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Packetbeat (Windows and Linux)
+* {packetbeat} (Windows and Linux)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `destination.ip`
 * `host.name`
@@ -646,9 +644,9 @@ rare_process_by_host_linux_ecs::
 +
 rare_process_by_host_windows_ecs::
 
-Identifies rare processes that do not usually run on individual Windows/Linux
-hosts, which can indicate execution of unauthorized services, malware, or
-persistence mechanisms.
+Identifies rare processes that do not usually run on individual hosts, which
+can indicate execution of unauthorized services, malware, or persistence
+mechanisms.
 +
 Processes are considered rare when they only run occasionally as compared with
 other processes running on the host.
@@ -659,12 +657,12 @@ Job details:::
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
-* Winlogbeat (Windows)
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `host.name`
 * `process.name`
@@ -684,11 +682,11 @@ Job details:::
 * Detects unusually high number of authentication attempts (using the 
   {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Auditbeat (Linux)
+* {auditbeat} (Linux)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `source.ip`
 * `host.name`
@@ -713,11 +711,11 @@ Job details:::
 * Models occurrences of processes in paths.
 * Detects activity in unusual paths (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Winlogbeat (Windows)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `host.name`
 * `process.name`
@@ -728,7 +726,7 @@ Required ECS fields:::
 
 windows_anomalous_process_creation::
 
-Identifies unusual parent/child process relationships that can indicate
+Identifies unusual parent-child process relationships that can indicate
 malware execution or persistence mechanisms.
 +
 Malicious scripts often call on other applications and processes as part of
@@ -750,11 +748,11 @@ Job details:::
 * Detects process relationships that are rare compared to other process 
   relationships (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Winlogbeat (Windows)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `host.name`
 * `process.name`
@@ -777,9 +775,9 @@ Job details:::
   script activities (using the 
   {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Winlogbeat (Windows)
+* {winlogbeat} (Windows)
 
 +
 NOTE: You can only run this job when Winlogbeat is used to ship data.
@@ -799,9 +797,9 @@ Job details:::
 * Models occurrences of Windows service activities.
 * Detects Windows service activities that occur rarely compared to other Windows service activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Winlogbeat (Windows)
+* {winlogbeat} (Windows)
 
 +
 NOTE: You can only run this job when Winlogbeat is used to ship data.
@@ -820,11 +818,11 @@ Job details:::
 * Models occurrences of user context switches.
 * Detects user context switches that occur rarely compared to other user context switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Winlogbeat (Windows)
+* {winlogbeat} (Windows)
 
-Required ECS fields:::
+Required ECS fields when not using {beats}:::
 
 * `process.name`
 * `host.name`
@@ -845,9 +843,9 @@ Job details:::
 * Detects user remote login activities that occur rarely compared to other 
   user remote login activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Beats required on hosts:::
+Required {beats}:::
 
-* Winlogbeat (Windows)
+* {winlogbeat} (Windows)
 
 +
 NOTE: You can only run this job when Winlogbeat is used to ship data.

@@ -34,23 +34,26 @@ details).
 
 The SIEM app comes with prebuilt {ml} {anomaly-jobs} for automatically detecting
 host and network anomalies. The jobs are displayed in the `Anomaly Detection`
-interface. They are available when:
+interface. They are available when either:
 
 * You ship data using https://www.elastic.co/products/beats[Beats], and
 {kib} is configured with the required index patterns
 (`auditbeat-*`, `filebeat-*`, `packetbeat-*`, or `winlogbeat-*` via {kib} -> Management -> Index Patterns).
-* Your shipped data is ECS-compliant, and {kib} is configured with the data's 
-index patterns.
+
+Or
+
+* Your shipped data is ECS-compliant, and {kib} is configured with the shipped
+data's index patterns.
+
+<<prebuilt-ml-jobs>> describes all available {ml} jobs, and lists 
+which ECS fields are required on your hosts when you are not using {beats} to
+ship your data. For information on tuning anomaly results to reduce the number
+of false positive, see <<tuning-anomaly-results>>.
 
 NOTE: Machine learning jobs look back and analyse two weeks of historical data 
 prior to the time they are enabled. After jobs are enabled, they continuously 
 analyse incoming data. When jobs are stopped and restarted within the two week 
 time frame, previously analysed data is not processed again.
-
-<<prebuilt-ml-jobs>> describes all available {ml} jobs and lists 
-which beats are required on your hosts for each job. For information on tuning
-anomaly results to reduce the number of false positive, see
-<<tuning-anomaly-results>>.
 
 [float]
 [[view-anomolies]]
@@ -66,9 +69,10 @@ Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
 === Prebuilt job reference
 
 Prebuilt jobs automatically detect file system and network anomalies on your 
-hosts. If you use Beats to ship your data, the ECS fields are populated and you 
-do not need to manually map the fields.
+hosts. To run jobs when you are not using {beats}, you must map your data to
+the ECS fields listed in each job description.
 
-The following prebuilt jobs are available:
+NOTE: Some jobs use fields that are not ECS-compliant. These jobs are only
+available when you use {beats} to ship data.
 
 include::../stack/ml/anomaly-detection/ootb-ml-jobs.asciidoc[tag=siem-jobs]

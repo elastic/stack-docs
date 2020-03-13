@@ -3,30 +3,14 @@
 === Next steps
 
 By completing this tutorial, you've learned how you can detect anomalous
-behavior in a simple set of sample data. You created single and multi-metric
-jobs in {kib}, which opens jobs and creates and starts {dfeeds} for
-you under the covers. You examined the results of the {ml} analysis in the
-**Single Metric Viewer** and **Anomaly Explorer** in {kib}. You also
-extrapolated the future behavior of a job by creating a forecast.
+behavior in a simple set of sample data. You created {anomaly-jobs} in {kib},
+which opens jobs and creates and starts {dfeeds} for you under the covers. You
+examined the results of the {ml} analysis in the **Single Metric Viewer** and
+**Anomaly Explorer** in {kib}. You also extrapolated the future behavior of a
+job by creating a forecast.
 
-If you intend to use {ml} APIs in your applications, a good next step might be
-to learn about the APIs by retrieving information about these sample jobs.
-For example, the following APIs retrieve information about the jobs and {dfeeds}.
-
-[source,js]
---------------------------------------------------
-GET _ml/anomaly_detectors
-
-GET _ml/datafeeds
---------------------------------------------------
-// CONSOLE
-
-For more information about the {ml} APIs, see <<ml-api-quickref>>.
-
-If you want to find more sample jobs, see <<ootb-ml-jobs>>.
-
-There are three things to consider when you're
-thinking about where {anomaly-detect} will be most impactful:
+If you're now thinking about where {anomaly-detect} can be most impactful for
+your own data, there are three things to consider:
 
 . It must be time series data.
 . It should be information that contains key performance indicators for the
@@ -39,15 +23,17 @@ cannot use {kib} to create your jobs and you cannot use {dfeeds}. Machine
 learning analysis is still possible, however, by using APIs to create and manage
 jobs and to post data to them.
 
-Once you have decided which data to analyze, you can start considering which
-analysis functions you want to use. For more information, see <<ml-functions>>.
-
-In general, it is a good idea to start with single metric jobs for your
-key performance indicators. After you examine these simple analysis results,
+In general, it is a good idea to start with single metric {anomaly-jobs} for
+your key performance indicators. After you examine these simple analysis results,
 you will have a better idea of what the influencers might be. You can create
 multi-metric jobs and split the data or create more complex analysis functions
 as necessary. For examples of more complicated configuration options, see
 <<ml-configuration>>.
+
+If you want to find more sample jobs, see <<ootb-ml-jobs>>. In particular, there
+are sample jobs for <<ootb-ml-jobs-apache,Apache>> and
+<<ootb-ml-jobs-nginx,Nginx>> that are quite similar to the examples in this
+tutorial.
 
 If you encounter problems, we're here to help. If you are an existing Elastic
 customer with a support contract, please create a ticket in the

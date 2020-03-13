@@ -26,7 +26,10 @@ There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 
 One of the sample jobs (`low_request_rate`), is a _single metric {anomaly-job}_.
 It has a single detector that uses the `low_count` function and limited job
-properties. Let's start by looking at this simple job in the
+properties. You might use a job like this if you want to determine when the
+request rate on your web site drops significantly. 
+
+Let's start by looking at this simple job in the
 **Single Metric Viewer**:
 
 [role="screenshot"]
@@ -60,25 +63,21 @@ anomaly score is significant and requires investigation.
 
 Slide the time selector to a section of the time series that contains a red
 anomaly data point. If you hover over the point, you can see more information.
-You can also see details in the **Anomalies** section of the viewer. For example:
+
+NOTE: You might notice a high spike in the time series. It's not highlighted as 
+an anomaly, however, since this job looks for low counts only. 
+
+For each anomaly, you can see key details such as the time, the actual and
+expected ("typical") values, and their probability in the **Anomalies** section
+of the viewer. For example:
 
 [role="screenshot"]
 image::images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for low_request_rate job"]
-
-For each anomaly you can see key details such as the time, the actual and
-expected ("typical") values, and their probability.
 
 By default, the table contains all anomalies that have a severity of "warning"
 or higher in the selected section of the timeline. If you are only interested in
 critical anomalies, for example, you can change the severity threshold for this
 table.
-
-The anomalies table also automatically calculates an interval for the data in
-the table. If the time difference between the earliest and latest records in the
-table is less than two days, the data is aggregated by hour to show the details
-of the highest severity anomaly for each detector. Otherwise, it is aggregated
-by day. You can change the interval for the table, for example, to show all
-anomalies.
 
 After you have identified anomalies, often the next step is to try to determine
 the context of those situations. For example, are there other factors that are
@@ -113,9 +112,12 @@ see <<ml-influencers>>.
 
 You can also configure your {anomaly-jobs} to split a single time series into
 multiple time series based on a categorical field. For example, the
-`response_code_rates` job splits the data based on the `response.keyword`. When
-you view the results in the **Anomaly Explorer**, you can see separate swim
-lanes for the `404` and `200` responses:
+`response_code_rates` job has a single detector that splits the data based on
+the `response.keyword` and then uses the `count` function to determine when the
+number of events is anomalous. You might use a job like this if you want to
+look at both high and low request rates partitioned by response code. When you
+view the results in the **Anomaly Explorer**, you can see separate swim lanes
+for the `404` and `200` responses:
 
 [role="screenshot"]
 image::images/ml-gs-job2-explorer.jpg["Anomaly explorer for response_code_rates job"]
@@ -130,11 +132,11 @@ influencers for all of the detected anomalies in that same time period. The list
 includes maximum anomaly scores, which in this case are aggregated for each
 influencer, for each bucket, across all detectors. There is also a total sum of
 the anomaly scores for each influencer. You can use this list to help you narrow
-down the contributing factors and focus on the most anomalous entities.
+down the contributing factors and focus on the most anomalous entities. 
 
 Click on a section in the swim lanes to obtain more information about the
 anomalies in that time period. For example, click on the red section in the
-swim lane for the `response.keyword` value of `200`:
+swim lane for the `response.keyword` value of `404`:
 
 [role="screenshot"]
 image::images/ml-gs-job2-explorer-anomaly.jpg["Anomaly charts for the response_code_rates job"]
@@ -153,7 +155,12 @@ image::images/ml-gs-job2-explorer-table.jpg["Anomaly tables for the response_cod
 If your job has multiple detectors, the table aggregates the anomalies to show
 the highest severity anomaly per detector and entity, which is the field value
 that is displayed in the **found for** column. To view all the anomalies without
-any aggregation, set the **Interval** to `Show all`.
+any aggregation, set the **Interval** to `Show all`. 
+
+In this sample data, the spike in the 404 response codes is influenced by a
+specific client. Situations like this might indicate that the client is
+accessing unusual pages or scanning your site to see if they can access
+unusual URLs. This anomalous behavior merits further investigation.
 
 TIP: The anomaly scores that you see in each section of the **Anomaly Explorer**
 might differ slightly. This disparity occurs because for each job there are

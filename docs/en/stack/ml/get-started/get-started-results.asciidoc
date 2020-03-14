@@ -173,6 +173,15 @@ scores. The list of anomalies uses the record-level anomaly scores.
 [[ml-gs-results-population]]
 === Population job results
 
+The final sample job (`url_scanning`) is a _population {anomaly-job}_. As we
+saw in the `response_code_rates` job results, there are some clients that seem
+to be accessing unusually high numbers of URLs. The `url_scanning` sample job
+provides another method for investigating that type of problem. It has a
+single detector that uses the `high_distinct_count` function on the `url.keyword`
+to detect unusually high numbers of distinct values in that field. It then
+analyzes whether that behavior differs over the population of clients, as
+defined by the `clientip` field.  
+
 If you examine the results from the `url_scanning` {anomaly-job} in the
 **Anomaly Explorer**, you'll notice its charts have a different format. For
 example:
@@ -180,14 +189,15 @@ example:
 [role="screenshot"]
 image::images/ml-gs-job3-explorer.jpg["Anomaly charts for the url_scanning job"]
 
-_Population {anomaly-jobs}_ detect activity that is unusual compared to the
-behavior of a specified population, which is defined by the _over field_. In
-this case, the metrics for each client IP are analyzed relative to other client
-IPs in each bucket and the `30.156.16.164` client IP is behaving abnormally.
+In this case, the metrics for each client IP are analyzed relative to other
+client IPs in each bucket and we can once again see that the
+`30.156.16.164` client IP is behaving abnormally.
 
-If you add the sample eCommerce orders data set, it contains another example of
-a population job. The metrics for each customer are analyzed relative to other
-customers in each bucket. In this example, `Abd Burton` made anomalous purchases:
+If you want to play with another example of a population {anomaly-job}, add the
+sample eCommerce orders data set. Its `high_sum_total_sales` job determines
+which customers have made unusual amounts of purchases relative to other
+customers in each bucket of time. In this example, there is a low severity
+anomalous event found for `Abd Burton`:
 
 [role="screenshot"]
 image::images/ml-gs-job4-explorer.jpg["Anomaly charts for the high_sum_total_sales job"]

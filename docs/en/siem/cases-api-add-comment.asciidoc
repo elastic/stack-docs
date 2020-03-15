@@ -5,7 +5,7 @@ Adds a comment to an existing case.
 
 ==== Request URL
 
-`POST /api/cases/<case ID>/comment`
+`POST /api/cases/<case ID>/comments`
 
 ===== URL parts
 
@@ -25,11 +25,11 @@ A JSON object with a `comment` field:
 
 ===== Example request
 
-Adds a comment to case ID `c2ffcea0-57d0-11ea-95da-cb9f4a010e31`:
+Adds a comment to case ID `eb696730-66a2-11ea-be1b-2bd3fef48984`:
 
 [source,sh]
 --------------------------------------------------
-POST api/cases/c2ffcea0-57d0-11ea-95da-cb9f4a010e31/comment
+POST api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 {
   "comment": "That is nothing - Ethan Hunt answered a targeted social media 
   campaign promoting phishy pension schemes to IMF operatives."
@@ -52,14 +52,15 @@ ID, version, and creation time.
 [source,json]
 --------------------------------------------------
 {
-  "comment_id": "f118e4a0-57e1-11ea-95da-cb9f4a010e31",
-  "version": "WzM1LDFd",
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
-  "created_at": "2020-02-25T15:17:31.057Z",
+  "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
+  "version": "WzIyLDFd",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting cheap summer holidays to IMF operatives.",
+  "created_at": "2020-03-15T10:24:52.253Z",
   "created_by": {
     "full_name": "Ms Moneypenny",
     "username": "moneypenny"
   },
-  "updated_at": "2020-02-25T15:17:31.057Z"
+  "updated_at": null,
+  "updated_by": null
 }
 --------------------------------------------------

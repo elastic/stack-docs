@@ -23,9 +23,9 @@ are:
 * `open`
 * `closed`
 
-|No, defaults to `open`.
-|`tags` |String[] |String array containing words and phrases that help categorize 
-cases. |No, defaults to an empty array.
+|Yes
+|`tags` |String[] |String array containing words and phrases that help
+categorize cases. |Yes, can be an empty array.
 |==============================================
 
 ===== Example request
@@ -60,18 +60,20 @@ version, and creation time.
 [source,json]
 --------------------------------------------------
 {
-  "case_id": "c2ffcea0-57d0-11ea-95da-cb9f4a010e31",
-  "version": "WzI4LDFd",
+  "id": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+  "version": "WzE1LDFd",
   "comments": [],
-  "created_at": "2020-02-25T13:14:32.264Z",
+  "comment_ids": [],
+  "created_at": "2020-03-15T09:54:10.654Z",
   "created_by": {
     "full_name": "Alan Hunley",
     "username": "ahunley"
   },
-  "updated_at": "2020-02-25T13:14:32.264Z",
+  "updated_at": null,
+  "updated_by": null,
   "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants.",
   "title": "This case will self-destruct in 5 seconds",
-  "state": "open",
+  "status": "open",
   "tags": [
     "phishing",
     "social engineering"

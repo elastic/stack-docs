@@ -1,32 +1,38 @@
 [[cases-api-update]]
 === Update case
 
-Updates an existing case.
+Updates existing cases.
 
 ==== Request URL
 
-`PATCH /api/cases/<case ID>`
-
-===== URL parts
-
-The URL must include the `case ID` of the case you are updating.
+`PATCH /api/cases`
 
 ==== Request body
 
-A JSON object containing:
+A JSON array containing one or more case objects with updated field values:
 
 [width="100%",options="header"]
 |==============================================
 |Name |Type |Description |Required
 
-|`case` |Object a|Contains the updated case field values, which can be:
+|`cases` |<<update-cases-schema, cases[]>> |Array containing one or more case objects. |Yes
+|==============================================
 
-* `title`: The case's title (string).
-* `description`: The case's description (string).
-* `state` Indicates whether the case is `open` or `closed`.
-* `tags`: String array containing words and phrases that help categorize cases.
+[[update-cases-schema]]
+===== `cases` schema
+|==============================================
+|Name |Type |Description |Required
 
-|Yes
+|`id` |String |The case ID of the case being updated. |Yes
+|`title` |String |The updated case title. |No
+|`description` |String |The updated case description. |No
+|`state` |String a|The updated case status, which can be:
+
+* `open`
+* `closed`
+
+|No
+|`tags` |String[] |The updated case tags. |No
 |`version` |String |The current case version (returned when calling
 <<cases-api-get-case>> or <<cases-api-get-all-cases>>) |Yes
 |==============================================
@@ -34,21 +40,24 @@ A JSON object containing:
 ===== Example request
 
 Updates the `description` and `tags` fields of case ID
-`c2ffcea0-57d0-11ea-95da-cb9f4a010e31`:
+`eb696730-66a2-11ea-be1b-2bd3fef48984`:
 
 [source,sh]
 --------------------------------------------------
-PATCH api/cases/c2ffcea0-57d0-11ea-95da-cb9f4a010e31
+PATCH api/cases
 {
-  "case":{ 
-    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
-    "tags": [
-      "phishing",
-      "social engineering",
-      "bubblegum"
-    ]
-  },
-  "version": "WzI4LDFd"
+  "cases": [
+    {
+      "id": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+      "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active",
+      "tags": [
+        "phishing",
+        "social engineering",
+        "bubblegum"
+      ],
+      "version": "WzIzLDFd"
+    }
+  ]
 }
 --------------------------------------------------
 // KIBANA
@@ -66,14 +75,32 @@ The updated case with a new `version` value.
 
 [source,json]
 --------------------------------------------------
-{
-  "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
-  "tags": [
-    "phishing",
-    "social engineering",
-    "bubblegum"
-  ],
-  "updated_at": "2020-02-25T16:11:12.637Z",
-  "version": "WzQwLDFd"
-}
+[
+  {
+    "id": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+    "version": "WzI0LDFd",
+    "comments": [],
+    "comment_ids": [
+      "35180680-66a7-11ea-be1b-2bd3fef48984"
+    ],
+    "created_at": "2020-03-15T09:54:10.654Z",
+    "created_by": {
+      "full_name": "Alan Hunley",
+      "username": "ahunley"
+    },
+    "updated_at": "2020-03-15T10:39:02.360Z",
+    "updated_by": {
+      "full_name": "Classified",
+      "username": "M"
+    },
+    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active",
+    "title": "This case will self-destruct in 5 seconds",
+    "status": "open",
+    "tags": [
+      "phishing",
+      "social engineering",
+      "bubblegum"
+    ]
+  }
+]
 --------------------------------------------------

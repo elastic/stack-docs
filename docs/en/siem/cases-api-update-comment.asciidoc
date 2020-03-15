@@ -9,30 +9,33 @@ Updates an existing comment.
 
 ===== URL parts
 
-The URL must include the `case ID` of the comment you are updating.
+The URL must include the `case ID` of the comment's associated case.
 
 ==== Request body
 
-A JSON object with updated comment:
+A JSON object with the updated comment:
 
 [width="100%",options="header"]
 |==============================================
 |Name |Type |Description |Required
 
 |`comment` |String |The updated comment. |Yes
+|`id` |String |The comment's ID. |Yes
+|`version` |String |The current comment version. |Yes
 |==============================================
 
 ===== Example request
 
-Updates comment ID `f118e4a0-57e1-11ea-95da-cb9f4a010e3`:
+Updates comment ID `35180680-66a7-11ea-be1b-2bd3fef48984` (associated with case
+ID `eb696730-66a2-11ea-be1b-2bd3fef48984`):
 
 [source,sh]
 --------------------------------------------------
-PATCH api/cases/comment/f118e4a0-57e1-11ea-95da-cb9f4a010e3
+PATCH api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 {
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media
-  campaign promoting phishy pension schemes to IMF operatives. Even worse, he
-  likes baked beans."
+  "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+  "version": "WzIyLDFd"
 }
 --------------------------------------------------
 // KIBANA
@@ -44,14 +47,25 @@ PATCH api/cases/comment/f118e4a0-57e1-11ea-95da-cb9f4a010e3
 
 ==== Response payload
 
-The updated comment and its timestamp.
+The updated comment and timestamp.
 
 ===== Example response
 
 [source,json]
 --------------------------------------------------
 {
+  "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
+  "version": "WzI1LDFd",
   "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
-  "updated_at": "2020-02-27T09:33:39.803Z"
+  "created_at": "2020-03-15T10:24:52.253Z",
+  "created_by": {
+    "full_name": "Ms Moneypenny",
+    "username": "moneypenny"
+  },
+  "updated_at": "2020-03-15T11:42:17.238Z",
+  "updated_by": {
+    "full_name": "Zero-Zero-*",
+    "username": "00*"
+  }
 }
 --------------------------------------------------

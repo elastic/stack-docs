@@ -1,0 +1,144 @@
+[[cases-api-conf]]
+=== Configuring cases
+
+You can send cases and comments to ServiceNow. To create ServiceNow incidents,
+you first need to register a connector using the {kib} Actions API. Afterwards, you can retrieve connectors and update their settings. 
+
+==== Register ServiceNow connector
+
+Registers a ServiceNow action, which can then be used to push cases to
+ServiceNow.
+
+===== Request URL
+
+`POST /api/action`
+
+===== Request body
+
+A JSON object with these fields:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`actionTypeId` |String |Must be: `.servicenow`.^1^ |Yes
+|`config` |<<config-schema, config>> |Object containing the action's
+configuration. |Yes
+|`secrets` |Object a|Object containing the ServiceNow account credentials used
+to create and update incidents:
+
+* `username`: The account username (String).
+* `password`: The account password (String).
+
+|Yes
+
+|`name` |String |The registered ServiceNow connector. |Yes
+|==============================================
+^1^For information about other action types, see.
+
+[[config-schema]]
+*`config` schema*
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`casesConfiguration` |Object a|Contains a `mapping` array, which determines how SIEM cases are mapped to ServiceNow incidents:
+
+* `source`: The name of the SIEM case field, which can be `title`,
+`description`, or `comments` (String).
+* `target`: The name of the mapped ServiceNow incident field. Foe example: `short_description`, `description`, and `comments` (String).
+* `actionType`: Determines whether updates to existing cases overwrite or
+append the ServiceNow incident fields. Valid values are `overwrite` and
+`append` (String).
+
+|Yes
+
+|`apiUrl` |String |URL of the ServiceNow instance. |Yes
+|==============================================
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+POST api/action
+{
+  "actionTypeId": ".servicenow",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://dev87359.service-now.com"
+  },
+  "secrets": {
+    "username": "admin",
+    "password": "securePassword123!"
+  },
+  "name": "ServiceNow"
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Response payload
+
+A JSON object with an `id` required to push cases to ServiceNow.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "7349772f-421a-4de3-b8bb-2d9b22ccee30",
+  "actionTypeId": ".servicenow",
+  "name": "ServiceNow",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://dev87359.service-now.com"
+  }
+}
+--------------------------------------------------
+
+==== Get ServiceNow connectors
+
+Retrieves all registered ServiceNow connectors.
+
+

@@ -1,6 +1,6 @@
 :sn: ServiceNow
 [[cases-api-conf]]
-=== Configuring {sn} integration
+=== {sn} integration
 
 You can create {sn} incidents from {siem-soln} cases. This requires registering
 a {sn} connector using the {kib} actions API. Once you have at least one
@@ -25,7 +25,7 @@ A JSON object with these fields:
 |Name |Type |Description |Required
 
 |`actionTypeId` |String |Must be: `.servicenow`.^1^ |Yes
-|`config` |<<config-schema, config>|Object containing the action's
+|`config` |<<config-schema, config>> |Object containing the action's
 configuration. |Yes
 |`secrets` |Object a|Object containing the {sn} account credentials used
 to create and update incidents:
@@ -160,7 +160,7 @@ A JSON object with these fields:
 |==============================================
 |Name |Type |Description |Required
 
-|`params` |<<case-conf-params, params>|Contains the {siem-soln} case details
+|`params` |<<case-conf-params, params>> |Contains the {siem-soln} case details
 for which you are opening a {sn} incident. |Yes
 |==============================================
 

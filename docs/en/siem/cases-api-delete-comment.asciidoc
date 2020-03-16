@@ -5,19 +5,23 @@ Deletes the specified comment.
 
 ==== Request URL
 
-`DELETE /api/cases/comments/<comment ID>`
+`DELETE /api/cases/<case ID>/comments/<comment ID>`
 
 ===== URL parts
 
-The URL must include the `comment ID` of the comment you are deleting. 
+The URL must include:
+
+* the `case ID` of the comment’s associated case.
+* the `comment ID` of the comment you are deleting.
 
 ===== Example request
 
-Deletes comment ID `669364c0-2174-11ea-87ed-69e2fb63d9ed`:
+Deletes comment ID `35180680-66a7-11ea-be1b-2bd3fef48984` from case ID
+`eb696730-66a2-11ea-be1b-2bd3fef48984`:
 
 [source,sh]
 --------------------------------------------------
-DELETE api/cases/comments/669364c0-2174-11ea-87ed-69e2fb63d9ed
+DELETE api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments/35180680-66a7-11ea-be1b-2bd3fef48984
 --------------------------------------------------
 // KIBANA
 

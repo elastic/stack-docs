@@ -1,7 +1,7 @@
 [[cases-api-get-all-case-comments]]
 === Get all case comments
 
-Returns a paginated subset of comments for the specified case.
+Returns all comments for the specified case.
 
 ==== Request URL
 
@@ -14,11 +14,11 @@ comments.
 
 ===== Example request
 
-Gets all comments for case ID `c2ffcea0-57d0-11ea-95da-cb9f4a010e31`:
+Gets all comments for case ID `eb696730-66a2-11ea-be1b-2bd3fef48984`:
 
 [source,sh]
 --------------------------------------------------
-GET api/cases/c2ffcea0-57d0-11ea-95da-cb9f4a010e31/comments
+GET api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 --------------------------------------------------
 // KIBANA
 
@@ -29,39 +29,39 @@ GET api/cases/c2ffcea0-57d0-11ea-95da-cb9f4a010e31/comments
 
 ==== Response payload
 
-A JSON object listing comments for the specified case.
+A JSON array containing all comments for the specified case.
 
 ===== Response example
 
 [source,json]
 --------------------------------------------------
-{
-  "page": 1,
-  "per_page": 20,
-  "total": 2,
-  "comments": [
-    {
-      "comment_id": "0a846810-5940-11ea-bad4-61e6383623ca",
-      "version": "WzE1LDFd",
-      "comment": "Start operation bubblegum immediately! And chew fast!",
-      "created_at": "2020-02-27T09:03:37.554Z",
-      "created_by": {
-        "full_name": "Classified",
-        "username": "M"
-      },
-      "updated_at": "2020-02-27T09:03:37.554Z"
+[
+  {
+    "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
+    "version": "WzI1LDFd",
+    "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+    "created_at": "2020-03-15T10:24:52.253Z",
+    "created_by": {
+      "full_name": "Ms Moneypenny",
+      "username": "moneypenny"
     },
-    {
-      "comment_id": "f118e4a0-57e1-11ea-95da-cb9f4a010e31",
-      "version": "WzE3LDFd",
-      "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
-      "created_at": "2020-02-25T15:17:31.057Z",
-      "created_by": {
-        "full_name": "Ms Moneypenny",
-        "username": "moneypenny"
-      },
-      "updated_at": "2020-02-27T09:35:21.019Z"
+    "updated_at": "2020-03-15T11:42:17.238Z",
+    "updated_by": {
+      "full_name": "zero-zero-*",
+      "username": "00*"
     }
-  ]
-}
+  },
+  {
+    "id": "f215d6a0-6755-11ea-a1c2-e3a8bc9f7aca",
+    "version": "WzM3LDFd",
+    "comment": "Start operation bubblegum immediately! And chew fast!",
+    "created_at": "2020-03-16T07:15:41.756Z",
+    "created_by": {
+      "full_name": "Classified",
+      "username": "M"
+    },
+    "updated_at": null,
+    "updated_by": null
+  }
+]
 --------------------------------------------------

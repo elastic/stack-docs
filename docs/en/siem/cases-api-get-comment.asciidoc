@@ -5,20 +5,23 @@ Gets the specified comment.
 
 ==== Request URL
 
-`GET /api/cases/comment/<comment ID>`
+`GET /api/cases/<case ID>/comments/<comment ID>`
 
 ===== URL parts
 
-The URL must include the `comment ID` of the comment you are retrieving. To 
-retrieve all comment IDs, call <<cases-api-get-all-case-comments>>.
+The URL must include:
+
+* the `case ID` of the comment’s associated case.
+* the `comment ID` of the comment you are retrieving.
 
 ===== Example request
 
-Retrieves comment ID `f118e4a0-57e1-11ea-95da-cb9f4a010e31`:
+Retrieves comment ID `35180680-66a7-11ea-be1b-2bd3fef48984` from case ID
+`eb696730-66a2-11ea-be1b-2bd3fef48984`:
 
 [source,sh]
 --------------------------------------------------
-GET api/cases/comments/f118e4a0-57e1-11ea-95da-cb9f4a010e31
+GET api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments/35180680-66a7-11ea-be1b-2bd3fef48984
 --------------------------------------------------
 // KIBANA
 
@@ -36,14 +39,18 @@ The requested comment JSON object.
 [source,json]
 --------------------------------------------------
 {
-  "comment_id": "f118e4a0-57e1-11ea-95da-cb9f4a010e31",
-  "version": "WzMsMV0=",
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
-  "created_at": "2020-02-25T15:17:31.057Z",
+  "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
+  "version": "WzI1LDFd",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+  "created_at": "2020-03-15T10:24:52.253Z",
   "created_by": {
     "full_name": "Ms Moneypenny",
     "username": "moneypenny"
   },
-  "updated_at": "2020-02-26T14:59:06.749Z"
+  "updated_at": "2020-03-15T11:42:17.238Z",
+  "updated_by": {
+    "full_name": "zero-zero-*",
+    "username": "00*"
+  }
 }
 --------------------------------------------------

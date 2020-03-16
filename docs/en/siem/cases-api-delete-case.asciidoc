@@ -1,23 +1,26 @@
 [[cases-api-delete-case]]
 === Delete case
 
-Deletes the specified case and all associated comments.
+Deletes the specified cases and all associated comments.
 
 ==== Request URL
 
-`DELETE /api/cases/<case ID>`
+`DELETE /api/cases?ids=["<case ID1>","<case ID2>"]`
 
 ===== URL parts
 
-The URL must include the `case ID` of the case you are deleting. 
+The URL must include the case IDs of the cases you are deleting.
 
 ===== Example request
 
-Deletes case ID `0a0fa050-20e4-11ea-8f80-690fedc74682`:
+Deletes cases with these IDs:
 
-[source,sh]
+* `2e3a54f0-6754-11ea-a1c2-e3a8bc9f7aca`
+* `40b9a450-66a0-11ea-be1b-2bd3fef48984`
+
+[source,console]
 --------------------------------------------------
-DELETE api/cases/0a0fa050-20e4-11ea-8f80-690fedc74682
+DELETE api/cases?ids=%5B%222e3a54f0-6754-11ea-a1c2-e3a8bc9f7aca%22%2C%2240b9a450-66a0-11ea-be1b-2bd3fef48984%22%5D
 --------------------------------------------------
 // KIBANA
 

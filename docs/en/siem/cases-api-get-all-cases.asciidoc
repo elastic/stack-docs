@@ -1,12 +1,12 @@
-[[cases-api-get-all-cases]]
-=== Get all cases
+[[cases-api-find-cases]]
+=== Find cases
 
 Retrieves a paginated subset of cases. By default, the first page is returned 
 with 20 results per page.
 
 ==== Request URL
 
-`GET /api/cases`
+`GET /api/cases/_find`
 
 ===== URL query parameters
 
@@ -25,11 +25,10 @@ All parameters are optional:
 
 |`sortOrder` |String |Determines the sort order, which can be `desc` or `asc`.
 
-|`filter` |String a|Filters the returned results according to the value of the 
-specified field, using the `case-workflow.attributes.<field name>:<field value>` syntax, where `<field name>` can be:
+|`status` |String |Filters the returned cases by state, which can be `open` or
+`closed`.
 
-* `state`
-* `tags`
+|`tags` |String |Filters the returned cases by tags.
 
 |==============================================
 
@@ -44,7 +43,7 @@ last update time.
 
 [source,sh]
 --------------------------------------------------
-GET api/cases?page=1&perPage=5&sortField=updatedAt&sortOrder=asc&filter=case-workflow.attributes.tags:phishing
+GET api/cases/_find?page=1&perPage=5&sortField=updatedAt&sortOrder=asc&tags=phishing
 --------------------------------------------------
 // KIBANA
 
@@ -67,18 +66,25 @@ A JSON object listing all cases.
   "total": 2,
   "cases": [
     {
-      "case_id": "c2ffcea0-57d0-11ea-95da-cb9f4a010e31",
-      "version": "WzQ2LDFd",
+      "id": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+      "version": "WzI0LDFd",
       "comments": [],
-      "created_at": "2020-02-25T13:14:32.264Z",
+      "comment_ids": [
+        "35180680-66a7-11ea-be1b-2bd3fef48984"
+      ],
+      "created_at": "2020-03-15T09:54:10.654Z",
       "created_by": {
         "full_name": "Alan Hunley",
         "username": "ahunley"
       },
-      "updated_at": "2020-02-26T15:46:48.716Z",
-      "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
+      "updated_at": "2020-03-15T10:39:02.360Z",
+      "updated_by": {
+        "full_name": "Classified",
+        "username": "M"
+      },
+      "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active",
       "title": "This case will self-destruct in 5 seconds",
-      "state": "open",
+      "status": "open",
       "tags": [
         "phishing",
         "social engineering",
@@ -86,23 +92,30 @@ A JSON object listing all cases.
       ]
     },
     {
-      "case_id": "e1c61e40-58af-11ea-910e-c9f06dd752a6",
-      "version": "WzUyLDFd",
+      "id": "2e3a54f0-6754-11ea-a1c2-e3a8bc9f7aca",
+      "version": "WzM2LDFd",
       "comments": [],
-      "created_at": "2020-02-26T15:51:41.669Z",
+      "comment_ids": [],
+      "created_at": "2020-03-16T07:03:03.648Z",
       "created_by": {
         "full_name": "Rat Hustler",
         "username": "rhustler"
       },
-      "updated_at": "2020-02-26T16:21:16.693Z",
+      "updated_at": "2020-03-16T07:03:18.058Z",
+      "updated_by": {
+        "full_name": "Rat Hustler",
+        "username": "rhustler"
+      },
       "title": "The Long Game",
-      "description": "Windows 95",
       "tags": [
         "windows",
         "phishing"
       ],
-      "state": "open"
+      "description": "Windows 95",
+      "status": "closed"
     }
-  ]
+  ],
+  "count_open_cases": 1,
+  "count_closed_cases": 1
 }
 --------------------------------------------------

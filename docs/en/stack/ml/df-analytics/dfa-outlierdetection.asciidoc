@@ -20,8 +20,17 @@ You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
 [[dfa-outlier-algorithms]]
 ==== {oldetection-cap} algorithms
 
+//tag::outlier-detection-algorithms[]
 In the {stack}, we use an ensemble of four different distance and density based 
-{oldetection} methods. By default, you don't need to select the methods or 
+{oldetection} methods:
+
+* distance of K^th^ nearest neighbor
+* distance of K-nearest neighbors
+* local outlier factor (`lof`)
+* local distance-based outlier factor (`ldof`).
+//end::outlier-detection-algorithms[]
+
+By default, you don't need to select the methods or 
 provide any parameters, but you can override the default behavior if you like. 
 The basic assumption of the **distance based methods** is that normal data 
 points – in other words, points that are not outliers – have a lot of neighbors 

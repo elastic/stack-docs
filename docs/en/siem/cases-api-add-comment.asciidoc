@@ -10,7 +10,7 @@ Adds a comment to an existing case.
 ===== URL parts
 
 The URL must include the `case ID` of the case to which you are adding a 
-comment.
+comment. Call <<cases-api-find-cases>> to retrieve case IDs.
 
 ==== Request body
 
@@ -31,8 +31,8 @@ Adds a comment to case ID `eb696730-66a2-11ea-be1b-2bd3fef48984`:
 --------------------------------------------------
 POST api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 {
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media 
-  campaign promoting phishy pension schemes to IMF operatives."
+  "comment": "That is nothing - Ethan Hunt answered a targeted social
+  media campaign promoting phishy pension schemes to IMF operatives."
 }
 --------------------------------------------------
 // KIBANA
@@ -54,7 +54,8 @@ ID, version, and creation time.
 {
   "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
   "version": "WzIyLDFd",
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting cheap summer holidays to IMF operatives.",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social
+  media campaign promoting cheap summer holidays to IMF operatives.",
   "created_at": "2020-03-15T10:24:52.253Z",
   "created_by": {
     "full_name": "Ms Moneypenny",

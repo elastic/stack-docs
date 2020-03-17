@@ -1,11 +1,15 @@
 :sn: ServiceNow
 [[cases-api-conf]]
-=== {sn} integration
+=== Third-party integrations
 
 You can create {sn} incidents from {siem-soln} cases. This requires registering
-a {sn} connector using the {kib} actions API. Once you have at least one
-registered connector, you can retrieve and delete connectors, and update
-their settings.
+a {sn} connector using the {kib} actions API. Connectors store the information
+required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such the {sn} URL,
+account credentials, and the field mappings required for representing a
+{siem-soln} case as a {sn} incident.
+
+Additionally, you can configure connectors to automatically close
+{siem-app} cases when they are pushed to {sn} (see <<case-closure-settings>>).
 
 ==== Register {sn} connector
 
@@ -24,7 +28,7 @@ A JSON object with these fields:
 |==============================================
 |Name |Type |Description |Required
 
-|`actionTypeId` |String |Must be: `.servicenow`.^1^ |Yes
+|`actionTypeId` |String |Must be: `.servicenow`. |Yes
 |`config` |<<config-schema, config>> |Object containing the action's
 configuration. |Yes
 |`secrets` |Object a|Object containing the {sn} account credentials used
@@ -37,7 +41,6 @@ to create and update incidents:
 
 |`name` |String |The registered {sn} connector. |Yes
 |==============================================
-^1^For information about other action types, see.
 
 [[config-schema]]
 *`config` schema*
@@ -150,7 +153,9 @@ Creates a new or updates an existing {sn} incident from a {siem-soln} case.
 
 ===== URL parts
 
-The URL must include the the ServiceNow connector ID.
+The URL must include the the ServiceNow connector ID. Call <<get-sn-connector>>
+to retrieve the currently used connector ID, or <<find-all-sn-connectors>> to
+retrieve all registered connectors IDs.
 
 ===== Request body
 
@@ -196,7 +201,10 @@ POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
   "params": {
     "caseId": "eb696730-66a2-11ea-be1b-2bd3fef48984",
     "title": "This case will self-destruct in 5 seconds",
-    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
+    "description": "James Bond clicked on a highly suspicious email
+    banner advertising cheap holidays for underpaid civil servants.
+    Operation bubblegum is active. Repeat - operation bubblegum is
+    now active!",
     "comments": [
       {
         "commentId": "f215d6a0-6755-11ea-a1c2-e3a8bc9f7aca",
@@ -221,7 +229,9 @@ POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
       {
         "commentId": "11d967b0-6795-11ea-86e7-8f72afa8e6d9",
         "version": "Wzg0LDFd",
-        "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives."
+        "comment": "That is nothing - Ethan Hunt answered a targeted
+        social media campaign promoting phishy pension schemes to
+        IMF operatives."
       }
     ],
     "incidentId": "d1d2c8562f2b001032645d372799b6cd"
@@ -260,9 +270,10 @@ A JSON object with the {sn} incident number.
 }
 --------------------------------------------------
 
+[[get-sn-connector]]
 ==== Get current ServiceNow connector
 
-Retrieves the currently configured {sn} connector.
+Retrieves the currently used {sn} connector.
 
 ===== Request URL
 
@@ -306,9 +317,10 @@ A JSON object describing the connector.
 }
 --------------------------------------------------
 
+[[find-all-sn-connectors]]
 ==== Find ServiceNow connectors
 
-Retrieves a paginated subset of all {sn} connectors and their settings.
+Retrieves a paginated subset of all {sn} connectors.
 
 ===== Request URL
 
@@ -372,9 +384,10 @@ A JSON object describing the connectors and their settings.
 }
 --------------------------------------------------
 
+[[case-closure-settings]]
 ==== Update case closure settings
 
-Updates an existing connector's case closure settings.
+Updates a connector's case closure settings.
 
 You can define whether or not a case is automatically closed in the {siem-app}
 when it is pushed to {sn}.
@@ -400,8 +413,10 @@ are pushed to {sn}.
 
 |Yes
 
-|`version` |String |The latest connector version. |Yes
+|`version` |String |The connector version. |Yes
 |==============================================
+
+NOTE: Call <<get-sn-connector>> to retrieve the connector ID and version value..
 
 ===== Example request
 
@@ -442,9 +457,9 @@ PATCH api/cases/configure
 }
 --------------------------------------------------
 
-==== Update connector field action settings
+==== Update connector field mapping settings
 
-Updates an existing connector's field action settings.
+Updates a connector's field mapping settings.
 
 You can map fields and define how they are updated when you push a case to {sn}.
 
@@ -454,7 +469,9 @@ You can map fields and define how they are updated when you push a case to {sn}.
 
 ===== URL parts
 
-The URL must include the the ServiceNow connector ID.
+The URL must include the the ServiceNow connector ID. Call <<get-sn-connector>>
+to retrieve the currently used connector ID, or <<find-all-sn-connectors>> to
+retrieve all registered connector IDs.
 
 ===== Request body
 

@@ -11,8 +11,10 @@ Gets the specified comment.
 
 The URL must include:
 
-* the `case ID` of the comment’s associated case.
-* the `comment ID` of the comment you are retrieving.
+* the `case ID` of the comment’s associated case (call <<cases-api-find-cases>>
+to retrieve case IDs).
+* the `comment ID` of the comment you are retrieving (call
+<<cases-api-get-all-case-comments>> to retrieve comment IDs).
 
 ===== Example request
 
@@ -41,7 +43,9 @@ The requested comment JSON object.
 {
   "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
   "version": "WzI1LDFd",
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social
+  media campaign promoting phishy pension schemes to IMF operatives.
+  Even worse, he likes baked beans.",
   "created_at": "2020-03-15T10:24:52.253Z",
   "created_by": {
     "full_name": "Ms Moneypenny",

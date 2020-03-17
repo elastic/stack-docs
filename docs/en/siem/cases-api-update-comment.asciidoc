@@ -9,7 +9,8 @@ Updates an existing comment.
 
 ===== URL parts
 
-The URL must include the `case ID` of the comment's associated case.
+The URL must include the `case ID` of the comment's associated case. Call
+<<cases-api-find-cases>> to retrieve case IDs.
 
 ==== Request body
 
@@ -24,6 +25,9 @@ A JSON object with the updated comment:
 |`version` |String |The current comment version. |Yes
 |==============================================
 
+NOTE: Call <<cases-api-get-all-case-comments>> to retrieve comment IDs and
+version values.
+
 ===== Example request
 
 Updates comment ID `35180680-66a7-11ea-be1b-2bd3fef48984` (associated with case
@@ -34,7 +38,9 @@ ID `eb696730-66a2-11ea-be1b-2bd3fef48984`):
 PATCH api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 {
   "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
-  "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+  "comment": "That is nothing - Ethan Hunt answered a targeted social
+  media campaign promoting phishy pension schemes to IMF operatives.
+  Even worse, he likes baked beans.",
   "version": "WzIyLDFd"
 }
 --------------------------------------------------
@@ -47,7 +53,7 @@ PATCH api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 
 ==== Response payload
 
-The updated comment and timestamp.
+A JSON object with updated comment's text, version, and timestamp.
 
 ===== Example response
 

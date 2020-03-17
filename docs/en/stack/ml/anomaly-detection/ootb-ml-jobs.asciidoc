@@ -352,7 +352,7 @@ Required {beats}:::
 * {auditbeat} (Linux)
 
 +
-NOTE: You can only run this job when Auditbeat is used to ship data.
+NOTE: This job is available only when you use {auditbeat} to ship data.
 
 linux_anomalous_network_service::
 
@@ -371,7 +371,7 @@ Required {beats}:::
 * {auditbeat} (Linux)
 
 +
-NOTE: You can only run this job when Auditbeat is used to ship data.
+NOTE: This job is available only when you use {auditbeat} to ship data.
 
 linux_anomalous_network_url_activity_ecs::
 
@@ -507,7 +507,7 @@ Required ECS fields when not using {beats}:::
 * `agent.type`
 
 +
-NOTE: This job uses the Packetbeat
+NOTE: This job uses the {packetbeat}
 {packetbeat-ref}/exported-fields-dns.html[`dns.question.etld_plus_one`] field, 
 which is not defined in ECS. Instead, map your network data to the
 {ecs-ref}/ecs-dns.html[`dns.question.registered_domain`] ECS field.
@@ -804,7 +804,7 @@ Required {beats}:::
 * {winlogbeat} (Windows)
 
 +
-NOTE: You can only run this job when Winlogbeat is used to ship data.
+NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 windows_rare_user_runas_event::
 
@@ -850,6 +850,6 @@ Required {beats}:::
 * {winlogbeat} (Windows)
 
 +
-NOTE: You can only run this job when Winlogbeat is used to ship data.
+NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 // end::siem-jobs[]

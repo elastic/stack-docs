@@ -1,0 +1,28 @@
+[[cases-api-delete-all-comments]]
+=== Delete all comments
+
+Deletes all comments from the specified case.
+
+==== Request URL
+
+`DELETE /api/cases/<case ID>/comments`
+
+===== URL parts
+
+The URL must include the `case ID` of the comment’s associated case (call
+<<cases-api-find-cases>> to retrieve case IDs).
+
+===== Example request
+
+Deletes all comments from case ID `9c235210-6834-11ea-a78c-6ffb38a34414`:
+
+[source,console]
+--------------------------------------------------
+DELETE api/cases/9c235210-6834-11ea-a78c-6ffb38a34414/comments
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.

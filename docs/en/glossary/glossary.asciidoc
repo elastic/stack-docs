@@ -52,6 +52,24 @@ necessary to perform an analytics task. See
 +
 //Source: X-Pack
 endif::xpack-terms[]
+ifdef::elasticsearch-terms[]
+
+[[glossary-api-key]] API key ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=api-key-def]
+--
+
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+
+[[glossary-auto-follow-pattern]] auto-follow pattern ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=auto-follow-pattern-def]
+--
+
+endif::elasticsearch-terms[]
 ifdef::cloud-terms[]
 [[glossary-zone]] availability zone ::
 
@@ -126,6 +144,15 @@ json, msgpack, and plain (text).
 +
 //Source: Logstash
 endif::logstash-terms[]
+ifdef::xpack-terms[]
+
+[[glossary-cold-phase]] cold phase ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=cold-phase-def]
+--
+
+endif::xpack-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-conditional]] conditional ::
@@ -206,6 +233,14 @@ outcome in a destination index. See
 {ml-docs}//ml-dfa-overview.html[{dfanalytics-cap} overview] and the
 {ref}/put-dfanalytics.html[create {dfanalytics-job} API].
 //Source: X-Pack
+endif::xpack-terms[]
+ifdef::xpack-terms[]
+[[glossary-delete-phase]] delete phase ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=delete-phase-def]
+--
+
 endif::xpack-terms[]
 ifdef::xpack-terms[]
 
@@ -330,14 +365,31 @@ grok, mutate, drop, clone, and geoip. Filter stages are optional.
 +
 //Source: Logstash
 endif::logstash-terms[]
-ifdef::xpack-terms[]
+ifdef::elasticsearch-terms[]
+[[glossary-flush]] flush ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=flush-def]
+--
+
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
 [[glossary-follower-index]] follower index ::  
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=follower-index-def]
 --
 
-endif::xpack-terms[]
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+[[glossary-frozen-index]] frozen index ::  
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=frozen-index-def]
+--
+
+endif::elasticsearch-terms[]
+
 ifdef::logstash-terms[]
 
 [[glossary-gem]] gem ::
@@ -349,6 +401,14 @@ packaged as Ruby Gems. You can use the Logstash
 +
 //Source: Logstash
 endif::logstash-terms[]
+ifdef::xpack-terms[]
+[[glossary-hot-phase]] hot phase ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=hot-phase-def]
+--
+
+endif::xpack-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-hot-thread]] hot thread ::
@@ -382,6 +442,30 @@ ifdef::elasticsearch-terms[]
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-alias-def]
+--
+
+endif::elasticsearch-terms[]
+ifdef::xpack-terms[]
+[[glossary-index-lifecycle]] index lifecycle ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=index-lifecycle-def]
+--
+
+endif::xpack-terms[]
+ifdef::xpack-terms[]
+[[glossary-index-lifecycle-policy]] index lifecycle policy ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=index-lifecycle-policy-def]
+--
+
+endif::xpack-terms[]
+ifdef::elasticsearch-terms[]
+[[glossary-index-pattern]] index pattern ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=index-pattern-def]
 --
 
 endif::elasticsearch-terms[]
@@ -433,6 +517,14 @@ include::{es-repo-dir}/glossary.asciidoc[tag=leader-index-def]
 --
 
 endif::xpack-terms[]
+ifdef::elasticsearch-terms[]
+[[glossary-local-cluster]] local cluster ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=local-cluster-def]
+--
+
+endif::elasticsearch-terms[]
 ifdef::xpack-terms[]
 
 [[glossary-ml-nodes]]
@@ -594,6 +686,14 @@ include::{es-repo-dir}/glossary.asciidoc[tag=reindex-def]
 --
 
 endif::elasticsearch-terms[]
+ifdef::xpack-terms[]
+[[glossary-remote-cluster]] remote cluster ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=remote-cluster-def]
+--
+
+endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
 
 [[glossary-replica-shard]] replica shard ::
@@ -615,13 +715,28 @@ by making sure that only authorized hosts become part of the installation.
 //Source: Cloud
 endif::cloud-terms[]
 ifdef::xpack-terms[]
+[[glossary-rollup]] rollup ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=rollup-def]
+--
+
+endif::xpack-terms[]
+ifdef::xpack-terms[]
+[[glossary-rollup-index]] rollup index ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=rollup-index-def]
+--
+
+endif::xpack-terms[]
+ifdef::xpack-terms[]
 
 [[glossary-rollup-job]] {rollup-job}::
-
-A {rollup-job} contains all the details about how the job should run, when it
-indexes documents, and what future queries will be able to execute against the
-rollup index. See {ref}/xpack-rollup.html[Rolling up historical data].
-//Source: X-Pack
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=rollup-job-def]
+--
 endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
 
@@ -679,6 +794,33 @@ include::{es-repo-dir}/glossary.asciidoc[tag=shrink-def]
 endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
 
+[[glossary-snapshot]] snapshot ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=snapshot-def]
+--
+
+endif::elasticsearch-terms[]
+ifdef::xpack-terms[]
+
+[[glossary-snapshot-lifecycle-policy]] snapshot lifecycle policy ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=snapshot-lifecycle-policy-def]
+--
+
+endif::xpack-terms[]
+ifdef::elasticsearch-terms[]
+
+[[glossary-snapshot-repository]] snapshot repository::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=snapshot-repository-def]
+--
+
+endif::elasticsearch-terms[]
+ifdef::elasticsearch-terms[]
+
 [[glossary-source_field]] source field ::
 +
 --
@@ -730,6 +872,15 @@ include::{es-repo-dir}/glossary.asciidoc[tag=type-def]
 --
 
 endif::elasticsearch-terms[]
+ifdef::xpack-terms[]
+
+[[glossary-warm-phase]] warm phase ::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=warm-phase-def]
+--
+
+endif::xpack-terms[]
 ifdef::logstash-terms[]
 
 [[glossary-worker]] worker ::

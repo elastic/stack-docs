@@ -1,0 +1,274 @@
+[[cases-actions-api-connectors]]
+=== Third-party integrations
+
+You can create {sn} incidents from {siem-soln} cases. This requires registering
+a {sn} connector using the {kib} Actions API. Connectors store the information
+required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such the {sn} URL,
+account credentials, and the field mappings required for representing a
+{siem-soln} case as a {sn} incident.
+
+// Additionally, you can configure connectors to automatically close
+// {siem-app} cases when they are pushed to {sn} (see <<case-closure-settings>>).
+
+The Actions API is also used to send and update cases to {sn} (see
+<<cases-actions-api-execute>>).
+
+==== Register {sn} connector
+
+Registers a {sn} connector, which can then be used to open {sn} incidents from
+{siem-soln} cases.
+
+===== Request URL
+
+`POST /api/action`
+
+===== Request body
+
+A JSON object with these fields:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`actionTypeId` |String |Must be: `.servicenow`. |Yes
+|`config` |<<config-schema, config>> |Object containing the action's
+configuration. |Yes
+|`secrets` |Object a|Object containing the {sn} account credentials used
+to create and update incidents:
+
+* `username` (string): The account username.
+* `password` (string): The account password.
+
+|Yes
+
+|`name` |String |The registered {sn} connector. |Yes
+|==============================================
+
+[[config-schema]]
+*`config` schema*
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`casesConfiguration` |Object a|Contains a `mapping` array, which determines how {siem-soln} case fields are mapped to {sn} incident fields:
+
+* `source` (string): The name of the {siem-soln} case field, which can be 
+`title`, `description`, or `comments`.
+* `target` (string): The name of the mapped {sn} incident field. For example: `short_description`, `description`, and `comments`.
+* `actionType` (string): Determines whether {siem-soln} case updates overwrite 
+or append to the mapped {sn} incident fields. Valid values are `overwrite` and
+`append`.
+
+|Yes
+
+|`apiUrl` |String |URL of the {sn} instance. |Yes
+|==============================================
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+POST api/action
+{
+  "actionTypeId": ".servicenow",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://dev87359.service-now.com"
+  },
+  "secrets": {
+    "username": "admin",
+    "password": "securePassword123!"
+  },
+  "name": "ServiceNow"
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Response payload
+
+A JSON object with a connector `id` that is required to push cases to {sn}.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "7349772f-421a-4de3-b8bb-2d9b22ccee30",
+  "actionTypeId": ".servicenow",
+  "name": "ServiceNow",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://dev87359.service-now.com"
+  }
+}
+--------------------------------------------------
+
+[[cases-actions-api-execute]]
+==== Create or update a {sn} incident
+
+Creates a new or updates an existing {sn} incident from a {siem-soln} case.
+
+===== Request URL
+
+`POST /api/action/<connector ID>/_execute`
+
+===== URL parts
+
+The URL must include the the ServiceNow connector ID. Call
+<<cases-get-connector>> to retrieve the currently used connector ID, or
+<<cases-find-connectors>> to retrieve all registered connectors IDs.
+
+===== Request body
+
+A JSON object with these fields:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`params` |<<case-conf-params, params>> |Contains the {siem-soln} case details
+for which you are opening a {sn} incident. |Yes
+|==============================================
+
+[[case-conf-params]]
+*`params` schema*
+
+|==============================================
+|Name |Type |Description |Required
+
+|`caseId` |String |The case ID. |Yes
+|`title` |String |The case title. |No
+|`description` |String |The case description. |No
+|`comments` |Object[] a|Array containing case comments:
+
+* `commentId` (string): The comment ID.
+* `version` (string): The comment version.
+* `comment` (string): The comment text.
+
+|No
+
+|`incidentId` |String |The {sn} incident ID. Required when updating an existing
+{sn} incident. |No
+|==============================================
+
+===== Example requests
+
+Creates a new {sn} incident:
+
+[source,sh]
+--------------------------------------------------
+POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
+{
+  "params": {
+    "caseId": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+    "title": "This case will self-destruct in 5 seconds",
+    "description": "James Bond clicked on a highly suspicious email
+    banner advertising cheap holidays for underpaid civil servants.
+    Operation bubblegum is active. Repeat - operation bubblegum is
+    now active!",
+    "comments": [
+      {
+        "commentId": "f215d6a0-6755-11ea-a1c2-e3a8bc9f7aca",
+        "version": "WzM3LDFd",
+        "comment": "Start operation bubblegum immediately! And chew fast!"
+      }
+    ]
+  }
+}
+--------------------------------------------------
+// KIBANA
+
+Updates an existing {sn} incident:
+
+[source,sh]
+--------------------------------------------------
+POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
+{
+  "params": {
+    "caseId": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+    "comments": [
+      {
+        "commentId": "11d967b0-6795-11ea-86e7-8f72afa8e6d9",
+        "version": "Wzg0LDFd",
+        "comment": "That is nothing - Ethan Hunt answered a targeted
+        social media campaign promoting phishy pension schemes to
+        IMF operatives."
+      }
+    ],
+    "incidentId": "d1d2c8562f2b001032645d372799b6cd"
+  }
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Response payload
+
+A JSON object with the {sn} incident number.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "status": "ok",
+  "actionId": "7349772f-421a-4de3-b8bb-2d9b22ccee30",
+  "data": {
+    "incidentId": "d1d2c8562f2b001032645d372799b6cd",
+    "number": "INC0010001",
+    "pushedDate": "2020-03-16T10:36:56.000Z",
+    "comments": [
+      {
+        "commentId": "f215d6a0-6755-11ea-a1c2-e3a8bc9f7aca",
+        "pushedDate": "2020-03-16T10:36:57.000Z"
+      }
+    ]
+  }
+}
+--------------------------------------------------

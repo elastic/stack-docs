@@ -287,254 +287,570 @@ visitor_rate_ecs::
 [[ootb-ml-jobs-siem]]
 === SIEM
 
-These {anomaly-jobs} appear by default in the Anomaly Detection interface of the 
-{siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
-automatically detect file system and network anomalies on your hosts. The list
-below contains the jobs organized by `agent.type` ({auditbeat}, {packetbeat},
-and {winlogbeat}).
+These {anomaly-jobs} appear by default in the Anomaly Detection interface of
+the {siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
+automatically detect file system and network anomalies on your hosts. However,
+if you don't use Beats, you need to map your data to the ECS fields that are 
+listed for every job.
 
 // tag::siem-jobs[]
 For more details, see the
 {dfeed} and job definitions in the `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/legacy/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
-[float]
-[[ootb-ml-jobs-siem-audit]]
-==== SIEM - {auditbeat}
-
 linux_anomalous_network_activity_ecs::
++
+windows_anomalous_network_activity_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat`.
+Identifies OS processes that do not usually use the network but have
+unexpected network activity, which can indicate command-and-control, lateral
+movement, persistence, or data exfiltration activity.
++
+A process with unusual network activity can denote process exploitation or
+injection, where the process is used to run persistence mechanisms that allow a
+malicious actor remote access or control of the host, data exfiltration, and
+execution of unauthorized network applications.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for unusual processes using the network which could indicate
-command-and-control, lateral movement, persistence, or data exfiltration
-activity.
+Required {beats}:::
+
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `destination.ip`
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
 
 linux_anomalous_network_port_activity_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat`.
+Identifies unusual destination port activity that can indicate
+command-and-control, persistence mechanism, or data exfiltration activity.
++
+Rarely used destination port activity is generally unusual in Linux fleets, and 
+can indicate unauthorized access or threat actor activity.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models destination port activity.
 * Detects destination port activity that occurs rarely compared to other port 
   activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for unusual destination port activity that could indicate 
-command-and-control, persistence mechanism, or data exfiltration activity.
++
+Required {beats}:::
+
+* {auditbeat} (Linux)
+
++
+NOTE: This job is available only when you use {auditbeat} to ship data.
 
 linux_anomalous_network_service::
 
-* For network activity logs where `agent.type` is `auditbeat`.
+Searches for unusual listening ports that can indicate execution of
+unauthorized services, backdoors, or persistence mechanisms.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models listening port activity.
-* Detects unusual listening port activity that occurs rarely compared to 
+* Detects listening port activity that occurs rarely compared to 
   other port activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for unusual listening ports that could indicate execution of unauthorized 
-services, backdoors, or persistence mechanisms.
+Required {beats}:::
+
+* {auditbeat} (Linux)
+
++
+NOTE: This job is available only when you use {auditbeat} to ship data.
 
 linux_anomalous_network_url_activity_ecs::
 
-* For network activity logs where `agent.type` is `auditbeat`.
+Searches for unusual web URL requests from hosts, which can indicate malware
+delivery and execution.
++
+Wget and cURL are commonly used by Linux programs to download code and data. 
+Most of the time, their usage is entirely normal. Generally, because they use a 
+list of URLs, they repeatedly download from the same locations. However, Wget 
+and cURL are sometimes used to deliver Linux exploit payloads, and threat 
+actors use these tools to download additional software and code. For these 
+reasons, unusual URLs can indicate unauthorized downloads or threat activity.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of URL requests.
-* Detects unusual web URL request that is rare compared to other web URL 
+* Detects a web URL request that is rare compared to other web URL 
   requests (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for an unusual web URL request from a Linux instance. Curl and wget web 
-request activity is very common but unusual web requests from a Linux server can 
-sometimes be malware delivery or execution.
+Required {beats}:::
+
+* {auditbeat} (Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `destination.ip`
+* `destination.port`
+* `host.name`
+* `process.name`
+* `process.title`
+* `agent.type`
 
 linux_anomalous_process_all_hosts_ecs::
++
+windows_anomalous_process_all_hosts_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat`.
+Searches for rare processes running on multiple hosts in an entire fleet or
+network.
++
+This reduces the detection of false positives since automated maintenance
+processes usually only run occasionally on a single machine but are common to
+all or many hosts in a fleet.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
 * Models the occurrences of processes on all hosts.
-* Detects processes that occur rarely compared to other processes to all 
-  Linux/Windows hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Detects processes that occur rarely compared to other processes on all 
+  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for processes that are unusual to all Linux hosts. Such unusual processes 
-may indicate unauthorized services, malware, or persistence mechanisms.
+Required {beats}:::
+
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `process.executable`
+* `event.action`
+* `agent.type`
 
 linux_anomalous_user_name_ecs::
++
+windows_anomalous_user_name_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat`.
+Searches for activity from users who are not normally active, which can
+indicate unauthorized changes, activity by unauthorized users, lateral
+movement, and compromised credentials.
++
+In organizations, new usernames are not often created apart from specific types 
+of system activities, such as creating new accounts for new employees. These 
+user accounts quickly become active and routine.
++
+Events from rarely used usernames can point to suspicious activity. 
+Additionally, automated Linux fleets tend to see activity from rarely used 
+usernames only when personnel log in to make authorized or unauthorized 
+changes, or threat actors have acquired credentials and log in for malicious 
+purposes. Unusual usernames can also indicate pivoting, where compromised 
+credentials are used to try and move laterally from one host to another.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or
+`winlogbeat` (Windows).
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Rare and unusual users that are not normally active may indicate unauthorized 
-changes or activity by an unauthorized user which may be credentialed access or 
-lateral movement.
+Required {beats}:::
+
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
+
+packetbeat_dns_tunneling::
+
+Searches for unusually large numbers of DNS queries
+for a single top-level DNS domain, which is often used for DNS tunneling.
++
+DNS tunneling can be used for command-and-control, persistence, or data
+exfiltration activity. For example, `dnscat` tends to generate many DNS
+questions for a top-level domain as it uses the DNS protocol to tunnel data.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of DNS activity.
+* Detects unusual DNS activity (using the 
+  {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
+
+Required {beats}:::
+
+* {packetbeat} (Windows and Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `destination.ip`
+* `dns.question.registered_domain` 
+* `host.name`
+* `dns.question.name`
+* `event.dataset`
+* `agent.type`
+
++
+NOTE: This job uses the {packetbeat}
+{packetbeat-ref}/exported-fields-dns.html[`dns.question.etld_plus_one`] field, 
+which is not defined in ECS. Instead, map your network data to the
+{ecs-ref}/ecs-dns.html[`dns.question.registered_domain`] ECS field.
+
+packetbeat_rare_dns_question::
+
+Searches for rare and unusual DNS queries that indicate network activity with
+unusual domains is about to occur. This can be due to initial access,
+persistence, command-and-control, or exfiltration activity.
++
+For example, when a user clicks on a link in a phishing email or opens a 
+malicious document, a request may be sent to download and run a payload from an
+uncommon domain. When malware is already running, it may send requests to an
+uncommon DNS domain the malware uses for command-and-control communication.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of DNS activity.
+* Detects DNS activity that is rare compared to other DNS activities (using the 
+  {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {packetbeat} (Windows and Linux)
+
++
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `dns.question.name`
+* `dns.question.type`
+* `event.dataset`
+* `agent.type`
+
+packetbeat_rare_server_domain::
+
+Searches for rare and unusual DNS queries that indicate network activity with
+unusual domains is about to occur. This can be due to initial access,
+persistence, command-and-control, or exfiltration activity.
++
+For example, when a user clicks on a link in a phishing email or opens a 
+malicious document, a request may be sent to download and run a payload from an
+uncommon HTTP or TLS server. When malware is already running, it may send
+requests to an uncommon DNS domain the malware uses for command-and-control
+communication.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `packetbeat`.
+* Models HTTP or TLS domain activity.
+* Detects HTTP or TLS domain activity that is rare compared to other 
+  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {packetbeat} (Windows and Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `destination.ip`
+* `source.ip`
+* `host.name`
+* `server.domain`
+* `agent.type`
+
+packetbeat_rare_urls::
+
+Searches for rare and unusual URLs that indicate unusual 
+web browsing activity. This can be due to initial access, persistence,
+command-and-control, or exfiltration activity.
++
+For example, in a strategic web compromise or watering hole attack, when a
+trusted website is compromised to target a particular sector or organization,
+targeted users may receive emails with uncommon URLs for trusted websites. These
+URLs can be used to download and run a payload. When malware is already running,
+it may send requests to uncommon URLs on trusted websites the malware uses for
+command-and-control communication. When rare URLs are observed being requested
+for a local web server by a remote source, these can be due to web scanning,
+enumeration or attack traffic, or they can be due to bots and web scrapers which
+are part of common Internet background traffic.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of web browsing URL activity.
+* Detects URL activity that rarely occurs compared to other URL activities 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {packetbeat} (Windows and Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `destination.ip`
+* `host.name`
+* `url.full`
+* `agent.type`
+
+packetbeat_rare_user_agent::
+
+Searches for rare and unusual user agents that indicate web browsing activity
+by an unusual process other than a web browser. This can be due to persistence,
+command-and-control, or exfiltration activity. Uncommon user agents coming from
+remote sources to local destinations are often the result of scanners, bots,
+and web scrapers, which are part of common internet background traffic.
++
+Much of this is noise, but more targeted attacks on websites using tools like
+Burp or SQLmap can sometimes be discovered by spotting uncommon user agents.
+Uncommon user agents in traffic from local sources to remote destinations can
+be any number of things, including harmless programs like weather monitoring or
+stock-trading programs. However, uncommon user agents from local sources can
+also be due to malware or scanning activity.
+
+Job details:::
+
+* Analyzes network activity logs where `agent.type` is `packetbeat`.
+* Models occurrences of HTTP user agent activity.
+* Detects HTTP user agent activity that occurs rarely compared to other HTTP 
+  user agent activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {packetbeat} (Windows and Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `destination.ip`
+* `host.name`
+* `event.dataset`
+* `user_agent.original`
+* `agent.type`
 
 rare_process_by_host_linux_ecs::
++
+rare_process_by_host_windows_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat`.
+Identifies rare processes that do not usually run on individual hosts, which
+can indicate execution of unauthorized services, malware, or persistence
+mechanisms.
++
+Processes are considered rare when they only run occasionally as compared with
+other processes running on the host.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows) or `auditbeat` (Linux).
 * Models occurrences of process activities on the host. 
-* Detect unusually rare processes compared to other processes on Linux (using 
-  the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {auditbeat} (Linux)
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
 
 suspicious_login_activity_ecs::
 
-* For host activity logs where `agent.type` is `auditbeat`.
+Identifies an unusually high number of authentication attempts.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models occurrences of authentication attempts (`partition_field_name` is 
   `host.name`).
 * Detects unusually high number of authentication attempts (using the 
   {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
 
-[float]
-[[ootb-ml-jobs-siem-packet]]
-==== SIEM - {packetbeat}
+Required {beats}:::
 
-packetbeat_dns_tunneling::
+* {auditbeat} (Linux)
 
-* For network activity logs where `agent.type` is `packetbeat`.
-* Models occurrances of DNS activity.
-* Detects unusual DNS activity (using the 
-  {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
+Required ECS fields when not using {beats}:::
 
-Looks for unusual DNS activity that could indicate command-and-control or data 
-exfiltration activity.
-
-packetbeat_rare_dns_question::
-
-* For network activity logs where `agent.type` is `packetbeat`.
-* Models occurrences of DNS activity.
-* Detects DNS activity that is rare compared to other DNS activities (using the 
-  {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for unusual DNS activity that could indicate command-and-control activity.
-
-packetbeat_rare_server_domain::
-
-* For network activity logs where `agent.type` is `packetbeat`.
-* Models HTTP or TLS domain activity.
-* Detects HTTP or TLS domain activity that is rarely occurs compared to other 
-  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for unusual HTTP or TLS destination domain activity that could indicate 
-execution, persistence, command-and-control or data exfiltration activity.
-
-packetbeat_rare_urls::
-
-* For network activity logs where `agent.type` is `packetbeat`.
-* Models occurrences of web browsing URL activity.
-* Detects URL activity that rarely occurs compared to other URL activities 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for unusual web browsing URL activity that could indicate execution, 
-persistence, command-and-control or data exfiltration activity.
-
-packetbeat_rare_user_agent::
-
-* For network activity logs where `agent.type` is `packetbeat`.
-* Models occurrences of HTTP user agent activity.
-* Detects HTTP user agent activity that occurs rarely compared to other HTTP 
-  user agent activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for unusual HTTP user agent activity that could indicate execution, 
-persistence, command-and-control or data exfiltration activity.
-
-[float]
-[[ootb-ml-jobs-siem-winlog]]
-==== SIEM - {winlogbeat}
-
-windows_anomalous_network_activity_ecs::
-
-* For network activity logs where `agent.type` is `winlogbeat`.
-* Models the occurrences of processes that cause network activity.
-* Detects network activity caused by processes that occur rarely compared to 
-  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for unusual processes using the network which could indicate
-command-and-control, lateral movement, persistence, or data exfiltration
-activity.
-
-windows_anomalous_process_all_hosts_ecs::
-
-* For host activity logs where `agent.type` is `winlogbeat`.
-* Models the occurrences of processes on all hosts.
-* Detects processes that occur rarely compared to other processes to all 
-  Linux/Windows hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for processes that are unusual to all Windows hosts. Such unusual 
-processes may indicate unauthorized services, malware, or persistence 
-mechanisms.
-
-windows_anomalous_user_name_ecs::
-
-* For host activity logs where `agent.type` is `winlogbeat`.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Rare and unusual users that are not normally active may indicate unauthorized 
-changes or activity by an unauthorized user which may be credentialed access or 
-lateral movement.
-
-rare_process_by_host_windows_ecs::
-
-* For host activity logs where `agent.type` is `winlogbeat`.
-* Models occurrences of process activities on the host. 
-* Detect unusually rare processes compared to other processes on Windows (using 
-  the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* `source.ip`
+* `host.name`
+* `user.name`
+* `event.category`
+* `agent.type`
 
 windows_anomalous_path_activity_ecs::
 
-* For host activity logs where `agent.type` is `winlogbeat`.
+Identifies processes started from atypical folders in the file system, which
+might indicate malware execution or persistence mechanisms.
++
+In corporate Windows environments, software installation is centrally managed
+and it is unusual for programs to be executed from user or temporary
+directories. Processes executed from these locations can denote that a user
+downloaded software directly from the internet or a malicious script/macro
+executed malware.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of processes in paths.
 * Detects activity in unusual paths (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Activities in unusual paths may indicate execution of malware or persistence 
-mechanisms. Windows payloads often execute from user profile paths.
+Required {beats}:::
+
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `process.working_directory`
+* `event.action`
+* `agent.type`
 
 windows_anomalous_process_creation::
 
-* For host activity logs where `agent.type` is `winlogbeat`.
+Identifies unusual parent-child process relationships that can indicate
+malware execution or persistence mechanisms.
++
+Malicious scripts often call on other applications and processes as part of
+their exploit payload. For example, when a malicious Office document runs
+scripts as part of an exploit payload, Excel or Word may start a script
+interpreter process, which, in turn, runs a script that downloads and executes
+malware. Another common scenario is Outlook running an unusual process when
+malware is downloaded in an email.
++
+Monitoring and identifying anomalous process relationships is an excellent way
+of detecting new and emerging malware that is not yet recognized by anti-virus
+scanners.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process creation activities (`partition_field_name` is 
   `process.parent.name`).
 * Detects process relationships that are rare compared to other process 
   relationships (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for unusual process relationships which may indicate execution of malware 
-or persistence mechanisms.
+Required {beats}:::
+
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `process.parent.name`
+* `event.action`
+* `agent.type`
 
 windows_anomalous_script::
 
-* For host activity logs where `agent.type` is `winlogbeat`.
-* Models occurrences of powershell script activities.
-* Detects unusual powershell script execution compared to other powershell 
+Searches for PowerShell scripts with unusual data characteristics, such as
+obfuscation, that may be a characteristic of malicious PowerShell script text
+blocks.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of PowerShell script activities.
+* Detects unusual PowerShell script execution compared to other PowerShell 
   script activities (using the 
   {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
-Looks for unusual powershell scripts that may indicate execution of malware, or 
-persistence mechanisms.
+Required {beats}:::
+
+* {winlogbeat} (Windows)
+
++
+NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 windows_anomalous_service::
 
-* For host activity logs where `agent.type` is `winlogbeat`.
-* Models occurrences of Windows service activities.
-* Detects Windows service activities that occur rarely compared to other Windows 
-  service activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Looks for rare and unusual Windows services which may indicate execution of 
+Searches for unusual Windows services that can indicate execution of
 unauthorized services, malware, or persistence mechanisms.
++
+In corporate Windows environments, hosts do not generally run many rare or
+unique services. This job helps detect malware and persistence mechanisms that
+have been installed and run as a service.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of Windows service activities.
+* Detects Windows service activities that occur rarely compared to other Windows service activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {winlogbeat} (Windows)
+
++
+NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 windows_rare_user_runas_event::
 
-* For host activity logs where `agent.type` is `winlogbeat`.
-* Models occurrences of user context switches.
-* Detects user context switches that occur rarely compared to other user context 
-  switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+Searches for unusual user context switches using the `runas` command or similar
+techniques, which can indicate account takeover or privilege escalation using
+compromised accounts. Privilege elevation using tools like `runas` is more
+common for domain and network administrators than professionals who are not
+members of the technology department.
 
-Unusual user context switches can be due to privilege escalation.
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
+* Models occurrences of user context switches.
+* Detects user context switches that occur rarely compared to other user context switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {winlogbeat} (Windows)
+
+Required ECS fields when not using {beats}:::
+
+* `process.name`
+* `host.name`
+* `user.name`
+* `event.code`
+* `agent.type`
 
 windows_rare_user_type10_remote_login::
 
-* For host activity logs where `agent.type` is `winlogbeat`.
+Searches for unusual remote desktop protocol (RDP) logins, which can indicate
+account takeover or credentialed persistence using compromised accounts. RDP
+attacks, such as BlueKeep, also tend to use unusual usernames.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user remote login activities.
 * Detects user remote login activities that occur rarely compared to other 
   user remote login activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Looks for unusual user remote logins. Unusual RDP (remote desktop protocol) 
-user logins can indicate account takeover or credentialed access.
+Required {beats}:::
+
+* {winlogbeat} (Windows)
+
++
+NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 // end::siem-jobs[]

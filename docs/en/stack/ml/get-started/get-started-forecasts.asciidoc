@@ -1,0 +1,76 @@
+[role="xpack"]
+[[ml-gs-forecasts]]
+=== Create forecasts
+
+In addition to detecting anomalous behavior in your data, you can use the
+{ml-features} to predict future behavior.
+
+To create a forecast in {kib}:
+
+. Go to the **Single Metric Viewer** and select one of the jobs that you created
+in this tutorial. For example, select the `low_request_rate` job. 
+
+. Click **Forecast**. +
++
+--
+[role="screenshot"]
+image::images/ml-gs-forecast.jpg["Create a forecast from the Single Metric Viewer"]
+--
+
+. Specify a duration for your forecast. This value indicates how far to
+extrapolate beyond the last record that was processed. You must use
+{ref}/common-options.html#time-units[time units]. In this example, the duration
+is one week (`1w`): +
++
+--
+[role="screenshot"]
+image::images/ml-gs-duration.jpg["Specify a duration of 1w"]
+--
+
+. View the forecast in the **Single Metric Viewer**: +
++
+--
+[role="screenshot"]
+image::images/ml-gs-forecast-results.jpg["View a forecast from the Single Metric Viewer"]
+
+The yellow line in the chart represents the predicted data values. The shaded
+yellow area represents the bounds for the predicted values, which also gives an
+indication of the confidence of the predictions. Note that the bounds generally
+increase with time (that is to say, the confidence levels decrease), since you
+are forecasting further into the future. Eventually if the confidence levels are
+too low, the forecast stops.
+--
+
+. Optional: Compare the forecast to actual data. +
++
+--
+[role="screenshot"]
+image::images/ml-gs-forecast-actual.jpg["View a forecast over actual data in the Single Metric Viewer"]
+
+As the job processes more data, you can choose to see the forecast overlaid on
+the actual data. The chart contains the actual data values, the bounds for the
+expected values, the anomalies, the forecast data values, and the bounds for the
+forecast. This combination of actual and forecast data gives you an indication
+of how well the {ml-features} can extrapolate the future behavior of the data.
+
+To generate this comparison for the {kib} sample data, use only a subset of the
+data when you create the job. For example, follow the steps in <<ml-gs-jobs>>
+but add a different job ID prefix and deselect the
+**Use full kibana_sample_data_logs data** option. Choose a date part way
+through your sample data as the end date. By default, the {dfeed} stops and the
+{anomaly-job} closes when it reaches that date. Create the forecast. You can
+then restart the {dfeed} to process the remaining data and generate the type of
+results shown here.
+
+TIP: The {kib} sample data sets have timestamps that are relative to when you
+added the data sets. However, some of these dates are in the future. Therefore,
+for the purposes of this tutorial, when you restart your {dfeed} do not use the
+**No end time (Real-time search)** option. Specify the appropriate end dates so
+that it processes all of the data immediately.
+
+--
+
+Now that you have seen how easy it is to create forecasts with the sample data,
+consider what type of events you might want to predict in your own data. For
+more information and ideas, as well as a list of limitations related to
+forecasts, see <<ml-forecasting>>.

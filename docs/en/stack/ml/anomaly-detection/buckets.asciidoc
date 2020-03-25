@@ -15,6 +15,12 @@ characteristics. When you set the bucket span, take into account the granularity
 at which you want to analyze, the frequency of the input data, the typical
 duration of the anomalies, and the frequency at which alerting is required.
 
+////
+The bucket span has two purposes: it dictates over what time span to look for anomalous features in data, and also determines how quickly anomalies can be detected. Choosing a shorter bucket span enables anomalies to be detected more quickly. However, there is a risk of being too sensitive to natural variations or noise in the input data. Choosing too long a bucket span can mean that interesting anomalies are averaged away. There is also the possibility that the aggregation might smooth out some anomalies based on when the bucket starts in time.
+
+The bucket span has a significant impact on the analysis. When you’re trying to determine what value to use, take into account the granularity at which you want to perform the analysis, the frequency of the input data, the duration of typical anomalies, and the frequency at which alerting is required.
+////
+
 [discrete]
 [[ml-bucket-results]]
 ==== Bucket results

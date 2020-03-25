@@ -1,0 +1,41 @@
+[role="xpack"]
+[[ml-gs-next]]
+=== Next steps
+
+By completing this tutorial, you've learned how you can detect anomalous
+behavior in a simple set of sample data. You created {anomaly-jobs} in {kib},
+which opens jobs and creates and starts {dfeeds} for you under the covers. You
+examined the results of the {ml} analysis in the **Single Metric Viewer** and
+**Anomaly Explorer** in {kib}. You also extrapolated the future behavior of a
+job by creating a forecast.
+
+If you're now thinking about where {anomaly-detect} can be most impactful for
+your own data, there are three things to consider:
+
+. It must be time series data.
+. It should be information that contains key performance indicators for the
+health, security, or success of your business or system. The better you know the
+data, the quicker you will be able to create jobs that generate useful
+insights.
+. Ideally, the data is located in {es} and you can therefore create a {dfeed}
+that retrieves data in real time.  If your data is outside of {es}, you
+cannot use {kib} to create your jobs and you cannot use {dfeeds}. Machine
+learning analysis is still possible, however, by using APIs to create and manage
+jobs and to post data to them.
+
+In general, it is a good idea to start with single metric {anomaly-jobs} for
+your key performance indicators. After you examine these simple analysis results,
+you will have a better idea of what the influencers might be. You can create
+multi-metric jobs and split the data or create more complex analysis functions
+as necessary. For examples of more complicated configuration options, see
+<<ml-configuration>>.
+
+If you want to find more sample jobs, see <<ootb-ml-jobs>>. In particular, there
+are sample jobs for <<ootb-ml-jobs-apache,Apache>> and
+<<ootb-ml-jobs-nginx,Nginx>> that are quite similar to the examples in this
+tutorial.
+
+If you encounter problems, we're here to help. If you are an existing Elastic
+customer with a support contract, please create a ticket in the
+http://support.elastic.co[Elastic Support portal]. Or post in the
+https://discuss.elastic.co/[Elastic forum].

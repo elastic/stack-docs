@@ -1,0 +1,58 @@
+[role="xpack"]
+[[ml-gs-jobs]]
+=== Create sample {anomaly-jobs} in {kib}
+++++
+<titleabbrev>Create {anomaly-jobs}</titleabbrev>
+++++
+
+The {kib} sample data sets include some pre-configured {anomaly-jobs} for you to
+play with. You can use either of the following methods to add the jobs:
+
+* After you load the sample web logs data set on the {kib} home page, click
+*View data* > *ML jobs*.
+* In the Machine Learning app, when you select the `kibana_sample_data_logs`
+index pattern in the *Data Visualizer* or the *Anomaly Detection* job wizards,
+it recommends that you create a job using its known configuration. Select the
+*Kibana sample data web logs* configuration.
+
+[role="screenshot"]
+image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
+
+Accept the default values and click *Create Jobs*.
+
+The wizard creates three jobs and three {dfeeds}.
+
+.Datafeeds, buckets, and detectors
+****
+A _{dfeed}_ retrieves time series data from {es} and provides it to an
+{anomaly-job} for analysis.
+
+The job uses _buckets_ to divide the time series into batches for processing.
+For example, all three sample web log jobs use a bucket span of 1 hour.
+
+Each {anomaly-job} contains one or more _detectors_, which define the type of
+analysis that occurs (for example, `max`, `average`, or `rare` analytical
+functions) and the fields that are analyzed. Some of the analytical functions
+look for single anomalous data points. For example, `max` identifies the maximum
+value that is seen within a bucket. Others perform some aggregation over the
+length of the bucket. For example, `mean` calculates the mean of all the data
+points seen within the bucket.
+
+For more information, see <<ml-dfeeds>>, <<ml-buckets>>, and <<ml-functions>>.
+****
+
+If you want to see all of the configuration details for your jobs and {dfeeds},
+you can do so on the *Machine Learning* > *Anomaly Detection* > *Job Management*
+page. For the purposes of this tutorial, however, here's a quick overview of the
+goal of each job:
+
+* `low_request_rate` uses the `low_count` function to find unusually low request
+rates
+* `response_code_rates` uses the `count` function and partitions the analysis by
+`response.keyword` values to find unusual event rates by HTTP response code
+* `url_scanning` uses the `high_distinct_count` function and performs population
+analysis on the `clientip` field to find client IPs accessing an unusually high
+distinct count of URLs
+
+The next step is to view the results and see what types of insights these jobs
+have generated!

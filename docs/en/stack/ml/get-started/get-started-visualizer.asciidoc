@@ -1,0 +1,82 @@
+[role="xpack"]
+[[ml-gs-visualizer]]
+=== Explore the data in {kib}
+
+To get the best results from {ml} analytics, you must understand your data. You
+must know its data types and the range and distribution of values. The
+{data-viz} enables you to explore the fields in your data: 
+
+. Open {kib} in your web browser. If you are running {kib} locally,
+go to `http://localhost:5601/`.
++
+--
+TIP: The {kib} {ml-features} use pop-ups. You must configure your
+web browser so that it does not block pop-up windows or create an
+exception for your {kib} URL.
+
+--
+
+. Click *Machine Learning* in the side navigation.
+
+. Select the *{data-viz}* tab.
+
+. Click *Select index* and choose the `kibana_sample_data_logs` index pattern.
+
+. Use the time filter to select a time period that you're interested in
+exploring. Alternatively, click
+*Use full kibana_sample_data_logs data* to view the full time range of data.
+
+. Optional: Change the sample size, which is the number of documents per shard
+that are used in the visualizations. There is a relatively small number of
+documents in the sample data, so you can choose a value of `all`. For larger
+data sets, keep in mind that using a large sample size increases query run times
+and increases the load on the cluster.
+
+. Explore the fields and metrics in the {data-viz}.
++
+--
+It lists the fields in two sections. The first section contains
+the numeric ("metric") data types. The second section contains non-numeric data
+types (such as `keyword`, `text`, `date`, `boolean`, `ip`, and `geo_point`). For
+more information, see {ref}/mapping-types.html[Field data types].
+
+For each metric, the {data-viz} indicates how many documents contain the field
+in the selected time period. It also provides information about the minimum,
+median, and maximum values, the number of distinct values, and their
+distribution. You can use the distribution chart to get a better idea of how
+the values in the data are clustered. Alternatively, you can view the top values
+for metric fields. For example:
+
+[role="screenshot"]
+image::images/ml-gs-data-metric.jpg["{data-viz} output for top values in {kib}", width="50%",role="screenshot left"]
+
+In particular, look at the `clientip`, `response.keyword`, and `url.keyword`
+fields, since we'll use them in our {anomaly-jobs}. For
+{ref}/ip.html[`ip`] and {ref}/keyword.html[`keyword`] fields, the {data-viz}
+provides the number of distinct values, a list of the top values, and the number
+and percentage of documents that contain the field during the selected time
+period. For example:
+
+[role="screenshot"]
+image:images/ml-gs-data-keyword.jpg["{data-viz} output for keyword fields in {kib}", width="50%",role="screenshot left"]
+
+[role="screenshot"]
+image:images/ml-gs-data-ip.jpg["{data-viz} output for ip fields in {kib}", width="50%",role="screenshot left"]
+
+--
+
+. Make note of the range of dates in the `@timestamp` field. They are relative
+to when you added the sample data and you'll need that information later in the
+tutorial.
++
+--
+For {ref}/date.html[`date`] fields, the {data-viz} provides the earliest and
+latest field values and the number and percentage of documents that contain the
+field during the selected time period:
+
+[role="screenshot"]
+image:images/ml-gs-data-timestamp.jpg["{data-viz} output for date fields in {kib}",width="50%",role="screenshot left"]
+--
+
+Now that you're familiar with the data in the `kibana_sample_data_logs` index,
+you can create some {anomaly-jobs} to analyze it. 

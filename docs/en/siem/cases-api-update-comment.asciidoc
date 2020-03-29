@@ -5,7 +5,7 @@ Updates an existing comment.
 
 ==== Request URL
 
-`PATCH /api/cases/<case ID>/comments`
+`PATCH <kibana host>/<port>/api/cases/<case ID>/comments`
 
 ===== URL parts
 
@@ -30,18 +30,18 @@ version values.
 
 ===== Example request
 
-Updates comment ID `35180680-66a7-11ea-be1b-2bd3fef48984` (associated with case
-ID `eb696730-66a2-11ea-be1b-2bd3fef48984`):
+Updates comment ID `c6f0dca0-71b3-11ea-a0b2-c51ea50a58e2` (associated with case
+ID `a18b38a0-71b0-11ea-a0b2-c51ea50a58e2`):
 
 [source,sh]
 --------------------------------------------------
 PATCH api/cases/eb696730-66a2-11ea-be1b-2bd3fef48984/comments
 {
-  "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
+  "id": "c6f0dca0-71b3-11ea-a0b2-c51ea50a58e2",
   "comment": "That is nothing - Ethan Hunt answered a targeted social
   media campaign promoting phishy pension schemes to IMF operatives.
   Even worse, he likes baked beans.",
-  "version": "WzIyLDFd"
+  "version": "Wzk1LDFd"
 }
 --------------------------------------------------
 // KIBANA
@@ -60,20 +60,24 @@ A JSON object with updated comment's text, version, and timestamp.
 [source,json]
 --------------------------------------------------
 {
-  "id": "35180680-66a7-11ea-be1b-2bd3fef48984",
-  "version": "WzI1LDFd",
+  "id": "c6f0dca0-71b3-11ea-a0b2-c51ea50a58e2",
+  "version": "WzEwNSwxXQ==",
   "comment": "That is nothing - Ethan Hunt answered a targeted social
   media campaign promoting phishy pension schemes to IMF operatives.
   Even worse, he likes baked beans.",
-  "created_at": "2020-03-15T10:24:52.253Z",
+  "created_at": "2020-03-29T11:52:33.889Z",
   "created_by": {
+    "email": "moneypenny@hms.gov.uk",
     "full_name": "Ms Moneypenny",
     "username": "moneypenny"
   },
-  "updated_at": "2020-03-15T11:42:17.238Z",
+  "pushed_at": null,
+  "pushed_by": null,
+  "updated_at": "2020-03-29T12:14:32.997Z",
   "updated_by": {
-    "full_name": "zero-zero-*",
-    "username": "00*"
+    "email": "jbond@hms.gov.uk",
+    "full_name": "James Bond",
+    "username": "_007"
   }
 }
 --------------------------------------------------

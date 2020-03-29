@@ -4,12 +4,12 @@
 
 The cases API is used to open and track security action items.
 
-The API endpoint is: `<kibana URL>/api/cases`, where `<kibana URL>` is the URL
-and port number of your Kibana instance.
+The API endpoint is: `<kibana host>/<port>/api/cases`, where `<kibana URL>` is
+the host name and `<port>` is the port number of your Kibana instance.
 
 <<cases-actions-api-connectors>> describes how to set up integrations with
-third-party systems, and <<cases-get-connector>> describes how to push {siem-app}
-cases to third-party systems (currently, ServiceNow).
+third-party systems, and <<cases-get-connector>> describes how to push
+{siem-app} cases to third-party systems (currently, ServiceNow).
 
 NOTE: In dev mode, the Kibana server runs behind a proxy which adds a random 
 path component to its URL.
@@ -25,7 +25,8 @@ to the Kibana UI, is required to access the API.
 [float]
 === API calls
 
-All calls to the API are stateless. Each call must include all the information {siem-soln} needs to perform the request.
+All calls to the API are stateless. Each call must include all the information
+{siem-soln} needs to perform the request.
 
 All requests must contain these headers:
 
@@ -37,6 +38,6 @@ For example, the following call retrieves the first 20 cases:
 
 [source,sh]
 --------------------------------------------------
-curl -X GET "<kibana URL>/api/cases"
+curl -X GET "<kibana host>/<port>/api/cases"
 -H 'kbn-xsrf: kibana' -u <username>:<password>
 --------------------------------------------------

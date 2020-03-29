@@ -5,7 +5,7 @@ Updates existing cases.
 
 ==== Request URL
 
-`PATCH /api/cases`
+`PATCH <kibana host>/<port>/api/cases`
 
 ==== Request body
 
@@ -26,7 +26,7 @@ A JSON array containing one or more case objects with updated field values:
 |`id` |String |The case ID of the case being updated. |Yes
 |`title` |String |The updated case title. |No
 |`description` |String |The updated case description. |No
-|`state` |String a|The updated case status, which can be:
+|`status` |String a|The updated case status, which can be:
 
 * `open`
 * `closed`
@@ -40,7 +40,7 @@ A JSON array containing one or more case objects with updated field values:
 ===== Example request
 
 Updates the `description` and `tags` fields of case ID
-`eb696730-66a2-11ea-be1b-2bd3fef48984`:
+`a18b38a0-71b0-11ea-a0b2-c51ea50a58e2`:
 
 [source,sh]
 --------------------------------------------------
@@ -48,7 +48,7 @@ PATCH api/cases
 {
   "cases": [
     {
-      "id": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+      "id": "a18b38a0-71b0-11ea-a0b2-c51ea50a58e2",
       "description": "James Bond clicked on a highly suspicious email
       banner advertising cheap holidays for underpaid civil servants.
       Operation bubblegum is active. Repeat - operation bubblegum is
@@ -80,26 +80,26 @@ The updated case with a new `version` value.
 --------------------------------------------------
 [
   {
-    "id": "eb696730-66a2-11ea-be1b-2bd3fef48984",
-    "version": "WzI0LDFd",
+    "id": "a18b38a0-71b0-11ea-a0b2-c51ea50a58e2",
+    "version": "Wzk4LDFd",
     "comments": [],
-    "comment_ids": [
-      "35180680-66a7-11ea-be1b-2bd3fef48984"
-    ],
-    "created_at": "2020-03-15T09:54:10.654Z",
+    "totalComment": 0,
+    "closed_at": null,
+    "closed_by": null,
+    "created_at": "2020-03-29T11:30:02.658Z",
     "created_by": {
+      "email": "ahunley@imf.usa.gov",
       "full_name": "Alan Hunley",
       "username": "ahunley"
     },
-    "updated_at": "2020-03-15T10:39:02.360Z",
+    "external_service": null,
+    "updated_at": "2020-03-29T12:01:50.244Z",
     "updated_by": {
+      "email": "classified@hms.oo.gov.uk",
       "full_name": "Classified",
       "username": "M"
     },
-    "description": "James Bond clicked on a highly suspicious email
-    banner advertising cheap holidays for underpaid civil servants.
-    Operation bubblegum is active. Repeat - operation bubblegum is
-    now active!",
+    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
     "title": "This case will self-destruct in 5 seconds",
     "status": "open",
     "tags": [

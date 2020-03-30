@@ -2,14 +2,18 @@
 [role="xpack"]
 == Cases API
 
-The cases API is used to open and track security action items.
+You can create, manage, configure, and send cases to external systems with
+these APIs:
 
-The API endpoint is: `<kibana host>/<port>/api/cases`, where `<kibana URL>` is
-the host name and `<port>` is the port number of your Kibana instance.
+* Cases API: Used to open and manage security action items. The API endpoint is
+`<kibana host>/<port>/api/cases`, where `<kibana URL>` is the host name and
+`<port>` is the port number of your Kibana instance.
 
-<<cases-actions-api-connectors>> describes how to set up integrations with
-third-party systems, and <<cases-get-connector>> describes how to push
-{siem-app} cases to third-party systems (currently, ServiceNow).
+* Actions API: Used to send cases to external systems. The API endpoint
+is `<kibana host>/<port>/api/actions`. <<cases-actions-api-connectors>>
+describes how to set up integrations with third-party systems, and
+<<cases-actions-api-execute>> describes how to push {siem-app} cases to third
+party systems (currently, ServiceNow).
 
 NOTE: In dev mode, the Kibana server runs behind a proxy which adds a random 
 path component to its URL.

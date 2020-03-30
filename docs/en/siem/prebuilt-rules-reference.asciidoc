@@ -6,256 +6,256 @@ beta[]
 
 [width="100%",options="header"]
 |==============================================
-|Rule |Description |Tags |Version
+|Rule |Description |Tags |Last updated |Version
 
 
 |<<adding-hidden-file-attribute-via-attrib, Adding Hidden File Attribute via Attrib>> |Adversaries can add the `hidden` attribute to files to hide them from 
-the user in an attempt to evade detection. |[Elastic] [Windows] |1
+the user in an attempt to evade detection. |[Elastic] [Windows] |7.6.0 |1
 
 |<<adobe-hijack-persistence, Adobe Hijack Persistence>> |Detects the creation 
 of an executable file or files that will be automatically run by Acrobat Reader 
-when it starts.  |[Elastic] [Windows] |1
+when it starts.  |[Elastic] [Windows] |7.6.0 |1
 
 |<<adversary-behavior-detected-elastic-endpoint, Adversary Behavior - Detected - Elastic Endpoint>> |Elastic Endpoint detected an Adversary Behavior. Click 
 the Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<clearing-windows-event-logs, Clearing Windows Event Logs>> |Identifies 
 attempts to clear Windows event log stores. This is often done by attackers in 
 an attempt to evade detection or destroy forensic evidence on a system. 
-|[Elastic] [Windows] |1
+|[Elastic] [Windows] |7.6.0 |1
 
 |<<command-prompt-network-connection, Command Prompt Network Connection>> 
 |Identifies `cmd.exe` making a network connection. Adversaries can abuse 
-`cmd.exe` to download or execute malware from a remote URL. |[Elastic] [Windows] |1
+`cmd.exe` to download or execute malware from a remote URL. |[Elastic] [Windows] |7.6.0 |1
 
 |<<credential-dumping-detected-elastic-endpoint, Credential Dumping - Detected - Elastic Endpoint>> |Elastic Endpoint detected Credential Dumping. Click the 
 Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<credential-dumping-prevented-elastic-endpoint, Credential Dumping - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented Credential Dumping. 
 Click the Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<credential-manipulation-detected-elastic-endpoint, Credential Manipulation - Detected - Elastic Endpoint>> |Elastic Endpoint detected Credential 
 Manipulation. Click the Elastic Endpoint icon in the `event.module` column or 
 the link in the `rule.reference` column in the External Alerts tab of the SIEM 
-*Detections* page for additional information. |[Elastic] [Endpoint] |1
+*Detections* page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<credential-manipulation-prevented-elastic-endpoint, Credential Manipulation - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented Credential 
 Manipulation. Click the Elastic Endpoint icon in the `event.module` column or 
 the link in the `rule.reference` column in the External Alerts tab of the SIEM 
-*Detections* page for additional information. |[Elastic] [Endpoint] |1
+*Detections* page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
-|<<dns-activity-to-the-internet, DNS Activity to the Internet>> |Detects when an internal network client sends DNS traffic directly to the Internet. This is atypical behavior for a managed network, and can be indicative of malware, exfiltration, command and control, or, simply, misconfiguration. This DNS activity also impacts your organization's ability to provide enterprise monitoring and logging of DNS, and opens your network to a variety of abuses and malicious communications. |[Elastic] [Network] |2
+|<<dns-activity-to-the-internet, DNS Activity to the Internet>> |Detects when an internal network client sends DNS traffic directly to the Internet. This is atypical behavior for a managed network, and can be indicative of malware, exfiltration, command and control, or, simply, misconfiguration. This DNS activity also impacts your organization's ability to provide enterprise monitoring and logging of DNS, and opens your network to a variety of abuses and malicious communications. |[Elastic] [Network] |7.6.1 |2 <<dns-activity-to-the-internet-history, Version history>>
 
 |<<delete-volume-usn-journal-with-fsutil, Delete Volume USN Journal with Fsutil>> |Identifies use of the `fsutil.exe` to delete the `USNJRNL` volume. 
 This  technique is used by attackers to eliminate evidence of files created 
-during post-exploitation activities. |[Elastic] [Windows] |1
+during post-exploitation activities. |[Elastic] [Windows] |7.6.0 |1
 
-|<<deleting-backup-catalogs-with-wbadmin, Deleting Backup Catalogs with Wbadmin>> |Identifies use of the `wbadmin.exe` to delete the backup catalog. Ransomware and other malware may do this to prevent system recovery. |[Elastic] [Windows] |1
+|<<deleting-backup-catalogs-with-wbadmin, Deleting Backup Catalogs with Wbadmin>> |Identifies use of the `wbadmin.exe` to delete the backup catalog. Ransomware and other malware may do this to prevent system recovery. |[Elastic] [Windows] |7.6.0 |1
 
-|<<direct-outbound-smb-connection, Direct Outbound SMB Connection>> |Identifies unexpected processes making network connections over port 445. Windows File Sharing is typically implemented over Server Message Block (SMB), which communicates between hosts using port 445. When legitimate, these network connections are established by the kernel. Processes making 445/tcp connections may be port scanners, exploits, or suspicious user-level processes moving laterally. |[Elastic] [Windows] |1
+|<<direct-outbound-smb-connection, Direct Outbound SMB Connection>> |Identifies unexpected processes making network connections over port 445. Windows File Sharing is typically implemented over Server Message Block (SMB), which communicates between hosts using port 445. When legitimate, these network connections are established by the kernel. Processes making 445/tcp connections may be port scanners, exploits, or suspicious user-level processes moving laterally. |[Elastic] [Windows] |7.6.0 |1
 
-|<<disable-windows-firewall-rules-via-netsh, Disable Windows Firewall Rules via Netsh>> |Identifies use of the `netsh.exe` to disable or weaken the local firewall. Attackers will use this command line tool to disable the firewall during troubleshooting or to enable network mobility. |[Elastic] [Windows] |1
+|<<disable-windows-firewall-rules-via-netsh, Disable Windows Firewall Rules via Netsh>> |Identifies use of the `netsh.exe` to disable or weaken the local firewall. Attackers will use this command line tool to disable the firewall during troubleshooting or to enable network mobility. |[Elastic] [Windows] |7.6.0 |1
 
-|<<encoding-or-decoding-files-via-certutil, Encoding or Decoding Files via CertUtil>> |Identifies the use of `certutil.exe` to encode or decode data. CertUtil is a native Windows component which is part of Certificate Services. CertUtil is often abused by attackers to encode or decode base64 data for stealthier command and control or exfiltration. |[Elastic] [Windows] |1
+|<<encoding-or-decoding-files-via-certutil, Encoding or Decoding Files via CertUtil>> |Identifies the use of `certutil.exe` to encode or decode data. CertUtil is a native Windows component which is part of Certificate Services. CertUtil is often abused by attackers to encode or decode base64 data for stealthier command and control or exfiltration. |[Elastic] [Windows] |7.6.0 |1
 
-|<<execution-via-signed-binary, Execution via Signed Binary>> |Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Adversaries may use these binaries to _live off the land_ and execute malicious files that could bypass application whitelisting and signature validation. |[Elastic] [Windows] |1
+|<<execution-via-signed-binary, Execution via Signed Binary>> |Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Adversaries may use these binaries to _live off the land_ and execute malicious files that could bypass application whitelisting and signature validation. |[Elastic] [Windows] |7.6.0 |1
 
 |<<exploit-detected-elastic-endpoint, Exploit - Detected - Elastic Endpoint>> |Elastic Endpoint detected an Exploit. Click the Elastic Endpoint icon in the
 `event.module` column or the link in the `rule.reference` column in the External
-Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |1
+Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<exploit-prevented-elastic-endpoint, Exploit - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented an Exploit. Click the Elastic Endpoint icon in the
 `event.module` column or the link in the `rule.reference` column in the External
-Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |1
+Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
-|<<ftp-file-transfer-protocol-activity-to-the-internet, FTP (File Transfer Protocol) Activity to the Internet>> |Detects events that may indicate the use of FTP network connections to the Internet. The File Transfer Protocol (FTP) has been around in its current form since the 1980s. It can be a common and efficient procedure on your network to send and receive files. Because of this, adversaries will also often use this protocol to exfiltrate data from your network or download new tools. Additionally, FTP is a plain-text protocol which, if intercepted, may expose usernames and passwords. FTP activity involving servers subject to regulations or compliance standards may be unauthorized. |[Elastic] [Network] |2
+|<<ftp-file-transfer-protocol-activity-to-the-internet, FTP (File Transfer Protocol) Activity to the Internet>> |Detects events that may indicate the use of FTP network connections to the Internet. The File Transfer Protocol (FTP) has been around in its current form since the 1980s. It can be a common and efficient procedure on your network to send and receive files. Because of this, adversaries will also often use this protocol to exfiltrate data from your network or download new tools. Additionally, FTP is a plain-text protocol which, if intercepted, may expose usernames and passwords. FTP activity involving servers subject to regulations or compliance standards may be unauthorized. |[Elastic] [Network] |7.6.1 |2 <<ftp-file-transfer-protocol-activity-to-the-internet-history, Version history>>
 
-|<<hping-process-activity, Hping Process Activity>> |Hping ran on a Linux host. Hping is a FOSS command-line packet analyzer and has the ability to construct network packets for a wide variety of network security testing applications, including scanning and firewall auditing. |[Elastic] [Linux] |1
+|<<hping-process-activity, Hping Process Activity>> |Hping ran on a Linux host. Hping is a FOSS command-line packet analyzer and has the ability to construct network packets for a wide variety of network security testing applications, including scanning and firewall auditing. |[Elastic] [Linux] |7.6.0 |1
 
-|<<ipsec-nat-traversal-port-activity, IPSEC NAT Traversal Port Activity>> |Detects events that could be describing IPSEC NAT Traversal traffic. IPSEC is a VPN technology that allows one system to talk to another using encrypted tunnels. NAT Traversal enables these tunnels to communicate over the Internet where one of the sides is behind a NAT router gateway. This may be common on your network, but this technique is also used by threat actors to avoid detection.|[Elastic] [Network] |2
+|<<ipsec-nat-traversal-port-activity, IPSEC NAT Traversal Port Activity>> |Detects events that could be describing IPSEC NAT Traversal traffic. IPSEC is a VPN technology that allows one system to talk to another using encrypted tunnels. NAT Traversal enables these tunnels to communicate over the Internet where one of the sides is behind a NAT router gateway. This may be common on your network, but this technique is also used by threat actors to avoid detection.|[Elastic] [Network] |7.6.1 |2 <<ipsec-nat-traversal-port-activity-history, Version history>>
 
-|<<irc-internet-relay-chat-protocol-activity-to-the-internet, IRC (Internet Relay Chat) Protocol Activity to the Internet>> |Detects events that use common ports for Internet Relay Chat (IRC) to the Internet. IRC is a common protocol that can be used for chat and file transfers. This protocol is also a good candidate for remote control of malware and data transfers to and from a network.|[Elastic] [Network] |2
+|<<irc-internet-relay-chat-protocol-activity-to-the-internet, IRC (Internet Relay Chat) Protocol Activity to the Internet>> |Detects events that use common ports for Internet Relay Chat (IRC) to the Internet. IRC is a common protocol that can be used for chat and file transfers. This protocol is also a good candidate for remote control of malware and data transfers to and from a network.|[Elastic] [Network] |7.6.1 |2 <<irc-internet-relay-chat-protocol-activity-to-the-internet-history, Version history>>
 
-|<<local-scheduled-task-commands, Local Scheduled Task Commands>> |A scheduled task can be used by an adversary to establish persistence, move laterally, and/or escalate privileges. |[Elastic] [Windows] |1
+|<<local-scheduled-task-commands, Local Scheduled Task Commands>> |A scheduled task can be used by an adversary to establish persistence, move laterally, and/or escalate privileges. |[Elastic] [Windows] |7.6.0 |1
 
-|<<local-service-commands, Local Service Commands>> |Identifies use of `sc.exe` to create, modify, or start services on remote hosts. This could be indicative of adversary lateral movement but will be noisy if commonly done by admins. |[Elastic] [Windows] |1
+|<<local-service-commands, Local Service Commands>> |Identifies use of `sc.exe` to create, modify, or start services on remote hosts. This could be indicative of adversary lateral movement but will be noisy if commonly done by admins. |[Elastic] [Windows] |7.6.0 |1
 
 |<<malware-detected-elastic-endpoint, Malware - Detected - Elastic Endpoint>> |Elastic Endpoint detected Malware. Click the Elastic Endpoint icon in the
 `event.module` column or the link in the `rule.reference` column in the External
-Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |1
+Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<malware-prevented-elastic-endpoint, Malware - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented Malware. Click the Elastic Endpoint icon in the
 `event.module` column or the link in the `rule.reference` column in the External
-Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |1
+Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<mknod-process-activity, Mknod Process Activity>> |The Linux `mknod` program 
 is sometimes used in the command payload of a remote command injection (RCI) 
 and other exploits. It is used to export a command shell when the traditional 
-version of `netcat` is not available to the payload. |[Elastic] [Linux] |1
+version of `netcat` is not available to the payload. |[Elastic] [Linux] |7.6.0 |1
 
-|<<msbuild-making-network-connections, MsBuild Making Network Connections>> |Identifies `MsBuild.exe` making outbound network connections. This may indicate adversarial activity as MsBuild is often leveraged by adversaries to execute code and evade detection. |[Elastic] [Windows] |1
+|<<msbuild-making-network-connections, MsBuild Making Network Connections>> |Identifies `MsBuild.exe` making outbound network connections. This may indicate adversarial activity as MsBuild is often leveraged by adversaries to execute code and evade detection. |[Elastic] [Windows] |7.6.0 |1
 
-|<<netcat-network-activity, Netcat Network Activity>> |A `netcat` process is engaging in network activity on a Linux host. Netcat is often used as a persistence mechanism by exporting a reverse shell or by serving a shell on a listening port. Netcat is also sometimes used for data exfiltration. |[Elastic] [Linux] |1
+|<<netcat-network-activity, Netcat Network Activity>> |A `netcat` process is engaging in network activity on a Linux host. Netcat is often used as a persistence mechanism by exporting a reverse shell or by serving a shell on a listening port. Netcat is also sometimes used for data exfiltration. |[Elastic] [Linux] |7.6.0 |1
 
 |<<network-connection-via-compiled-html-file, Network Connection via Compiled HTML File>> |Compiled HTML files (`.chm`) are commonly distributed as part of 
 the Microsoft HTML Help system. Adversaries may conceal malicious code in a CHM 
 file and deliver it to a victim for execution. CHM content is loaded by the 
-HTML Help executable program (`hh.exe`). |[Elastic] [Windows] |1
+HTML Help executable program (`hh.exe`). |[Elastic] [Windows] |7.6.0 |1
 
 |<<network-connection-via-mshta, Network Connection via Mshta>> |Identifies 
 `mshta.exe` making a network connection. This may indicate adversarial activity 
 as `mshta.exe` is often leveraged by adversaries to execute malicious scripts 
-and evade detection. |[Elastic] [Windows] |1
+and evade detection. |[Elastic] [Windows] |7.6.0 |1
 
 |<<network-connection-via-regsvr, Network Connection via Regsvr>> |Identifies 
 the native Windows tools `regsvr32.exe` and `regsvr64.exe` making a
 network connection.  This may be indicative of an attacker bypassing
 whitelisting or running arbitrary scripts via a signed Microsoft binary. 
-|[Elastic] [Windows] |1
+|[Elastic] [Windows] |7.6.0 |1
 
-|<<network-connection-via-signed-binary, Network Connection via Signed Binary>> |Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Adversaries may use these binaries to 'live off the land' and execute malicious files that could bypass application whitelisting and signature validation. |[Elastic] [Windows] |1
+|<<network-connection-via-signed-binary, Network Connection via Signed Binary>> |Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Adversaries may use these binaries to 'live off the land' and execute malicious files that could bypass application whitelisting and signature validation. |[Elastic] [Windows] |7.6.0 |1
 
-|<<network-sniffing-via-tcpdump, Network Sniffing via Tcpdump>> |The Tcpdump program ran on a Linux host. Tcpdump is a network monitoring or packet sniffing tool that can be used to capture insecure credentials or data in motion. Sniffing can also be used to discover details of network services as a prelude to lateral movement or defense evasion. |[Elastic] [Linux] |1
+|<<network-sniffing-via-tcpdump, Network Sniffing via Tcpdump>> |The Tcpdump program ran on a Linux host. Tcpdump is a network monitoring or packet sniffing tool that can be used to capture insecure credentials or data in motion. Sniffing can also be used to discover details of network services as a prelude to lateral movement or defense evasion. |[Elastic] [Linux] |7.6.0 |1
 
-|<<nmap-process-activity, Nmap Process Activity>> |Nmap was executed on a Linux host. Nmap is a FOSS tool for network scanning and security testing. It can map and discover networks, and identify listening services and operating systems. It is sometimes used to gather information in support of exploitation, execution or lateral movement. |[Elastic] [Linux] |1
+|<<nmap-process-activity, Nmap Process Activity>> |Nmap was executed on a Linux host. Nmap is a FOSS tool for network scanning and security testing. It can map and discover networks, and identify listening services and operating systems. It is sometimes used to gather information in support of exploitation, execution or lateral movement. |[Elastic] [Linux] |7.6.0 |1
 
-|<<nping-process-activity, Nping Process Activity>> |Nping ran on a Linux host. Nping is part of the Nmap tool suite and has the ability to construct raw packets for a wide variety of security testing applications, including denial of service testing. |[Elastic] [Linux] |1
+|<<nping-process-activity, Nping Process Activity>> |Nping ran on a Linux host. Nping is part of the Nmap tool suite and has the ability to construct raw packets for a wide variety of security testing applications, including denial of service testing. |[Elastic] [Linux] |7.6.0 |1
 
-|<<pptp-point-to-point-tunneling-protocol-activity, PPTP (Point to Point Tunneling Protocol) Activity>> |Detects events that may indicate use of a PPTP VPN connection. Some threat actors use these types of connections to tunnel their traffic while avoiding detection. |[Elastic] [Network] |2
+|<<pptp-point-to-point-tunneling-protocol-activity, PPTP (Point to Point Tunneling Protocol) Activity>> |Detects events that may indicate use of a PPTP VPN connection. Some threat actors use these types of connections to tunnel their traffic while avoiding detection. |[Elastic] [Network] |7.6.1 |2 <<pptp-point-to-point-tunneling-protocol-activity-history, Version history>>
 
 |<<permission-theft-detected-elastic-endpoint, Permission Theft - Detected - Elastic Endpoint>> |Elastic Endpoint detected Permission Theft. Click the 
 Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<permission-theft-prevented-elastic-endpoint, Permission Theft - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented Permission Theft. Click the 
 Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
-|<<persistence-via-kernel-module-modification, Persistence via Kernel Module Modification>> |Identifies loadable kernel module errors, which are often indicative of potential persistence attempts. |[Elastic] [Linux] |1
+|<<persistence-via-kernel-module-modification, Persistence via Kernel Module Modification>> |Identifies loadable kernel module errors, which are often indicative of potential persistence attempts. |[Elastic] [Linux] |7.6.0 |1
 
-|<<potential-application-shimming-via-sdbinst, Potential Application Shimming via Sdbinst>> |The Application Shim was created to allow for backward compatibility of software as the operating system codebase changes over time. This Windows functionality has been abused by attackers to stealthily gain persistence and arbitrary code execution in legitimate Windows processes. |[Elastic] [Windows] |1
+|<<potential-application-shimming-via-sdbinst, Potential Application Shimming via Sdbinst>> |The Application Shim was created to allow for backward compatibility of software as the operating system codebase changes over time. This Windows functionality has been abused by attackers to stealthily gain persistence and arbitrary code execution in legitimate Windows processes. |[Elastic] [Windows] |7.6.0 |1
 
-|<<potential-dns-tunneling-via-iodine, Potential DNS Tunneling via Iodine>> |Iodine is a tool for tunneling Internet protocol version 4 (IPV4) traffic over the DNS protocol to circumvent firewalls, network security groups, and network access lists while evading detection. |[Elastic] [Linux] |1
+|<<potential-dns-tunneling-via-iodine, Potential DNS Tunneling via Iodine>> |Iodine is a tool for tunneling Internet protocol version 4 (IPV4) traffic over the DNS protocol to circumvent firewalls, network security groups, and network access lists while evading detection. |[Elastic] [Linux] |7.6.0 |1
 
-|<<potential-evasion-via-filter-manager, Potential Evasion via Filter Manager>> |The Filter Manager Control Program (fltMC.exe) binary may be abused by adversaries to unload a filter driver and evade defenses. |[Elastic] [Windows] |1
+|<<potential-evasion-via-filter-manager, Potential Evasion via Filter Manager>> |The Filter Manager Control Program (fltMC.exe) binary may be abused by adversaries to unload a filter driver and evade defenses. |[Elastic] [Windows] |7.6.0 |1
 
-|<<potential-modification-of-accessibility-binaries, Potential Modification of Accessibility Binaries>> |Windows contains accessibility features that may be launched with a key combination before a user has logged in. An adversary can modify the way these programs are launched to get a command prompt or backdoor without logging in to the system. |[Elastic] [Windows] |1
+|<<potential-modification-of-accessibility-binaries, Potential Modification of Accessibility Binaries>> |Windows contains accessibility features that may be launched with a key combination before a user has logged in. An adversary can modify the way these programs are launched to get a command prompt or backdoor without logging in to the system. |[Elastic] [Windows] |7.6.0 |1
 
-|<<potential-shell-via-web-server, Potential Shell via Web Server>> |Identifies suspicious commands executed via a web server, which may suggest a vulnerability and remote shell access. |[Elastic] [Linux] |1
+|<<potential-shell-via-web-server, Potential Shell via Web Server>> |Identifies suspicious commands executed via a web server, which may suggest a vulnerability and remote shell access. |[Elastic] [Linux] |7.6.1 |2 <<potential-shell-via-web-server-history, Version history>>
 
-|<<powershell-spawning-cmd, PowerShell spawning Cmd>> |Identifies a suspicious parent child process relationship with `cmd.exe` descending from `PowerShell.exe`. |[Elastic] [Windows] |1
+|<<powershell-spawning-cmd, PowerShell spawning Cmd>> |Identifies a suspicious parent child process relationship with `cmd.exe` descending from `PowerShell.exe`. |[Elastic] [Windows] |7.6.0 |1
 
-|<<process-activity-via-compiled-html-file, Process Activity via Compiled HTML File>> |Compiled HTML files (`.chm`) are commonly distributed as part of the Microsoft HTML Help system. Adversaries may conceal malicious code in a CHM file and deliver it to a victim for execution. CHM content is loaded by the HTML Help executable program (`hh.exe`). |[Elastic] [Windows] |1
+|<<process-activity-via-compiled-html-file, Process Activity via Compiled HTML File>> |Compiled HTML files (`.chm`) are commonly distributed as part of the Microsoft HTML Help system. Adversaries may conceal malicious code in a CHM file and deliver it to a victim for execution. CHM content is loaded by the HTML Help executable program (`hh.exe`). |[Elastic] [Windows] |7.6.0 |1
 
-|<<process-discovery-via-tasklist, Process Discovery via Tasklist>> |Adversaries may attempt to get information about running processes on a system. |[Elastic] [Windows] |1
+|<<process-discovery-via-tasklist, Process Discovery via Tasklist>> |Adversaries may attempt to get information about running processes on a system. |[Elastic] [Windows] |7.6.0 |1
 
 |<<process-injection-detected-elastic-endpoint, Process Injection - Detected - Elastic Endpoint>> |Elastic Endpoint detected Process Injection. Click the 
 Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<process-injection-prevented-elastic-endpoint, Process Injection - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented Process Injection. Click the 
 Elastic Endpoint icon in the `event.module` column or the link in the 
 `rule.reference` column in the External Alerts tab of the SIEM *Detections* 
-page for additional information. |[Elastic] [Endpoint] |1
+page for additional information. |[Elastic] [Endpoint] |7.6.0 |1
 
-|<<proxy-port-activity-to-the-internet, Proxy Port Activity to the Internet>> |Detects events that may describe network events of proxy use to the Internet. It includes popular HTTP proxy ports and SOCKS proxy ports. Typically, environments will use an internal IP address for a proxy server. It can also be used to circumvent network controls and detection mechanisms. |[Elastic] [Network] |2
+|<<proxy-port-activity-to-the-internet, Proxy Port Activity to the Internet>> |Detects events that may describe network events of proxy use to the Internet. It includes popular HTTP proxy ports and SOCKS proxy ports. Typically, environments will use an internal IP address for a proxy server. It can also be used to circumvent network controls and detection mechanisms. |[Elastic] [Network] |7.6.1 |2 <<proxy-port-activity-to-the-internet-history, Version history>>
 
-|<<psexec-network-connection, PsExec Network Connection>> |Identifies use of the SysInternals tool `PsExec.exe` making a network connection. This could be an indication of lateral movement. |[Elastic] [Windows] |1
+|<<psexec-network-connection, PsExec Network Connection>> |Identifies use of the SysInternals tool `PsExec.exe` making a network connection. This could be an indication of lateral movement. |[Elastic] [Windows] |7.6.0 |1
 
-|<<rdp-remote-desktop-protocol-from-the-internet, RDP (Remote Desktop Protocol) from the Internet>> |Detects network events that may indicate the use of RDP traffic from the Internet. RDP is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<rdp-remote-desktop-protocol-from-the-internet, RDP (Remote Desktop Protocol) from the Internet>> |Detects network events that may indicate the use of RDP traffic from the Internet. RDP is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<rdp-remote-desktop-protocol-from-the-internet-history, Version history>>
 
-|<<rdp-remote-desktop-protocol-to-the-internet, RDP (Remote Desktop Protocol) to the Internet>> |Detects network events that may indicate the use of RDP traffic to the Internet. RDP is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<rdp-remote-desktop-protocol-to-the-internet, RDP (Remote Desktop Protocol) to the Internet>> |Detects network events that may indicate the use of RDP traffic to the Internet. RDP is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<rdp-remote-desktop-protocol-to-the-internet-history, Version history>>
 
-|<<rpc-remote-procedure-call-from-the-internet, RPC (Remote Procedure Call) from the Internet>> |Detects network events that may indicate the use of RPC traffic from the Internet. RPC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<rpc-remote-procedure-call-from-the-internet, RPC (Remote Procedure Call) from the Internet>> |Detects network events that may indicate the use of RPC traffic from the Internet. RPC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<rpc-remote-procedure-call-from-the-internet-history, Version history>>
 
-|<<rpc-remote-procedure-call-to-the-internet, RPC (Remote Procedure Call) to the Internet>> |Detects network events that may indicate the use of RPC traffic to the Internet. RPC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<rpc-remote-procedure-call-to-the-internet, RPC (Remote Procedure Call) to the Internet>> |Detects network events that may indicate the use of RPC traffic to the Internet. RPC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<rpc-remote-procedure-call-to-the-internet-history, Version history>>
 
 |<<ransomware-detected-elastic-endpoint, Ransomware - Detected - Elastic Endpoint>> |Elastic Endpoint detected Ransomware. Click the Elastic Endpoint 
 icon in the `event.module` column or the link in the `rule.reference` column in 
 the External Alerts tab of the SIEM *Detections* page for additional 
-information. |[Elastic] [Endpoint] |1
+information. |[Elastic] [Endpoint] |7.6.0 |1
 
 |<<ransomware-prevented-elastic-endpoint, Ransomware - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented Ransomware. Click the Elastic Endpoint 
 icon in the `event.module` column or the link in the `rule.reference` column in 
 the External Alerts tab of the SIEM *Detections* page for additional 
-information. |[Elastic] [Endpoint] |1
+information. |[Elastic] [Endpoint] |7.6.0 |1
 
-|<<smb-windows-file-sharing-activity-to-the-internet, SMB (Windows File Sharing) Activity to the Internet>> |Detects network events that may indicate the use of Windows file sharing (also called SMB or CIFS) traffic to the Internet. SMB is commonly used within networks to share files, printers, and other system resources amongst trusted systems. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector or for data exfiltration.|[Elastic] [Network] |2
+|<<smb-windows-file-sharing-activity-to-the-internet, SMB (Windows File Sharing) Activity to the Internet>> |Detects network events that may indicate the use of Windows file sharing (also called SMB or CIFS) traffic to the Internet. SMB is commonly used within networks to share files, printers, and other system resources amongst trusted systems. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector or for data exfiltration.|[Elastic] [Network] |7.6.1 |2 <<smb-windows-file-sharing-activity-to-the-internet-history, Version history>>
 
-|<<smtp-on-port-26-tcp, SMTP on Port 26/TCP>> |Detects events that may indicate use of SMTP on TCP port 26. This port is commonly used by several popular mail transfer agents to deconflict with the default SMTP port 25. This port has also been used by a malware family called BadPatch for command and control of Windows systems.|[Elastic] [Network] |2
+|<<smtp-on-port-26-tcp, SMTP on Port 26/TCP>> |Detects events that may indicate use of SMTP on TCP port 26. This port is commonly used by several popular mail transfer agents to deconflict with the default SMTP port 25. This port has also been used by a malware family called BadPatch for command and control of Windows systems.|[Elastic] [Network] |7.6.1 |2 <<smtp-on-port-26-tcp-history, Version history>>
 
-|<<smtp-to-the-internet, SMTP to the Internet>> |Detects events that may describe SMTP traffic from internal hosts to a host across the Internet. In an enterprise network, there is typically a dedicated internal host that performs this function. It is also frequently abused by threat actors for command and control, or data exfiltration.|[Elastic] [Network] |2
+|<<smtp-to-the-internet, SMTP to the Internet>> |Detects events that may describe SMTP traffic from internal hosts to a host across the Internet. In an enterprise network, there is typically a dedicated internal host that performs this function. It is also frequently abused by threat actors for command and control, or data exfiltration.|[Elastic] [Network] |7.6.1 |2 <<smtp-to-the-internet-history, Version history>>
 
-|<<sql-traffic-to-the-internet, SQL Traffic to the Internet>> |Detects events that may describe database traffic (MS SQL, Oracle, MySQL, and Postgresql) across the Internet. Databases should almost never be directly exposed to the Internet, as they are frequently targeted by threat actors to gain initial access to network resources.|[Elastic] [Network] |2
+|<<sql-traffic-to-the-internet, SQL Traffic to the Internet>> |Detects events that may describe database traffic (MS SQL, Oracle, MySQL, and Postgresql) across the Internet. Databases should almost never be directly exposed to the Internet, as they are frequently targeted by threat actors to gain initial access to network resources.|[Elastic] [Network] |7.6.1 |2 <<sql-traffic-to-the-internet-history, Version history>>
 
-|<<ssh-secure-shell-from-the-internet, SSH (Secure Shell) from the Internet>> |Detects network events that may indicate the use of SSH traffic from the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<ssh-secure-shell-from-the-internet, SSH (Secure Shell) from the Internet>> |Detects network events that may indicate the use of SSH traffic from the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<ssh-secure-shell-from-the-internet-history, Version history>>
 
-|<<ssh-secure-shell-to-the-internet, SSH (Secure Shell) to the Internet>> |Detects network events that may indicate the use of SSH traffic to the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<ssh-secure-shell-to-the-internet, SSH (Secure Shell) to the Internet>> |Detects network events that may indicate the use of SSH traffic to the Internet. SSH is commonly used by system administrators to remotely control a system using the command line shell. If it is exposed to the Internet, it should be done with strong security controls as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<ssh-secure-shell-to-the-internet-history, Version history>>
 
-|<<socat-process-activity, Socat Process Activity>> |A Socat process is running on a Linux host. Socat is often used as a persistence mechanism by exporting a reverse shell, or by serving a shell on a listening port. Socat is also sometimes used for lateral movement. |[Elastic] [Linux] |1
+|<<socat-process-activity, Socat Process Activity>> |A Socat process is running on a Linux host. Socat is often used as a persistence mechanism by exporting a reverse shell, or by serving a shell on a listening port. Socat is also sometimes used for lateral movement. |[Elastic] [Linux] |7.6.0 |1
 
-|<<strace-process-activity, Strace Process Activity>> |Strace runs in a privileged context and can be used to escape restrictive environments by instantiating a shell in order to elevate privileges or move laterally. |[Elastic] [Linux] |1
+|<<strace-process-activity, Strace Process Activity>> |Strace runs in a privileged context and can be used to escape restrictive environments by instantiating a shell in order to elevate privileges or move laterally. |[Elastic] [Linux] |7.6.0 |1
 
-|<<suspicious-ms-office-child-process, Suspicious MS Office Child Process>> |Identifies suspicious child processes of frequently targeted Microsoft Office applications (Word, PowerPoint, Excel). These child processes are often launched during exploitation of Office applications or from documents with malicious macros. |[Elastic] [Windows] |1
+|<<suspicious-ms-office-child-process, Suspicious MS Office Child Process>> |Identifies suspicious child processes of frequently targeted Microsoft Office applications (Word, PowerPoint, Excel). These child processes are often launched during exploitation of Office applications or from documents with malicious macros. |[Elastic] [Windows] |7.6.0 |1
 
-|<<suspicious-ms-outlook-child-process, Suspicious MS Outlook Child Process>> |Identifies suspicious child processes of Microsoft Outlook. These child processes are often associated with spear phishing activity. |[Elastic] [Windows] |1
+|<<suspicious-ms-outlook-child-process, Suspicious MS Outlook Child Process>> |Identifies suspicious child processes of Microsoft Outlook. These child processes are often associated with spear phishing activity. |[Elastic] [Windows] |7.6.0 |1
 
-|<<suspicious-process-spawning-from-script-interpreter, Suspicious Process spawning from Script Interpreter>> |Identifies a suspicious process being spawned from a script interpreter, which could be indicative of a potential phishing attack. |[Elastic] [Windows] |1
+|<<suspicious-process-spawning-from-script-interpreter, Suspicious Process spawning from Script Interpreter>> |Identifies a suspicious process being spawned from a script interpreter, which could be indicative of a potential phishing attack. |[Elastic] [Windows] |7.6.0 |1
 
-|<<suspicious-script-object-execution, Suspicious Script Object Execution>> |Identifies scrobj.dll loaded into unusual Microsoft processes. This may indicate a malicious scriptlet is being executed in the target process. |[Elastic] [Windows] |1
+|<<suspicious-script-object-execution, Suspicious Script Object Execution>> |Identifies scrobj.dll loaded into unusual Microsoft processes. This may indicate a malicious scriptlet is being executed in the target process. |[Elastic] [Windows] |7.6.0 |1
 
 |<<svchost-spawning-cmd, Svchost spawning Cmd>> |Identifies a suspicious
-parent-child process relationship with cmd.exe descending from `svchost.exe` |[Elastic] [Windows] |1
+parent-child process relationship with cmd.exe descending from `svchost.exe` |[Elastic] [Windows] |7.6.0 |1
 
-|<<system-shells-via-services, System Shells via Services>> |Windows services typically run as SYSTEM and can be used as a privilege escalation opportunity. Malware or penetration testers may run a shell as a service to gain SYSTEM permissions. |[Elastic] [Windows] |1
+|<<system-shells-via-services, System Shells via Services>> |Windows services typically run as SYSTEM and can be used as a privilege escalation opportunity. Malware or penetration testers may run a shell as a service to gain SYSTEM permissions. |[Elastic] [Windows] |7.6.0 |1
 
-|<<tcp-port-8000-activity-to-the-internet, TCP Port 8000 Activity to the Internet>> |TCP Port 8000 is commonly used for development environments of web server software. It generally should not be exposed directly to the Internet. If you are running software like this on the Internet, you should consider placing it behind a reverse proxy. |[Elastic] [Network] |2
+|<<tcp-port-8000-activity-to-the-internet, TCP Port 8000 Activity to the Internet>> |TCP Port 8000 is commonly used for development environments of web server software. It generally should not be exposed directly to the Internet. If you are running software like this on the Internet, you should consider placing it behind a reverse proxy. |[Elastic] [Network] |7.6.1 |2 <<tcp-port-8000-activity-to-the-internet-history, Version history>>
 
-|<<telnet-port-activity, Telnet Port Activity>> |Detects network events that may indicate the use of Telnet traffic. Telnet is commonly used by system administrators to remotely control older or embedded systems using the command line shell. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector. As a plain-text protocol, it may also expose usernames and passwords to anyone capable of observing the traffic.|[Elastic] [Network] |2
+|<<telnet-port-activity, Telnet Port Activity>> |Detects network events that may indicate the use of Telnet traffic. Telnet is commonly used by system administrators to remotely control older or embedded systems using the command line shell. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector. As a plain-text protocol, it may also expose usernames and passwords to anyone capable of observing the traffic.|[Elastic] [Network] |7.6.1 |2 <<telnet-port-activity-history, Version history>>
 
-|<<tor-activity-to-the-internet, Tor Activity to the Internet>> |Detects network events that may indicate the use of Tor traffic to the Internet. Tor is a network protocol that sends traffic through a series of encrypted tunnels used to conceal a user's location and usage. Tor may be used by threat actors as an alternate communication pathway to conceal the actor's identity and avoid detection.|[Elastic] [Network] |2
+|<<tor-activity-to-the-internet, Tor Activity to the Internet>> |Detects network events that may indicate the use of Tor traffic to the Internet. Tor is a network protocol that sends traffic through a series of encrypted tunnels used to conceal a user's location and usage. Tor may be used by threat actors as an alternate communication pathway to conceal the actor's identity and avoid detection.|[Elastic] [Network] |7.6.1 |2 <<tor-activity-to-the-internet-history, Version history>>
 
-|<<trusted-developer-application-usage, Trusted Developer Application Usage>> |Identifies possibly suspicious activity using a trusted Windows developer utility program. |[Elastic] [Windows] |1
+|<<trusted-developer-application-usage, Trusted Developer Application Usage>> |Identifies possibly suspicious activity using a trusted Windows developer utility program. |[Elastic] [Windows] |7.6.0 |1
 
-|<<unusual-network-connection-via-rundll32, Unusual Network Connection via RunDLL32>> |Identifies unusual instances of `rundll32.exe` making outbound network connections. This may indicate adversarial activity and may identify malicious DLLs. |[Elastic] [Windows] |1
+|<<unusual-network-connection-via-rundll32, Unusual Network Connection via RunDLL32>> |Identifies unusual instances of `rundll32.exe` making outbound network connections. This may indicate adversarial activity and may identify malicious DLLs. |[Elastic] [Windows] |7.6.0 |1
 
-|<<unusual-parent-child-relationship, Unusual Parent-Child Relationship >> |Identifies Windows programs run by unexpected parent processes. This could indicate masquerading or other strange activity on a system. |[Elastic] [Windows] |1
+|<<unusual-parent-child-relationship, Unusual Parent-Child Relationship >> |Identifies Windows programs run by unexpected parent processes. This could indicate masquerading or other strange activity on a system. |[Elastic] [Windows] |7.6.0 |1
 
-|<<unusual-process-execution-temp, Unusual Process Execution - Temp>> |Identifies processes running in a temporary folder. This is sometimes done by adversaries to hide malware. |[Elastic] [Linux] |1
+|<<unusual-process-execution-temp, Unusual Process Execution - Temp>> |Identifies processes running in a temporary folder. This is sometimes done by adversaries to hide malware. |[Elastic] [Linux] |7.6.0 |1
 
-|<<unusual-process-network-connection, Unusual Process Network Connection>> |Identifies network activity from unexpected system applications. This may indicate adversarial activity as these applications are often leveraged by adversaries to execute code and evade detection. |[Elastic] [Windows] |1
+|<<unusual-process-network-connection, Unusual Process Network Connection>> |Identifies network activity from unexpected system applications. This may indicate adversarial activity as these applications are often leveraged by adversaries to execute code and evade detection. |[Elastic] [Windows] |7.6.0 |1
 
-|<<user-account-creation, User Account Creation>> |Identifies attempts to create new local users. This is sometimes done by attackers to increase access to a system or domain. |[Elastic] [Windows] |1
+|<<user-account-creation, User Account Creation>> |Identifies attempts to create new local users. This is sometimes done by attackers to increase access to a system or domain. |[Elastic] [Windows] |7.6.0 |1
 
-|<<user-discovery-via-whoami, User Discovery via Whoami>> |The `whoami` application was executed on a Linux host. This is often used by tools and persistence mechanisms to test for privileged access. |[Elastic] [Linux] |1
+|<<user-discovery-via-whoami, User Discovery via Whoami>> |The `whoami` application was executed on a Linux host. This is often used by tools and persistence mechanisms to test for privileged access. |[Elastic] [Linux] |7.6.0 |1
 
-|<<vnc-virtual-network-computing-from-the-internet, VNC (Virtual Network Computing) from the Internet>> |Detects network events that may indicate the use of VNC traffic from the Internet. VNC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |2
+|<<vnc-virtual-network-computing-from-the-internet, VNC (Virtual Network Computing) from the Internet>> |Detects network events that may indicate the use of VNC traffic from the Internet. VNC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector.|[Elastic] [Network] |7.6.1 |2 <<vnc-virtual-network-computing-from-the-internet-history, Version history>>
 
-|<<vnc-virtual-network-computing-to-the-internet, VNC (Virtual Network Computing) to the Internet>> |Detects network events that may indicate the use of VNC traffic to the Internet. VNC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector. |[Elastic] [Network] |2
+|<<vnc-virtual-network-computing-to-the-internet, VNC (Virtual Network Computing) to the Internet>> |Detects network events that may indicate the use of VNC traffic to the Internet. VNC is commonly used by system administrators to remotely control a system for maintenance or to use shared resources. It should almost never be directly exposed to the Internet, as it is frequently targeted and exploited by threat actors as an initial access or back-door vector. |[Elastic] [Network] |7.6.1 |2 <<vnc-virtual-network-computing-to-the-internet-history, Version history>>
 
-|<<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> |Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints. This commonly occurs in tandem with ransomware or other destructive attacks. |[Elastic] [Windows] |1
+|<<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> |Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints. This commonly occurs in tandem with ransomware or other destructive attacks. |[Elastic] [Windows] |7.6.0 |1
 
-|<<volume-shadow-copy-deletion-via-wmic, Volume Shadow Copy Deletion via WMIC>> |Identifies use of `wmic.exe` for shadow copy deletion on endpoints. This commonly occurs in tandem with ransomware or other destructive attacks. |[Elastic] [Windows] |1
+|<<volume-shadow-copy-deletion-via-wmic, Volume Shadow Copy Deletion via WMIC>> |Identifies use of `wmic.exe` for shadow copy deletion on endpoints. This commonly occurs in tandem with ransomware or other destructive attacks. |[Elastic] [Windows] |7.6.0 |1
 
-|<<web-application-suspicious-activity-no-user-agent, Web Application Suspicious Activity: No User Agent>> |A request to a web application server contained no identifying user agent string. |[Elastic] [APM] |1
+|<<web-application-suspicious-activity-no-user-agent, Web Application Suspicious Activity: No User Agent>> |A request to a web application server contained no identifying user agent string. |[Elastic] [APM] |7.6.0 |1
 
-|<<web-application-suspicious-activity-post-request-declined, Web Application Suspicious Activity: POST Request Declined>> |A POST request to web application returned a 403 response, which indicates the web application declined to process the request because the action requested was not allowed |[Elastic] [APM] |1
+|<<web-application-suspicious-activity-post-request-declined, Web Application Suspicious Activity: POST Request Declined>> |A POST request to web application returned a 403 response, which indicates the web application declined to process the request because the action requested was not allowed |[Elastic] [APM] |7.6.0 |1
 
-|<<web-application-suspicious-activity-unauthorized-method, Web Application Suspicious Activity: Unauthorized Method>> |A request to web application returned a 405 response which indicates the web application declined to process the request because the HTTP method is not allowed for the resource |[Elastic] [APM] |1
+|<<web-application-suspicious-activity-unauthorized-method, Web Application Suspicious Activity: Unauthorized Method>> |A request to web application returned a 405 response which indicates the web application declined to process the request because the HTTP method is not allowed for the resource |[Elastic] [APM] |7.6.0 |1
 
-|<<web-application-suspicious-activity-sqlmap-user-agent, Web Application Suspicious Activity: sqlmap User Agent>> |This is an example of how to detect an unwanted web client user agent. This search matches the user agent for sqlmap 1.3.11, which is a popular FOSS tool for testing web applications for SQL injection vulnerabilities. |[Elastic] [APM] |1
+|<<web-application-suspicious-activity-sqlmap-user-agent, Web Application Suspicious Activity: sqlmap User Agent>> |This is an example of how to detect an unwanted web client user agent. This search matches the user agent for sqlmap 1.3.11, which is a popular FOSS tool for testing web applications for SQL injection vulnerabilities. |[Elastic] [APM] |7.6.0 |1
 
-|<<whoami-process-activity, Whoami Process Activity>> |Identifies use of `whoami.exe` which displays user, group, and privileges information for the user who is currently logged on to the local system. |[Elastic] [Windows] |1
+|<<whoami-process-activity, Whoami Process Activity>> |Identifies use of `whoami.exe` which displays user, group, and privileges information for the user who is currently logged on to the local system. |[Elastic] [Windows] |7.6.0 |1
 
-|<<windows-script-executing-powershell, Windows Script Executing PowerShell>> |Identifies a PowerShell process launched by either `cscript.exe` or `wscript.exe`. Observing Windows scripting processes executing a PowerShell script, may be indicative of malicious activity. |[Elastic] [Windows] |1
+|<<windows-script-executing-powershell, Windows Script Executing PowerShell>> |Identifies a PowerShell process launched by either `cscript.exe` or `wscript.exe`. Observing Windows scripting processes executing a PowerShell script, may be indicative of malicious activity. |[Elastic] [Windows] |7.6.0 |1
 
 |==============================================

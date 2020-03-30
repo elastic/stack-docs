@@ -18,13 +18,15 @@ the {anomaly-jobs} that are ready to use via {kib}.
 
 
 [[ootb-ml-jobs-apache]]
-=== Apache
-
+=== Apache {anomaly-detect} configurations
+++++
+<titleabbrev>Apache</titleabbrev>
+++++
 // tag::apache-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use 
 {filebeat-ref}/index.html[{filebeat}] to ship access logs from your 
 https://httpd.apache.org/[Apache] HTTP servers to {es} and store it using fields 
-and datatypes from the Elastic Common Schema (ECS). For more details, see the
+and data types from the Elastic Common Schema (ECS). For more details, see the
 {dfeed} and job definitions in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apache_ecs/ml[GitHub].
 
@@ -65,7 +67,11 @@ visitor_rate_ecs::
   rates (using the <<ml-nonzero-count,`non_zero_count` function>>).
 
 [[ootb-ml-jobs-apm]]
-=== APM
+=== APM {anomaly-detect} configurations
+++++
+<titleabbrev>APM</titleabbrev>
+++++
+
 These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or
 an APM Server stored in {es}. For more details, see the {dfeed} and job
 definitions in the `apm_*` folders in
@@ -127,7 +133,10 @@ high_mean_response_time::
 
 
 [[ootb-ml-jobs-auditbeat]]
-=== Auditbeat
+=== {auditbeat} {anomaly-detect} configurations
+++++
+<titleabbrev>{auditbeat}</titleabbrev>
+++++
 
 // tag::auditbeat-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use 
@@ -171,7 +180,10 @@ hosts_rare_process_activity_ecs::
 
 
 [[ootb-ml-jobs-logs-ui]]
-=== Logs UI
+=== Logs {anomaly-detect} configurations
+++++
+<titleabbrev>Logs</titleabbrev>
+++++
 
 // tag::logs-jobs[]
 These {anomaly-jobs} appear by default in the
@@ -198,7 +210,10 @@ log_entry_rate::
 
 
 [[ootb-ml-jobs-metricbeat]]
-=== Metricbeat
+=== {metricbeat} {anomaly-detect} configurations
+++++
+<titleabbrev>{metricbeat}</titleabbrev>
+++++
 
 // tag::metricbeat-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use the 
@@ -235,7 +250,10 @@ metricbeat_outages_ecs::
 
 
 [[ootb-ml-jobs-nginx]]
-=== Nginx
+=== Nginx {anomaly-detect} configurations
+++++
+<titleabbrev>Nginx</titleabbrev>
+++++
 
 // tag::nginx-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship access 
@@ -284,7 +302,10 @@ visitor_rate_ecs::
 
 
 [[ootb-ml-jobs-siem]]
-=== SIEM
+=== SIEM {anomaly-detect} configurations
+++++
+<titleabbrev>SIEM</titleabbrev>
+++++
 
 These {anomaly-jobs} appear by default in the Anomaly Detection interface of
 the {siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
@@ -853,3 +874,25 @@ Required {beats}:::
 NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 // end::siem-jobs[]
+
+[[ootb-ml-jobs-uptime]]
+=== Uptime {anomaly-detect} configurations
+++++
+<titleabbrev>Uptime</titleabbrev>
+++++
+// tag::uptime-jobs[]
+
+If you have appropriate {heartbeat} data in {es}, you can enable this
+{anomaly-job} in the 
+{uptime-guide}/uptime-overview.html[Elastic Uptime] app in {kib}. For more
+details, see the {dfeed} and job definitions in 
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/ml[GitHub].
+
+high_latency_by_geo::
+
+* Detects unusually high average latency values (using the
+<<ml-metric-mean,`high_mean` function>> on the `monitor.duration.us` field).
+* Models the occurrences across geographical locations (`partition_field_name` 
+  is `observer.geo.name`).
+
+// end::uptime-jobs[]

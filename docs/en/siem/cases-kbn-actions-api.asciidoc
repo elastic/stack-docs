@@ -1,19 +1,30 @@
 [[cases-actions-api-connectors]]
-=== External integrations using the {kib} Actions API
-
-[beta]
+=== Configure and send cases to external interfaces
 
 You can create {sn} incidents from {siem-soln} cases. This requires creating
 a {sn} connector using the {kib} Actions API. Connectors store the information
-required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such the {sn} URL,
+required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such as the {sn} URL,
 account credentials, and the field mappings required for representing a
 {siem-soln} case as a {sn} incident.
 
-The Actions API is also used to send and update cases to {sn} (see
-<<cases-actions-api-execute>>).
+To send cases to {sn} and keep the {siem-ui} updated:
+
+. <<register-connector>>: Create the connector.
+. <<assign-connector>> or <<case-api-update-connector>>: If required, configure
+connector options.
+. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to {sn}. You
+must store the returned data as it is required for updating the
+`external_service` object in the {siem-soln} case.
+. [[update-case-sn-data]]<<cases-api-associate-sn-incident>>: Update the
+{siem-soln} case with the associated {sn} incident data returned in
+<<sn-returned-data, step 3>>.
+. Repeat <<sn-returned-data, step 3>> and <<update-case-sn-data, step 4>> each
+time you open or update a case.
+
+
 
 [[register-connector]]
-==== Create {sn} connector
+==== Create connector
 
 Creates a {sn} connector, which can then be used to open {sn} incidents from
 {siem-soln} cases.
@@ -158,7 +169,7 @@ A JSON object with a connector `id` that is required to push cases to {sn}.
 --------------------------------------------------
 
 [[update-connector]]
-==== Update {sn} connector
+==== Update connector
 
 Updates a {sn} connector.
 
@@ -169,7 +180,7 @@ Updates a {sn} connector.
 ===== URL parts
 
 The URL must include the `connector ID` of the connector you are updating.
-Call <<cases-find-connectors>> to retrieve connector IDs.
+Call <<cases-api-find-connectors>> to retrieve connector IDs.
 
 ===== Request body
 
@@ -296,12 +307,14 @@ The updated JSON connector object.
 --------------------------------------------------
 
 [[cases-actions-api-execute]]
-==== Create or update a {sn} incident
+==== Create or update an external incident
 
 Creates a new or updates an existing {sn} incident from a {siem-soln} case.
 
 NOTE: You can only send cases to external system after you have
-<<register-connector, created>> and <<assign-connector, assigned>> a connector.
+<<register-connector, created>> a connector. After you have sent the case to
+{sn}, you must call <<cases-api-associate-sn-incident>> to update the
+{siem-soln} case with the relevant {sn} incident details.
 
 ===== Request URL
 
@@ -311,7 +324,7 @@ NOTE: You can only send cases to external system after you have
 
 The URL must include the the ServiceNow connector ID. Call
 <<cases-get-connector>> to retrieve the currently used connector ID, or
-<<cases-find-connectors>> to retrieve all registered connectors IDs.
+<<cases-api-find-connectors>> to retrieve all connectors IDs.
 
 ===== Request body
 
@@ -332,19 +345,45 @@ for which you are opening a {sn} incident. |Yes
 |Name |Type |Description |Required
 
 |`caseId` |String |The case ID. |Yes
-|`title` |String |The case title. |No
-|`description` |String |The case description. |No
+|`createdAt` |String |The time the case was created, using ISO 8601 with UTC
+notation. For example, `2020-03-31T06:40:21.674Z`. |Yes
+|`createdBy` |Object a|The user who created the case:
+
+* `fullName` (string): The user's full name.
+* `username` (string): The user's username.
+
+|Yes
+
 |`comments` |Object[] a|Array containing case comments:
 
-* `commentId` (string): The comment ID.
-* `version` (string): The comment version.
-* `comment` (string): The comment text.
+* `commentId` (string, required): The comment ID.
+* `comment` (string, required): The comment text.
+* `createdAt` (string, required): The time the comment was created, using ISO 8601 with
+UTC notation.
+* `createdBy` (object, required): The user who created the comment, containing
+`fullName` and `username` fields.
+* `updatedBy` (object, optional): The user who last updated the comment,
+containing `fullName` and `username` fields.
 
 |No
 
+|`description` |String |The case description. |No
 |`incidentId` |String |The {sn} incident ID. Required when updating an existing
 {sn} incident. |No
+|`title` |String |The case title. |Yes
+|`updatedAt` |String |The time the case was updated, using ISO 8601 with UTC
+notation. |No
+|`updatedBy` |Object a|The user who last updated the case:
+
+* `fullName` (string): The user's full name.
+* `username` (string): The user's username.
+
+|No
 |==============================================
+
+NOTE: When updating an existing case, call <<cases-api-get-case>> or
+<<cases-api-find-cases>> to retrieve the `incidentId`. In the case JSON
+object, the `incidentId` value is stored in the `external_id` field.
 
 ===== Example requests
 
@@ -355,19 +394,25 @@ Creates a new {sn} incident:
 POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
 {
   "params": {
-    "caseId": "eb696730-66a2-11ea-be1b-2bd3fef48984",
-    "title": "This case will self-destruct in 5 seconds",
-    "description": "James Bond clicked on a highly suspicious email
-    banner advertising cheap holidays for underpaid civil servants.
-    Operation bubblegum is active. Repeat - operation bubblegum is
-    now active!",
+    "caseId": "c1472f70-732a-11ea-a0b2-c51ea50a58e2",
+    "createdAt": "2020-03-31T08:36:45.661Z",
+    "createdBy": {
+      "fullName": "Alan Hunley",
+      "username": "ahunley"
+    },
     "comments": [
       {
-        "commentId": "f215d6a0-6755-11ea-a1c2-e3a8bc9f7aca",
-        "version": "WzM3LDFd",
-        "comment": "Start operation bubblegum immediately! And chew fast!"
+        "commentId": "dda30310-732a-11ea-a0b2-c51ea50a58e2",
+        "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+        "createdAt": "2020-03-31T08:37:33.240Z",
+        "createdBy": {
+          "fullName": "Ms Moneypenny",
+          "username": "moneypenny"
+        }
       }
-    ]
+    ],
+    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active.",
+    "title": "This case will self-destruct in 5 seconds"
   }
 }
 --------------------------------------------------
@@ -380,17 +425,25 @@ Updates an existing {sn} incident:
 POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
 {
   "params": {
-    "caseId": "eb696730-66a2-11ea-be1b-2bd3fef48984",
+    "caseId": "c1472f70-732a-11ea-a0b2-c51ea50a58e2",
+    "createdAt": "2020-03-31T08:36:45.661Z",
+    "createdBy": {
+      "fullName": "Alan Hunley",
+      "username": "ahunley"
+    },
     "comments": [
       {
-        "commentId": "11d967b0-6795-11ea-86e7-8f72afa8e6d9",
-        "version": "Wzg0LDFd",
-        "comment": "That is nothing - Ethan Hunt answered a targeted
-        social media campaign promoting phishy pension schemes to
-        IMF operatives."
+        "commentId": "8ef6d660-732f-11ea-a0b2-c51ea50a58e2",
+        "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+        "createdAt": "2020-03-31T09:11:08.736Z",
+        "createdBy": {
+          "fullName": "Ms Moneypenny",
+          "username": "moneypenny"
+        }
       }
     ],
-    "incidentId": "d1d2c8562f2b001032645d372799b6cd"
+    "incidentId": "cc6ef44bdb7300106ba884da0b9619cf",
+    "title": "This case will self-destruct in 5 seconds"
   }
 }
 --------------------------------------------------
@@ -403,7 +456,11 @@ POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
    
 ===== Response payload
 
-A JSON object with the {sn} incident number.
+A JSON object with the {sn} incident number and link to the {sn} incident.
+
+IMPORTANT: You need the returned information to associate it with the original
+{siem-soln} case. To add the {sn} incident details to the {siem-soln} case,
+call <<cases-api-associate-sn-incident>>.
 
 ===== Example response
 
@@ -411,15 +468,16 @@ A JSON object with the {sn} incident number.
 --------------------------------------------------
 {
   "status": "ok",
-  "actionId": "7349772f-421a-4de3-b8bb-2d9b22ccee30",
+  "actionId": "61787f53-4eee-4741-8df6-8fe84fa616f7",
   "data": {
-    "incidentId": "d1d2c8562f2b001032645d372799b6cd",
-    "number": "INC0010001",
-    "pushedDate": "2020-03-16T10:36:56.000Z",
+    "number": "INC0010012",
+    "incidentId": "62dc3c8bdb7300106ba884da0b9619ea",
+    "pushedDate": "2020-03-31T09:01:33.000Z",
+    "url": "https://dev78437.service-now.com/nav_to.do?uri=incident.do?sys_id=62dc3c8bdb7300106ba884da0b9619ea",
     "comments": [
       {
-        "commentId": "f215d6a0-6755-11ea-a1c2-e3a8bc9f7aca",
-        "pushedDate": "2020-03-16T10:36:57.000Z"
+        "commentId": "dda30310-732a-11ea-a0b2-c51ea50a58e2",
+        "pushedDate": "2020-03-31T09:01:34.000Z"
       }
     ]
   }

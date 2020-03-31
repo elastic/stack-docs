@@ -1,0 +1,103 @@
+[[cases-api-associate-sn-incident]]
+=== Add external details to case
+
+Adds the data returned from {sn} to the specified case.
+
+After sending a new or updated case to {sn}, you must associate the returned
+{sn} incident fields with the case in the {siem-app}.
+
+==== Request URL
+
+`POST <kibana host>/<port>/api/cases/<case ID>/_push`
+
+===== URL parts
+
+The URL must include the `case ID` of the case you are updating. Call
+<<cases-api-find-cases>> to retrieve case IDs.
+
+==== Request body
+
+A JSON object with the data returned from {sn}:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`connector_id` |String |The ID of the connector used to send the case to {sn}.
+|Yes
+|`connector_name` |String |The ID of the connector used to send the case to
+{sn}. |Yes
+|`external_id` |String |The `incidentId` returned when calling
+<<cases-actions-api-execute>>. |Yes
+|`external_title` |String |The `number` returned when calling
+<<cases-actions-api-execute>>. |Yes
+|`external_url` |String |The `url` returned when calling
+<<cases-actions-api-execute>>. |Yes
+|==============================================
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+POST api/cases/718265d0-733a-11ea-a0b2-c51ea50a58e2/_push
+
+  "connector_id": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+  "connector_name": "ServiceNow",
+  "external_id": "74c15d07dbb300106ba884da0b9619a0",
+  "external_title": "INC0010016",
+  "external_url": "https://dev78437.service-now.com/nav_to.do?uri=incident.do?sys_id=74c15d07dbb300106ba884da0b9619a0"
+}
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+==== Response payload
+
+The updated JSON case object.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "718265d0-733a-11ea-a0b2-c51ea50a58e2",
+  "version": "WzMyNywxXQ==",
+  "comments": [],
+  "totalComment": 0,
+  "closed_at": null,
+  "closed_by": null,
+  "created_at": "2020-03-31T10:29:03.781Z",
+  "created_by": {
+    "email": "ahunley@imf.usa.gov",
+    "full_name": "Alan Hunley",
+    "username": "ahunley"
+  },
+  "external_service": {
+    "pushed_at": "2020-03-31T10:56:10.959Z",
+    "pushed_by": {
+      "username": "ahunley",
+      "full_name": "Alan Hunley",
+      "email": "ahunley@imf.usa.gov"
+    },
+    "connector_id": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+    "connector_name": "ServiceNow",
+    "external_id": "74c15d07dbb300106ba884da0b9619a0",
+    "external_title": "INC0010016",
+    "external_url": "https://dev78437.service-now.com/nav_to.do?uri=incident.do?sys_id=74c15d07dbb300106ba884da0b9619a0"
+  },
+  "updated_at": "2020-03-31T10:56:10.959Z",
+  "updated_by": {
+    "username": "ahunley",
+    "full_name": "Alan Hunley",
+    "email": "ahunley@imf.usa.gov"
+  },
+  "title": "This case will self-destruct in 5 seconds",
+  "tags": [],
+  "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants.",
+  "status": "open"
+}
+--------------------------------------------------

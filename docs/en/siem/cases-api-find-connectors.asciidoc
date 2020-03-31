@@ -1,0 +1,96 @@
+[[cases-api-find-connectors]]
+=== Find connectors
+
+Retrieves a paginated subset of all {sn} connectors.
+
+NOTE: For more information on connectors, see <<cases-actions-api-connectors>>.
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/configure/connectors/_find`
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/configure/connectors/_find
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+==== Response payload
+
+A JSON object describing the connectors and their settings.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "page": 1,
+  "perPage": 20,
+  "total": 2,
+  "data": [
+    {
+      "id": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+      "actionTypeId": ".servicenow",
+      "name": "ServiceNow",
+      "config": {
+        "casesConfiguration": {
+          "mapping": [
+            {
+              "actionType": "overwrite",
+              "source": "title",
+              "target": "short_description"
+            },
+            {
+              "actionType": "append",
+              "source": "description",
+              "target": "description"
+            },
+            {
+              "actionType": "append",
+              "source": "comments",
+              "target": "comments"
+            }
+          ]
+        },
+        "apiUrl": "https://dev78437.service-now.com"
+      },
+      "referencedByCount": 0
+    },
+    {
+      "id": "131d4448-abe0-4789-939d-8ef60680b498",
+      "actionTypeId": ".servicenow",
+      "name": "Defector",
+      "config": {
+        "apiUrl": "https://dev87359.service-now.com",
+        "casesConfiguration": {
+          "mapping": [
+            {
+              "source": "title",
+              "target": "short_description",
+              "actionType": "append"
+            },
+            {
+              "source": "description",
+              "target": "description",
+              "actionType": "append"
+            },
+            {
+              "source": "comments",
+              "target": "comments",
+              "actionType": "append"
+            }
+          ]
+        }
+      },
+      "referencedByCount": 0
+    }
+  ]
+}
+--------------------------------------------------

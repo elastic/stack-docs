@@ -177,14 +177,15 @@ process. For more information, see <<stopping-ml>> and
 {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
 
 [float]
-== Rollup indices and index patterns are not supported
+[[ml-rollup-limitations]]
+=== Rollup indices and index patterns are not supported in {kib}
 
-Rollup indices and index patterns cannot be used in machine learning jobs or 
-{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
-{kib} or by using APIs. In {kib}, if you select an index, saved search, or index 
-pattern that uses the Rollup feature, the {ml} job creation wizards fail. 
-
-See {ref}/xpack-rollup.html[Rolling up historical data].
+Rollup indices and index patterns cannot be used in {anomaly-jobs} or 
+{dfeeds} in {kib}. If you select an index, saved search, or index pattern that
+uses {ref}/xpack-rollup.html[{rollup-features}], the {anomaly-job} creation
+wizards fail. If you use APIs to create {anomaly-jobs} that use
+{rollup-features}, the job results might not display properly in the
+*Single Metric Viewer* or *Anomaly Explorer* in {kib}.
 
 [float]
 [[ml-space-limitations]]

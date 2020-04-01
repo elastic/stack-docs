@@ -12,20 +12,24 @@ and alerts, see <<det-engine-terminology, detections terminology>>.
 
 The API has these endpoints:
 
-* `<kibana URL>/api/detection_engine/rules` - Signal detection rules CRUD 
-functions 
-* `<kibana URL>/api/detection_engine/index` - Signal index operations
-* `<kibana URL>/api/detection_engine/tags` - Aggregates and returns rule tags
-* `<kibana URL>/api/detection_engine/_import` - Imports rules from an ndjson 
-file
-* `<kibana URL>/api/detection_engine/_export` - Exports rules to an ndjson file
-* `<kibana URL>/api/detection_engine/privileges` - Returns the user's 
+* `<kibana host>:<port>/api/detection_engine/rules` - Signal detection rules
+CRUD functions
+* `<kibana host>:<port>/api/detection_engine/index` - Signal index operations
+* `<kibana host>:<port>/api/detection_engine/tags` - Aggregates and returns
+rule tags
+* `<kibana host>:<port>/api/detection_engine/_import` - Imports rules from an
+ndjson file
+* `<kibana host>:<port>/api/detection_engine/_export` - Exports rules to an
+ndjson file
+* `<kibana host>:<port>/api/detection_engine/privileges` - Returns the user's
 {kib} space and signal index permissions, and whether the user is authenticated
-* `<kibana URL>/api/detection_engine/signals` - Aggregates, queries, and
+* `<kibana host>:<port>/api/detection_engine/signals` - Aggregates, queries, and
 returns signals, and updates their statuses
-* `<kibana URL>/api/detection_engine/prepackaged` - Loads and retrieves the status of Elastic <<prebuilt-rules, prebuilt rules>>
+* `<kibana host>:<port>/api/detection_engine/prepackaged` - Loads and retrieves
+the status of Elastic <<prebuilt-rules, prebuilt rules>>
 
-Where `<kibana URL>` is the URL and port number of your Kibana instance.
+Where `<kibana host>` is the host name and `<port>` is the port of your {kib}
+instance.
 
 NOTE: In dev mode, the Kibana server runs behind a proxy which adds a random 
 path component to its URL.
@@ -38,7 +42,7 @@ how to work with and disable the random path component.
 If you are making calls to a {kib} space *other than* the `Default` space, the 
 space identifier is part of the endpoint's URL:
 
-`<kibana URL>/s/<space URL>/api/detection_engine/rules`
+`<kibana host>:<port>/s/<space URL>/api/detection_engine/rules`
 
 Where `<space URL>` is the URL identifier for the space.
 
@@ -79,6 +83,6 @@ from the {kib} `siem` space:
 
 [source,js]
 --------------------------------------------------
-curl -X GET "<kibana URL>/s/siem/api/detection_engine/rules/_find"
+curl -X GET "<kibana host>:<port>/s/siem/api/detection_engine/rules/_find"
 -H 'kbn-xsrf: kibana' -u <username>:<password>
 --------------------------------------------------

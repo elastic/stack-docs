@@ -1,6 +1,29 @@
 [[cases-overview]]
 [role="xpack"]
 
-= Cases
+= Cases (Beta)
 
-// Placeholder
+beta[]
+
+Cases are used to open and track security issues directly in the {siem-app}. 
+The UI lists the original reporter and all users who add comments. Comments
+support markup syntax, and allow linking to saved
+<<timelines-overview, Timelines>>.
+Additionally, from within the {siem-app} you can send cases to external case
+and incident management systems (currently {sn}). <<cases-ui-integrations>>
+describes how to set up external interfaces.
+
+You can create and manage cases via the UI or the <<cases-api-overview>>.
+
+IMPORTANT: To make sure you can view and open cases, see <<case-permisions>>.
+
+
+
+[float]
+[[case-permisions]]
+== Cases prerequisites
+
+To view cases, you need the {kib} space `Read` privilege for the Saved Objects
+Management feature. To create cases and add comments, you need the `All` {kib}
+space privilege for the Saved Objects Management feature. For more information
+about feature access, see {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges].

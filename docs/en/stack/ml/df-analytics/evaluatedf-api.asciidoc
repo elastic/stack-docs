@@ -159,3 +159,25 @@ analysis classified data points correctly with their actual class as well as the
 number of occurrences where it misclassified them with another class. The 
 multi-class confusion matrix provides a summary about the performance of the 
 {classification} analysis.
+
+Let's see two examples of the confusion matrix. The first is a confusion matrix 
+of a binary {classification} problem. 
+
+image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
+
+It is a two by two matrix because there are only two classes. The matrix shows 
+what proportion of the data points is correctly identified as members of a 
+certain class (`true` and `false` in this case) and what proportion of them is 
+misidentified.
+
+The confusion matrix of a multi-class {classification} problem becomes more 
+complicated as the number of classes grows.
+
+image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
+
+
+The matrix contains the actual labels on the left side while the predicted 
+labels are on the top. The proportion of correct and incorrect predictions is 
+filled in the table broken down for each class. This way you can examine the 
+ways how the {classanalysis} confused the different classes while it made the 
+predictions.

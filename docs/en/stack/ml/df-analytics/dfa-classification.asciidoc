@@ -64,7 +64,12 @@ otherwise the {classanalysis} may not provide the best predictions. Read
 The ensemble algorithm that we use in the {stack} for {classification} is a type 
 of boosting called boosted tree regression model which combines multiple weak 
 models into a composite one. We use decision trees to learn to predict the 
-probability that a data point belongs to a certain class.
+probability that a data point belongs to a certain class. A sequence of decision 
+trees are trained and every decision tree learns from the mistakes of the 
+previous one. Every tree is an iteration of the last one, hence it improves the 
+decision made by the previous tree. Both binary and multi-class {classification} 
+mostly use the same machinery since multi-class is an extension of binary 
+{classification}.
 //end::classification-algorithms[]
 
 

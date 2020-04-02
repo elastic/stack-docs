@@ -7,11 +7,13 @@ beta[]
 
 The SIEM Detections feature automatically searches for threats and creates 
 signals when they are detected. Signal detection rules define the conditions 
-for creating signals. The {siem-app} comes with
-<<prebuilt-rules, prebuilt rules>> that search for suspicious 
-activity on your network and hosts. For information on how to optimize the 
-prebuilt rules, see <<tuning-detection-signals>>. Additionally, you can 
-<<rules-ui-create, create your own rules>>.
+for creating signals. You can use the {kib} Alerts and Actions framework to
+send notifications when signals are generated.
+
+The {siem-app} comes with <<prebuilt-rules, prebuilt rules>> that search for
+suspicious activity on your network and hosts. For information on how to
+optimize the prebuilt rules, see <<tuning-detection-signals>>. Additionally,
+you can <<rules-ui-create, create your own rules>>.
 
 You can manage detection rules and signals via the UI or the
 <<rule-api-overview, Detections API>>.
@@ -143,6 +145,6 @@ If you see this message, you do not have the
 <<detections-permissions, required privileges>> to view the *Detections* page 
 and you should contact your {kib} administrator.
 
-NOTE: For *on-premises* {stack} deployments only, this message may be displayed 
-when the <<detections-permissions, `xpack.security.enabled`>> setting is 
-not enabled in the `elasticsearch.yml` file.
+NOTE: For *on-premises* {stack} deployments only, this message may be
+displayed when the <<detections-permissions, `xpack.security.enabled`>>
+setting is not enabled in the `elasticsearch.yml` file.

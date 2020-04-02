@@ -3,7 +3,7 @@
 == Configuring external connections
 
 You can push new cases and case updates to {sn}. To do this, you need to create
-a connector, which store the information required to push cases to {sn} via
+a connector, which stores the information required to push cases to {sn} via
 {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API].
 
 [float]
@@ -26,11 +26,11 @@ instance.
 instance.
 . To represent a SIEM case as a {sn} incident, these SIEM case fields are
 mapped to {sn} incidents fields:
-** `Title`: Mapped to the {sn} `Short description` field. When updates to SIEM
-case titles are sent to {sn}, the existing {sn} `Short description` field is
+** `Title`: Mapped to the {sn} `Short description` field. When an update to a
+SIEM case title is sent to {sn}, the existing {sn} `Short description` field is
 overwritten.
-** `Description`: Mapped to the {sn} `Description` field. When updates to SIEM
-case descriptions are sent to {sn}, the existing {sn} `Description` field is
+** `Description`: Mapped to the {sn} `Description` field. When an update to a
+SIEM case description is sent to {sn}, the existing {sn} `Description` field is
 overwritten.
 ** `Comments`: Mapped to the {sn} `Comments` field. When a new comment is added
 to a SIEM case, a new comment is appended to the {sn} incident.

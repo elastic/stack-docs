@@ -24,7 +24,7 @@ The loan example above is a binary {classification} problem where the two
 potential outputs are `safe` or `risky`. The music classification problem is an 
 example of multi-class {classification} where there are many different potential 
 outputs; one for every possible music genre. In the {version} version of the 
-{stack}, you can perform only binary {classanalysis}.
+{stack}, you can perform both binary and multi-class {classanalysis}.
 
 
 [discrete]
@@ -37,7 +37,7 @@ these fields as _{feature-vars}_ and _{depvar}_, respectively.
 {feature-vars-cap} are the values that the {depvar} value depends on. There are 
 three different types of {feature-vars} that you can use with our 
 {classification} algorithm: numerical, categorical, and boolean. Arrays are not 
-supported in the {feature-var} fields.
+supported in the {feature-var} fields.  
 
 
 [discrete]
@@ -82,7 +82,8 @@ The following sections help you understand and interpret the results of a
 The value of `class_probability` shows how likely it is that a given datapoint 
 belongs to a certain class. It is a value between 0 and 1. The higher the 
 number, the higher the probability that the data point belongs to the named 
-class. This information is stored in the `top_classes` array for each document in your destination index. See the
+class. This information is stored in the `top_classes` array for each document 
+in your destination index. See the
 {ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
 section in the {classification} example.
 
@@ -130,15 +131,17 @@ include::{docdir}/shared-ml-concepts.asciidoc[tag=feature-importance]
 You can measure how well the model has performed on your dataset by using the 
 `classification` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The metric that the 
-evaluation provides you is the multi-class confusion matrix which tells you how 
-many times a given data point that belongs to a given class was classified 
-correctly and incorrectly. In other words, how many times your data point that 
-belongs to the X class was mistakenly classified as Y.
+evaluation provides you is the confusion matrix for binary {classification} and 
+multi-class confusion matrix for multi-class {classification}. These matrices 
+tell you how many times a given data point that belongs to a given class was 
+classified correctly and incorrectly. In other words, how many times your data 
+point that belongs to the X class was mistakenly classified as Y or Z or any 
+other class in the dataset other than X.
 
 Another crucial measurement is how well your model performs on unseen data 
 points. To assess how well the trained model will perform on data it has never 
 seen before, you must set aside a proportion of the training dataset for 
-testing. This split of the dataset is the testing dataset. Once the model has 
+testing. This split of the dataset is the _testing dataset_. Once the model has 
 been trained, you can let the model predict the value of the data points it has 
 never seen before and compare the prediction to the actual value by using the 
 evaluate {dfanalytics} API.

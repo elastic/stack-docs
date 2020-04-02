@@ -24,7 +24,8 @@ The loan example above is a binary {classification} problem where the two
 potential outputs are `safe` or `risky`. The music classification problem is an 
 example of multi-class {classification} where there are many different potential 
 outputs; one for every possible music genre. In the {version} version of the 
-{stack}, you can perform both binary and multi-class {classanalysis}.
+{stack}, you can perform both binary and multi-class {classanalysis}. The 
+maximum number of classes for multi-class {classification} is 30.
 
 
 [discrete]
@@ -49,11 +50,25 @@ means that you need to supply a labeled training dataset that has some
 {feature-vars} and a {depvar}. The {classification} algorithm learns the 
 relationships between the features and the {depvar}. Once you’ve trained the 
 model on your training dataset, you can reuse the knowledge that the model has 
-learned about the relationships between the data points to classify new data. 
-Your training dataset should be approximately balanced which means the number of 
-data points belonging to the various classes should not be widely different, 
-otherwise the {classanalysis} may not provide the best predictions. Read 
-<<dfa-classification-imbalanced-classes>> to learn more.
+learned about the relationships between the data points to classify new data. In 
+case of multi-class {classification} an automated process called stratification 
+makes sure that the proportions of each class in the training data are equal so 
+that the training is consistent. 
+
+Your training dataset should be approximately balanced. It means the number of 
+data points belonging to the various classes should not be widely different. It 
+is also necessary to have sufficient representation from all classes, so that 
+the model can learn about each classes enough, otherwise the {classanalysis} may 
+not provide the best predictions.
+
+The sufficient representation of the classes always depends on the complexity 
+and the characteristics of the dataset. Complex decision boundaries – the rules 
+that separate the different classes in a dataset – are harder to learn and 
+require more data points per class. For this reason, it is not possible to 
+declare a hard rule on how much data is enough per class that fits all use 
+cases.
+
+Read <<dfa-classification-imbalanced-classes>> to learn more.
 
 
 [discrete]
@@ -72,6 +87,20 @@ mostly use the same machinery since multi-class is an extension of binary
 {classification}.
 //end::classification-algorithms[]
 
+
+[discrete]
+[[dfa-classification-performance]]
+==== {classification-cap} performance
+
+As a rule of thumb, multi-class {classification} takes more time to run than 
+binary. The runtime of the analysis scales approximately linearly with the 
+number of involved documents below roughly 200.000 data points. Therefore, if 
+you double the number of documents, then the runtime of the analysis doubles 
+respectively. Above 200.000 data points, runtime increases faster.
+
+The number of classes also affects the runtime of the analysis. The relationship 
+between these two factors is about linear. 
+ 
 
 [discrete]
 [[dfa-classification-interpret]]

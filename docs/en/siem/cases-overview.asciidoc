@@ -6,11 +6,11 @@
 beta[]
 
 Cases are used to open and track security issues directly in the {siem-app}. 
-The UI lists the original reporter and all users who add comments. Comments
-support markdown syntax, and allow linking to saved
-<<timelines-overview, Timelines>>.
-Additionally, from within the {siem-app} you can send cases to external systems
-(currently {sn}). <<cases-ui-integrations>> describes how to set this up.
+The UI lists the original reporter and all users who contribute to the case
+(`participants`). Comments support markdown syntax, and allow linking to saved
+<<timelines-overview, Timelines>>. Additionally, from within the {siem-app} you
+can send cases to external systems (currently {sn}). <<cases-ui-integrations>>
+describes how to set this up.
 
 You can create and manage cases via the UI or the <<cases-api-overview>>.
 
@@ -31,8 +31,9 @@ Open a new case to keep track of security issues and share their details with co
 TIP: In the `Description` area, you can use
 https://www.markdownguide.org/cheat-sheet[markdown] syntax and insert a
 timeline link (click the icon in the top right corner of the area).
+
 . When ready, create the case.
-. If external integrations are configured, you can send the case to {sn}.
+. If external connections are configured, you can send the case to {sn}.
 
 [role="screenshot"]
 image::images/cases-ui-open.png[]
@@ -48,8 +49,9 @@ To view a case, click on its name. You can then:
 
 * Add a new comment.
 * Edit existing comments and the case's description.
-* Send updates to {sn} (if external integrations are configured).
+* Send updates to {sn} (if external connections are configured).
 * Close the case.
+* Reopen a closed case.
 
 [float]
 [[case-permisions]]

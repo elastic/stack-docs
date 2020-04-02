@@ -1,3 +1,46 @@
 [[cases-ui-integrations]]
 [role="xpack"]
-== Configuring external integrations
+== Configuring external connections
+
+You can push new cases and case updates to {sn}. To do this, you need to create
+a connector, which store the information required to push cases to {sn} via
+{sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API].
+
+[float]
+=== Create a new connector
+
+. Go to *SIEM* -> *Cases* -> *Edit external connection*.
++
+[role="screenshot"]
+image::images/cases-ui-connector.png[]
+. Click `Add new connector option`, and then click {sn}.
++
+[role="screenshot"]
+image::images/cases-ui-sn-connector.png[]
+. Fill in the following:
+* _Connector name_: A name for the connector.
+* _URL_: The URL of the {sn} instance to which you want to send cases.
+* _Username_: The username of the {sn} account used to access the {sn}
+instance.
+* _Password_: The password of the the {sn} account used to access the {sn}
+instance.
+. To represent a SIEM case as a {sn} incident, these SIEM case fields are
+mapped to {sn} incidents fields:
+** `Title`: Mapped to the {sn} `Short description` field. When updates to SIEM
+case titles are sent to {sn}, the existing {sn} `Short description` field is
+overwritten.
+** `Description`: Mapped to the {sn} `Description` field. When updates to SIEM
+case descriptions are sent to {sn}, the existing {sn} `Description` field is
+overwritten.
+** `Comments`: Mapped to the {sn} `Comments` field. When a new comment is added
+to a SIEM case, a new comment is appended to the {sn} incident.
+. Save the connector.
+
+[float]
+=== Change connectors
+
+You can configure more than one connector, and change the connector used to
+send cases to {sn}.
+
+. Go to *SIEM* -> *Cases* -> *Edit external connection*.
+. Select the required connector from the `Incident management system` list.

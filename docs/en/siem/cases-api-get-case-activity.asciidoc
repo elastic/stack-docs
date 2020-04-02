@@ -1,0 +1,111 @@
+[[cases-api-get-case-activity]]
+=== Get all case activity
+
+Returns all user activity for the specified case.
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/<case ID>/user_actions`
+
+===== URL parts
+
+The URL must include the `case ID` of the case for which you are retrieving 
+activity. Call <<cases-api-find-cases>> to retrieve case IDs.
+
+===== Example request
+
+Gets all comments for case ID `a18b38a0-71b0-11ea-a0b2-c51ea50a58e2`:
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/a18b38a0-71b0-11ea-a0b2-c51ea50a58e2/user_actions
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+==== Response payload
+
+A JSON array containing all user activity for the specified case.
+
+===== Response example
+
+[source,json]
+--------------------------------------------------
+[
+  {
+    "action_field": [
+      "description",
+      "status",
+      "tags",
+      "title"
+    ],
+    "action": "create",
+    "action_at": "2020-04-02T15:25:19.088Z",
+    "action_by": {
+      "email": "ahunley@imf.usa.gov",
+      "full_name": "Alan Hunley",
+      "username": "ahunley"
+    },
+    "new_value": "{\"title\":\"This case will self-destruct in 5 seconds\",\"tags\":[\"phishing\",\"social engineering\"],\"description\":\"James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants.\"}",
+    "old_value": null,
+    "action_id": "29ce6370-74f6-11ea-b83a-553aecdb28b6",
+    "case_id": "293f1bc0-74f6-11ea-b83a-553aecdb28b6",
+    "comment_id": null
+  },
+  {
+    "action_field": [
+      "comment"
+    ],
+    "action": "create",
+    "action_at": "2020-04-02T15:28:03.034Z",
+    "action_by": {
+      "email": "moneypenny@hms.gov.uk",
+      "full_name": "Ms Moneypenny",
+      "username": "moneypenny"
+    },
+    "new_value": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+    "old_value": null,
+    "action_id": "8b0d6870-74f6-11ea-b83a-553aecdb28b6",
+    "case_id": "293f1bc0-74f6-11ea-b83a-553aecdb28b6",
+    "comment_id": "8af6ac20-74f6-11ea-b83a-553aecdb28b6"
+  },
+  {
+    "action_field": [
+      "comment"
+    ],
+    "action": "update",
+    "action_at": "2020-04-02T15:34:01.118Z",
+    "action_by": {
+      "email": "jbond@hms.gov.uk",
+      "full_name": "James Bond",
+      "username": "_007"
+    },
+    "new_value": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives. Even worse, he likes baked beans.",
+    "old_value": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+    "action_id": "60dafd50-74f7-11ea-b83a-553aecdb28b6",
+    "case_id": "293f1bc0-74f6-11ea-b83a-553aecdb28b6",
+    "comment_id": "8af6ac20-74f6-11ea-b83a-553aecdb28b6"
+  },
+  {
+    "action_field": [
+      "comment"
+    ],
+    "action": "create",
+    "action_at": "2020-04-02T17:48:16.293Z",
+    "action_by": {
+      "email": "classified@hms.oo.gov.uk",
+      "full_name": "Classified",
+      "username": "M"
+    },
+    "new_value": "I'm on it.",
+    "old_value": null,
+    "action_id": "223f7bd0-750a-11ea-b83a-553aecdb28b6",
+    "case_id": "293f1bc0-74f6-11ea-b83a-553aecdb28b6",
+    "comment_id": "21a844e0-750a-11ea-b83a-553aecdb28b6"
+  }
+]
+--------------------------------------------------

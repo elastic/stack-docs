@@ -1,0 +1,485 @@
+[[cases-actions-api-connectors]]
+=== Configure and send cases to external interfaces
+
+You can create {sn} incidents from {siem-soln} cases. This requires creating
+a {sn} connector using the {kib} Actions API. Connectors store the information
+required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such as the {sn} URL,
+account credentials, and the field mappings required for representing a
+{siem-soln} case as a {sn} incident.
+
+To send cases to {sn} and keep the {siem-ui} updated:
+
+. <<register-connector>>: Create the connector.
+. <<assign-connector>> or <<case-api-update-connector>>: If required, configure
+connector options.
+. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to {sn}. You
+must store the returned data as it is required for updating the
+`external_service` object in the {siem-soln} case.
+. [[update-case-sn-data]]<<cases-api-associate-sn-incident>>: Update the
+{siem-soln} case with the associated {sn} incident data returned in
+<<sn-returned-data, step 3>>.
+. Repeat <<sn-returned-data, step 3>> and <<update-case-sn-data, step 4>> each
+time you open or update a case.
+
+
+
+[[register-connector]]
+==== Create connector
+
+Creates a {sn} connector, which can then be used to open {sn} incidents from
+{siem-soln} cases.
+
+===== Request URL
+
+`POST <kibana host>/<port>/api/action`
+
+===== Request body
+
+A JSON object with these fields:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`actionTypeId` |String |Must be: `.servicenow`. |Yes
+|`config` |<<config-schema, config>> |Object containing the action's
+configuration. |Yes
+|`secrets` |Object a|Object containing the {sn} account credentials used
+to create and update incidents:
+
+* `username` (string): The account username.
+* `password` (string): The account password.
+
+|Yes
+
+|`name` |String |The registered {sn} connector. |Yes
+|==============================================
+
+[[config-schema]]
+*`config` schema*
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`casesConfiguration` |Object a|Contains a `mapping` array, which determines how {siem-soln} case fields are mapped to {sn} incident fields:
+
+* `source` (string): The name of the {siem-soln} case field, which can be 
+`title`, `description`, or `comments`.
+* `target` (string): The name of the mapped {sn} incident field. For example: `short_description`, `description`, and `comments`.
+* `actionType` (string): Determines whether {siem-soln} case updates overwrite 
+or append to the mapped {sn} incident fields. Valid values are `overwrite` and
+`append`.
+
+|Yes
+
+|`apiUrl` |String |URL of the {sn} instance. |Yes
+|==============================================
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+POST api/action
+{
+  "actionTypeId": ".servicenow",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title", <1>
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description", <2>
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments", <3>
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://dev87359.service-now.com"
+  },
+  "secrets": {
+    "username": "admin",
+    "password": "securePassword123!"
+  },
+  "name": "ServiceNow"
+}
+--------------------------------------------------
+// KIBANA
+
+<1> {siem-soln} case `title` fields are mapped to {sn} `short_description`
+fields. When a {siem-soln} `title` field is updated and sent to {sn}, the {sn}
+`short_description` field is overwritten.
+
+<2> {siem-soln} case `description` fields are mapped to {sn} `description`
+fields. When a {siem-soln} `description` field is updated and sent to {sn},
+the {sn} `description` field is overwritten.
+
+<3> {siem-soln} case `comments` fields are mapped to {sn} `comments` fields.
+When a {siem-soln} `comments` field is updated and sent to {sn}, the updated
+text is appended to the {sn} `comments` field.
+
+===== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Response payload
+
+A JSON object with a connector `id` that is required to push cases to {sn}.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+  "actionTypeId": ".servicenow",
+  "name": "ServiceNow",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://dev78437.service-now.com"
+  }
+}
+--------------------------------------------------
+
+[[update-connector]]
+==== Update connector
+
+Updates a {sn} connector.
+
+===== Request URL
+
+`PUT <kibana host>/<port>/api/action/<connector ID>`
+
+===== URL parts
+
+The URL must include the `connector ID` of the connector you are updating.
+Call <<cases-api-find-connectors>> to retrieve connector IDs.
+
+===== Request body
+
+A JSON object with the fields you want to update:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`config` |<<config-update-schema, config>> |Object containing the action's
+configuration. |Yes
+|`secrets` |Object a|Object containing the {sn} account credentials used
+to create and update incidents:
+
+* `username` (string): The account username.
+* `password` (string): The account password.
+
+|Yes
+
+|`name` |String |The registered {sn} connector. |Yes
+|==============================================
+
+[[config-update-schema]]
+*`config` schema*
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`casesConfiguration` |Object a|Contains a `mapping` array, which determines how {siem-soln} case fields are mapped to {sn} incident fields:
+
+* `source` (string): The name of the {siem-soln} case field, which can be 
+`title`, `description`, or `comments`.
+* `target` (string): The name of the mapped {sn} incident field. For example: `short_description`, `description`, and `comments`.
+* `actionType` (string): Determines whether {siem-soln} case updates overwrite 
+or append to the mapped {sn} incident fields. Valid values are `overwrite` and
+`append`.
+
+|Yes
+
+|`apiUrl` |String |URL of the {sn} instance. |Yes
+|==============================================
+
+===== Example request
+
+Updates the `description` field mapping of connector ID
+`61787f53-4eee-4741-8df6-8fe84fa616f7`:
+
+[source,sh]
+--------------------------------------------------
+PUT api/action/61787f53-4eee-4741-8df6-8fe84fa616f7
+{
+  "name": "ServiceNow",
+  "config": {
+    "apiUrl": "https://dev78437.service-now.com",
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "append"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    }
+  },
+  "secrets": {
+    "username": "admin",
+    "password": "me4Vered1!"
+  }
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Response payload
+
+The updated JSON connector object.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+  "actionTypeId": ".servicenow",
+  "name": "ServiceNow",
+  "config": {
+    "apiUrl": "https://dev78437.service-now.com",
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title",
+          "target": "short_description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "append"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    }
+  }
+}
+--------------------------------------------------
+
+[[cases-actions-api-execute]]
+==== Create or update an external incident
+
+Creates a new or updates an existing {sn} incident from a {siem-soln} case.
+
+NOTE: You can only send cases to external system after you have
+<<register-connector, created>> a connector. After you have sent the case to
+{sn}, you must call <<cases-api-associate-sn-incident>> to update the
+{siem-soln} case with the relevant {sn} incident details.
+
+===== Request URL
+
+`POST <kibana host>/<port>/api/action/<connector ID>/_execute`
+
+===== URL parts
+
+The URL must include the the ServiceNow connector ID. Call
+<<cases-get-connector>> to retrieve the currently used connector ID, or
+<<cases-api-find-connectors>> to retrieve all connectors IDs.
+
+===== Request body
+
+A JSON object with these fields:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`params` |<<case-conf-params, params>> |Contains the {siem-soln} case details
+for which you are opening a {sn} incident. |Yes
+|==============================================
+
+[[case-conf-params]]
+*`params` schema*
+
+|==============================================
+|Name |Type |Description |Required
+
+|`caseId` |String |The case ID. |Yes
+|`createdAt` |String |The time the case was created, using ISO 8601 with UTC
+notation. For example, `2020-03-31T06:40:21.674Z`. |Yes
+|`createdBy` |Object a|The user who created the case:
+
+* `fullName` (string): The user's full name.
+* `username` (string): The user's username.
+
+|Yes
+
+|`comments` |Object[] a|Array containing case comments:
+
+* `commentId` (string, required): The comment ID.
+* `comment` (string, required): The comment text.
+* `createdAt` (string, required): The time the comment was created, using ISO 8601 with
+UTC notation.
+* `createdBy` (object, required): The user who created the comment, containing
+`fullName` and `username` fields.
+* `updatedBy` (object, optional): The user who last updated the comment,
+containing `fullName` and `username` fields.
+
+|No
+
+|`description` |String |The case description. |No
+|`incidentId` |String |The {sn} incident ID. Required when updating an existing
+{sn} incident. |No
+|`title` |String |The case title. |Yes
+|`updatedAt` |String |The time the case was updated, using ISO 8601 with UTC
+notation. |No
+|`updatedBy` |Object a|The user who last updated the case:
+
+* `fullName` (string): The user's full name.
+* `username` (string): The user's username.
+
+|No
+|==============================================
+
+NOTE: When updating an existing case, call <<cases-api-get-case>> or
+<<cases-api-find-cases>> to retrieve the `incidentId`. In the case JSON
+object, the `incidentId` value is stored in the `external_id` field.
+
+===== Example requests
+
+Creates a new {sn} incident:
+
+[source,sh]
+--------------------------------------------------
+POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
+{
+  "params": {
+    "caseId": "c1472f70-732a-11ea-a0b2-c51ea50a58e2",
+    "createdAt": "2020-03-31T08:36:45.661Z",
+    "createdBy": {
+      "fullName": "Alan Hunley",
+      "username": "ahunley"
+    },
+    "comments": [
+      {
+        "commentId": "dda30310-732a-11ea-a0b2-c51ea50a58e2",
+        "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+        "createdAt": "2020-03-31T08:37:33.240Z",
+        "createdBy": {
+          "fullName": "Ms Moneypenny",
+          "username": "moneypenny"
+        }
+      }
+    ],
+    "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active.",
+    "title": "This case will self-destruct in 5 seconds"
+  }
+}
+--------------------------------------------------
+// KIBANA
+
+Updates an existing {sn} incident:
+
+[source,sh]
+--------------------------------------------------
+POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
+{
+  "params": {
+    "caseId": "c1472f70-732a-11ea-a0b2-c51ea50a58e2",
+    "createdAt": "2020-03-31T08:36:45.661Z",
+    "createdBy": {
+      "fullName": "Alan Hunley",
+      "username": "ahunley"
+    },
+    "comments": [
+      {
+        "commentId": "8ef6d660-732f-11ea-a0b2-c51ea50a58e2",
+        "comment": "That is nothing - Ethan Hunt answered a targeted social media campaign promoting phishy pension schemes to IMF operatives.",
+        "createdAt": "2020-03-31T09:11:08.736Z",
+        "createdBy": {
+          "fullName": "Ms Moneypenny",
+          "username": "moneypenny"
+        }
+      }
+    ],
+    "incidentId": "cc6ef44bdb7300106ba884da0b9619cf",
+    "title": "This case will self-destruct in 5 seconds"
+  }
+}
+--------------------------------------------------
+// KIBANA
+
+===== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Response payload
+
+A JSON object with the {sn} incident number and link to the {sn} incident.
+
+IMPORTANT: You need the returned information to associate it with the original
+{siem-soln} case. To add the {sn} incident details to the {siem-soln} case,
+call <<cases-api-associate-sn-incident>>.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "status": "ok",
+  "actionId": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+  "data": {
+    "number": "INC0010012",
+    "incidentId": "62dc3c8bdb7300106ba884da0b9619ea",
+    "pushedDate": "2020-03-31T09:01:33.000Z",
+    "url": "https://dev78437.service-now.com/nav_to.do?uri=incident.do?sys_id=62dc3c8bdb7300106ba884da0b9619ea",
+    "comments": [
+      {
+        "commentId": "dda30310-732a-11ea-a0b2-c51ea50a58e2",
+        "pushedDate": "2020-03-31T09:01:34.000Z"
+      }
+    ]
+  }
+}
+--------------------------------------------------

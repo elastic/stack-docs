@@ -1,0 +1,77 @@
+[[cases-api-get-case]]
+=== Get case
+
+Returns the specified case.
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/<case ID>`
+
+===== URL parts
+
+The URL must include the `case ID` of the case you are retrieving. Call
+<<cases-api-find-cases>> to retrieve case IDs.
+
+===== URL query parameters
+ 
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`includeComments` |Boolean |Determines whether case comments are 
+returned. |No, defaults to `true`.
+|==============================================
+
+===== Example request
+
+Returns case ID `a18b38a0-71b0-11ea-a0b2-c51ea50a58e2` without comments:
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/a18b38a0-71b0-11ea-a0b2-c51ea50a58e2?includeComments=false
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+==== Response payload
+
+The requested case JSON object.
+
+===== Response example
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "a18b38a0-71b0-11ea-a0b2-c51ea50a58e2",
+  "version": "Wzk4LDFd",
+  "comments": [],
+  "totalComment": 0,
+  "closed_at": null,
+  "closed_by": null,
+  "created_at": "2020-03-29T11:30:02.658Z",
+  "created_by": {
+    "email": "ahunley@imf.usa.gov",
+    "full_name": "Alan Hunley",
+    "username": "ahunley"
+  },
+  "external_service": null,
+  "updated_at": "2020-03-29T12:01:50.244Z",
+  "updated_by": {
+    "full_name": "Classified",
+    "email": "classified@hms.oo.gov.uk",
+    "username": "M"
+  },
+  "description": "James Bond clicked on a highly suspicious email banner advertising cheap holidays for underpaid civil servants. Operation bubblegum is active. Repeat - operation bubblegum is now active!",
+  "title": "This case will self-destruct in 5 seconds",
+  "status": "open",
+  "tags": [
+    "phishing",
+    "social engineering",
+    "bubblegum"
+  ]
+}
+--------------------------------------------------

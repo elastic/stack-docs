@@ -1,0 +1,43 @@
+[[cases-get-connector]]
+=== Get current connector
+
+Retrieves the currently used connector.
+
+NOTE: For more information on connectors, see <<cases-actions-api-connectors>>.
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/configure`
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/configure
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "connector_id": "61787f53-4eee-4741-8df6-8fe84fa616f7",
+  "closure_type": "close-by-user",
+  "connector_name": "ServiceNow",
+  "created_at": "2020-03-30T13:31:38.083Z",
+  "created_by": {
+    "email": "admin@hms.gov.uk",
+    "full_name": "Mr Admin",
+    "username": "admin"
+  },
+  "updated_at": null,
+  "updated_by": null,
+  "version": "WzE3NywxXQ=="
+}
+--------------------------------------------------

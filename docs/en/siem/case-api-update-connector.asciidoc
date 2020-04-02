@@ -20,7 +20,8 @@ A JSON object with these fields:
 |Name |Type |Description |Required
 
 |`connector_id` |String |The ID of the connector you want to use for sending
-cases to external systems. |Yes
+cases to external systems. |No
+|`connector_name` |String |The connector name. |No
 |`closure_type` |String a|Determines whether a case is automatically closed in
 the {siem-app} when it is pushed to {sn}. Valid values are:
 
@@ -28,7 +29,7 @@ the {siem-app} when it is pushed to {sn}. Valid values are:
 are pushed to {sn}.
 * `close-by-user`: {siem-app} cases are not automatically closed.
 
-|Yes
+|No
 
 |`version` |String |The connector version. |Yes
 |==============================================

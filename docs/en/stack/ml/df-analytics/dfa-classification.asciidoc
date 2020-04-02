@@ -165,12 +165,12 @@ include::{docdir}/shared-ml-concepts.asciidoc[tag=feature-importance]
 You can measure how well the model has performed on your dataset by using the 
 `classification` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The metric that the 
-evaluation provides you is the confusion matrix for binary {classification} and 
-multi-class confusion matrix for multi-class {classification}. These matrices 
-tell you how many times a given data point that belongs to a given class was 
-classified correctly and incorrectly. In other words, how many times your data 
-point that belongs to the X class was mistakenly classified as Y or Z or any 
-other class in the dataset other than X.
+evaluation provides you is a confusion matrix both for binary {classification} 
+and multi-class {classification}. The more classes you have, the more complex 
+the confusion matrix is. The matrix tells you how many data points that belong 
+to a given class were classified correctly and incorrectly. In other words, how 
+many data points that belong to the X class were classified correctly and 
+mistakenly classified as Y or Z or any other class in the dataset other than X.
 
 Another crucial measurement is how well your model performs on unseen data 
 points. To assess how well the trained model will perform on data it has never 

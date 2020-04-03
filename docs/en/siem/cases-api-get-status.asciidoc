@@ -1,0 +1,31 @@
+[[cases-api-get-status]]
+=== Get status
+
+Returns the number of open and closed cases.
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/status`
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/status
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "count_open_cases": 27,
+  "count_closed_cases": 1198
+}
+--------------------------------------------------

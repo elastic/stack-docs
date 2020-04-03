@@ -1,0 +1,59 @@
+[[cases-ui-integrations]]
+[role="xpack"]
+== Configuring external connections
+
+You can push new cases and case updates to {sn}. To do this, you need to create
+a connector, which stores the information required to push cases to {sn} via
+{sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API].
+After you have created a connector, you can set {siem-soln} cases to close
+automatically when they are sent to {sn}.
+
+[float]
+=== Create a new connector
+
+. Go to *SIEM* -> *Cases* -> *Edit external connection*.
++
+[role="screenshot"]
+image::images/cases-ui-connector.png[]
+. Click `Add new connector option`, and then click {sn}.
++
+[role="screenshot"]
+image::images/cases-ui-sn-connector.png[]
+. Fill in the following:
+* _Connector name_: A name for the connector.
+* _URL_: The URL of the {sn} instance to which you want to send cases.
+* _Username_: The username of the {sn} account used to access the {sn}
+instance.
+* _Password_: The password of the the {sn} account used to access the {sn}
+instance.
+. To represent a SIEM case as a {sn} incident, these SIEM case fields are
+mapped to {sn} incidents fields as follows:
+** `Title`: Mapped to the {sn} `Short description` field. When an update to a
+SIEM case title is sent to {sn}, the existing {sn} `Short description` field is
+overwritten.
+** `Description`: Mapped to the {sn} `Description` field. When an update to a
+SIEM case description is sent to {sn}, the existing {sn} `Description` field is
+overwritten.
+** `Comments`: Mapped to the {sn} `Comments` field. When a comment is updated
+in a SIEM case, a new comment is added to the {sn} incident.
+. Save the connector.
+
+[float]
+=== Close sent cases automatically
+
+To close cases when they are sent to {sn}, select the
+_Automatically close SIEM cases when pushing new incident to third-party_
+option.
+
+[float]
+=== Change and update connectors
+
+You can create additional connectors, update existing connectors, and change
+the connector used to send cases to {sn}.
+
+. To change the connector used to send cases to {sn}: 
+.. Go to *SIEM* -> *Cases* -> *Edit external connection*.
+.. Select the required connector from the `Incident management system` list.
+. To update an existing connector:
+.. Click `Update connector`.
+.. Update the the connector fields as required.

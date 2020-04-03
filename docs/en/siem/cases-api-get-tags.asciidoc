@@ -1,0 +1,35 @@
+[[cases-api-get-tag]]
+=== Get tags
+
+Aggregates and returns all unique tags from all cases.
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/tags`
+
+===== Example request
+
+Gets all tags for all cases:
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/tags
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Example response
+
+[source,json]
+--------------------------------------------------
+[
+  "windows",
+  "phishing",
+  "social engineering",
+  "bubblegum"
+]
+--------------------------------------------------

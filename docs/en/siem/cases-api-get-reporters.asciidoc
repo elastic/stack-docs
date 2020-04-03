@@ -1,0 +1,39 @@
+[[cases-api-get-reporters]]
+=== Get reporters
+
+Returns all case reporters (users who opened cases).
+
+==== Request URL
+
+`GET <kibana host>/<port>/api/cases/reporters`
+
+===== Example request
+
+[source,sh]
+--------------------------------------------------
+GET api/cases/reporters
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+   
+===== Example response
+
+[source,json]
+--------------------------------------------------
+[
+  {
+    "full_name": "Alan Hunley",
+    "email": "ahunley@imf.usa.gov",
+    "username": "ahunley"
+  },
+  {
+    "full_name": "Rat Hustler",
+    "email": "jrhustler@aol.com",
+    "username": "rhustler"
+  }
+]
+--------------------------------------------------

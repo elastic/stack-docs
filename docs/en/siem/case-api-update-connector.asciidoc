@@ -1,0 +1,83 @@
+[[case-api-update-connector]]
+=== Update case configurations
+
+Updates the connector's case closure settings.
+
+Connectors are used to interface with external systems. You can only call this
+method after you have created a connector (see <<register-connector>>). After a
+connector has been created and assigned, call <<cases-actions-api-execute>> to
+send cases to the external system.
+
+==== Request URL
+
+`PATCH <kibana host>/<port>/api/cases/configure`
+
+==== Request body
+
+A JSON object with these fields:
+
+|==============================================
+|Name |Type |Description |Required
+
+|`connector_id` |String |The ID of the connector you want to use for sending
+cases to external systems. |No
+|`connector_name` |String |The connector name. |No
+|`closure_type` |String a|Determines whether a case is automatically closed in
+the {siem-app} when it is pushed to {sn}. Valid values are:
+
+* `close-by-pushing`: {siem-app} cases are automatically closed when they
+are pushed to {sn}.
+* `close-by-user`: {siem-app} cases are not automatically closed.
+
+|No
+
+|`version` |String |The connector version. |Yes
+|==============================================
+
+NOTE: Call <<cases-get-connector>> to retrieve the version value, and
+<<cases-api-find-connectors>> to retrieve connector IDs.
+
+===== Example request
+
+Changes the connector's case closure option: 
+
+[source,sh]
+--------------------------------------------------
+PATCH api/cases/configure
+{
+  "connector_id": "131d4448-abe0-4789-939d-8ef60680b498",
+  "closure_type": "close-by-pushing",
+  "version": "WzIwMiwxXQ=="
+}
+--------------------------------------------------
+// KIBANA
+
+==== Response code
+
+`200`:: 
+   Indicates a successful call.
+
+===== Example response
+
+[source,json]
+--------------------------------------------------
+{
+  "connector_id": "131d4448-abe0-4789-939d-8ef60680b498",
+  "closure_type": "close-by-pushing",
+  "connector_name": "ServiceNow",
+  "created_at": "2020-03-30T13:31:38.083Z",
+  "created_by": {
+    "email": "admin@hms.gov.uk",
+    "full_name": "Ms Admin",
+    "username": "admin"
+  },
+  "updated_at": "2020-03-31T06:21:35.759Z",
+  "updated_by": {
+    "email": "admin@hms.gov.uk",
+    "full_name": "Ms Admin",
+    "username": "admin"
+  },
+  "version": "WzIwMywxXQ=="
+}
+--------------------------------------------------
+

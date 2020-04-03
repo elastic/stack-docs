@@ -1,6 +1,65 @@
 [[cases-overview]]
 [role="xpack"]
 
-= Cases
+= Cases (Beta)
 
-// Placeholder
+beta[]
+
+Cases are used to open and track security issues directly in the {siem-app}. 
+They list the original reporter and all users who contribute to a case
+(`participants`). Comments support markdown syntax, and allow linking to saved
+<<timelines-overview, Timelines>>. Additionally, you can send cases to external
+systems from within the {siem-app} (currently {sn}). <<cases-ui-integrations>>
+describes how to set this up.
+
+You can create and manage cases via the UI or the <<cases-api-overview>>.
+
+IMPORTANT: To make sure you can view and open cases, see <<case-permisions>>.
+
+[role="screenshot"]
+image::images/cases-ui-home.png[]
+
+[float]
+[[cases-ui-open]]
+== Open a new case
+
+Open a new case to keep track of security issues and share their details with colleagues.
+
+. Go to *SIEM* -> *Cases* -> *Create new case*.
+. Give the case a name, and add a description and any relevant tags.
++
+TIP: In the `Description` area, you can use
+https://www.markdownguide.org/cheat-sheet[markdown] syntax and insert a
+timeline link (click the icon in the top right corner of the area).
+
+. When ready, create the case.
+. If external connections are configured, you can send the case to {sn}.
+
+[role="screenshot"]
+image::images/cases-ui-open.png[]
+
+[float]
+[[cases-ui-manage]]
+== Manage existing cases
+
+You can search existing cases, and filter them by tags, reporter, and status
+(open or closed).
+
+To view a case, click on its name. You can then:
+
+* Add a new comment.
+* Edit existing comments and the case's description.
+* Send updates to {sn} (if external connections are configured).
+* Close the case.
+* Reopen a closed case.
+* Edit tags.
+* Refresh cases to retrieve the latest updates.
+
+[float]
+[[case-permisions]]
+== Cases prerequisites
+
+To view cases, you need the {kib} space `Read` privilege for the Saved Objects
+Management feature. To create cases and add comments, you need the `All` {kib}
+space privilege for the Saved Objects Management feature. For more information,
+see {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges].

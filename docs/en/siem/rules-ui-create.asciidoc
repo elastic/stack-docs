@@ -25,7 +25,7 @@ On the Rules page, you can:
 * <<load-prebuilt-rules>>
 * <<select-all-prebuilt-rules>>
 * <<create-rule-ui, Create your own rules>>
-* <<manage-rules-ui, Clone, delete, activate, and deactivate rules>>
+* <<manage-rules-ui, Clone, edit, delete, activate, and deactivate rules>>
 * <<import-export-rules-ui>>
 * <<troubleshoot-signals>>
 
@@ -70,14 +70,30 @@ ones.
 [[create-rule-ui]]
 === Create a new rule
 
+You can create two types of rules:
+
+* *Custom query*: Query-based rule, which searches the defined indices and creates a signal when a document matches the rule's query.
+* *Machine learning*: {ml-cap} rule, which creates a signal when a {ml} job discovers an anomaly above the defined threshold (see <<machine-learning>>).
+
+IMPORTANT: You can only create {ml} jobs when you have a
+https://www.elastic.co/subscriptions[Platinum License] or you are using a
+{ess-trial}[Cloud] deployment.
+
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
 +
 The *Create new rule* page is displayed.
 [role="screenshot"]
-image::create-new-rule.png[]
-. Define which {es} indices the rule analyzes for signals.
-. Use the filter and query fields to create the criteria used for detecting 
+image::images/create-new-rule.png[]
+. Do *one* of the following:
+* To create a rule based on a {ml} anomaly threshold, select _Machine Learning_
+and then:
+.. The required {ml} job.
+.. The anomaly score threshold above which signals are created.
+* To create a rule base on a KQL or Lucene query, select _Custom query_ and
+then:
+.. Define which {es} indices the rule analyzes for signals.
+.. Use the filter and query fields to create the criteria used for detecting 
 signals.
 +
 NOTE: You can use {kib} saved queries (save icon) and queries from saved timelines (`Import query from saved timeline`) as rule conditions.
@@ -85,10 +101,10 @@ NOTE: You can use {kib} saved queries (save icon) and queries from saved timelin
 For example, the following rule detects when the `vssadmin delete shadows`
 Windows command is executed:
 
-* _Index patterns_: `winlogbeat-*`
+** _Index patterns_: `winlogbeat-*`
 +
 Winlogbeat ships Windows event logs to the SIEM app.
-* _Custom query_: `event.action:"Process Create (rule: ProcessCreate)" and process.name:"vssadmin.exe" and process.args:("delete" and "shadows")`
+** _Custom query_: `event.action:"Process Create (rule: ProcessCreate)" and process.name:"vssadmin.exe" and process.args:("delete" and "shadows")`
 +
 Searches the `winlogbeat-*` indices for `vssadmin.exe` executions with 
 the `delete` and `shadow` arguments, used to delete a volume's shadow copies.
@@ -99,11 +115,17 @@ image::rule-query-example.png[]
 TIP: This example is based on the
 <<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> prebuilt rule.
 
+. Select the timeline template used when you  send a signal
+created by the rule to the timeline (optional).
++
+TIP: Before you create rules, create and save relevant
+<<timelines-ui,timelines>> so they can be selected here. 
+
 . Click *Continue*.
 +
 The *About rule* pane is displayed.
 [role="screenshot"]
-image::about-rule-pane.png[]
+image::images/about-rule-pane.png[]
 . Fill in the following fields:
 .. _Name_: The rule's name.
 .. _Description_: A description of what the rule does.
@@ -121,13 +143,7 @@ indicate suspicious activity.
 * `48` - `73` represents high severity.
 * `74` - `100` represents critical severity.
 .. For additional options, click *Advanced settings* and fill in any of 
-these fields: 
-... _Timeline template_ (optional): Select a timeline template used when you 
-send a signal created by the rule to the timeline.
-+
-TIP: Before you create rules, create and save relevant
-<<timelines-ui,timelines>> so they can be selected here. 
-
+these fields:
 ... _Reference URLs_ (optional): References to information that is relevant to 
 the rule. For example, links to relevant background information.
 ... _False positives_ (optional): List of common scenarios that may produce 
@@ -135,12 +151,14 @@ false-positive signals.
 ... _MITRE ATT&CK^TM^_ (optional): Relevant MITRE framework tactics and techniques.
 ... _Tags_ (optional): Words and phrases used to categorize, filter, and search 
 the rule.
+... _Investigation guide_ (optional): Information for analysts investigating
+signals created by the rule.
 . Click *Continue*.
 +
 [[rule-schedule]]
 The *Schedule rule* pane is displayed.
 [role="screenshot"]
-image::schedule-rule.png[]
+image::images/schedule-rule.png[]
 . Select how often the rule runs.
 . Optionally, add `Additional look-back time` to the rule. When defined, the 
 rule searches indices with the additional time.
@@ -158,6 +176,38 @@ run exactly at its scheduled time.
 The {siem-app} performs deduplication. Duplicate signals discovered during the 
 `Additional look-back time` are *not* created.
 ==============
+. Click *Continue*.
++
+[[rule-actions]]
+The *Rule actions* pane is displayed.
+[role="screenshot"]
+image::images/rule-actions.png[]
+. Select the action frequency (how often actions are triggered when signals
+are generated (optional):
+
+* _On each rule execution_: Performs actions every time signals are generated.
+* _Hourly_: Performs actions every hour when signals are created within that
+time frame.
+* _Daily_: Performs actions every day when signals are created within that
+time frame.
+* _Weekly_: Performs actions every week when signals are created within that
+time frame.
++
+The available action types are displayed.
+[role="screenshot"]
+image::images/available-action-types.png[]
+
+. Select the required action types.
++
+IMPORTANT: Each action type requires its own connector. Connectors store the
+information required to trigger the action in the external system. You can
+configure connectors while creating the rule or on the {kib} Alerts and Actions
+page (*Management* -> *Alerts and Actions* -> *Connectors*). For more
+information, see {kibana-ref}/action-types.html[Action and connector types].
+
++
+For each action type, you can add these place holders in the message body: 
+
 . Save the rule with or without activation.
 +
 NOTE: When you activate a rule, it is queued and its schedule is determined by 
@@ -176,6 +226,9 @@ You can clone, edit, activate, deactivate, and delete rules:
 * In the *Rule* column, select all the rules you want to act on, and then the 
 required action from the `Batch actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
+
+NOTE: For prebuilt rules, you can only edit the <<rule-actions, rule action>>
+settings.
 
 [float]
 [[import-export-rules-ui]]

@@ -115,8 +115,8 @@ image::rule-query-example.png[]
 TIP: This example is based on the
 <<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> prebuilt rule.
 
-. Select the timeline template used when you  send a signal
-created by the rule to the timeline (optional).
+. Select the timeline template used when you  send a signal created by the rule
+to the timeline (optional).
 +
 TIP: Before you create rules, create and save relevant
 <<timelines-ui,timelines>> so they can be selected here. 
@@ -182,31 +182,41 @@ The {siem-app} performs deduplication. Duplicate signals discovered during the
 The *Rule actions* pane is displayed.
 [role="screenshot"]
 image::images/rule-actions.png[]
-. Select the action frequency (how often actions are triggered when signals
-are generated (optional):
+. Optionally, set up notifications that are sent via other systems when new
+signals are detected:
+.. Set how often notifications are sent:
 
-* _On each rule execution_: Performs actions every time signals are generated.
-* _Hourly_: Performs actions every hour when signals are created within that
-time frame.
-* _Daily_: Performs actions every day when signals are created within that
-time frame.
-* _Weekly_: Performs actions every week when signals are created within that
-time frame.
+* _On each rule execution_: Sends a notification every time new signals are
+detected.
+* _Hourly_: Sends a notification every hour.
+* _Daily_: Sends a notification every day.
+* _Weekly_: Sends a notification every week.
++
+NOTE: Notifications are sent only when new signals are detected.
+
 +
 The available action types are displayed.
 [role="screenshot"]
 image::images/available-action-types.png[]
 
-. Select the required action types.
 +
-IMPORTANT: Each action type requires its own connector. Connectors store the
-information required to trigger the action in the external system. You can
+.. Select the required action type, which determines how notifications are sent (Email, PagerDuty, Slack, Webhook).
++
+NOTE: Each action type requires its own connector. Connectors store the
+information required to send the notification from the external system. You can
 configure connectors while creating the rule or on the {kib} Alerts and Actions
 page (*Management* -> *Alerts and Actions* -> *Connectors*). For more
 information, see {kibana-ref}/action-types.html[Action and connector types].
 
 +
-For each action type, you can add these place holders in the message body: 
+The selected action type fields are displayed (Slack example).
+[role="screenshot"]
+image::images/selected-action-type.png[]
+
++
+.. Fill in the fields for the selected action types. For all action types, click
+the icon above the `Message` field to add placeholders for rule and signal
+details to the notifications. 
 
 . Save the rule with or without activation.
 +

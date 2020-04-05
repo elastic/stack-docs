@@ -33,11 +33,20 @@ image::detections-ui.png[]
 [[det-engine-terminology]]
 == Terminology
 
+Rules::
+Perform background tasks to detect suspicious activity. There are two types of
+rules:
+
+* Query-based rules search indices for documents that match their queries at
+scheduled intervals. When a document matches, a signal is created.
+* {ml-cap} rules create a signal when a {ml} job discovers an anomaly above
+a rule's defined threshold.
+
 Signals::
 Always refer to {siem-soln} produced detections. Signals are never received 
 from third-party systems. When a rule's conditions are met, the {siem-app} 
 writes one or more signals to an Elasticsearch `signals` index.
-
++
 [NOTE]
 ==============
 Signal indices are created for each {kib} space. The naming convention is:
@@ -48,6 +57,9 @@ Signal indices are created for each {kib} space. The naming convention is:
 Alerts and events::
 Always refer to data the {siem-app} receives from external systems, such as 
 Elastic Endpoint and Suricata.
+
+Notifications::
+Notifications sent by other systems when a signal is produced, such as email, Slack, PagerDuty, and Webhook.
 
 [float]
 == Signals and external alerts

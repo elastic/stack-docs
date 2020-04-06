@@ -4,8 +4,8 @@
 
 beta[]
 
-Rules run periodically and search the specified indices for documents that meet
-their criteria.
+Rules run periodically and search for documents or {ml} job anomaly results 
+that meet their criteria.
 
 [IMPORTANT]
 ==============
@@ -26,6 +26,7 @@ On the Rules page, you can:
 * <<select-all-prebuilt-rules>>
 * <<create-rule-ui, Create your own rules>>
 * <<manage-rules-ui, Clone, edit, delete, activate, and deactivate rules>>
+* <<monitor-rule-exe>>
 * <<import-export-rules-ui>>
 * <<troubleshoot-signals>>
 
@@ -239,6 +240,17 @@ required action from the `Batch actions` menu.
 
 NOTE: For prebuilt rules, you can only edit the <<rule-actions, rule action>>
 settings.
+
+[float]
+[[monitor-rule-exe]]
+=== Monitor rule executions
+
+To view a summary of all rule executions, such as failures and last execution
+times, click the Monitoring tab in the *All rules* table (*SIEM* ->
+*Detections* -> *Manage signal detection rules*).
+
+For detailed information on a rule and its produced signals, click on a rule
+name in the *All rules* table.
 
 [float]
 [[import-export-rules-ui]]

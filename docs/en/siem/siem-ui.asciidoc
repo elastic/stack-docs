@@ -106,7 +106,7 @@ There are also tabs for viewing and investigating specific types of data:
 external monitoring tools, such as Elastic Endpoint Security
 
 
-*Host details* shows information for a selected host, including
+*Host detail* pages show information for a selected host, including
 Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
 versions, machine type, and so forth. Additionally, it contains all the widgets
 and tabs relevant for the selected host.
@@ -141,6 +141,28 @@ There are also tabs for viewing and investigating specific types of data:
 * Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
 * <<det-engine-terminology, External alerts>>: alerts received from
 external monitoring tools, such as Elastic Endpoint Security
+
+*IP detail* pages show information for the selected IP address, including
+links to external sites for verifying the IP address's reputation. By default,
+the external sites are https://talosintelligence.com/[TALOS] and
+https://www.virustotal.com/[VIRUSTOTAL]. You can change the displayed
+reputation links in *{kib}* -> *Management* -> *Advanced Settings* ->
+*`siem:ipReputationLinks`*. The `siem:ipReputationLinks` setting contains a
+JSON array with these fields:
+
+* `name`: UI display name.
+* `url_template`: URL of the link. It can include `{{ip}}`, which is placeholder for the IP address you are viewing on the details page.
+
+For example:
+
+[source,json]
+--------------------------------------------------
+[
+  { "name": "virustotal.com", "url_template": "https://www.virustotal.com/gui/search/{{ip}}" },
+  { "name": "dnschecker.org", "url_template": "https://www.dnschecker.org/ip-location.php?ip={{ip}}" },
+  { "name": "talosIntelligence.com", "url_template": "https://talosintelligence.com/reputation_center/lookup?search={{ip}}" }
+]
+--------------------------------------------------
 
 [float]
 [[map-ui]]

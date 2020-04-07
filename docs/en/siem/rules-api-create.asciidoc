@@ -315,7 +315,6 @@ POST api/detection_engine/rules
   "from": "now-70m", <2>
   "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
   "language": "kuery",
-  "throttle": "rule",
   "filters": [
      {
       "query": {
@@ -365,6 +364,7 @@ POST api/detection_engine/rules
   "type": "machine_learning",
   "from": "now-6m",
   "enabled": true,
+  "throttle": "rule",
   "actions": [
     {
       "action_type_id": ".slack",

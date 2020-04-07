@@ -77,8 +77,8 @@ You can create two types of rules:
 * *Machine learning*: {ml-cap} rule, which creates a signal when a {ml} job discovers an anomaly above the defined threshold (see <<machine-learning>>).
 
 IMPORTANT: You can only create {ml} jobs when you have a
-https://www.elastic.co/subscriptions[Platinum License] or you are using a
-{ess-trial}[Cloud] deployment.
+https://www.elastic.co/subscriptions[Platinum License], are using a
+{ess-trial}[Cloud] deployment, or are testing out a *Free Trial*.
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
@@ -91,7 +91,10 @@ image::images/create-new-rule.png[]
 and then:
 .. The required {ml} job.
 .. The anomaly score threshold above which signals are created.
-* To create a rule base on a KQL or Lucene query, select _Custom query_ and
++
+IMPORTANT: The selected {ml} job must be running for the rule to function.
+
+* To create a rule based on a KQL or Lucene query, select _Custom query_ and
 then:
 .. Define which {es} indices the rule analyzes for signals.
 .. Use the filter and query fields to create the criteria used for detecting 
@@ -238,8 +241,8 @@ You can clone, edit, activate, deactivate, and delete rules:
 required action from the `Batch actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
 
-NOTE: For prebuilt rules, you can only edit the <<rule-actions, rule action>>
-settings.
+NOTE: For prebuilt rules, you can only activate, deactivate, delete, and edit
+<<rule-actions, rule actions>>.
 
 [float]
 [[monitor-rule-exe]]
@@ -249,8 +252,8 @@ To view a summary of all rule executions, such as failures and last execution
 times, click the Monitoring tab in the *All rules* table (*SIEM* ->
 *Detections* -> *Manage signal detection rules*).
 
-For detailed information on a rule and its produced signals, click on a rule
-name in the *All rules* table.
+For detailed information on a rule, its produced signals, and errors, click on
+a rule name in the *All rules* table.
 
 [float]
 [[import-export-rules-ui]]

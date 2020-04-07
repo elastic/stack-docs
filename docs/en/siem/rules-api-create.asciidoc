@@ -315,6 +315,7 @@ POST api/detection_engine/rules
   "from": "now-70m", <2>
   "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
   "language": "kuery",
+  "throttle": "rule",
   "filters": [
      {
       "query": {
@@ -340,7 +341,7 @@ POST api/detection_engine/rules
 If the rule starts to run at 15:00, it analyzes data from 13:50 until 15:00. 
 When it runs next, at 16:00, it will analyze data from 14:50 until 16:00.
 
-{ml-caps} rule that creates signals, and sends Slack notification, when the
+{ml-cap} rule that creates signals, and sends Slack notification, when the
 `linux_anomalous_network_activity_ecs` {ml} job discovers anomalies with a
 threshold of 70 or above:
 
@@ -480,7 +481,7 @@ Example response for a {ml} job rule:
       }
     }
   ],
-  "throttle": "no_actions",
+  "throttle": "rule",
   "note": "Shut down the internet.",
   "status": "going to run",
   "status_date": "2020-04-07T14:45:21.685Z",

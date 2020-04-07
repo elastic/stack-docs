@@ -9,15 +9,12 @@ that meet their criteria.
 
 [IMPORTANT]
 ==============
-After you activate a rule, periodically check the rule is running as expected. 
-When a rule fails to run, the {siem-app} tries to rerun it at its next 
-scheduled run time and an error is displayed in the *Failure History* table on 
-the *Rule details* page (*SIEM* -> *Detections* ->
-*Manage signal detection rules* -> <rule name>).
+After you activate a rule, periodically check the rule is running as expected
+in the <<monitor-rule-exe, Monitoring tab>> on the All rules page. If you see
+values in the `Gap` column, you can <<troubleshoot-signals>>.
 
-If you see a 
-`gaps of <x> minutes, and could be missing signals within that time` error 
-message, see <<troubleshoot-signals>>.
+When a rule fails to run, the {siem-app} tries to rerun it at its next 
+scheduled run time.
 ==============
 
 On the Rules page, you can:

@@ -3,6 +3,43 @@
 
 Creates a new signal detection rule.
 
+You can create two types of rules:
+
+* Query-based rules, which search the defined indices and creates a signal when
+a document matches the rule's query.
+* {ml-cap} rules, which create a signal when a {ml} job discovers an anomaly above the defined threshold (see <<machine-learning>>).
+
+IMPORTANT: You can only create {ml} jobs when you have a
+https://www.elastic.co/subscriptions[Platinum License], are using a
+{ess-trial}[Cloud] deployment, or are testing out a *Free Trial*. Additionally,
+for the {ml} rule to function, the associated {ml} job must be running.
+
+To retrieve {ml} job IDs, which are required to create {ml} jobs, call the
+{ref}/ml-get-job.html[{es} Get jobs API].
+
+Additionally, you can set up notification when a rule creates a signal. The
+notifications use the {kib} {kibana-ref}/alerting-getting-started.html[Alerting and Actions framework].
+Each action type requires its own connector, which store the information
+required to send the notification. These action types are supported for rule
+notifications:
+
+* Slack
+* email
+* PagerDuty
+* Webhook
+
+NOTE: For more information on PagerDuty fields, see https://v2.developer.pagerduty.com/v2/docs/send-an-event-events-api-v2[PagerDuty Send a v2 Event API]. 
+
+To retrieve connector IDs, which are based on {kib} saved objects and are
+required to configure rule notifications, call
+`GET <kibana host>/<port>/api/action/_find`.
+
+For detailed information on {kib} actions and alerting, and additional API
+calls, see:
+
+* https://github.com/elastic/kibana/tree/master/x-pack/plugins/alerting
+* https://github.com/elastic/kibana/tree/master/x-pack/plugins/actions 
+
 ==== Request URL
 
 `POST <kibana host>:<port>/api/detection_engine/rules`
@@ -14,6 +51,12 @@ A JSON object with these fields:
 [width="100%",options="header"]
 |==============================================
 |Name |Type |Description |Required
+
+|actions |<<actions-object-schema, actions[]>> |Array defining the automated
+actions (notifications) taken signals are produced. |No
+
+|anomaly_threshold |Integer |Anomaly threshold above which signals are
+generated for {ml} rules |Yes, for {ml} rules.
 
 |description |String |The rule's description. |Yes
 
@@ -41,19 +84,21 @@ time).
 is converted from a third-party security solution. |No, automatically created 
 when it is not provided.
 
-|index |String[] |Indices on which the rule functions. |No, defaults to the 
-{siem-soln} indices defined on the {kib} Advanced Settings page (*Kibana* → 
-*Management* → *Advanced Settings* → `siem:defaultIndex`).
+|index |String[] |Indices on which the rule functions. |No, for query rules,
+defaults to the {siem-soln} indices defined on the {kib} Advanced Settings page
+(*Kibana* → *Management* → *Advanced Settings* → `siem:defaultIndex`).
 
 |interval |String |Frequency of rule execution, using a
 {ref}/common-options.html#date-math[date math range]. For example, `"1h"` 
 means the rule runs every hour. |No, defaults to `5m` (5 minutes).
 
+|machine_learning_job_id |String |{ml} job ID of the job for which you want to generate signals. |Yes, for {ml} rules.
+
 |query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal. |No, defaults to an empty string.
+signal. |No, for query rules, defaults to an empty string.
 
 |language |String |Determines the query language, which must be
-`kuery` or `lucene`. |No, defaults to `kuery`.
+`kuery` or `lucene`. |No, for query rules, defaults to `kuery`.
 
 |output_index |String |Index to which signals detected by the rule are saved. 
 |No, if unspecified signals are saved to `.siem-signals-<space_name>` index, 
@@ -79,6 +124,8 @@ single execution. |No, defaults to `100`.
 
 |name |String |The rule's name. |Yes
 
+|note |String |Notes to help investigate signals produced by the rule. |No
+
 |severity |String a|Severity level of signals produced by the rule, which must 
 be one of the following:
 
@@ -94,14 +141,25 @@ occurred
 |tags |String[] |String array containing words and phrases to help categorize,
 filter, and search rules. |No, defaults to an empty array.
 
+|throttle |String a|Determines how often actions are taken:
+
+* `no_actions`: Never
+* `rule`: Every time new signals are detected
+* `1h`: Every hour
+* `1d`: Every day
+* `7d`: Every week
+
+|Yes, when actions are used to send notifications.
+
 // |to |String |Time to which data is analyzed each time the rule executes, using a
 // {ref}/common-options.html#date-math[date math range]. For example, `"now-300s"` 
 // means the rule analyzes data until 5 minutes before its starts time. |Yes
 
 |type |String a|Data type on which the rule is based:
 
-* `query`: query-based conditions with or without additional filters
-* `saved_query`: saved search, identified in the `saved_id` field
+* `query`: query-based conditions with or without additional filters.
+* `saved_query`: saved search, identified in the `saved_id` field.
+* `machine_learning`: rule based on a {ml} job's anomaly scores.
 
 |Yes
 
@@ -116,6 +174,91 @@ relevant information about the rule. |No, defaults to an empty array.
 |version |Integer |The rule's version number. a|No, defaults to `1`.
 
 |==============================================
+
+[[actions-object-schema]]
+===== `actions` schema
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|action_type_id |String a|The action type used for sending notifications, can
+be:
+
+* `.slack`
+* `.email`
+* `.pagerduty`
+* `.webhook`
+
+|Yes
+
+|group |String |Groups action for different use cases. Use `default` for signal
+notifications.|Yes
+
+|id |String |The connector ID. |Yes
+
+|params |Object a|Object containing the allowed connector fields, which varies according to the connector type:
+
+* For Slack:
+** `message` (string, required): The notification message.
+* For email:
+** `to`, `cc`, `bcc` (string): Email addresses to which the notifications are
+sent. At least one field must have a value.
+** `subject` (string, optional): Email subject line.
+** `message` (string, required): Email body text.
+* For Webhook:
+** `body` (string, required): JSON payload.
+* For PagerDuty:
+** `severity` (string, required): Severity of on the signal notification, can
+be: `Critical`, `Error`, `Warning` or `Info`.
+** `eventAction` (string, required):  Event https://v2.developer.pagerduty.com/docs/events-api-v2#event-action[action type], which can be `trigger` (default), `resolve`, or `acknowledge`.
+** `dedupKey` (string, optional): Groups signal notifications with the same
+PagerDuty alert.
+** `timestamp` (DateTime, optional): https://v2.developer.pagerduty.com/v2/docs/types#datetime[ISO-8601 format date-time], indicating the time the notification
+was generated.
+** `component` (string, optional): Component of the source machine that is responsible for the event, for example `mysql` or `eth0`.
+** `group` (string, optional): Logical grouping of components of a service.
+** `source` (string, optional): The affected system, preferably a hostname or
+fully qualified domain name. Defaults to the {kib} saved object ID of the
+action. 
+** `summary` (string, options): Summary of the event. Defaults to
+`No summary provided`. Maximum length is 1024 characters.
+** `class` (string, optional): Value indicating the class/type of the event.
+
+|Yes
+
+|==============================================
+
+All text fields (such as `message` fields) can contain placeholders for rule
+and signal details:
+
+* `{{state.signals_count}}`: Number of signals detected
+* `{{{context.results_link}}}`: URL to the signals in {kib}
+* `{{context.rule.anomaly_threshold}}`: Set anomaly threshold above which
+signals are generated ({ml} rules only)
+* `{{context.rule.description}}`: Rule description
+* `{{context.rule.false_positives}}`: Rule false positives
+* `{{context.rule.filters}}`: Rule filters (query-based rules only)
+* `{{context.rule.id}}`: Rule ID
+* `{{context.rule.index}}`: Indices rule runs on (query-based rules only)
+* `{{context.rule.language}}`: Rule query language (query-based rules only)
+* `{{context.rule.machine_learning_job_id}}`: ID of associated {ml} job ({ml}
+rules only)
+* `{{context.rule.max_signals}}`: Maximum allowed number of signals per rule
+execution
+* `{{context.rule.name}}`: Rule name
+* `{{context.rule.output_index}}`: Index to which signals are written
+* `{{context.rule.query}}`: Rule query (query-based rules only)
+* `{{context.rule.references}}`: Rule references
+* `{{context.rule.risk_score}}`: Rule risk score
+* `{{context.rule.rule_id}}`: Rule ID
+* `{{context.rule.saved_id}}`: 
+* `{{context.rule.severity}}`: Rule severity
+* `{{context.rule.threat}}`: Rule threat framework
+* `{{context.rule.timeline_id}}`: Associated timeline ID
+* `{{context.rule.timeline_title}}`: Associated timeline name
+* `{{context.rule.type}}`: Rule type
+* `{{context.rule.version}}`: Rule version
 
 [[threats-object-create]]
 ===== `threat` schema
@@ -149,15 +292,15 @@ technique:
 
 |==============================================
 
-===== Example request
+===== Example requests
 
-Searches for processes started by MS Office: 
+Query-based rule that searches for processes started by MS Office: 
 
 [source,console]
 --------------------------------------------------
 POST api/detection_engine/rules
 {
-  "rule_id": "process_started_by_ms_office_program_possible_payload",
+  "rule_id": "process_started_by_ms_office_program",
   "risk_score": 50,
   "description": "Process started by MS Office program - possible payload",
   "interval": "1h", <1>
@@ -196,6 +339,44 @@ POST api/detection_engine/rules
 If the rule starts to run at 15:00, it analyzes data from 13:50 until 15:00. 
 When it runs next, at 16:00, it will analyze data from 14:50 until 16:00.
 
+{ml-caps} rule that creates signals, and sends Slack notification, when the
+`linux_anomalous_network_activity_ecs` {ml} job discovers anomalies with a
+threshold of 70 or above:
+
+[source,console]
+--------------------------------------------------
+POST api/detection_engine/rules
+{
+  "anomaly_threshold": 70,
+  "rule_id": "ml_linux_network_high_threshold",
+  "risk_score": 70,
+  "machine_learning_job_id": "linux_anomalous_network_activity_ecs",
+  "description": "Generates signals when the job discovers anomalies over 70",
+  "interval": "5m",
+  "name": "Anomalous Linux network activity",
+  "note": "Shut down the internet.",
+  "severity": "high",
+  "tags": [
+   "machine learning",
+   "Linux"
+   ],
+  "type": "machine_learning",
+  "from": "now-6m",
+  "enabled": true,
+  "actions": [
+    {
+      "action_type_id": ".slack",
+      "group": "default",
+      "id": "5ad22cd5-5e6e-4c6c-a81a-54b626a4cec5",
+      "params": {
+        "message": "Urgent: {{context.rule.description}}"
+      }
+    }
+  ]
+}
+--------------------------------------------------
+// KIBANA
+
 ==== Response code
 
 `200`:: 
@@ -203,19 +384,42 @@ When it runs next, at 16:00, it will analyze data from 14:50 until 16:00.
     
 ==== Response payload
 
-A JSON object that includes a unique ID, the time the rule was created, and its version number. If the request payload did not include a `rule_id` field, a unique rule ID is also generated.
+A JSON object that includes a unique ID, the time the rule was created, and its
+version number. If the request payload did not include a `rule_id` field, a
+unique rule ID is also generated.
 
-Example response:
+Example response for a query-based rule:
 
 [source,json]
 --------------------------------------------------
 {
-  "created_at": "2020-01-05T09:56:11.805Z",
-  "updated_at": "2020-01-05T09:56:11.805Z",
-  "created_by": "elastic",
+  "created_at": "2020-04-07T14:51:09.755Z",
+  "updated_at": "2020-04-07T14:51:09.970Z",
+  "created_by": "LiverpoolFC",
   "description": "Process started by MS Office program - possible payload",
   "enabled": false,
   "false_positives": [],
+  "from": "now-70m",
+  "id": "6541b99a-dee9-4f6d-a86d-dbd1869d73b1",
+  "immutable": false,
+  "interval": "1h",
+  "rule_id": "process_started_by_ms_office_program",
+  "output_index": ".siem-signals-default",
+  "max_signals": 100,
+  "risk_score": 50,
+  "name": "MS Office child process",
+  "references": [],
+  "severity": "low",
+  "updated_by": "LiverpoolFC",
+  "tags": [
+    "child process",
+    "ms office"
+  ],
+  "to": "now",
+  "type": "query",
+  "threat": [],
+  "version": 1,
+  "actions": [],
   "filters": [
     {
       "query": {
@@ -228,25 +432,58 @@ Example response:
       }
     }
   ],
-  "from": "now-4200s",
-  "id": "4f228868-9928-47e4-9785-9a1a9b520c7f",
-  "interval": "1h",
-  "rule_id": "process_started_by_ms_office_program_possible_payload",
-  "language": "kuery",
+  "throttle": "no_actions",
+  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
+  "language": "kuery"
+}
+--------------------------------------------------
+
+Example response for a {ml} job rule:
+
+[source,json]
+--------------------------------------------------
+{
+  "created_at": "2020-04-07T14:45:15.679Z",
+  "updated_at": "2020-04-07T14:45:15.892Z",
+  "created_by": "LiverpoolFC",
+  "description": "Generates signals when the job discovers anomalies over 70",
+  "enabled": true,
+  "false_positives": [],
+  "from": "now-6m",
+  "id": "83876f66-3a57-4a99-bf37-416494c80f3b",
+  "immutable": false,
+  "interval": "5m",
+  "rule_id": "ml_linux_network_high_threshold",
   "output_index": ".siem-signals-default",
   "max_signals": 100,
-  "risk_score": 50,
-  "name": "MS Office child process",
-  "query": "process.parent.name:EXCEL.EXE or process.parent.name:MSPUB.EXE or process.parent.name:OUTLOOK.EXE or process.parent.name:POWERPNT.EXE or process.parent.name:VISIO.EXE or process.parent.name:WINWORD.EXE",
+  "risk_score": 70,
+  "name": "Anomalous Linux network activity",
   "references": [],
-  "severity": "low",
-  "updated_by": "elastic",
+  "severity": "high",
+  "updated_by": "LiverpoolFC",
   "tags": [
-    "child process",
-    "ms office"
+    "machine learning",
+    "Linux"
   ],
-  "type": "query",
+  "to": "now",
+  "type": "machine_learning",
   "threat": [],
-  "version": 1
+  "version": 1,
+  "actions": [
+    {
+      "action_type_id": ".slack",
+      "group": "default",
+      "id": "5ad22cd5-5e6e-4c6c-a81a-54b626a4cec5",
+      "params": {
+        "message": "Urgent: {{context.rule.description}}"
+      }
+    }
+  ],
+  "throttle": "no_actions",
+  "note": "Shut down the internet.",
+  "status": "going to run",
+  "status_date": "2020-04-07T14:45:21.685Z",
+  "anomaly_threshold": 70,
+  "machine_learning_job_id": "linux_anomalous_network_activity_ecs"
 }
 --------------------------------------------------

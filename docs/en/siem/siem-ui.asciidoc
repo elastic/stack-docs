@@ -106,7 +106,7 @@ There are also tabs for viewing and investigating specific types of data:
 external monitoring tools, such as Elastic Endpoint Security
 
 
-*Host details* shows information for a selected host, including
+*Host detail* pages show information for a selected host, including
 Host ID, First Seen timestamp, Last Seen timestamp, IP and MAC addresses, OS,
 versions, machine type, and so forth. Additionally, it contains all the widgets
 and tabs relevant for the selected host.
@@ -141,6 +141,28 @@ There are also tabs for viewing and investigating specific types of data:
 * Anomalies: anomalies discovered by <<machine-learning, machine learning jobs>>
 * <<det-engine-terminology, External alerts>>: alerts received from
 external monitoring tools, such as Elastic Endpoint Security
+
+*IP detail* pages show information for the selected IP address, including
+links to external sites for verifying the IP address's reputation. By default,
+the external sites are https://talosintelligence.com/[TALOS] and
+https://www.virustotal.com/[VIRUSTOTAL]. You can change the displayed
+reputation links in *{kib}* -> *Management* -> *Advanced Settings* ->
+*`siem:ipReputationLinks`*. The `siem:ipReputationLinks` setting contains a
+JSON array with these fields:
+
+* `name`: UI display name.
+* `url_template`: URL of the link. It can include `{{ip}}`, which is placeholder for the IP address you are viewing on the details page.
+
+For example:
+
+[source,json]
+--------------------------------------------------
+[
+  { "name": "virustotal.com", "url_template": "https://www.virustotal.com/gui/search/{{ip}}" },
+  { "name": "dnschecker.org", "url_template": "https://www.dnschecker.org/ip-location.php?ip={{ip}}" },
+  { "name": "talosIntelligence.com", "url_template": "https://talosintelligence.com/reputation_center/lookup?search={{ip}}" }
+]
+--------------------------------------------------
 
 [float]
 [[map-ui]]
@@ -256,6 +278,25 @@ As your query takes shape, an easy-to-follow rendered view appears for events.
 It shows relevant contextual information that helps tell the backstory of the
 event. If you see a particular item that interests you, you can drag it to the
 drop area for further introspection.
+
+[float]
+[[import-export-timelines]]
+==== Export and import timelines
+
+You can import and export timelines, which enables importing timelines from one
+{kib} space or instance to another. Exported timelines are saved in an
+http://ndjson.org[`ndjson`] file.
+
+. Go to *SIEM* -> *Timelines*.
+. To export timelines, do one of the following:
+
+* To export one timeline, click the more actions icon in the relevant row and
+then select _Export selected_.
+* To export multiple timelines, select all the required timelines and then click
+*Bulk actions* -> _Export selected_.
+
+. To import timelines, click *Import Timeline* and then select or drap-and-drop
+the timeline `ndjson` file.
 
 [float]
 [[other]]

@@ -47,8 +47,8 @@ makes sure that the proportions of each class in the training data are equal so
 that the training is consistent. 
 
 Your training dataset should be approximately balanced. It means the number of 
-data points belonging to the various classes should not be widely different. It 
-is also necessary to have sufficient representation from all classes so that the 
+data points belonging to the various classes are not widely different. It is 
+also necessary to have sufficient representation from all classes so that the 
 model can learn about each class enough, otherwise, the {classanalysis} may not 
 provide the best predictions.
 
@@ -89,7 +89,12 @@ the number of documents, then the runtime of the analysis doubles respectively.
 Above 200.000 data points, runtime increases faster.
 
 The number of classes also affects the runtime of the analysis. The relationship 
-between these two factors is linear. 
+between these two factors is linear.
+
+To achieve faster runtime, consider to set a smaller training percent, prepare 
+your input data to have less classes if it is possible, and remove the fields 
+that are not relevant from the analysis by specifying `excludes` patterns in the 
+`analyzed_fields` object when configuring the {dfanalytics-job}.
  
 
 [discrete]

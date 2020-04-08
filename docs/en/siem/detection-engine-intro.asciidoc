@@ -7,10 +7,14 @@ beta[]
 
 The SIEM Detections feature automatically searches for threats and creates 
 signals when they are detected. Signal detection rules define the conditions 
-for creating signals. The {siem-app} comes with
-<<prebuilt-rules, prebuilt rules>> that search for suspicious 
-activity on your network and hosts. For information on how to optimize the 
-prebuilt rules, see <<tuning-detection-signals>>. Additionally, you can 
+for creating signals. Additionally, you can use the {kib}
+{kibana-ref}/alerting-getting-started.html[Alerting and Actions]
+framework to send notifications via other systems, such as email and Slack,
+when signals are generated.
+
+The {siem-app} comes with <<prebuilt-rules, prebuilt rules>> that search for
+suspicious activity on your network and hosts. For information on how to
+optimize the prebuilt rules, see <<tuning-detection-signals>>. You can also
 <<rules-ui-create, create your own rules>>.
 
 You can manage detection rules and signals via the UI or the
@@ -29,11 +33,20 @@ image::detections-ui.png[]
 [[det-engine-terminology]]
 == Terminology
 
+Rules::
+Perform background tasks to detect suspicious activity. There are two types of
+rules:
+
+* Query-based rules search indices for documents that match their queries at
+scheduled intervals. When a document matches, a signal is created.
+* {ml-cap} rules create a signal when a {ml} job discovers an anomaly score
+above a rule's defined threshold.
+
 Signals::
 Always refer to {siem-soln} produced detections. Signals are never received 
 from third-party systems. When a rule's conditions are met, the {siem-app} 
 writes one or more signals to an Elasticsearch `signals` index.
-
++
 [NOTE]
 ==============
 Signal indices are created for each {kib} space. The naming convention is:
@@ -44,6 +57,10 @@ Signal indices are created for each {kib} space. The naming convention is:
 Alerts and events::
 Always refer to data the {siem-app} receives from external systems, such as 
 Elastic Endpoint and Suricata.
+
+Actions::
+Used to send notifications via other systems when a signal is produced, such as
+email, Slack, PagerDuty, and Webhook.
 
 [float]
 == Signals and external alerts
@@ -107,7 +124,6 @@ For *all* deployments (on-premises and hosted):
 ** {kib} space `Read` privileges for the `SIEM` feature (see
 {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
 * To create and modify detection rules, you must have:
-** The `manage_api_key` cluster privilege (see {ref}/security-privileges.html[Security privileges]).
 ** {kib} space `All` privileges for the `SIEM` feature (see
 {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
 ** Write permissions for the `.siem-signals-<space name>` index, such as 
@@ -126,8 +142,6 @@ when you try to open the *Detections* page.
 If you see this message, a user with these privileges must visit the 
 *Detections* page before you can view signals and rules:
 
-* The `manage_api_key` cluster privilege (see
-{ref}/security-privileges.html[Security privileges]).
 * The `create_index` privilege for the {kib} space (see {ref}/security-privileges.html#privileges-list-indices[Indices privileges]).
 * {kib} space `All` privileges for the `SIEM` feature (see
 {kibana-ref}/xpack-spaces.html#spaces-control-user-access[Feature access based on user privileges]).
@@ -143,6 +157,6 @@ If you see this message, you do not have the
 <<detections-permissions, required privileges>> to view the *Detections* page 
 and you should contact your {kib} administrator.
 
-NOTE: For *on-premises* {stack} deployments only, this message may be displayed 
-when the <<detections-permissions, `xpack.security.enabled`>> setting is 
-not enabled in the `elasticsearch.yml` file.
+NOTE: For *on-premises* {stack} deployments only, this message may be
+displayed when the <<detections-permissions, `xpack.security.enabled`>>
+setting is not enabled in the `elasticsearch.yml` file.

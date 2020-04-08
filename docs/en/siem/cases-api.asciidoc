@@ -21,6 +21,22 @@ path component to its URL.
 how to work with and disable the random path component.
 
 [float]
+=== {kib} space API calls
+
+Cases are created and managed per {kib} space. If you are making calls to a
+{kib} space *other than* the `Default` space, the space identifier is part of 
+the endpoint's URL:
+
+`<kibana host>:<port>/s/<space URL>/api/cases`
+
+Where `<space URL>` is the URL identifier for the space.
+
+NOTE: You can find space URL identifiers on
+{kibana-ref}/xpack-spaces.html[*Edit space*] pages (Management -> Spaces -> 
+<space name>) or by calling
+{kibana-ref}/spaces-api-get-all.html[`GET /api/spaces/space`].
+
+[float]
 === Authentication
 
 Token-based authentication, using the same username and password used to log in

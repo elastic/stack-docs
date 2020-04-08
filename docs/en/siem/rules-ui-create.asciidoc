@@ -4,20 +4,17 @@
 
 beta[]
 
-Rules run periodically and search the specified indices for 
-documents that meet their criteria.
+Rules run periodically and search for documents or {ml} job anomaly scores 
+that meet their criteria.
 
 [IMPORTANT]
 ==============
-After you activate a rule, periodically check the rule is running as expected. 
-When a rule fails to run, the {siem-app} tries to rerun it at its next 
-scheduled run time and an error is displayed in the *Failure History* table on 
-the *Rule details* page (*SIEM* -> *Detections* ->
-*Manage signal detection rules* -> <rule name>).
+After you activate a rule, periodically check the rule is running as expected
+in the <<monitor-rule-exe, Monitoring tab>> on the All rules page. If you see
+values in the `Gap` column, you can <<troubleshoot-signals>>.
 
-If you see a 
-`gaps of <x> minutes, and could be missing signals within that time` error 
-message, see <<troubleshoot-signals>>.
+When a rule fails to run, the {siem-app} tries to rerun it at its next 
+scheduled run time.
 ==============
 
 On the Rules page, you can:
@@ -25,7 +22,8 @@ On the Rules page, you can:
 * <<load-prebuilt-rules>>
 * <<select-all-prebuilt-rules>>
 * <<create-rule-ui, Create your own rules>>
-* <<manage-rules-ui, Clone, delete, activate, and deactivate rules>>
+* <<manage-rules-ui, Clone, edit, delete, activate, and deactivate rules>>
+* <<monitor-rule-exe>>
 * <<import-export-rules-ui>>
 * <<troubleshoot-signals>>
 
@@ -70,14 +68,41 @@ ones.
 [[create-rule-ui]]
 === Create a new rule
 
+You can create two types of rules:
+
+* *Custom query*: Query-based rule, which searches the defined indices and creates a signal when a document matches the rule's query.
+* *Machine learning*: {ml-cap} rule, which creates a signal when a {ml} job discovers an anomaly above the defined threshold (see <<machine-learning>>).
++
+For {ml} rules, the associated {ml} job must be running. If the {ml} job is not
+running, the rule will:
+
+** Run and create signals if existing anomaly scores above the defined threshold
+are discovered.
+** Issue an error stating the {ml} job was not running when the rule executed.
+
+IMPORTANT: You can only create {ml} jobs when you have a
+https://www.elastic.co/subscriptions[Platinum License], are using a
+{ess-trial}[Cloud] deployment, or are testing out a *Free Trial*.
+
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
 +
 The *Create new rule* page is displayed.
 [role="screenshot"]
-image::create-new-rule.png[]
-. Define which {es} indices the rule analyzes for signals.
-. Use the filter and query fields to create the criteria used for detecting 
+image::images/create-new-rule.png[]
+. Do *one* of the following:
+* To create a rule based on a {ml} anomaly threshold, select _Machine Learning_
+and then:
+.. The required {ml} job.
+.. The anomaly score threshold above which signals are created.
++
+IMPORTANT: The selected {ml} job must be running for the rule to function
+correctly.
+
+* To create a rule based on a KQL or Lucene query, select _Custom query_ and
+then:
+.. Define which {es} indices the rule analyzes for signals.
+.. Use the filter and query fields to create the criteria used for detecting 
 signals.
 +
 NOTE: You can use {kib} saved queries (save icon) and queries from saved timelines (`Import query from saved timeline`) as rule conditions.
@@ -85,10 +110,10 @@ NOTE: You can use {kib} saved queries (save icon) and queries from saved timelin
 For example, the following rule detects when the `vssadmin delete shadows`
 Windows command is executed:
 
-* _Index patterns_: `winlogbeat-*`
+** _Index patterns_: `winlogbeat-*`
 +
 Winlogbeat ships Windows event logs to the SIEM app.
-* _Custom query_: `event.action:"Process Create (rule: ProcessCreate)" and process.name:"vssadmin.exe" and process.args:("delete" and "shadows")`
+** _Custom query_: `event.action:"Process Create (rule: ProcessCreate)" and process.name:"vssadmin.exe" and process.args:("delete" and "shadows")`
 +
 Searches the `winlogbeat-*` indices for `vssadmin.exe` executions with 
 the `delete` and `shadow` arguments, used to delete a volume's shadow copies.
@@ -99,11 +124,17 @@ image::rule-query-example.png[]
 TIP: This example is based on the
 <<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> prebuilt rule.
 
+. Select the timeline template used when you send a signal created by the rule
+to the timeline (optional).
++
+TIP: Before you create rules, create and save relevant
+<<timelines-ui,timelines>> so they can be selected here. 
+
 . Click *Continue*.
 +
 The *About rule* pane is displayed.
 [role="screenshot"]
-image::about-rule-pane.png[]
+image::images/about-rule-pane.png[]
 . Fill in the following fields:
 .. _Name_: The rule's name.
 .. _Description_: A description of what the rule does.
@@ -121,13 +152,7 @@ indicate suspicious activity.
 * `48` - `73` represents high severity.
 * `74` - `100` represents critical severity.
 .. For additional options, click *Advanced settings* and fill in any of 
-these fields: 
-... _Timeline template_ (optional): Select a timeline template used when you 
-send a signal created by the rule to the timeline.
-+
-TIP: Before you create rules, create and save relevant
-<<timelines-ui,timelines>> so they can be selected here. 
-
+these fields:
 ... _Reference URLs_ (optional): References to information that is relevant to 
 the rule. For example, links to relevant background information.
 ... _False positives_ (optional): List of common scenarios that may produce 
@@ -135,12 +160,14 @@ false-positive signals.
 ... _MITRE ATT&CK^TM^_ (optional): Relevant MITRE framework tactics and techniques.
 ... _Tags_ (optional): Words and phrases used to categorize, filter, and search 
 the rule.
+... _Investigation guide_ (optional): Information for analysts investigating
+signals created by the rule.
 . Click *Continue*.
 +
 [[rule-schedule]]
 The *Schedule rule* pane is displayed.
 [role="screenshot"]
-image::schedule-rule.png[]
+image::images/schedule-rule.png[]
 . Select how often the rule runs.
 . Optionally, add `Additional look-back time` to the rule. When defined, the 
 rule searches indices with the additional time.
@@ -158,6 +185,48 @@ run exactly at its scheduled time.
 The {siem-app} performs deduplication. Duplicate signals discovered during the 
 `Additional look-back time` are *not* created.
 ==============
+. Click *Continue*.
++
+[[rule-actions]]
+The *Rule actions* pane is displayed.
+[role="screenshot"]
+image::images/rule-actions.png[]
+. Optionally, use {kib} Actions to set up notifications sent via other systems
+when new signals are detected:
+.. Set how often notifications are sent:
+
+* _On each rule execution_: Sends a notification every time new signals are
+detected.
+* _Hourly_: Sends a notification every hour.
+* _Daily_: Sends a notification every day.
+* _Weekly_: Sends a notification every week.
++
+NOTE: Notifications are sent only when new signals are detected.
+
++
+The available action types are displayed.
+[role="screenshot"]
+image::images/available-action-types.png[]
+
++
+.. Select the required action type, which determines how notifications are sent (Email, PagerDuty, Slack, Webhook).
++
+NOTE: Each action type requires its own connector. Connectors store the
+information required to send the notification from the external system. You can
+configure connectors while creating the rule or on the {kib} Alerts and Actions
+page (*Management* -> *Alerts and Actions* -> *Connectors*). For more
+information, see {kibana-ref}/action-types.html[Action and connector types].
+
++
+The selected action type fields are displayed (Slack example).
+[role="screenshot"]
+image::images/selected-action-type.png[]
+
++
+.. Fill in the fields for the selected action types. For all action types, click
+the icon above the `Message` field to add placeholders for rule and signal
+details to the notifications. 
+
 . Save the rule with or without activation.
 +
 NOTE: When you activate a rule, it is queued and its schedule is determined by 
@@ -177,6 +246,20 @@ You can clone, edit, activate, deactivate, and delete rules:
 required action from the `Batch actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
 
+NOTE: For prebuilt rules, you can only activate, deactivate, delete, and edit
+<<rule-actions, rule actions>>.
+
+[float]
+[[monitor-rule-exe]]
+=== Monitor all rule executions
+
+To view a summary of all rule executions, such as failures and last execution
+times, click the Monitoring tab in the *All rules* table (*SIEM* ->
+*Detections* -> *Manage signal detection rules*).
+
+For detailed information on a rule, its produced signals, and errors, click on
+a rule name in the *All rules* table.
+
 [float]
 [[import-export-rules-ui]]
 === Import and export rules
@@ -186,11 +269,11 @@ required action from the `Batch actions` menu.
 .. Click *Import rule*.
 .. Drag-and-drop files containing the signal detection rules.
 +
-NOTE: Imported rules must be in a `ndjson` file.
+NOTE: Imported rules must be in an `ndjson` file.
 
 . To export rules:
 .. In the *All rules* table, select the rules you want to export.
-.. Select *Batch actions* -> *Export selected*.
+.. Select *Bulk actions* -> *Export selected*.
 +
 NOTE: You cannot export prebuilt rules.
 
@@ -202,12 +285,12 @@ When a rule fails to run close to its scheduled time, some signals may be
 missing. There are a number of steps you can perform to try and resolve this 
 issue.
 
-If you are seeing `gaps of <x> minutes` error messages for a small number of 
-rules, you can increase those rules' `Additional look-back time`
-(*Signal detection rules* page -> the rule's actions icon ->
-*Edit rule settings* -> *Schedule* -> _Additional look-back time_).
+If you are seeing `Gaps` in the All rules table or on the Rule details page
+for a small number of rules, you can increase those rules'
+`Additional look-back time` (*Signal detection rules* page -> the rule's
+actions icon -> *Edit rule settings* -> *Schedule* -> _Additional look-back time_).
 
-If you are seeing `gaps of <x> minutes` for a lot of rules:
+If you are seeing gaps for a lot of rules:
 
 * If you restarted {kib} when many rules were activated, try deactivating them 
 and then reactivating them in small batches at staggered intervals. This 

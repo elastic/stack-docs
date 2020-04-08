@@ -4,7 +4,7 @@
 
 beta[]
 
-Rules run periodically and search for documents or {ml} job anomaly results 
+Rules run periodically and search for documents or {ml} job anomaly scores 
 that meet their criteria.
 
 [IMPORTANT]
@@ -72,6 +72,13 @@ You can create two types of rules:
 
 * *Custom query*: Query-based rule, which searches the defined indices and creates a signal when a document matches the rule's query.
 * *Machine learning*: {ml-cap} rule, which creates a signal when a {ml} job discovers an anomaly above the defined threshold (see <<machine-learning>>).
++
+For {ml} rules, the associated {ml} job must be running. If the {ml} job is not
+running, the rule will:
+
+** Run and create signals if existing anomaly scores above the defined threshold
+are discovered.
+** Issue an error stating the {ml} job was not running when the rule executed.
 
 IMPORTANT: You can only create {ml} jobs when you have a
 https://www.elastic.co/subscriptions[Platinum License], are using a
@@ -89,7 +96,8 @@ and then:
 .. The required {ml} job.
 .. The anomaly score threshold above which signals are created.
 +
-IMPORTANT: The selected {ml} job must be running for the rule to function.
+IMPORTANT: The selected {ml} job must be running for the rule to function
+correctly.
 
 * To create a rule based on a KQL or Lucene query, select _Custom query_ and
 then:
@@ -116,7 +124,7 @@ image::rule-query-example.png[]
 TIP: This example is based on the
 <<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> prebuilt rule.
 
-. Select the timeline template used when you  send a signal created by the rule
+. Select the timeline template used when you send a signal created by the rule
 to the timeline (optional).
 +
 TIP: Before you create rules, create and save relevant
@@ -265,7 +273,7 @@ NOTE: Imported rules must be in an `ndjson` file.
 
 . To export rules:
 .. In the *All rules* table, select the rules you want to export.
-.. Select *Batch actions* -> *Export selected*.
+.. Select *Bulk actions* -> *Export selected*.
 +
 NOTE: You cannot export prebuilt rules.
 
@@ -277,12 +285,12 @@ When a rule fails to run close to its scheduled time, some signals may be
 missing. There are a number of steps you can perform to try and resolve this 
 issue.
 
-If you are seeing `gaps of <x> minutes` error messages for a small number of 
-rules, you can increase those rules' `Additional look-back time`
-(*Signal detection rules* page -> the rule's actions icon ->
-*Edit rule settings* -> *Schedule* -> _Additional look-back time_).
+If you are seeing `Gaps` in the All rules table or on the Rule details page
+for a small number of rules, you can increase those rules'
+`Additional look-back time` (*Signal detection rules* page -> the rule's
+actions icon -> *Edit rule settings* -> *Schedule* -> _Additional look-back time_).
 
-If you are seeing `gaps of <x> minutes` for a lot of rules:
+If you are seeing gaps for a lot of rules:
 
 * If you restarted {kib} when many rules were activated, try deactivating them 
 and then reactivating them in small batches at staggered intervals. This 

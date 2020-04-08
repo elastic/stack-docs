@@ -5,11 +5,11 @@
 For *Free Trial*, *{ess-trial}[Cloud]*
 and *https://www.elastic.co/subscriptions[Platinum License]* deployments,
 {kibana-ref}/xpack-ml.html[Machine Learning] functionality is available 
-throughout the SIEM app. You can view the details of detected anomalies within 
-the `Anomalies` table widget shown on the Hosts, Network and associated Details 
-pages, or even narrow to the specific date range of an anomaly from the `Max 
-Anomaly Score` details in the overview of the Host and IP Details pages. Each 
-of these interfaces also offer the ability to drag and drop details of the 
+on the *Detections* page. You can view the details of detected anomalies
+within the `Anomalies` table widget shown on the Hosts, Network and associated
+Details pages, or even narrow to the specific date range of an anomaly from the
+`Max Anomaly Score` details in the overview of the Host and IP Details pages.
+Each of these interfaces also offer the ability to drag and drop details of the 
 anomaly to Timeline, such as the `Entity` itself, or any of the associated 
 `Influencers`.
 
@@ -20,12 +20,12 @@ image::ml-ui.png[]
 [float]
 [[manage-jobs]]
 === Manage machine learning jobs
-For users with the `ml_admin` role, the `Anomaly Detection` interface within
-the main navigation header can be used for for viewing, starting, and stopping
-SIEM machine learning jobs.
+For users with the `machine_learning_admin` role, the `ML job settings`
+interface on the *Detections* page can be used for for viewing, starting, and
+stopping SIEM machine learning jobs.
 
-TIP: To add a custom job to the `Anomaly Detection` interface, add a `SIEM` tag 
-to the job's `Group` field ({kib} -> {ml-cap} -> Create/Edit job -> Job 
+TIP: To add a custom job to the `ML job settings` interface, add `SIEM` to
+the job's `Groups` field ({kib} -> {ml-cap} -> Create/Edit job -> Job 
 details).
 
 [float]

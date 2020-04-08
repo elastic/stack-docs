@@ -31,11 +31,12 @@ some fields are required.
 |==============================================
 |Name |Type |Description |Required (`PUT` calls)
 
-|actions |<<actions-object-schema-update, actions[]>> |Array defining the automated
-actions (notifications) taken signals are produced. |No
+|actions |<<actions-object-schema-update, actions[]>> |Array defining the
+automated actions (notifications) taken signals are produced. |No
 
-|anomaly_threshold |Integer |Anomaly threshold above which signals are
-generated for {ml} rules |Yes, for {ml} rules.
+|anomaly_threshold |Integer |Anomaly score threshold above which the rule
+creates signals. Valid values are from `0` to `100`. |Yes, for {ml} rules. Not
+allowed in `query` rule types.
 
 |description |String |The rule's description. |Yes
 
@@ -66,13 +67,16 @@ time).
 {ref}/common-options.html#date-math[date math range]. For example, `"1h"` 
 means the rule runs every hour. |No, defaults to `5m` (5 minutes).
 
-|machine_learning_job_id |String |{ml} job ID of the job for which you want to generate signals. |Yes, for {ml} rules.
+|machine_learning_job_id |String |{ml-cap} job ID the rule monitors for
+anomaly scores. |Yes, for {ml} rules. Not allowed in `query` rules types.
 
 |query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal. |No, defaults to an empty string.
+signal. |No. For `query` rules types, defaults to an empty string. Not allowed
+in `machine-learning` rule types.
 
 |language |String |Determines the query language, which must be
-`kuery` or `lucene`. |No, defaults to `kuery`.
+`kuery` or `lucene`. |No. For `query` rule types, defaults to `kuery`. Not
+allowed in `machine-learning` rule types.
 
 |output_index |String |Index to which signals detected by the rule are saved. 
 |No, if unspecified signals are saved to `.siem-signals-<space_name>` index, 
@@ -171,7 +175,7 @@ be:
 
 |Yes
 
-|group |String |Groups action for different use cases. Use `default` for signal
+|group |String |Optionally groups actions by use cases. Use `default` for signal
 notifications.|Yes
 
 |id |String |The connector ID. |Yes
@@ -190,16 +194,16 @@ sent. At least one field must have a value.
 * For PagerDuty:
 ** `severity` (string, required): Severity of on the signal notification, can
 be: `Critical`, `Error`, `Warning` or `Info`.
-** `eventAction` (string, required):  Event https://v2.developer.pagerduty.com/docs/events-api-v2#event-action[action type], which can be `trigger` (default), `resolve`, or `acknowledge`.
+** `eventAction` (string, required):  Event https://v2.developer.pagerduty.com/docs/events-api-v2#event-action[action type], which can be `trigger`,
+`resolve`, or `acknowledge`.
 ** `dedupKey` (string, optional): Groups signal notifications with the same
 PagerDuty alert.
-** `timestamp` (DateTime, optional): https://v2.developer.pagerduty.com/v2/docs/types#datetime[ISO-8601 format date-time], indicating the time the notification
-was generated.
-** `component` (string, optional): Component of the source machine that is responsible for the event, for example `mysql` or `eth0`.
-** `group` (string, optional): Logical grouping of components of a service.
-** `source` (string, optional): The affected system, preferably a hostname or
-fully qualified domain name. Defaults to the {kib} saved object ID of the
-action. 
+** `timestamp` (DateTime, optional): https://v2.developer.pagerduty.com/v2/docs/types#datetime[ISO-8601 format timestamp].
+** `component` (string, optional): Source machine component responsible for the
+event, for example `siem`.
+** `group` (string, optional): Enables logical grouping of service components.
+** `source` (string, optional): The affected system. Defaults to the {kib}
+saved object ID of the action. 
 ** `summary` (string, options): Summary of the event. Defaults to
 `No summary provided`. Maximum length is 1024 characters.
 ** `class` (string, optional): Value indicating the class/type of the event.

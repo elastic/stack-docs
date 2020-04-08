@@ -12,12 +12,28 @@ a document matches the rule's query.
 IMPORTANT: You can only create {ml} jobs when you have a
 https://www.elastic.co/subscriptions[Platinum License], are using a
 {ess-trial}[Cloud] deployment, or are testing out a *Free Trial*. Additionally,
-for the {ml} rule to function, the associated {ml} job must be running.
+for the {ml} rule to function correctly, the associated {ml} job must be
+running.
 
 To retrieve {ml} job IDs, which are required to create {ml} jobs, call the
-{ref}/ml-get-job.html[{es} Get jobs API].
+{ref}/ml-get-job.html[{es} Get jobs API]. {ml-cap} jobs that contain `siem` in
+the `groups` field can be used to create rules:
 
-Additionally, you can set up notification when a rule creates a signal. The
+[source,json]
+--------------------------------------------------
+...
+"job_id": "linux_anomalous_network_activity_ecs",
+      "job_type": "anomaly_detector",
+      "job_version": "7.7.0",
+      "groups": [
+        "auditbeat",
+        "process",
+        "siem"
+      ],
+...
+--------------------------------------------------
+
+Additionally, you can set up notifications for when rules create signals. The
 notifications use the {kib} {kibana-ref}/alerting-getting-started.html[Alerting and Actions framework].
 Each action type requires its own connector, which store the information
 required to send the notification. These action types are supported for rule
@@ -30,9 +46,8 @@ notifications:
 
 NOTE: For more information on PagerDuty fields, see https://v2.developer.pagerduty.com/v2/docs/send-an-event-events-api-v2[PagerDuty Send a v2 Event API]. 
 
-To retrieve connector IDs, which are based on {kib} saved objects and are
-required to configure rule notifications, call
-`GET <kibana host>/<port>/api/action/_find`.
+To retrieve connector IDs, which are required to configure rule notifications,
+call `GET <kibana host>/<port>/api/action/_find`.
 
 For detailed information on {kib} actions and alerting, and additional API
 calls, see:
@@ -55,8 +70,9 @@ A JSON object with these fields:
 |actions |<<actions-object-schema, actions[]>> |Array defining the automated
 actions (notifications) taken signals are produced. |No
 
-|anomaly_threshold |Integer |Anomaly threshold above which signals are
-generated for {ml} rules |Yes, for {ml} rules.
+|anomaly_threshold |Integer |Anomaly score threshold above which the rule
+creates signals. Valid values are from `0` to `100`. |Yes, for {ml} rules. Not
+allowed in `query` rule types.
 
 |description |String |The rule's description. |Yes
 
@@ -84,7 +100,7 @@ time).
 is converted from a third-party security solution. |No, automatically created 
 when it is not provided.
 
-|index |String[] |Indices on which the rule functions. |No, for query rules,
+|index |String[] |Indices on which the rule functions. |No. For query rules,
 defaults to the {siem-soln} indices defined on the {kib} Advanced Settings page
 (*Kibana* → *Management* → *Advanced Settings* → `siem:defaultIndex`).
 
@@ -92,13 +108,16 @@ defaults to the {siem-soln} indices defined on the {kib} Advanced Settings page
 {ref}/common-options.html#date-math[date math range]. For example, `"1h"` 
 means the rule runs every hour. |No, defaults to `5m` (5 minutes).
 
-|machine_learning_job_id |String |{ml} job ID of the job for which you want to generate signals. |Yes, for {ml} rules.
+|machine_learning_job_id |String |{ml-cap} job ID the rule monitors for
+anomaly scores. |Yes, for {ml} rules. Not allowed in `query` rules types.
 
 |query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal. |No, for query rules, defaults to an empty string.
+signal. |No. For `query` rules types, defaults to an empty string. Not allowed
+in `machine-learning` rule types.
 
 |language |String |Determines the query language, which must be
-`kuery` or `lucene`. |No, for query rules, defaults to `kuery`.
+`kuery` or `lucene`. |No. For `query` rule types, defaults to `kuery`. Not
+allowed in `machine-learning` rule types.
 
 |output_index |String |Index to which signals detected by the rule are saved. 
 |No, if unspecified signals are saved to `.siem-signals-<space_name>` index, 
@@ -192,7 +211,7 @@ be:
 
 |Yes
 
-|group |String |Groups action for different use cases. Use `default` for signal
+|group |String |Optionally groups actions by use cases. Use `default` for signal
 notifications.|Yes
 
 |id |String |The connector ID. |Yes
@@ -211,16 +230,16 @@ sent. At least one field must have a value.
 * For PagerDuty:
 ** `severity` (string, required): Severity of on the signal notification, can
 be: `Critical`, `Error`, `Warning` or `Info`.
-** `eventAction` (string, required):  Event https://v2.developer.pagerduty.com/docs/events-api-v2#event-action[action type], which can be `trigger` (default), `resolve`, or `acknowledge`.
+** `eventAction` (string, required):  Event https://v2.developer.pagerduty.com/docs/events-api-v2#event-action[action type], which can be `trigger`,
+`resolve`, or `acknowledge`.
 ** `dedupKey` (string, optional): Groups signal notifications with the same
 PagerDuty alert.
-** `timestamp` (DateTime, optional): https://v2.developer.pagerduty.com/v2/docs/types#datetime[ISO-8601 format date-time], indicating the time the notification
-was generated.
-** `component` (string, optional): Component of the source machine that is responsible for the event, for example `mysql` or `eth0`.
-** `group` (string, optional): Logical grouping of components of a service.
-** `source` (string, optional): The affected system, preferably a hostname or
-fully qualified domain name. Defaults to the {kib} saved object ID of the
-action. 
+** `timestamp` (DateTime, optional): https://v2.developer.pagerduty.com/v2/docs/types#datetime[ISO-8601 format timestamp].
+** `component` (string, optional): Source machine component responsible for the
+event, for example `siem`.
+** `group` (string, optional): Enables logical grouping of service components.
+** `source` (string, optional): The affected system. Defaults to the {kib}
+saved object ID of the action. 
 ** `summary` (string, options): Summary of the event. Defaults to
 `No summary provided`. Maximum length is 1024 characters.
 ** `class` (string, optional): Value indicating the class/type of the event.
@@ -234,7 +253,7 @@ and signal details:
 
 * `{{state.signals_count}}`: Number of signals detected
 * `{{{context.results_link}}}`: URL to the signals in {kib}
-* `{{context.rule.anomaly_threshold}}`: Set anomaly threshold above which
+* `{{context.rule.anomaly_threshold}}`: Anomaly threshold score above which
 signals are generated ({ml} rules only)
 * `{{context.rule.description}}`: Rule description
 * `{{context.rule.false_positives}}`: Rule false positives
@@ -295,6 +314,8 @@ technique:
 
 ===== Example requests
 
+*Example 1*
+
 Query-based rule that searches for processes started by MS Office: 
 
 [source,console]
@@ -335,12 +356,12 @@ POST api/detection_engine/rules
 <1> The rule runs every hour.
 <2> When the rule runs it analyzes data from 70 minutes before its start time.
 
-*Example*
-
 If the rule starts to run at 15:00, it analyzes data from 13:50 until 15:00. 
 When it runs next, at 16:00, it will analyze data from 14:50 until 16:00.
 
-{ml-cap} rule that creates signals, and sends Slack notification, when the
+*Example 2*
+
+{ml-cap} rule that creates signals, and sends Slack notifications, when the
 `linux_anomalous_network_activity_ecs` {ml} job discovers anomalies with a
 threshold of 70 or above:
 

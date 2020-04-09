@@ -20,16 +20,21 @@ classes for {classanalysis} is 30.
 
 
 [discrete]
-[[dfa-classification-features]]
-==== {feature-vars-cap}
+[[dfa-classification-depvar]]
+==== {depvar-cap}
 
-When you perform {classification}, you must identify a subset of fields that you 
-want to use to create a model for predicting another field value. We refer to 
-these fields as _{feature-vars}_ and _{depvar}_, respectively. 
-{feature-vars-cap} are the values that the {depvar} value depends on. There are 
-three different types of {feature-vars} that you can use with our 
-{classification} algorithm: numerical, categorical, and boolean. Arrays are not 
-supported in the {feature-var} fields.  
+When you create a {classification} job, you must specify which field contains 
+the classes that you want to predict (no more than 30 classes). We refer to this 
+field as {depvar}. The rest of the fields that are included in the analysis are 
+used to create the model for predicting the value of the {depvar} (these are the 
+{feature-vars}). All the 
+{ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included 
+by default, however, you can explicitly exclude and/or include fields. As the 
+runtime and the necessary resources for the analysis are increasing as the 
+number of included fields is growing,  
+
+For more information about field selection, see 
+{ref}/explain-dfanalytics.html[Explain data frame analytics API].
 
 
 [discrete]

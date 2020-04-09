@@ -31,6 +31,13 @@ some fields are required.
 |==============================================
 |Name |Type |Description |Required (`PUT` calls)
 
+|actions |<<actions-object-schema-update, actions[]>> |Array defining the
+automated actions (notifications) taken when signals are produced. |No
+
+|anomaly_threshold |Integer |Anomaly score threshold above which the rule
+creates signals. Valid values are from `0` to `100`. |Yes, for {ml} rules. Not
+allowed in `query` rule types.
+
 |description |String |The rule's description. |Yes
 
 |enabled |Boolean |Determines whether the rule is enabled. |No, defaults to
@@ -60,11 +67,16 @@ time).
 {ref}/common-options.html#date-math[date math range]. For example, `"1h"` 
 means the rule runs every hour. |No, defaults to `5m` (5 minutes).
 
+|machine_learning_job_id |String |{ml-cap} job ID the rule monitors for
+anomaly scores. |Yes, for {ml} rules. Not allowed in `query` rules types.
+
 |query |String |{kibana-ref}/search.html[Query] used by the rule to create a 
-signal. |No, defaults to an empty string.
+signal. |No. For `query` rules types, defaults to an empty string. Not allowed
+in `machine-learning` rule types.
 
 |language |String |Determines the query language, which must be
-`kuery` or `lucene`. |No, defaults to `kuery`.
+`kuery` or `lucene`. |No. For `query` rule types, defaults to `kuery`. Not
+allowed in `machine-learning` rule types.
 
 |output_index |String |Index to which signals detected by the rule are saved. 
 |No, if unspecified signals are saved to `.siem-signals-<space_name>` index, 
@@ -90,6 +102,8 @@ single execution. |No, defaults to `100`.
 
 |name |String |The rule's name. |Yes
 
+|note |String |Notes to help investigate signals produced by the rule. |No
+
 |severity |String a|Severity level of signals produced by the rule, which must 
 be one of the following:
 
@@ -109,10 +123,21 @@ filter, and search rules. |No, defaults to an empty array.
 // {ref}/common-options.html#date-math[date math range]. For example, `"now-300s"` 
 // means the rule analyzes data until 5 minutes before its starts time.
 
+|throttle |String a|Determines how often actions are taken:
+
+* `no_actions`: Never
+* `rule`: Every time new signals are detected
+* `1h`: Every hour
+* `1d`: Every day
+* `7d`: Every week
+
+|Yes, when actions are used to send notifications.
+
 |type |String a|Data type on which the rule is based:
 
 * `query`: query-based conditions with or without additional filters
 * `saved_query`: saved search, identified in the `saved_id` field
+* `machine_learning`: rule based on a {ml} job's anomaly scores.
 
 |Yes
 
@@ -133,6 +158,60 @@ number.
 
 |==============================================
 
+[[actions-object-schema-update]]
+===== `actions` schema
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required (`PUT` calls)
+
+|action_type_id |String a|The action type used for sending notifications, can
+be:
+
+* `.slack`
+* `.email`
+* `.pagerduty`
+* `.webhook`
+
+|Yes
+
+|group |String |Optionally groups actions by use cases. Use `default` for signal
+notifications.|Yes
+
+|id |String |The connector ID. |Yes
+
+|params |Object a|Object containing the allowed connector fields, which varies according to the connector type:
+
+* For Slack:
+** `message` (string, required): The notification message.
+* For email:
+** `to`, `cc`, `bcc` (string): Email addresses to which the notifications are
+sent. At least one field must have a value.
+** `subject` (string, optional): Email subject line.
+** `message` (string, required): Email body text.
+* For Webhook:
+** `body` (string, required): JSON payload.
+* For PagerDuty:
+** `severity` (string, required): Severity of on the signal notification, can
+be: `Critical`, `Error`, `Warning` or `Info`.
+** `eventAction` (string, required):  Event https://v2.developer.pagerduty.com/docs/events-api-v2#event-action[action type], which can be `trigger`,
+`resolve`, or `acknowledge`.
+** `dedupKey` (string, optional): Groups signal notifications with the same
+PagerDuty alert.
+** `timestamp` (DateTime, optional): https://v2.developer.pagerduty.com/v2/docs/types#datetime[ISO-8601 format timestamp].
+** `component` (string, optional): Source machine component responsible for the
+event, for example `siem`.
+** `group` (string, optional): Enables logical grouping of service components.
+** `source` (string, optional): The affected system. Defaults to the {kib}
+saved object ID of the action. 
+** `summary` (string, options): Summary of the event. Defaults to
+`No summary provided`. Maximum length is 1024 characters.
+** `class` (string, optional): Value indicating the class/type of the event.
+
+|Yes
+
+|==============================================
+
 
 [[threats-object-update]]
 ===== `threat` schema
@@ -143,9 +222,9 @@ in the UI (*SIEM* -> *Detections* -> *Manage signal detection rules* ->
 
 [width="100%",options="header"]
 |==============================================
-|Name |Type |Description
+|Name |Type |Description  |Required (`PUT` calls)
 
-|framework |String |Relevant attack framework.
+|framework |String |Relevant attack framework. |Yes
 
 |tactic |Object a|Object containing information on the attack type:
 
@@ -153,12 +232,16 @@ in the UI (*SIEM* -> *Detections* -> *Manage signal detection rules* ->
 * `name` - string, required
 * `reference` - string, required
 
+|Yes
+
 |technique |Object a|Object containing information on the attack 
 technique:
 
 * `id` - string, required
 * `name` - string, required
 * `reference` - string, required
+
+|Yes
 
 |==============================================
 

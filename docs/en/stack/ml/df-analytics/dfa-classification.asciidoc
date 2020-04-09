@@ -40,29 +40,16 @@ fields. For more information about field selection, see
 ==== Training the {classification} model
 
 {classification-cap} – just like {regression} – is a supervised {ml} process. It 
-means that you need to supply a labeled training data set that has some 
-{feature-vars} and a {depvar}. The {classification} algorithm learns the 
-relationships between the features and the {depvar}. Once you’ve trained the 
+means that you need to supply a labeled training data set that has a {depvar} 
+and some fields that are related to it. The {classification} algorithm learns 
+the relationships between these fields and the {depvar}. Once you’ve trained the 
 model on your training data set, you can reuse the knowledge that the model has 
-learned about the relationships between the data points to classify new data. In 
-case there are more than two classes, an automated process called stratification 
-makes sure that the proportions of each class in the training data are equal so 
-that the training is consistent. 
+learned about the relationships between the data points to classify new data.
 
-Your training data set should be approximately balanced. It means the number of 
-data points belonging to the various classes are not widely different. It is 
-also necessary to have sufficient representation from all classes so that the 
-model can learn about each class enough, otherwise, the {classanalysis} may not 
-provide the best predictions.
-
-The sufficient representation of the classes always depends on the complexity 
-and the characteristics of the data set. Complex decision boundaries – the rules 
-that separate the different classes in a data set – are harder to learn and 
-require more data points per class. For this reason, it is not possible to 
-declare a hard rule on how much data is enough per class that fits all use 
-cases.
-
-Read <<dfa-classification-imbalanced-classes>> to learn more.
+Although the effects of imbalanced data are automatically mitigated before the 
+training, we still recommend using an approximately balanced data set to train 
+the model. It means the number of data points belonging to the various classes 
+is not widely different.
 
 
 [discrete]

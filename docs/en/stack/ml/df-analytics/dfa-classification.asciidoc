@@ -15,19 +15,19 @@ data we have represents songs and the analysis – based on the features of the
 data points – classifies the songs as hip-hop, country, classical, or any 
 other genres available in the set of categories we have. Therefore, 
 {classification} is for predicting discrete, categorical values, unlike 
-{reganalysis} which predicts continuous, numerical values. The maximum number of 
-classes for {classanalysis} is 30.
+{reganalysis} which predicts continuous, numerical values.
 
 When you create a {classification} job, you must specify which field contains 
-the classes that you want to predict. This field is known as the {depvar}. The 
-rest of the fields that are included in the analysis are used to create the 
-model for predicting the value of the {depvar} (these are the {feature-vars}). 
-All {ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are 
-included by default, however, you can explicitly exclude and/or include fields. 
-Since the runtime and the necessary resources for the analysis increase as 
-the number of included fields grow, consider including only relevant 
-fields. For more information about field selection, see 
-{ref}/explain-dfanalytics.html[Explain data frame analytics API].
+the classes that you want to predict. This field is known as the {depvar}. It
+must contain no more than 30 classes. The rest of the fields that are included
+in the analysis are used to create the model for predicting the value of the
+{depvar} (these are the {feature-vars}). All
+{ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included
+by default, however, you can explicitly exclude and/or include fields. Since the
+runtime and the necessary resources for the analysis increase as the number of
+included fields grow, consider including only relevant fields. For more
+information about field selection, see 
+{ref}/explain-dfanalytics.html[explain data frame analytics API].
 
 
 [discrete]

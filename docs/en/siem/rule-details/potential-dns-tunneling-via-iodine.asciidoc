@@ -5,6 +5,8 @@ Iodine is a tool for tunneling Internet protocol version 4 (IPV4) traffic over
 the DNS protocol to circumvent firewalls, network security groups, and network
 access lists while evading detection.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -28,9 +30,12 @@ access lists while evading detection.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<potential-dns-tunneling-via-iodine-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -41,6 +46,16 @@ by non-security engineers is very uncommon.
 
 
 [source,js]
+----------------------------------
+process.name:(iodine or iodined) and event.action:executed
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name: (iodine or iodined) and event.action:executed
 ----------------------------------

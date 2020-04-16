@@ -5,6 +5,8 @@ Identifies `MsBuild.exe` making outbound network connections. This may indicate
 adversarial activity as MsBuild is often leveraged by adversaries to execute
 code and evade detection.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,14 +26,28 @@ code and evade detection.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<msbuild-making-network-connections-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:MSBuild.exe and not destination.ip:(127.0.0.1 or "::1")
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.action:"Network connection detected (rule: NetworkConnect)" and
 process.name:MSBuild.exe and not destination.ip:("127.0.0.1" or "::1")

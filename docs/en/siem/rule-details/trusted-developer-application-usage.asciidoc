@@ -1,8 +1,10 @@
 [[trusted-developer-application-usage]]
 === Trusted Developer Application Usage
 
-Identifies possibly suspicious activity using a trusted Windows developer 
+Identifies possibly suspicious activity using a trusted Windows developer
 utility program.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -23,9 +25,12 @@ utility program.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<trusted-developer-application-usage-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -36,6 +41,16 @@ unusual.
 
 
 [source,js]
+----------------------------------
+event.code:1 and process.name:(MSBuild.exe or msxsl.exe)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.code:1 and (process.name:MSBuild.exe or process.name:msxsl.exe)
 ----------------------------------

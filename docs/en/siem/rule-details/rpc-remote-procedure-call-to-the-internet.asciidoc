@@ -1,11 +1,13 @@
 [[rpc-remote-procedure-call-to-the-internet]]
 === RPC (Remote Procedure Call) to the Internet
 
-Detects network events that may indicate the use of RPC traffic to the
-Internet. RPC is commonly used by system administrators to remotely control a
-system for maintenance or to use shared resources. It should almost never be
-directly exposed to the Internet, as it is frequently targeted and exploited by
-threat actors as an initial access or back-door vector.
+Detects network events that may indicate the use of RPC traffic to the Internet.
+RPC is commonly used by system administrators to remotely control a system for
+maintenance or to use shared resources. It should almost never be directly
+exposed to the Internet, as it is frequently targeted and exploited by threat
+actors as an initial access or back-door vector.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -26,21 +28,35 @@ threat actors as an initial access or back-door vector.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<rpc-remote-procedure-call-to-the-internet-history, version history>>)
+*Version*: 3 (<<rpc-remote-procedure-call-to-the-internet-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.6.1
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
+network.transport:tcp and destination.port:135 and
+source.ip:(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and not
+destination.ip:(10.0.0.0/8 or 127.0.0.0/8 or 172.16.0.0/12 or
+192.168.0.0/16 or "::1")
+----------------------------------
+
+
+===== Query changelog
+
+*Version 2 query*
+
+[source]
+----------------------------------
 network.transport: tcp and destination.port: 135 and (
 network.direction: outbound or ( source.ip: (10.0.0.0/8 or
-172.16.0.0/12 or 192.168.0.0/16) and not destination.ip:
-(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
+172.16.0.0/12 or 192.168.0.0/16) and not destination.ip: (10.0.0.0/8
+or 172.16.0.0/12 or 192.168.0.0/16) ) )
 ----------------------------------
 
 ==== Threat mapping

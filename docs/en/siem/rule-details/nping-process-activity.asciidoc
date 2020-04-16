@@ -1,9 +1,11 @@
 [[nping-process-activity]]
 === Nping Process Activity
 
-Nping ran on a Linux host. Nping is part of the Nmap tool suite and has  the
+Nping ran on a Linux host. Nping is part of the Nmap tool suite and has the
 ability to construct raw packets for a wide variety of security testing
 applications, including denial of service testing.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -28,9 +30,12 @@ applications, including denial of service testing.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<nping-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -42,6 +47,16 @@ unannounced. Use of `Nping` by non-engineers or ordinary users is uncommon.
 
 
 [source,js]
+----------------------------------
+process.name:nping and event.action:executed
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name: nping and event.action:executed
 ----------------------------------

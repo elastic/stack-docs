@@ -1,9 +1,11 @@
 [[delete-volume-usn-journal-with-fsutil]]
 === Delete Volume USN Journal with Fsutil
 
-Identifies use of the `fsutil.exe` to delete the `USNJRNL` volume. This 
+Identifies use of the `fsutil.exe` to delete the `USNJRNL` volume. This
 technique is used by attackers to eliminate evidence of files created during
 post-exploitation activities.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -24,9 +26,12 @@ post-exploitation activities.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<delete-volume-usn-journal-with-fsutil-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -34,8 +39,18 @@ post-exploitation activities.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"fsutil.exe" and process.args:("usn" and
-"deletejournal")
+process.name:fsutil.exe and process.args:(deletejournal and usn)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"fsutil.exe" and process.args:("usn" and "deletejournal")
 ----------------------------------
 
 ==== Threat mapping

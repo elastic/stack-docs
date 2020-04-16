@@ -1,8 +1,10 @@
 [[command-prompt-network-connection]]
 === Command Prompt Network Connection
 
-Identifies `cmd.exe` making a network connection. Adversaries can abuse 
+Identifies `cmd.exe` making a network connection. Adversaries can abuse
 `cmd.exe` to download or execute malware from a remote URL.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -23,9 +25,12 @@ Identifies `cmd.exe` making a network connection. Adversaries can abuse
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<command-prompt-network-connection-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -37,6 +42,18 @@ the command prompt to determine any abnormal use of this tool.
 
 
 [source,js]
+----------------------------------
+process.name:cmd.exe and event.action:"Network connection detected
+(rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name:cmd.exe and event.action:"Network connection detected
 (rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not

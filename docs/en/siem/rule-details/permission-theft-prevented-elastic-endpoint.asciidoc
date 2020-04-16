@@ -2,8 +2,10 @@
 === Permission Theft - Prevented - Elastic Endpoint
 
 Elastic Endpoint prevented Permission Theft. Click the Elastic Endpoint icon in
-the `event.module` column or the link in the `rule.reference` column in the 
+the `event.module` column or the link in the `rule.reference` column in the
 External Alerts tab of the SIEM *Detections* page for additional information.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -24,14 +26,30 @@ External Alerts tab of the SIEM *Detections* page for additional information.
 * Elastic
 * Endpoint
 
-*Rule version*: 1
+*Version*: 2 (<<permission-theft-prevented-elastic-endpoint-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.kind:alert and event.module:endgame and
+endgame.metadata.type:prevention and
+(event.action:token_protection_event or
+endgame.event_subtype_full:token_protection_event)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.kind:alert and event.module:endgame and
 event.action:token_protection_event and

@@ -5,6 +5,8 @@ Windows services typically run as SYSTEM and can be used as a privilege
 escalation opportunity. Malware or penetration testers may run a shell as a
 service to gain SYSTEM permissions.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,14 +26,29 @@ service to gain SYSTEM permissions.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<system-shells-via-services-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.parent.name:services.exe and process.name:(cmd.exe or
+powershell.exe)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
 process.parent.name:"services.exe" and process.name:("cmd.exe" or

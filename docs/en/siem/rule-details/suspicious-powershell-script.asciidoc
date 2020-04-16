@@ -1,0 +1,42 @@
+[[suspicious-powershell-script]]
+=== Suspicious Powershell Script
+
+A machine learning job detected a PowerShell script with unusual data
+characteristics, such as obfuscation, that may be a characteristic of malicious
+PowerShell script text blocks.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: windows_anomalous_script
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+Certain kinds of security testing may trigger this signal. PowerShell scripts
+that use high levels of obfuscation or have unusual script block payloads may
+trigger this signal.

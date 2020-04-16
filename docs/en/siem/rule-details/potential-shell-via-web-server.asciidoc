@@ -4,6 +4,8 @@
 Identifies suspicious commands executed via a web server, which may suggest a
 vulnerability and remote shell access.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -27,11 +29,12 @@ vulnerability and remote shell access.
 * Elastic
 * Linux
 
-*Rule version*: 2 (<<potential-shell-via-web-server-history, version history>>)
+*Version*: 2 (<<potential-shell-via-web-server-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
 *Last modified ({stack} release)*: 7.6.1
+
 
 ==== Potential false positives
 
@@ -43,7 +46,7 @@ runs shell commands as part of normal behavior.
 
 [source,js]
 ----------------------------------
-process.name: bash and user.name: (apache or www or "www-data") and
+process.name:bash and user.name:(apache or www or www-data) and
 event.action:executed
 ----------------------------------
 

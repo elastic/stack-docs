@@ -1,0 +1,53 @@
+[[unusual-windows-remote-user]]
+=== Unusual Windows Remote User
+
+A machine learning job detected an unusual remote desktop protocol (RDP)
+username, which can indicate account takeover or credentialed persistence using
+compromised accounts. RDP attacks, such as BlueKeep, also tend to use unusual
+usernames.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: windows_rare_user_type10_remote_login
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+Uncommon username activity can be due to an engineer logging onto a server
+instance in order to perform manual troubleshooting or reconfiguration.
+
+==== Investigation guide
+
+Signals from this rule indicate
+activity for a rare and unusual Windows RDP (remote desktop) user. Here are some
+possible avenues of investigation: - Consider the user as identified by the
+username field. Is the user part of a group who normally logs into Windows hosts
+using RDP (remote desktop protocol)? Is this logon activity part of an expected
+workflow for the user?  - Consider the source of the login. If the source is
+remote, could this be related to occasional troubleshooting or support activity
+by a vendor or an employee working remotely?

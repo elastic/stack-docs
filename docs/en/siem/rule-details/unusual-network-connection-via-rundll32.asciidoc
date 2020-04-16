@@ -5,6 +5,8 @@ Identifies unusual instances of `rundll32.exe` making outbound network
 connections. This may indicate adversarial activity and may identify malicious
 DLLs.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,14 +26,29 @@ DLLs.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<unusual-network-connection-via-rundll32-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+process.name:rundll32.exe and event.action:"Network connection
+detected (rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name:rundll32.exe and event.action:"Network connection
 detected (rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and

@@ -1,0 +1,64 @@
+[[microsoft-build-engine-started-an-unusual-process]]
+=== Microsoft Build Engine Started an Unusual Process
+
+An instance of MSBuild, the Microsoft Build Engine, started a PowerShell script
+or the Visual C# Command Line Compiler. This technique is sometimes used to
+deploy a malicious payload using the Build Engine.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://blog.talosintelligence.com/2020/02/building-bypass-with-msbuild.html
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+The Build Engine is commonly used by Windows developers but use by non-engineers
+is unusual. If a build system triggers this rule it can be exempted by process,
+user or host name.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.parent.name:MSBuild.exe and process.name:(csc.exe or
+iexplore.exe or powershell.exe)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Compile After Delivery
+** ID: T1500
+** Reference URL: https://attack.mitre.org/techniques/T1500/

@@ -5,6 +5,8 @@ Identifies network activity from unexpected system applications. This may
 indicate adversarial activity as these applications are often leveraged by
 adversaries to execute code and evade detection.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,13 +26,30 @@ adversaries to execute code and evade detection.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<unusual-process-network-connection-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
+*Last modified ({stack} release)*: 7.7.0
+
+
 ==== Rule query
 
+
 [source,js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:(Microsoft.Workflow.Compiler.exe or bginfo.exe or cdb.exe
+or cmstp.exe or csi.exe or dnx.exe or fsi.exe or ieexec.exe or
+iexpress.exe or odbcconf.exe or rcsi.exe or xwizard.exe)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.action:"Network connection detected (rule: NetworkConnect)" and
 process.name:(bginfo.exe or cdb.exe or cmstp.exe or csi.exe or dnx.exe

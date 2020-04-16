@@ -5,6 +5,8 @@ Hping ran on a Linux host. Hping is a FOSS command-line packet analyzer and has
 the ability to construct network packets for a wide variety of network security
 testing applications, including scanning and firewall auditing.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -28,9 +30,12 @@ testing applications, including scanning and firewall auditing.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<hping-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -41,6 +46,16 @@ non-security engineers is very uncommon.
 
 
 [source,js]
+----------------------------------
+process.name:(hping or hping2 or hping3) and event.action:executed
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name: (hping3 or hping2 or hping) and event.action:executed
 ----------------------------------

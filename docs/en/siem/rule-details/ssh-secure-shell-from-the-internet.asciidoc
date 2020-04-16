@@ -1,11 +1,13 @@
 [[ssh-secure-shell-from-the-internet]]
 === SSH (Secure Shell) from the Internet
 
-Detects network events that may indicate the use of SSH traffic from
-the Internet. SSH is commonly used by system administrators to remotely control
-a system using the command line shell. If it is exposed to the Internet, it
-should be done with strong security controls as it is frequently targeted and
-exploited by threat actors as an initial access or back-door vector.
+Detects network events that may indicate the use of SSH traffic from the
+Internet. SSH is commonly used by system administrators to remotely control a
+system using the command line shell. If it is exposed to the Internet, it should
+be done with strong security controls as it is frequently targeted and exploited
+by threat actors as an initial access or back-door vector.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -26,32 +28,46 @@ exploited by threat actors as an initial access or back-door vector.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<ssh-secure-shell-from-the-internet-history, version history>>)
+*Version*: 3 (<<ssh-secure-shell-from-the-internet-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.6.1
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
 Some network security policies allow SSH directly from the Internet but usage
-that is unfamiliar to server or network owners can be unexpected and
-suspicious. SSH services may be exposed directly to the Internet in some
-networks such as cloud environments. In such cases, only SSH gateways,
-bastions or jump servers may be expected expose SSH directly to the Internet
-and can be exempted from this rule. SSH may be required by some workflows
-such as remote access and support for specialized software products and servers.
-Such workflows are usually known and not unexpected.
+that is unfamiliar to server or network owners can be unexpected and suspicious.
+SSH services may be exposed directly to the Internet in some networks such as
+cloud environments. In such cases, only SSH gateways, bastions or jump servers
+may be expected expose SSH directly to the Internet and can be exempted from
+this rule. SSH may be required by some workflows such as remote access and
+support for specialized software products and servers. Such workflows are
+usually known and not unexpected.
 
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
+network.transport:tcp and destination.port:22 and not
+source.ip:(10.0.0.0/8 or 127.0.0.0/8 or 172.16.0.0/12 or
+192.168.0.0/16 or "::1") and destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 2 query*
+
+[source]
+----------------------------------
 network.transport: tcp and destination.port:22 and (
 network.direction: inbound or ( not source.ip: (10.0.0.0/8 or
-172.16.0.0/12 or 192.168.0.0/16) and destination.ip:
-(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
+172.16.0.0/12 or 192.168.0.0/16) and destination.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) ) )
 ----------------------------------
 
 ==== Threat mapping

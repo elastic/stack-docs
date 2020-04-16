@@ -2,8 +2,10 @@
 === Network Connection via Regsvr
 
 Identifies the native Windows tools `regsvr32.exe` and `regsvr64.exe` making a
-network connection.  This may be indicative of an attacker bypassing
-whitelisting or running arbitrary scripts via a signed Microsoft binary.
+network connection. This may be indicative of an attacker bypassing whitelisting
+or running arbitrary scripts via a signed Microsoft binary.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -24,9 +26,12 @@ whitelisting or running arbitrary scripts via a signed Microsoft binary.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<network-connection-via-regsvr-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -37,6 +42,19 @@ by non-engineers and ordinary users is unusual.
 
 
 [source,js]
+----------------------------------
+process.name:(regsvr32.exe or regsvr64.exe) and event.action:"Network
+connection detected (rule: NetworkConnect)" and not
+destination.ip:(10.0.0.0/8 or 169.254.169.254 or 172.16.0.0/12 or
+192.168.0.0/16)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 (process.name:regsvr32.exe or process.name:regsvr64.exe) and
 event.action:"Network connection detected (rule: NetworkConnect)" and

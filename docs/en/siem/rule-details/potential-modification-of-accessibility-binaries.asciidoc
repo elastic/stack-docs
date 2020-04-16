@@ -6,6 +6,8 @@ combination before a user has logged in. An adversary can modify the way these
 programs are launched to get a command prompt or backdoor without logging in to
 the system.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -25,14 +27,29 @@ the system.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<potential-modification-of-accessibility-binaries-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.code:1 and process.parent.name:winlogon.exe and
+process.name:(atbroker.exe or displayswitch.exe or magnify.exe or
+narrator.exe or osk.exe or sethc.exe or utilman.exe)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.code:1 and process.parent.name:winlogon.exe and
 (process.name:atbroker.exe or process.name:displayswitch.exe or

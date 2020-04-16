@@ -3,11 +3,13 @@
 
 A request to web application returned a 405 response which indicates the web
 application declined to process the request because the HTTP method is not
-allowed for the resource
+allowed for the resource.
+
+*Rule type*: query
 
 *Rule indices*:
 
-* apm-\*-transaction*
+* apm-*-transaction*
 
 *Severity*: medium
 
@@ -25,12 +27,15 @@ allowed for the resource
 
 *Tags*:
 
-* Elastic
 * APM
+* Elastic
 
-*Rule version*: 1
+*Version*: 2 (<<web-application-suspicious-activity-unauthorized-method-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 

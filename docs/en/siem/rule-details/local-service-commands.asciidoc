@@ -5,6 +5,8 @@ Identifies use of `sc.exe` to create, modify, or start services on remote hosts.
 This could be indicative of adversary lateral movement but will be noisy if
 commonly done by admins.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,14 +26,29 @@ commonly done by admins.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<local-service-commands-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:sc.exe and process.args:(config or create or failure or
+start)
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
 process.name:sc.exe and process.args:("create" or "config" or

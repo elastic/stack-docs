@@ -4,6 +4,8 @@
 The `whoami` application was executed on a Linux host. This is often used by
 tools and persistence mechanisms to test for privileged access.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -23,9 +25,12 @@ tools and persistence mechanisms to test for privileged access.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<user-discovery-via-whoami-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -36,6 +41,16 @@ this command may originate from automation tools and frameworks.
 
 
 [source,js]
+----------------------------------
+process.name:whoami and event.action:executed
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name: whoami and event.action:executed
 ----------------------------------

@@ -1,13 +1,14 @@
 [[telnet-port-activity]]
 === Telnet Port Activity
 
-Detects network events that may indicate the use of Telnet traffic.
-Telnet is commonly used by system administrators to remotely control older or
-embedded systems using the command line shell. It should almost never be
-directly exposed to the Internet, as it is frequently targeted and exploited by
-threat actors as an initial access or back-door vector. As a plain-text
-protocol, it may also expose usernames and passwords to anyone capable of
-observing the traffic.
+Detects network events that may indicate the use of Telnet traffic. Telnet is
+commonly used by system administrators to remotely control older or embedded
+systems using the command line shell. It should almost never be directly exposed
+to the Internet, as it is frequently targeted and exploited by threat actors as
+an initial access or back-door vector. As a plain-text protocol, it may also
+expose usernames and passwords to anyone capable of observing the traffic.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -28,27 +29,28 @@ observing the traffic.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<telnet-port-activity-history, version history>>)
+*Version*: 2 (<<telnet-port-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
 *Last modified ({stack} release)*: 7.6.1
 
+
 ==== Potential false positives
 
 IoT (Internet of Things) devices and networks may use telnet and can be excluded
-if desired. Some business workflows may use Telnet for administration of
-older devices. These often have a predictable behavior. Telnet activity
-involving an unusual source or destination may be more suspicious. Telnet
-activity involving a production server that has no known associated Telnet
-workflow or business requirement is often suspicious.
+if desired. Some business workflows may use Telnet for administration of older
+devices. These often have a predictable behavior. Telnet activity involving an
+unusual source or destination may be more suspicious. Telnet activity involving
+a production server that has no known associated Telnet workflow or business
+requirement is often suspicious.
 
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
-network.transport: tcp and destination.port: 23
+network.transport:tcp and destination.port:23
 ----------------------------------
 
 ==== Threat mapping

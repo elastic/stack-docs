@@ -4,6 +4,8 @@
 Identifies attempts to create new local users. This is sometimes done by
 attackers to increase access to a system or domain.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,14 +25,29 @@ attackers to increase access to a system or domain.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<user-account-creation-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:(net.exe or net1.exe) and not process.parent.name:net.exe
+and process.args:(user and (/ad or /add))
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
 process.name:("net.exe" or "net1.exe") and not

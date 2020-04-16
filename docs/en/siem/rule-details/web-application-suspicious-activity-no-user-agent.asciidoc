@@ -4,9 +4,11 @@
 A request to a web application server contained no identifying user agent
 string.
 
+*Rule type*: query
+
 *Rule indices*:
 
-* apm-\*-transaction*
+* apm-*-transaction*
 
 *Severity*: medium
 
@@ -24,12 +26,15 @@ string.
 
 *Tags*:
 
-* Elastic
 * APM
+* Elastic
 
-*Rule version*: 1
+*Version*: 2 (<<web-application-suspicious-activity-no-user-agent-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -43,6 +48,16 @@ malicious activity.
 
 
 [source,js]
+----------------------------------
+url.path:*
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 url.path: *
 ----------------------------------

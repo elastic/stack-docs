@@ -6,6 +6,8 @@ HTML Help system. Adversaries may conceal malicious code in a CHM file and
 deliver it to a victim for execution. CHM content is loaded by the HTML Help
 executable program (`hh.exe`).
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -25,15 +27,18 @@ executable program (`hh.exe`).
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<process-activity-via-compiled-html-file-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
+*Last modified ({stack} release)*: 7.7.0
+
+
 ==== Potential false positives
 
-The HTML Help executable program (`hh.exe`) runs whenever a user clicks a 
-compiled help (`.chm`) file or menu item that opens the help file inside the 
-Help Viewer. This is not always malicious, but adversaries may abuse this 
+The HTML Help executable program (`hh.exe`) runs whenever a user clicks a
+compiled help (`.chm`) file or menu item that opens the help file inside the
+Help Viewer. This is not always malicious, but adversaries may abuse this
 technology to conceal malicious code.
 
 ==== Rule query

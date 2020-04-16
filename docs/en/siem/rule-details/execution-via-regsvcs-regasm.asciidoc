@@ -1,0 +1,65 @@
+[[execution-via-regsvcs-regasm]]
+=== Execution via Regsvcs/Regasm
+
+RegSvcs.exe and RegAsm.exe are Windows command line utilities that are used to
+register .NET Component Object Model (COM) assemblies. Adversaries can use
+RegSvcs.exe and RegAsm.exe to proxy execution of code through a trusted Windows
+utility.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:(RegAsm.exe or RegSvcs.exe) and event.action:"Process
+Create (rule: ProcessCreate)"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Regsvcs/Regasm
+** ID: T1121
+** Reference URL: https://attack.mitre.org/techniques/T1121/
+
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Regsvcs/Regasm
+** ID: T1121
+** Reference URL: https://attack.mitre.org/techniques/T1121/

@@ -8,6 +8,8 @@ connections are established by the kernel. Processes making 445/tcp connections
 may be port scanners, exploits, or suspicious user-level processes moving
 laterally.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -27,14 +29,29 @@ laterally.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<direct-outbound-smb-connection-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+destination.port:445 and not process.pid:4 and not
+destination.ip:(127.0.0.1 or "::1")
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 event.action:"Network connection detected (rule: NetworkConnect)" and
 destination.port:445 and not process.pid:4 and not

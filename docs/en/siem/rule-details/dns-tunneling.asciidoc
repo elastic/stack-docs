@@ -1,0 +1,44 @@
+[[dns-tunneling]]
+=== DNS Tunneling
+
+A machine learning job detected unusually large numbers of DNS queries for a
+single top-level DNS domain, which is often used for DNS tunneling. DNS
+tunneling can be used for command-and-control, persistence, or data exfiltration
+activity. For example, dnscat tends to generate many DNS questions for a top-
+level domain as it uses the DNS protocol to tunnel data.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: packetbeat_dns_tunneling
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Packetbeat
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+DNS domains that use large numbers of child domains, such as software or content
+distribution networks, can trigger this signal and such parent domains can be
+excluded.

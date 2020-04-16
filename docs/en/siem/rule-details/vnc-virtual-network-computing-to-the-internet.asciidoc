@@ -1,11 +1,13 @@
 [[vnc-virtual-network-computing-to-the-internet]]
 === VNC (Virtual Network Computing) to the Internet
 
-Detects network events that may indicate the use of VNC traffic to the
-Internet. VNC is commonly used by system administrators to remotely control a
-system for maintenance or to use shared resources. It should almost never be
-directly exposed to the Internet, as it is frequently targeted and exploited by
-threat actors as an initial access or back-door vector.
+Detects network events that may indicate the use of VNC traffic to the Internet.
+VNC is commonly used by system administrators to remotely control a system for
+maintenance or to use shared resources. It should almost never be directly
+exposed to the Internet, as it is frequently targeted and exploited by threat
+actors as an initial access or back-door vector.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -26,31 +28,44 @@ threat actors as an initial access or back-door vector.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<vnc-virtual-network-computing-to-the-internet-history, version history>>)
+*Version*: 3 (<<vnc-virtual-network-computing-to-the-internet-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.6.1
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
 VNC connections may be made directly to Linux cloud server instances but such
 connections are usually made only by engineers. VNC is less common than SSH or
-RDP but may be required by some work flows such as remote access and support
-for specialized software products or servers. Such workflows are usually
-known and not unexpected. Usage that is unfamiliar to server or network
-owners can be unexpected and suspicious.
+RDP but may be required by some work flows such as remote access and support for
+specialized software products or servers. Such workflows are usually known and
+not unexpected. Usage that is unfamiliar to server or network owners can be
+unexpected and suspicious.
 
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
+network.transport:tcp and destination.port >= 5800 and
+destination.port <= 5810 and source.ip:(10.0.0.0/8 or 172.16.0.0/12 or
+192.168.0.0/16) and not destination.ip:(10.0.0.0/8 or 127.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16 or "::1")
+----------------------------------
+
+
+===== Query changelog
+
+*Version 2 query*
+
+[source]
+----------------------------------
 network.transport: tcp and (destination.port >= 5800 and
 destination.port <= 5810) and ( network.direction: outbound or (
-source.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and
-not destination.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16)
-) )
+source.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and not
+destination.ip: (10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
 ----------------------------------
 
 ==== Threat mapping

@@ -1,12 +1,14 @@
 [[ipsec-nat-traversal-port-activity]]
 === IPSEC NAT Traversal Port Activity
 
-Detects events that could be describing IPSEC NAT Traversal traffic.
-IPSEC is a VPN technology that allows one system to talk to another using
-encrypted tunnels. NAT Traversal enables these tunnels to communicate over the
-Internet where one of the sides is behind a NAT router gateway. This may be
-common on your network, but this technique is also used by threat actors to
-avoid detection.
+Detects events that could be describing IPSEC NAT Traversal traffic. IPSEC is a
+VPN technology that allows one system to talk to another using encrypted
+tunnels. NAT Traversal enables these tunnels to communicate over the Internet
+where one of the sides is behind a NAT router gateway. This may be common on
+your network, but this technique is also used by threat actors to avoid
+detection.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -27,11 +29,12 @@ avoid detection.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<ipsec-nat-traversal-port-activity-history, version history>>)
+*Version*: 2 (<<ipsec-nat-traversal-port-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
 *Last modified ({stack} release)*: 7.6.1
+
 
 ==== Potential false positives
 
@@ -47,7 +50,7 @@ can be excluded.
 
 [source,js]
 ----------------------------------
-network.transport: udp and destination.port: 4500
+network.transport:udp and destination.port:4500
 ----------------------------------
 
 ==== Threat mapping

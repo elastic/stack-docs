@@ -1,10 +1,12 @@
 [[nmap-process-activity]]
 === Nmap Process Activity
 
-Nmap was executed on a Linux host. Nmap is a FOSS tool for network scanning  and
+Nmap was executed on a Linux host. Nmap is a FOSS tool for network scanning and
 security testing. It can map and discover networks, and identify listening
 services and operating systems. It is sometimes used to gather information in
 support of exploitation, execution or lateral movement.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -29,9 +31,12 @@ support of exploitation, execution or lateral movement.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<nmap-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -43,6 +48,16 @@ and network or server administrators. Use of nmap by ordinary users is uncommon.
 
 
 [source,js]
+----------------------------------
+process.name:nmap
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name: nmap
 ----------------------------------

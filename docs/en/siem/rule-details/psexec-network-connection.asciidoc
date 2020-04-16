@@ -1,8 +1,10 @@
 [[psexec-network-connection]]
 === PsExec Network Connection
 
-Identifies use of the SysInternals tool `PsExec.exe` making a network 
+Identifies use of the SysInternals tool `PsExec.exe` making a network
 connection. This could be an indication of lateral movement.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -23,9 +25,12 @@ connection. This could be an indication of lateral movement.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<psexec-network-connection-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -37,6 +42,17 @@ expect from this tool.
 
 
 [source,js]
+----------------------------------
+process.name:PsExec.exe and event.action:"Network connection detected
+(rule: NetworkConnect)"
+----------------------------------
+
+
+===== Query changelog
+
+*Version 1 query*
+
+[source]
 ----------------------------------
 process.name:PsExec.exe and event.action:"Network connection detected
 (rule: NetworkConnect)"

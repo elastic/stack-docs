@@ -18,11 +18,6 @@ other genres available in the set of categories we have. Therefore,
 {reganalysis} which predicts continuous, numerical values. The maximum number of 
 classes for {classanalysis} is 30.
 
-
-[discrete]
-[[dfa-classification-depvar]]
-==== {depvar-cap}
-
 When you create a {classification} job, you must specify which field contains 
 the classes that you want to predict. This field is known as the {depvar}. The 
 rest of the fields that are included in the analysis are used to create the 
@@ -74,15 +69,16 @@ As a rule of thumb, a {classanalysis} with many classes takes more time to run
 than a binary {classification} process when there are only two classes. The 
 relationship between the number of classes and the runtime is linear.
 
-The runtime also scales approximately linearly with the number of involved documents 
-below 200.000 data points. Therefore, if you double the number of documents, 
-then the runtime of the analysis doubles respectively. Above 200.000 data 
-points, runtime increases faster.
+The runtime also scales approximately linearly with the number of involved 
+documents below 200.000 data points. Therefore, if you double the number of 
+documents, then the runtime of the analysis doubles respectively. Above 200.000 
+data points, runtime increases faster.
 
-To achieve faster runtime, consider to set a smaller training percent, prepare 
-If possible, prepare your input data such that is has less classes. You can also remove the fields 
-that are not relevant from the analysis by specifying `excludes` patterns in the 
-`analyzed_fields` object when configuring the {dfanalytics-job}.
+To improve the performance of your {classanalysis}, consider to set a smaller 
+training percent. If possible, prepare your input data such that is has less 
+classes. You can also remove the fields that are not relevant from the analysis 
+by specifying `excludes` patterns in the `analyzed_fields` object when 
+configuring the {dfanalytics-job}.
  
 
 [discrete]

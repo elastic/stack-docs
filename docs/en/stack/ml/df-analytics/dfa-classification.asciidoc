@@ -42,8 +42,9 @@ model on your training data set, you can reuse the knowledge that the model has
 learned about the relationships between the data points to classify new data.
 
 The effects of imbalanced data are automatically mitigated before the 
-training. Nonetheless, it is a good idea to train your model with a data set that is approximately balanced.
-That is to say, ideally your data set should have a similar number of data points for each class.
+training. Nonetheless, it is a good idea to train your model with a data set 
+that is approximately balanced. That is to say, ideally your data set should 
+have a similar number of data points for each class.
 
 
 [discrete]
@@ -51,13 +52,13 @@ That is to say, ideally your data set should have a similar number of data point
 ===== {classification-cap} algorithms
 
 //tag::classification-algorithms[]
-The ensemble algorithm that we use in the {stack} for {classification} is a type 
-of boosting called boosted tree regression model which combines multiple weak 
-models into a composite one. We use decision trees to learn to predict the 
-probability that a data point belongs to a certain class. A sequence of decision 
-trees are trained and every decision tree learns from the mistakes of the 
-previous one. Every tree is an iteration of the last one, hence it improves the 
-decision made by the previous tree.
+{classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
+boosted tree regression model which combines multiple weak models into a 
+composite one. It uses decision trees to learn to predict the probability that a 
+data point belongs to a certain class. A sequence of decision trees are trained 
+and every decision tree learns from the mistakes of the previous one. Every tree 
+is an iteration of the last one, hence it improves the decision made by the 
+previous tree.
 //end::classification-algorithms[]
 
 
@@ -75,10 +76,11 @@ documents, then the runtime of the analysis doubles respectively. Above 200.000
 data points, runtime increases faster.
 
 To improve the performance of your {classanalysis}, consider to set a smaller 
-training percent. If possible, prepare your input data such that is has less 
-classes. You can also remove the fields that are not relevant from the analysis 
-by specifying `excludes` patterns in the `analyzed_fields` object when 
-configuring the {dfanalytics-job}.
+`training_percent` value when you create the job. That is to say, use a smaller 
+percentage of your documents to train the model more quickly. If possible, 
+prepare your input data such that is has less classes. You can also remove the 
+fields that are not relevant from the analysis by specifying `excludes` patterns 
+in the `analyzed_fields` object when configuring the {dfanalytics-job}.
  
 
 [discrete]

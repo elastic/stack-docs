@@ -48,18 +48,6 @@ process.name:cmd.exe and event.action:"Network connection detected
 172.16.0.0/12 or 192.168.0.0/16)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-process.name:cmd.exe and event.action:"Network connection detected
-(rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not
-destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -82,3 +70,17 @@ destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
 ** Name: Remote File Copy
 ** ID: T1105
 ** Reference URL: https://attack.mitre.org/techniques/T1105/
+
+[[command-prompt-network-connection-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name:cmd.exe and event.action:"Network connection detected
+(rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not
+destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
+----------------------------------
+

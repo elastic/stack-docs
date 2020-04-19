@@ -56,12 +56,26 @@ process.name:userinit.exe and not process.parent.name:(dwm.exe or
 winlogon.exe))
 ----------------------------------
 
+==== Threat mapping
 
-===== Query changelog
+*Framework*: MITRE ATT&CK^TM^
 
-*Version 1 query*
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Process Hollowing
+** ID: T1093
+** Reference URL: https://attack.mitre.org/techniques/T1093/
 
-[source]
+[[unusual-parent-child-relationship-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
 process.parent.executable:* and ( (process.name:"smss.exe" and not
@@ -84,15 +98,3 @@ process.parent.name:("services.exe" or "svchost.exe")) or
 "winlogon.exe")) )
 ----------------------------------
 
-==== Threat mapping
-
-*Framework*: MITRE ATT&CK^TM^
-
-* Tactic:
-** Name: Privilege Escalation
-** ID: TA0004
-** Reference URL: https://attack.mitre.org/tactics/TA0004/
-* Technique:
-** Name: Process Hollowing
-** ID: T1093
-** Reference URL: https://attack.mitre.org/techniques/T1093/

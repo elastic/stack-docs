@@ -45,16 +45,6 @@ this command may originate from automation tools and frameworks.
 process.name:whoami and event.action:executed
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-process.name: whoami and event.action:executed
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -67,3 +57,15 @@ process.name: whoami and event.action:executed
 ** Name: System Owner/User Discovery
 ** ID: T1033
 ** Reference URL: https://attack.mitre.org/techniques/T1033/
+
+[[user-discovery-via-whoami-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name: whoami and event.action:executed
+----------------------------------
+

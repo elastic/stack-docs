@@ -47,16 +47,6 @@ administrators engaged in network troubleshooting.
 process.name:tcpdump and event.action:executed
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-process.name: tcpdump and event.action:executed
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -79,3 +69,15 @@ process.name: tcpdump and event.action:executed
 ** Name: Network Sniffing
 ** ID: T1040
 ** Reference URL: https://attack.mitre.org/techniques/T1040/
+
+[[network-sniffing-via-tcpdump-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name: tcpdump and event.action:executed
+----------------------------------
+

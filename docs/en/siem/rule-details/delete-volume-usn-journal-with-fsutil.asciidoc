@@ -42,17 +42,6 @@ event.action:"Process Create (rule: ProcessCreate)" and
 process.name:fsutil.exe and process.args:(deletejournal and usn)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"fsutil.exe" and process.args:("usn" and "deletejournal")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -65,3 +54,16 @@ process.name:"fsutil.exe" and process.args:("usn" and "deletejournal")
 ** Name: File Deletion
 ** ID: T1107
 ** Reference URL: https://attack.mitre.org/techniques/T1107/
+
+[[delete-volume-usn-journal-with-fsutil-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"fsutil.exe" and process.args:("usn" and "deletejournal")
+----------------------------------
+

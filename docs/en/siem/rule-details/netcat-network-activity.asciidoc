@@ -58,11 +58,13 @@ socket_opened)
 ----------------------------------
 
 
-===== Query changelog
+[[netcat-network-activity-history]]
+==== Rule version history
 
-*Version 1 query*
-
-[source]
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.name: (nc or ncat or netcat or netcat.openbsd or
 netcat.traditional) and event.action: (connected-to or bound-socket or

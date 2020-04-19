@@ -56,12 +56,26 @@ systeminfo.exe or tasklist.exe or tracert.exe or whoami.exe or
 wmic.exe or wscript.exe or xwizard.exe)
 ----------------------------------
 
+==== Threat mapping
 
-===== Query changelog
+*Framework*: MITRE ATT&CK^TM^
 
-*Version 1 query*
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Spearphishing Attachment
+** ID: T1193
+** Reference URL: https://attack.mitre.org/techniques/T1193/
 
-[source]
+[[suspicious-ms-office-child-process-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
 process.parent.name:("winword.exe" or "excel.exe" or "powerpnt.exe" or
@@ -82,15 +96,3 @@ process.name:("arp.exe" or "dsquery.exe" or "dsget.exe" or
 "bitsadmin.exe" or "certutil.exe" or "ftp.exe")
 ----------------------------------
 
-==== Threat mapping
-
-*Framework*: MITRE ATT&CK^TM^
-
-* Tactic:
-** Name: Execution
-** ID: TA0002
-** Reference URL: https://attack.mitre.org/tactics/TA0002/
-* Technique:
-** Name: Spearphishing Attachment
-** ID: T1193
-** Reference URL: https://attack.mitre.org/techniques/T1193/

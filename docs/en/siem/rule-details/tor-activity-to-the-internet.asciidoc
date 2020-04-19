@@ -54,19 +54,6 @@ destination.ip:(10.0.0.0/8 or 127.0.0.0/8 or 172.16.0.0/12 or
 192.168.0.0/16 or "::1")
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 2 query*
-
-[source]
-----------------------------------
-network.transport: tcp and destination.port: (9001 or 9030) and (
-network.direction: outbound or ( source.ip: (10.0.0.0/8 or
-172.16.0.0/12 or 192.168.0.0/16) and not destination.ip: (10.0.0.0/8
-or 172.16.0.0/12 or 192.168.0.0/16) ) )
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -89,3 +76,20 @@ or 172.16.0.0/12 or 192.168.0.0/16) ) )
 ** Name: Multi-hop Proxy
 ** ID: T1188
 ** Reference URL: https://attack.mitre.org/techniques/T1188/
+
+[[tor-activity-to-the-internet-history]]
+==== Rule version history
+
+Version 3 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+network.transport: tcp and destination.port: (9001 or 9030) and (
+network.direction: outbound or ( source.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) and not destination.ip: (10.0.0.0/8
+or 172.16.0.0/12 or 192.168.0.0/16) ) )
+----------------------------------
+
+Version 2 (7.6.1 release)::
+* Removed auditbeat-\*, packetbeat-*, and winlogbeat-* from the rule indices.

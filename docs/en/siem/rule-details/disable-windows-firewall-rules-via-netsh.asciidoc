@@ -43,18 +43,6 @@ process.name:netsh.exe and process.args:(disable and firewall and set)
 or process.args:(advfirewall and off and state)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"netsh.exe" and process.args:("firewall" and "set" and
-"disable") or process.args:("advfirewall" and "state" and "off")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -67,3 +55,17 @@ process.name:"netsh.exe" and process.args:("firewall" and "set" and
 ** Name: Disabling Security Tools
 ** ID: T1089
 ** Reference URL: https://attack.mitre.org/techniques/T1089/
+
+[[disable-windows-firewall-rules-via-netsh-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"netsh.exe" and process.args:("firewall" and "set" and
+"disable") or process.args:("advfirewall" and "state" and "off")
+----------------------------------
+

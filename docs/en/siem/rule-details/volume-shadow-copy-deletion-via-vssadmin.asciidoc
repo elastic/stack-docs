@@ -41,17 +41,6 @@ event.action:"Process Create (rule: ProcessCreate)" and
 process.name:vssadmin.exe and process.args:(delete and shadows)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -64,3 +53,16 @@ process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
 ** Name: Inhibit System Recovery
 ** ID: T1490
 ** Reference URL: https://attack.mitre.org/techniques/T1490/
+
+[[volume-shadow-copy-deletion-via-vssadmin-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
+----------------------------------
+

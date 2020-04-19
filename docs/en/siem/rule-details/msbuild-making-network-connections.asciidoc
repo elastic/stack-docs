@@ -42,17 +42,6 @@ event.action:"Network connection detected (rule: NetworkConnect)" and
 process.name:MSBuild.exe and not destination.ip:(127.0.0.1 or "::1")
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Network connection detected (rule: NetworkConnect)" and
-process.name:MSBuild.exe and not destination.ip:("127.0.0.1" or "::1")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -65,3 +54,16 @@ process.name:MSBuild.exe and not destination.ip:("127.0.0.1" or "::1")
 ** Name: Trusted Developer Utilities
 ** ID: T1127
 ** Reference URL: https://attack.mitre.org/techniques/T1127/
+
+[[msbuild-making-network-connections-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:MSBuild.exe and not destination.ip:("127.0.0.1" or "::1")
+----------------------------------
+

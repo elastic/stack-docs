@@ -41,17 +41,6 @@ event.action:"Process Create (rule: ProcessCreate)" and
 process.name:attrib.exe and process.args:+h
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"attrib.exe" and process.args:"+h"
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -74,3 +63,16 @@ process.name:"attrib.exe" and process.args:"+h"
 ** Name: Hidden Files and Directories
 ** ID: T1158
 ** Reference URL: https://attack.mitre.org/techniques/T1158/
+
+[[adding-hidden-file-attribute-via-attrib-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"attrib.exe" and process.args:"+h"
+----------------------------------
+

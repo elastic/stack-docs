@@ -62,3 +62,16 @@ event.action:executed
 ** Name: Web Shell
 ** ID: T1100
 ** Reference URL: https://attack.mitre.org/techniques/T1100/
+
+[[potential-shell-via-web-server-history]]
+==== Rule version history
+
+Version 2 (7.6.1 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name: bash and user.name: (apache or www or "wwww-data") and
+event.action:executed
+----------------------------------
+

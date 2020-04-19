@@ -44,20 +44,6 @@ process.name:(atbroker.exe or displayswitch.exe or magnify.exe or
 narrator.exe or osk.exe or sethc.exe or utilman.exe)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.code:1 and process.parent.name:winlogon.exe and
-(process.name:atbroker.exe or process.name:displayswitch.exe or
-process.name:magnify.exe or process.name:narrator.exe or
-process.name:osk.exe or process.name:sethc.exe or
-process.name:utilman.exe)
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -80,3 +66,19 @@ process.name:utilman.exe)
 ** Name: Accessibility Features
 ** ID: T1015
 ** Reference URL: https://attack.mitre.org/techniques/T1015/
+
+[[potential-modification-of-accessibility-binaries-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.code:1 and process.parent.name:winlogon.exe and
+(process.name:atbroker.exe or process.name:displayswitch.exe or
+process.name:magnify.exe or process.name:narrator.exe or
+process.name:osk.exe or process.name:sethc.exe or
+process.name:utilman.exe)
+----------------------------------
+

@@ -51,11 +51,13 @@ process.name:(hping or hping2 or hping3) and event.action:executed
 ----------------------------------
 
 
-===== Query changelog
+[[hping-process-activity-history]]
+==== Rule version history
 
-*Version 1 query*
-
-[source]
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.name: (hping3 or hping2 or hping) and event.action:executed
 ----------------------------------

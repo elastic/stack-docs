@@ -42,19 +42,6 @@ process.name:(net.exe or net1.exe) and not process.parent.name:net.exe
 and process.args:(user and (/ad or /add))
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:("net.exe" or "net1.exe") and not
-process.parent.name:"net.exe" and process.args:("user" and ("/add" or
-"/ad"))
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -67,3 +54,18 @@ process.parent.name:"net.exe" and process.args:("user" and ("/add" or
 ** Name: Create Account
 ** ID: T1136
 ** Reference URL: https://attack.mitre.org/techniques/T1136/
+
+[[user-account-creation-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:("net.exe" or "net1.exe") and not
+process.parent.name:"net.exe" and process.args:("user" and ("/add" or
+"/ad"))
+----------------------------------
+

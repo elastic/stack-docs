@@ -43,18 +43,6 @@ process.name:sc.exe and process.args:(config or create or failure or
 start)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:sc.exe and process.args:("create" or "config" or
-"failure" or "start")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -67,3 +55,17 @@ process.name:sc.exe and process.args:("create" or "config" or
 ** Name: Remote Services
 ** ID: T1021
 ** Reference URL: https://attack.mitre.org/techniques/T1021/
+
+[[local-service-commands-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:sc.exe and process.args:("create" or "config" or
+"failure" or "start")
+----------------------------------
+

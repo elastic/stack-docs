@@ -43,18 +43,6 @@ process.parent.name:services.exe and process.name:(cmd.exe or
 powershell.exe)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.parent.name:"services.exe" and process.name:("cmd.exe" or
-"powershell.exe")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -67,3 +55,17 @@ process.parent.name:"services.exe" and process.name:("cmd.exe" or
 ** Name: New Service
 ** ID: T1050
 ** Reference URL: https://attack.mitre.org/techniques/T1050/
+
+[[system-shells-via-services-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.parent.name:"services.exe" and process.name:("cmd.exe" or
+"powershell.exe")
+----------------------------------
+

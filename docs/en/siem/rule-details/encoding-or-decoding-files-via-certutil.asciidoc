@@ -44,18 +44,6 @@ process.name:certutil.exe and process.args:(-decode or -encode or
 /decode or /encode)
 ----------------------------------
 
-
-===== Query changelog
-
-*Version 1 query*
-
-[source]
-----------------------------------
-event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"certutil.exe" and process.args:("-encode" or "/encode"
-or "-decode" or "/decode")
-----------------------------------
-
 ==== Threat mapping
 
 *Framework*: MITRE ATT&CK^TM^
@@ -68,3 +56,17 @@ or "-decode" or "/decode")
 ** Name: Deobfuscate/Decode Files or Information
 ** ID: T1140
 ** Reference URL: https://attack.mitre.org/techniques/T1140/
+
+[[encoding-or-decoding-files-via-certutil-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"certutil.exe" and process.args:("-encode" or "/encode"
+or "-decode" or "/decode")
+----------------------------------
+

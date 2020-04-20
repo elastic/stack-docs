@@ -1,0 +1,50 @@
+[[unusual-dns-activity]]
+=== Unusual DNS Activity
+
+A machine learning job detected a rare and unusual DNS query that indicates
+network activity with unusual DNS domains. This can be due to initial access,
+persistence, command-and-control, or exfiltration activity. For example, when a
+user clicks on a link in a phishing email or opens a malicious document, a
+request may be sent to download and run a payload from an uncommon domain. When
+malware is already running, it may send requests to an uncommon DNS domain the
+malware uses for command-and-control communication.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: packetbeat_rare_dns_question
+
+*Machine learning anomaly threshold*: 50
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Packetbeat
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+A newly installed program or one that runs rarely as part of a monthly or
+quarterly workflow could trigger this signal. Network activity that occurs
+rarely, in small quantities, can trigger this signal. Possible examples are
+browsing technical support or vendor networks sparsely. A user who visits a new
+or unique web destination may trigger this signal.

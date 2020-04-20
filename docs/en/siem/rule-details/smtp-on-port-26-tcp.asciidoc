@@ -1,10 +1,12 @@
 [[smtp-on-port-26-tcp]]
 === SMTP on Port 26/TCP
 
-Detects events that may indicate use of SMTP on TCP port 26. This port
-is commonly used by several popular mail transfer agents to deconflict with the
+Detects events that may indicate use of SMTP on TCP port 26. This port is
+commonly used by several popular mail transfer agents to deconflict with the
 default SMTP port 25. This port has also been used by a malware family called
 BadPatch for command and control of Windows systems.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -30,11 +32,12 @@ BadPatch for command and control of Windows systems.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<smtp-on-port-26-tcp-history, version history>>)
+*Version*: 2 (<<smtp-on-port-26-tcp-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
 *Last modified ({stack} release)*: 7.6.1
+
 
 ==== Potential false positives
 
@@ -46,7 +49,7 @@ excluded from this rule as this is expected behavior.
 
 [source,js]
 ----------------------------------
-network.transport: tcp and destination.port: 26
+network.transport:tcp and destination.port:26
 ----------------------------------
 
 ==== Threat mapping
@@ -71,3 +74,9 @@ network.transport: tcp and destination.port: 26
 ** Name: Exfiltration Over Alternative Protocol
 ** ID: T1048
 ** Reference URL: https://attack.mitre.org/techniques/T1048/
+
+[[smtp-on-port-26-tcp-history]]
+==== Rule version history
+
+Version 2 (7.6.1 release)::
+* Removed auditbeat-\*, packetbeat-*, and winlogbeat-* from the rule indices.

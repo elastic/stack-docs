@@ -1,0 +1,60 @@
+[[microsoft-build-engine-using-an-alternate-name]]
+=== Microsoft Build Engine Using an Alternate Name
+
+An instance of MSBuild, the Microsoft Build Engine, was started after being
+renamed. This is uncommon behavior and may indicate an attempt to run MSBuild
+unnoticed or undetected.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+The Build Engine is commonly used by Windows developers but use by non-engineers
+is unusual.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+(pe.original_file_name:MSBuild.exe or
+winlog.event_data.OriginalFileName: MSBuild.exe) and not process.name:
+MSBuild.exe and event.action: "Process Create (rule: ProcessCreate)"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Masquerading
+** ID: T1036
+** Reference URL: https://attack.mitre.org/techniques/T1036/

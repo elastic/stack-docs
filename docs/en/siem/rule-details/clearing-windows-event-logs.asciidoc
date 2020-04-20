@@ -5,6 +5,8 @@ Identifies attempts to clear Windows event log stores. This is often done by
 attackers in an attempt to evade detection or destroy forensic evidence on a
 system.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,9 +26,12 @@ system.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<clearing-windows-event-logs-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -34,8 +39,8 @@ system.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-(process.name:"wevtutil.exe" and process.args:"cl") or
-(process.name:"powershell.exe" and process.args:"Clear-EventLog")
+process.name:wevtutil.exe and process.args:cl or
+process.name:powershell.exe and process.args:Clear-EventLog
 ----------------------------------
 
 ==== Threat mapping
@@ -50,3 +55,17 @@ event.action:"Process Create (rule: ProcessCreate)" and
 ** Name: Indicator Removal on Host
 ** ID: T1070
 ** Reference URL: https://attack.mitre.org/techniques/T1070/
+
+[[clearing-windows-event-logs-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+(process.name:"wevtutil.exe" and process.args:"cl") or
+(process.name:"powershell.exe" and process.args:"Clear-EventLog")
+----------------------------------
+

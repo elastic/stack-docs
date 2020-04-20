@@ -5,6 +5,8 @@ Strace runs in a privileged context and can be used to escape restrictive
 environments by instantiating a shell in order to elevate privileges or move
 laterally.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -28,9 +30,12 @@ laterally.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<strace-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -42,6 +47,18 @@ debugging or system call tracing.
 
 
 [source,js]
+----------------------------------
+process.name:strace and event.action:executed
+----------------------------------
+
+
+[[strace-process-activity-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.name: strace and event.action:executed
 ----------------------------------

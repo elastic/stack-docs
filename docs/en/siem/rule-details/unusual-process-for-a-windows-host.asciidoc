@@ -1,0 +1,67 @@
+[[unusual-process-for-a-windows-host]]
+=== Unusual Process For a Windows Host
+
+Identifies rare processes that do not usually run on individual hosts, which can
+indicate execution of unauthorized services, malware, or persistence mechanisms.
+Processes are considered rare when they only run occasionally as compared with
+other processes running on the host.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: rare_process_by_host_windows_ecs
+
+*Machine learning anomaly threshold*: 50
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+A newly installed program or one that runs rarely as part of a monthly or
+quarterly workflow could trigger this signal.
+
+==== Investigation guide
+
+Signals from this rule indicate the presence of a Windows process that is rare and unusual for the host it ran on. Here are some possible avenues of investigation:
+
+* Consider the user as identified by the username field. Is this program part
+of an expected workflow for the user who ran this program on this host?
+* Examine the history of execution. If this process manifested only very
+recently, it might be part of a new software package. If it has a consistent
+schedule - for example if it runs monthly or quarterly - it might be part of a
+monthly or quarterly business process.
+* Examine the process metadata like the values of the Company, Description and
+Product fields which may indicate whether the program is associated with an
+expected software vendor or package.
+* Examine arguments and working directory. These may provide indications as to
+the source of the program or the nature of the tasks it is performing.
+* Consider the same for the parent process. If the parent process is a
+legitimate system utility or service, this could be related to software updates
+or system management. If the parent process is something user-facing like an
+Office application, this process could be more suspicious.
+* If you have file hash values in the event data, and you suspect malware, you
+can optionally run a search for the file hash to see if the file is identified
+as malware by anti-malware tools.

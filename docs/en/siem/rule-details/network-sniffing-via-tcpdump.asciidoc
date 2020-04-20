@@ -6,6 +6,8 @@ packet sniffing tool that can be used to capture insecure credentials or data in
 motion. Sniffing can also be used to discover details of network services as a
 prelude to lateral movement or defense evasion.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -25,9 +27,12 @@ prelude to lateral movement or defense evasion.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<network-sniffing-via-tcpdump-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -39,7 +44,7 @@ administrators engaged in network troubleshooting.
 
 [source,js]
 ----------------------------------
-process.name: tcpdump and event.action:executed
+process.name:tcpdump and event.action:executed
 ----------------------------------
 
 ==== Threat mapping
@@ -64,3 +69,15 @@ process.name: tcpdump and event.action:executed
 ** Name: Network Sniffing
 ** ID: T1040
 ** Reference URL: https://attack.mitre.org/techniques/T1040/
+
+[[network-sniffing-via-tcpdump-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name: tcpdump and event.action:executed
+----------------------------------
+

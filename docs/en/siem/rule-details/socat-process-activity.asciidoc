@@ -5,6 +5,8 @@ A Socat process is running on a Linux host. Socat is often used as a persistence
 mechanism by exporting a reverse shell, or by serving a shell on a listening
 port. Socat is also sometimes used for lateral movement.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -28,9 +30,12 @@ port. Socat is also sometimes used for lateral movement.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<socat-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -43,6 +48,18 @@ to be suspicious.
 
 
 [source,js]
+----------------------------------
+process.name:socat and not process.args:-V and event.action:executed
+----------------------------------
+
+
+[[socat-process-activity-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.name:socat and not process.args:"-V" and event.action:executed
 ----------------------------------

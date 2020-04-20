@@ -1,0 +1,55 @@
+[[network-connection-via-msxsl]]
+=== Network Connection via MsXsl
+
+Identifies `msxsl.exe` making a network connection. This may indicate
+adversarial activity as `msxsl.exe` is often leveraged by adversaries to
+execute malicious scripts and evade detection.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:msxsl.exe and event.action:"Network connection detected
+(rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: XSL Script Processing
+** ID: T1220
+** Reference URL: https://attack.mitre.org/techniques/T1220/

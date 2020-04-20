@@ -1,8 +1,10 @@
 [[adobe-hijack-persistence]]
 === Adobe Hijack Persistence
 
-Detects the creation of an executable file or files that will be automatically 
-run by Acrobat Reader when it starts. 
+Detects the creation of an executable file or files that will be automatically
+run by Acrobat Reader when it starts.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -23,11 +25,12 @@ run by Acrobat Reader when it starts.
 * Elastic
 * Windows
 
-*Rule version*: 2 (<<adobe-hijack-persistence-history, version history>>)
+*Version*: 2 (<<adobe-hijack-persistence-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
 *Last modified ({stack} release)*: 7.6.2
+
 
 ==== Rule query
 
@@ -52,3 +55,18 @@ Reader DC\Reader\AcroCEF\RdrCEF.exe") and event.action:"File created
 ** Name: File System Permissions Weakness
 ** ID: T1044
 ** Reference URL: https://attack.mitre.org/techniques/T1044/
+
+[[adobe-hijack-persistence-history]]
+==== Rule version history
+
+Version 2 (7.6.2 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+file.path:("C:\Program Files (x86)\Adobe\Acrobat Reader
+DC\Reader\AcroCEF\RdrCEF.exe" or "C:\Program Files\Adobe\Acrobat
+Reader DC\Reader\AcroCEF\RdrCEF.exe") and event.action:"File created
+(rule: FileCreate)" and not process.name:msiexeec.exe
+----------------------------------
+

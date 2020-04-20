@@ -4,6 +4,8 @@
 Adversaries can add the `hidden` attribute to files to hide them from the user
 in an attempt to evade detection.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,9 +25,12 @@ in an attempt to evade detection.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<adding-hidden-file-attribute-via-attrib-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -33,7 +38,7 @@ in an attempt to evade detection.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"attrib.exe" and process.args:"+h"
+process.name:attrib.exe and process.args:+h
 ----------------------------------
 
 ==== Threat mapping
@@ -58,3 +63,16 @@ process.name:"attrib.exe" and process.args:"+h"
 ** Name: Hidden Files and Directories
 ** ID: T1158
 ** Reference URL: https://attack.mitre.org/techniques/T1158/
+
+[[adding-hidden-file-attribute-via-attrib-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"attrib.exe" and process.args:"+h"
+----------------------------------
+

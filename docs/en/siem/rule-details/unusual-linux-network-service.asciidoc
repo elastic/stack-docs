@@ -1,0 +1,42 @@
+[[unusual-linux-network-service]]
+=== Unusual Linux Network Service
+
+Identifies unusual listening ports on Linux instances that can indicate
+execution of unauthorized services, backdoors, or persistence mechanisms.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: linux_anomalous_network_service
+
+*Machine learning anomaly threshold*: 50
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* Linux
+* ML
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+A newly installed program or one that rarely uses the network could trigger this
+signal.

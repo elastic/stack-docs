@@ -68,14 +68,14 @@ than a binary {classification} process when there are only two classes. The
 relationship between the number of classes and the runtime is linear.
 
 The runtime also scales approximately linearly with the number of involved 
-documents below 200.000 data points. Therefore, if you double the number of 
-documents, then the runtime of the analysis doubles respectively. Above 200.000 
+documents below 200,000 data points. Therefore, if you double the number of 
+documents, then the runtime of the analysis doubles respectively. Above 200,000 
 data points, runtime increases faster.
 
-To improve the performance of your {classanalysis}, consider to set a smaller 
+To improve the performance of your {classanalysis}, consider using a smaller 
 `training_percent` value when you create the job. That is to say, use a smaller 
 percentage of your documents to train the model more quickly. If possible, 
-prepare your input data such that is has less classes. You can also remove the 
+prepare your input data such that it has less classes. You can also remove the 
 fields that are not relevant from the analysis by specifying `excludes` patterns 
 in the `analyzed_fields` object when configuring the {dfanalytics-job}.
  

@@ -1,0 +1,45 @@
+[[unusual-windows-service]]
+=== Unusual Windows Service
+
+A machine learning job detected an unusual Windows service, This can indicate
+execution of unauthorized services, malware, or persistence mechanisms. In
+corporate Windows environments, hosts do not generally run many rare or unique
+services. This job helps detect malware and persistence mechanisms that have
+been installed and run as a service.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: windows_anomalous_service
+
+*Machine learning anomaly threshold*: 50
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+A newly installed program or one that runs rarely as part of a monthly or
+quarterly workflow could trigger this signal.

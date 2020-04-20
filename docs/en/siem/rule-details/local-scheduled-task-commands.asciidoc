@@ -4,6 +4,8 @@
 A scheduled task can be used by an adversary to establish persistence, move
 laterally, and/or escalate privileges.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,9 +25,12 @@ laterally, and/or escalate privileges.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<local-scheduled-task-commands-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -37,8 +42,8 @@ Legitimate scheduled tasks may be created during installation of new software.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:schtasks.exe and process.args:("/create" or "-create" or
-"/S" or "-s" or "/run" or "-run" or "/change" or "-change")
+process.name:schtasks.exe and process.args:(-change or -create or -run
+or -s or /S or /change or /create or /run)
 ----------------------------------
 
 ==== Threat mapping
@@ -53,3 +58,17 @@ process.name:schtasks.exe and process.args:("/create" or "-create" or
 ** Name: Scheduled Task
 ** ID: T1053
 ** Reference URL: https://attack.mitre.org/techniques/T1053/
+
+[[local-scheduled-task-commands-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:schtasks.exe and process.args:("/create" or "-create" or
+"/S" or "-s" or "/run" or "-run" or "/change" or "-change")
+----------------------------------
+

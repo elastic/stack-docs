@@ -1,0 +1,55 @@
+[[bypass-uac-via-event-viewer]]
+=== Bypass UAC via Event Viewer
+
+Identifies User Account Control (UAC) bypass via `eventvwr.exe.` Attackers
+bypass UAC to stealthily execute code with elevated permissions.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.parent.name:eventvwr.exe and event.action:"Process Create
+(rule: ProcessCreate)" and not
+process.executable:("C:\Windows\SysWOW64\mmc.exe" or
+"C:\Windows\System32\mmc.exe")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Bypass User Account Control
+** ID: T1088
+** Reference URL: https://attack.mitre.org/techniques/T1088/

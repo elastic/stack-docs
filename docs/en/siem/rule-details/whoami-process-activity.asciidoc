@@ -4,6 +4,8 @@
 Identifies use of `whoami.exe` which displays user, group, and privileges
 information for the user who is currently logged on to the local system.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,9 +25,12 @@ information for the user who is currently logged on to the local system.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<whoami-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -53,3 +58,9 @@ process.name:whoami.exe and event.code:1
 ** Name: System Owner/User Discovery
 ** ID: T1033
 ** Reference URL: https://attack.mitre.org/techniques/T1033/
+
+[[whoami-process-activity-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+* Formatting only.

@@ -4,6 +4,8 @@
 Identifies processes running in a temporary folder. This is sometimes done by
 adversaries to hide malware.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -23,9 +25,12 @@ adversaries to hide malware.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<unusual-process-execution-temp-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -36,6 +41,18 @@ can be exempted by name or by username.
 
 
 [source,js]
+----------------------------------
+process.working_directory:/tmp and event.action:executed
+----------------------------------
+
+
+[[unusual-process-execution-temp-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.working_directory: /tmp and event.action:executed
 ----------------------------------

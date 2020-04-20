@@ -5,6 +5,8 @@ Identifies use of the `netsh.exe` to disable or weaken the local firewall.
 Attackers will use this command line tool to disable the firewall during
 troubleshooting or to enable network mobility.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -24,9 +26,12 @@ troubleshooting or to enable network mobility.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<disable-windows-firewall-rules-via-netsh-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -34,8 +39,8 @@ troubleshooting or to enable network mobility.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"netsh.exe" and process.args:("firewall" and "set" and
-"disable") or process.args:("advfirewall" and "state" and "off")
+process.name:netsh.exe and process.args:(disable and firewall and set)
+or process.args:(advfirewall and off and state)
 ----------------------------------
 
 ==== Threat mapping
@@ -50,3 +55,17 @@ process.name:"netsh.exe" and process.args:("firewall" and "set" and
 ** Name: Disabling Security Tools
 ** ID: T1089
 ** Reference URL: https://attack.mitre.org/techniques/T1089/
+
+[[disable-windows-firewall-rules-via-netsh-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"netsh.exe" and process.args:("firewall" and "set" and
+"disable") or process.args:("advfirewall" and "state" and "off")
+----------------------------------
+

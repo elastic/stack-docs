@@ -6,6 +6,8 @@ often used as a persistence mechanism by exporting a reverse shell or by serving
 a shell on a listening port. Netcat is also sometimes used for data
 exfiltration.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * auditbeat-*
@@ -31,9 +33,12 @@ exfiltration.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<netcat-network-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -46,6 +51,20 @@ originate from scripts, automation tools, and frameworks.
 
 
 [source,js]
+----------------------------------
+process.name:(nc or ncat or netcat or netcat.openbsd or
+netcat.traditional) and event.action:(bound-socket or connected-to or
+socket_opened)
+----------------------------------
+
+
+[[netcat-network-activity-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.name: (nc or ncat or netcat or netcat.openbsd or
 netcat.traditional) and event.action: (connected-to or bound-socket or

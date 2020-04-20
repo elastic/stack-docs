@@ -18,10 +18,6 @@ For details about tuning prebuilt rules for specific categories, see:
 * <<tune-windows-rules>>
 * <<tune-network-rules>>
 
-IMPORTANT: If you are using version 7.6.0 of the {stack}, see
-<<fix-network-rules>>. From version 7.6.1, the network rules have already been
-optimized.
-
 [float]
 [[filter-rule-process]]
 === Filter out uncommon application signals
@@ -194,41 +190,3 @@ TIP: If your organization is widely distributed and the workforce travels a
 lot, use the `windows_anomalous_user_name_ecs`, 
 `linux_anomalous_user_name_ecs`, and `suspicious_login_activity_ecs`
 <<machine-learning, {ml}>> jobs to detect suspicious authentication activity.
-
-[float]
-[[fix-network-rules]]
-=== Reduce noise for network rules
-
-NOTE: This is only required if you are using version 7.6.0 of the {stack}.
-
-To reduce noise for network rules, duplicate the network rules and *either*:
-
-* Remove all rule index patterns, except for the `filebeat-*` index pattern.
-* Remove the `network.direction: outbound` statement from the query. The rule
-then relies on CIDR notation to match traffic direction. The CIDR matches 
-(`source.ip` and `destination.ip`) can be changed to match your network's 
-configuration.
-
-The following rules can be modified:
-
-* <<dns-activity-to-the-internet>>
-* <<ftp-file-transfer-protocol-activity-to-the-internet>>
-* <<ipsec-nat-traversal-port-activity>>
-* <<irc-internet-relay-chat-protocol-activity-to-the-internet>>
-* <<pptp-point-to-point-tunneling-protocol-activity>>
-* <<proxy-port-activity-to-the-internet>>
-* <<rdp-remote-desktop-protocol-from-the-internet>>
-* <<rdp-remote-desktop-protocol-to-the-internet>>
-* <<rpc-remote-procedure-call-from-the-internet>>
-* <<rpc-remote-procedure-call-to-the-internet>>
-* <<smb-windows-file-sharing-activity-to-the-internet>>
-* <<smtp-on-port-26-tcp>>
-* <<smtp-to-the-internet>>
-* <<sql-traffic-to-the-internet>>
-* <<ssh-secure-shell-from-the-internet>>
-* <<ssh-secure-shell-to-the-internet>>
-* <<tcp-port-8000-activity-to-the-internet>>
-* <<telnet-port-activity>>
-* <<tor-activity-to-the-internet>>
-* <<vnc-virtual-network-computing-from-the-internet>>
-* <<vnc-virtual-network-computing-to-the-internet>>

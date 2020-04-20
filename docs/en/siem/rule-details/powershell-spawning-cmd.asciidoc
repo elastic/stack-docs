@@ -2,7 +2,9 @@
 === PowerShell spawning Cmd
 
 Identifies a suspicious parent child process relationship with `cmd.exe`
-descending from `PowerShell`.
+descending from `PowerShell.exe`.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -23,9 +25,12 @@ descending from `PowerShell`.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<powershell-spawning-cmd-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -57,3 +62,9 @@ process.parent.name:powershell.exe and process.name:cmd.exe
 ** Name: PowerShell
 ** ID: T1086
 ** Reference URL: https://attack.mitre.org/techniques/T1086/
+
+[[powershell-spawning-cmd-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+* Formatting only.

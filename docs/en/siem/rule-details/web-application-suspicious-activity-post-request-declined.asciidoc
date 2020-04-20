@@ -3,11 +3,13 @@
 
 A POST request to web application returned a 403 response, which indicates the
 web application declined to process the request because the action requested was
-not allowed
+not allowed.
+
+*Rule type*: query
 
 *Rule indices*:
 
-* apm-\*-transaction*
+* apm-*-transaction*
 
 *Severity*: medium
 
@@ -25,12 +27,15 @@ not allowed
 
 *Tags*:
 
-* Elastic
 * APM
+* Elastic
 
-*Rule version*: 1
+*Version*: 2 (<<web-application-suspicious-activity-post-request-declined-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -47,3 +52,9 @@ suspicious or malicious activity.
 http.response.status_code:403 and http.request.method:post
 ----------------------------------
 
+
+[[web-application-suspicious-activity-post-request-declined-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+* Formatting only.

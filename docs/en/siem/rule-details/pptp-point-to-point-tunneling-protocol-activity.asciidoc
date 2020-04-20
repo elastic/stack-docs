@@ -1,9 +1,11 @@
 [[pptp-point-to-point-tunneling-protocol-activity]]
 === PPTP (Point to Point Tunneling Protocol) Activity
 
-Detects events that may indicate use of a PPTP VPN connection. Some
-threat actors use these types of connections to tunnel their traffic while
-avoiding detection.
+Detects events that may indicate use of a PPTP VPN connection. Some threat
+actors use these types of connections to tunnel their traffic while avoiding
+detection.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -24,11 +26,12 @@ avoiding detection.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<pptp-point-to-point-tunneling-protocol-activity-history, version history>>)
+*Version*: 2 (<<pptp-point-to-point-tunneling-protocol-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
 *Last modified ({stack} release)*: 7.6.1
+
 
 ==== Potential false positives
 
@@ -45,7 +48,7 @@ excluded.
 
 [source,js]
 ----------------------------------
-network.transport: tcp and destination.port: 1723
+network.transport:tcp and destination.port:1723
 ----------------------------------
 
 ==== Threat mapping
@@ -60,3 +63,9 @@ network.transport: tcp and destination.port: 1723
 ** Name: Commonly Used Port
 ** ID: T1043
 ** Reference URL: https://attack.mitre.org/techniques/T1043/
+
+[[pptp-point-to-point-tunneling-protocol-activity-history]]
+==== Rule version history
+
+Version 2 (7.6.1 release)::
+* Removed auditbeat-\*, packetbeat-*, and winlogbeat-* from the rule indices.

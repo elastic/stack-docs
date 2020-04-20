@@ -1,12 +1,14 @@
 [[dns-activity-to-the-internet]]
 === DNS Activity to the Internet
 
-Detects when an internal network client sends DNS traffic directly to
-the Internet. This is atypical behavior for a managed network, and can be
-indicative of malware, exfiltration, command and control, or, simply,
-misconfiguration. This DNS activity also impacts your organization's ability to
-provide enterprise monitoring and logging of DNS, and opens your network to a
-variety of abuses and malicious communications.
+Detects when an internal network client sends DNS traffic directly to the
+Internet. This is atypical behavior for a managed network, and can be indicative
+of malware, exfiltration, command and control, or, simply, misconfiguration.
+This DNS activity also impacts your organization's ability to provide enterprise
+monitoring and logging of DNS, and opens your network to a variety of abuses and
+malicious communications.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -32,11 +34,12 @@ variety of abuses and malicious communications.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<dns-activity-to-the-internet-history, version history>>)
+*Version*: 3 (<<dns-activity-to-the-internet-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.6.1
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -54,11 +57,10 @@ expected behavior.
 
 [source,js]
 ----------------------------------
-destination.port:53 and ( network.direction: outbound or (
-source.ip:(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and
-not destination.ip:( 169.254.169.254/32 or 127.0.0.53/32 or 10.0.0.0/8
-or 172.16.0.0/12 or 192.168.0.0/16 or 224.0.0.251 or ff02\:\:fb or
-255.255.255.255 ) ) )
+destination.port:53 and source.ip:(10.0.0.0/8 or 172.16.0.0/12 or
+192.168.0.0/16) and not destination.ip:(10.0.0.0/8 or 127.0.0.0/8 or
+169.254.169.254/32 or 172.16.0.0/12 or 192.168.0.0/16 or 224.0.0.251
+or 224.0.0.252 or 255.255.255.255 or "::1" or "ff02::fb")
 ----------------------------------
 
 ==== Threat mapping
@@ -73,3 +75,21 @@ or 172.16.0.0/12 or 192.168.0.0/16 or 224.0.0.251 or ff02\:\:fb or
 ** Name: Commonly Used Port
 ** ID: T1043
 ** Reference URL: https://attack.mitre.org/techniques/T1043/
+
+[[dns-activity-to-the-internet-history]]
+==== Rule version history
+
+Version 3 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+destination.port:53 and ( network.direction: outbound or (
+source.ip:(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) and not
+destination.ip:( 169.254.169.254/32 or 127.0.0.53/32 or 10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16 or 224.0.0.251 or ff02\:\:fb or
+255.255.255.255 ) ) )
+----------------------------------
+
+Version 2 (7.6.1 release)::
+* Removed auditbeat-\*, packetbeat-*, and winlogbeat-* from the rule indices.

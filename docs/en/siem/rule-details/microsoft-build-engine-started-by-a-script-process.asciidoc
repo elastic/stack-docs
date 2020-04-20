@@ -1,0 +1,70 @@
+[[microsoft-build-engine-started-by-a-script-process]]
+=== Microsoft Build Engine Started by a Script Process
+
+An instance of MSBuild, the Microsoft Build Engine, was started by a script or
+the Windows command interpreter. This behavior is unusual and is sometimes used
+by malicious payloads.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+The Build Engine is commonly used by Windows developers but use by non-engineers
+is unusual.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+process.name:MSBuild.exe and process.parent.name:(cmd.exe or
+powershell.exe or cscript.exe or wscript.exe) and
+event.action:"Process Create (rule: ProcessCreate)"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Trusted Developer Utilities
+** ID: T1127
+** Reference URL: https://attack.mitre.org/techniques/T1127/
+
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Trusted Developer Utilities
+** ID: T1127
+** Reference URL: https://attack.mitre.org/techniques/T1127/

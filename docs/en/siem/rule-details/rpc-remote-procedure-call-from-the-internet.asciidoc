@@ -1,11 +1,13 @@
 [[rpc-remote-procedure-call-from-the-internet]]
 === RPC (Remote Procedure Call) from the Internet
 
-Detects network events that may indicate the use of RPC traffic from
-the Internet. RPC is commonly used by system administrators to remotely control
-a system for maintenance or to use shared resources. It should almost never be
+Detects network events that may indicate the use of RPC traffic from the
+Internet. RPC is commonly used by system administrators to remotely control a
+system for maintenance or to use shared resources. It should almost never be
 directly exposed to the Internet, as it is frequently targeted and exploited by
 threat actors as an initial access or back-door vector.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -26,21 +28,22 @@ threat actors as an initial access or back-door vector.
 * Elastic
 * Network
 
-*Rule version*: 2 (<<rpc-remote-procedure-call-from-the-internet-history, version history>>)
+*Version*: 3 (<<rpc-remote-procedure-call-from-the-internet-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.6.1
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
 
 [source,js]
 ----------------------------------
-network.transport: tcp and destination.port: 135 and (
-network.direction: inbound or ( not source.ip: (10.0.0.0/8 or
-172.16.0.0/12 or 192.168.0.0/16) and destination.ip:
-(10.0.0.0/8 or 172.16.0.0/12 or 192.168.0.0/16) ) )
+network.transport:tcp and destination.port:135 and not
+source.ip:(10.0.0.0/8 or 127.0.0.0/8 or 172.16.0.0/12 or
+192.168.0.0/16 or "::1") and destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
 ----------------------------------
 
 ==== Threat mapping
@@ -55,3 +58,20 @@ network.direction: inbound or ( not source.ip: (10.0.0.0/8 or
 ** Name: Exploit Public-Facing Application
 ** ID: T1190
 ** Reference URL: https://attack.mitre.org/techniques/T1190/
+
+[[rpc-remote-procedure-call-from-the-internet-history]]
+==== Rule version history
+
+Version 3 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+network.transport: tcp and destination.port: 135 and (
+network.direction: inbound or ( not source.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) and destination.ip: (10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16) ) )
+----------------------------------
+
+Version 2 (7.6.1 release)::
+* Removed auditbeat-\*, packetbeat-*, and winlogbeat-* from the rule indices.

@@ -1,0 +1,70 @@
+[[unusual-windows-username]]
+=== Unusual Windows Username
+
+A machine learning job detected activity for a username that is not normally
+active, which can indicate unauthorized changes, activity by unauthorized users,
+lateral movement, or compromised credentials. In many organizations, new
+usernames are not often created apart from specific types of system activities,
+such as creating new accounts for new employees. These user accounts quickly
+become active and routine. Events from rarely used usernames can point to
+suspicious activity. Unusual usernames can also indicate pivoting, where
+compromised credentials are used to try and move laterally from one host to
+another.
+
+*Rule type*: machine_learning
+
+*Machine learning job*: windows_anomalous_user_name_ecs
+
+*Machine learning anomaly threshold*: 50
+
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 15 minutes
+
+*Searches indices from*: now-45m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*References*:
+
+* https://www.elastic.co/guide/en/siem/guide/current/prebuilt-ml-jobs.html
+
+*Tags*:
+
+* Elastic
+* ML
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Potential false positives
+
+Uncommon user activity can be due to an administrator or help desk technician
+logging in to a workstation or server to perform manual troubleshooting or
+reconfiguration.
+
+==== Investigation guide
+
+Signals from this rule indicate activity for a Windows user name that is rare
+and unusual. Here are some possible avenues of investigation:
+
+* Consider the user as identified by the username field. Is this program part
+of an expected workflow for the user who ran this program on this host? Could
+this be related to occasional troubleshooting or support activity?
+* Examine the history of user activity. If this user manifested only very
+recently, it might be a service account for a new software package. If it has a
+consistent schedule - for example if it runs monthly or quarterly - it might be
+part of a monthly or quarterly business process.
+* Examine the process arguments, title and working directory. These may
+provide indications as to the source of the program or the nature of the tasks
+that the user is performing.
+* Consider the same for the parent process. If the parent process is a
+legitimate system utility or service, this could be related to software updates
+or system management. If the parent process is something user-facing like an
+Office application, this process could be more suspicious.

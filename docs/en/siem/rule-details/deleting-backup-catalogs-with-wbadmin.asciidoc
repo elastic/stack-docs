@@ -4,6 +4,8 @@
 Identifies use of the `wbadmin.exe` to delete the backup catalog. Ransomware and
 other malware may do this to prevent system recovery.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,9 +25,12 @@ other malware may do this to prevent system recovery.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<deleting-backup-catalogs-with-wbadmin-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -33,7 +38,7 @@ other malware may do this to prevent system recovery.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"wbadmin.exe" and process.args:("delete" and "catalog")
+process.name:wbadmin.exe and process.args:(catalog and delete)
 ----------------------------------
 
 ==== Threat mapping
@@ -48,3 +53,16 @@ process.name:"wbadmin.exe" and process.args:("delete" and "catalog")
 ** Name: File Deletion
 ** ID: T1107
 ** Reference URL: https://attack.mitre.org/techniques/T1107/
+
+[[deleting-backup-catalogs-with-wbadmin-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"wbadmin.exe" and process.args:("delete" and "catalog")
+----------------------------------
+

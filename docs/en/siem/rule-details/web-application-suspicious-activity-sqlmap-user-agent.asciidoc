@@ -2,12 +2,14 @@
 === Web Application Suspicious Activity: sqlmap User Agent
 
 This is an example of how to detect an unwanted web client user agent. This
-search matches the user agent for `sqlmap 1.3.11`, which is a popular FOSS tool
+search matches the user agent for sqlmap 1.3.11, which is a popular FOSS tool
 for testing web applications for SQL injection vulnerabilities.
+
+*Rule type*: query
 
 *Rule indices*:
 
-* apm-\*-transaction*
+* apm-*-transaction*
 
 *Severity*: medium
 
@@ -25,12 +27,15 @@ for testing web applications for SQL injection vulnerabilities.
 
 *Tags*:
 
-* Elastic
 * APM
+* Elastic
 
-*Rule version*: 1
+*Version*: 2 (<<web-application-suspicious-activity-sqlmap-user-agent-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -47,3 +52,9 @@ malicious activity.
 user_agent.original:"sqlmap/1.3.11#stable (http://sqlmap.org)"
 ----------------------------------
 
+
+[[web-application-suspicious-activity-sqlmap-user-agent-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+* Formatting only.

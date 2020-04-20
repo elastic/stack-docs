@@ -4,6 +4,8 @@
 Identifies attempts to create new local users. This is sometimes done by
 attackers to increase access to a system or domain.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,9 +25,12 @@ attackers to increase access to a system or domain.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<user-account-creation-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -33,9 +38,8 @@ attackers to increase access to a system or domain.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:("net.exe" or "net1.exe") and not
-process.parent.name:"net.exe" and process.args:("user" and ("/add" or
-"/ad"))
+process.name:(net.exe or net1.exe) and not process.parent.name:net.exe
+and process.args:(user and (/ad or /add))
 ----------------------------------
 
 ==== Threat mapping
@@ -50,3 +54,18 @@ process.parent.name:"net.exe" and process.args:("user" and ("/add" or
 ** Name: Create Account
 ** ID: T1136
 ** Reference URL: https://attack.mitre.org/techniques/T1136/
+
+[[user-account-creation-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:("net.exe" or "net1.exe") and not
+process.parent.name:"net.exe" and process.args:("user" and ("/add" or
+"/ad"))
+----------------------------------
+

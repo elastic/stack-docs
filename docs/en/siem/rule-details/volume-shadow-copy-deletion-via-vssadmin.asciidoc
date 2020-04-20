@@ -4,6 +4,8 @@
 Identifies use of `vssadmin.exe` for shadow copy deletion on endpoints. This
 commonly occurs in tandem with ransomware or other destructive attacks.
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -23,9 +25,12 @@ commonly occurs in tandem with ransomware or other destructive attacks.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<volume-shadow-copy-deletion-via-vssadmin-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -33,7 +38,7 @@ commonly occurs in tandem with ransomware or other destructive attacks.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
+process.name:vssadmin.exe and process.args:(delete and shadows)
 ----------------------------------
 
 ==== Threat mapping
@@ -48,3 +53,16 @@ process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
 ** Name: Inhibit System Recovery
 ** ID: T1490
 ** Reference URL: https://attack.mitre.org/techniques/T1490/
+
+[[volume-shadow-copy-deletion-via-vssadmin-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:"vssadmin.exe" and process.args:("delete" and "shadows")
+----------------------------------
+

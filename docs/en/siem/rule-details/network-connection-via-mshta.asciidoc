@@ -1,9 +1,11 @@
 [[network-connection-via-mshta]]
 === Network Connection via Mshta
 
-Identifies `mshta.exe` making a network connection. This may indicate 
-adversarial activity as `mshta.exe` is often leveraged by adversaries to 
-execute malicious scripts and evade detection.
+Identifies `mshta.exe` making a network connection. This may indicate
+adversarial activity as `mshta.exe` is often leveraged by adversaries to execute
+malicious scripts and evade detection.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -28,9 +30,12 @@ execute malicious scripts and evade detection.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<network-connection-via-mshta-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -38,7 +43,7 @@ execute malicious scripts and evade detection.
 [source,js]
 ----------------------------------
 event.action:"Network connection detected (rule: NetworkConnect)" and
-process.name:"mshta.exe"
+process.name:mshta.exe
 ----------------------------------
 
 ==== Threat mapping
@@ -53,3 +58,16 @@ process.name:"mshta.exe"
 ** Name: Mshta
 ** ID: T1170
 ** Reference URL: https://attack.mitre.org/techniques/T1170/
+
+[[network-connection-via-mshta-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Network connection detected (rule: NetworkConnect)" and
+process.name:"mshta.exe"
+----------------------------------
+

@@ -1,0 +1,54 @@
+[[modification-of-boot-configuration]]
+=== Modification of Boot Configuration
+
+Identifies use of `bcdedit.exe` to delete boot configuration data. Malware and
+attackers sometimes use this tactic as a destructive technique.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.name:bcdedit.exe and process.args:(/set and (bootstatuspolicy
+and ignoreallfailures or no and recoveryenabled))
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: File Deletion
+** ID: T1107
+** Reference URL: https://attack.mitre.org/techniques/T1107/

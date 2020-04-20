@@ -1,0 +1,55 @@
+[[net-command-via-system-account]]
+=== Net command via SYSTEM account
+
+Identifies the SYSTEM account using the Net utility. The Net utility is a
+component of the Windows operating system. It is used in command line operations
+for control of users, groups, services, and network connections.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* winlogbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Windows
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.7.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+(process.name:net.exe or process.name:net1.exe and not
+process.parent.name:net.exe) and user.name:SYSTEM and
+event.action:"Process Create (rule: ProcessCreate)"
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Discovery
+** ID: TA0007
+** Reference URL: https://attack.mitre.org/tactics/TA0007/
+* Technique:
+** Name: Account Discovery
+** ID: T1087
+** Reference URL: https://attack.mitre.org/techniques/T1087/

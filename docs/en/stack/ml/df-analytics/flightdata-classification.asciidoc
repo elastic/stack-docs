@@ -80,20 +80,7 @@ trained on the subset of documents that contain it.
 }
 ```
 ====
-////
-Each document in this sample data contains a `FlightDelay` field with a boolean 
-value. {classification-cap} is a supervised {ml} analysis and therefore 
-needs to train on data that contains the ground truth, known as the 
-_dependent_variable_. In this example, the ground truth is available in each 
-document as the actual value of `FlightDelay`.
-////
-////
-By default, all of that subset of documents is used 
-for training. However, you can choose to specify a percentage of the documents 
-as your training data. Predictions are made against all of the data. The current 
-implementation of {classanalysis} supports a single batch analysis for both 
-training and predictions.
-////
+
 TIP: The sample flight data set is used in this example because it is easily
 accessible. However, the data has been manually created and contains some
 inconsistencies. For example, a flight can be both delayed and canceled. This is
@@ -350,7 +337,7 @@ The snippet below shows a part of a document with the annotated results:
             "prediction_score" : 0.36964390728677926,
             "FlightDelay_prediction" : false,
             "prediction_probability" : 0.9198146781161334,
-            feature_importance" : [
+            "feature_importance" : [
               {
                 "feature_name" : "DistanceMiles",
                 "importance" : -3.039025449178423

@@ -9,11 +9,10 @@ You can create two types of rules:
 a document matches the rule's query.
 * {ml-cap} rules, which create a signal when a {ml} job discovers an anomaly above the defined threshold (see <<machine-learning>>).
 
-IMPORTANT: You can only create {ml} jobs when you have a
-https://www.elastic.co/subscriptions[Platinum License], are using a
-{ess-trial}[Cloud] deployment, or are testing out a *Free Trial*. Additionally,
-for the {ml} rule to function correctly, the associated {ml} job must be
-running.
+IMPORTANT: To create {ml} rules, you must have the
+https://www.elastic.co/subscriptions[appropriate license] or use a
+{ess-trial}[cloud deployment]. Additionally, for the {ml} rule to function
+correctly, the associated {ml} job must be running.
 
 To retrieve {ml} job IDs, which are required to create {ml} jobs, call the
 {ref}/ml-get-job.html[{es} Get jobs API]. {ml-cap} jobs that contain `siem` in

@@ -80,9 +80,9 @@ running, the rule will:
 are discovered.
 ** Issue an error stating the {ml} job was not running when the rule executed.
 
-IMPORTANT: You can only create {ml} jobs when you have a
-https://www.elastic.co/subscriptions[Platinum License], are using a
-{ess-trial}[Cloud] deployment, or are testing out a *Free Trial*.
+IMPORTANT: To create {ml} rules, you must have the
+https://www.elastic.co/subscriptions[appropriate license] or use a
+{ess-trial}[cloud deployment].
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
@@ -128,7 +128,10 @@ TIP: This example is based on the
 to the timeline (optional).
 +
 TIP: Before you create rules, create and save relevant
-<<timelines-ui,timelines>> so they can be selected here. 
+<<timelines-ui,timelines>> so they can be selected here. When signals generated
+by the rule are sent to the Timeline,
+<<signals-to-timelines, some query field values>> are replaced with their
+corresponding signal field values.
 
 . Click *Continue*.
 +
@@ -191,8 +194,12 @@ The {siem-app} performs deduplication. Duplicate signals discovered during the
 The *Rule actions* pane is displayed.
 [role="screenshot"]
 image::images/rule-actions.png[]
-. Optionally, use {kib} Actions to set up notifications sent via other systems
-when new signals are detected:
+. Optionally, use {kib} Alerting to set up notifications sent via other systems
+when new signals are detected.
++
+NOTE: To use {kib} Alerting for signal notifications, you need the
+https://www.elastic.co/subscriptions[appropriate license].
+
 .. Set how often notifications are sent:
 
 * _On each rule execution_: Sends a notification every time new signals are

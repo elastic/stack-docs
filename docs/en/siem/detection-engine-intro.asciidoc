@@ -47,7 +47,7 @@ above a rule's defined threshold.
 
 Signals::
 Always refer to {siem-soln} produced detections. Signals are never received 
-from third-party systems. When a rule's conditions are met, the {siem-app} 
+from external systems. When a rule's conditions are met, the {siem-app} 
 writes one or more signals to an Elasticsearch `signals` index.
 +
 [NOTE]
@@ -62,7 +62,7 @@ Always refer to data the {siem-app} receives from external systems, such as
 Elastic Endpoint and Suricata.
 
 Actions::
-Used to send notifications via other systems when a signal is produced, such as
+Used to send notifications via other systems when a signal is created, such as
 email, Slack, PagerDuty, and Webhook.
 
 [float]
@@ -77,8 +77,8 @@ by a rule, you can:
 *Manage signal detection rules* -> rule name in the *All rules* table).
 
 NOTE: KQL autocomplete for `.siem-signals-*` indices is available on the 
-*Detections* and *Rule details* pages, and in timelines where `All events` or 
-`Signal events` are selected. 
+*Detections* and *Rule details* pages, and in Timeline when either `All events`
+or `Signal events` is selected. 
 
 To view alerts from external data shippers, click *External alerts*.
 
@@ -188,7 +188,7 @@ setting has not been added to the `kibana.yml` file.
 *`Detection engine permissions required`*
 
 If you see this message, you do not have the
-<<detections-permissions, required privileges>> to view the *Detections* page 
+<<detections-permissions, required privileges>> to view the *Detections* page, 
 and you should contact your {kib} administrator.
 
 NOTE: For *on-premises* {stack} deployments only, this message may be

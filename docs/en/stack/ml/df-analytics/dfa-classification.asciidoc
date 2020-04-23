@@ -6,15 +6,16 @@ experimental[]
 
 {classification-cap} is a {ml} process that enables you to predict the class or
 category of a data point in your data set. Typical examples of {classification}
-problems are predicting loan risk, classifying music, or detecting cancer in a
-DNA sequence. In the first case, for example, the data set might contain the
-investment history, employment status, debit status, and other financial details
-for loan applicants. Based on this data, you could use {classanalysis} to create
-a model that predicts whether it is safe or risky to lend money to applicants.
-In the second case, the data contains song details that enable you to classify
-music into genres like hip-hop, country, or classical, for example.
-{classification-cap} is for predicting discrete, categorical values, whereas
-<<dfa-regression,{reganalysis}>> predicts continuous, numerical values.
+problems are predicting loan risk, classifying music, or detecting the potential 
+for cancer in a DNA sequence. In the first case, for example, the data set might 
+contain the investment history, employment status, debit status, and other 
+financial details for loan applicants. Based on this data, you could use 
+{classanalysis} to create a model that predicts whether it is safe or risky to 
+lend money to applicants. In the second case, the data contains song details 
+that enable you to classify music into genres like hip-hop, country, or 
+classical, for example. {classification-cap} is for predicting discrete, 
+categorical values, whereas <<dfa-regression,{reganalysis}>> predicts 
+continuous, numerical values.
 
 When you create a {classification} job, you must specify which field contains 
 the classes that you want to predict. This field is known as the _{depvar}_. It
@@ -37,17 +38,19 @@ the _ground truth_. That is to say, your data set must contain the {depvar}
 and the {feature-vars} fields that are related to it. You can divide the data
 set into training and testing data by specifying a `training_percent`. By
 default when you use the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API], 100% of the eligible
-documents in the data set are used for training. If you divide your data set,
-the job stratifies the data to ensure that both the training and testing data
-sets are representative of the full data set. That is to say, the same
-proportions of each class are fairly represented in both data sets.
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API], 100% of the 
+<<dfa-classification-field-type-docs-limitations,eligible documents>> in the 
+data set are used for training. If you divide your data set, the job stratifies 
+the data to ensure that both the training and testing data sets contains classes 
+in proportions that are representative of the class proportions in the full data 
+set.
 
 When you are collecting a data set to train your model, ensure that it
 captures information for all of the classes. If some classes are poorly
-represented in the training data set, the model might be unaware of them. In
-general, complex decision boundaries between classes are harder to learn and
-require more data points per class in the training data.
+represented in the training data set (that is, you have very few data points per 
+class), the model might be unaware of them. In general, complex decision 
+boundaries between classes are harder to learn and require more data points per 
+class in the training data.
 
 ////
 It means that you need to supply a labeled training data set that has a {depvar} 
@@ -83,19 +86,21 @@ previous tree.
 
 As a rule of thumb, a {classanalysis} with many classes takes more time to run 
 than a binary {classification} process when there are only two classes. The 
-relationship between the number of classes and the runtime is linear.
+relationship between the number of classes and the runtime is roughly linear.
 
 The runtime also scales approximately linearly with the number of involved 
 documents below 200,000 data points. Therefore, if you double the number of 
-documents, then the runtime of the analysis doubles respectively. Above 200,000 
-data points, runtime increases faster.
+documents, then the runtime of the analysis doubles respectively.
 
 To improve the performance of your {classanalysis}, consider using a smaller 
 `training_percent` value when you create the job. That is to say, use a smaller 
-percentage of your documents to train the model more quickly. If possible, 
+percentage of your documents to train the model more quickly. It is a good 
+strategy to make progress iteratively: use a smaller training percentage first, 
+run the analysis, and evaluate the performance. Then, based on the results, 
+decide if it is necessary to increase the `training_percent` value. If possible, 
 prepare your input data such that it has less classes. You can also remove the 
 fields that are not relevant from the analysis by specifying `excludes` patterns 
-in the `analyzed_fields` object when configuring the {dfanalytics-job}.
+in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
  
 
 [discrete]

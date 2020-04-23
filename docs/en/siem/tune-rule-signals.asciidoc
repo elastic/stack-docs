@@ -5,7 +5,7 @@ In the {siem-app}, prebuilt detection rules can be tuned to produce the best
 possible set of actionable signals. To reduce the noise level, you can:
 
 * Disable detection rules that rarely produce actionable signals because they 
-match local expected behavior, workflows, or policy exceptions.
+match expected local behavior, workflows, or policy exceptions.
 * <<manage-rules-ui, Clone and modify>> detection rule queries so they are
 aligned with local policy exceptions. This reduces noise while retaining
 actionable signals.
@@ -82,10 +82,10 @@ make `psexec` connections, and run WMI commands.
 * Applications that work with file shares, such as backup programs, and use the 
 server message block (SMB) protocol.
 
-To reduce signal noise for authorized activity, you can do any of the these:
+To reduce signal noise for authorized activity, you can do any of these:
 
 * Add a statement or filter to the rules that exclude specific servers, such as 
-the relevant host names, agent names, or other common identifier. 
+the relevant host names, agent names, or other common identifiers. 
 For example, `and not host.name : "server-name"`.
 * Add a statement or filter to the rules that <<filter-rule-process, exclude specific processes>>. For example, `and not process.name : "process-name"`.
 * Add a statement or filter to the rules that exclude a common user. 
@@ -109,7 +109,7 @@ names excluded in the first duplication
 [[tune-windows-rules]]
 === Tune Windows child process and PowerShell rules
 
-Normal user activity may sometimes trigger one or more of these these rules:
+Normal user activity may sometimes trigger one or more of these rules:
 
 * <<powershell-spawning-cmd>>
 * <<suspicious-ms-office-child-process>>
@@ -121,7 +121,7 @@ Normal user activity may sometimes trigger one or more of these these rules:
 * <<windows-script-executing-powershell>>
  
 While all rules can be adjusted as needed, use care when adding exceptions to 
-these rules. Exceptions could result in an undetected client side execution, or 
+these rules. Exceptions could result in an undetected client-side execution, or 
 a persistence or malware threat going unnoticed.
 
 Examples of when these rules may create noise include:
@@ -141,7 +141,7 @@ you can create duplicate rules with lower risk scores.
 === Tune network rules
 
 The definition of normal network behavior varies widely across different
-organizations, each network conforming to different security policies, 
+organizations. Different networks conform to different security policies, 
 standards, and regulations. When normal network activity triggers signals, 
 network rules can be disabled or modified. For example:
 

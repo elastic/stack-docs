@@ -29,8 +29,8 @@ The *Create new filter list* pane is displayed.
 . Enter a filter list ID.
 . Enter a description for the filter list (optional).
 . Click *Add item*.
-. In the *Items* textbox, enter the `process.name` field of the process for which
-you want to filter out anomaly results (`maintenanceservice.exe` in our example).
+. In the *Items* textbox, enter the name of the process for which you want to
+filter out anomaly results (`maintenanceservice.exe` in our example).
 +
 [role="screenshot"]
 image::filter-add-item.png[]
@@ -78,7 +78,7 @@ have completed all job rule changes.
 . Navigate to the job for which you configured the rule.
 . Optionally, expand the job row and click *JSON* to verify the configured filter
 appears under `custom rules` in the JSON code.
-. In the *actions* column, click the more (three dot) icon and select _Clone job_.
+. In the *actions* column, click the more (three dots) icon and select _Clone job_.
 +
 The *Configure datafeed* page is displayed.
 . Click *Data Preview* and check the data is displayed without errors.
@@ -89,15 +89,15 @@ name, such as `windows-rare-network-process-2`.
 +
 [role="screenshot"]
 image::cloned-job-details.png[]
-. Click *Next* and check the job validates without errors. Warnings about multiple
-influencers can be ignored.
+. Click *Next* and check the job validates without errors. You can ignore
+warnings about multiple influencers.
 . Click *Next* and then *Create job*.
 +
 The *Start <job name>* window is displayed.
 +
 [role="screenshot"]
 image::start-job-window.png[]
-. Select the point of time from which the job will analyse anomalies.
+. Select the point of time from which the job will analyze anomalies.
 . Click *Start*.
 +
 After a while, results will start to appear on the *Anomaly Explorer* page.
@@ -105,15 +105,14 @@ After a while, results will start to appear on the *Anomaly Explorer* page.
 [[define-rule-threshold]]
 ==== Define an anomaly threshold for a job
 
-Certain jobs use a high count function to look for unusual spikes in 
-process events. Some processes cause a burst of activity as a normal part of 
-their function, such as automation and housekeeping jobs running on server 
-fleets. However, sometimes a high-delta event count is unlikely to be the 
-result of routine behavior. In these cases, defining a minimum threshold for 
-when a high event count is considered an anomaly can be applied to the {ml} 
-jobs.
+Certain jobs use a high-count function to look for unusual spikes in process
+events. For some processes, a burst of activity is a normal, such as automation
+and housekeeping jobs running on server fleets. However, sometimes a high-delta
+event count is unlikely to be the result of routine behavior. In these cases,
+you can define a minimum threshold for when a high-event count is considered an
+anomaly.
 
-Depending on your anomaly detection results, you may want to define a 
+Depending on your anomaly detection results, you may want to set a 
 minimum event count threshold for the `packetbeat_dns_tunneling` job:
 
 

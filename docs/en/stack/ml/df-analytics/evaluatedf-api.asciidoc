@@ -142,20 +142,39 @@ value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^
 [[ml-dfanalytics-classification]]
 ==== {classification-cap} evaluation
 
-This evaluation type is suitable for evaluating {classification} models. In the 
-{version} version of the {stack}, {classification} evaluation handles two 
-classes. The {classification} evaluation offers the following metrics to 
-evaluate the model performance:
+This evaluation type is suitable for evaluating {classification} models. The 
+{classification} evaluation offers the following metrics to evaluate the model 
+performance:
 
-* Multi-class confusion matrix
+* Multiclass confusion matrix
 
 
 [discrete]
 [[ml-dfanalytics-mccm]]
-===== Multi-class confusion matrix
+===== Multiclass confusion matrix
 
-The multi-class confusion matrix contains the number of occurrences where the 
-analysis classified data points correctly with their actual class as well as the 
-number of occurrences where it misclassified them with another class. The 
-multi-class confusion matrix provides a summary about the performance of the 
-{classification} analysis.
+The multiclass confusion matrix provides a summary of the performance of the 
+{classanalysis}. It contains the number of occurrences where the analysis
+classified data points correctly with their actual class as well as the number
+of occurrences where it misclassified them.
+
+Let's see two examples of the confusion matrix. The first is a confusion matrix 
+of a binary problem:
+
+image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
+
+It is a two by two matrix because there are only two classes (`true` and
+`false`). The matrix shows the proportion of data points that is correctly
+identified as members of a each class and the proportion that is 
+misidentified.
+
+As the number of classes in your {classanalysis} increases, the confusion
+matrix also increases in complexity:
+
+image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
+
+
+The matrix contains the actual labels on the left side while the predicted 
+labels are on the top. The proportion of correct and incorrect predictions is 
+broken down for each class. This enables you to examine how the {classanalysis}
+confused the different classes while it made its predictions.

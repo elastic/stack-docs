@@ -6,6 +6,8 @@ HTML Help system. Adversaries may conceal malicious code in a CHM file and
 deliver it to a victim for execution. CHM content is loaded by the HTML Help
 executable program (`hh.exe`).
 
+*Rule type*: query
+
 *Rule indices*:
 
 * winlogbeat-*
@@ -25,9 +27,12 @@ executable program (`hh.exe`).
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<network-connection-via-compiled-html-file-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -35,8 +40,8 @@ executable program (`hh.exe`).
 [source,js]
 ----------------------------------
 process.name:hh.exe and event.action:"Network connection detected
-(rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not
-destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
+(rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
 ----------------------------------
 
 ==== Threat mapping
@@ -61,3 +66,17 @@ destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
 ** Name: Compiled HTML File
 ** ID: T1223
 ** Reference URL: https://attack.mitre.org/techniques/T1223/
+
+[[network-connection-via-compiled-html-file-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name:hh.exe and event.action:"Network connection detected
+(rule: NetworkConnect)" and not destination.ip:10.0.0.0/8 and not
+destination.ip:172.16.0.0/12 and not destination.ip:192.168.0.0/16
+----------------------------------
+

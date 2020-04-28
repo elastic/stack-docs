@@ -108,8 +108,8 @@ destination index that don't contain a results field are not included in the
 If your training data is very imbalanced, {classanalysis} may not provide 
 good predictions. Try to avoid highly imbalanced situations. We recommend having 
 at least 50 examples of each class and a ratio of no more than 10 to 1 for the 
-majority to minority class labels in the training data. If your training data set 
-is very imbalanced, consider downsampling the majority class, upsampling the 
+majority to minority class labels in the training data. If your training data 
+set is very imbalanced, consider downsampling the majority class, upsampling the 
 minority class, or gathering more data.
 
 [float]
@@ -161,3 +161,11 @@ Example:
   }
 }
 ```
+
+[float]
+[[dfa-inference-bwc]]
+=== {infer-cap} trained models created in 7.8 are not backwards compatible
+
+Inference models created in version 7.8.0 are not backwards compatible with 
+older node versions. In a mixed cluster environment, all nodes must be at 
+least 7.8.0 to use a model created on a 7.8.0 node.

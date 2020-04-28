@@ -1,9 +1,11 @@
 [[windows-script-executing-powershell]]
 === Windows Script Executing PowerShell
 
-Identifies a PowerShell process launched by either `cscript.exe` or 
-`wscript.exe`. Observing Windows scripting processes executing a PowerShell 
+Identifies a PowerShell process launched by either `cscript.exe` or
+`wscript.exe`. Observing Windows scripting processes executing a PowerShell
 script, may be indicative of malicious activity.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -24,9 +26,12 @@ script, may be indicative of malicious activity.
 * Elastic
 * Windows
 
-*Rule version*: 1
+*Version*: 2 (<<windows-script-executing-powershell-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Rule query
 
@@ -34,8 +39,8 @@ script, may be indicative of malicious activity.
 [source,js]
 ----------------------------------
 event.action:"Process Create (rule: ProcessCreate)" and
-process.parent.name:("wscript.exe" or "cscript.exe") and
-process.name:"powershell.exe"
+process.parent.name:(cscript.exe or wscript.exe) and
+process.name:powershell.exe
 ----------------------------------
 
 ==== Threat mapping
@@ -50,3 +55,17 @@ process.name:"powershell.exe"
 ** Name: Spearphishing Attachment
 ** ID: T1193
 ** Reference URL: https://attack.mitre.org/techniques/T1193/
+
+[[windows-script-executing-powershell-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+event.action:"Process Create (rule: ProcessCreate)" and
+process.parent.name:("wscript.exe" or "cscript.exe") and
+process.name:"powershell.exe"
+----------------------------------
+

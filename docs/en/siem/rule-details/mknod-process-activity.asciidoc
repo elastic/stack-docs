@@ -2,8 +2,10 @@
 === Mknod Process Activity
 
 The Linux `mknod` program is sometimes used in the command payload of a remote
-command injection (RCI) and other exploits. It is used to export a command
-shell when the traditional version of `netcat` is not available to the payload.
+command injection (RCI) and other exploits. It is used to export a command shell
+when the traditional version of `netcat` is not available to the payload.
+
+*Rule type*: query
 
 *Rule indices*:
 
@@ -28,9 +30,12 @@ shell when the traditional version of `netcat` is not available to the payload.
 * Elastic
 * Linux
 
-*Rule version*: 1
+*Version*: 2 (<<mknod-process-activity-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
+
+*Last modified ({stack} release)*: 7.7.0
+
 
 ==== Potential false positives
 
@@ -42,6 +47,18 @@ frameworks. Usage by web servers is more likely to be suspicious.
 
 
 [source,js]
+----------------------------------
+process.name:mknod and event.action:executed
+----------------------------------
+
+
+[[mknod-process-activity-history]]
+==== Rule version history
+
+Version 2 (7.7.0 release)::
+Updated query, changed from:
++
+[source, js]
 ----------------------------------
 process.name: mknod and event.action:executed
 ----------------------------------

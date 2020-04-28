@@ -4,69 +4,104 @@
 
 experimental[]
 
-{classification-cap} is a {ml} process for predicting the class or category of a 
-given data point in a dataset. Typical examples of {classification} problems are 
-predicting loan risk, classifying music, or detecting cancer in a DNA sequence. 
-In the first case, for example, our dataset consists of data on loan applicants 
-that covers investment history, employment status, debit status, and so on. 
-Based on historical data, the {classification} analysis predicts whether it is 
-safe or risky to lend money to a given loan applicant. In the second case, the 
-data we have represents songs and the analysis – based on the features of the 
-data points – classifies the songs as hip-hop, country, classical, or any 
-other genres available in the set of categories we have. Therefore, 
-{classification} is for predicting discrete, categorical values, unlike 
-{reganalysis} which predicts continuous, numerical values.
+{classification-cap} is a {ml} process that enables you to predict the class or
+category of a data point in your data set. Typical examples of {classification}
+problems are predicting loan risk, classifying music, or detecting the potential 
+for cancer in a DNA sequence. In the first case, for example, the data set might 
+contain the investment history, employment status, debit status, and other 
+financial details for loan applicants. Based on this data, you could use 
+{classanalysis} to create a model that predicts whether it is safe or risky to 
+lend money to applicants. In the second case, the data contains song details 
+that enable you to classify music into genres like hip-hop, country, or 
+classical, for example. {classification-cap} is for predicting discrete, 
+categorical values, whereas <<dfa-regression,{reganalysis}>> predicts 
+continuous, numerical values.
 
-From the perspective of the possible output, there are two types of 
-{classification}: binary and multi-class {classification}. In binary 
-{classification} the variable you want to predict has only two potential values. 
-The loan example above is a binary {classification} problem where the two 
-potential outputs are `safe` or `risky`. The music classification problem is an 
-example of multi-class {classification} where there are many different potential 
-outputs; one for every possible music genre. In the {version} version of the 
-{stack}, you can perform only binary {classanalysis}.
-
-
-[discrete]
-[[dfa-classification-features]]
-==== {feature-vars-cap}
-
-When you perform {classification}, you must identify a subset of fields that you 
-want to use to create a model for predicting another field value. We refer to 
-these fields as _{feature-vars}_ and _{depvar}_, respectively. 
-{feature-vars-cap} are the values that the {depvar} value depends on. There are 
-three different types of {feature-vars} that you can use with our 
-{classification} algorithm: numerical, categorical, and boolean. Arrays are not 
-supported in the {feature-var} fields.
+When you create a {classification} job, you must specify which field contains 
+the classes that you want to predict. This field is known as the _{depvar}_. It
+must contain no more than 30 classes. By default, all other
+{ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included
+in the analysis and are known as _{feature-vars}_. The runtime and resources
+used by the job increase with the number of feature variables. Therefore, you
+can optionally include or exclude fields from the analysis. For more information
+about field selection, see the
+{ref}/explain-dfanalytics.html[explain data frame analytics API].
 
 
 [discrete]
 [[dfa-classification-supervised]]
 ==== Training the {classification} model
 
-{classification-cap} – just like {regression} – is a supervised {ml} process. It 
-means that you need to supply a labeled training dataset that has some 
-{feature-vars} and a {depvar}. The {classification} algorithm learns the 
-relationships between the features and the {depvar}. Once you’ve trained the 
-model on your training dataset, you can reuse the knowledge that the model has 
-learned about the relationships between the data points to classify new data. 
-Your training dataset should be approximately balanced which means the number of 
-data points belonging to the various classes should not be widely different, 
-otherwise the {classanalysis} may not provide the best predictions. Read 
-<<dfa-classification-imbalanced-classes>> to learn more.
+{classification-cap} – just like {regression} – is a supervised {ml} process.
+When you create the {dfanalytics-job}, you must provide a data set that contains
+the _ground truth_. That is to say, your data set must contain the {depvar} 
+and the {feature-vars} fields that are related to it. You can divide the data
+set into training and testing data by specifying a `training_percent`. By
+default when you use the
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API], 100% of the 
+<<dfa-classification-field-type-docs-limitations,eligible documents>> in the 
+data set are used for training. If you divide your data set, the job stratifies 
+the data to ensure that both the training and testing data sets contains classes 
+in proportions that are representative of the class proportions in the full data 
+set.
 
+When you are collecting a data set to train your model, ensure that it
+captures information for all of the classes. If some classes are poorly
+represented in the training data set (that is, you have very few data points per 
+class), the model might be unaware of them. In general, complex decision 
+boundaries between classes are harder to learn and require more data points per 
+class in the training data.
+
+////
+It means that you need to supply a labeled training data set that has a {depvar} 
+and some fields that are related to it. The {classification} algorithm learns 
+the relationships between these fields and the {depvar}. Once you’ve trained the 
+model on your training data set, you can reuse the knowledge that the model has 
+learned about the relationships between the data points to classify new data.
+
+The effects of imbalanced data are automatically mitigated before the 
+training. Nonetheless, it is a good idea to train your model with a data set 
+that is approximately balanced. That is to say, ideally your data set should 
+have a similar number of data points for each class.
+////
 
 [discrete]
 [[dfa-classification-algorithm]]
 ===== {classification-cap} algorithms
 
 //tag::classification-algorithms[]
-The ensemble algorithm that we use in the {stack} for {classification} is a type 
-of boosting called boosted tree regression model which combines multiple weak 
-models into a composite one. We use decision trees to learn to predict the 
-probability that a data point belongs to a certain class.
+{classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
+boosted tree regression model which combines multiple weak models into a 
+composite one. It uses decision trees to learn to predict the probability that a 
+data point belongs to a certain class. A sequence of decision trees are trained 
+and every decision tree learns from the mistakes of the previous one. Every tree 
+is an iteration of the last one, hence it improves the decision made by the 
+previous tree.
 //end::classification-algorithms[]
 
+
+[discrete]
+[[dfa-classification-performance]]
+==== {classification-cap} performance
+
+As a rule of thumb, a {classanalysis} with many classes takes more time to run 
+than a binary {classification} process when there are only two classes. The 
+relationship between the number of classes and the runtime is roughly linear.
+
+The runtime also scales approximately linearly with the number of involved 
+documents below 200,000 data points. Therefore, if you double the number of 
+documents, then the runtime of the analysis doubles respectively.
+
+To improve the performance of your {classanalysis}, consider using a smaller 
+`training_percent` value when you create the job. That is to say, use a smaller 
+percentage of your documents to train the model more quickly. It is a good 
+strategy to make progress iteratively: use a smaller training percentage first, 
+run the analysis, and evaluate the performance. Then, based on the results, 
+decide if it is necessary to increase the `training_percent` value. If possible, 
+prepare your input data such that it has less classes. You can also remove the 
+fields that are not relevant from the analysis by specifying `excludes` patterns 
+in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
+ 
 
 [discrete]
 [[dfa-classification-interpret]]
@@ -79,10 +114,11 @@ The following sections help you understand and interpret the results of a
 [[dfa-classification-class-probability]]
 ===== `class_probability`
 
-The value of `class_probability` shows how likely it is that a given datapoint 
+The value of `class_probability` shows how likely it is that a given data point 
 belongs to a certain class. It is a value between 0 and 1. The higher the 
 number, the higher the probability that the data point belongs to the named 
-class. This information is stored in the `top_classes` array for each document in your destination index. See the
+class. This information is stored in the `top_classes` array for each document 
+in your destination index. See the
 {ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
 section in the {classification} example.
 
@@ -92,7 +128,7 @@ section in the {classification} example.
 ===== `class_score`
 
 The value of `class_score` controls the probability at which a class label is 
-assigned to a datapoint. In normal case – that you maximize the number of 
+assigned to a data point. In normal case – that you maximize the number of 
 correct labels – a class label is assigned when its predicted probability is 
 greater than 0.5. The `class_score` makes it possible to change this behavior, 
 so it can be less than or greater than 0.5. For example, suppose our two classes 
@@ -105,11 +141,11 @@ class_score(class 1) = 0.5 / k * probability(class 1)
 ```
 
 Here, `k` is a positive constant less than one. It represents the predicted 
-probability of `class 1` for a datapoint at which to label it `class 1` and is 
-chosen to maximise the minimum recall of any class. This is useful for example 
+probability of `class 1` for a data point at which to label it `class 1` and is 
+chosen to maximize the minimum recall of any class. This is useful for example 
 in case of highly imbalanced data. If `class 0` is much more frequent in the 
 training data than `class 1`, then it can mean that you achieve the best 
-accuracy by assigning `class 0` to every datapoint. This is equivalent to zero 
+accuracy by assigning `class 0` to every data point. This is equivalent to zero 
 recall for `class 1`. Instead of this behavior, the default scheme of the 
 {stack} {classanalysis} is to choose `k < 0.5` and accept a higher rate of 
 actual `class 0` predicted `class 1` errors, or in other words, a slight 
@@ -118,27 +154,37 @@ degradation of the overall accuracy.
 
 [discrete]
 [[dfa-classification-feature-importance]]
-===== Feature importance
+===== {feat-imp-cap}
 
-include::{docdir}/shared-ml-concepts.asciidoc[tag=feature-importance]
+{feat-imp-cap} provides further information about the results of an analysis and 
+helps to interpret the results in a more subtle way. If you want to learn more 
+about {feat-imp}, <<ml-feature-importance,click here>>. 
+
 
 
 [discrete]
 [[dfa-classification-evaluation]]
 ==== Measuring model performance
 
-You can measure how well the model has performed on your dataset by using the 
+You can measure how well the model has performed on your data set by using the 
 `classification` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The metric that the 
-evaluation provides you is the multi-class confusion matrix which tells you how 
-many times a given data point that belongs to a given class was classified 
-correctly and incorrectly. In other words, how many times your data point that 
-belongs to the X class was mistakenly classified as Y.
+evaluation provides you is a confusion matrix. The more classes you have, the 
+more complex the confusion matrix is. The matrix tells you how many data points 
+that belong to a given class were classified correctly and incorrectly.
 
-Another crucial measurement is how well your model performs on unseen data 
-points. To assess how well the trained model will perform on data it has never 
-seen before, you must set aside a proportion of the training dataset for 
-testing. This split of the dataset is the testing dataset. Once the model has 
+If you split your data set into training and testing data, you can determine how
+well your model performs on data it has never seen before and compare the
+prediction to the actual value.
+
+For more information, see <<ml-dfanalytics-evaluate>>.
+
+////
+Another crucial measurement is how well your model performs on unseen data
+points. To assess how well the trained model will perform on data it has never
+seen before, you must set aside a proportion of the training data set for 
+testing. This split of the data set is the _testing data set_. Once the model has 
 been trained, you can let the model predict the value of the data points it has 
 never seen before and compare the prediction to the actual value by using the 
 evaluate {dfanalytics} API.
+////

@@ -80,9 +80,9 @@ running, the rule will:
 are discovered.
 ** Issue an error stating the {ml} job was not running when the rule executed.
 
-IMPORTANT: You can only create {ml} jobs when you have a
-https://www.elastic.co/subscriptions[Platinum License], are using a
-{ess-trial}[Cloud] deployment, or are testing out a *Free Trial*.
+IMPORTANT: To create {ml} rules, you must have the
+https://www.elastic.co/subscriptions[appropriate license] or use a
+{ess-trial}[cloud deployment].
 
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Click *Create new rule*.
@@ -116,7 +116,8 @@ Winlogbeat ships Windows event logs to the SIEM app.
 ** _Custom query_: `event.action:"Process Create (rule: ProcessCreate)" and process.name:"vssadmin.exe" and process.args:("delete" and "shadows")`
 +
 Searches the `winlogbeat-*` indices for `vssadmin.exe` executions with 
-the `delete` and `shadow` arguments, used to delete a volume's shadow copies.
+the `delete` and `shadow` arguments, which are used to delete a volume's shadow
+copies.
 +
 [role="screenshot"]
 image::rule-query-example.png[]
@@ -124,11 +125,14 @@ image::rule-query-example.png[]
 TIP: This example is based on the
 <<volume-shadow-copy-deletion-via-vssadmin, Volume Shadow Copy Deletion via VssAdmin>> prebuilt rule.
 
-. Select the timeline template used when you send a signal created by the rule
-to the timeline (optional).
+. Select the timeline template used when you investigate a signal created by
+the rule in Timeline (optional).
 +
 TIP: Before you create rules, create and save relevant
-<<timelines-ui,timelines>> so they can be selected here. 
+<<timelines-ui,timelines>> so they can be selected here. When signals generated
+by the rule are investigated in Timeline,
+<<signals-to-timelines, some query field values>> are replaced with their
+corresponding signal field values.
 
 . Click *Continue*.
 +
@@ -191,8 +195,12 @@ The {siem-app} performs deduplication. Duplicate signals discovered during the
 The *Rule actions* pane is displayed.
 [role="screenshot"]
 image::images/rule-actions.png[]
-. Optionally, use {kib} Actions to set up notifications sent via other systems
-when new signals are detected:
+. Optionally, use {kib} Alerting to set up notifications sent via other systems
+when new signals are detected.
++
+NOTE: To use {kib} Alerting for signal notifications, you need the
+https://www.elastic.co/subscriptions[appropriate license].
+
 .. Set how often notifications are sent:
 
 * _On each rule execution_: Sends a notification every time new signals are
@@ -211,7 +219,7 @@ image::images/available-action-types.png[]
 +
 .. Select the required action type, which determines how notifications are sent (Email, PagerDuty, Slack, Webhook).
 +
-NOTE: Each action type requires its own connector. Connectors store the
+NOTE: Each action type requires a connector. Connectors store the
 information required to send the notification from the external system. You can
 configure connectors while creating the rule or on the {kib} Alerts and Actions
 page (*Management* -> *Alerts and Actions* -> *Connectors*). For more
@@ -242,8 +250,8 @@ You can clone, edit, activate, deactivate, and delete rules:
 . Go to *SIEM* -> *Detections* -> *Manage signal detection rules*.
 . Do one of the following:
 * Click the actions icon (three dots) and then select the required action.
-* In the *Rule* column, select all the rules you want to act on, and then the 
-required action from the `Batch actions` menu.
+* In the *Rule* column, select all the rules you want to modify, and then the 
+required action from the `Bulk actions` menu.
 . To activate or deactivate a rule, click the Activate toggle button.
 
 NOTE: For prebuilt rules, you can only activate, deactivate, delete, and edit
@@ -285,12 +293,12 @@ When a rule fails to run close to its scheduled time, some signals may be
 missing. There are a number of steps you can perform to try and resolve this 
 issue.
 
-If you are seeing `Gaps` in the All rules table or on the Rule details page
+If you see `Gaps` in the All rules table or on the Rule details page
 for a small number of rules, you can increase those rules'
 `Additional look-back time` (*Signal detection rules* page -> the rule's
 actions icon -> *Edit rule settings* -> *Schedule* -> _Additional look-back time_).
 
-If you are seeing gaps for a lot of rules:
+If you see gaps for a lot of rules:
 
 * If you restarted {kib} when many rules were activated, try deactivating them 
 and then reactivating them in small batches at staggered intervals. This 

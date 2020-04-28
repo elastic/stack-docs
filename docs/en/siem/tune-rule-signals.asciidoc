@@ -5,7 +5,7 @@ In the {siem-app}, prebuilt detection rules can be tuned to produce the best
 possible set of actionable signals. To reduce the noise level, you can:
 
 * Disable detection rules that rarely produce actionable signals because they 
-match local expected behavior, workflows, or policy exceptions.
+match expected local behavior, workflows, or policy exceptions.
 * <<manage-rules-ui, Clone and modify>> detection rule queries so they are
 aligned with local policy exceptions. This reduces noise while retaining
 actionable signals.
@@ -17,10 +17,6 @@ For details about tuning prebuilt rules for specific categories, see:
 * <<tune-authorized-processes>>
 * <<tune-windows-rules>>
 * <<tune-network-rules>>
-
-IMPORTANT: If you are using version 7.6.0 of the {stack}, see
-<<fix-network-rules>>. From version 7.6.1, the network rules have already been
-optimized.
 
 [float]
 [[filter-rule-process]]
@@ -82,10 +78,10 @@ make `psexec` connections, and run WMI commands.
 * Applications that work with file shares, such as backup programs, and use the 
 server message block (SMB) protocol.
 
-To reduce signal noise for authorized activity, you can do any of the these:
+To reduce signal noise for authorized activity, you can do any of these:
 
 * Add a statement or filter to the rules that exclude specific servers, such as 
-the relevant host names, agent names, or other common identifier. 
+the relevant host names, agent names, or other common identifiers. 
 For example, `and not host.name : "server-name"`.
 * Add a statement or filter to the rules that <<filter-rule-process, exclude specific processes>>. For example, `and not process.name : "process-name"`.
 * Add a statement or filter to the rules that exclude a common user. 
@@ -109,7 +105,7 @@ names excluded in the first duplication
 [[tune-windows-rules]]
 === Tune Windows child process and PowerShell rules
 
-Normal user activity may sometimes trigger one or more of these these rules:
+Normal user activity may sometimes trigger one or more of these rules:
 
 * <<powershell-spawning-cmd>>
 * <<suspicious-ms-office-child-process>>
@@ -121,7 +117,7 @@ Normal user activity may sometimes trigger one or more of these these rules:
 * <<windows-script-executing-powershell>>
  
 While all rules can be adjusted as needed, use care when adding exceptions to 
-these rules. Exceptions could result in an undetected client side execution, or 
+these rules. Exceptions could result in an undetected client-side execution, or 
 a persistence or malware threat going unnoticed.
 
 Examples of when these rules may create noise include:
@@ -141,7 +137,7 @@ you can create duplicate rules with lower risk scores.
 === Tune network rules
 
 The definition of normal network behavior varies widely across different
-organizations, each network conforming to different security policies, 
+organizations. Different networks conform to different security policies, 
 standards, and regulations. When normal network activity triggers signals, 
 network rules can be disabled or modified. For example:
 
@@ -194,41 +190,3 @@ TIP: If your organization is widely distributed and the workforce travels a
 lot, use the `windows_anomalous_user_name_ecs`, 
 `linux_anomalous_user_name_ecs`, and `suspicious_login_activity_ecs`
 <<machine-learning, {ml}>> jobs to detect suspicious authentication activity.
-
-[float]
-[[fix-network-rules]]
-=== Reduce noise for network rules
-
-NOTE: This is only required if you are using version 7.6.0 of the {stack}.
-
-To reduce noise for network rules, duplicate the network rules and *either*:
-
-* Remove all rule index patterns, except for the `filebeat-*` index pattern.
-* Remove the `network.direction: outbound` statement from the query. The rule
-then relies on CIDR notation to match traffic direction. The CIDR matches 
-(`source.ip` and `destination.ip`) can be changed to match your network's 
-configuration.
-
-The following rules can be modified:
-
-* <<dns-activity-to-the-internet>>
-* <<ftp-file-transfer-protocol-activity-to-the-internet>>
-* <<ipsec-nat-traversal-port-activity>>
-* <<irc-internet-relay-chat-protocol-activity-to-the-internet>>
-* <<pptp-point-to-point-tunneling-protocol-activity>>
-* <<proxy-port-activity-to-the-internet>>
-* <<rdp-remote-desktop-protocol-from-the-internet>>
-* <<rdp-remote-desktop-protocol-to-the-internet>>
-* <<rpc-remote-procedure-call-from-the-internet>>
-* <<rpc-remote-procedure-call-to-the-internet>>
-* <<smb-windows-file-sharing-activity-to-the-internet>>
-* <<smtp-on-port-26-tcp>>
-* <<smtp-to-the-internet>>
-* <<sql-traffic-to-the-internet>>
-* <<ssh-secure-shell-from-the-internet>>
-* <<ssh-secure-shell-to-the-internet>>
-* <<tcp-port-8000-activity-to-the-internet>>
-* <<telnet-port-activity>>
-* <<tor-activity-to-the-internet>>
-* <<vnc-virtual-network-computing-from-the-internet>>
-* <<vnc-virtual-network-computing-to-the-internet>>

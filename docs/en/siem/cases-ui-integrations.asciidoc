@@ -5,8 +5,11 @@
 You can push new cases and case updates to {sn}. To do this, you need to create
 a connector, which stores the information required to push cases to {sn} via
 {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API].
-After you have created a connector, you can set {siem-soln} cases to close
-automatically when they are sent to {sn}.
+After you have created a connector, you can set {siem-soln} cases to
+automatically close when they are sent to {sn}.
+
+NOTE: To create a {sn} connector and send cases to {sn}, you need the
+https://www.elastic.co/subscriptions[appropriate license].
 
 [float]
 === Create a new connector
@@ -24,8 +27,7 @@ image::images/cases-ui-sn-connector.png[]
 * _URL_: The URL of the {sn} instance to which you want to send cases.
 * _Username_: The username of the {sn} account used to access the {sn}
 instance.
-* _Password_: The password of the the {sn} account used to access the {sn}
-instance.
+* _Password_: The password of the {sn} account used to access the {sn} instance.
 . To represent a SIEM case as a {sn} incident, these SIEM case fields are
 mapped to {sn} incidents fields as follows:
 ** `Title`: Mapped to the {sn} `Short description` field. When an update to a
@@ -56,4 +58,4 @@ the connector used to send cases to {sn}.
 .. Select the required connector from the `Incident management system` list.
 . To update an existing connector:
 .. Click `Update connector`.
-.. Update the the connector fields as required.
+.. Update the connector fields as required.

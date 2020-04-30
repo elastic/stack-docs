@@ -1,6 +1,6 @@
 [[siem-overview]]
 [role="xpack"]
-== Overview
+= Overview
 
 {siem-soln} enables analysis of host-related and network-related security events
 as part of alert investigations or interactive threat hunting.
@@ -14,7 +14,7 @@ and workstations.
 
 [float]
 [[siem-components]]
-=== SIEM components
+== SIEM components
 
 SIEM requires the following {stack} components.
 
@@ -38,7 +38,7 @@ view, and interact with data stored in {es} indices. You can easily perform
 advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
 
-[float]
+[discrete]
 [[siem-integration]]
 ==== Additional Elastic components
 
@@ -51,14 +51,14 @@ identify and investigate suspicious activity:
 
 [float]
 [[data-sources]]
-=== Data sources
+== Data sources
 
 SIEM can ingest and analyze data from a variety of sources, including Elastic
 Endpoint Security, Beats and Beats modules, 
 {apm-app-ref}/transactions.html[APM transactions], and third-party 
 collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)]. 
 
-[float]
+[discrete]
 [[hosts-data-sources]]
 ==== Hosts data sources
 
@@ -77,7 +77,7 @@ collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)].
 * https://www.elastic.co/products/beats/winlogbeat[{winlogbeat}]
 ** Windows event logs - Windows
 
-[float]
+[discrete]
 [[network-data-sources]]
 ==== Network data sources
 
@@ -98,14 +98,14 @@ collectors mapped to the {ecs-ref}[Elastic Common Schema (ECS)].
 ** {filebeat-ref}/filebeat-module-googlecloud.html[Google Cloud module]
 ** {filebeat-ref}/filebeat-module-netflow.html[NetFlow module]
 
-[float]
+[discrete]
 [[endpoint-security-platform]]
 ==== Elastic Endpoint Sensor Management Platform
 
 The Sensor Management Platform (SMP) ships all relevant host and network data
 directly to the {siem-app}.
 
-[float]
+[discrete]
 [[apm-transactions-data]]
 ==== APM transactions
 
@@ -116,7 +116,7 @@ Advanced Settings -> `siem:defaultIndex`).
 
 [float]
 [[ecs]]
-==== Elastic Common Schema (ECS) for normalizing data
+=== Elastic Common Schema (ECS) for normalizing data
 
 The {ecs-ref}[Elastic Common Schema (ECS)] defines a common set of fields to be used for
 storing event data in Elasticsearch. ECS helps users normalize their event data
@@ -125,9 +125,9 @@ events.
 
 {siem-soln} can ingest and normalize events from ECS-compatible data sources.
 
-[float]
+[discrete]
 [[host_id]]
-===== Host identification
+==== Host identification
 All Beats use the `add_host_metadata` processor to add the `host.name` field to
 events. The default value is `host.name`, but you can change it in Beats
 processor settings.

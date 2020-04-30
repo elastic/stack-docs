@@ -154,8 +154,7 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
 }
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
-<1> Specifies the name of the field in the `dest` index that contains the 
-results of the analysis. 
+<1> The field name in the `dest` index that contains the analysis results. 
 ====
 --
 
@@ -295,11 +294,11 @@ predict. It also shows a column for the predicted values
 or testing data set. You can use this information to filter the table and the
 confusion matrix such that they contain only testing or training data.
 
-If you examine this destination index more closely in the *Discover* app in {kib}
-or use the standard {es} search command, you can see that the analysis predicts
-the probability of all possible classes for the dependent variable (in a
-`top_classes` object). In this case, there are two classes: `true` and `false`.
-The most probable class is the prediction, which is what's shown in the
+If you examine this destination index more closely in the *Discover* app in 
+{kib} or use the standard {es} search command, you can see that the analysis 
+predicts the probability of all possible classes for the dependent variable (in 
+a `top_classes` object). In this case, there are two classes: `true` and 
+`false`. The most probable class is the prediction, which is what's shown in the
 {classification} results table. If you want to understand how sure the model is
 about the prediction, however, you might want to examine the class probability
 values. A higher number means that the model is more confident.
@@ -324,8 +323,8 @@ The snippet below shows a part of a document with the annotated results:
           "ml" : {
             "top_classes" : [ <1>
               {
-                "class_probability" : 0.9198146781161334, <2>
-               "class_score" : 0.36964390728677926, <3>
+                "class_probability" : 0.9198146781161334, 
+               "class_score" : 0.36964390728677926, 
                "class_name" : false
               },
               {
@@ -351,15 +350,16 @@ The snippet below shows a part of a document with the annotated results:
           }
 ----
 <1> An array of values specifying the probability of the prediction and the 
-`class_score` for each class. The `top_classes` object contains the predicted 
-classes with the highest scores.
-<2> The probability is a value between 0 and 1. The higher the number, the more 
-confident the model is that the data point belongs to the named class. In this 
-example, `false` has a `class_probability` of 0.91 while `true` has only 0.08, 
-so the prediction will be `false`.
-<3> The `class_score` is a function of the probability. It is chosen so that the 
-decision to assign the data point to the class with the highest score maximizes 
-the minimum recall of any class.
+`class_score` for each class. 
+
+The `top_classes` object contains the predicted  classes with the highest 
+scores. The `class_probability` is a value between 0 and 1. The higher the 
+number, the more confident the model is that the data point belongs to the named 
+class. In the example above, `false` has a `class_probability` of 0.91 while 
+`true` has only 0.08, so the prediction will be `false`. The `class_score` is a 
+function of the probability. It is chosen so that the decision to assign the 
+data point to the class with the highest score maximizes the minimum recall of 
+any class.
 ====
 
 [[flightdata-classification-evaluate]]

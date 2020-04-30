@@ -156,7 +156,7 @@ PUT _ml/data_frame/analytics/model-flight-delays
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 
-<1> This optional query removes erroneous data from the analysis to improve its
+<1> Optional query that removes erroneous data from the analysis to improve 
 quality.
 ====
 --
@@ -378,8 +378,8 @@ POST _ml/data_frame/_evaluate
 
 <1> The destination index which is the output of the {dfanalytics-job}.
 <2> Calculate the training error by evaluating only the training data.
-<3> The field that contains the actual (ground truth) value.
-<4> The field that contains the predicted value.
+<3> Field containing the actual (ground truth) value.
+<4> Field containing the predicted value.
 
 The API returns a response like this:
 

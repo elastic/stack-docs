@@ -1,8 +1,6 @@
-[chapter]
-[role="xpack"]
+[chapter, role="xpack"]
 [[install-siem]]
 = Get up and running
-
 
 To use the {siem-app}, you need an *Elasticsearch* cluster and *Kibana* 
 (version 7.2 or later) with a basic license. See
@@ -29,6 +27,7 @@ indices, see:
 * {cloud}/ec-enable-ccs.html[Enable cross-cluster search] (for hosted deployments)
 
 [float]
+[[siem-ingest]]
 == Ingest data
 
 To ingest data, you can use:
@@ -53,7 +52,7 @@ primary key for identifying hosts.
 
 [float]
 [[install-beats]]
-== Install {beats} shippers
+=== Install {beats} shippers
 
 To populate the {siem-app} with hosts and network security events, you need to install and
 configure Beats on the systems from which you want to ingest security events:

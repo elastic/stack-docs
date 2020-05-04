@@ -1,6 +1,6 @@
 [[machine-learning]]
 [role="xpack"]
-== Anomaly Detection with Machine Learning
+= Anomaly Detection with Machine Learning
 
 {kibana-ref}/xpack-ml.html[{ml-cap}] functionality is available when
 you have the *https://www.elastic.co/subscriptions[appropriate license]*, are
@@ -19,7 +19,7 @@ image::ml-ui.png[]
 
 [float]
 [[manage-jobs]]
-=== Manage machine learning jobs
+== Manage machine learning jobs
 For users with the `machine_learning_admin` role, the `ML job settings`
 interface on the *Detections* page can be used for for viewing, starting, and
 stopping SIEM machine learning jobs.
@@ -30,7 +30,7 @@ details).
 
 [float]
 [[included-jobs]]
-==== Prebuilt jobs
+=== Prebuilt jobs
 
 The SIEM app comes with prebuilt {ml} {anomaly-jobs} for automatically detecting
 host and network anomalies. The jobs are displayed in the `Anomaly Detection`
@@ -57,7 +57,7 @@ time frame, previously analysed data is not processed again.
 
 [float]
 [[view-anomolies]]
-=== View detected anomalies
+== View detected anomalies
 To view the `Anomalies` table widget and `Max Anomaly Score By Job` details,
 the user must have the `ml_admin` or `ml_user` role.
 
@@ -66,7 +66,7 @@ NOTE: To adjust the `score` threshold that determines which
 Management -> Advanced Settings -> `siem:defaultAnomalyScore`.
 
 [[prebuilt-ml-jobs]]
-=== Prebuilt job reference
+== Prebuilt job reference
 
 Prebuilt jobs automatically detect file system and network anomalies on your 
 hosts. To enable jobs when you are not using {beats}, you must map your data to

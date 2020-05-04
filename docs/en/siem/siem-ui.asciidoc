@@ -1,6 +1,6 @@
 [[siem-ui-overview]]
 [role="xpack"]
-== SIEM UI
+= SIEM UI
 
 The {siem-app} is a highly interactive workspace designed for security
 analysts. It provides a clear overview of events from your
@@ -18,7 +18,7 @@ Management -> Advanced Settings -> `siem:defaultIndex`.
 
 [float]
 [[siem-overview-ui]]
-=== Overview
+== Overview page
 
 The Overview page provides a high-level view of security events available
 for analysis, and can help surface problems with data ingestion.
@@ -26,7 +26,7 @@ for analysis, and can help surface problems with data ingestion.
 TIP: All histograms and graphs on the overview page contain an **Inspect** button so users may better understand that data surfaced through the {siem-app}.
 
 
-[float]
+[discrete]
 [[search-overview]]
 ==== Search
 
@@ -34,7 +34,7 @@ Filter for signals, events, process and other important security information  wi
 
 To save specific filters and queries, click the Save icon and then **Save current query**.
 
-[float]
+[discrete]
 [[timelines-overview]]
 ==== Timelines
 
@@ -42,7 +42,7 @@ Select the collapsable *Timeline* button on the right of the {siem-ui} to start 
 
 The most recent timelines you've accessed appear in **Recent Timelines**.
 
-[float]
+[discrete]
 [[signals-count]]
 ==== Signals count
 
@@ -50,7 +50,7 @@ The signals histogram displays a count of all the Signals detected by the {siem-
 
 To create signal detection rules, see <<rules-ui-create,Managing Signal Detection Rules>>.
 
-[float]
+[discrete]
 [[external-alerts-count]]
 ==== External alerts count
 
@@ -60,14 +60,14 @@ The external alerts histogram displays a count within a certain time frame. You 
 image::overview-ui.png[]
 
 
-[float]
+[discrete]
 [[events-count]]
 ==== Events count
 
 The events count histogram displays a count of all events within a set time frame. You can stack by `event.action`, `event.dataset`, or `event.module`.
 
 
-[float]
+[discrete]
 [[host-and-network-events]]
 ==== Host and network events
 
@@ -79,7 +79,7 @@ image::events-count.png[]
 
 [float]
 [[hosts-ui]]
-=== Hosts
+== Hosts page
 
 The Hosts view provides key metrics regarding host-related security
 events, and a set of data tables that let you interact with the Timeline Event
@@ -113,7 +113,7 @@ and tabs relevant for the selected host.
 
 [float]
 [[network-ui]]
-=== Network
+== Network page
 
 The Network view provides key network activity metrics and an interactive map,
 facilitates investigation time enrichment, and provides network event tables
@@ -164,9 +164,9 @@ For example:
 ]
 --------------------------------------------------
 
-[float]
+[discrete]
 [[map-ui]]
-=== Map
+==== Map
 The map provides a visual overview of your network traffic. It is interactive,
 so you can start exploring data directly from the map. Hover over source and
 destination points to see more information, such as hostnames and IP addresses.
@@ -185,7 +185,7 @@ corner of the map.
 
 [float]
 [[detection-engine-ui]]
-=== Detections
+== Detections page
 
 The Detections page provides an overview of all the signals created by
 signal detection rules. It is also the place where you can enable prebuilt
@@ -202,7 +202,7 @@ allowing you to search, filter, and aggregate all {siem-soln} signals.
 
 [float]
 [[cases-ui]]
-=== Cases
+== Cases page
 
 The Cases page is used to open and track security issues directly in the
 {siem-app}. For more information, see <<cases-overview>>.
@@ -212,7 +212,7 @@ image::images/cases-ui-home.png[]
 
 [float]
 [[timelines-ui]]
-=== Timelines
+== Timelines
 
 Use timelines as your workspace for alert investigations or threat hunting.
 Data from multiple indices can be added to a timeline, which enables investigating
@@ -236,7 +236,7 @@ others. You can share a timeline, or pass it off to another person or team. You
 can link to timelines from a ticketing system.
 
 
-[float]
+[discrete]
 [[raw]]
 ==== Focus on signals or raw events
 
@@ -248,7 +248,7 @@ other raw events, or both are displayed in the Timeline.
 You can click and expand events from within Timeline to see the underlying
 event data, either in tabular form, as as {es} JSON.
 
-[float]
+[discrete]
 [[narrow-expand]]
 ==== Narrow or expand your query
 
@@ -257,7 +257,7 @@ the drop area. Horizontal filters are `AND`-ed together. Vertical filters or
 sets are `OR`-ed together. As you hover the item over the drop area, you can see
 whether your placement is on target to create an `AND` or `OR` filters.
 
-[float]
+[discrete]
 [[pivot]]
 ==== Pivot on a data point
 
@@ -265,7 +265,7 @@ Click a filter to access additional operations such as exclude, temporarily
 disable, or delete items from the query. For example, you can change an included
 item so that it is excluded.
 
-[float]
+[discrete]
 [[row-renderer]]
 ==== Get more context for each event
 
@@ -277,7 +277,7 @@ It shows relevant contextual information that helps tell the backstory of the
 event. If you see a particular item that interests you, you can drag it to the
 drop area for further introspection.
 
-[float]
+[discrete]
 [[import-export-timelines]]
 ==== Export and import timelines
 
@@ -296,7 +296,7 @@ then select _Export selected_.
 . To import timelines, click *Import Timeline* and then select or drap-and-drop
 the timeline `ndjson` file.
 
-[float]
+[discrete]
 [[other]]
 ==== Other actions
 
@@ -314,7 +314,7 @@ areas to see what happens. Are there interactions that you would expect to see
 that aren't present?  Let us know. We welcome your input.
 
 [[conf-map-ui]]
-=== Configuring map data
+== Configuring map data
 
 Depending on your {kib} setup, to display and interact with data on the map you
 might need to:
@@ -326,8 +326,9 @@ might need to:
 NOTE: To see source and destination connections lines on the map, you must
 configure `source.geo` and `destination.geo` ECS fields for your indices.
 
+[float]
 [[kibana-index-pattern]]
-==== Create {kib} index patterns
+=== Create {kib} index patterns
 
 To display map data, you must define {kib}
 {kibana-ref}/tutorial-define-index.html[index patterns] (*Management* ->
@@ -341,8 +342,9 @@ For example, if you define a {siem-soln} {es} `servers-europe-*` glob pattern,
 to display map data for the matching indices you must also define a {kib} index
 pattern that matches `servers-europe-*`, such as `servers-*`.
 
+[float]
 [[geoip-data]]
-==== Add geoIP data
+=== Add geoIP data
 
 When the ECS {ecs-ref}/ecs-geo.html[source.geo.location and
 destination.geo.location] fields are mapped, network data is displayed on
@@ -422,8 +424,9 @@ it encounters an event that doesn't have the specified field.
 <1> The value of this field must be the same as the ingest pipeline name in
 <<geo-pipeleine, step 1>> (`geoip-info` in this example).
 
+[float]
 [[private-network]]
-==== Map your internal network
+=== Map your internal network
 
 If you want to add your network’s internal IP addresses to the map, define geo
 location fields under the `processors` tag in the Beats configuration files

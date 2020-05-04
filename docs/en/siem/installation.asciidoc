@@ -1,7 +1,6 @@
+[chapter, role="xpack"]
 [[install-siem]]
-[role="xpack"]
-== Get up and running
-
+= Get up and running
 
 To use the {siem-app}, you need an *Elasticsearch* cluster and *Kibana* 
 (version 7.2 or later) with a basic license. See
@@ -28,7 +27,8 @@ indices, see:
 * {cloud}/ec-enable-ccs.html[Enable cross-cluster search] (for hosted deployments)
 
 [float]
-=== Ingest data
+[[siem-ingest]]
+== Ingest data
 
 To ingest data, you can use:
 
@@ -68,7 +68,7 @@ network activity
 You can install {beats} using a {kib}-based guide or directly from the command line.
 
 [float]
-==== Install {beats} using the {kib}-based guide
+=== Install {beats} using the {kib}-based guide
 
 Follow the instructions in the Add Data section of the {kib} home page. Click
 *Add log data* or *Add metrics*, and follow the links for the types of data you
@@ -78,7 +78,7 @@ want to collect.
 image::add-data.png[]
 
 [float]
-==== Download and install {beats} from the command line
+=== Download and install {beats} from the command line
 
 If your data source isn't in the list, or you want to install {beats} the old
 fashioned way:
@@ -97,7 +97,7 @@ learn how to configure inputs.
 * *Packetbeat.* See {packetbeat-ref}/packetbeat-getting-started.html[{packetbeat} getting started].
 
 [float]
-==== Enable modules and configuration options
+=== Enable modules and configuration options
 
 No matter how you installed {beats}, you need to enable modules in {auditbeat}
 and {filebeat} to populate the {SIEM-app} with data.

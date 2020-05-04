@@ -1,13 +1,14 @@
 [[tuning-anomaly-results]]
-=== Optimizing anomaly results
+== Optimizing anomaly results
 
 To gain clearer insights into real threats, you can tune the anomaly results. The following procedures help to reduce the number of false positives: 
 
 * <<rarely-used-processes, Tune results for rare applications and processes>>
 * <<define-rule-threshold>>
 
+[float]
 [[rarely-used-processes]]
-==== Filter out anomalies from rarely used applications and processes
+=== Filter out anomalies from rarely used applications and processes
 
 When anomalies include results from a known process that only runs occasionally,
 you can filter out the unwanted results.
@@ -19,8 +20,9 @@ For example, to filter out results from a housekeeping process, named
 . <<add-job-filter>>
 . <<clone-job, Clone and rerun the job>> (optional)
 
+[float]
 [[create-fiter-list]]
-===== Create a filter list
+==== Create a filter list
 
 . Go to *Machine Learning* -> *Anomaly Detection* -> *Settings*.
 . Click *Filter Lists* and then *New*.
@@ -38,8 +40,9 @@ image::filter-add-item.png[]
 +
 The new filter appears in the Filter List and can be added to relevant jobs.
 
+[float]
 [[add-job-filter]]
-===== Add the filter to the relevant job
+==== Add the filter to the relevant job
 
 . Go to *Machine Learning* -> *Anomaly Detection* -> *Anomaly Explorer*.
 . Navigate to the job results for which the filter is required. If the job results
@@ -65,8 +68,9 @@ TIP: For more information about detectors, see
 NOTE: Changes to rules only affect new results. All anomalies found by the job
 before the filter was added are still displayed.
 
+[float]
 [[clone-job]]
-===== Clone and rerun the job
+==== Clone and rerun the job
 
 If you want to remove all the previously detected results for the process, you
 must clone and run the cloned job.
@@ -102,8 +106,9 @@ image::start-job-window.png[]
 +
 After a while, results will start to appear on the *Anomaly Explorer* page.
 
+[float]
 [[define-rule-threshold]]
-==== Define an anomaly threshold for a job
+=== Define an anomaly threshold for a job
 
 Certain jobs use a high-count function to look for unusual spikes in 
 process events. For some processes, a burst of activity is a normal, such as

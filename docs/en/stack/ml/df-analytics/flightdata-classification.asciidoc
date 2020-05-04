@@ -357,9 +357,13 @@ scores. The `class_probability` is a value between 0 and 1. The higher the
 number, the more confident the model is that the data point belongs to the named 
 class. In the example above, `false` has a `class_probability` of 0.91 while 
 `true` has only 0.08, so the prediction will be `false`. The `class_score` is a 
-function of the probability. It is chosen so that the decision to assign the 
+function of the probability.
+
+////
+It is chosen so that the decision to assign the 
 data point to the class with the highest score maximizes the minimum recall of 
 any class.
+////
 ====
 
 [[flightdata-classification-evaluate]]

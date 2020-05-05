@@ -1,31 +1,264 @@
-[[field-reference]]
-[role="xpack"]
-
+[[siem-field-reference]]
+[chapter, role="xpack"]
 = Field reference and mappings
 
-This section lists all fields required to populate {siem-son} Network and Hosts
-pages.
+This section lists all fields required to populate {siem-soln} data.
+
+NOTE: Unless noted otherwise, all listed fields are {ecs-ref}[ECS fields]. 
 
 [float]
-[[host-fields]]
+[[siem-global-fields]]
+== Global fields
+
+Fields required for populating all SIEM data:
+
+* `@timestamp`
+* `host.name`
+
+[float]
+[[siem-host-fields]]
 == Host fields
 
-* field
-////
-* <field>
-* <field>
-...
-* <field>
-////
+* `cloud.instance.id`
+* `cloud.machine.type`
+* `cloud.provider`
+* `cloud.region`
+* `host.architecture`
+* `host.id`
+* `host.ip`
+* `host.mac`
+* `host.os.family`
+* `host.os.name`
+* `host.os.platform`
+* `host.os.version`
+
+[discrete]
+==== Authentication fields
+
+* `event.category`
+* `event.outcome`
+* `user.name`
+
+[discrete]
+==== Uncommon process fields
+
+* `agent.type`
+* `event.action`
+* `event.category`
+* `event.code`
+* `event.dataset`
+* `event.module`
+* `process.args`
+* `process.name`
+* `user.id`
+* `user.name`
+* `winlog.channel` {winlogbeat-ref}/exported-fields-winlog.html[(Winlogbeat field)]
+* `winlog.event_id` (Winlogbeat field)
 
 [float]
-[[network-fields]]
+[[siem-network-fields]]
 == Network fields
 
-* field
-////
-* <field>
-* <field>
-...
-* <field>
-////
+* `destination.geo.location` (for <<conf-map-ui, map data>>)
+* `destination.ip`
+* `source.geo.location` (for map data)
+* `source.ip`
+
+[discrete]
+==== DNS query fields
+
+* `destination.bytes`
+* `dns.question.name`
+* `dns.question.registered_domain`
+* `source.bytes`
+
+[discrete]
+==== HTTP request fields
+
+* `http.request.method`
+* `http.response.status_code`
+* `source.ip`
+* `url.domain`
+* `url.path`
+
+[discrete]
+==== TLS fields
+
+* `tls.server.hash.sha1`
+* `tls.server.issuer`
+* `tls.server.ja3s`
+* `tls.server.not_after`
+* `tls.server.subject`
+
+[float]
+== Event and external alert fields
+
+NOTE: For external alerts, the `event.kind` field value must be `alert`.
+
+* `auditd.data.acct` {auditbeat-ref}/exported-fields-auditd.html[(Auditbeat field)]
+* `auditd.data.op` (Auditbeat field)
+* `auditd.data.terminal` (Auditbeat field)
+* `auditd.result` (Auditbeat field)
+* `auditd.session` (Auditbeat field)
+* `auditd.summary.actor.primary` (Auditbeat field)
+* `auditd.summary.actor.secondary` (Auditbeat field)
+* `auditd.summary.how` (Auditbeat field)
+* `auditd.summary.message_type` (Auditbeat field)
+* `auditd.summary.object.primary` (Auditbeat field)
+* `auditd.summary.object.secondary` (Auditbeat field)
+* `auditd.summary.object.type` (Auditbeat field)
+* `auditd.summary.sequence` (Auditbeat field)
+* `destination.bytes`
+* `destination.geo.city_name`
+* `destination.geo.continent_name`
+* `destination.geo.country_iso_code`
+* `destination.geo.country_name`
+* `destination.geo.region_iso_code`
+* `destination.geo.region_name`
+* `destination.ip`
+* `destination.packets`
+* `destination.port`
+* `dns.question.name`
+* `dns.question.type`
+* `dns.resolved_ip`
+* `dns.response_code`
+* `event.action`
+* `event.category`
+* `event.code`
+* `event.created`
+* `event.dataset`
+* `event.duration`
+* `event.end`
+* `event.hash`
+* `event.id`
+* `event.kind`
+* `event.module`
+* `event.original`
+* `event.outcome`
+* `event.risk_score_norm`
+* `event.risk_score`
+* `event.severity`
+* `event.start`
+* `event.timezone`
+* `event.type`
+* `file.ctime`
+* `file.device`
+* `file.extension`
+* `file.gid`
+* `file.group`
+* `file.inode`
+* `file.mode`
+* `file.mtime`
+* `file.name`
+* `file.owner`
+* `file.path`
+* `file.size`
+* `file.target_path`
+* `file.type`
+* `file.uid`
+* `host.id`
+* `host.ip`
+* `http.request.body.bytes`
+* `http.request.body.content`
+* `http.request.method`
+* `http.request.referrer`
+* `http.response.body.bytes`
+* `http.response.body.content`
+* `http.response.status_code`
+* `http.version`
+* `message`
+* `network.bytes`
+* `network.community_id`
+* `network.direction`
+* `network.packets`
+* `network.protocol`
+* `network.transport`
+* `process.args`
+* `process.executable`
+* `process.hash.md5`
+* `process.hash.sha1`
+* `process.hash.sha256`
+* `process.name`
+* `process.pid`
+* `process.ppid`
+* `process.title`
+* `process.working_directory`
+* `rule.reference`
+* `source.bytes`
+* `source.geo.city_name`
+* `source.geo.continent_name`
+* `source.geo.country_iso_code`
+* `source.geo.country_name`
+* `source.geo.region_iso_code`
+* `source.geo.region_name`
+* `source.ip`
+* `source.packets`
+* `source.port`
+* `suricata.eve.alert.signature_id` {filebeat-ref}/exported-fields-suricata.html[(Filebeat field)]
+* `suricata.eve.alert.signature` (Filebeat field)
+* `suricata.eve.flow_id` (Filebeat field)
+* `suricata.eve.proto` (Filebeat field)
+* `system.audit.package.arch` {auditbeat-ref}/exported-fields-system.html[(Auditbeat field)]
+* `system.audit.package.entity_id` (Auditbeat field)
+* `system.audit.package.name` (Auditbeat field)
+* `system.audit.package.size` (Auditbeat field)
+* `system.audit.package.summary` (Auditbeat field)
+* `system.audit.package.version` (Auditbeat field)
+* `system.auth.ssh.method` {filebeat-ref}/exported-fields-system.html[(Filebeat field)]
+* `system.auth.ssh.signature` (Filebeat field)
+* `tls.client_certificate.fingerprint.sha1` {packetbeat-ref}/exported-fields-tls.html[(Packetbeat field)]
+* `tls.fingerprints.ja3.hash` (Packetbeat field)
+* `tls.server_certificate.fingerprint.sha1` (Packetbeat field)
+* `user.domain`
+* `user.name`
+* `winlog.event_id` {winlogbeat-ref}/exported-fields-winlog.html[(Winlogbeat field)]
+* `zeek.connection.history` {filebeat-ref}/exported-fields-zeek.html[(Filebeat field)]
+* `zeek.connection.local_orig` (Filebeat field)
+* `zeek.connection.local_resp` (Filebeat field)
+* `zeek.connection.missed_bytes` (Filebeat field)
+* `zeek.connection.state` (Filebeat field)
+* `zeek.dns.AA` (Filebeat field)
+* `zeek.dns.qclass_name` (Filebeat field)
+* `zeek.dns.qclass` (Filebeat field)
+* `zeek.dns.qtype_name` (Filebeat field)
+* `zeek.dns.qtype` (Filebeat field)
+* `zeek.dns.query` (Filebeat field)
+* `zeek.dns.RA` (Filebeat field)
+* `zeek.dns.RD` (Filebeat field)
+* `zeek.dns.TC` (Filebeat field)
+* `zeek.dns.trans_id` (Filebeat field)
+* `zeek.files.analyzers` (Filebeat field)
+* `zeek.files.depth` (Filebeat field)
+* `zeek.files.duration` (Filebeat field)
+* `zeek.files.fuid` (Filebeat field)
+* `zeek.files.is_orig` (Filebeat field)
+* `zeek.files.local_orig` (Filebeat field)
+* `zeek.files.md5` (Filebeat field)
+* `zeek.files.mime_type` (Filebeat field)
+* `zeek.files.missing_bytes` (Filebeat field)
+* `zeek.files.overflow_bytes` (Filebeat field)
+* `zeek.files.rx_host` (Filebeat field)
+* `zeek.files.seen_bytes` (Filebeat field)
+* `zeek.files.session_ids` (Filebeat field)
+* `zeek.files.sha1` (Filebeat field)
+* `zeek.files.source` (Filebeat field)
+* `zeek.files.timedout` (Filebeat field)
+* `zeek.files.total_bytes` (Filebeat field)
+* `zeek.files.tx_host` (Filebeat field)
+* `zeek.http.resp_fuids` (Filebeat field)
+* `zeek.http.resp_mime_types` (Filebeat field)
+* `zeek.http.status_msg` (Filebeat field)
+* `zeek.http.tags` (Filebeat field)
+* `zeek.http.trans_depth` (Filebeat field)
+* `zeek.notice.dropped` (Filebeat field)
+* `zeek.notice.dst` (Filebeat field)
+* `zeek.notice.msg` (Filebeat field)
+* `zeek.notice.note` (Filebeat field)
+* `zeek.notice.peer_descr` (Filebeat field)
+* `zeek.notice.sub` (Filebeat field)
+* `zeek.notice.suppress_for` (Filebeat field)
+* `zeek.session_id` (Filebeat field)
+* `zeek.ssl.cipher` (Filebeat field)
+* `zeek.ssl.established` (Filebeat field)
+* `zeek.ssl.resumed` (Filebeat field)
+* `zeek.ssl.version` (Filebeat field)

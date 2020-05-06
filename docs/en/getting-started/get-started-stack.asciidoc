@@ -1,26 +1,18 @@
 [[get-started-elastic-stack]]
 == Getting started with the {stack}
 
-Looking for an {stack} ("ELK") guide that shows how to set up the {stack} and
-get up and running quickly? You're on the right place! First you install the
-core products:
+Looking for an {stack} ("ELK") guide that shows how to quickly install and configure the {stack}? You're in the right place! You can install the {stack} on a single VM, or even on your laptop:
 
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
 * <<install-beats,{beats}>>
 * <<install-logstash,{ls} (optional)>>
 
-Then you learn how to implement a system monitoring solution that uses
-{metricbeat} to collect server metrics and ship the data to {es}, where you can
-search and visualize the data by using {kib}. After you get the basic setup
-working, you add {ls} for additional parsing.
+After completing the installation process, learn how to implement a system monitoring solution that uses 
+{metricbeat} to collect server metrics and ship the data to {es}, search and visualize the data by using {kib}, and incorporate {ls} for additional parsing.
 
-To get started, you can install the {stack} on a single VM or even on your
-laptop.
-
-IMPORTANT: Implementing security is a critical step in setting up the {stack}.
-To get up and running quickly with a sample installation, you skip those steps
-right now. Before sending sensitive data across the network, make sure you
+IMPORTANT: Implementing security is a critical step in configuring the {stack}.
+This guide skips security configuration to quickly install a sample installation. Before sending sensitive data across the network, 
 {ref}/elasticsearch-security.html[secure the {stack}] and enable
 {ref}/encrypting-communications.html[encrypted communications].
 

@@ -51,7 +51,8 @@ In this phase, the job generates a {ml} model for analyzing the dataset.
 ===== {oldetection-cap}
 
 {oldetection-cap} has one sub-phase during analyzing that called 
-`computing_outliers`.
+`computing_outliers`. This is the phase when the {oldetection} analysis 
+identifies outliers in the loaded data.
 
 
 [discrete]
@@ -60,10 +61,16 @@ In this phase, the job generates a {ml} model for analyzing the dataset.
 {regression-cap} and {classification} share the same set of sub-phases. There 
 are four of them:
 
-* `feature_selection`:
-* `coarse_parameter_search`: 
-* `fine_tuning_parameters`: 
-* `final_training`: 
+* `feature_selection`: In this phase, the process iterates through the available 
+  field set to define which fields are significant for the analysis.
+* `coarse_parameter_search`: This is the first part of 
+  <<hyperparameters,hyperparameter optimization>> in which the process finds 
+  suitable values for the hyperparameters that are required to run the analysis. 
+* `fine_tuning_parameters`: After the values of hyperparameters are narrowed 
+  down to a certain range in the `coarse_parameter_search` phase, the parameters 
+  are further refined to an exact value in this second part of hyperparameter 
+  optimization.
+* `final_training`: This is the phase where the {ml} model training takes place.
 
 
 [discrete]

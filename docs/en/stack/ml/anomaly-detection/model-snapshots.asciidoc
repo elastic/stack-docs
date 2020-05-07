@@ -14,7 +14,7 @@ approximately every 3 to 4 hours. You can change this interval
 (`background_persist_interval`) when you create or update a job.
 
 To reduce the number of snapshots consuming space on your cluster, at the end of
-each day, old snapshots are automatically deleted. By default, if there are
+each day, old snapshots are automatically deleted. The age of each snapshot is calculated relative to the timestamp of the most recent snapshot. By default, if there are
 snapshots over one day old, only the first snapshot for each day is retained.
 As well, all snapshots over ten days old are deleted. You can change these
 retention settings (`daily_model_snapshot_retention_after_days` and

@@ -8,21 +8,28 @@ accomplished by generating models of your data.
 
 To ensure resilience in the event of a system failure, snapshots of the {ml}
 model for each {anomaly-job} are saved to an internal index within the {es}
-cluster. By default, snapshots are captured approximately every 3 to 4 hours and 
-retained for one day (twenty-four hours). The amount of time necessary to
-save these snapshots is proportional to the size of the model in memory.
+cluster. The amount of time necessary to save these snapshots is proportional to
+the size of the model in memory. By default, snapshots are captured
+approximately every 3 to 4 hours. You can change this interval
+(`background_persist_interval`) when you create or update a job.
 
-You can use the {ref}/ml-update-job.html[update {anomaly-jobs} API] to change
-the interval (`background_persist_interval`) and retention
-(`model_snapshot_retention_days`) of these snapshots.
+To reduce the number of snapshots consuming space on your cluster, at the end of
+each day, old snapshots are automatically deleted. By default, if there are
+snapshots over one day old, only the first snapshot for each day is retained.
+As well, all snapshots over ten days old are deleted. You can change these
+retention settings (`daily_model_snapshot_retention_after_days` and
+`model_snapshot_retention_days`) when you create or update a job. If you want to
+exempt a specific snapshot from this clean up, use the
+{ref}/ml-update-snapshot.html[update model snapshots API] to set `retain` to
+`true`.
 
-There are also situations where you might want to
+TIP: There are situations other than system failures where you might want to
 {ref}/ml-revert-snapshot.html[revert] to using a specific model snapshot. The
 {ml-features} react quickly to anomalous input and new behaviors in data. Highly 
 anomalous input increases the variance in the models and {ml} analytics must 
 determine whether it is a new step-change in behavior or a one-off event. In the
 case where you know this anomalous input is a one-off, it might be appropriate
-to reset the model state to a time before this event. For example, you might
-consider reverting to a saved snapshot after Black Friday or a critical system 
-failure. If you know about such events in advance, you can use
+to reset the model state to a time before this event. For example, after a Black
+Friday sales day you might consider reverting to a saved snapshot. If you know
+about such events in advance, however, you can use
 <<ml-calendars,calendars and scheduled events>> to avoid impacting your model.

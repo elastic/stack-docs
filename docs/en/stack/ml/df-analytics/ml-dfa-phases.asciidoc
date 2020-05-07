@@ -36,40 +36,24 @@ process expects, then sends it to the analysis process.
 [discrete]
 ==== Analyzing
 
-When all the required data is loaded, the analyzing phase begins. The exact 
-process always depends on the type of {dfanalytics} – for example, 
-{classification} or {oldetection} – that is executed, you can find the 
-description of these processes below ordered by analysis type. The analyzing 
-phase is not reported in the `phase` property of the 
-{ref}/get-dfanalytics-stats.html[Get {dfanalytics-jobs} statistics API], the 
-specific sub-phases are reported instead.
-In this phase, the job generates a {ml} model for analyzing the dataset.
+In this phase, the job generates a {ml} model for analyzing the data. The 
+specific phases of analysis vary depending on the type of {dfanalytics-job}.
 
-
-[discrete]
-===== {oldetection-cap}
-
-{oldetection-cap} jobs have a single analysis phase called `computing_outliers`, in which they identify outliers in the data. 
-`computing_outliers`. This is the phase when the {oldetection} analysis 
-identifies outliers in the loaded data.
-
-
-[discrete]
-===== {regression-cap} and {classanalysis}
+{oldetection-cap} jobs have a single analysis phase called `computing_outliers`, 
+in which they identify outliers in the data.
 
 {regression-cap} and {classification} jobs have four analysis phases:
-are four of them:
 
 . `feature_selection`: Identifies which fields are significant for the analysis 
   field set to define which fields are significant for the analysis.
-* `coarse_parameter_search`: This is the first part of 
+. `coarse_parameter_search`: This is the first part of 
   <<hyperparameters,hyperparameter optimization>> in which the process finds 
   suitable values for the hyperparameters that are required to run the analysis. 
-* `fine_tuning_parameters`: After the values of hyperparameters are narrowed 
+. `fine_tuning_parameters`: After the values of hyperparameters are narrowed 
   down to a certain range in the `coarse_parameter_search` phase, the parameters 
   are further refined to an exact value in this second part of hyperparameter 
   optimization.
-* `final_training`: This is the phase where the {ml} model training takes place.
+. `final_training`: This is the phase where the {ml} model training takes place.
 
 
 [discrete]

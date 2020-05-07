@@ -2,13 +2,17 @@
 [role="xpack"]
 == Configuring external connections
 
-You can push new cases and case updates to {sn}. To do this, you need to create
-a connector, which stores the information required to push cases to {sn} via
-{sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API].
+You can push new cases and case updates to {sn} and Jira. To do this, you need
+to create a connector, which stores the information required to push cases to
+external systems. For {sn}, cases are send via {sn}'s
+https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API]. For Jira, the
+https://developer.atlassian.com/cloud/jira/platform/rest/v2/[REST API v2] is
+used.
+
 After you have created a connector, you can set {siem-soln} cases to
 automatically close when they are sent to {sn}.
 
-NOTE: To create a {sn} connector and send cases to {sn}, you need the
+NOTE: To create connectors and send cases to external systems, you need the
 https://www.elastic.co/subscriptions[appropriate license].
 
 [float]

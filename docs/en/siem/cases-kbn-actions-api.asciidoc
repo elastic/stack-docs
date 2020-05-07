@@ -1,33 +1,33 @@
 [[cases-actions-api-connectors]]
 === Configure and send cases to external interfaces
 
-You can create {sn} incidents from {siem-soln} cases. This requires creating
-a {sn} connector using the {kib} Actions API. Connectors store the information
-required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such as the {sn} URL,
-account credentials, and the field mappings required for representing a
-{siem-soln} case as a {sn} incident.
+You can push {siem-soln} cases to third-party systems, currently {sn} and Jira.
+This requires creating a connector using the {kib} Actions API, which stores
+the information required to push cases to external systems. For {sn}, cases are
+send via {sn}'s
+https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API]. For Jira, the
+https://developer.atlassian.com/cloud/jira/platform/rest/v2/[REST API v2] is
+used.
 
-To send cases to {sn} and keep the {siem-ui} updated:
+To send cases to external systems and keep the {siem-ui} updated:
 
 . <<register-connector>>: Create the connector.
 . <<assign-connector>> or <<case-api-update-connector>>: If required, configure
 connector options.
-. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to {sn}. You
-must store the returned data as it is required for updating the
-`external_service` object in the {siem-soln} case.
+. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to the
+external system. You must store the returned data as it is required for
+updating the `external_service` object in the {siem-soln} case.
 . [[update-case-sn-data]]<<cases-api-associate-sn-incident>>: Update the
-{siem-soln} case with the associated {sn} incident data returned in
+{siem-soln} case with the associated data returned in
 <<sn-returned-data, step 3>>.
 . Repeat <<sn-returned-data, step 3>> and <<update-case-sn-data, step 4>> each
 time you open or update a case.
 
-
-
 [[register-connector]]
 ==== Create connector
 
-Creates a {sn} connector, which can then be used to open {sn} incidents from
-{siem-soln} cases.
+Creates a connector, which can then be used to open and update case in external
+systems.
 
 ===== Request URL
 
@@ -41,14 +41,25 @@ A JSON object with these fields:
 |==============================================
 |Name |Type |Description |Required
 
-|`actionTypeId` |String |Must be: `.servicenow`. |Yes
+|`actionTypeId` |String a|Must be one of these:
+
+* `.servicenow`: Send cases to {sn}
+* `.jira`: Send cases to Jira
+|Yes
 |`config` |<<config-schema, config>> |Object containing the action's
 configuration. |Yes
-|`secrets` |Object a|Object containing the {sn} account credentials used
-to create and update incidents:
+|`secrets` |Object a|Object containing the third-party account information used
+to create and update incidents.
+
+For {sn} connectors:
 
 * `username` (string): The account username.
 * `password` (string): The account password.
+
+For Jira connectors:
+
+* `email` (string): The account email.
+* `apiToken` (string): API authentication token.
 
 |Yes
 
@@ -62,21 +73,25 @@ to create and update incidents:
 |==============================================
 |Name |Type |Description |Required
 
-|`casesConfiguration` |Object a|Contains a `mapping` array, which determines how {siem-soln} case fields are mapped to {sn} incident fields:
+|`casesConfiguration` |Object a|Contains a `mapping` array, which determines how {siem-soln} case fields are mapped to external system fields:
 
 * `source` (string): The name of the {siem-soln} case field, which can be 
 `title`, `description`, or `comments`.
-* `target` (string): The name of the mapped {sn} incident field. For example: `short_description`, `description`, and `comments`.
+* `target` (string): The name of the mapped exterals field. For example: `short_description` ({sn}), `title` (Jira), `description`, and `comments`.
 * `actionType` (string): Determines whether {siem-soln} case updates overwrite 
-or append to the mapped {sn} incident fields. Valid values are `overwrite` and
+or append to the mapped incident fields. Valid values are `overwrite` and
 `append`.
 
 |Yes
 
-|`apiUrl` |String |URL of the {sn} instance. |Yes
+|`apiUrl` |String |URL of the third-party instance. |Yes
+|`projectKey` |String |Jira project key. |For Jira connectors, yes. For {sn}
+connectors, no.
 |==============================================
 
-===== Example request
+===== Example requests
+
+Creates a {sn} connector:
 
 [source,sh]
 --------------------------------------------------
@@ -126,6 +141,47 @@ the {sn} `description` field is overwritten.
 When a {siem-soln} `comments` field is updated and sent to {sn}, the updated
 text is appended to the {sn} `comments` field.
 
+Creates a Jira connector:
+
+[source,sh]
+--------------------------------------------------
+POST api/action
+{
+  "actionTypeId": ".jira",
+  "config": {
+    "casesConfiguration": {
+      "mapping": [
+        {
+          "source": "title", <1>
+          "target": "summary",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "actionType": "overwrite"
+        },
+        {
+          "source": "comments",
+          "target": "comments",
+          "actionType": "append"
+        }
+      ]
+    },
+    "apiUrl": "https://hms.atlassian.net",
+    "projectKey": "HMS"
+  },
+  "secrets": {
+    "email": "admin@hms.gov.co.uk",
+    "apiToken": "2REegzCVGoMJaHafJou83372"
+  },
+  "name": "Jira"
+}
+--------------------------------------------------
+// KIBANA
+
+<1> {siem-soln} case `title` fields are mapped to Jira `summary` fields.
+
 ===== Response code
 
 `200`:: 
@@ -135,7 +191,9 @@ text is appended to the {sn} `comments` field.
 
 A JSON object with a connector `id` that is required to push cases to {sn}.
 
-===== Example response
+===== Example responses
+
+{sn} connector:
 
 [source,json]
 --------------------------------------------------
@@ -164,7 +222,43 @@ A JSON object with a connector `id` that is required to push cases to {sn}.
       ]
     },
     "apiUrl": "https://dev78437.service-now.com"
-  }
+  },
+  "isPreconfigured": false
+}
+--------------------------------------------------
+
+Jira connector:
+
+[source,json]
+--------------------------------------------------
+{
+  "id": "05da469f-1fde-4058-99a3-91e4807e2de8",
+  "actionTypeId": ".jira",
+  "name": "Jira",
+  "config": {
+      "casesConfiguration": {
+          "mapping": [
+              {
+                  "source": "title",
+                  "target": "summary",
+                  "actionType": "overwrite"
+              },
+              {
+                  "source": "description",
+                  "target": "description",
+                  "actionType": "overwrite"
+              },
+              {
+                  "source": "comments",
+                  "target": "comments",
+                  "actionType": "append"
+              }
+          ]
+      },
+      "apiUrl": "https://hms.atlassian.net",
+      "projectKey": "HMS"
+  },
+  "isPreconfigured": false
 }
 --------------------------------------------------
 

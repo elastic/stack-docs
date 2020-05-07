@@ -7,7 +7,7 @@ cycle, it goes through four main phases:
 
 * reindexing,
 * loading data,
-* analyzing (the sub-phases of this phase are depends on the type of 
+* analyzing,
   {dfanalytics} that you run),
 * writing results.
 
@@ -50,7 +50,7 @@ In this phase, the job generates a {ml} model for analyzing the dataset.
 [discrete]
 ===== {oldetection-cap}
 
-{oldetection-cap} has one sub-phase during analyzing that called 
+{oldetection-cap} jobs have a single analysis phase called `computing_outliers`, in which they identify outliers in the data. 
 `computing_outliers`. This is the phase when the {oldetection} analysis 
 identifies outliers in the loaded data.
 
@@ -58,10 +58,10 @@ identifies outliers in the loaded data.
 [discrete]
 ===== {regression-cap} and {classanalysis}
 
-{regression-cap} and {classification} share the same set of sub-phases. There 
+{regression-cap} and {classification} jobs have four analysis phases:
 are four of them:
 
-* `feature_selection`: In this phase, the process iterates through the available 
+. `feature_selection`: Identifies which fields are significant for the analysis 
   field set to define which fields are significant for the analysis.
 * `coarse_parameter_search`: This is the first part of 
   <<hyperparameters,hyperparameter optimization>> in which the process finds 

@@ -45,13 +45,10 @@ in which they identify outliers in the data.
 {regression-cap} and {classification} jobs have four analysis phases:
 
 . `feature_selection`: Identifies which fields are significant for the analysis. 
-. `coarse_parameter_search`: Identifies initial values for undefined hyperparameters. 
-  <<hyperparameters,hyperparameter optimization>> in which the process finds 
-  suitable values for the hyperparameters that are required to run the analysis. 
-. `fine_tuning_parameters`: Identifies final values for undefined hyperparameters. See <<hyperparameter optimization>>.
-  down to a certain range in the `coarse_parameter_search` phase, the parameters 
-  are further refined to an exact value in this second part of hyperparameter 
-  optimization.
+. `coarse_parameter_search`: Identifies initial values for undefined 
+  hyperparameters.
+. `fine_tuning_parameters`: Identifies final values for undefined 
+  hyperparameters. See <<hyperparameter optimization>>.
 . `final_training`: Trains the {ml} model.
 
 

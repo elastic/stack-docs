@@ -8,11 +8,11 @@ Looking for an {stack} ("ELK") guide that shows how to quickly install and confi
 * <<install-beats,{beats}>>
 * <<install-logstash,{ls} (optional)>>
 
-After completing the installation process, learn how to implement a system monitoring solution that uses 
+After completing the installation process, learn how to implement a system monitoring solution that uses
 {metricbeat} to collect server metrics and ship the data to {es}, search and visualize the data by using {kib}, and incorporate {ls} for additional parsing.
 
 IMPORTANT: Implementing security is a critical step in configuring the {stack}.
-This guide skips security configuration to quickly install a sample installation. Before sending sensitive data across the network, 
+This guide skips security configuration to quickly install a sample installation. Before sending sensitive data across the network,
 {ref}/elasticsearch-security.html[secure the {stack}] and enable
 {ref}/encrypting-communications.html[encrypted communications].
 
@@ -245,8 +245,9 @@ and maps.
 
 [TIP]
 ==========
-If you are running our hosted Elasticsearch Service on https://www.elastic.co/cloud[Elastic Cloud],
-then {cloud}/ec-enable-kibana.html[Kibana can be enabled] with the flick of a switch.
+Running our hosted Elasticsearch Service on https://www.elastic.co/cloud[Elastic Cloud]?
+Kibana is enabled automatically in most templates,
+or manually with the {cloud}/ec-enable-kibana.html[flick of a switch].
 ==========
 
 We recommend that you install {kib} on the same server as {es},

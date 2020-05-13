@@ -1,0 +1,63 @@
+= Elastic Stack documentation
+
+:beats-repo-dir:  {docdir}/../../../../beats/libbeat/docs
+:es-repo-dir:     {docdir}/../../../../elasticsearch/docs
+:hadoop-repo-dir: {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
+:kib-repo-dir:    {docdir}/../../../../kibana/docs
+:ls-repo-dir:     {docdir}/../../../../logstash/docs
+:stack-repo-dir:  {docdir}
+
+include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
+include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
+
+= What's new in the Stack
+[partintro]
+--
+TBD
+
+:toc:
+--
+
+//Explicitly renaming due to unclear titles otherwise.
+
+[[beats-highlights]]
+== Beats release highlights
+
+include::{beats-repo-dir}/release-notes/highlights/highlights.asciidoc[lines=4..5]
+
+[[elasticsearch-highlights]]
+== {es} release highlights
+
+include::{es-repo-dir}/reference/release-notes/highlights.asciidoc[lines=6..7]
+
+[[kibana-highlights]]
+== {kib} release highlights
+
+include::{kib-repo-dir}/release-notes/highlights.asciidoc[lines=6..7]
+
+
+
+
+["appendix",role="exclude",id="redirects"]
+= Missing links
+
+The following pages are to work-around content that hasn't been included yet.
+
+[role="exclude",id="breaking-changes"]
+=== Breaking changes
+
+See {kibana-ref}/breaking-changes.html[{kib} breaking changes] or
+{ref}/breaking-changes.html[{es} breaking changes] or
+{beats-ref}/breaking-changes.html[Beats breaking changes].
+
+[role="exclude",id="release-notes"]
+=== Release notes
+
+See {kibana-ref}/release-notes.html[{kib} release notes] or 
+{beats-ref}/release-notes.html[Beats release notes].
+
+[role="exclude",id="es-release-notes"]
+=== {es} release notes
+
+See {ref}/es-release-notes.html[{kib} release notes].
+

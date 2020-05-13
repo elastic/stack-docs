@@ -132,7 +132,7 @@ data set. For more information about the evaluation metrics, see
 [[regression-lossfunction]]
 ==== Loss functions for {regression} analyses
 
-Loss function is for measuring how well a given {ml} model fits to the specific 
+Loss function is for measuring how well a given {ml} model fits the specific 
 data set. The loss function boils down all the different aspects of the model to 
 a single number. This value makes it possible to compare the performance of the 
 various models. The bigger the difference between the prediction and the ground 
@@ -147,8 +147,8 @@ In the {stack}, there are three different types of loss function:
 * mean squared logarithmic error (`msle`; a variation of `mse`)
 * https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss (`huber`)]
 
-The different types of loss function calculate the model error differently. It 
-means that the loss function that is appropriate for your case highly depends on 
+The various types of loss function calculate the model error differently. It 
+means that which loss function is appropriate for your case highly depends on 
 the value distribution in your data set, the problem that you want to model, the 
 number of outliers in the data, and so on.
 
@@ -157,7 +157,7 @@ You can determine which loss function to be used during {reganalysis} though the
 squared error (`mse`). If you choose `msle` or `huber`, you can also set up a 
 parameter for the loss function which is `t` (defaults to `1.0`) for `msle` and 
 `ẟ` (defaults to `1.0`) for `huber`. With these offset parameters, you can 
-further refine the behavor of the chosen functions. There is no parameter to 
+further refine the behavior of the chosen functions. There is no parameter to 
 manually set up for `mse`.
 
 TIP: Unless you fully understand the purpose of the different loss functions, it 

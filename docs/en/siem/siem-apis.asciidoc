@@ -20,19 +20,19 @@ For calls to the `Default` {kib} space, API endpoints are as follows:
 
 `<kibana host>:<port>/api/<endpoint>`
 
-If you are making calls to a {kib} space *other than* the `Default` space, the 
-space identifier is part of the endpoint's URL. For example:
-
-`<kibana host>:<port>/s/<space URL>/api/<endpoint>`
-
 Where:
 
 * `<kibana host>` is the host name of your {kib} instance.
 * `<port>` is port number of your {kib} instance.
-* `<space URL>` is the URL identifier for the {kib} space when the `Default`
-space is not being called.
 * `<endpoint>` is the API endpoint, such as `detection_engine/rules` or
 `cases/configure`.
+
+If you are making calls to a {kib} space *other than* the `Default` space, the 
+space identifier is part of the endpoint's URL:
+
+`<kibana host>:<port>/s/<space URL>/api/<endpoint>`
+
+Where `<space URL>` is the URL identifier for the {kib} space.
 
 NOTE: You can find space URL identifiers on
 {kibana-ref}/xpack-spaces.html[*Edit space*] pages (Management -> Spaces -> 

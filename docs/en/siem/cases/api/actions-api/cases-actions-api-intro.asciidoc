@@ -6,16 +6,16 @@ You can use the Actions API to open and update cases in external ticketing
 systems. This requires creating a connector, which stores the information
 required to interface with the external system. 
 
-To send cases to {sn} and keep the {siem-ui} updated:
+To send cases to an external system and keep the {siem-ui} updated:
 
 . <<register-connector>>: Create the connector (Actions API).
 . <<assign-connector>> or <<case-api-update-connector>>: If required, configure
 connector options (Cases API).
-. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to {sn}
-(Actions API). You must store the returned data as it is required for updating
-the `external_service` object in the {siem-soln} case.
+. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to an
+external system (Actions API). You must store the returned data as it is
+required for updating the the {siem-soln} case.
 . [[update-case-sn-data]]<<cases-api-associate-sn-incident>>: Update the
-{siem-soln} case with the associated {sn} incident data returned in
+{siem-soln} case with the associated external system data returned in
 <<sn-returned-data, step 3>> (Cases API).
 . Repeat <<sn-returned-data, step 3>> and <<update-case-sn-data, step 4>> each
 time you open or update a case.

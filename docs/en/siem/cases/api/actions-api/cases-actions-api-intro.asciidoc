@@ -1,5 +1,8 @@
-[[cases-actions-api-connectors]]
-=== Configure and send cases to external interfaces
+[[actions-api-overview]]
+[role="xpack"]
+== Actions API (for pushing cases to external systems)
+
+beta[]
 
 You can push {siem-soln} cases to third-party systems, currently {sn} and Jira.
 This requires creating a connector using the {kib} Actions API, which stores
@@ -8,31 +11,31 @@ are send via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madr
 For Jira, the https://developer.atlassian.com/cloud/jira/platform/rest/v2/[REST API v2]
 is used.
 
-To send cases to external systems and keep the {siem-ui} updated:
+To send cases to an external system and keep the {siem-ui} updated:
 
-. <<register-connector>>: Create the connector.
+. <<register-connector>>: Create the connector (Actions API).
 . <<assign-connector>> or <<case-api-update-connector>>: If required, configure
-connector options.
-. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to the
-external system. You must store the returned data as it is required for
-updating the `external_service` object in the {siem-soln} case.
+connector options (Cases API).
+. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to an
+external system (Actions API). You must store the returned data as it is
+required for updating the the {siem-soln} case.
 . [[update-case-sn-data]]<<cases-api-associate-sn-incident>>: Update the
-{siem-soln} case with the associated data returned in
-<<sn-returned-data, step 3>>.
+{siem-soln} case with the associated external system data returned in
+<<sn-returned-data, step 3>> (Cases API).
 . Repeat <<sn-returned-data, step 3>> and <<update-case-sn-data, step 4>> each
 time you open or update a case.
 
 [[register-connector]]
-==== Create connector
+=== Create connector
 
 Creates a connector, which can then be used to open and update cases in external
 systems.
 
-===== Request URL
+==== Request URL
 
 `POST <kibana host>:<port>/api/action`
 
-===== Request body
+==== Request body
 
 A JSON object with these fields:
 
@@ -187,7 +190,7 @@ POST api/action
 `200`:: 
    Indicates a successful call.
    
-===== Response payload
+==== Response payload
 
 A JSON object with a connector `id` that is required to push cases to {sn}.
 
@@ -263,11 +266,11 @@ Jira connector:
 --------------------------------------------------
 
 [[update-connector]]
-==== Update connector
+=== Update connector
 
 Updates a connector.
 
-===== Request URL
+==== Request URL
 
 `PUT <kibana host>:<port>/api/action/<connector ID>`
 
@@ -276,7 +279,7 @@ Updates a connector.
 The URL must include the `connector ID` of the connector you are updating.
 Call <<cases-api-find-connectors>> to retrieve connector IDs.
 
-===== Request body
+==== Request body
 
 A JSON object with the fields you want to update:
 
@@ -367,12 +370,12 @@ PUT api/action/61787f53-4eee-4741-8df6-8fe84fa616f7
 --------------------------------------------------
 // KIBANA
 
-===== Response code
+==== Response code
 
 `200`:: 
    Indicates a successful call.
    
-===== Response payload
+==== Response payload
 
 The updated JSON connector object.
 
@@ -410,16 +413,16 @@ The updated JSON connector object.
 --------------------------------------------------
 
 [[cases-actions-api-execute]]
-==== Create or update an external incident
+=== Create or update an external incident
 
 Creates a new or updates an existing external incident from a {siem-soln} case.
 
-NOTE: You can only send cases to external system after you have
+NOTE: You can only send cases to external systems after you have
 <<register-connector, created>> a connector. After you have sent the case to
 an external system, you must call <<cases-api-associate-sn-incident>> to update
-the {siem-soln} case with the relevant external incident details.
+the {siem-soln} case with the returned external incident details.
 
-===== Request URL
+==== Request URL
 
 `POST <kibana host>:<port>/api/action/<connector ID>/_execute`
 
@@ -429,7 +432,7 @@ The URL must include the connector ID. Call <<cases-get-connector>> to retrieve
 the currently used connector ID, or <<cases-api-find-connectors>> to retrieve
 all connectors IDs.
 
-===== Request body
+==== Request body
 
 A JSON object with these fields:
 
@@ -569,12 +572,12 @@ POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
 --------------------------------------------------
 // KIBANA
 
-===== Response code
+==== Response code
 
 `200`:: 
    Indicates a successful call.
    
-===== Response payload
+==== Response payload
 
 A JSON object with the ID and the URL of the external incident.
 

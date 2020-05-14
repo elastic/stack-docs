@@ -435,6 +435,9 @@ that contains the IP address to use for the geographical lookup, and
 `"ignore_missing": true` configures the pipeline to continue processing when
 it encounters an event that doesn't have the specified field.
 
+TIP: An example ingest pipeline that uses the GeoLite2-ASN.mmdb database to add
+autonomous system number (ASN) fields can be found https://github.com/elastic/examples/blob/master/Security%20Analytics/SIEM-examples/Packetbeat/geoip-info.json[here]. 
+
 . In your Beats configuration files, add the pipeline to the
 `output.elasticsearch`tag:
 +

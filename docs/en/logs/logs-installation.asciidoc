@@ -7,10 +7,10 @@ To set up logs monitoring, you need:
 * An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic license
 // Add a link to what constitutes a basic license. And is this any different for the cloud?
 
-* Appropriate {beats} shippers (version 6.5 or later) installed and enabled on each system you want to
+* Appropriate {beats} shippers (version 6.5 or later) installed and enabled on each of the systems you want to
 monitor
 
-If your data uses nonstandard fields, you may also need to modify some default configuration settings.
+If your data uses nonstandard fields, you may need to modify some of the default configuration settings.
 
 [float]
 === Get Elasticsearch and Kibana
@@ -40,12 +40,12 @@ You can install and configure {beats} shippers for most kinds of data directly f
 ==== Install {beats} from {kib}
 
 To install {beats} from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
-In the *Add Data to Kibana* section, click *Add log data*.
+In the *Observability* section displayed on the home page of {kib}, click *Add log data*.
 Now follow the instructions for the type of data you want to collect.
-The instructions walk you through the steps required to download, install and configure the appropriate Beats modules for your data.
+The instructions include the steps required to download, install, and configure the appropriate Beats modules for your data.
 
 [role="screenshot"]
-image::images/add-data.png[]
+image::images/add-data.png[Add log data]
 
 [float]
 ==== Install {beats} yourself
@@ -81,12 +81,12 @@ To collect logs from Kubernetes pods, enable:
 === Configure your data sources
 
 If your logs data has nonstandard fields, you may need to modify some configuration settings in {kib}, such as the index pattern used to query the data, and the timestamp field used for sorting.
-You can use the {kibana-ref}/xpack-logs-configuring.html[*Settings* tab in the {logs-app}] to modify some common settings.
+To modify configuration settings, use the {kibana-ref}/xpack-logs-configuring.html[*Settings* tab in the {logs-app}].
 Alternatively, see {kibana-ref}/logs-ui-settings-kb.html[{logs} settings] for a complete list of logs configuration settings.
 
 [float]
 === More about container monitoring
 
 If you're monitoring Docker containers or Kubernetes pods, you can use autodiscovery to automatically change the configuration settings in response to changes in your containers.
-This ensures you don't stop collecting data when your container configuration changes.
+Autodiscovery ensures that even when your container configuration changes, data is still collected.
 To learn how to do this, see {filebeat-ref}/configuration-autodiscover.html[{filebeat} autodiscover configuration].

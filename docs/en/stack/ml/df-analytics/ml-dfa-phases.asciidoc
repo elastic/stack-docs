@@ -13,7 +13,6 @@ cycle, it goes through four main phases:
 Let's take a look at the phases one-by-one.
 
 
-[discrete]
 ==== Reindexing
 
 During the reindexing phase the documents from the source index or indices are 
@@ -25,7 +24,6 @@ Once the destination index is built, the {dfanalytics-job} task calls the {es}
 {ref}/docs-reindex.html[Reindex API] to launch the reindexing task.
 
 
-[discrete]
 ==== Loading data
 
 After the reindexing is finished, the job fetches the needed data from the 
@@ -33,7 +31,6 @@ destination index. It converts the data into the format that the analysis
 process expects, then sends it to the analysis process.
 
 
-[discrete]
 ==== Analyzing
 
 In this phase, the job generates a {ml} model for analyzing the data. The 
@@ -52,7 +49,6 @@ in which they identify outliers in the data.
 . `final_training`: Trains the {ml} model.
 
 
-[discrete]
 ==== Writing results
 
 After the loaded data is analyzed, the analysis process sends back the results. 

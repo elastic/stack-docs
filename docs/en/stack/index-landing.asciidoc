@@ -1,12 +1,16 @@
 = Elastic Stack documentation
 
-:beats-repo-dir:    {docdir}/../../../../beats/libbeat/docs
-:es-repo-dir:       {docdir}/../../../../elasticsearch/docs
-:xes-repo-dir:      {docdir}/../../../../elasticsearch/x-pack/docs/{lang}
-:hadoop-repo-dir:   {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
-:kib-repo-dir:      {docdir}/../../../../kibana/docs
-:ls-repo-dir:       {docdir}/../../../../logstash/docs
-:stack-repo-dir:    {docdir}
+:beats-repo-dir:      {docdir}/../../../../beats/libbeat/docs
+:es-repo-dir:         {docdir}/../../../../elasticsearch/docs
+:xes-repo-dir:        {docdir}/../../../../elasticsearch/x-pack/docs/{lang}
+:hadoop-repo-dir:     {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
+:kib-repo-dir:        {docdir}/../../../../kibana/docs
+:ls-repo-dir:         {docdir}/../../../../logstash/docs
+:stack-repo-dir:      {docdir}
+:cloud-terms:         true
+:elasticsearch-terms: true
+:logstash-terms:      true
+:xpack-terms:         true
 
 include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
 include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
@@ -76,7 +80,7 @@ TBD
 TBD
 
 
-include::{stack-docs}/../../install-upgrade/upgrading-stack.asciidoc[]
+include::{stack-repo-dir}/../install-upgrade/upgrading-stack.asciidoc[]
 
 [[secure]]
 == Secure the stack
@@ -113,7 +117,6 @@ include::{es-repo-dir}/reference/monitoring/overview.asciidoc[lines=8..-1]
 
 TBD
 
-////
 = Analyst Guides
 
 [partintro]
@@ -121,18 +124,60 @@ TBD
 TBD
 --
 
-Get Started: Discover > Visualize > Build a dashboard
-Add data
-Explore your data
- Visualize your data
- Build dashboards
-   Create presentations with Canvas
- Create Maps
- Graph data connections
- Generate reports
-Transform your data
-Analyze your data
-Manage Kibana     
+[[add-data]]
+== Add data
+
+TBD
+
+[[explore-data]]
+== Explore your data
+
+TBD
+
+[[visualize-data]]
+== Visualize your data
+
+TBD
+
+[[dashboards]]
+== Build dashboards
+
+TBD
+
+[[canvas]]
+== Create presentations with Canvas
+
+TBD
+
+[[maps]]
+== Create maps
+
+TBD
+
+[[graph-data]]
+== Graph data connections
+
+TBD
+
+[[reports]]
+== Generate reports
+
+TBD
+
+[[transform-data]]
+== Transform your data
+
+TBD
+
+[[analyze-data]]
+== Analyze your data
+
+TBD
+
+[[manage-kibana]]
+== Manage Kibana
+
+TBD
 
 = Developer Guides
 
@@ -141,13 +186,40 @@ Manage Kibana
 TBD
 --
 
-Interact with Elasticsearch {REST,Kibana, clients}
-Store {including Logstash, Beats}
-Search 
-Analyze 
-Profile search queries
-  Debug grok patterns
-Script
+[[interact]]
+== Interact with Elasticsearch
+
+TBD
+
+[[store]]
+== Store
+
+TBD
+
+[[search]]
+== Search 
+
+TBD
+
+[[analyze]]
+== Analyze 
+
+TBD
+
+[[profile]]
+== Profile search queries
+
+TBD
+
+[[grok]]
+== Debug grok patterns
+
+TBD
+
+[[script]]
+== Script
+
+TBD
 
 = Contributor/Plugin Developer Guides
 
@@ -156,14 +228,41 @@ Script
 TBD
 --
 
-Core development
-    	Plugin development
-    	Develop visualizations
-    	Add data guide
-    	Security
-    	Pull request review guidelines
-    	Interpreting CI failures
-////
+[[core-dev]]
+== Core development
+
+TBD
+
+[[plugin-dev]]
+== Plugin development
+
+TBD
+
+[[visualizations]]
+== Develop visualizations
+
+TBD
+
+[[add-dev-data]]
+== Add data
+
+TBD
+
+[[dev-security]]
+== Security
+
+TBD
+
+[[prs]]
+== Pull request review guidelines
+
+TBD
+
+[[ci-failures]]
+== Interpreting CI failures
+
+TBD
+
 = Concepts
 
 [partintro]
@@ -207,17 +306,18 @@ include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1]
 TBD
 --
 
-include::{xes-repo-dir}/security/authorization/privileges.asciidoc[leveloffset=-1]
+:es-repo-dir:  {docdir}/../../../../elasticsearch/docs/reference
 
-//include::{stack-docs}/../../glossary/glossary.asciidoc[]
+include::{stack-repo-dir}/../glossary/glossary.asciidoc[]
+
+:es-repo-dir:         {docdir}/../../../../elasticsearch/docs
+include::{xes-repo-dir}/security/authorization/privileges.asciidoc[leveloffset=-1]
 
 ////
 Elasticsearch APIs
 Elasticsearch settings
 Kibana APIs
 Elasticsearch plugins & integrations
-Logstash Versioned Plugin Reference?
-Other beats reference (i.e. if they’re not included in Observability?)
 Machine learning functions
 Machine learning modules
 Machine learning limitations
@@ -227,5 +327,4 @@ ECS: Elastic common schema
 Release docs (notes, breaking changes, limitations)
 Accessibility
 ////
-
 include::redirects-landing.asciidoc[]

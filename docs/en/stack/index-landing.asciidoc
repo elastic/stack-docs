@@ -1,11 +1,12 @@
 = Elastic Stack documentation
 
-:beats-repo-dir:  {docdir}/../../../../beats/libbeat/docs
-:es-repo-dir:     {docdir}/../../../../elasticsearch/docs
-:hadoop-repo-dir: {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
-:kib-repo-dir:    {docdir}/../../../../kibana/docs
-:ls-repo-dir:     {docdir}/../../../../logstash/docs
-:stack-repo-dir:  {docdir}
+:beats-repo-dir:    {docdir}/../../../../beats/libbeat/docs
+:es-repo-dir:       {docdir}/../../../../elasticsearch/docs
+:xes-repo-dir:      {docdir}/../../../../elasticsearch/x-pack/docs/{lang}
+:hadoop-repo-dir:   {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
+:kib-repo-dir:      {docdir}/../../../../kibana/docs
+:ls-repo-dir:       {docdir}/../../../../logstash/docs
+:stack-repo-dir:    {docdir}
 
 include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
 include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
@@ -77,15 +78,42 @@ TBD
 
 include::{stack-docs}/../../install-upgrade/upgrading-stack.asciidoc[]
 
-////
-Secure the stack 
-Alert and take action
-Manage clusters
-	Manage indices
-	Manage licenses/subscriptions
-	Monitor the stack
-Troubleshoot the stack
+[[secure]]
+== Secure the stack
 
+include::{xes-repo-dir}/security/index.asciidoc[lines=6..9]
+
+[[alert]]
+== Alert and take action
+
+TBD
+
+[[manage-cluster]]
+== Manage clusters
+
+TBD
+
+[[manage-indices]]
+== Manage indices
+
+TBD
+
+[[managing-licenses]]
+== Manage subscriptions
+
+include::{kib-repo-dir}/management/managing-licenses.asciidoc[lines=4..-1]
+
+[[monitor]]
+== Monitor the stack
+
+include::{es-repo-dir}/reference/monitoring/overview.asciidoc[lines=8..-1]
+
+[[troubleshoot]]
+== Troubleshoot the stack
+
+TBD
+
+////
 = Analyst Guides
 
 [partintro]
@@ -135,20 +163,43 @@ Core development
     	Security
     	Pull request review guidelines
     	Interpreting CI failures
-
+////
 = Concepts
-
-Machine learning - anomaly detection
-Machine learning - data frame analytics
-Security     	
-Transforms
 
 [partintro]
 --
 TBD
 --
-////
-////
+
+[[anomaly-detection]]
+== Machine learning - anomaly detection
+
+include::ml/anomaly-detection/analyzing.asciidoc[]
+
+include::ml/anomaly-detection/forecasting.asciidoc[]
+
+include::ml/anomaly-detection/algorithms.asciidoc[]
+
+include::ml/anomaly-detection/jobs.asciidoc[]
+
+include::ml/anomaly-detection/buckets.asciidoc[]
+
+include::ml/anomaly-detection/datafeeds.asciidoc[]
+
+include::ml/anomaly-detection/influencers.asciidoc[]
+
+[data-frame-analytics]
+== Machine learning - data frame analytics
+
+TBD
+
+[[security]]
+== Security
+
+include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53]
+
+include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1]
+
 = Reference
 
 [partintro]
@@ -156,8 +207,10 @@ TBD
 TBD
 --
 
-include::{stack-docs}/../../glossary/glossary.asciidoc[]
-////
+include::{xes-repo-dir}/security/authorization/privileges.asciidoc[leveloffset=-1]
+
+//include::{stack-docs}/../../glossary/glossary.asciidoc[]
+
 ////
 Elasticsearch APIs
 Elasticsearch settings
@@ -175,31 +228,4 @@ Release docs (notes, breaking changes, limitations)
 Accessibility
 ////
 
-["appendix",role="exclude",id="redirects"]
-= Missing links
-
-The following pages are to work-around content that hasn't been included yet.
-
-[role="exclude",id="breaking-changes"]
-=== Breaking changes
-
-See {kibana-ref}/breaking-changes.html[{kib} breaking changes] or
-{ref}/breaking-changes.html[{es} breaking changes] or
-{beats-ref}/breaking-changes.html[Beats breaking changes].
-
-[role="exclude",id="release-notes"]
-=== Release notes
-
-See {kibana-ref}/release-notes.html[{kib} release notes] or 
-{beats-ref}/release-notes.html[Beats release notes].
-
-[role="exclude",id="es-release-notes"]
-=== {es} release notes
-
-See {ref}/es-release-notes.html[{kib} release notes].
-
-[role="exclude",id="elastic-stack-breaking-changes"]
-=== Elastic Stack breaking changes
-
-See {stack-ref}/elastic-stack-breaking-changes.html[Breaking changes].
-
+include::redirects-landing.asciidoc[]

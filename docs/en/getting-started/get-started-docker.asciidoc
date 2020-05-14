@@ -141,13 +141,13 @@ docker-compose -f elastic-docker-tls.yml up -d
 ----
 
 IMPORTANT: At this point, {kib} cannot connect to the {es} cluster.
-You must generate a password for the built-in `kibana` user, update the `ELASTICSEARCH_PASSWORD` 
+You must generate a password for the built-in `kibana_system` user, update the `ELASTICSEARCH_PASSWORD` 
 in the compose file, and restart to enable {kib} to communicate with the secured cluster. 
 
 --
 
 . Run the `elasticsearch-setup-passwords` tool to generate passwords for all built-in users, 
-including the `kibana` user. If you don't use PowerShell on Windows, remove the trailing `\`characters
+including the `kibana_system` user. If you don't use PowerShell on Windows, remove the trailing `\`characters
 and join the lines before running this command.
 +
 --
@@ -162,13 +162,13 @@ auto --batch \
 ----
 
 IMPORTANT: Make a note of the generated passwords. 
-You must configure the `kibana` user password in the compose file to enable {kib} to connect to {es}, 
+You must configure the `kibana_system` user password in the compose file to enable {kib} to connect to {es}, 
 and you'll need the password for the `elastic` superuser to 
 log in to {kib} and submit requests to {es}.
 --
 
 . Set `ELASTICSEARCH_PASSWORD` in the `elastic-docker-tls.yml` compose file to the password 
-generated for the `kibana` user.
+generated for the `kibana_system` user.
 +
 --
 ifeval::["{release-state}"=="unreleased"]
@@ -190,7 +190,7 @@ ifeval::["{release-state}"!="unreleased"]
       SERVERNAME: localhost
       ELASTICSEARCH_URL: https://es01:9200
       ELASTICSEARCH_HOSTS: https://es01:9200
-      ELASTICSEARCH_USERNAME: kibana
+      ELASTICSEARCH_USERNAME: kibana_system
       **ELASTICSEARCH_PASSWORD: CHANGEME**
       ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: $CERTS_DIR/ca/ca.crt
       SERVER_SSL_ENABLED: "true"

@@ -8,7 +8,32 @@ environment, and you can use the interactive UI to drill down into areas of
 interest.
 
 The *{kibana-ref}/kuery-query.html[{kib} Query Language (KQL)]* bar is available
-throughout the {siem-app} for searching and filtering.
+throughout the {siem-app} for searching and filtering. You can also select
+areas of interest in time-based histograms, which updates the timepicker.
+
+[role="screenshot"]
+image::images/siem-click-swipe.png[]
+
+TIP: All {siem-soln} histograms, graphs, and tables contain an **Inspect**
+button, so you can examine the {es} queries used to retrieve data throughout
+the app.
+
+Chart legends and many grid fields are interactive. Fields that can be dragged
+to <<timelines-ui, Timeline>> are indicated with two dotted vertical lines, and
+are highlighted when you hover over a grid's row:
+
+[role="screenshot"]
+image::images/siem-field-highlight.png[]
+
+When a popup menu appears while hovering over a field, you can perform these
+actions:
+
+* Filter for value: adds the field to the filter bar
+* Filter out value: adds the field with a `NOT` operator to the filter bar
+* Add to Timeline investigation: adds the field to Timeline
+* Show top <field name>: displays a histogram of the top field values
+* Copy to clipboard: copies the field and its value to your clipboard, using
+KQL syntax
 
 NOTE: The default index glob patterns defined for {siem-soln} events are
 `endgame-*`, `auditbeat-*`, `winlogbeat-*`, `filebeat-*`, `packetbeat-*`,
@@ -22,9 +47,6 @@ Management -> Advanced Settings -> `siem:defaultIndex`.
 
 The Overview page provides a high-level view of security events available
 for analysis, and can help surface problems with data ingestion.
-
-TIP: All histograms and graphs on the overview page contain an **Inspect** button so users may better understand that data surfaced through the {siem-app}.
-
 
 [discrete]
 [[search-overview]]
@@ -214,12 +236,13 @@ image::images/cases-ui-home.png[]
 [[timelines-ui]]
 == Timelines
 
-Use timelines as your workspace for alert investigations or threat hunting.
-Data from multiple indices can be added to a timeline, which enables investigating
-complex threats, such as lateral movement of malware across hosts in your network.
+Use Timeline as your workspace for alert investigations or threat hunting.
+Data from multiple indices can be added to a timeline, which enables
+investigating complex threats, such as lateral movement of malware across hosts
+in your network.
 
-You can drag objects of interest into the Timeline Event Viewer to create
-exactly the query filter you need to get to the bottom of an alert. You can drag
+You can drag objects of interest into Timeline to create exactly the query
+filter you need to get to the bottom of an alert. You can drag
 items from table widgets within Hosts and Network pages, or even from within
 Timeline itself.
 
@@ -233,7 +256,7 @@ image::images/timeline-ui.png[]
 
 Add notes for your own use and to communicate your workflow and findings to
 others. You can share a timeline, or pass it off to another person or team. You
-can link to timelines from a ticketing system.
+can also link to timelines from Cases and external ticketing systems.
 
 
 [discrete]
@@ -411,6 +434,9 @@ that contains the IP address to use for the geographical lookup, and
 `target_field` is the field that will hold the geographical information.
 `"ignore_missing": true` configures the pipeline to continue processing when
 it encounters an event that doesn't have the specified field.
++
+TIP: An example ingest pipeline that uses the GeoLite2-ASN.mmdb database to add
+autonomous system number (ASN) fields can be found https://github.com/elastic/examples/blob/master/Security%20Analytics/SIEM-examples/Packetbeat/geoip-info.json[here]. 
 
 . In your Beats configuration files, add the pipeline to the
 `output.elasticsearch`tag:

@@ -1,39 +1,36 @@
-[[cases-actions-api-connectors]]
-=== Configure and send cases to external interfaces
+[[actions-api-overview]]
+[role="xpack"]
+== Actions API (for pushing cases to external systems)
 
-You can create {sn} incidents from {siem-soln} cases. This requires creating
-a {sn} connector using the {kib} Actions API. Connectors store the information
-required to push cases to {sn} via {sn}'s https://developer.servicenow.com/dev.do#!/reference/api/madrid/rest/c_TableAPI[Table API], such as the {sn} URL,
-account credentials, and the field mappings required for representing a
-{siem-soln} case as a {sn} incident.
+You can use the Actions API to open and update cases in external ticketing
+systems. This requires creating a connector, which stores the information
+required to interface with the external system. 
 
 To send cases to {sn} and keep the {siem-ui} updated:
 
-. <<register-connector>>: Create the connector.
+. <<register-connector>>: Create the connector (Actions API).
 . <<assign-connector>> or <<case-api-update-connector>>: If required, configure
-connector options.
-. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to {sn}. You
-must store the returned data as it is required for updating the
-`external_service` object in the {siem-soln} case.
+connector options (Cases API).
+. [[sn-returned-data]]<<cases-actions-api-execute>>: Send the case to {sn}
+(Actions API). You must store the returned data as it is required for updating
+the `external_service` object in the {siem-soln} case.
 . [[update-case-sn-data]]<<cases-api-associate-sn-incident>>: Update the
 {siem-soln} case with the associated {sn} incident data returned in
-<<sn-returned-data, step 3>>.
+<<sn-returned-data, step 3>> (Cases API).
 . Repeat <<sn-returned-data, step 3>> and <<update-case-sn-data, step 4>> each
 time you open or update a case.
 
-
-
 [[register-connector]]
-==== Create connector
+=== Create connector
 
 Creates a {sn} connector, which can then be used to open {sn} incidents from
 {siem-soln} cases.
 
-===== Request URL
+==== Request URL
 
 `POST <kibana host>:<port>/api/action`
 
-===== Request body
+==== Request body
 
 A JSON object with these fields:
 
@@ -126,12 +123,12 @@ the {sn} `description` field is overwritten.
 When a {siem-soln} `comments` field is updated and sent to {sn}, the updated
 text is appended to the {sn} `comments` field.
 
-===== Response code
+==== Response code
 
 `200`:: 
    Indicates a successful call.
    
-===== Response payload
+==== Response payload
 
 A JSON object with a connector `id` that is required to push cases to {sn}.
 
@@ -169,11 +166,11 @@ A JSON object with a connector `id` that is required to push cases to {sn}.
 --------------------------------------------------
 
 [[update-connector]]
-==== Update connector
+=== Update connector
 
 Updates a {sn} connector.
 
-===== Request URL
+==== Request URL
 
 `PUT <kibana host>:<port>/api/action/<connector ID>`
 
@@ -182,7 +179,7 @@ Updates a {sn} connector.
 The URL must include the `connector ID` of the connector you are updating.
 Call <<cases-api-find-connectors>> to retrieve connector IDs.
 
-===== Request body
+==== Request body
 
 A JSON object with the fields you want to update:
 
@@ -264,12 +261,12 @@ PUT api/action/61787f53-4eee-4741-8df6-8fe84fa616f7
 --------------------------------------------------
 // KIBANA
 
-===== Response code
+==== Response code
 
 `200`:: 
    Indicates a successful call.
    
-===== Response payload
+==== Response payload
 
 The updated JSON connector object.
 
@@ -307,16 +304,16 @@ The updated JSON connector object.
 --------------------------------------------------
 
 [[cases-actions-api-execute]]
-==== Create or update an external incident
+=== Create or update an external incident
 
 Creates a new or updates an existing {sn} incident from a {siem-soln} case.
 
-NOTE: You can only send cases to external system after you have
+NOTE: You can only send cases to external systems after you have
 <<register-connector, created>> a connector. After you have sent the case to
 {sn}, you must call <<cases-api-associate-sn-incident>> to update the
-{siem-soln} case with the relevant {sn} incident details.
+{siem-soln} case with the returned {sn} incident details.
 
-===== Request URL
+==== Request URL
 
 `POST <kibana host>:<port>/api/action/<connector ID>/_execute`
 
@@ -326,7 +323,7 @@ The URL must include the ServiceNow connector ID. Call
 <<cases-get-connector>> to retrieve the currently used connector ID, or
 <<cases-api-find-connectors>> to retrieve all connectors IDs.
 
-===== Request body
+==== Request body
 
 A JSON object with these fields:
 
@@ -449,12 +446,12 @@ POST api/action/7349772f-421a-4de3-b8bb-2d9b22ccee30/_execute
 --------------------------------------------------
 // KIBANA
 
-===== Response code
+==== Response code
 
 `200`:: 
    Indicates a successful call.
    
-===== Response payload
+==== Response payload
 
 A JSON object with the {sn} incident number and link to the {sn} incident.
 

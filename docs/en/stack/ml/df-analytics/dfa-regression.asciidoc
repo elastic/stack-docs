@@ -90,12 +90,12 @@ gradient boosting methodologies.
 
 Loss function is for measuring how well a given {ml} model fits the specific 
 data set. The loss function boils down all the different aspects of the model to 
-a single number. This value makes it possible to compare the performance of the 
-various models. The bigger the difference between the prediction and the ground 
-truth, the higher the value of the loss function. Eventually, it helps you 
-decide which model is more suitable for your needs. Loss functions are also used 
-automatically in <<hyperparameters,hyperparameter optimization>> and when 
-training the decision trees.
+a single number. The bigger the difference between the prediction and the ground 
+truth, the higher the value of the loss function. Loss functions are used 
+automatically in the background during 
+<<hyperparameters,hyperparameter optimization>> and when training the decision 
+trees to compare the various iterations of the model and decide which iteration 
+performs better. 
 
 In the {stack}, there are three different types of loss function:
 
@@ -112,9 +112,9 @@ You can determine which loss function to be used during {reganalysis} though the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. The default is mean 
 squared error (`mse`). If you choose `msle` or `huber`, you can also set up a 
 parameter for the loss function which is `t` (defaults to `1.0`) for `msle` and 
-`ẟ` (defaults to `1.0`) for `huber`. With these offset parameters, you can 
-further refine the behavior of the chosen functions. There is no parameter to 
-manually set up for `mse`.
+`ẟ` (defaults to `1.0`) for `huber`. With these parameters, you can further 
+refine the behavior of the chosen functions. There is no parameter to manually 
+set up for `mse`.
 
 TIP: Unless you fully understand the purpose of the different loss functions, it 
 is highly recommended that you leave it unset and use the default parameters.

@@ -109,9 +109,9 @@ increase the size of the {ml} nodes in your cluster.
 [[dedicated-indices]]
 ===== Dedicated indices
 
-For each {anomaly-job}, you can optionally specify a separated index to store 
+For each {anomaly-job}, you can optionally specify a dedicated index to store 
 the {anomaly-detect} results. As {anomaly-jobs} may produce a large amount 
-of results (for example, jobs with small bucket span or with long running 
-period), it is recommended to use a dedicated results index by choosing the 
-**Use dedicated index** option in {kib} or specifying the `results_index_name` 
-via the {ref}/ml-put-job.html[Create {anomaly-jobs} API].
+of results (for example, jobs with many time series, small bucket span, or with 
+long running period), it is recommended to use a dedicated results index by 
+choosing the **Use dedicated index** option in {kib} or specifying the 
+`results_index_name` via the {ref}/ml-put-job.html[Create {anomaly-jobs} API].

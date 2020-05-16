@@ -21,11 +21,11 @@ search, analyze, and visualize it in real time.
 
 TBD
 
-////
 [[beats-highlights]]
 === Beats release highlights
 
 include::beats/libbeat/docs/release-notes/highlights/highlights.asciidoc[lines=4..5]
+
 
 [[elasticsearch-highlights]]
 === {es} release highlights
@@ -54,6 +54,7 @@ TBD
 === Kibana for solutions
 
 TBD
+
 
 [[admin-guides]]
 == Admin Guides
@@ -117,6 +118,7 @@ TBD
 //Upgrade the stack
 include::stack-docs/docs/en/install-upgrade/upgrading-stack.asciidoc[leveloffset=+1]
 
+
 [[secure]]
 === Secure the stack
 
@@ -140,7 +142,9 @@ TBD
 [[managing-licenses]]
 === Manage subscriptions
 
+:imagesdir: kibana/docs/
 include::kibana/docs/management/managing-licenses.asciidoc[lines=4..-1]
+:!imagesdir:
 
 [[monitor]]
 === Monitor the stack
@@ -251,7 +255,7 @@ TBD
 TBD
 
 [[contributor-guides]]
-== Contributor/Plugin Developer Guides
+== Contributor Guides
 
 [[core-dev]]
 === Core development
@@ -288,12 +292,13 @@ TBD
 
 TBD
 
+
 == Concepts
 
 [[anomaly-detection]]
 === Machine learning - anomaly detection
 
-:imagesdir: ml/anomaly-detection/
+:imagesdir: stack-docs/docs/en/stack/ml/anomaly-detection/
 include::stack-docs/docs/en/stack/ml/anomaly-detection/analyzing.asciidoc[]
 
 include::stack-docs/docs/en/stack/ml/anomaly-detection/forecasting.asciidoc[]
@@ -322,6 +327,7 @@ include::elasticsearch/x-pack/docs/en/security/authentication/realms.asciidoc[li
 :imagesdir: elasticsearch/x-pack/docs/en/
 include::elasticsearch/x-pack/docs/en/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+1]
 :!imagesdir:
+
 
 == Reference
 
@@ -355,11 +361,25 @@ TBD
 
 TBD
 
+[[glossary]]
+=== Glossary
+
+TBD
+
+
 [[kibana-apis]]
 === Kibana APIs
 
-// include::kibana/docs/user/api.asciidoc[lines=6..12]
-// include::kibana/docs/user/api.asciidoc[lines=34..42,leveloffset=+2]
+include::kibana/docs/user/api.asciidoc[lines=6..12]
+include::kibana/docs/api/using-api.asciidoc[leveloffset=+2]
+include::kibana/docs/api/features.asciidoc[leveloffset=+2]
+include::kibana/docs/api/spaces-management.asciidoc[leveloffset=+2]
+include::kibana/docs/api/role-management.asciidoc[leveloffset=+2]
+include::kibana/docs/api/saved-objects.asciidoc[leveloffset=+2]
+include::kibana/docs/api/dashboard-api.asciidoc[leveloffset=+2]
+include::kibana/docs/api/logstash-configuration-management.asciidoc[leveloffset=+2]
+include::kibana/docs/api/url-shortening.asciidoc[leveloffset=+2]
+include::kibana/docs/api/upgrade-assistant.asciidoc[leveloffset=+2]
 
 [[ml-functions]]
 === Machine learning functions
@@ -375,6 +395,7 @@ include::stack-docs/docs/en/stack/ml/anomaly-detection/ootb-ml-jobs.asciidoc[lin
 === Machine learning limitations
 
 TBD
+
 
 [[painless]]
 === Painless
@@ -396,13 +417,7 @@ TBD
 
 TBD
 
+
 include::elasticsearch/x-pack/docs/en/security/authorization/privileges.asciidoc[]
 
-:es-repo-dir: elasticsearch/docs/reference
-
-include::stack-docs/docs/en/glossary/glossary.asciidoc[]
-
-:es-repo-dir: elasticsearch/docs
-
-//include::redirects-landing.adoc[]
-////
+include::stack-docs/docs/en/stack/redirects-landing.adoc[]

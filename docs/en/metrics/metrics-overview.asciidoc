@@ -2,15 +2,15 @@
 [role="xpack"]
 == Metrics monitoring overview
 
-The {metrics-app} enables you to monitor metrics for your infrastructure and identify problems in real time.
-You can view basic metrics for servers, containers, services, and so on.
-Then you can drill down to view more detailed metrics, or you can seamlessly switch to view corresponding logs, uptime information or APM traces where available.
+The {metrics-app} enables you to monitor metrics for your infrastructure to help identify problems in real-time.
+You can view metrics for servers, containers, services, and so on.
+Additionally, you can drill down to view detailed metrics, or you can seamlessly switch to view corresponding logs, uptime information, or APM traces where available.
 // Add links to logs, uptime and APM when I have good places to link to.
 
 [float]
 === Metrics monitoring components
 
-image::images/metrics-monitoring-architecture.png[]
+image::images/metrics-monitoring-architecture.png[Metrics monitoring architecture]
 
 // redo for metrics and logs separately.
 
@@ -21,12 +21,11 @@ distributed storage, search, and analytics engine. {es} can store, search, and a
 The {metrics-app} uses {es} to store metrics data in {es} documents which are queried on demand.
 
 *https://www.elastic.co/products/beats[{beats}]* are open source data shippers that you install as agents on your servers to send data to {es}.
-The {metrics-app} uses metrics collected by Metricbeat from the servers, containers, and other services in your infrastructure.
-Metricbeat modules are available for most common servers, containers and services.
+The {metrics-app} uses Metricbeat to collect metrics from the servers, containers, and other services in your infrastructure.
+Metricbeat modules are available for most typical servers, containers, and services.
 
 *https://www.elastic.co/products/kibana[{kib}]* is an open source analytics and visualization platform designed to work with {es}.
 You use {kib} to search, view, and interact with the metrics data stored in {es}.
-You can easily perform advanced data analysis and visualize your data in a variety of charts, tables,
+You can perform advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
 The <<infrastructure-ui-overview, {metrics-app}>> in {kib} provides a dedicated user interface to view metrics for your infrastructure.
-

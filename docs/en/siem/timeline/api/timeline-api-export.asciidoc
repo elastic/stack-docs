@@ -1,0 +1,56 @@
+[[timeline-api-export]]
+=== Export timelines
+
+Exports timelines to an ndjson file.
+
+==== Request URL
+
+`POST <kibana host>:<port>/api/timeline/_export`
+
+
+===== URL query parameters
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`exclude_export_details` |Boolean |Does not affect the returned file.|Yes
+|`file_name` |String |File name for saving the exported rules. |Yes
+|==============================================
+
+TIP: When using cURL to export timelines to a file, use the `-O` and `-J`
+options to save the timelines to the file name specified in the URL.
+
+==== Request body
+
+A JSON `ids` array containing the `savedObjectId` fields of the rules you want to export:
+
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
+
+|`ids` |String[] |Array of `savedObjectId` fields. |Yes
+|==============================================
+
+
+===== Example request
+
+Exports two timeline and saves them to the `timelines_export.ndjson` file:
+
+[source,console]
+--------------------------------------------------
+POST api/timeline/_export?exclude_export_details=false&file_name=timelines_export.ndjson
+{
+  "ids": [
+    "34ca11c0-9503-11ea-9f74-e7e108796192",
+    "21cf9a00-9048-11ea-9f74-e7e108796192"
+  ]
+}
+--------------------------------------------------
+// KIBANA
+
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

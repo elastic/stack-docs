@@ -1,0 +1,40 @@
+[[timeline-api-import]]
+=== Import timelines
+
+Imports timelines from an ndjson file.
+
+==== Request URL
+
+`POST <kibana host>:<port>/api/timeline/_import`
+
+The request must include:
+
+* The `Content-Type: multipart/form-data` HTTP header.
+* A link to the ndjson file containing the timelines.
+
+For example, using cURL:
+
+[source,console]
+--------------------------------------------------
+curl -X POST "<KibanaURL>/api/timeline/_import"
+-u <username>:<password> -H 'kbn-xsrf: true'
+-H 'Content-Type: multipart/form-data'
+--form "file=@<link to file>" <1>
+--------------------------------------------------
+<1> The relative link to the ndjson file containing the timelines.
+
+===== Example request
+
+Imports the rules in the `timelines_export.ndjson` file:
+
+[source,console]
+--------------------------------------------------
+curl -X POST "api/detection_engine/rules/_import"
+-H 'kbn-xsrf: true' -H 'Content-Type: multipart/form-data'
+--form "file=@timelines_export.ndjson"
+--------------------------------------------------
+
+==== Response code
+
+`200`:: 
+    Indicates a successful call.

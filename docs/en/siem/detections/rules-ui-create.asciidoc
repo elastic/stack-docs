@@ -5,7 +5,11 @@
 beta[]
 
 Rules run periodically and search for documents or {ml} job anomaly scores 
-that meet their criteria.
+that meet their criteria. For both prebuilt and custom rules, you can use the
+{kib} {kibana-ref}/alerting-getting-started.html[Alerting and Actions] feature
+to send notifications when signals are created. Notifications can be sent via
+Email, PagerDuty, Slack, and Webhook, and can be configured in the {siem-app}
+when you create or edit a rule.
 
 [IMPORTANT]
 ==============
@@ -196,10 +200,10 @@ The {siem-app} performs deduplication. Duplicate signals discovered during the
 The *Rule actions* pane is displayed.
 [role="screenshot"]
 image::images/rule-actions.png[]
-. Optionally, use {kib} Alerting to set up notifications sent via other systems
+. Optionally, use {kib} Actions to set up notifications sent via other systems
 when new signals are detected.
 +
-NOTE: To use {kib} Alerting for signal notifications, you need the
+NOTE: To use {kib} Actions for signal notifications, you need the
 https://www.elastic.co/subscriptions[appropriate license].
 
 .. Set how often notifications are sent:
@@ -233,14 +237,50 @@ image::images/selected-action-type.png[]
 
 +
 .. Fill in the fields for the selected action types. For all action types, click
-the icon above the `Message` field to add placeholders for rule and signal
-details to the notifications. 
+the icon above the `Message` field to add
+<<rule-action-variables, placeholders>> for rule and signal details to the
+notifications. 
 
 . Save the rule with or without activation.
 +
 NOTE: When you activate a rule, it is queued and its schedule is determined by 
 its initial run time. For example, if you activate a rule that runs every 5 
 minutes at 14:03 but it does not run until 14:04, it will run again at 14:09.
+
+[float]
+[[rule-action-variables]]
+==== Notification placeholders
+
+These placeholders can be added to <<rule-actions, rule action>> fields:
+
+* `{{state.signals_count}}`: Number of signals detected
+* `{{{context.results_link}}}`: URL to the signals in {kib}
+* `{{context.rule.anomaly_threshold}}`: Anomaly threshold score above which
+signals are generated ({ml} rules only)
+* `{{context.rule.description}}`: Rule description
+* `{{context.rule.false_positives}}`: Rule false positives
+* `{{context.rule.filters}}`: Rule filters (query-based rules only)
+* `{{context.rule.id}}`: Unique rule ID returned after creating the rule
+* `{{context.rule.index}}`: Indices rule runs on (query-based rules only)
+* `{{context.rule.language}}`: Rule query language (query-based rules only)
+* `{{context.rule.machine_learning_job_id}}`: ID of associated {ml} job ({ml}
+rules only)
+* `{{context.rule.max_signals}}`: Maximum allowed number of signals per rule
+execution
+* `{{context.rule.name}}`: Rule name
+* `{{context.rule.output_index}}`: Index to which signals are written
+* `{{context.rule.query}}`: Rule query (query-based rules only)
+* `{{context.rule.references}}`: Rule references
+* `{{context.rule.risk_score}}`: Rule risk score
+* `{{context.rule.rule_id}}`: Generated or user-defined rule ID that can be
+used as an identifier across systems
+* `{{context.rule.saved_id}}`: Saved search ID
+* `{{context.rule.severity}}`: Rule severity
+* `{{context.rule.threat}}`: Rule threat framework
+* `{{context.rule.timeline_id}}`: Associated timeline ID
+* `{{context.rule.timeline_title}}`: Associated timeline name
+* `{{context.rule.type}}`: Rule type
+* `{{context.rule.version}}`: Rule version
 
 [float]
 [[manage-rules-ui]]

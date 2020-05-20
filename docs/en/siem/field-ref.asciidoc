@@ -67,6 +67,11 @@ Fields required for populating all SIEM data:
 [discrete]
 ==== DNS query fields
 
+* `dns.question.type`
+
+NOTE: If you want to be able to filter out PTR records, make sure the
+`dns.question.type` field is populated with a value of `PTR`.
+
 * `destination.bytes`
 * `dns.question.name`
 * `dns.question.registered_domain`

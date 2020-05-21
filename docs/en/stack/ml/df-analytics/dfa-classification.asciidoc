@@ -131,10 +131,10 @@ so it can be less than or greater than 0.5. For example, suppose our two classes
 are denoted `class 0` and `class 1`, then the value of `class_score` is always 
 non-negative and its definition is:
 
-```
-class_score(class 0) = 0.5 / (1.0 - k) * probability(class 0)
-class_score(class 1) = 0.5 / k * probability(class 1)
-```
+
+stem:[\text{class_score(class 0)} = 0.5 / (1.0 - k) * probability(class 0)]
+
+stem:[\text{class_score(class 1)}= 0.5 / k * probability(class 1)]
 
 Here, `k` is a positive constant less than one. It represents the predicted 
 probability of `class 1` for a data point at which to label it `class 1` and is 

@@ -10,6 +10,7 @@ provide advice based on the characteristics of your data. By heeding these
 suggestions, you can create jobs that are more likely to produce insightful {ml}
 results.
 
+
 [[bucket-span]]
 ===== Bucket span
 
@@ -23,6 +24,7 @@ NOTE: The bucket span must contain a valid time interval. See
 If you choose a value that is larger than one day or is significantly different 
 than the estimated value, you receive an informational message. For more 
 information about choosing an appropriate bucket span, see <<ml-buckets>>.
+
 
 [[cardinality]]
 ===== Cardinality
@@ -41,6 +43,7 @@ Likewise if you are performing population analysis and the cardinality of the
 `over_field_name` is below 10, you are advised that this might not be a suitable
 field to use. For more information, see <<ml-configuring-pop>>.
 
+
 [[detectors]]
 ===== Detectors
 
@@ -53,10 +56,12 @@ If a job contains duplicate detectors, you also receive an error. Detectors are
 duplicates if they have the same `function`, `field_name`, `by_field_name`, 
 `over_field_name` and `partition_field_name`. 
 
+
 [[influencers]]
 ===== Influencers
 
 See <<ml-influencers>>.
+
 
 [[model-memory-limits]]
 ===== Model memory limits
@@ -99,3 +104,14 @@ If you are using {ece} or the hosted Elasticsearch Service on Elastic Cloud,
 that cannot be allocated to any {ml} nodes in the cluster. If you find that you 
 cannot increase `model_memory_limit` for your {ml} jobs, the solution is to 
 increase the size of the {ml} nodes in your cluster.
+
+
+[[dedicated-indices]]
+===== Dedicated indices
+
+For each {anomaly-job}, you can optionally specify a dedicated index to store 
+the {anomaly-detect} results. As {anomaly-jobs} may produce a large amount 
+of results (for example, jobs with many time series, small bucket span, or with 
+long running period), it is recommended to use a dedicated results index by 
+choosing the **Use dedicated index** option in {kib} or specifying the 
+`results_index_name` via the {ref}/ml-put-job.html[Create {anomaly-jobs} API].

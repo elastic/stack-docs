@@ -117,10 +117,9 @@ the number of outliers in the data, and so on.
 You can determine which loss function to be used during {reganalysis} though the 
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. The default is mean 
 squared error (`mse`). If you choose `msle` or `huber`, you can also set up a 
-parameter for the loss function which is `t` (defaults to `1.0`) for `msle` and 
-`ẟ` (defaults to `1.0`) for `huber`. With these parameters, you can further 
-refine the behavior of the chosen functions. There is no parameter to manually 
-set up for `mse`.
+parameter for the loss function. With the parameter, you can further refine the 
+behavior of the chosen functions. There is no parameter to manually set up for 
+`mse`.
 
 TIP: The default loss function parameter values work fine for most of the cases. 
 It is highly recommended to use the default values, unless you fully understand 

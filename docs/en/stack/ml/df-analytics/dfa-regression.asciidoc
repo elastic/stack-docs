@@ -88,8 +88,8 @@ gradient boosting methodologies.
 [[dfa-regression-lossfunction]]
 ===== Loss functions for {regression} analyses
 
-Loss function is for measuring how well a given {ml} model fits the specific 
-data set. The loss function boils down all the different aspects of the model to 
+Loss function measures how well a given {ml} model fits the specific 
+data set. The loss function boils down all the different under- and overestimations of the model to 
 a single number. The bigger the difference between the prediction and the ground 
 truth, the higher the value of the loss function. Loss functions are used 
 automatically in the background during 
@@ -103,9 +103,9 @@ In the {stack}, there are three different types of loss function:
 * mean squared logarithmic error (`msle`; a variation of `mse`)
 * https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss (`huber`)]
 
-The various types of loss function calculate the model error differently. It 
+The various types of loss function calculate the prediction error differently. It 
 means that which loss function is appropriate for your case highly depends on 
-the value distribution in your data set, the problem that you want to model, the 
+the target distribution in your data set, the problem that you want to model, the 
 number of outliers in the data, and so on.
 
 You can determine which loss function to be used during {reganalysis} though the 
@@ -116,8 +116,7 @@ parameter for the loss function which is `t` (defaults to `1.0`) for `msle` and
 refine the behavior of the chosen functions. There is no parameter to manually 
 set up for `mse`.
 
-TIP: Unless you fully understand the purpose of the different loss functions, it 
-is highly recommended that you leave it unset and use the default parameters.
+TIP: The default loss function parameter values work fine for most of the cases, so unless you fully understand the impact of the different loss function parameters, it is highly recommended that you use the default values.
 
 
 [[dfa-regression-feature-importance]]

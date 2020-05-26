@@ -6,10 +6,14 @@ Looking for an {stack} ("ELK") guide that shows how to quickly install and confi
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
 * <<install-beats,{beats}>>
-* <<install-logstash,{ls} (optional)>>
 
-After completing the installation process, learn how to implement a system monitoring solution that uses
-{metricbeat} to collect server metrics and ship the data to {es}, search and visualize the data by using {kib}, and incorporate {ls} for additional parsing.
+TIP: {ls} adds powerful data parsing and transformation features, but usually
+isn't required. To get started with {ls}, see
+{logstash-ref}/getting-started-with-logstash.html[Getting Started with {ls}].
+
+After completing the installation process, learn how to implement a system
+monitoring solution that uses {metricbeat} to collect server metrics and ship
+the data to {es}. Then use {kib} to search and visualize the data.
 
 IMPORTANT: Implementing security is a critical step in configuring the {stack}.
 This guide skips security configuration to quickly install a sample installation. Before sending sensitive data across the network,
@@ -26,7 +30,7 @@ compatibility.
 
 * Verify that your system meets the
 https://www.elastic.co/support/matrix#matrix_jvm[minimum JVM requirements] for
-{ls} and {es}.
+{es}.
 
 [float]
 [[install-elasticsearch]]
@@ -661,353 +665,12 @@ Click *Host Overview* to see detailed metrics about the selected host.
 [role="screenshot"]
 image::images/metricbeat-system-host-details.png[{metricbeat} host overview]
 
-Now that you know how to set up the simplest architecture for the {stack}--one
-or more {beats} sending event data directly to an {es} instance running on the
-same server--let's add {ls}.
-
-[float]
-[[install-logstash]]
-
-=== Install {ls} (optional)
-
-https://www.elastic.co/products/logstash[{ls}] is a powerful tool that
-integrates with a wide variety of deployments. It offers a large selection of
-plugins to help you parse, enrich, transform, and buffer data from a variety of
-sources. If your data requires additional processing that is not available in
-{beats}, then you need to add {ls} to your deployment.
-
-To download and install {ls}, open a terminal window and use the commands that
-work with your system:
-
-*deb:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {ls} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.deb
-sudo dpkg -i logstash-{logstash_version}.deb
-----------------------------------------------------------------------
-
-endif::[]
-
-*rpm:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {ls} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.rpm
-sudo rpm -i logstash-{logstash_version}.rpm
-----------------------------------------------------------------------
-
-endif::[]
-
-*mac and linux:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {ls} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-curl -L -O https://artifacts.elastic.co/downloads/logstash/logstash-{logstash_version}.tar.gz
-tar -xzvf logstash-{logstash_version}.tar.gz
-----------------------------------------------------------------------
-
-endif::[]
-
-*brew:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {ls} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-["source","sh",subs="attributes"]
-----------------------------------------------------------------------
-brew tap elastic/tap
-brew install elastic/tap/logstash-full
-----------------------------------------------------------------------
-
-endif::[]
-
-*win:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {ls} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-. Download the {ls} {logstash_version} Windows zip file from the
-https://www.elastic.co/downloads/logstash[{ls} download] page.
-
-. Extract the contents of the zip file to a directory on your computer, for
-example, `C:\Program Files`. Use a short path (fewer than 30 characters) to
-avoid running into file path length limitations on Windows.
-
-endif::[]
-
-For other operating systems, go to the
-https://www.elastic.co/downloads/logstash[{ls} download] page.
-
-To learn more about installing, configuring, and running {ls}, read the
-{logstash-ref}/index.html[{ls} Reference].
-
-[float]
-[[logstash-setup]]
-==== Configure {ls} to listen for {beats} input
-
-{ls} provides {logstash-ref}/input-plugins.html[input plugins] for reading from
-a variety of inputs. In this guide, you create a {ls} pipeline configuration
-that listens for {beats} input and sends the received events to the {es} output.
-
-To configure {ls}:
-
-. Create a new {ls} pipeline configuration file called `demo-metrics-pipeline.conf`.
-If you installed {ls} as a deb or rpm package, create the file in the {ls}
-`config` directory. The file must contain:
-+
---
-* An input stage that configures {ls} to listen on port 5044 for incoming {beats}
-connections.
-* An output stage that indexes events into {es}. The output stage also
-configures {ls} to write to the {metricbeat} index.
---
-+
-For example:
-+
-[source,ruby]
-----
-input {
-  beats {
-    port => 5044
-  }
-}
-
-# The filter part of this file is commented out to indicate that it
-# is optional.
-# filter {
-#
-# }
-
-output {
-  elasticsearch {
-    hosts => "localhost:9200"
-    manage_template => false
-    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-  }
-}
-----
-+
-When you start {ls} with this pipeline configuration, {beats} events are routed
-through {ls}, where you have full access to {ls} capabilities for collecting,
-enriching, and transforming data.
-
-[float]
-[[gs-start-logstash]]
-==== Start {ls}
-
-Use the command that works with your system. If you installed {ls} as a deb or
-rpm package, make sure the config file is in the `config` directory.
-For other platforms, a `config` directory isn't required, but it's a best
-practice to be consistent.
-
-*deb:*
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-sudo /etc/init.d/logstash start
-----------------------------------------------------------------------
-
-*rpm:*
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-sudo service logstash start
-----------------------------------------------------------------------
-
-*mac and linux:*
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-cd logstash-{logstash_version}
-./bin/logstash -f path/to/config/demo-metrics-pipeline.conf
-----------------------------------------------------------------------
-
-*brew:*
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-logstash -f path/to/config/demo-metrics-pipeline.conf
-----------------------------------------------------------------------
-
-*win:*
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-bin\logstash.bat -f path\to\config\demo-metrics-pipeline.conf
-----------------------------------------------------------------------
-
-TIP: If you receive JVM error messages, check your Java version as shown in
-{logstash-ref}/installing-logstash.html[Installing {ls}].
-
-{ls} starts listening for events from the {beats} input. Next you need to
-configure {metricbeat} to send events to {ls}.
-
-[float]
-==== Configure {metricbeat} to send events to {ls}
-
-{metricbeat} sends events to {es} by default. To send events to {ls}, modify the
-{metricbeat} configuration file, `metricbeat.yml`. You'll find this file under
-the {metricbeat} install directory, `/etc/metricbeat` for rpm and deb, or
-`/usr/local/etc/metricbeat` for brew.
-
-Disable the `output.elasticsearch` section by commenting it out, then enable
-the `output.logstash` section by uncommenting it:
-
-[source,yaml]
-----
-#-------------------------- Elasticsearch output ------------------------------
-#output.elasticsearch:
-  # Array of hosts to connect to.
-  #hosts: ["localhost:9200"]
-.
-.
-.
-#----------------------------- Logstash output --------------------------------
-output.logstash:
-  # The Logstash hosts
-  hosts: ["localhost:5044"]
-----
-
-
-Save the file, then restart {metricbeat} to apply the configuration changes.
-
-{ls} reads from the {beats} input and indexes events into {es}. You haven't
-defined a filter section yet, so {ls} simply forwards events to {es} without
-additional processing. Next, you learn how to define the filter stage.
-
-[float]
-[[logstash-filter]]
-==== Define a filter to extract data from a field
-
-The system metrics collected by {metricbeat} include a field called `cmdline`
-that contains the full command-line arguments used to start system processes.
-For example:
-
-[source,json]
-----
-"cmdline": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container -childID 3
--isForBrowser -boolPrefs 36:1|299:0| -stringPrefs 285:38;{b77ae304-9f53-a248-8bd4-a243dbf2cab1}| -schedulerPrefs
-0001,2 -greomni /Applications/Firefox.app/Contents/Resources/omni.ja -appomni
-/Applications/Firefox.app/Contents/Resources/browser/omni.ja -appdir
-/Applications/Firefox.app/Contents/Resources/browser -profile
-/Users/dedemorton/Library/Application Support/Firefox/Profiles/mftvzeod.default-1468353066634
-99468 gecko-crash-server-pipe.99468 org.mozilla.machname.1911848630 tab"
-----
-
-
-Rather than sending the whole command-line argument to {es}, you might want to
-send just the command's path. One way to do that is by using a Grok filter.
-Learning Grok is beyond the scope of this getting started guide, but if you want
-to learn more, see the
-{logstash-ref}/plugins-filters-grok.html[Grok filter plugin] documentation.
-
-To extract the path, add the following Grok filter between the input and output
-sections in the {ls} config file that you created earlier:
-
-[source,ruby]
-----
-filter {
-  if [system][process] {
-    if [system][process][cmdline] {
-      grok {
-        match => { <1>
-          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
-        }
-        remove_field => "[system][process][cmdline]" <2>
-      }
-    }
-  }
-}
-----
-<1> Uses a pattern to match the path, then stores the path in a field called
-`cmdline_path`.
-<2> Removes the original field, `cmdline`, so it's not indexed in {es}.
-
-
-When you're done, the full configuration file should look like this:
-
-[source,ruby]
-----
-input {
-  beats {
-    port => 5044
-  }
-}
-
-filter {
-  if [system][process] {
-    if [system][process][cmdline] {
-      grok {
-        match => {
-          "[system][process][cmdline]" => "^%{PATH:[system][process][cmdline_path]}"
-        }
-        remove_field => "[system][process][cmdline]"
-      }
-    }
-  }
-}
-
-output {
-  elasticsearch {
-    hosts => "localhost:9200"
-    manage_template => false
-    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
-  }
-}
-----
-
-
-Restart {ls} to pick up the changes. The event now includes a field called
-`cmdline_path` that contains the command path:
-
-[source,ruby]
-----
-"cmdline_path": "/Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container"
-----
-
-
 [float]
 [[whats_next]]
 ==== What's next?
 
 Congratulations! You've successfully set up the {stack}. You learned how to
-stream system metrics to {es} and visualize the data in {kib}. You also learned
-how to use {ls} to filter events collected by {metricbeat}.
+stream system metrics to {es} and visualize the data in {kib}. 
 
 Next, you'll want to set up the {stack} {security-features} and activate your
 trial license so you can unlock the full capabilities of the {stack}. To learn
@@ -1020,8 +683,6 @@ Want to get up and running quickly with metrics monitoring and
 centralized log analytics? Try out the Metrics app and the Logs app in {kib}.
 For more details, see the {metrics-guide}[Metrics Monitoring Guide]
 and the {logs-guide}[Logs Monitoring Guide].
-
-
 
 Later, when you're ready to set up a production environment, also see the
 {stack-ref}/installing-elastic-stack.html[{stack} Installation and Upgrade

@@ -2,4 +2,48 @@
 [role="xpack"]
 == Timeline object schema
 
+[width="100%",options="header"]
+|==============================================
+|Name |Type |Description |Required
 
+|`columns` |Object[] |The timeline's displayed columns |Yes
+|`created` |Ben: Long?? |The time the timeline was created, using a
+13-digit Epoch timestamp. |Yes
+|`createdBy` |String |The user who created the timeline. |Yes
+|`dataProviders` |Object[] |The dropzone query. |Yes
+|`dateRange` |Object |The timeline's range. |Yes
+|`description` |String |The timeline's description |Yes
+|`eventNotes` |Object[] |Ben: ??Notes added to specific events. |Yes, can be an
+empty array.
+|`eventType` |String a|Event types displayed in the timeline, which can be:
+
+* `all`: all events
+* `raw`: raw events only
+* `signal`: signals only
+
+|Yes
+|`filters` |Object[] |Filters used in addition to the dropzone query. |Yes
+|`globalNotes` |Object[] |Notes added to the timeline. |Yes, can be an empty
+array.
+|`kqlMode` |String a|Determines whether the dropzone queries are filtered (`and`) or additional search results are displayed (`or`), can be:
+
+* `filter`: filters dropzone query results
+* `search`: displays additional search results
+
+|Yes
+|`kqlQuery` |Object |Determines whether additional filters use KQL or Lucene
+queries. |Yes
+|`pinnedEventIds` |Object[] |Pinned events |Yes, can be an empty array.
+|`savedObjectId` |String |Saved object ID. |Yes
+|`savedQueryId` |String |If used, the saved query ID used to filter or search
+dropzone query results. |Yes, can be `null`.
+|`sort` |Object |Determines how rows are sorted in the result's grid. |Yes
+|`templateTimelineId` |Ben: ??? | |
+|`templateTimelineVersion` |Ben: ??? | |
+|`timelineType` |String |Ben: ???? |Yes
+|`title` |String |The timeline's title. |Yes
+|`updated` |Ben: Long?? |The time the timeline was last updated, using a
+13-digit Epoch timestamp. |Yes
+|`updatedBy` |String |The user who last updated the timeline. |Yes
+|`version` |String |Timeline version. |Yes
+|==============================================

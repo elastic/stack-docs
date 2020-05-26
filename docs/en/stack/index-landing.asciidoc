@@ -1,0 +1,23 @@
+= Elastic Stack docs
+:description: Playing with Asciidoctor to create Elastic Stack docs
+:keywords: Elasticsearch, Kibana, Logstash
+:page-description: {description}
+:page-keywords: {keywords}
+:cloud-terms:
+:elasticsearch-terms:
+:logstash-terms:  
+:xpack-terms:
+:buildtool:           builddocs
+:includedir:          {docdir}
+:beats-repo-dir:      {docdir}/../../../../beats/libbeat/docs
+:es-repo-dir:         {docdir}/../../../../elasticsearch/docs
+:xes-repo-dir:        {docdir}/../../../../elasticsearch/x-pack/docs/{lang}
+:hadoop-repo-dir:     {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
+:kib-repo-dir:        {docdir}/../../../../kibana/docs
+:ls-repo-dir:         {docdir}/../../../../logstash/docs
+:stack-repo-dir:      {docdir}
+
+include::{asciidoc-dir}/../../shared/versions/stack/{source_branch}.asciidoc[]
+include::{asciidoc-dir}/../../shared/attributes.asciidoc[]
+
+include::landing.asciidoc[]

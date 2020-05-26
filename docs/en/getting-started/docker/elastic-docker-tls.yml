@@ -68,6 +68,8 @@ services:
     volumes:
       - data02:/usr/share/elasticsearch/data
       - certs:$CERTS_DIR
+    ports:
+      - 9201:9201
     networks:
       - elastic
       
@@ -99,6 +101,8 @@ services:
     volumes: 
       - data03:/usr/share/elasticsearch/data
       - certs:$CERTS_DIR
+    ports:
+      - 9202:9202
     networks:
       - elastic
   kib01:
@@ -110,7 +114,7 @@ services:
     environment:
       SERVERNAME: localhost
       ELASTICSEARCH_URL: https://es01:9200
-      ELASTICSEARCH_HOSTS: https://es01:9200
+      ELASTICSEARCH_HOSTS: '["https://es01:9200", "https://es02:9201", "https://es03:9202"]'
       ELASTICSEARCH_USERNAME: kibana
       ELASTICSEARCH_PASSWORD: CHANGEME
       ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: $CERTS_DIR/ca/ca.crt

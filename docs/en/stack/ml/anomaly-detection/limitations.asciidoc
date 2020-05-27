@@ -276,3 +276,14 @@ of the data analysis are less accurate.
 possible to specify the `ignore_throttled` query parameter for search requests
 in {dfeeds} or jobs. See
 {ref}/searching_a_frozen_index.html[Searching a frozen index].
+
+[discrete]
+[[ml-scheduling-priority]]
+=== CPU scheduling improvements apply to Linux and MacOS only
+
+When there are many {ml} jobs running at the same time and there are insufficient
+CPU resources, the JVM performance must be prioritized so search and indexing
+latency remain acceptable. To that end, when CPU is constrained on Linux and
+MacOS environments, the CPU scheduling priority of native analysis processes is
+reduced to favor the {es} JVM. This improvement does not apply to Windows
+environments.

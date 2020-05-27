@@ -88,11 +88,11 @@ gradient boosting methodologies.
 [[dfa-regression-lossfunction]]
 ===== Loss functions for {regression} analyses
 
-A loss function measures how well a given {ml} model fits the specific 
-data set. It boils down all the different under- and 
-overestimations of the model to a single number. The bigger the difference 
-between the prediction and the ground truth, the higher the value of the loss 
-function. Loss functions are used automatically in the background during 
+A loss function measures how well a given {ml} model fits the specific data set. 
+It boils down all the different under- and overestimations of the model to a 
+single number, known as the prediction error. The bigger the difference between 
+the prediction and the ground truth, the higher the value of the loss function. 
+Loss functions are used automatically in the background during 
 <<hyperparameters,hyperparameter optimization>> and when training the decision 
 trees to compare the performance of various iterations of the model.
 
@@ -109,16 +109,14 @@ Use it when you want to prevent the model trying to fit the outliers instead of
 regular data.
 
 The various types of loss function calculate the prediction error differently. 
-The appropriate loss function for your use case depends on 
-the target distribution in your data set, the problem that you want to model, 
-the number of outliers in the data, and so on.
+The appropriate loss function for your use case depends on the target 
+distribution in your data set, the problem that you want to model, the number of 
+outliers in the data, and so on.
 
-You can specify the loss function to be used during {reganalysis} though the 
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. The default is mean 
-squared error (`mse`). If you choose `msle` or `huber`, you can also set up a 
-parameter for the loss function. With the parameter, you can further refine the 
-behavior of the chosen functions. There is no parameter to manually set up for 
-`mse`.
+You can specify the loss function to be used during {reganalysis} when you 
+create the {dfanalytics-job}. The default is mean squared error (`mse`). If you 
+choose `msle` or `huber`, you can also set up a parameter for the loss function. 
+With the parameter, you can further refine the behavior of the chosen functions.
 
 TIP: The default loss function parameter values work fine for most of the cases. 
 It is highly recommended to use the default values, unless you fully understand 

@@ -13,7 +13,7 @@ Learn how to get it done with the {stack}--{es}, {kib}, Beats, and Logstash.
 [cols="4*"]
 |=== 
 
-| 1. *Try on cloud* > Run the {stack} on our hosted {es} Service.
+| 1. *Try on {ecloud}* > Run the {stack} on our hosted {ess}.
 | 2. *Get data in* > Set up a data flow using our add data tutorials. 
 | 3. *Discover data* > Search for hidden insights and relationships in your data.
 | 4. *Visualize* > Show off your data in graphs, metrics, tables, and more.
@@ -52,7 +52,7 @@ a|
 
 | *ILM* Description goes here.
 | *Machine learning* Find anomalies and outliers, forecast based on trends, and identify areas of interest in your data with Elastic {ml-features}.
-| *Topic* Description goes here.
+| *Hot-warm architecture* If you have an {ess} deployment that is getting overwhelmed by the volume of incoming data or that contains logging data that doesn’t all need to be on fast storage, consider adding a hot-warm architecture.
 
 |===
 
@@ -87,7 +87,7 @@ TBD
 [[stack-quickstart]]
 === Quick start
 
-TBD
+include::{includedir}/../../../../docs/shared/cloud/ess-getting-started.asciidoc[]
 
 [[kibana-solutions]]
 === Kibana for solutions
@@ -110,9 +110,9 @@ TBD
 [[install]]
 ==== Install the {stack}
 
-
-[[cloud]]
-===== Cloud
+You can run the {stack} on your own hardware, or use our hosted {ess} on
+{ecloud}. The {ess} is available on both AWS and GCP.
+{ess-trial}[Try out the {ess} for free].
 
 [[linux]]
 ===== Linux

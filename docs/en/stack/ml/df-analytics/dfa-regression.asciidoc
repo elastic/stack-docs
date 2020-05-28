@@ -32,7 +32,6 @@ on. All of these factors can be considered _features_; they are measurable
 properties or characteristics of the phenomenon we're studying.
 
 
-[discrete]
 [[dfa-regression-features]]
 ==== {feature-vars-cap}
 
@@ -54,7 +53,6 @@ algorithm:
 Arrays are not supported.
 
 
-[discrete]
 [[dfa-regression-supervised]]
 ==== Training the {regression} model
 
@@ -77,7 +75,6 @@ predictions are combined.
 you must restart the {dfanalytics-job}.
 
 
-[discrete]
 [[dfa-regression-algorithm]]
 ===== {regression-cap} algorithms
 
@@ -88,7 +85,44 @@ gradient boosting methodologies.
 //end::regression-algorithms[]
 
 
-[discrete]
+[[dfa-regression-lossfunction]]
+===== Loss functions for {regression} analyses
+
+A loss function measures how well a given {ml} model fits the specific data set. 
+It boils down all the different under- and overestimations of the model to a 
+single number, known as the prediction error. The bigger the difference between 
+the prediction and the ground truth, the higher the value of the loss function. 
+Loss functions are used automatically in the background during 
+<<hyperparameters,hyperparameter optimization>> and when training the decision 
+trees to compare the performance of various iterations of the model.
+
+In the {stack}, there are three different types of loss function:
+
+* https://en.wikipedia.org/wiki/Mean_squared_error[mean squared error (`mse`)]: 
+It is the default choice when no additional information about the data set is 
+available.
+* mean squared logarithmic error (`msle`; a variation of `mse`): It is for 
+cases where the target values are all positive with a long tail distribution 
+(for example, prices or population).
+* https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss (`huber`)]:
+Use it when you want to prevent the model trying to fit the outliers instead of 
+regular data.
+
+The various types of loss function calculate the prediction error differently. 
+The appropriate loss function for your use case depends on the target 
+distribution in your data set, the problem that you want to model, the number of 
+outliers in the data, and so on.
+
+You can specify the loss function to be used during {reganalysis} when you 
+create the {dfanalytics-job}. The default is mean squared error (`mse`). If you 
+choose `msle` or `huber`, you can also set up a parameter for the loss function. 
+With the parameter, you can further refine the behavior of the chosen functions.
+
+TIP: The default loss function parameter values work fine for most of the cases. 
+It is highly recommended to use the default values, unless you fully understand 
+the impact of the different loss function parameters.
+
+
 [[dfa-regression-feature-importance]]
 ==== {feat-imp-cap}
 
@@ -97,7 +131,6 @@ helps to interpret the results in a more subtle way. If you want to learn more
 about {feat-imp}, <<ml-feature-importance,click here>>.
 
 
-[discrete]
 [[dfa-regression-evaluation]]
 ==== Measuring model performance
 
@@ -126,6 +159,7 @@ which do not generalize to new data. A model that overfits the data has a
 low MSE value on the training data set and a high MSE value on the testing 
 data set. For more information about the evaluation metrics, see 
 <<ml-dfanalytics-regression-evaluation>>.
+
 
 ==== Further readings
 

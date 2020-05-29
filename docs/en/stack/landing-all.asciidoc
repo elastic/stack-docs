@@ -377,7 +377,24 @@ endif::[]
 [data-frame-analytics]
 === Machine learning - data frame analytics
 
-TBD
+ifeval::["{buildtool}" == "asciidoctor"]
+:imagesdir: ml/df-analytics/
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+endif::[]
+include::ml/df-analytics/dfa-outlierdetection.asciidoc[]
+include::ml/df-analytics/dfa-classification.asciidoc[]
+include::ml/df-analytics/dfa-regression.asciidoc[]
+include::ml/df-analytics/ml-inference.asciidoc[]
+include::ml/df-analytics/ml-lang-ident.asciidoc[]
+include::ml/df-analytics/evaluatedf-api.asciidoc[]
+ifeval::["{buildtool}" == "asciidoctor"]
+:!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:!imagesdir:
+endif::[]
 
 [[security-concepts]]
 === Security

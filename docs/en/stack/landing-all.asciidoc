@@ -1,5 +1,6 @@
-Take data from any source, and search, analyze, and visualize it in real time.
-Learn how to get it done with the {stack}--{es}, {kib}, Beats, and Logstash.
+Search. Observe. Protect.
+
+Search is foundational to a wide variety of experiences — from finding documents to monitoring infrastructure to protecting against security threats. Elastic is a search company that powers three solutions built on one powerful stack: the {stack}. Deploy them anywhere (from the cloud to bare metal) to instantly find actionable insights from any type of data.
 
 |=== 
 
@@ -8,7 +9,7 @@ Learn how to get it done with the {stack}--{es}, {kib}, Beats, and Logstash.
 |===
 
 [discrete]
-== Get started with the {stack}
+== Get started with Elastic
 
 [cols="4*"]
 |=== 
@@ -57,129 +58,130 @@ a|
 |===
 
 [[whats-new]]
-== What's new in the Stack
+== What's new in Elastic
 
-[[beats-highlights]]
-=== Beats release highlights
-
-include::{beats-repo-dir}/release-notes/highlights/highlights.asciidoc[lines=4..5]
-
-[[elasticsearch-highlights]]
-=== {es} release highlights
-
-include::{es-repo-dir}/reference/release-notes/highlights.asciidoc[lines=6..7]
-
-[[kibana-highlights]]
-=== {kib} release highlights
-
-include::{kib-repo-dir}/release-notes/highlights.asciidoc[lines=6..7]
+TBD -- Does this contain solution-specific pages?
 
 [[get-started]]
 == Get started
 
-TBD
+TBD -- Does this include solution-specific tutorials?
+Or does it help users identify the appropriate solution for their needs?
 
-[[stack-intro]]
-=== Intro to the stack
-
-TBD
-
-[[stack-quickstart]]
-=== Quick start
+[[quickstart]]
+=== Quickstart
 
 include::{includedir}/../../../../docs/shared/cloud/ess-getting-started.asciidoc[]
 
-[[kibana-solutions]]
-=== Kibana for solutions
+[[security]]
+== Security
 
 TBD
 
+[[observability]]
+== Observability
+
+TBD
+
+[[enterprise-search]]
+== Enterprise Search
+
+TBD
+
+[[orchestration]]
+== Orchestration
+
+TBD
+
+[[guides]]
+== Guides
+
 [[admin-guides]]
-== Admin Guides
+=== Admin Guides
 
 TBD
 
 [[deployment]]
-=== Deployment scenarios 
+==== Deployment scenarios 
 
 TBD
 
 [[setup]]
-=== Set up the {stack}
+==== Set up the {stack}
 
 [[install]]
-==== Install the {stack}
+===== Install the {stack}
 
 You can run the {stack} on your own hardware, or use our hosted {ess} on
 {ecloud}. The {ess} is available on both AWS and GCP.
 {ess-trial}[Try out the {ess} for free].
 
 [[linux]]
-===== Linux
+====== Linux
 
 [[windows]]
-===== Windows
+====== Windows
 
 [[deb]]
-===== Deb
+====== Deb
 
 [[rpm]]
-===== RPM
+====== RPM
 
 [[msi]]
-===== MSI
+====== MSI
 
 [[docker]]
-===== Docker
+====== Docker
 
 [[homebrew]]
-===== Homebrew
+====== Homebrew
 
 [[configure]]
-==== Configure the {stack} 
+===== Configure the {stack} 
 
 [[run]]
-==== Run the {stack}
+===== Run the {stack}
 
 [[start-stop]]
-===== Start and stop the {stack}
+====== Start and stop the {stack}
 
 [[run-service]]
-===== Run {es} as a service
+====== Run {es} as a service
   
 [[restart]]
-===== Restarting a cluster
+====== Restarting a cluster
 
 [[access]]
-==== Access {kib}
+===== Access {kib}
 
 TBD
 
 //Upgrade the stack
-include::{includedir}/../install-upgrade/upgrading-stack.asciidoc[leveloffset=+1]
+include::{includedir}/../install-upgrade/upgrading-stack.asciidoc[leveloffset=+2]
 
-[[secure]]
-=== Secure the stack
+[[secure-stack]]
+==== Secure the stack
 
 include::{xes-repo-dir}/security/index.asciidoc[lines=6..9]
 
 [[alert]]
-=== Alert and take action
+==== Alert and take action
 
 TBD
 
 [[manage-cluster]]
-=== Manage clusters
+==== Manage clusters
 
 TBD
 
 [[manage-indices]]
-=== Manage indices
+==== Manage indices
 
 TBD
 
 [[managing-licenses]]
-=== Manage subscriptions
+==== Manage subscriptions
 
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: kibana/docs/
@@ -190,7 +192,7 @@ ifeval::["{buildtool}" == "gradle"]
 endif::[]
 
 [[monitor]]
-=== Monitor the stack
+==== Monitor the stack
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ../../../../elasticsearch/docs/reference/monitoring/
@@ -207,143 +209,143 @@ ifeval::["{buildtool}" == "gradle"]
 endif::[]
 
 [[troubleshoot]]
-=== Troubleshoot the stack
+==== Troubleshoot the stack
 
 TBD
 
 [[analyst-guides]]
-== Analyst Guides
+=== Analyst Guides
 
 TBD
 
 [[add-data]]
-=== Add data
+==== Add data
 
 TBD
 
 [[explore-data]]
-=== Explore your data
+==== Explore your data
 
 TBD
 
 [[visualize-data]]
-=== Visualize your data
+==== Visualize your data
 
 TBD
 
 [[dashboards]]
-=== Build dashboards
+==== Build dashboards
 
 TBD
 
 [[canvas]]
-=== Create presentations with Canvas
+==== Create presentations with Canvas
 
 TBD
 
 [[maps]]
-=== Create maps
+==== Create maps
 
 TBD
 
 [[graph-data]]
-=== Graph data connections
+==== Graph data connections
 
 TBD
 
 [[reports]]
-=== Generate reports
+==== Generate reports
 
 TBD
 
 [[transform-data]]
-=== Transform your data
+==== Transform your data
 
 TBD
 
 [[analyze-data]]
-=== Analyze your data
+==== Analyze your data
 
 TBD
 
 [[manage-kibana]]
-=== Manage Kibana
+==== Manage Kibana
 
 TBD
 
 [[developer-guides]]
-== Developer Guides
+=== Developer Guides
 
 [[interact]]
-=== Interact with Elasticsearch
+==== Interact with Elasticsearch
 
 TBD
 
 [[store]]
-=== Store
+==== Store
 
 TBD
 
 [[search]]
-=== Search 
+==== Search 
 
 TBD
 
 [[analyze]]
-=== Analyze 
+==== Analyze 
 
 TBD
 
 [[profile]]
-=== Profile search queries
+==== Profile search queries
 
 TBD
 
 [[grok]]
-=== Debug grok patterns
+==== Debug grok patterns
 
 TBD
 
 [[script]]
-=== Script
+==== Script
 
 TBD
 
 [[contributor-guides]]
-== Contributor/Plugin Developer Guides
+=== Contributor/Plugin Developer Guides
 
 [[core-dev]]
-=== Core development
+==== Core development
 
 TBD
 
 [[plugin-dev]]
-=== Plugin development
+==== Plugin development
 
 TBD
 
 [[visualizations]]
-=== Develop visualizations
+==== Develop visualizations
 
 TBD
 
 [[add-dev-data]]
-=== Add data
+==== Add data
 
 TBD
 
 [[dev-security]]
-=== Security
+==== Security
 
 TBD
 
 [[prs]]
-=== Pull request review guidelines
+==== Pull request review guidelines
 
 TBD
 
 [[ci-failures]]
-=== Interpreting CI failures
+==== Interpreting CI failures
 
 TBD
 
@@ -377,7 +379,7 @@ endif::[]
 
 TBD
 
-[[security]]
+[[security-concepts]]
 === Security
 
 include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+1]

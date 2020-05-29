@@ -62,6 +62,11 @@ a|
 
 TBD -- Does this contain solution-specific pages?
 
+[[breaking-changes]]
+=== Breaking changes
+
+TBD
+
 [[get-started]]
 == Get started
 
@@ -395,6 +400,35 @@ ifeval::["{buildtool}" == "gradle"]
 :!imagesdir:
 endif::[]
 
+[[apis]]
+== APIs
+
+[[elasticsearch-apis]]
+=== {es} APIs
+
+TBD
+
+[[ess-apis]]
+=== {ess} APIs
+
+TBD
+
+[[kibana-apis]]
+=== {kib} APIs
+
+include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
+include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+2]
+
+
+[[reference]]
 == Reference
 
 [[accessibility]]
@@ -402,18 +436,8 @@ endif::[]
 
 TBD
 
-[[breaking-changes]]
-=== Breaking changes
-
-TBD
-
 [[ecs]]
 === Elastic common schema
-
-TBD
-
-[[elasticsearch-apis]]
-=== Elasticsearch APIs
 
 TBD
 
@@ -426,20 +450,6 @@ TBD
 === Elasticsearch plugins & integrations
 
 TBD
-
-[[kibana-apis]]
-=== Kibana APIs
-
-include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
-include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+2]
 
 [[ml-functions]]
 === Machine learning functions
@@ -458,11 +468,6 @@ TBD
 
 [[painless]]
 === Painless
-
-TBD
-
-[[release-notes]]
-=== Release notes
 
 TBD
 
@@ -491,5 +496,10 @@ ifeval::["{buildtool}" == "builddocs"]
 include::{stack-repo-dir}/../glossary/glossary.asciidoc[leveloffset=+1]
 :!es-repo-dir:
 endif::[]
+
+[[release-notes]]
+== Release notes
+
+TBD
 
 include::redirects-landing.adoc[]

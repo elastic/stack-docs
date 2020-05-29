@@ -266,6 +266,20 @@ TBD
 
 TBD
 
+ifeval::["{buildtool}" == "asciidoctor"]
+:imagesdir: ml/df-analytics/
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+endif::[]
+include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "asciidoctor"]
+:!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:!imagesdir:
+endif::[]
+
 [[manage-kibana]]
 === Manage Kibana
 
@@ -375,7 +389,26 @@ endif::[]
 [data-frame-analytics]
 === Machine learning - data frame analytics
 
-TBD
+ifeval::["{buildtool}" == "asciidoctor"]
+:imagesdir: ml/df-analytics/
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+endif::[]
+include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
+include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+1]
+include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+1]
+include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+1]
+include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+1]
+include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+1]
+include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+1]
+include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+1]
+ifeval::["{buildtool}" == "asciidoctor"]
+:!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:!imagesdir:
+endif::[]
 
 [[security]]
 === Security

@@ -62,6 +62,11 @@ a|
 
 TBD -- Does this contain solution-specific pages?
 
+[[breaking-changes]]
+=== Breaking changes
+
+TBD
+
 [[get-started]]
 == Get started
 
@@ -74,17 +79,17 @@ Or does it help users identify the appropriate solution for their needs?
 include::{includedir}/../../../../docs/shared/cloud/ess-getting-started.asciidoc[]
 
 [[security]]
-== Security
+== Elastic Security
 
 TBD
 
 [[observability]]
-== Observability
+== Elastic Observability
 
 TBD
 
 [[enterprise-search]]
-== Enterprise Search
+== Elastic Enterprise Search
 
 TBD
 
@@ -93,95 +98,92 @@ TBD
 
 TBD
 
-[[guides]]
-== Guides
-
 [[admin-guides]]
-=== Admin Guides
+== Admin guides
 
 TBD
 
 [[deployment]]
-==== Deployment scenarios 
+=== Deployment scenarios 
 
 TBD
 
 [[setup]]
-==== Set up the {stack}
+=== Set up the {stack}
 
 [[install]]
-===== Install the {stack}
+==== Install the {stack}
 
 You can run the {stack} on your own hardware, or use our hosted {ess} on
 {ecloud}. The {ess} is available on both AWS and GCP.
 {ess-trial}[Try out the {ess} for free].
 
 [[linux]]
-====== Linux
+===== Linux
 
 [[windows]]
-====== Windows
+===== Windows
 
 [[deb]]
-====== Deb
+===== Deb
 
 [[rpm]]
-====== RPM
+===== RPM
 
 [[msi]]
-====== MSI
+===== MSI
 
 [[docker]]
-====== Docker
+===== Docker
 
 [[homebrew]]
-====== Homebrew
+===== Homebrew
 
 [[configure]]
-===== Configure the {stack} 
+==== Configure the {stack} 
 
 [[run]]
-===== Run the {stack}
+==== Run the {stack}
 
 [[start-stop]]
-====== Start and stop the {stack}
+===== Start and stop the {stack}
 
 [[run-service]]
-====== Run {es} as a service
+===== Run {es} as a service
   
 [[restart]]
-====== Restarting a cluster
+===== Restarting a cluster
 
 [[access]]
-===== Access {kib}
+==== Access {kib}
 
 TBD
 
 //Upgrade the stack
-include::{includedir}/../install-upgrade/upgrading-stack.asciidoc[leveloffset=+2]
+include::{includedir}/../install-upgrade/upgrading-stack.asciidoc[leveloffset=+1]
 
 [[secure-stack]]
-==== Secure the stack
+=== Secure the stack
 
 include::{xes-repo-dir}/security/index.asciidoc[lines=6..9]
 
 [[alert]]
-==== Alert and take action
+=== Alert and take action
 
 TBD
 
 [[manage-cluster]]
-==== Manage clusters
+=== Manage clusters
 
 TBD
 
 [[manage-indices]]
-==== Manage indices
+=== Manage indices
 
 TBD
 
 [[managing-licenses]]
-==== Manage subscriptions
+=== Manage subscriptions
 
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: kibana/docs/
@@ -192,7 +194,7 @@ ifeval::["{buildtool}" == "gradle"]
 endif::[]
 
 [[monitor]]
-==== Monitor the stack
+=== Monitor the stack
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ../../../../elasticsearch/docs/reference/monitoring/
@@ -209,143 +211,143 @@ ifeval::["{buildtool}" == "gradle"]
 endif::[]
 
 [[troubleshoot]]
-==== Troubleshoot the stack
+=== Troubleshoot the stack
 
 TBD
 
 [[analyst-guides]]
-=== Analyst Guides
+== Analyst guides
 
 TBD
 
 [[add-data]]
-==== Add data
+=== Add data
 
 TBD
 
 [[explore-data]]
-==== Explore your data
+=== Explore your data
 
 TBD
 
 [[visualize-data]]
-==== Visualize your data
+=== Visualize your data
 
 TBD
 
 [[dashboards]]
-==== Build dashboards
+=== Build dashboards
 
 TBD
 
 [[canvas]]
-==== Create presentations with Canvas
+=== Create presentations with Canvas
 
 TBD
 
 [[maps]]
-==== Create maps
+=== Create maps
 
 TBD
 
 [[graph-data]]
-==== Graph data connections
+=== Graph data connections
 
 TBD
 
 [[reports]]
-==== Generate reports
+=== Generate reports
 
 TBD
 
 [[transform-data]]
-==== Transform your data
+=== Transform your data
 
 TBD
 
 [[analyze-data]]
-==== Analyze your data
+=== Analyze your data
 
 TBD
 
 [[manage-kibana]]
-==== Manage Kibana
+=== Manage Kibana
 
 TBD
 
 [[developer-guides]]
-=== Developer Guides
+== Developer guides
 
 [[interact]]
-==== Interact with Elasticsearch
+=== Interact with Elasticsearch
 
 TBD
 
 [[store]]
-==== Store
+=== Store
 
 TBD
 
 [[search]]
-==== Search 
+=== Search 
 
 TBD
 
 [[analyze]]
-==== Analyze 
+=== Analyze 
 
 TBD
 
 [[profile]]
-==== Profile search queries
+=== Profile search queries
 
 TBD
 
 [[grok]]
-==== Debug grok patterns
+=== Debug grok patterns
 
 TBD
 
 [[script]]
-==== Script
+=== Script
 
 TBD
 
 [[contributor-guides]]
-=== Contributor/Plugin Developer Guides
+== Contributor/Plugin developer guides
 
 [[core-dev]]
-==== Core development
+=== Core development
 
 TBD
 
 [[plugin-dev]]
-==== Plugin development
+=== Plugin development
 
 TBD
 
 [[visualizations]]
-==== Develop visualizations
+=== Develop visualizations
 
 TBD
 
 [[add-dev-data]]
-==== Add data
+=== Add data
 
 TBD
 
 [[dev-security]]
-==== Security
+=== Security
 
 TBD
 
 [[prs]]
-==== Pull request review guidelines
+=== Pull request review guidelines
 
 TBD
 
 [[ci-failures]]
-==== Interpreting CI failures
+=== Interpreting CI failures
 
 TBD
 
@@ -398,6 +400,35 @@ ifeval::["{buildtool}" == "gradle"]
 :!imagesdir:
 endif::[]
 
+[[apis]]
+== APIs
+
+[[elasticsearch-apis]]
+=== {es} APIs
+
+TBD
+
+[[ess-apis]]
+=== {ess} APIs
+
+TBD
+
+[[kibana-apis]]
+=== {kib} APIs
+
+include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
+include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+2]
+
+
+[[reference]]
 == Reference
 
 [[accessibility]]
@@ -405,18 +436,8 @@ endif::[]
 
 TBD
 
-[[breaking-changes]]
-=== Breaking changes
-
-TBD
-
 [[ecs]]
 === Elastic common schema
-
-TBD
-
-[[elasticsearch-apis]]
-=== Elasticsearch APIs
 
 TBD
 
@@ -429,20 +450,6 @@ TBD
 === Elasticsearch plugins & integrations
 
 TBD
-
-[[kibana-apis]]
-=== Kibana APIs
-
-include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
-include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+2]
-include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+2]
 
 [[ml-functions]]
 === Machine learning functions
@@ -461,11 +468,6 @@ TBD
 
 [[painless]]
 === Painless
-
-TBD
-
-[[release-notes]]
-=== Release notes
 
 TBD
 
@@ -494,5 +496,10 @@ ifeval::["{buildtool}" == "builddocs"]
 include::{stack-repo-dir}/../glossary/glossary.asciidoc[leveloffset=+1]
 :!es-repo-dir:
 endif::[]
+
+[[release-notes]]
+== Release notes
+
+TBD
 
 include::redirects-landing.adoc[]

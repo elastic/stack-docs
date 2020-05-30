@@ -67,7 +67,7 @@ include::{beats-repo-dir}/release-notes/highlights/highlights.asciidoc[lines=4..
 [[elasticsearch-highlights]]
 === {es} release highlights
 
-include::{es-repo-dir}/reference/release-notes/highlights.asciidoc[lines=6..7]
+include::{es-repo-dir}/release-notes/highlights.asciidoc[lines=6..7]
 
 [[kibana-highlights]]
 === {kib} release highlights
@@ -100,7 +100,7 @@ include::{includedir}/../../../../docs/shared/cloud/ess-getting-started.asciidoc
 TBD
 
 [[admin-guides]]
-== Admin Guides
+== Admin guides
 
 TBD
 
@@ -203,7 +203,7 @@ endif::[]
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: elasticsearch/docs/reference/monitoring/
 endif::[]
-include::{es-repo-dir}/reference/monitoring/overview.asciidoc[lines=8..-1]
+include::{es-repo-dir}/monitoring/overview.asciidoc[lines=8..-1]
 ifeval::["{buildtool}" == "asciidoctor"]
 :!imagesdir:
 endif::[]
@@ -217,7 +217,7 @@ endif::[]
 TBD
 
 [[analyst-guides]]
-== Analyst Guides
+== Analyst guides
 
 TBD
 
@@ -277,7 +277,7 @@ TBD
 TBD
 
 [[developer-guides]]
-== Developer Guides
+== Developer guides
 
 [[interact]]
 === Interact with Elasticsearch
@@ -315,7 +315,7 @@ TBD
 TBD
 
 [[contributor-guides]]
-== Contributor/Plugin Developer Guides
+== Contributor/Plugin developer guides
 
 [[core-dev]]
 === Core development
@@ -382,7 +382,7 @@ endif::[]
 
 TBD
 
-[[security]]
+[[security-concepts]]
 === Security
 
 include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+1]
@@ -407,19 +407,23 @@ endif::[]
 [[elasticsearch-apis]]
 === {es} APIs
 
-TBD
+include::{es-repo-dir}/rest-api/index.asciidoc[lines=6..12]
+
+include::{es-repo-dir}/api-conventions.asciidoc[leveloffset=+2]
+
+include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+2]
 
 [[ess-apis]]
 === {ess} APIs
 
 include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=6..15]
 
-include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=19..328,leveloffset=+2]
+include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=19..-1,leveloffset=+2]
 
-include::{cloud-repo-dir}/saas/saas-api-swagger.asciidoc[leveloffset=+2]
+include::{cloud-repo-dir}/saas/saas-api-swagger.asciidoc[leveloffset=+3]
 
 [[kibana-apis]]
-=== Kibana APIs
+=== {kib} APIs
 
 include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
 include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
@@ -448,7 +452,7 @@ TBD
 [[elasticsearch-settings]]
 === Elasticsearch settings
 
-TBD
+include::{es-repo-dir}/settings/ml-settings.asciidoc[leveloffset=+1]
 
 [[elasticsearch-plugins]]
 === Elasticsearch plugins & integrations
@@ -458,7 +462,7 @@ TBD
 [[ml-functions]]
 === Machine learning functions
 
-include::{es-repo-dir}/reference/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+1]
+include::{es-repo-dir}/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+1]
 
 [[ml-modules]]
 === Machine learning modules
@@ -480,7 +484,7 @@ TBD
 
 TBD
 
-[[security-roles]]
+[[built-in-roles]]
 === Security built-in roles
 
 TBD
@@ -490,15 +494,11 @@ include::{xes-repo-dir}/security/authorization/privileges.asciidoc[]
 
 //Omitting Glossary from gradle build due to build issues
 ifeval::["{buildtool}" == "asciidoctor"]
-:es-repo-dir:  {es-repo-dir}/reference
 include::{stack-repo-dir}/../glossary/glossary.asciidoc[leveloffset=+1]
-:!es-repo-dir:
 endif::[]
 
 ifeval::["{buildtool}" == "builddocs"]
-:es-repo-dir:  {es-repo-dir}/reference
 include::{stack-repo-dir}/../glossary/glossary.asciidoc[leveloffset=+1]
-:!es-repo-dir:
 endif::[]
 
 

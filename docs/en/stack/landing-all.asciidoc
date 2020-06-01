@@ -202,7 +202,7 @@ endif::[]
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: elasticsearch/docs/reference/monitoring/
 endif::[]
-include::{es-repo-dir}/reference/monitoring/overview.asciidoc[lines=8..-1]
+include::{es-repo-dir}/monitoring/overview.asciidoc[lines=8..-1]
 ifeval::["{buildtool}" == "asciidoctor"]
 :!imagesdir:
 endif::[]
@@ -406,12 +406,20 @@ endif::[]
 [[elasticsearch-apis]]
 === {es} APIs
 
-TBD
+include::{es-repo-dir}/rest-api/index.asciidoc[lines=6..12]
+
+include::{es-repo-dir}/api-conventions.asciidoc[leveloffset=+2]
+
+include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+2]
 
 [[ess-apis]]
 === {ess} APIs
 
-TBD
+include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=6..15]
+
+include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=19..-1,leveloffset=+2]
+
+include::{cloud-repo-dir}/saas/saas-api-swagger.asciidoc[leveloffset=+3]
 
 [[kibana-apis]]
 === {kib} APIs
@@ -444,7 +452,8 @@ TBD
 [[elasticsearch-settings]]
 === Elasticsearch settings
 
-TBD
+include::{es-repo-dir}/settings/ml-settings.asciidoc[leveloffset=+1]
+
 
 [[elasticsearch-plugins]]
 === Elasticsearch plugins & integrations
@@ -454,7 +463,7 @@ TBD
 [[ml-functions]]
 === Machine learning functions
 
-include::{es-repo-dir}/reference/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+1]
+include::{es-repo-dir}/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+1]
 
 [[ml-modules]]
 === Machine learning modules
@@ -476,7 +485,7 @@ TBD
 
 TBD
 
-[[security-roles]]
+[[built-in-roles]]
 === Security built-in roles
 
 TBD
@@ -486,15 +495,11 @@ include::{xes-repo-dir}/security/authorization/privileges.asciidoc[]
 
 //Omitting Glossary from gradle build due to build issues
 ifeval::["{buildtool}" == "asciidoctor"]
-:es-repo-dir:  {es-repo-dir}/reference
 include::{stack-repo-dir}/../glossary/glossary.asciidoc[leveloffset=+1]
-:!es-repo-dir:
 endif::[]
 
 ifeval::["{buildtool}" == "builddocs"]
-:es-repo-dir:  {es-repo-dir}/reference
 include::{stack-repo-dir}/../glossary/glossary.asciidoc[leveloffset=+1]
-:!es-repo-dir:
 endif::[]
 
 [[release-notes]]

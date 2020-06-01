@@ -1,32 +1,44 @@
 = Elastic docs
-:description: Playing with Asciidoctor to create Elastic docs
-:keywords: Elastic
-:page-description: {description}
-:page-keywords: {keywords}
+:description:                 Playing with Asciidoctor to create Elastic docs
+:keywords:                    Elastic
+:page-description:            {description}
+:page-keywords:               {keywords}
 :cloud-terms:
 :elasticsearch-terms:
 :logstash-terms:  
 :xpack-terms:
-:buildtool:           asciidoctor
-:toc:                 left
-:toclevels:           4
-:lang:                en
-:beats-repo-dir:      {docdir}/../../../../beats/libbeat/docs
-:es-repo-dir:         {docdir}/../../../../elasticsearch/docs/reference
-:xes-repo-dir:        {docdir}/../../../../elasticsearch/x-pack/docs/{lang}
-:hadoop-repo-dir:     {docdir}/../../../../elasticsearch-hadoop/docs/src/reference/asciidoc
-:kib-repo-dir:        {docdir}/../../../../kibana/docs
-:ls-repo-dir:         {docdir}/../../../../logstash/docs
-:stack-repo-dir:      {docdir}
-:cloud-repo-dir:      {docdir}/../../../../cloud/docs
-:includedir:          {docdir}
+:buildtool:                   asciidoctor
+:toc:                         left
+:toclevels:                   4
+:lang:                        en
 
-include::{docdir}/../../../../docs/shared/versions/stack/master.asciidoc[]
-include::{docdir}/../../../../docs/shared/attributes.asciidoc[]
+// These root attributes are automatically created by the build but must be defined for Asciidoctor builds here:
+:beats-root:                  {docdir}/../../../../beats
+:cloud-root:                  {docdir}/../../../../cloud
+:docs-root:                   {docdir}/../../../../docs
+:elasticsearch-root:          {docdir}/../../../../elasticsearch
+:elasticsearch-hadoop-root:   {docdir}/../../../../elasticsearch-hadoop
+:kibana-root:                 {docdir}/../../../../kibana
+:logstash-root:               {docdir}/../../../../logstash
+:stack-docs-root:             {docdir}/../../../../stack-docs
+
+// These dir attributes are used to find included files:
+:beats-repo-dir:              {beats-root}/libbeat/docs
+:cloud-repo-dir:              {cloud-root}/docs
+:es-repo-dir:                 {elasticsearch-root}/docs/reference
+:xes-repo-dir:                {elasticsearch-root}/x-pack/docs/{lang}
+:hadoop-repo-dir:             {elasticsearch-hadoop-root}/docs/src/reference/asciidoc
+:kib-repo-dir:                {kibana-root}/docs
+:ls-repo-dir:                 {logstash-root}/docs
+:stack-repo-dir:              {stack-docs-root}/docs/en/stack
+:includedir:                  {stack-repo-dir}
+
+include::{docs-root}/shared/versions/stack/master.asciidoc[]
+include::{docs-root}/shared/attributes.asciidoc[]
 
 //Attributes for ESS APIs
-:n:                    {ess}
-:s:                    ESS
-:p:                    ec
+:n:                           {ess}
+:s:                           ESS
+:p:                           ec
 
 include::landing-all.asciidoc[]

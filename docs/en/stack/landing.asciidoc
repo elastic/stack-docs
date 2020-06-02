@@ -264,10 +264,37 @@ TBD
 [[transform-data]]
 === Transform your data
 
-TBD
+ifeval::["{buildtool}" == "asciidoctor"]
+:imagesdir: {es-repo-dir}/transform
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:imagesdir: elasticsearch/docs/reference/transform
+endif::[]
+include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
+ifeval::["{buildtool}" == "asciidoctor"]
+:!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:!imagesdir:
+endif::[]
 
 [[analyze-data]]
-=== Analyze your data
+=== Analyze your data with {ml}
+
+TBD
+
+[[detect-anomalies]]
+==== Detect anomalies in timeseries data
+
+TBD
+
+[[detect-outliers]]
+==== Detect outliers
+
+TBD
+
+[[make-predictions]]
+==== Make predictions with supervised {ml}
 
 TBD
 
@@ -447,6 +474,10 @@ include::{es-repo-dir}/api-conventions.asciidoc[leveloffset=+2]
 
 include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+2]
 
+include::{es-repo-dir}/ml/df-analytics/apis/index.asciidoc[leveloffset=+2]
+
+include::{es-repo-dir}/transform/apis/index.asciidoc[leveloffset=+2]
+
 [[ess-apis]]
 === {ess} APIs
 
@@ -487,6 +518,8 @@ TBD
 === Elasticsearch settings
 
 include::{es-repo-dir}/settings/ml-settings.asciidoc[leveloffset=+1]
+
+include::{es-repo-dir}/settings/transform-settings.asciidoc[leveloffset=+1]
 
 [[elasticsearch-plugins]]
 === Elasticsearch plugins & integrations

@@ -1,7 +1,8 @@
 [[base16-or-base32-encoding-decoding-activity]]
 === Base16 or Base32 Encoding/Decoding Activity
 
-Adversaries may encode/decode data in an attempt to evade detection by host- or network-based security controls.
+Identifies attempts to encode and decode data, a technique adversaries can
+use to evade detection by host- or network-based security controls.
 
 *Rule type*: query
 
@@ -31,7 +32,9 @@ Adversaries may encode/decode data in an attempt to evade detection by host- or 
 
 ==== Potential false positives
 
-Automated tools such as Jenkins may encode or decode files as part of their normal behavior. These events can be filtered by the process executable or username values.
+Automated tools such as Jenkins may encode or decode files as part of their
+normal behavior. These events can be filtered by the process executable or
+username values.
 
 ==== Rule query
 

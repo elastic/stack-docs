@@ -184,37 +184,42 @@ endif::[]
 [[analyze-data-ml]]
 === Analyze your data with {ml}
 
-TBD
+ifeval::["{buildtool}" != "gradle-nooffsets"]
+include::ml/setup.asciidoc[leveloffset=+2]
+endif::[]
 
 [[detect-anomalies]]
 ==== Detect anomalies in timeseries data
 
-TBD
+include::ml/anomaly-detection/index.asciidoc[lines=7..11]
+
+include::ml/lifecycle.adoc[lines=1..12]
 
 [[detect-outliers]]
 ==== Detect outliers
 
-TBD
+include::ml/lifecycle.adoc[lines=15..26]
 
 [[make-predictions]]
 ==== Make predictions with supervised {ml}
 
-TBD
-
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ml/df-analytics/
+include::ml/lifecycle.adoc[lines=15..26]
 include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
 include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+include::ml/lifecycle.adoc[lines=15..26]
 include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
 include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+include::ml/lifecycle.adoc[lines=15..26]
 include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
 include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
 :!imagesdir:

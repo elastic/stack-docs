@@ -286,22 +286,22 @@ TBD
 [[detect-anomalies]]
 ==== Detect anomalies in timeseries data
 
-TBD
+include::ml/lifecycle.adoc[]
 
 [[detect-outliers]]
 ==== Detect outliers
 
-TBD
+include::ml/lifecycle.adoc[]
 
 [[make-predictions]]
 ==== Make predictions with supervised {ml}
 
-TBD
-
 ifeval::["{buildtool}" == "asciidoctor"]
+include::ml/lifecycle.adoc[]
 :imagesdir: ml/df-analytics/
 endif::[]
 ifeval::["{buildtool}" == "gradle"]
+include::ml/lifecycle.adoc[lines=15..26]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
 endif::[]
 include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
@@ -400,7 +400,6 @@ TBD
 === Machine learning - anomaly detection
 
 ifeval::["{buildtool}" == "asciidoctor"]
-include::ml/lifecycle.adoc[]
 :imagesdir: ml/anomaly-detection/
 endif::[]
 ifeval::["{buildtool}" == "gradle"]

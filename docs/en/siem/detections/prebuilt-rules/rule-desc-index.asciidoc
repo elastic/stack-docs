@@ -10,11 +10,23 @@ include::rule-details/anomalous-process-for-a-windows-population.asciidoc[]
 
 include::rule-details/anomalous-windows-process-creation.asciidoc[]
 
+include::rule-details/attempt-to-disable-iptables-or-firewall.asciidoc[]
+
+include::rule-details/attempt-to-disable-syslog-service.asciidoc[]
+
+include::rule-details/base16-or-base32-encoding-decoding-activity.asciidoc[]
+
+include::rule-details/base64-encoding-decoding-activity.asciidoc[]
+
 include::rule-details/bypass-uac-via-event-viewer.asciidoc[]
 
 include::rule-details/clearing-windows-event-logs.asciidoc[]
 
 include::rule-details/command-prompt-network-connection.asciidoc[]
+
+include::rule-details/connection-to-external-network-via-telnet.asciidoc[]
+
+include::rule-details/connection-to-internal-network-via-telnet.asciidoc[]
 
 include::rule-details/credential-dumping-detected-elastic-endpoint.asciidoc[]
 
@@ -38,9 +50,9 @@ include::rule-details/disable-windows-firewall-rules-via-netsh.asciidoc[]
 
 include::rule-details/encoding-or-decoding-files-via-certutil.asciidoc[]
 
-include::rule-details/execution-via-regsvcs-regasm.asciidoc[]
+include::rule-details/enumeration-of-kernel-modules.asciidoc[]
 
-include::rule-details/execution-via-signed-binary.asciidoc[]
+include::rule-details/execution-via-regsvcs-regasm.asciidoc[]
 
 include::rule-details/exploit-detected-elastic-endpoint.asciidoc[]
 
@@ -48,11 +60,23 @@ include::rule-details/exploit-prevented-elastic-endpoint.asciidoc[]
 
 include::rule-details/ftp-file-transfer-protocol-activity-to-the-internet.asciidoc[]
 
+include::rule-details/file-deletion-via-shred.asciidoc[]
+
+include::rule-details/file-permission-modification-in-writable-directory.asciidoc[]
+
+include::rule-details/hex-encoding-decoding-activity.asciidoc[]
+
 include::rule-details/hping-process-activity.asciidoc[]
 
 include::rule-details/ipsec-nat-traversal-port-activity.asciidoc[]
 
 include::rule-details/irc-internet-relay-chat-protocol-activity-to-the-internet.asciidoc[]
+
+include::rule-details/interactive-terminal-spawned-via-perl.asciidoc[]
+
+include::rule-details/interactive-terminal-spawned-via-python.asciidoc[]
+
+include::rule-details/kernel-module-removal.asciidoc[]
 
 include::rule-details/local-scheduled-task-commands.asciidoc[]
 
@@ -114,6 +138,8 @@ include::rule-details/potential-application-shimming-via-sdbinst.asciidoc[]
 
 include::rule-details/potential-dns-tunneling-via-iodine.asciidoc[]
 
+include::rule-details/potential-disabling-of-selinux.asciidoc[]
+
 include::rule-details/potential-evasion-via-filter-manager.asciidoc[]
 
 include::rule-details/potential-modification-of-accessibility-binaries.asciidoc[]
@@ -160,9 +186,15 @@ include::rule-details/ssh-secure-shell-from-the-internet.asciidoc[]
 
 include::rule-details/ssh-secure-shell-to-the-internet.asciidoc[]
 
+include::rule-details/setgid-bit-set-via-chmod.asciidoc[]
+
+include::rule-details/setuid-bit-set-via-chmod.asciidoc[]
+
 include::rule-details/socat-process-activity.asciidoc[]
 
 include::rule-details/strace-process-activity.asciidoc[]
+
+include::rule-details/sudoers-file-modification.asciidoc[]
 
 include::rule-details/suspicious-ms-office-child-process.asciidoc[]
 
@@ -171,10 +203,6 @@ include::rule-details/suspicious-ms-outlook-child-process.asciidoc[]
 include::rule-details/suspicious-pdf-reader-child-process.asciidoc[]
 
 include::rule-details/suspicious-powershell-script.asciidoc[]
-
-include::rule-details/suspicious-process-spawning-from-script-interpreter.asciidoc[]
-
-include::rule-details/suspicious-script-object-execution.asciidoc[]
 
 include::rule-details/svchost-spawning-cmd.asciidoc[]
 
@@ -239,6 +267,8 @@ include::rule-details/user-discovery-via-whoami.asciidoc[]
 include::rule-details/vnc-virtual-network-computing-from-the-internet.asciidoc[]
 
 include::rule-details/vnc-virtual-network-computing-to-the-internet.asciidoc[]
+
+include::rule-details/virtual-machine-fingerprinting.asciidoc[]
 
 include::rule-details/volume-shadow-copy-deletion-via-vssadmin.asciidoc[]
 

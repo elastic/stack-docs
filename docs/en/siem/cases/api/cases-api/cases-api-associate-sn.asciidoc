@@ -1,11 +1,11 @@
 [[cases-api-associate-sn-incident]]
 === Add external details to case
 
-Adds the data returned from {sn} to the specified case.
+Adds the data returned from an external system to the specified case.
 
-After sending a new or updated case to {sn} using the
-<<cases-actions-api-execute, Actions API>>, you must associate the returned
-{sn} incident fields with the case in the {siem-app}.
+After sending a new or updated case to an external system using the
+<<cases-actions-api-execute, Actions API>>, you must associate
+the external system's returned object with the case in the {siem-app}.
 
 ==== Request URL
 
@@ -18,19 +18,19 @@ The URL must include the `case ID` of the case you are updating. Call
 
 ==== Request body
 
-A JSON object with the data returned from {sn}:
+A JSON object with the data returned from the external system:
 
 [width="100%",options="header"]
 |==============================================
 |Name |Type |Description |Required
 
-|`connector_id` |String |The ID of the connector used to send the case to {sn}.
-|Yes
-|`connector_name` |String |The ID of the connector used to send the case to
-{sn}. |Yes
-|`external_id` |String |The `incidentId` returned when calling
+|`connector_id` |String |The ID of the connector used to send the case to the
+external system. |Yes
+|`connector_name` |String |The name of the connector used to send the case to
+the external system.. |Yes
+|`external_id` |String |The `id` returned when calling
 <<cases-actions-api-execute>>. |Yes
-|`external_title` |String |The `number` returned when calling
+|`external_title` |String |The `title` returned when calling
 <<cases-actions-api-execute>>. |Yes
 |`external_url` |String |The `url` returned when calling
 <<cases-actions-api-execute>>. |Yes

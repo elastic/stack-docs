@@ -90,17 +90,11 @@ TBD
 [[managing-licenses]]
 === Manage subscriptions
 
-ifeval::["{buildtool}" == "gradle"]
-:imagesdir: kibana/docs/
-endif::[]
-ifeval::["{buildtool}" == "gradle-nooffsets"]
+ifeval::["{buildtool}" != "asciidoctor"]
 :imagesdir: kibana/docs/
 endif::[]
 include::{kib-repo-dir}/management/managing-licenses.asciidoc[lines=4..-1]
-ifeval::["{buildtool}" == "gradle"]
-:!imagesdir:
-endif::[]
-ifeval::["{buildtool}" == "gradle-nooffsets"]
+ifeval::["{buildtool}" != "asciidoctor"]
 :!imagesdir:
 endif::[]
 
@@ -110,10 +104,7 @@ endif::[]
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ../../../../elasticsearch/docs/reference/monitoring/
 endif::[]
-ifeval::["{buildtool}" == "gradle"]
-:imagesdir: elasticsearch/docs/reference/monitoring/
-endif::[]
-ifeval::["{buildtool}" == "gradle-nooffsets"]
+ifeval::["{buildtool}" != "asciidoctor"]
 :imagesdir: elasticsearch/docs/reference/monitoring/
 endif::[]
 include::{es-repo-dir}/monitoring/overview.asciidoc[lines=8..-1]
@@ -182,15 +173,13 @@ ifeval::["{buildtool}" == "gradle"]
 :imagesdir: elasticsearch/docs/reference/transform
 include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
 endif::[]
-ifeval::["{buildtool}" == "gradle-nooffsets"]
-:imagesdir: elasticsearch/docs/reference/transform
-include::{es-repo-dir}/transform/index.asciidoc[lines=4..12]
-endif::[]
-ifeval::["{buildtool}" == "builddocs"]
-include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
-endif::[]
 ifeval::["{buildtool}" != "builddocs"]
 :!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:imagesdir: elasticsearch/docs/reference/transform
+include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
+:leveloffset: +1
 endif::[]
 
 [[analyze-data-ml]]
@@ -219,28 +208,18 @@ include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
 include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
 :!imagesdir:
 endif::[]
-
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
 include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
 include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
 :!imagesdir:
 endif::[]
-
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
-
-[[ml-dfa-phases]]
-==== How a {dfanalytics-job} works
-
-TBD
-
-[[ml-dfanalytics-evaluate]]
-==== Evaluating {dfanalytics}
-
-TBD
-
+include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
+include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
 :!imagesdir:
+:leveloffset: +1
 endif::[]
 
 [[manage-kibana]]
@@ -360,7 +339,13 @@ ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: stack-docs/docs/en/stack/ml/anomaly-detection/
 include::ml/anomaly-detection/analyzing.asciidoc[]
 include::ml/anomaly-detection/forecasting.asciidoc[]
+include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+1]
+include::ml/anomaly-detection/jobs.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/buckets.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/datafeeds.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/influencers.asciidoc[leveloffset=+2]
 :!imagesdir:
+:leveloffset: +1
 endif::[]
 
 [data-frame-analytics]
@@ -393,7 +378,15 @@ endif::[]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
 include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
+include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+1]
+include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+2]
+include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+2]
+include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+2]
 :!imagesdir:
+:leveloffset: +1
 endif::[]
 
 [[security-concepts]]
@@ -413,14 +406,10 @@ include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,le
 endif::[]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: elasticsearch/x-pack/docs/en/
-[[realms]]
-==== Realms
-include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=4..53]
-
-[[roles]]
-==== Role-based access control
-include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=14..62]
+include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+1]
+include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+2]
 :!imagesdir:
+:leveloffset: +1
 endif::[]
 
 [[stack-apis]]
@@ -431,7 +420,6 @@ endif::[]
 
 include::{es-repo-dir}/rest-api/index.asciidoc[lines=6..12]
 
-ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{es-repo-dir}/api-conventions.asciidoc[leveloffset=+2]
 
 include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+2]
@@ -439,6 +427,9 @@ include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+2]
 include::{es-repo-dir}/ml/df-analytics/apis/index.asciidoc[leveloffset=+2]
 
 include::{es-repo-dir}/transform/apis/index.asciidoc[leveloffset=+2]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[ess-apis]]
@@ -446,26 +437,54 @@ endif::[]
 
 include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=6..15]
 
-ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=19..-1,leveloffset=+2]
 
 include::{cloud-repo-dir}/saas/saas-api-swagger.asciidoc[leveloffset=+3]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[kibana-apis]]
 === {kib} APIs
 
 include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
-ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+2]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
 include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+2]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[stack-reference]]
@@ -485,9 +504,16 @@ TBD
 [[elasticsearch-settings]]
 === Elasticsearch settings
 
-ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{es-repo-dir}/settings/ml-settings.asciidoc[leveloffset=+1]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
+endif::[]
+
 include::{es-repo-dir}/settings/transform-settings.asciidoc[leveloffset=+1]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[elasticsearch-plugins]]
@@ -498,15 +524,19 @@ TBD
 [[ml-functions]]
 === Machine learning functions
 
-ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{es-repo-dir}/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+1]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[ml-modules]]
 === Machine learning modules
 
-ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{includedir}/ml/anomaly-detection/ootb-ml-jobs.asciidoc[lines=5..-1,leveloffset=+1]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[ml-limitations]]
@@ -540,6 +570,10 @@ endif::[]
 
 ifeval::["{buildtool}" != "gradle-nooffsets"]
 include::{stack-docs-root}/docs/en/glossary/glossary.asciidoc[leveloffset=+1]
+endif::[]
+
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:leveloffset: +1
 endif::[]
 
 [[stack-release-notes]]

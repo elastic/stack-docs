@@ -4,10 +4,12 @@
 
 This section lists ECS fields the {siem-app} uses to display data.
 
-IMPORTANT: It is recommended to use {beats} to ship your data. When you use
-{beats}, manual field mapping is not required and all {siem-app} data is
-populated. If you cannot use {beats}, map your data to {ecs-ref}[ECS fields]
-(see {ecs-ref}/ecs-converting.html[how to map data to ECS]).
+IMPORTANT: It is recommended to use {beats} to ship your data. Beat modules
+(for example, {filebeat-ref}/filebeat-modules.html[{filebeat} modules])
+are ECS-compliant so manual field mapping is not required, and all {siem-app}
+data is automatically populated. If you cannot use {beats}, map your data to
+{ecs-ref}[ECS fields] (see {ecs-ref}/ecs-converting.html[how to map data to ECS]).
+You can also try using the experimental https://github.com/elastic/ecs-mapper[ECS Mapper] tool.
 
 [float]
 [[siem-host-fields]]

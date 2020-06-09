@@ -1,36 +1,49 @@
 [[install-logs-monitoring]]
 [role="xpack"]
-== Setting up logs monitoring
+== Install Logs
 
-To set up logs monitoring, you need:
+The easiest way to get started with Elastic Logs is by using our hosted {es} Service on Elastic Cloud.
+The {es} Service is available on both AWS and GCP, and automatically configures {es} and {kib}.
 
-* An Elasticsearch cluster and Kibana (version 6.5 or later) with a basic license
-// Add a link to what constitutes a basic license. And is this any different for the cloud?
-
-* Appropriate {beats} shippers (version 6.5 or later) installed and enabled on each of the systems you want to
-monitor
-
-If your data uses nonstandard fields, you may need to modify some of the default configuration settings.
+NOTE: If your data uses nonstandard fields, you may need to modify some of the default <<xpack-logs-configuring,configuration settings>>.
 
 [float]
-=== Get Elasticsearch and Kibana
+=== Hosted Elasticsearch Service
 
-To get started, you can use our hosted {es} Service on Elastic Cloud (recommended for new users), or you can install {es} and {kib} locally.
-
-[float]
-==== Use our hosted service
-
-The hosted {es} Service is available on both AWS and GCP.
+Skip installing and managing your own {es} and {kib} instance by using our hosted {es} Service.
 {ess-trial}[Try out the {es} Service for free].
 
 [float]
-==== Install {es} and {kib} locally
+=== Install the stack yourself
 
-Alternatively, you can {stack-gs}/get-started-elastic-stack.html[install {es} and {kib} locally].
-Follow the instructions to install {es}, and to install and start {kib}.
+If you'd rather install the stack yourself,
+first see the https://www.elastic.co/support/matrix[Elastic Support Matrix] for information about supported operating systems and product compatibility.
 
-[float]
-=== Install {beats} shippers
+* <<install-elasticsearch-logs>>
+* <<install-kibana-logs>> (version 6.5 or later) with a basic license
+* <<install-shippers>> (version 6.5 or later) on each of the systems you want to
+monitor
+
+[[install-elasticsearch-logs]]
+=== Step 1: Install Elasticsearch
+
+Install an {es} cluster, start it up, and make sure it's running.
+
+. Verify that your system meets the
+https://www.elastic.co/support/matrix#matrix_jvm[minimum JVM requirements] for {es}.
+. {stack-gs}/get-started-elastic-stack.html#install-elasticsearch[Install Elasticsearch].
+. {stack-gs}/get-started-elastic-stack.html#_make_sure_elasticsearch_is_up_and_running[Make sure elasticsearch is up and running].
+
+[[install-kibana-logs]]
+=== Step 2: Install Kibana
+
+Install {kib}, start it up, and open up the web interface:
+
+. {stack-gs}/get-started-elastic-stack.html#install-kibana[Install Kibana].
+. {stack-gs}/get-started-elastic-stack.html#_launch_the_kibana_web_interface[Launch the Kibana Web Interface].
+
+[[install-shippers]]
+=== Step 3: Install and enable {beats} shippers
 
 To start collecting logs data, you need to install and configure the {filebeat} {beats} shipper.
 
@@ -81,7 +94,7 @@ To collect logs from Kubernetes pods, enable:
 === Configure your data sources
 
 If your logs data has nonstandard fields, you may need to modify some configuration settings in {kib}, such as the index pattern used to query the data, and the timestamp field used for sorting.
-To modify configuration settings, use the {kibana-ref}/xpack-logs-configuring.html[*Settings* tab in the {logs-app}].
+To modify configuration settings, use the <<xpack-logs-configuring,Settings tab>> in the {logs-app}.
 Alternatively, see {kibana-ref}/logs-ui-settings-kb.html[{logs} settings] for a complete list of logs configuration settings.
 
 [float]

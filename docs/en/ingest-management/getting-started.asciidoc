@@ -1,3 +1,42 @@
 [[ingest-management-getting-started]]
 [chapter, role="xpack"]
 = Getting Started
+
+// Scenario 1: use elastic-agent in standalone mode to send data to ES
+// this assumes a locally running nginx service that can be monitored with
+// metricbeat and filebeat
+
+// Enable Ingest Manager in Kibana
+// - in cloud
+// - in local installation
+
+// Navigate to ingest manager to ensure base & system packages are installed
+// Install nginx package
+
+// download and install elastic-agent
+// configure it to run without using fleet for enrolling
+// run it
+
+// go back to Kibana, navigate to the data stream page
+// find your data
+// navigate to dashboards
+// hooray!
+
+// Scenario 2: use Fleet to configure the agent, enrol elastic-agent in fleet
+// this too assumes a locally running nginx service
+
+// Enable Ingest Manager & Fleet in Kibana
+// - in cloud
+// - in local installation
+
+// Navigate to ingest manager and install nginx package
+// Navigate to Fleet submenu, enable Fleet
+
+// Enrol agent through UI & on command line (as instructed by UI)
+// run it
+
+// go back to Kibana, navigate to the data stream page
+// find your data, rejoice etc.
+
+// Unenrol agent from UI
+// verify that it can't send data anymore

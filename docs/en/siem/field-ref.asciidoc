@@ -144,6 +144,7 @@ NOTE: For external alerts, the `event.kind` field value must be `alert`.
 * `event.module`
 * `event.original`
 * `event.outcome`
+* `event.provider`
 * `event.risk_score_norm`
 * `event.risk_score`
 * `event.severity`
@@ -182,12 +183,15 @@ NOTE: For external alerts, the `event.kind` field value must be `alert`.
 * `network.packets`
 * `network.protocol`
 * `network.transport`
+* `pe.original_file_name`
 * `process.args`
 * `process.executable`
 * `process.hash.md5`
 * `process.hash.sha1`
 * `process.hash.sha256`
 * `process.name`
+* `process.parent.executable`
+* `process.parent.name`
 * `process.pid`
 * `process.ppid`
 * `process.title`
@@ -221,7 +225,8 @@ NOTE: For external alerts, the `event.kind` field value must be `alert`.
 // * `tls.server_certificate.fingerprint.sha1` (Packetbeat field)
 * `user.domain`
 * `user.name`
-* `winlog.event_id` {winlogbeat-ref}/exported-fields-winlog.html[(Winlogbeat field)]
+* `winlog.event_data.OriginalFileName` {winlogbeat-ref}/exported-fields-winlog.html[(Winlogbeat field)]
+* `winlog.event_id` (Winlogbeat field)
 * `zeek.connection.history` {filebeat-ref}/exported-fields-zeek.html[(Filebeat field)]
 * `zeek.connection.local_orig` (Filebeat field)
 * `zeek.connection.local_resp` (Filebeat field)

@@ -1,0 +1,52 @@
+[[sudoers-file-modification]]
+=== Sudoers File Modification
+
+A sudoers file specifies the commands that users or groups can run and from which terminals. Adversaries can take advantage of these configurations to execute commands as other users or spawn processes with higher privileges.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.module:file_integrity and event.action:updated and
+file.path:/etc/sudoers
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Sudo
+** ID: T1169
+** Reference URL: https://attack.mitre.org/techniques/T1169/

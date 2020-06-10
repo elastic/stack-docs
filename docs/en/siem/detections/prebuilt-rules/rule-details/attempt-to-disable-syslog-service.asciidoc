@@ -1,0 +1,55 @@
+[[attempt-to-disable-syslog-service]]
+=== Attempt to Disable Syslog Service
+
+Identifies attempts to disable the syslog service, a technique adversaries can
+use to disrupt event logging and evade detection by security controls.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:(executed or process_started) and ((process.name:service
+and process.args:stop) or (process.name:chkconfig and
+process.args:off) or (process.name:systemctl and process.args:(disable
+or stop or kill))) and process.args:(syslog or rsyslog or "syslog-ng")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Disabling Security Tools
+** ID: T1089
+** Reference URL: https://attack.mitre.org/techniques/T1089/

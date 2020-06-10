@@ -1,0 +1,62 @@
+[[setuid-bit-set-via-chmod]]
+=== Setuid Bit Set via chmod
+
+An adversary may add the setuid bit to a file or directory in order to run a file with the privileges of the owning user. An adversary can take advantage of this to either do a shell escape or exploit a vulnerability in an application with the setuid bit to get code running in a different user’s context. Additionally, adversaries can use this mechanism on their own malware to make sure they're able to execute in elevated contexts in the future.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 33
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:(executed OR process_started) AND process.name:chmod AND
+process.args:(u+s OR /4[0-9]{3}/) AND NOT user.name:root
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Privilege Escalation
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Setuid and Setgid
+** ID: T1166
+** Reference URL: https://attack.mitre.org/techniques/T1166/
+
+
+* Tactic:
+** Name: Persistence
+** ID: TA0004
+** Reference URL: https://attack.mitre.org/tactics/TA0004/
+* Technique:
+** Name: Setuid and Setgid
+** ID: T1166
+** Reference URL: https://attack.mitre.org/techniques/T1166/

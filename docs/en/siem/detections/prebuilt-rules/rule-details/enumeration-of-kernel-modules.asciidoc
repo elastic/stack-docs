@@ -1,0 +1,59 @@
+[[enumeration-of-kernel-modules]]
+=== Enumeration of Kernel Modules
+
+Identifies attempts to enumerate information about a kernel module. Loadable
+Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into
+the kernel upon demand. They extend the functionality of the kernel without the
+need to reboot the system.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Potential false positives
+
+Security tools and device drivers may run these programs in order to enumerate kernel modules. Use of these programs by ordinary users is uncommon. These can be exempted by process name or username.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:executed and process.args:(kmod and list and sudo or sudo
+and (depmod or lsmod or modinfo))
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Discovery
+** ID: TA0007
+** Reference URL: https://attack.mitre.org/tactics/TA0007/
+* Technique:
+** Name: System Information Discovery
+** ID: T1082
+** Reference URL: https://attack.mitre.org/techniques/T1082/

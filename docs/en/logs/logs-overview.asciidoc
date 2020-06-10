@@ -1,19 +1,17 @@
-[[logs-app-overview]]
+[[logs-overview]]
 [role="xpack"]
 == Logs monitoring overview
+
+++++
+<titleabbrev>Overview</titleabbrev>
+++++
 
 Logs monitoring enables you to view logs from your infrastructure to help identify problems in real-time.
 You can view logs from servers, containers, services, and so on.
 Additionally, you can drill down to view detailed information about an individual log entry, or you can seamlessly switch to view corresponding metrics, uptime information, or APM traces where available. You can also use machine learning to detect specific log anomalies automatically.
 
-// Add links to metrics, uptime and APM when I have good places to link to.
-
 [float]
 === Logs monitoring components
-
-image::images/logs-monitoring-architecture.png[]
-
-// Redo image for metrics and logs separately.
 
 Logs monitoring requires the following {stack} components.
 
@@ -30,4 +28,6 @@ Filebeat modules are available for most typical servers, containers, and service
 You use {kib} to search, view, and interact with the logs data stored in {es}.
 You can perform advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
-The <<logs-ui-overview, {logs-app}>> in {kib} provides a dedicated user interface to view logs from the servers, containers, and services in your infrastructure.
+The <<logs-app-overview, {logs-app}>> in {kib} provides a dedicated user interface to view logs from the servers, containers, and services in your infrastructure.
+
+image::images/logs-monitoring-architecture.png[Logs monitoring components]

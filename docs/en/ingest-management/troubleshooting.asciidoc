@@ -4,12 +4,75 @@
 
 This release of Ingest Management is an experimental release. With this early release we explicitly invite you to install and test it **in a test environment**, but it is absolutely possible that you run into problems and need to tweak your setup to get it running.
 
-We have collected the most common known problems below. If your question isn't answered here, please contact us https://ela.st/ingest-manager-feedback{here}. Your feedback is very valuable to us.
+We have collected the most common known problems below. If your question isn't answered here, please review open issues in the https://github.com/elastic/kibana/issues, https://github.com/elastic/beats/issuess, https://github.com/elastic/package-registry/issues, and contact us https://ela.st/ingest-manager-feedback{here}. Your feedback is very valuable to us.
 
+* <<ingest-manager-not-in-cloud-kibana>>
+* <<ingest-management-setup-fails>>
+* <<ingest-manager-app-crashes>>
+* <<agent-enrollment-timeout>>
+* <<enrolled-agent-not-showing-up>>
+* <<where-are-the-agent-logs>>
+* <<ingest-manager-not-in-on-prem-kibana>>
+
+[[ingest-manager-not-in-kibana]]
+=== The {ingest-manager} app is not listed in my Kibana cloud navigation list.
+
+In 7.8, the {ingest-manager} app is in Alpha state and as such is only shown when specifically enabled in the start up or cloud 'override' options.  To enable {ingest-manager} on cloud, go to your deployment in the user console.  Click on the 'edit' link directly beneath the deployment name.  Then click on 'user setting overrides' underneath the Kibana heading.  Here you must enter the following x-pack option and click the save button at the bottom:
+xpack.ingestManager.enabled: true
+
+This will restart Kibana automtically and when done, you can refresh the browser and see the app in the left hand navigation
+
+[[ingest-management-setup-fails]]
+=== The endpoint `/api/ingest_management/setup` returns an error that the package registry can't be reached.
+
+In order to install {integrations}, the {ingest-manager} app needs to connect to an external service, the {package-registry}. For this to work, Kibana server must be able to connect to http://epr-experimental.elastic.co on port 80.
+
+[[ingest-manager-app-crashes]]
 === The {ingest-manager} app in Kibana crashes.
 
 To find more about the error, open the development console of your browser, navigate to the **Network** tab and refresh the page. One of the requests to the Ingest Manager API will most likely have returned with an error. If the error message doesn't give you enough information to fix the problem on your own, please contact us https://ela.st/ingest-manager-feedback{here}.
 
-=== The endpoint `/api/ingest_management/setup` returns an error that the package registry can't be reached.
 
-In order to install {integrations}, the {ingest-manager} app needs to connect to an external service, the {package-registry}. For this to work, Kibana server must be able to connect to http://epr-experimental.elastic.co on port 80.
+[[agent-enrollment-timeout]]
+=== I get a time-out when I try to run the agent enrollment on my host
+This can look like the below console output: 
+fail to enroll: fail to execute request to Kibana: Post http://kibana:5601/api/ingest_manager/fleet/agents/enroll?: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+
+This is possibly due to a connectivity problem with the host talking to the Kibana instance.  It may be a networking problem, attempt a 'ping' command from the host to confirm it can reach the Kibana instance.  If this works, then it could be a problem with the specified enrollment command executed.  If 'ping' works, check the URL and port, both are correct for your environment.  If those are correct and working, check the enrollment key in the enrollment command you are trying to execute is valid.  You can do this by viewing the Fleet ui in {ingest-manager} and clicking on the Enrollment Tokens tab.  If you click the 'eyeball' for each listed secret, one listed should match the string being used in your host's enrollment command. If it is not listed, create a new enrollment token and replace it in the command, this can be done in that same UI.
+
+[[enrolled-agent-not-showing-up]]
+I ran the Agent enrollment step but I don’t see the Agent in the UI
+If Elastic Agent was successfully enrolled, but doesn't show up in the Fleet list a common problem is that it was not 'started'.  Starting the Agent is a separate step which can be done as follows as the below.
+
+On linux & macos hosts:
+./elastic-agent run
+
+On Windows hosts:
+elastic-agent.exe run
+
+[[where-are-the-agent-logs]]
+I need to find the logs when the Agent starts up
+
+When started successfully, the logs are in the folder where the Agent was started, in a sub-directory 'data/logs/metricbeat'
+If that path of logs does not exist, it indicates Agent did not successfully run metricbeat, which is a higher level problem to triage.
+
+
+[[ingest-manager-not-in-on-prem-kibana]]
+=== The {ingest-manager} app is not listed in my Kibana on-premises navigation list.
+
+In 7.8, the {ingest-manager} app is in Alpha state and as such is only shown when specifically enabled in the start up config.  To do this you must modify both the Elasticsearch and Kibana configs as well as adhering to all 'security enabled' requirements, like modifying the default elastic user password, see below for details:
+
+For Elasticsearch, file config/elasticsearch.yml you must set these start up options:
+xpack.security.enabled: true
+xpack.security.authc.api_key.enabled: true
+
+For Kibana config/kibana.yml you must set these start up options (the exception is tlsCheckDisabled which is not required if configure TLS checking)
+xpack.ingestManager.enabled: true
+xpack.ingestManager.fleet.tlsCheckDisabled: true
+xpack.security.enabled: true
+elasticsearch.username: "elastic"
+elasticsearch.password: "abc123iUnbRftkABC123"
+
+NOTE:  your elasticsearch.password above will be different, of course. It can be set with the documented Elastic apis, or you may wish to use the password re-setting script that comes with Elasticsearch.  It is in the /bin elasticsearch directory and can be used like:
+./bin/elasticsearch-setup-passwords auto 
+ - copy the elatic user name and put it to the kibana config file above after running the script.  Then re-start Kibana.

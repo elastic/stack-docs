@@ -1,3 +1,15 @@
 [[ingest-management-troubleshooting]]
 [chapter, role="xpack"]
 = Troubleshooting
+
+This release of Ingest Management is an experimental release. With this early release we explicitly invite you to install and test it **in a test environment**, but it is absolutely possible that you run into problems and need to tweak your setup to get it running.
+
+We have collected the most common known problems below. If your question isn't answered here, please contact us https://ela.st/ingest-manager-feedback{here}. Your feedback is very valuable to us.
+
+=== The {ingest-manager} app in Kibana crashes.
+
+To find more about the error, open the development console of your browser, navigate to the **Network** tab and refresh the page. One of the requests to the Ingest Manager API will most likely have returned with an error. If the error message doesn't give you enough information to fix the problem on your own, please contact us https://ela.st/ingest-manager-feedback{here}.
+
+=== The endpoint `/api/ingest_management/setup` returns an error that the package registry can't be reached.
+
+In order to install {integrations}, the {ingest-manager} app needs to connect to an external service, the {package-registry}. For this to work, Kibana server must be able to connect to http://epr-experimental.elastic.co on port 80.

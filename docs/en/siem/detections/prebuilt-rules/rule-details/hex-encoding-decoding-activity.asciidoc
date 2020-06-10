@@ -1,0 +1,67 @@
+[[hex-encoding-decoding-activity]]
+=== Hex Encoding/Decoding Activity
+
+Identifies attempts to encode and decode data, a technique adversaries can
+use to evade detection by host- or network-based security controls.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: low
+
+*Risk score*: 21
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Potential false positives
+
+Automated tools such as Jenkins may encode or decode files as part of their normal behavior. These events can be filtered by the process executable or username values.
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:(executed or process_started) and process.name:(hex or
+xxd)
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Deobfuscate/Decode Files or Information
+** ID: T1140
+** Reference URL: https://attack.mitre.org/techniques/T1140/
+
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Obfuscated Files or Information
+** ID: T1027
+** Reference URL: https://attack.mitre.org/techniques/T1027/

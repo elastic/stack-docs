@@ -2,34 +2,130 @@
 [chapter, role="xpack"]
 = Getting Started
 
-// Scenario 1: use elastic-agent in standalone mode to send data to ES
-// this assumes a locally running nginx service that can be monitored with
-// metricbeat and filebeat
+To use Ingest Management, you need an Elasticsearch cluster and Kibana (version 7.8 for the experimental release)
+with a basic licence. See {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
 
-// Enable Ingest Manager in Kibana
-// - in cloud
-// - in local installation
+Notice: Since this is an experimental release, it should only be used in a dedicated test environment
+that can be deleted when you are done. Please do not enable or use Ingest Management in a production
+environment.
 
-// Navigate to ingest manager to ensure base & system packages are installed
-// Install nginx package
+== Prerequisites
 
-// download and install elastic-agent
-// configure it to run without using fleet for enrolling
-// run it
+If you want to use Ingest Management, the following prerequisites have to be met in the Elasticsearch configuration:
 
-// go back to Kibana, navigate to the data stream page
-// find your data
-// navigate to dashboards
-// hooray!
+- Elasticsearch security has to be enabled by setting `xpack.security.enabled` to `true`.
+- API keys have to be enabled in Elasticsearch by setting `xpack.security.authc.api_key.enabled` to `true`.
+
+If you use our https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
+Elastic Cloud, these settings will already be enabled.
+
+In this experimental release, Ingest Management is only available to users with the superuser role, see
+{ref}/built-in-roles.html // TODO: link correct?
+
+== Enable Ingest Management
+
+To enable Ingest Management, make the following changes to the Kibana configuration:
+
+- set `xpack.ingestManagement.enabled` to `true`
+
+If you are using our https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
+Elastic Cloud, you will need to add them to the Kibana user settings as described in 
+{cloud}/ec-manage-kibana-settings.html // TODO: link correct?
+
+If you are using an **on-premises** stack deployment, you will need to add them to the Kibana configuration
+ as described in {kibana-ref}/settings.html // TODO: check link
+
+To verify that Ingest Management has been correctly enabled, login to {kib} and use the menu to navigate to 
+**Management** > **Ingest Manager**. If the menu entry is visible, and you see the following start page
+for Ingest Manager, enabling Ingest Management has been successful.
+// TODO: style guide for screenshot size or ratio?
+// TODO: style guide for how to navigate the menu?
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-start.png[Ingest Manager app in Kibana]
+
+== Install an integration and create a data source
+
+Ingest Management bundles various assets that are needed to ingest and visualize data in **integrations**.
+
+In this Guide we assume that you have `nginx` running on some of your infrastructure, and want to
+collect logs and metrics from it. To do so, first install the `nginx` integration provided by Elastic.
+
+In the Ingest Manager app, navigate to **Integrations** and use the search bar to find the Nginx integration.
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-integrations-nginx.png[Ingest Manager app showing Nginx Integration]
+
+Click on the Nginx integration to see more details about it. On the upper right, select **Create data source**.
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-integrations-nginx-overview.png[Ingest Manager app showing Nginx Integration overview]
+
+On the **Add data source** screen, click to select the default agent configuration from the list, and scroll down to inspect or change the
+default settings that have been set for you. When you're done, click **Save data source**. 
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-integrations-nginx-add-datasource.png[Ingest Manager app Add data source screen]
+
+Navigate back to the main **Integrations** tab and select **Installed Integrations**. The Nginx integration has been installed and
+should show up in this list. (Note that the **System** and **Elastic Endpoint** integrations have been installed by default.)
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-integrations-list-installed.png[Ingest Manager app showing installed integrations]
+
+Navigate to **Configurations** and click on the Default config in the list. On the detail view, the newly created data source should appear in the list. (Note that the `system-1` data source has been created by default.)
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-configurations-default-with-nginx.png[Ingest Manager app showing default agent configuration with nginx-1 datasource]
+
+== Install and run elastic-agent
+
+Elastic Agent is a single, unified agent that you can deploy to hosts or containers to collect data and send it to the {stack}. Behind the scenes, Elastic Agent runs the {beats} shippers or Endpoint required for your configuration. It can be configured manually or from the Ingest Manager app in {kib}.
+
+=== Installation
+
+See INSERT LINK TO AGENT DOCS for instructions how to install Elastic Agent on your operating system.
+
+=== Standalone mode
+
+To configure Elastic Agent manually, navigate to **Configurations** in the Ingest Manager app and click on the Default config in the list. Then select the **YAML** tab to access the configuration for Elastic agent. Copy the content and put it into a file `elastic-agent-standalone.yml` on the system where you have installed Elastic agent.
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-configurations-default-yaml.png[Ingest Manager app showing default agent configuration in YAML format]
+
+Please note that the configuration file generated by the Ingest Manager app should already contain the correct elasticsearch address and port for your setup. If you run everything locally, this will be `127.0.0.1:9200`. If you are using our https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
+Elastic Cloud, this will correspond to the Elasticsearch endpoint URL that is also available under **Endpoints** as described in {cloud}/ec-working-with-elasticsearch.html.
+
+You will also have to add your elasticsearch username and password to the `outputs` section in the configuration file:
+
+```
+[...]
+outputs:
+  default:
+    type: elasticsearch
+    hosts:
+      - 'HOST:PORT'
+    username: ES_USERNAME
+    password: ES_PASSWORD
+datasources:
+[...]
+```
+
+Run Elastic agent with the command
+
+```
+$ ./elastic-agent -c elastic-agent-standalone.yml run
+```
+
+Navigate to the **Data streams** tab in the Ingest manager app to inspect the data that is sent by the agent. From the **Actions** column you can navigate to the dashboards corresponding to the data type that is sent.
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-datastreams.png[Ingest Manager app showing data streams list]
+
 
 // Scenario 2: use Fleet to configure the agent, enrol elastic-agent in fleet
 // this too assumes a locally running nginx service
 
-// Enable Ingest Manager & Fleet in Kibana
-// - in cloud
-// - in local installation
-
-// Navigate to ingest manager and install nginx package
 // Navigate to Fleet submenu, enable Fleet
 
 // Enrol agent through UI & on command line (as instructed by UI)

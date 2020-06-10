@@ -26,11 +26,11 @@ DLLs.
 * Elastic
 * Windows
 
-*Version*: 2 (<<unusual-network-connection-via-rundll32-history, version history>>)
+*Version*: 3 (<<unusual-network-connection-via-rundll32-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.7.0
+*Last modified ({stack} release)*: 7.8.0
 
 
 ==== Rule query
@@ -40,7 +40,7 @@ DLLs.
 ----------------------------------
 process.name:rundll32.exe and event.action:"Network connection
 detected (rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
-172.16.0.0/12 or 192.168.0.0/16)
+172.16.0.0/12 or 192.168.0.0/16 or 127.0.0.0/8)
 ----------------------------------
 
 ==== Threat mapping
@@ -58,6 +58,16 @@ detected (rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
 
 [[unusual-network-connection-via-rundll32-history]]
 ==== Rule version history
+
+Version 3 (7.8.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name:rundll32.exe and event.action:"Network connection
+detected (rule: NetworkConnect)" and not destination.ip:(10.0.0.0/8 or
+172.16.0.0/12 or 192.168.0.0/16)
+----------------------------------
 
 Version 2 (7.7.0 release)::
 Updated query, changed from:

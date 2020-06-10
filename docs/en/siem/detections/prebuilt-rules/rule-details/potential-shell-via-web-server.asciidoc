@@ -29,11 +29,11 @@ vulnerability and remote shell access.
 * Elastic
 * Linux
 
-*Version*: 2 (<<potential-shell-via-web-server-history, version history>>)
+*Version*: 3 (<<potential-shell-via-web-server-history, version history>>)
 
 *Added ({stack} release)*: 7.6.0
 
-*Last modified ({stack} release)*: 7.6.1
+*Last modified ({stack} release)*: 7.8.0
 
 
 ==== Potential false positives
@@ -46,8 +46,8 @@ runs shell commands as part of normal behavior.
 
 [source,js]
 ----------------------------------
-process.name:bash and user.name:(apache or www or www-data) and
-event.action:executed
+process.name:(bash or dash) and user.name:(apache or nginx or www or
+"www-data") and event.action:executed
 ----------------------------------
 
 ==== Threat mapping
@@ -65,6 +65,15 @@ event.action:executed
 
 [[potential-shell-via-web-server-history]]
 ==== Rule version history
+
+Version 3 (7.8.0 release)::
+Updated query, changed from:
++
+[source, js]
+----------------------------------
+process.name:bash and user.name:(apache or www or www-data) and
+event.action:executed
+----------------------------------
 
 Version 2 (7.6.1 release)::
 Updated query, changed from:

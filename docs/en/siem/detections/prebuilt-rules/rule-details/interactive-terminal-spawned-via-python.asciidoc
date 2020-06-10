@@ -1,0 +1,55 @@
+[[interactive-terminal-spawned-via-python]]
+=== Interactive Terminal Spawned via Python
+
+Identifies when a terminal (`tty`) is spawned via Python. Attackers may upgrade
+a simple reverse shell to a fully interactive `tty` after obtaining initial
+access to a host.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: high
+
+*Risk score*: 73
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:executed and process.name:python and
+process.args:("import pty; pty.spawn(\"/bin/sh\")" or "import pty;
+pty.spawn(\"/bin/dash\")" or "import pty; pty.spawn(\"/bin/bash\")")
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Execution
+** ID: TA0002
+** Reference URL: https://attack.mitre.org/tactics/TA0002/
+* Technique:
+** Name: Command-Line Interface
+** ID: T1059
+** Reference URL: https://attack.mitre.org/techniques/T1059/

@@ -1,0 +1,56 @@
+[[attempt-to-disable-iptables-or-firewall]]
+=== Attempt to Disable IPTables or Firewall
+
+Identifies attempts to disable iptables or a firewall service, a technique
+adversaries can to modify the network traffic hosts are allowed to send and
+receive.
+
+*Rule type*: query
+
+*Rule indices*:
+
+* auditbeat-*
+
+*Severity*: medium
+
+*Risk score*: 47
+
+*Runs every*: 5 minutes
+
+*Searches indices from*: now-6m ({ref}/common-options.html#date-math[Date Math format], see also <<rule-schedule, `Additional look-back time`>>)
+
+*Maximum signals per execution*: 100
+
+*Tags*:
+
+* Elastic
+* Linux
+
+*Version*: 1
+
+*Added ({stack} release)*: 7.8.0
+
+
+==== Rule query
+
+
+[source,js]
+----------------------------------
+event.action:(executed or process_started) and (process.name:service
+and process.args:stop or process.name:chkconfig and process.args:off)
+and process.args:(ip6tables or iptables) or process.name:systemctl and
+process.args:(firewalld and (disable or stop or kill))
+----------------------------------
+
+==== Threat mapping
+
+*Framework*: MITRE ATT&CK^TM^
+
+* Tactic:
+** Name: Defense Evasion
+** ID: TA0005
+** Reference URL: https://attack.mitre.org/tactics/TA0005/
+* Technique:
+** Name: Disabling Security Tools
+** ID: T1089
+** Reference URL: https://attack.mitre.org/techniques/T1089/

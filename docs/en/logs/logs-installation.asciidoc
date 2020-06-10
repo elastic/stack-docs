@@ -5,7 +5,7 @@
 The easiest way to get started with Elastic Logs is by using our hosted {es} Service on Elastic Cloud.
 The {es} Service is available on both AWS and GCP, and automatically configures {es} and {kib}.
 
-NOTE: If your data uses nonstandard fields, you may need to modify some of the default <<xpack-logs-configuring,configuration settings>>.
+NOTE: If your data uses nonstandard fields, you may need to modify some of the default <<configure-logs-source,configuration settings>>.
 
 [float]
 === Hosted Elasticsearch Service
@@ -71,10 +71,6 @@ If there is no module for the logs you want to collect, see the {filebeat-ref}/f
 
 However you install {beats}, you need to enable the appropriate modules in {filebeat} to start collecting logs data.
 
-// ++ I think some of this is still necessary even if you've followed the instructions to install Beats from Kibana.
-// ++ The instructions there explain how to enable the module. Below, we enable more stuff.
-// ++ What about if you are using Cloud? Is anything different?
-
 To collect logs from your host system, enable:
 
 * {filebeat-ref}/filebeat-module-system.html[{filebeat} `system` module]
@@ -94,7 +90,7 @@ To collect logs from Kubernetes pods, enable:
 === Configure your data sources
 
 If your logs data has nonstandard fields, you may need to modify some configuration settings in {kib}, such as the index pattern used to query the data, and the timestamp field used for sorting.
-To modify configuration settings, use the <<xpack-logs-configuring,Settings tab>> in the {logs-app}.
+To modify configuration settings, use the <<configure-logs-source,Settings tab>> in the {logs-app}.
 Alternatively, see {kibana-ref}/logs-ui-settings-kb.html[{logs} settings] for a complete list of logs configuration settings.
 
 [float]

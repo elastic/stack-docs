@@ -38,13 +38,13 @@ If you are using an **on-premises** stack deployment, you will need to add them 
  as described in {kibana-ref}/settings.html // TODO: check link
 
 To verify that Ingest Management has been correctly enabled, login to {kib} and use the menu to navigate to 
-**Management** > **Ingest Manager**. If the menu entry is visible, and you see the following start page
-for Ingest Manager, enabling Ingest Management has been successful.
+**Management** > **{ingest-manager}**. If the menu entry is visible, and you see the following start page
+for {ingest-manager}, enabling Ingest Management has been successful.
 // TODO: style guide for screenshot size or ratio?
 // TODO: style guide for how to navigate the menu?
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-start.png[Ingest Manager app in Kibana]
+image::images/kibana-ingest-manager-start.png[{ingest-manager} app in Kibana]
 
 == Install an integration and create a data source
 
@@ -53,52 +53,52 @@ Ingest Management bundles various assets that are needed to ingest and visualize
 In this Guide we assume that you have `nginx` running on some of your infrastructure, and want to
 collect logs and metrics from it. To do so, first install the `nginx` integration provided by Elastic.
 
-In the Ingest Manager app, navigate to **Integrations** and use the search bar to find the Nginx integration.
+In the {ingest-manager} app, navigate to **Integrations** and use the search bar to find the Nginx integration.
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-integrations-nginx.png[Ingest Manager app showing Nginx Integration]
+image::images/kibana-ingest-manager-integrations-nginx.png[{ingest-manager} app showing Nginx Integration]
 
 Click on the Nginx integration to see more details about it. On the upper right, select **Create data source**.
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-integrations-nginx-overview.png[Ingest Manager app showing Nginx Integration overview]
+image::images/kibana-ingest-manager-integrations-nginx-overview.png[{ingest-manager} app showing Nginx Integration overview]
 
 On the **Add data source** screen, click to select the default agent configuration from the list, and scroll down to inspect or change the
 default settings that have been set for you. When you're done, click **Save data source**. 
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-integrations-nginx-add-datasource.png[Ingest Manager app Add data source screen]
+image::images/kibana-ingest-manager-integrations-nginx-add-datasource.png[{ingest-manager} app Add data source screen]
 
 Navigate back to the main **Integrations** tab and select **Installed Integrations**. The Nginx integration has been installed and
 should show up in this list. (Note that the **System** and **Elastic Endpoint** integrations have been installed by default.)
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-integrations-list-installed.png[Ingest Manager app showing installed integrations]
+image::images/kibana-ingest-manager-integrations-list-installed.png[{ingest-manager} app showing installed integrations]
 
 Navigate to **Configurations** and click on the Default config in the list. On the detail view, the newly created data source should appear in the list. (Note that the `system-1` data source has been created by default.)
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-configurations-default-with-nginx.png[Ingest Manager app showing default agent configuration with nginx-1 datasource]
+image::images/kibana-ingest-manager-configurations-default-with-nginx.png[{ingest-manager} app showing default agent configuration with nginx-1 datasource]
 
 == Install and run elastic-agent
 
-Elastic Agent is a single, unified agent that you can deploy to hosts or containers to collect data and send it to the {stack}. Behind the scenes, Elastic Agent runs the {beats} shippers or Endpoint required for your configuration. It can be configured manually or from the Ingest Manager app in {kib}.
+{agent} is a single, unified agent that you can deploy to hosts or containers to collect data and send it to the {stack}. Behind the scenes, {agent} runs the {beats} shippers or Endpoint required for your configuration. It can be configured manually or from the {ingest-manager} app in {kib}.
 
 === Installation
 
-See {elastic-agent-ref}/elastic-agent.html for instructions how to install Elastic Agent on your operating system.
+See {elastic-agent-ref}/elastic-agent.html for instructions how to install {agent} on your operating system.
 // TODO link correct?
 // TODO elastic-agent-ref is not yet defined in https://github.com/elastic/docs/blob/master/shared/attributes.asciidoc
 
 
 === Standalone mode
 
-To configure Elastic Agent manually, navigate to **Configurations** in the Ingest Manager app and click on the Default config in the list. Then select the **YAML** tab to access the configuration for Elastic agent. Copy the content and put it into a file `elastic-agent-standalone.yml` on the system where you have installed Elastic agent.
+To configure {agent} manually, navigate to **Configurations** in the {ingest-manager} app and click on the Default config in the list. Then select the **YAML** tab to access the configuration for {agent}. Copy the content and put it into a file `elastic-agent-standalone.yml` on the system where you have installed {agent}.
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-configurations-default-yaml.png[Ingest Manager app showing default agent configuration in YAML format]
+image::images/kibana-ingest-manager-configurations-default-yaml.png[{ingest-manager} app showing default agent configuration in YAML format]
 
-Please note that the configuration file generated by the Ingest Manager app already contains the correct elasticsearch address and port for your setup. If you run everything locally, this will be `127.0.0.1:9200`. If you are using our https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
+Please note that the configuration file generated by the {ingest-manager} app already contains the correct elasticsearch address and port for your setup. If you run everything locally, this will be `127.0.0.1:9200`. If you are using our https://www.elastic.co/cloud/elasticsearch-service[hosted {es} Service] on
 Elastic Cloud, this will correspond to the Elasticsearch endpoint URL that is also available under **Endpoints** as described in {cloud}/ec-working-with-elasticsearch.html.
 
 You will also have to add your elasticsearch username and password to the `outputs` section in the configuration file:
@@ -116,30 +116,30 @@ datasources:
 [...]
 ```
 
-Run Elastic agent with the command
+Run {agent} with the command
 
 ```
 $ ./elastic-agent -c elastic-agent-standalone.yml run
 ```
 
-=== Fleet mode
+=== {fleet} mode
 
-To use Fleet to configure Elastic agent, you first need to enable Fleet in the Ingest manager app. To do so, navigate to the **Fleet** tab and click **Create user and enable Fleet**.
-
-[role="screenshot"]
-image::images/kibana-ingest-manager-fleet-enable.png[Ingest Manager app showing prompt to enable Fleet]
-
-On the next page, click on **Enroll new agent** to start the enrollment. Select an agent configuration (or stay with the default) and copy the command to enrol the agent from the command line. This line contains your Kibana URL and an enrollment key that has been generated by the Ingest Manager app.
+To use {fleet} to configure {agent}, you first need to enable {fleet} in the {ingest-manager} app. To do so, navigate to the **{fleet}** tab and click **Create user and enable Fleet**.
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-fleet-enrol.png[Ingest Manager app showing agent enrollment dialog]
+image::images/kibana-ingest-manager-fleet-enable.png[{ingest-manager} app showing prompt to enable {fleet}]
 
-In the directory where you installed Elastic agent, paste the copied command to enroll the agent. Please note that this command will overwrite the `elastic-agent.yml` file in that directory.
+On the next page, click on **Enroll new agent** to start the enrollment. Select an agent configuration (or stay with the default) and copy the command to enrol the agent from the command line. This line contains your Kibana URL and an enrollment key that has been generated by the {ingest-manager} app.
+
+[role="screenshot"]
+image::images/kibana-ingest-manager-fleet-enrol.png[{ingest-manager} app showing agent enrollment dialog]
+
+In the directory where you installed {agent}, paste the copied command to enroll the agent. Please note that this command will overwrite the `elastic-agent.yml` file in that directory.
 
 ```
 $ ./elastic-agent enroll KIBANA_URL ENROLLMENT_KEY
 
-The Elastic Agent is currently in Experimental and should not be used in production
+The {agent} is currently in Experimental and should not be used in production
 This will replace your current settings. Do you want to continue? [Y/n]:
 ```
 After that, run the agent with
@@ -147,12 +147,12 @@ After that, run the agent with
 $ ./elastic-agent run
 ```
 
-In the Ingest Manager app, click **Continue** to get back to the **Fleet** tab. This will now show the newly enrolled agent.
+In the {ingest-manager} app, click **Continue** to get back to the **{fleet}** tab. This will now show the newly enrolled agent.
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-fleet-agents.png[Ingest Manager app showing enrolled agents]
+image::images/kibana-ingest-manager-fleet-agents.png[{ingest-manager} app showing enrolled agents]
 
-When you want to unenroll an agent, choose **Unenroll** from the **Actions** menu for this agent. This will invalidate the API key the agent is using to connect to {es}. The Elastic agent will continue to run, but will not be able to send data, and show this error instead:
+When you want to unenroll an agent, choose **Unenroll** from the **Actions** menu for this agent. This will invalidate the API key the agent is using to connect to {es}. The {agent} will continue to run, but will not be able to send data, and show this error instead:
 
 ```
 invalid api key to authenticate with fleet
@@ -160,9 +160,9 @@ invalid api key to authenticate with fleet
 
 == View your data
 
-Navigate to the **Data streams** tab in the Ingest manager app to inspect the data that is sent by the agent. From the **Actions** column you can navigate to the dashboards corresponding to the data type that is sent.
+Navigate to the **Data streams** tab in the {ingest-manager} app to inspect the data that is sent by the agent. From the **Actions** column you can navigate to the dashboards corresponding to the data type that is sent.
 
 [role="screenshot"]
-image::images/kibana-ingest-manager-datastreams.png[Ingest Manager app showing data streams list]
+image::images/kibana-ingest-manager-datastreams.png[{ingest-manager} app showing data streams list]
 
 

@@ -1,23 +1,26 @@
 [[siem-field-reference]]
 [chapter, role="xpack"]
-= Field reference and mappings
+= SIEM field reference guide
 
-This section lists all fields required to populate {siem-soln} data.
+This section lists ECS fields the {siem-app} uses to display data.
 
-NOTE: Unless noted otherwise, all listed fields are {ecs-ref}[ECS fields]. 
-
-[float]
-[[siem-global-fields]]
-== Global fields
-
-Fields required for populating all SIEM data:
-
-* `@timestamp`
-* `host.name`
+IMPORTANT: It is recommended to use {beats} to ship your data. Beat modules
+(for example, {filebeat-ref}/filebeat-modules.html[{filebeat} modules])
+are ECS-compliant so manual field mapping is not required, and all {siem-app}
+data is automatically populated. If you cannot use {beats}, map your data to
+{ecs-ref}[ECS fields] (see {ecs-ref}/ecs-converting.html[how to map data to ECS]).
+You can also try using the experimental https://github.com/elastic/ecs-mapper[ECS Mapper] tool.
 
 [float]
 [[siem-host-fields]]
 == Host fields
+
+These fields must be mapped to display host data in the {siem-app}:
+
+* `@timestamp`
+* `host.name`
+
+These fields can be mapped to display additional host data in the {siem-app}:
 
 * `cloud.instance.id`
 * `cloud.machine.type`
@@ -35,12 +38,31 @@ Fields required for populating all SIEM data:
 [discrete]
 ==== Authentication fields
 
+These fields must be mapped to display host authentication data in the
+{siem-app}:
+
 * `event.category`
++
+NOTE: To display authentication data in the {siem-app}, you must map authentication events to the `event.category` field with a value of
+`authentication`.
+ 
 * `event.outcome`
+
+This field can be mapped to display additional host authentication data in the
+{siem-app}:
+
 * `user.name`
 
 [discrete]
 ==== Uncommon process fields
+
+This field must be mapped to display host uncommon process data in the
+{siem-app}:
+
+* `process.name`
+
+These fields can be mapped to display additional uncommon process data in the
+{siem-app}:
 
 * `agent.type`
 * `event.action`
@@ -49,46 +71,66 @@ Fields required for populating all SIEM data:
 * `event.dataset`
 * `event.module`
 * `process.args`
-* `process.name`
 * `user.id`
 * `user.name`
-* `winlog.channel` {winlogbeat-ref}/exported-fields-winlog.html[(Winlogbeat field)]
-* `winlog.event_id` (Winlogbeat field)
 
 [float]
 [[siem-network-fields]]
 == Network fields
 
-* `destination.geo.location` (for <<conf-map-ui, map data>>)
+These fields must be mapped to display network data in the {siem-app}:
+
+* `@timestamp`
+* `destination.geo.location` (required for displaying <<conf-map-ui, map data>>)
 * `destination.ip`
-* `source.geo.location` (for map data)
+* `source.geo.location` (required for displaying map data)
 * `source.ip`
+
+These fields can be mapped to display additional network data in the {siem-app}:
+
+* `destination.as`
+* `destination.bytes`
+* `destination.domain`
+* `destination.geo.country_iso_code`
+* `source.as`
+* `source.bytes`
+* `source.domain`
+* `source.geo.country_iso_code`
 
 [discrete]
 ==== DNS query fields
 
-* `dns.question.type`
+These fields must be mapped to display DNS data in the {siem-app}:
 
-NOTE: If you want to be able to filter out PTR records, make sure relevant events populate the `dns.question.type` field with a value of `PTR`.
-
-* `destination.bytes`
 * `dns.question.name`
 * `dns.question.registered_domain`
-* `source.bytes`
+
+This field can be mapped to display additional DNS data in the {siem-app}:
+
+* `dns.question.type`
++
+NOTE: If you want to be able to filter out PTR records, make sure relevant
+events populate the `dns.question.type` field with a value of `PTR`.
 
 [discrete]
 ==== HTTP request fields
 
+These fields must be mapped to display HTTP request data in the {siem-app}:
+
 * `http.request.method`
 * `http.response.status_code`
-* `source.ip`
 * `url.domain`
 * `url.path`
 
 [discrete]
 ==== TLS fields
 
+This field must be mapped to display TLS data in the {siem-app}:
+
 * `tls.server.hash.sha1`
+
+These fields can be mapped to display additional TLS data in the {siem-app}:
+
 * `tls.server.issuer`
 * `tls.server.ja3s`
 * `tls.server.not_after`
@@ -97,21 +139,17 @@ NOTE: If you want to be able to filter out PTR records, make sure relevant event
 [float]
 == Event and external alert fields
 
+These fields must be mapped to display event and external alert data in the
+{siem-app}:
+
+* `@timestamp`
+* `event.kind`
++
 NOTE: For external alerts, the `event.kind` field value must be `alert`.
 
-* `auditd.data.acct` {auditbeat-ref}/exported-fields-auditd.html[(Auditbeat field)]
-* `auditd.data.op` (Auditbeat field)
-* `auditd.data.terminal` (Auditbeat field)
-* `auditd.result` (Auditbeat field)
-* `auditd.session` (Auditbeat field)
-* `auditd.summary.actor.primary` (Auditbeat field)
-* `auditd.summary.actor.secondary` (Auditbeat field)
-* `auditd.summary.how` (Auditbeat field)
-* `auditd.summary.message_type` (Auditbeat field)
-* `auditd.summary.object.primary` (Auditbeat field)
-* `auditd.summary.object.secondary` (Auditbeat field)
-* `auditd.summary.object.type` (Auditbeat field)
-* `auditd.summary.sequence` (Auditbeat field)
+These fields can be mapped to display additional event and external alert data
+in the {siem-app}:
+
 * `destination.bytes`
 * `destination.geo.city_name`
 * `destination.geo.continent_name`
@@ -135,10 +173,10 @@ NOTE: For external alerts, the `event.kind` field value must be `alert`.
 * `event.end`
 * `event.hash`
 * `event.id`
-* `event.kind`
 * `event.module`
 * `event.original`
 * `event.outcome`
+* `event.provider`
 * `event.risk_score_norm`
 * `event.risk_score`
 * `event.severity`
@@ -177,12 +215,15 @@ NOTE: For external alerts, the `event.kind` field value must be `alert`.
 * `network.packets`
 * `network.protocol`
 * `network.transport`
+* `pe.original_file_name`
 * `process.args`
 * `process.executable`
 * `process.hash.md5`
 * `process.hash.sha1`
 * `process.hash.sha256`
 * `process.name`
+* `process.parent.executable`
+* `process.parent.name`
 * `process.pid`
 * `process.ppid`
 * `process.title`
@@ -198,72 +239,5 @@ NOTE: For external alerts, the `event.kind` field value must be `alert`.
 * `source.ip`
 * `source.packets`
 * `source.port`
-* `suricata.eve.alert.signature_id` {filebeat-ref}/exported-fields-suricata.html[(Filebeat field)]
-* `suricata.eve.alert.signature` (Filebeat field)
-* `suricata.eve.flow_id` (Filebeat field)
-* `suricata.eve.proto` (Filebeat field)
-* `system.audit.package.arch` {auditbeat-ref}/exported-fields-system.html[(Auditbeat field)]
-* `system.audit.package.entity_id` (Auditbeat field)
-* `system.audit.package.name` (Auditbeat field)
-* `system.audit.package.size` (Auditbeat field)
-* `system.audit.package.summary` (Auditbeat field)
-* `system.audit.package.version` (Auditbeat field)
-* `system.auth.ssh.method` {filebeat-ref}/exported-fields-system.html[(Filebeat field)]
-* `system.auth.ssh.signature` (Filebeat field)
-// Not documented since v7.3:
-// * `tls.client_certificate.fingerprint.sha1` {packetbeat-ref}/exported-fields-tls_detailed.html[(Packetbeat field)]
-// * `tls.fingerprints.ja3.hash` (Packetbeat field)
-// * `tls.server_certificate.fingerprint.sha1` (Packetbeat field)
 * `user.domain`
 * `user.name`
-* `winlog.event_id` {winlogbeat-ref}/exported-fields-winlog.html[(Winlogbeat field)]
-* `zeek.connection.history` {filebeat-ref}/exported-fields-zeek.html[(Filebeat field)]
-* `zeek.connection.local_orig` (Filebeat field)
-* `zeek.connection.local_resp` (Filebeat field)
-* `zeek.connection.missed_bytes` (Filebeat field)
-* `zeek.connection.state` (Filebeat field)
-* `zeek.dns.AA` (Filebeat field)
-* `zeek.dns.qclass_name` (Filebeat field)
-* `zeek.dns.qclass` (Filebeat field)
-* `zeek.dns.qtype_name` (Filebeat field)
-* `zeek.dns.qtype` (Filebeat field)
-* `zeek.dns.query` (Filebeat field)
-* `zeek.dns.RA` (Filebeat field)
-* `zeek.dns.RD` (Filebeat field)
-* `zeek.dns.TC` (Filebeat field)
-* `zeek.dns.trans_id` (Filebeat field)
-* `zeek.files.analyzers` (Filebeat field)
-* `zeek.files.depth` (Filebeat field)
-* `zeek.files.duration` (Filebeat field)
-* `zeek.files.fuid` (Filebeat field)
-* `zeek.files.is_orig` (Filebeat field)
-* `zeek.files.local_orig` (Filebeat field)
-* `zeek.files.md5` (Filebeat field)
-* `zeek.files.mime_type` (Filebeat field)
-* `zeek.files.missing_bytes` (Filebeat field)
-* `zeek.files.overflow_bytes` (Filebeat field)
-* `zeek.files.rx_host` (Filebeat field)
-* `zeek.files.seen_bytes` (Filebeat field)
-* `zeek.files.session_ids` (Filebeat field)
-* `zeek.files.sha1` (Filebeat field)
-* `zeek.files.source` (Filebeat field)
-* `zeek.files.timedout` (Filebeat field)
-* `zeek.files.total_bytes` (Filebeat field)
-* `zeek.files.tx_host` (Filebeat field)
-* `zeek.http.resp_fuids` (Filebeat field)
-* `zeek.http.resp_mime_types` (Filebeat field)
-* `zeek.http.status_msg` (Filebeat field)
-* `zeek.http.tags` (Filebeat field)
-* `zeek.http.trans_depth` (Filebeat field)
-* `zeek.notice.dropped` (Filebeat field)
-* `zeek.notice.dst` (Filebeat field)
-* `zeek.notice.msg` (Filebeat field)
-* `zeek.notice.note` (Filebeat field)
-* `zeek.notice.peer_descr` (Filebeat field)
-* `zeek.notice.sub` (Filebeat field)
-* `zeek.notice.suppress_for` (Filebeat field)
-* `zeek.session_id` (Filebeat field)
-* `zeek.ssl.cipher` (Filebeat field)
-* `zeek.ssl.established` (Filebeat field)
-* `zeek.ssl.resumed` (Filebeat field)
-* `zeek.ssl.version` (Filebeat field)

@@ -58,8 +58,6 @@ with `ML`, and their rule type is `machine_learning`.
 
 |<<execution-via-regsvcs-regasm, Execution via Regsvcs/Regasm>> |RegSvcs.exe and RegAsm.exe are Windows command line utilities that are used to register .NET Component Object Model (COM) assemblies. Adversaries can use RegSvcs.exe and RegAsm.exe to proxy execution of code through a trusted Windows utility. |[Elastic] [Windows]  |7.7.0 |1
 
-|<<execution-via-signed-binary, Execution via Signed Binary>> |Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Adversaries may use these binaries to _live off the land_ and execute malicious files that could bypass application whitelisting and signature validation. |[Elastic] [Windows]  |7.6.0 |1
-
 |<<exploit-detected-elastic-endpoint, Exploit - Detected - Elastic Endpoint>> |Elastic Endpoint detected an Exploit. Click the Elastic Endpoint icon in the `event.module` column or the link in the `rule.reference` column in the External Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint]  |7.7.0 |2 <<exploit-detected-elastic-endpoint-history, Version history>>
 
 |<<exploit-prevented-elastic-endpoint, Exploit - Prevented - Elastic Endpoint>> |Elastic Endpoint prevented an Exploit. Click the Elastic Endpoint icon in the `event.module` column or the link in the `rule.reference` column in the External Alerts tab of the SIEM *Detections* page for additional information. |[Elastic] [Endpoint]  |7.7.0 |2 <<exploit-prevented-elastic-endpoint-history, Version history>>
@@ -189,10 +187,6 @@ with `ML`, and their rule type is `machine_learning`.
 |<<suspicious-pdf-reader-child-process, Suspicious PDF Reader Child Process>> |Identifies suspicious child processes of PDF reader applications. These child processes are often launched via exploitation of PDF applications or social engineering. |[Elastic] [Windows]  |7.7.0 |1
 
 |<<suspicious-powershell-script, Suspicious Powershell Script>> |A machine learning job detected a PowerShell script with unusual data characteristics, such as obfuscation, that may be a characteristic of malicious PowerShell script text blocks. |[Elastic] [ML] [Windows]  |7.7.0 |1
-
-|<<suspicious-process-spawning-from-script-interpreter, Suspicious Process spawning from Script Interpreter>> |Identifies a suspicious process being spawned from a script interpreter, which could be indicative of a potential phishing attack. |[Elastic] [Windows]  |7.6.0 |1
-
-|<<suspicious-script-object-execution, Suspicious Script Object Execution>> |Identifies scrobj.dll loaded into unusual Microsoft processes. This may indicate a malicious scriptlet is being executed in the target process. |[Elastic] [Windows]  |7.6.0 |1
 
 |<<svchost-spawning-cmd, Svchost spawning Cmd>> |Identifies a suspicious parent-child process relationship with cmd.exe descending from `svchost.exe`. |[Elastic] [Windows]  |7.7.0 |2 <<svchost-spawning-cmd-history, Version history>>
 

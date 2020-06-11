@@ -25,25 +25,14 @@
 ....
 
 
-[ditaa, target="ml-lifecycle-diagram"]
+[ditaa, target="ml-outlier-lifecycle-diagram"]
 ....
-      
-                                                 +-------------+    /-------------\
-                                                 |    Train    +--> |             |
-                                                 |    model    |    |             |
-                                                 +-------------+    |    View     |
-                                             /-->+   Anomaly   |    |  anomalies  |
-+----------+   +----------+   +-----------+  |   |  detection  |    |             |
-|          |-->+          |-->+           |--+   +-------------+    \-------------/
-| Define   |   |  Ingest  |   +  Prepare, |  |  
-| problem/ |   |  data    |   | transform |  |   +-------------+    /-------------\    +------------+
-| question |   |  {s}     |   |    data   |  \-->+  Data frame |    |             |    |            |
-|          |   |          |   |           |      |  analytics  |    |             |    |            |
-+----------+   +----------+   +-----------+      +-------------+    |    View     |    |   Deploy   |
-                                                 |  Train,test,+--> | predictions +--> |   model    |
-                                                 |  tune model |    |             |    |            |
-                                                 +-------------+    \------+------/    +------------+
-                                                        ^                  : 
-                                                        |      Evaluate    |
-                                                        +------------------+
+                            
++-----------+   +-----------+   +-----------+   
+|           |-->+           +-->+           |
+| Define    |   | Prepare,  |   + Train,    |   
+| problem/  |   | transform |   | test,     |   
+| question  |   | data      |   | model     |   
+|           |   |           |   |           |   
++-----------+   +-----------+   +-----------+
 ....

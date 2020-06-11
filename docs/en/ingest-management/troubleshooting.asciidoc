@@ -41,6 +41,7 @@ To find more about the error, open the development console of your browser, navi
 
 [[agent-enrollment-timeout]]
 === I get a time-out when I try to run the agent enrollment on my host
+
 This can look like the below console output: 
 fail to enroll: fail to execute request to Kibana: Post http://kibana:5601/api/ingest_manager/fleet/agents/enroll?: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
 
@@ -48,6 +49,7 @@ This is possibly due to a connectivity problem with the host talking to the Kiba
 
 [[enrolled-agent-not-showing-up]]
 === I ran the Agent enrollment step but I don’t see the Agent in the UI
+
 If Elastic Agent was successfully enrolled, but doesn't show up in the Fleet list a common problem is that it was not 'started'.  Starting the Agent is a separate step which can be done as follows as the below.
 
 On linux & macos hosts:
@@ -76,9 +78,9 @@ The action_store.yml has the whole configuration, unencrypted.  Look for 'output
 I think I have Agent set up and running and there are no errors on the Agent logs and I still don't see data in Kibana.  The recommended way to assess this is to go straight to Elasticsearch data queries, or maybe just use Kibana Discover app.  Look for any data in the index your Agent is sending to (metrics-* for example) and see if the name.host of your host machine shows.  If not, then perhaps the data is getting trapped / blocked in the network or isn't sent off of the Agent host correctly in the first place due to some Firewall or security reason.  While it should be redundant, it is all the same potentially helpful to install the stand-alone Metricbeat (see the Elastic docs for information) to see if that works to send data into ES, which would indicate a bug or problem in the Agent side.
 
 [[i-deleted-my-agent]]
-=== I deleted my agent in the Fleet {ingest-manager} app so now what?
+=== I deleted my agent in the Fleet {ingest-manager} app how can I get it back?
 
-Its ok, be cool: the data is still in Elasticsearch.  But to get the Agent back in the UI, you will need to stop, then re-enroll the Agent on the host and run it again.
+Its ok, we got your back!  The data is still in Elasticsearch.  And get the Agent back in the UI, you will need only to stop, then re-enroll the Agent on the host and run it again.
 
 [[i-need-to-stop-agent]]
 === I need to stop the Agent and all processes running on my host
@@ -86,14 +88,14 @@ Its ok, be cool: the data is still in Elasticsearch.  But to get the Agent back 
 To stop the Agent and relating executables running on my hosts is as easy as stopping the Agent process.  If you installed it as a service on Windows you will need to manage that, as well.  After that, if needed, on Windows you can use Task Manager and shut down ‘Elastic Agent’ which will kill it and the sub-processes it created (beats).  On Linux / macOS you can kill the elastic-agent process running, look with a ps | grep elastic-agent call to get the id to kill
 
 [[i-rebooted-my-host]]
-=== I needed to reboot my host, I'm not sure if the Agent is still running.
+=== I needed to reboot my host, how do I restart the Agent?.
 
-If you installed Windows Agent as a service with powershell, the Agent should still be running after a reboot of the host.  On macOS and Linux you will need to start the Agent again from the command line each time.  The ability to enhance support for those operating systems is known, as a temporary fix you could add that start command to a start up profile.
+If you installed Windows Agent as a service with powershell, the Agent should still be running after a reboot of the host.  On macOS and Linux you will need to start the Agent again from the command line each time as noted in the prior Agent start up steps.  Adding support to install as a service on all supported systems will be done in a future release.  To achieve this in the meantime, you can add the start command to a user's start up profile.
 
 [[what-is-the-endpoint-package]]
-=== The {ingest-manager} app shows an Integration called 'Endpoint' and I want to use it.
+=== The {ingest-manager} app shows an Integration called 'Endpoint', what is it?
 
-We all want to use it!  But we can't in 7.8 - It is not yet even 'Alpha' state, as the {ingest-manager} app is.  For some context, Endpoint is the integration that will allow the Elastic Security app to have a dedicated ‘Endpoint’ executable running like a beat and will be managed by the Agent as other beats are. It cannot yet be used in 7.8 so it is best left alone.  It won't hurt anything sitting there, promise.
+In 7.8, the Endpoint Integration is non-functional.  It cannot be used yet.  It exists as an artifact of the current feature development, please watch for announcements during coming release cycles.  As a teaser, Endpoint is the integration that will allow the Elastic Security app to have a dedicated executable running like a beat to protect the host and allow responses to security concerns that are found.  It will be managed by the Agent as other beats are.
 
 [[ingest-manager-not-in-on-prem-kibana]]
 === The {ingest-manager} app is not listed in my Kibana on-premises navigation list.

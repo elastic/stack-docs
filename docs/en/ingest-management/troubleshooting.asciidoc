@@ -12,6 +12,13 @@ We have collected the most common known problems below. If your question isn't a
 * <<agent-enrollment-timeout>>
 * <<enrolled-agent-not-showing-up>>
 * <<where-are-the-agent-logs>>
+* <<what-is-my-agent-config>>
+* <<where-is-the-data-agent-is-sending>>
+* <<i-deleted-my-agent>>
+* <<i-need-to-stop-agent>>
+* <<i-rebooted-my-host>>
+* <<what-is-the-endpoint-package>>
+
 * <<ingest-manager-not-in-on-prem-kibana>>
 
 [[ingest-manager-not-in-kibana]]
@@ -41,7 +48,7 @@ fail to enroll: fail to execute request to Kibana: Post http://kibana:5601/api/i
 This is possibly due to a connectivity problem with the host talking to the Kibana instance.  It may be a networking problem, attempt a 'ping' command from the host to confirm it can reach the Kibana instance.  If this works, then it could be a problem with the specified enrollment command executed.  If 'ping' works, check the URL and port, both are correct for your environment.  If those are correct and working, check the enrollment key in the enrollment command you are trying to execute is valid.  You can do this by viewing the Fleet ui in {ingest-manager} and clicking on the Enrollment Tokens tab.  If you click the 'eyeball' for each listed secret, one listed should match the string being used in your host's enrollment command. If it is not listed, create a new enrollment token and replace it in the command, this can be done in that same UI.
 
 [[enrolled-agent-not-showing-up]]
-I ran the Agent enrollment step but I don’t see the Agent in the UI
+=== I ran the Agent enrollment step but I don’t see the Agent in the UI
 If Elastic Agent was successfully enrolled, but doesn't show up in the Fleet list a common problem is that it was not 'started'.  Starting the Agent is a separate step which can be done as follows as the below.
 
 On linux & macos hosts:
@@ -51,11 +58,43 @@ On Windows hosts:
 elastic-agent.exe run
 
 [[where-are-the-agent-logs]]
-I need to find the logs when the Agent starts up
+=== I need to find the logs when the Agent starts up
 
 When started successfully, the logs are in the folder where the Agent was started, in a sub-directory 'data/logs/metricbeat'
 If that path of logs does not exist, it indicates Agent did not successfully run metricbeat, which is a higher level problem to triage.
 
+[[what-is-my-agent-config]]
+=== I need to know the configuration used in the running Agent.
+
+You can inspect the files in the folder from where you ran the Agent.  The elastic-agent.yml file will have an uncommented citation if it is in 'Fleet' mode:
+Management: mode: "fleet"
+
+The action_store.yml has the whole configuration, unencrypted.  Look for 'outputs:hosts' section with elasticsearch location.  This file will also have the current versions of the packages in use by the current configuration.  The version of the Agent is in the download folder / zip.
+
+[[where-is-the-data-agent-is-sending]]
+=== I'm not sure {ingest-manager} app is showing the data my Agent is sending.
+
+I think I have Agent set up and running and there are no errors on the Agent logs and I still don't see data in Kibana.  The recommended way to assess this is to go straight to Elasticsearch data queries, or maybe just use Kibana Discover app.  Look for any data in the index your Agent is sending to (metrics-* for example) and see if the name.host of your host machine shows.  If not, then perhaps the data is getting trapped / blocked in the network or isn't sent off of the Agent host correctly in the first place due to some Firewall or security reason.  While it should be redundant, it is all the same potentially helpful to install the stand-alone Metricbeat (see the Elastic docs for information) to see if that works to send data into ES, which would indicate a bug or problem in the Agent side.
+
+[[i-deleted-my-agent]]
+=== I deleted my agent in the Fleet {ingest-manager} app so now what?
+
+Its ok, be cool: the data is still in Elasticsearch.  But to get the Agent back in the UI, you will need to stop, then re-enroll the Agent on the host and run it again.
+
+[[i-need-to-stop-agent]]
+=== I need to stop the Agent and all processes running on my host
+
+To stop the Agent and relating executables running on my hosts is as easy as stopping the Agent process.  If you installed it as a service on Windows you will need to manage that, as well.  After that, if needed, on Windows you can use Task Manager and shut down ‘Elastic Agent’ which will kill it and the sub-processes it created (beats).  On Linux / macOS you can kill the elastic-agent process running, look with a ps | grep elastic-agent call to get the id to kill
+
+[[i-rebooted-my-host]]
+=== I needed to reboot my host, I'm not sure if the Agent is still running.
+
+If you installed Windows Agent as a service with powershell, the Agent should still be running after a reboot of the host.  On macOS and Linux you will need to start the Agent again from the command line each time.  The ability to enhance support for those operating systems is known, as a temporary fix you could add that start command to a start up profile.
+
+[[what-is-the-endpoint-package]]
+=== The {ingest-manager} app shows an Integration called 'Endpoint' and I want to use it.
+
+We all want to use it!  But we can't in 7.8 - It is not yet even 'Alpha' state, as the {ingest-manager} app is.  For some context, Endpoint is the integration that will allow the Elastic Security app to have a dedicated ‘Endpoint’ executable running like a beat and will be managed by the Agent as other beats are. It cannot yet be used in 7.8 so it is best left alone.  It won't hurt anything sitting there, promise.
 
 [[ingest-manager-not-in-on-prem-kibana]]
 === The {ingest-manager} app is not listed in my Kibana on-premises navigation list.

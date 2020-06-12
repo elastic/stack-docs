@@ -4,72 +4,186 @@
 
 experimental[]
 
-//TODO: Do a technical edit of this content.
-
 This early release of {ingest-management} is experimental. We invite you to
 install and test these capabilities **in a test environment**. You might run
 into problems and need to modify your setup to get this feature running.
 
-We have collected the most common known problems below. If your question isn't answered here, please review open issues in the https://github.com/elastic/kibana/issues, https://github.com/elastic/beats/issuess, https://github.com/elastic/package-registry/issues, and contact us https://ela.st/ingest-manager-feedback[here]. Your feedback is very valuable to us.
+We have collected the most common known problems and frequently asked questions
+here. If your question isn't answered here, please review open issues in the
+following GitHub repositories:
+
+* https://github.com/elastic/kibana/issues[{kib}]
+* https://github.com/elastic/beats/issuess[{beats}]
+* https://github.com/elastic/package-registry/issues[{package-registry}]
+
+Contact us https://ela.st/ingest-manager-feedback[here]. Your feedback is very
+valuable to us.
+
+//REVIEWERS: Using "here" for link text is strongly discouraged because it's
+//bad for SEO. What text should we provide instead? 
+
+// REVIEWERS: Do you think it's worthwhile to separate the jump list into two 
+// sections? We could create separate topics with a jump list at the top, but
+// then users can't search the page. In general, presenting a list of more than
+// 8 options makes the info harder for users to process. 
+
+**Common problems:**
+
+* <<ingest-manager-not-in-kibana>>
+* <<ingest-management-setup-fails>>
+* <<ingest-manager-app-crashes>>
+* <<agent-enrollment-timeout>>
+
+**Frequently asked questions:**
+
+* <<enrolled-agent-not-showing-up>>
+* <<where-are-the-agent-logs>>
+* <<what-is-my-agent-config>>
+* <<where-is-the-data-agent-is-sending>>
+* <<i-deleted-my-agent>>
+* <<i-need-to-stop-agent>>
+* <<i-rebooted-my-host>>
+* <<what-is-the-endpoint-package>>
 
 [float]
-[[ingest-manager-not-in-cloud-kibana]]
-== The {ingest-manager} app is not listed in my {kib} cloud navigation list
+[[ingest-manager-not-in-kibana]]
+== The {ingest-manager} app is not listed in the {kib} side navigation
 
-In 7.8, the {ingest-manager} app is in Alpha state and as such is only shown when specifically enabled in the start up or cloud 'override' options. To enable {ingest-manager} on cloud, go to your deployment in the user console. Click on the 'edit' link directly beneath the deployment name. Then click on 'user setting overrides' underneath the {kib} heading. Here you must enter the following x-pack option and click the save button at the bottom:
+In 7.8, the {ingest-manager} app is experimental. You must enable the app to
+see it in {kib}.
 
+//REVIEWERS: I don't want to have separate sections for cloud vs self-managed
+//because we are working on a widget for switching between instructions for
+//the two. Also I think it's more confusing to users if we have two sections
+//that cover the same content. 
+
+//TODO: Add platform tabs when the tabbed panel widget is stable (possibly after
+// 7.8)
+
+**To enable {ingest-manager} on cloud:**
+
+. Go to your deployment in the user console.
+
+. Under the deployment name in the side navigation, click **Edit**.
+
+. In the {kib} section, expand **User setting overrides** and enter the
+following setting:
++
 [source,yaml]
 ----
 xpack.ingestManager.enabled: true
 ----
 
-This will restart {kib} automatically and when done, you can refresh the browser and see the app in the left hand navigation.
+. Click **Save**.
+
+{kib} will restart automatically. When {kib} is available, refresh the browser
+to see the {ingest-manager} app in the navigation menu.
+
+**To enable {ingest-manager} on a self-managed cluster:**
+
+//REVIEWERS: Can't on-premise also mean cloud? I've seen self-managed used, too
+//so I've used that here. 
+
+. In the {es} configuration file, `config/elasticsearch.yml`, set the following
+security settings to enable security and API keys:
++
+[source,yaml]
+----
+xpack.security.enabled: true
+xpack.security.authc.api_key.enabled: true
+----
+
+. In the {kib} configuration file, `config/kibana.yml`, enable {ingest-manager}
+and specify user credentials:
++
+[source,yaml]
+----
+xpack.ingestManager.enabled: true
+xpack.ingestManager.fleet.tlsCheckDisabled: true <1>
+xpack.security.enabled: true
+elasticsearch.username: "elastic" <2>
+elasticsearch.password: "abc123iUnbRftkABC123"
+----
+<1> This setting is not required if you configure TLS checking.
+<2> Specify a user who is authorized to use {ingest-manager} 
+
+[TIP]
+=====
+To set up passwords, you can use the documented {es} APIs or the
+`elasticsearch-setup-passwords` command. For example:
+
+`./bin/elasticsearch-setup-passwords auto`
+=====
+
+After running the command, copy the Elastic user name to the {kib} config file.
+Then restart {kib}.
 
 [float]
 [[ingest-management-setup-fails]]
-== The endpoint `/api/ingest_management/setup` returns an error that the package registry can't be reached
+== The `/api/ingest_management/setup` endpoint returns an error because it can't reach the package registry
 
-In order to install {integrations}, the {ingest-manager} app needs to connect to an external service, the {package-registry}. For this to work, {kib} server must be able to connect to http://epr-experimental.elastic.co on port 80.
+In order to install {integrations}, the {ingest-manager} app needs to connect to
+an external service called the {package-registry}. For this to work, the {kib}
+server must be able to connect to `http://epr-experimental.elastic.co` on port
+80.
 
 [float]
 [[ingest-manager-app-crashes]]
 == The {ingest-manager} app in {kib} crashes
 
-To find more about the error, open the development console of your browser,
-navigate to the **Network** tab, and refresh the page. One of the requests to the
+To find more about the error, open your browser's development console, navigate
+to the **Network** tab, and refresh the page. One of the requests to the
 {ingest-manager} API will most likely have returned an error. If the error
-message doesn't give you enough information to fix the problem on your own,
-please contact us https://ela.st/ingest-manager-feedback[here].
+message doesn't give you enough information to fix the problem, please contact
+us https://ela.st/ingest-manager-feedback[here].
 
 [float]
 [[agent-enrollment-timeout]]
-== I get a time-out when I try to run the agent enrollment on my host
+== {agent} enrollment fails on the host with a `Client.Timeout exceeded` message
 
-This can look like the below console output:
+{agent} must be able to connect to the {kib} instance to enroll in {fleet}.
+If the agent is unable to connect, you will see the following failure:
 
 [source,output]
 -----
 fail to enroll: fail to execute request to {kib}:Post http://kibana:5601/api/ingest_manager/fleet/agents/enroll?: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
 -----
 
-This is possibly due to a connectivity problem with the host talking to the {kib} instance. It may be a networking problem, attempt a 'ping' command from the host to confirm it can reach the {kib} instance. If this works, then it could be a problem with the specified enrollment command executed. If 'ping' works, check the URL and port, both are correct for your environment. If those are correct and working, check the enrollment key in the enrollment command you are trying to execute is valid. You can do this by viewing the {fleet} ui in {ingest-manager} and clicking on the Enrollment Tokens tab. If you click the 'eyeball' for each listed secret, one listed should match the string being used in your host's enrollment command. If it is not listed, create a new enrollment token and replace it in the command, this can be done in that same UI.
+This may occur if the host is unable to connect to {kib}. To troubleshoot the
+problem:
+
+. Check for networking problems. Run the `ping` command from the host to confirm
+that it can reach the {kib} instance.
+
+. Verify that the URL and port you specified during enrollment are correct for
+your environment.
+
+. Check the enrollment key that you specified during enrollment to confirm that
+the key is valid. To do this:
+.. In {ingest-manager}, go to the {fleet} tab and click **Enrollment Tokens**. 
+.. Click the eyeball icon to see the secret. The secret should match the string
+that you used to enroll {agent} on your host.
+.. If the secret doesn't match, create a new enrollment token and use the new
+token when you run the `elastic-agent enroll` command.
 
 [float]
 [[enrolled-agent-not-showing-up]]
-== I ran the {agent} enrollment step but I don’t see the agent in the UI
+== Why doesn't my enrolled agent show up in the {ingest-manager} app?
 
-If {agent} was successfully enrolled, but doesn't show up in the {fleet} list a common problem is that it was not 'started'. Starting the agent is a separate step.
+If {agent} was successfully enrolled, but doesn't show up in the {fleet} list,
+it might not be started. You need to start the agent.
 
-//TODO: Point to the docs for running the agent instead of repeating the info here.
+// TODO: This should be single sourced. Update it when we add the tabbed widget
+// (probably after 7.8).
 
-On linux & macos hosts:
+On linux and macOS hosts, run:
 
 [source,shell]
 ----
 ./elastic-agent run
 ----
 
-On Windows hosts:
+On Windows hosts, run:
 
 [source,shell]
 ----
@@ -78,81 +192,125 @@ elastic-agent.exe run
 
 [float]
 [[where-are-the-agent-logs]]
-== I need to find the logs when {agent} starts up
+== Where does {agent} store logs after startup?
 
-When started successfully, the logs are in the folder where the {agent} was started, in a sub-directory `data/logs/metricbeat`.
-If that path of logs does not exist, it indicates the agent did not successfully run {metricbeat}, which is a higher level problem to triage.
+When started successfully, {metricbeat} logs are stored in
+`data/logs/metricbeat` under the folder where {agent} was started. If that log
+path does not exist, the agent was unable to start {metricbeat}, which is a
+higher level problem to triage.
 
 [float]
 [[what-is-my-agent-config]]
-== I need to know the configuration used in the running {agent}
+== What configuration is the {agent} running?
 
-You can inspect the files in the folder from where you ran {agent}. The `elastic-agent.yml` file will have an uncommented citation if it is in '{fleet}' mode:
+To find the configuration file, inspect the `elastic-agent.yml` file in the
+folder where you ran {agent}. If you're running the agent in {fleet} mode, this
+file contains the following citation:
+
+[source,yaml]
+----
 Management: mode: "fleet"
+----
 
-The `action_store.yml` has the whole configuration, unencrypted. Look for 'outputs:hosts' section with elasticsearch location. This file will also have the current versions of the packages in use by the current configuration. The version of the {agent} is in the download folder / zip.
+The `action_store.yml` contains the entire, unencrypted configuration:
+
+* To see the {es} location, look at `outputs:hosts`.
+* To see the {agent} version, look at the download folder and zip filenames.
+
+This file also shows the version of all packages used by the current
+configuration.
 
 [float]
 [[where-is-the-data-agent-is-sending]]
-== I'm not sure {ingest-manager} app is showing the data my {agent} is sending
+== Why can't I see the data {agent} is sending?
 
-I think I have {agent} set up and running and there are no errors on the agent logs and I still don't see data in {kib}. The recommended way to assess this is to go straight to {es} data queries, or maybe just use {kib} Discover app. Look for any data in the index your {agent} is sending to (metrics-* for example) and see if the name.host of your host machine shows. If not, then perhaps the data is getting trapped / blocked in the network or isn't sent off of the {agent} host correctly in the first place due to some Firewall or security reason. While it should be redundant, it is all the same potentially helpful to install the stand-alone Metricbeat (see the Elastic docs for information) to see if that works to send data into ES, which would indicate a bug or problem in the {agent} side.
+If {elastic-agent} is set up and running, but you don't see data in {kib}:
+
+//REVIEWERS: Is there a better command that we should recommend to users here?
+//I think it's good to show an actual command because we could have a newbie
+//reading this topic.
+
+. Make sure there are no errors in {kib}. If there are errors, resolve them.
+
+. Go to **Management > Dev Tools** in {kib}, and in the Console, search your
+index for data. For example:
++
+[source,console]
+----
+GET metrics-*/_search
+----
++
+Or if you prefer, go to the **Discover** app.
+
+. Look at the data that {elastic-agent} has sent and see if the `name.host`
+field contains your host machine name.
+
+If you don't see data for your host, it's possible that the data is blocked
+in the network, or that a firewall or security problem is preventing the {agent}
+from sending the data.
+
+Although it's redundant to install stand-alone {metricbeat}, you might want to
+try installing it to see if it's able to send data successfully to {es}. For
+more information, see
+{metricbeat-ref}/metricbeat-getting-started.html[Get started with {metricbeat}].
+
+If {metricbeat} is able to send data to {es}, there is possibly a bug or
+problem with {agent}, and you should report it.
 
 [float]
 [[i-deleted-my-agent]]
-== I deleted {agent} in the {fleet} {ingest-manager} app how can I get it back?
+== How do I restore an {agent} that I deleted from {fleet}?
 
-Its ok, we got your back!  The data is still in {es}. And get the {agent} back in the UI, you will need only to stop, then re-enroll the {agent} on the host and run it again.
+It's ok, we've got your back! The data is still in {es}. To add {agent}
+to {fleet} again, stop the agent, re-enroll the {agent} on the host, then run
+{agent}.
 
 [float]
 [[i-need-to-stop-agent]]
-== I need to stop {agent} and all processes running on my host
+== How do I stop {agent} and all processes running on my host?
 
-To stop the {agent} and relating executables running on my hosts is as easy as stopping the {agent} process. If you installed it as a service on Windows you will need to manage that, as well. After that, if needed, on Windows you can use Task Manager and shut down {agent} which will kill it and the sub-processes it created ({beats}). On Linux / macOS you can kill the `elastic-agent` process running, look with a `ps | grep elastic-agent` call to get the id to kill.
+To stop {agent} and its related executables, stop the {agent} process.
 
-[float]
-[[i-rebooted-my-host]]
-== I needed to reboot my host, how do I restart {agent}?
+On Windows, if you installed the agent as a service, stop the service. If
+necessary, use Task Manager on Windows to stop {agent}. This will kill the
+{agent} process and any sub-processes it created (such as {beats}).
 
-If you installed {agent} on Windows as a service with powershell, the agent should still be running after a reboot of the host. On macOS and Linux you will need to start the agent again from the command line each time as noted in the prior Agent start up steps. Adding support to install as a service on all supported systems will be done in a future release. To achieve this in the meantime, you can add the start command to a user's start up profile.
-
-[float]
-[[what-is-the-endpoint-package]]
-== The {ingest-manager} app shows an Integration called 'Endpoint', what is it?
-
-In 7.8, the Endpoint Integration is non-functional. It cannot be used yet. It exists as an artifact of the current feature development, please watch for announcements during coming release cycles. As a teaser, Endpoint is the integration that will allow the Elastic Security app to have a dedicated executable running like a beat to protect the host and allow responses to security concerns that are found. It will be managed by {agent} as other beats are.
-
-[float]
-[[ingest-manager-not-in-on-prem-kibana]]
-== The {ingest-manager} app is not listed in my {kib} on-premises navigation list.
-
-In 7.8, the {ingest-manager} app is in Alpha state and as such is only shown when specifically enabled in the start up config. To do this you must modify both the {es} and {kib} configs as well as adhering to all 'security enabled' requirements, like modifying the default elastic user password, see below for details:
-
-For {es}, file `config/elasticsearch.yml` you must set these startup options:
-
-[source,yaml]
-----
-xpack.security.enabled: true
-xpack.security.authc.api_key.enabled: true
-----
-
-For {kib} `config/kibana.yml` you must set these start up options (the exception is tlsCheckDisabled which is not required if configure TLS checking)
-
-[source,yaml]
-----
-xpack.ingestManager.enabled: true
-xpack.ingestManager.fleet.tlsCheckDisabled: true
-xpack.security.enabled: true
-elasticsearch.username: "elastic"
-elasticsearch.password: "abc123iUnbRftkABC123"
-----
-
-NOTE: Your `elasticsearch.password` above will be different, of course. It can be set with the documented Elastic apis, or you may wish to use the password re-setting script that comes with {es}. It is in the {es} `/bin` directory and can be used like:
+On Linux or macOS, run the following command to get the ID of the
+`elastic-agent` process:
 
 [source,shell]
 ----
-./bin/elasticsearch-setup-passwords auto
+ps | grep elastic-agent
 ----
 
-After running the script, copy the Elastic user name to the {kib} config file.
-Then re-start {kib}.
+Then kill the process.
+
+//REVIEWERS: Do we want to show the kill command. Not sure...if we do, which
+//kill command should we show?  kill -9? kill SIGTERM?
+
+
+[float]
+[[i-rebooted-my-host]]
+== How do I restart {agent} after rebooting my host?
+
+On Windows, if you used Powershell to install {agent} as a service, the agent
+should still be running after rebooting the host.
+
+On macOS and Linux, you need to restart {agent} from the command line after
+rebooting the host.
+
+Support for installing {agent} as a service on all supported systems will be
+available in a future release. To achieve this in the meantime, you can add the
+start command to a user's startup profile.
+
+[float]
+[[what-is-the-endpoint-package]]
+== What is the Endpoint integration shown in {ingest-manager}?
+
+In 7.8, the Endpoint integration is non-functional. It cannot be used yet. It
+exists as an artifact of the current feature development. Please watch for
+announcements during upcoming release cycles. As a teaser, Endpoint is the
+integration that will allow the Elastic Security app to have a dedicated
+executable running like {beats} to protect the host and respond to detected
+security concerns. Endpoint will be managed by {agent} in the same way that
+{beats} are managed.

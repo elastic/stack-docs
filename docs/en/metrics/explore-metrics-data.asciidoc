@@ -1,0 +1,114 @@
+[role="xpack"]
+[[explore-metrics-data]]
+=== Explore and filter metrics data
+
+Use the Metrics app in {kib} to monitor your infrastructure metrics and identify problems in real time.
+You can explore metrics for hosts, containers, and services.
+You can also drill down to view more detailed metrics, or seamlessly switch to view the corresponding logs, application traces, and uptime information.
+
+Initially, the *Inventory* tab shows an overview of the hosts in of your infrastructure and the current CPU usage for each host.
+From here, you can view other metrics or drill down into areas of interest.
+
+[role="screenshot"]
+image::images/infra-sysmon.png[Infrastructure Overview in Kibana]
+
+[float]
+[[infra-cat]]
+==== Choose the high-level view of your infrastructure
+
+Select the high-level view from *Hosts*, *Kubernetes*, or *Docker*.
+When you change views, you see the same data through the perspective of a different category.
+
+The default representation is the *Map view*, which shows your components in a _waffle map_ of one or more rectangular grids.
+If the view you select has a large number of components, you can hover over a component to see the details for that component. Alternatively, if you would prefer to see your infrastructure as a table, click *Table view*.
+
+[float]
+[[infra-metric]]
+==== Select the metric to view
+
+Select the metric to view from the *Metric* dropdown list.
+The available metrics are those that are most relevant for the high-level view you selected.
+
+[float]
+[[infra-group]]
+==== Group components
+
+Select the way you want to group the infrastructure components from the *Group By* dropdown list.
+The available options are specific to your physical, virtual, or container-based infrastructure.
+Examples of grouping options include *Availability Zone*, *Machine Type*, *Project ID*, and *Cloud Provider* for hosts, and *Namespace* and *Node* for Kubernetes.
+
+[float]
+[[infra-search]]
+==== Use the power of search
+
+Use the search bar to perform ad hoc searches for specific text.
+You can also create structured searches using {kibana-ref}/kuery-query.html[Kibana Query Language].
+For example, enter `host.hostname : "host1"` to see only the information for `host1`.
+
+[float]
+[[infra-date]]
+==== Specify the time and date
+
+Click the time filter image:images/infra-time-selector.png[time filter icon] to choose the timeframe for the metrics.
+The values shown are the values for the last minute at the specified time and date.
+
+[float]
+[[infra-refresh]]
+==== Auto-refresh metrics
+
+Select *Auto-refresh* to keep up-to-date metrics information coming in, or *Stop refreshing* to focus on historical data without new distractions.
+
+[float]
+[[infra-metrics-explorer]]
+==== Visualize multiple metrics in Metrics Explorer
+
+<<metrics-explorer, Metrics Explorer>> allows you to visualize and analyze metrics for multiple components in a powerful and configurable way. Click the *Metrics Explorer* tab to get started.
+
+[[view-infrastructure-metrics]]
+
+=== View infrastructure metrics
+
+When you select *View Metrics* for a component in your infrastructure, you can view detailed metrics for that component, and for any related components.
+You can also view additional component metadata.
+
+[role="screenshot"]
+image::images/infra-view-metrics.png[Infrastructure View Metrics in Kibana]
+
+[[infra-view-metrics-date]]
+==== Specify the time and date range
+
+Use the time filter to select the time and date range for the metrics.
+
+To quickly select some popular time range options, click the calendar dropdown image:images/time-filter-calendar.png[]. In this popup you can choose from:
+
+* *Quick select* to choose a recent time range, and use the back and forward arrows to move through the time ranges
+* *Commonly used* to choose a time range from some commonly used options such as *Last 15 minutes*, *Today*, or *Week to date*
+* *Refresh every* to specify an auto-refresh rate
+
+NOTE: When you start auto-refresh from within this dialog, the calendar dropdown changes to a clock image:images/time-filter-clock.png[].
+
+For complete control over the start and end times, click the start time or end time shown in the bar beside the calendar dropdown. In this popup, you can choose from the *Absolute*, *Relative* or *Now* tabs, then specify the required options.
+
+[float]
+[[infra-view-refresh-metrics-date]]
+==== Refresh the metrics
+
+You can click *Refresh* to manually refresh the metrics.
+
+[[metrics-integrations]]
+=== Integrate with Uptime, Logs, and APM
+
+Hover over a component to see more information about that component.
+
+Click a component to see the other actions available for that component.
+
+Depending on the features you have installed and configured, you can also:
+
+* View {uptime-guide}/uptime-app-overview.html[Uptime Information] in the *Uptime* app.
+
+* View {logs-guide}/inspect-log-events.html[Logs Information] in the *Logs* app.
+
+* View {kibana-ref}/traces.html[APM Traces] in the *APM* app.
+
+[role="screenshot"]
+image::images/metrics-integrations.png[Metrics integrations]

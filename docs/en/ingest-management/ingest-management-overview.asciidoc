@@ -1,0 +1,79 @@
+[[ingest-management-overview]]
+== Ingest management overview
+
+[float]
+[[elastic-agent]]
+=== Elastic Agent
+
+Elastic Agent is a single, unified way to add monitoring for logs, metrics, and other types of data to each host. A single agent will make it easier and faster to deploy across your infrastructure. Additionally, it offers a single, unified configuration to make it easier to add integrations for new data sources.
+
+[float]
+[[ingest-manager]]
+=== Ingest Manager
+
+Ingest Manager provides a web-based UI in Kibana to add and manage integrations for popular services and platforms, as well as manage a fleet of Elastic Agents. Our integrations not only provide an easy way to add new sources of data, but they also ship with out of the box assets like dashboards, visualizations, and pipelines to extract structured fields out of logs. This makes it easier to get insights within seconds.
+
+[role="screenshot"]
+image::images/integrations.png[Integrations page]
+
+[float]
+[[configuring-integrations]]
+=== Configuring Integrations
+
+We provide a web-based UI for configuring integrations with your data sources. This can include popular services and platforms like Nginx or AWS, as well as many generic input types like log files.
+
+The Elastic Agent configuration allows you to configure any number of integrations for data sources. The Agent configuration can be applied to multiple Agents. This makes it even easier to manage configuration at scale.
+
+[role="screenshot"]
+image::images/data-source.png[Configuring a data source]
+
+You may define a data source by supplying a name and description. You can then configure inputs for logs and metrics, such as the path to your Nginx access logs. When you are done, you may save the data source to update the Agent configuration. The next time enrolled Agents check in, they will receive the update. Having those configurations automatically deployed is more convenient than doing it yourself using SSH, Ansible playbooks, etc.
+
+If you prefer infrastructure as code, you may prefer to use YAML files and APIs. Ingest Manager has an API-first design and anything you can do in the UI you can also do using the API. This makes it easy to automate and integrate with other systems.
+
+[float]
+[[central-management]]
+=== Central management in Fleet
+
+You can see the state of all your Elastic Agents on the Fleet page. Here you can see which agents are online, which have errors, and the last time they checked in. You can also see the version of the Agent binary and configuration. 
+
+[role="screenshot"]
+image::images/fleet.png[Fleet page]
+
+Fleet serves as the communication channel back to the Elastic Agents. Agents check in for the latest updates on a regular basis. You can have any number of Agents enrolled into each Agent configuration, which allows you to scale up to thousands of hosts. When you make a change to an Agent configuration, all the Agents receive the update during their next check in. You no longer have to distribute configuration updates yourself using SSH, Ansible playbooks, or other configuration methods. 
+
+[float]
+[[data-streams]]
+=== Data streams make index management easier
+
+The data collected by Elastic Agents is stored in indices that are more granular than you’d get by default with Filebeat. The advantages are that it gives users more visibility into the sources of data volume, and control over lifecycle management policies and index permissions. We call these new indices “data streams” and we will have more improvements on this concept in future releases.
+
+In the screenshot below, you can see we’ve broken out the data streams (or indices) by dataset, type, and namespace. The dataset is defined by the integration and describes the fields and other settings for each index. For example, you might have one dataset for process metrics with a field describing whether the process is running or not. Another dataset for disk I/O metrics will have a field describing the number of bytes read. This solves the issue of having indices with hundreds or thousands of fields because we only need to store a small number of fields in each index. This makes them more compact with faster autocomplete, and as an added bonus the discover page will only show relevant fields.
+
+[role="screenshot"]
+image::images/data-streams.png[Data streams page]
+
+Namespaces are user-defined strings that allow you group data any way you like. For example, you might group your data by environment (prod, QA) or by team name. This makes it easier to search the data from a given source using index patterns, or to give users permissions to data by assigning an index pattern to user roles. Many of our customers already organize their indices this way, and now we are providing this best practice as a default out of the box.
+
+When searching your data in Kibana, you can use an [index pattern](https://www.elastic.co/guide/en/kibana/current/index-patterns.html) to search across all or some of the indices.
+
+[[limitations]]
+== Limitations of this release
+
+This is an experimental release and there is no migration path for future releases, so **YOU MUST TEST IN A DEDICATED CLUSTER.** In a future release, we plan to add support for a new way of managing rolling indices that will make the experience easier for users. However, any data stored in this release will not be migrated in our next release and you must wipe any data and settings changed in Kibana and Elasticsearch to avoid future conflicts. We recommend using a dedicated test cluster or deployment that can be deleted when you are done.
+
+Ingest Manager is currently only available to users with the [superuser role](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-roles.html). This role is necessary to create indices, install integration assets, and update Agent configurations. In order to use Fleet, the Elastic Agents must have a direct network connection to Kibana and Elasticsearch. It is also possible to run the Elastic Agents in standalone mode in cases where a network connection is not available or not needed.
+
+This feature has several additional limitations at the current time:
+*   Support for only 9 integrations (more coming soon)
+*   Support for only Filebeat and Metricbeat
+*   We recommend you enroll no more than 100 Agents
+*   No output to Logstash, Kafka, or other remote clusters
+*   No proxy support in Elastic Agent
+*   Kibana must have internet access to download integration packages
+*   No support for advanced Beats settings like multi-line, processors, etc.
+*   No custom index templates or pipelines
+*   No support for Kubernetes or Docker auto-discover
+
+Experimental releases are not officially supported, but we encourage you to report issues in our [discuss forum](https://ela.st/agent-discuss).
+

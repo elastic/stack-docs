@@ -1,18 +1,17 @@
-[[infrastructure-monitoring-overview]]
+[[metrics-overview]]
 [role="xpack"]
 == Metrics monitoring overview
+
+++++
+<titleabbrev>Overview</titleabbrev>
+++++
 
 The {metrics-app} enables you to monitor metrics for your infrastructure to help identify problems in real-time.
 You can view metrics for servers, containers, services, and so on.
 Additionally, you can drill down to view detailed metrics, or you can seamlessly switch to view corresponding logs, uptime information, or APM traces where available.
-// Add links to logs, uptime and APM when I have good places to link to.
 
 [float]
 === Metrics monitoring components
-
-image::images/metrics-monitoring-architecture.png[Metrics monitoring architecture]
-
-// redo for metrics and logs separately.
 
 Metrics monitoring requires the following {stack} components.
 
@@ -28,4 +27,6 @@ Metricbeat modules are available for most typical servers, containers, and servi
 You use {kib} to search, view, and interact with the metrics data stored in {es}.
 You can perform advanced data analysis and visualize your data in a variety of charts, tables,
 and maps.
-The <<infrastructure-ui-overview, {metrics-app}>> in {kib} provides a dedicated user interface to view metrics for your infrastructure.
+The {metrics-app} in {kib} provides a dedicated user interface to view metrics for your infrastructure.
+
+image::images/metrics-monitoring-architecture.png[Metrics monitoring components]

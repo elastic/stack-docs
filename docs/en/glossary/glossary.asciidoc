@@ -216,14 +216,6 @@ include::{es-repo-dir}/glossary.asciidoc[tag=ccs-def]
 endif::elasticsearch-terms[]
 ifdef::xpack-terms[]
 
-ifdef::elasticsearch-terms[]
-[[glossary-data-stream]] data stream::
-+
---
-include::{es-repo-dir}/glossary.asciidoc[tag=data-stream-def]
---
-endif::elasticsearch-terms[]
-
 [[glossary-ml-datafeed]] datafeed ::
 
 {anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
@@ -242,6 +234,15 @@ outcome in a destination index. See
 {ref}/put-dfanalytics.html[create {dfanalytics-job} API].
 //Source: X-Pack
 endif::xpack-terms[]
+
+ifdef::elasticsearch-terms[]
+[[glossary-data-stream]] data stream::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=data-stream-def]
+--
+endif::elasticsearch-terms[]
+
 ifdef::xpack-terms[]
 [[glossary-delete-phase]] delete phase ::
 +

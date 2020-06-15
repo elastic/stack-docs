@@ -19,8 +19,6 @@ following GitHub repositories:
 Contact us in the https://ela.st/ingest-manager-feedback[discuss forum]. Your feedback is very
 valuable to us.
 
-//REVIEWERS: Using "here" for link text is strongly discouraged because it's
-//bad for SEO. What text should we provide instead? 
 
 **Common problems:**
 
@@ -47,11 +45,6 @@ valuable to us.
 In 7.8, the {ingest-manager} app is experimental. You must enable the app to
 see it in {kib}.
 
-//REVIEWERS: I don't want to have separate sections for cloud vs self-managed
-//because we are working on a widget for switching between instructions for
-//the two. Also I think it's more confusing to users if we have two sections
-//that cover the same content. 
-
 //TODO: Add platform tabs when the tabbed panel widget is stable (possibly after
 // 7.8)
 
@@ -75,9 +68,6 @@ xpack.ingestManager.enabled: true
 to see the {ingest-manager} app in the navigation menu.
 
 **To enable {ingest-manager} on a self-managed cluster:**
-
-//REVIEWERS: Can't on-premise also mean cloud? I've seen self-managed used, too
-//so I've used that here. 
 
 . In the {es} configuration file, `config/elasticsearch.yml`, set the following
 security settings to enable security and API keys:
@@ -276,8 +266,6 @@ ps | grep elastic-agent
 
 Then kill the process.
 
-//REVIEWERS: Do we want to show the kill command. Not sure...if we do, which
-//kill command should we show?  kill -9? kill SIGTERM?
 
 
 [float]

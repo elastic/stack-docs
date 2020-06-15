@@ -1,94 +1,145 @@
 [[ingest-management-getting-started]]
 [role="xpack"]
-= Getting started
+= Get started with ingest management
 
-//TODO: Technical edit.
-
-//TODO: Add a summary.
+++++
+<titleabbrev>Get started</titleabbrev>
+++++
 
 experimental[]
 
-To use {ingest-management}, you need an {es} cluster and {kib} (version 7.8 for the experimental release)
-with a basic license. See {stack-gs}/get-started-elastic-stack.html[Getting started with the {stack}].
+This guide describes how to get started with the new {ingest-management}
+capabilities available in this release.
 
-//TODO: Add cloud info
+// tag::experimental-warning[]
+This early release of {ingest-management} is experimental. We invite you to
+install and test these capabilities **in a test environment**. You might run
+into problems and need to modify your setup to get this feature running. Please
+do not enable or use {ingest-management} in a production environment.
+// end::experimental-warning[]
 
-IMPORTANT: Since this is an experimental release, it should only be used in a dedicated test environment
-that can be deleted when you are done. Please do not enable or use {ingest-management} in a production
-environment.
+//REVIEWERS: We have several different statements like this one that say basically the same
+//thing but use slightly different words. Let's create a standard description that I
+//can include when we need to add this statement. Let me know if what I have here ^^
+//is good.
+
+For feedback and questions, please contact us in the
+https://ela.st/ingest-manager-feedback[discuss forum].
+
+//TODO: Add link to limitations topic after it is merged. 
 
 [float]
 [[ingest-manager-prereqs]]
 == Prerequisites
 
-If you want to use {ingest-management}, the following prerequisites have to be met in the {es} configuration:
+To use this **experimental** release of {ingest-management}, you need:
 
-- {es} security has to be enabled by setting `xpack.security.enabled` to `true`.
-- API keys have to be enabled in {es} by setting `xpack.security.authc.api_key.enabled` to `true`.
+* An {es} cluster and {kib} (version 7.8) with a basic license.
++
+You can use our https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}]
+on {ecloud}, or {stack-gs}/get-started-elastic-stack.html[install the {stack} on
+your own hardware].
 
-If you use our https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on
-{ecloud}, these settings will already be enabled.
+* An {es} configuration with the following capabilities enabled. If you use our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on {ecloud},
+these settings are already enabled.
++
+- {ref}/configuring-security.html[{es} security]. The `xpack.security.enabled`
+setting must be `true`.
+- {ref}/security-settings.html#api-key-service-settings[API key service]. The
+`xpack.security.authc.api_key.enabled` setting must be `true`.
 
-In this experimental release, {ingest-management} is only available to users with the superuser role. See
-{ref}/built-in-roles.html[Built-in roles].
+* A {kib} configuration with the following capabilities enabled:
++
+- {kibana-ref}/configuring-security.html[{kib} security]. The `xpack.security.enabled`
+setting must be `true`.
+- {kibana-ref}/configuring-tls.html[TLS] or the
+`pack.ingestManager.fleet.tlsCheckDisabled` setting must be `true`.
 
-For feedback and questions, please contact us https://ela.st/ingest-manager-feedback[here]. 
+//REVIEWERS: I've added the Kibana requirements because they weren't stated. Let
+//me know if you'd rather that I leave those out. I personally have concerns
+//about telling users to disable TLS checks.
+
+* A user with the superuser role. See {ref}/built-in-roles.html[Built-in roles].
 
 [float]
 [[enable-ingest-management]]
 == Step 1: Enable {ingest-management}
 
-To enable {ingest-management}, make the following changes to the {kib} configuration:
+To enable {ingest-management}:
 
-- set `xpack.ingestManagement.enabled` to `true`
-
-If you are using our https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on
-{ecloud}, you will need to add them to the {kib} user settings as described in 
+. Add the following setting to the {kib} configuration:
++
+[source,yaml]
+----
+xpack.ingestManager.enabled: true
+----
++
+* On our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on
+{ecloud}, add the setting to the {kib} user settings as described in 
 {cloud}/ec-manage-kibana-settings.html[Add {kib} user settings].
+* On a self-managed stack, add the setting to the {kib} configuration as
+described in
+{kibana-ref}/ingest-manager-settings-kb.html[{ingest-manager} settings].
 
-If you are using an **on-premises** stack deployment, you will need to add them to the {kib} configuration
- as described in {kibana-ref}/ingest-manager-settings-kb.html[{ingest-manager} settings].
-
-To verify that {ingest-management} has been correctly enabled, login to {kib}, and select 
-**Management > {ingest-manager}**. If the menu entry is visible, and you see the following start page
-for {ingest-manager}, enabling {ingest-management} has been successful.
-
+. Verify that {ingest-management} has been correctly enabled:
+.. Log in to {kib} and go to **Management > {ingest-manager}**.
++
+If the menu entry is visible, and you see the following start page
+for {ingest-manager}, {ingest-management} is successfully enabled.
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-start.png[{ingest-manager} app in {kib}]
+
+//TODO: Add tabbed panel when the code is stable.
 
 [float]
 [[install-integration]]
 == Step 2: Install an integration and create a data source
 
-{ingest-management} bundles various assets that are needed to ingest and visualize data in **integrations**.
+{ingest-manager} provides _integrations_ that bundle various assets needed to
+ingest and visualize data.
 
-In this Guide we assume that you have `nginx` running on some of your infrastructure, and want to
-collect logs and metrics from it. To do so, first install the `nginx` integration provided by Elastic.
+In this guide, we assume that you have `nginx` running on some of your
+infrastructure, and want to collect logs and metrics from it. To do so:
 
-In the {ingest-manager} app, navigate to **Integrations** and use the search bar to find the Nginx integration.
-
+. Install the `nginx` integration provided by Elastic:
+.. In the {ingest-manager} app, click the **Integrations** tab and use the
+search bar to find the Nginx integration.
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-integrations-nginx.png[{ingest-manager} app showing Nginx Integration]
-
-Click on the Nginx integration to see more details about it. On the upper right, select **Create data source**.
-
+.. Click the Nginx integration to see more details about it, and then click
+**Create data source**.
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-integrations-nginx-overview.png[{ingest-manager} app showing Nginx Integration overview]
 
-On the **Add data source** screen, click to select the default agent configuration from the list, and scroll down to inspect or change the
-default settings that have been set for you. When you're done, click **Save data source**. 
+.. On the **Add data source** page, click the default agent configuration
+to select it, then scroll down to inspect or change the default settings.
 
+.. When you're done, click **Save data source**. 
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-integrations-nginx-add-datasource.png[{ingest-manager} app Add data source screen]
 
-Navigate back to the main **Integrations** tab and select **Installed Integrations**. The Nginx integration has been installed and
-should show up in this list. (Note that the **System** and **Elastic Endpoint** integrations have been installed by default.)
-
+. To verify that the integration is installed, click the **Integrations** tab
+and then click **Installed Integrations**.
++
+The Nginx integration has been installed and should show up in this list. Note
+that the **System** and **Elastic Endpoint** integrations are installed by
+default.
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-integrations-list-installed.png[{ingest-manager} app showing installed integrations]
 
-Navigate to **Configurations** and click on the Default config in the list. On the detail view, the newly created data source should appear in the list. (Note that the `system-1` data source has been created by default.)
-
+. Select the **Configurations** tab, and in the Agent configurations list, click
+the default config.
++
+The newly created data source should appear on the **Data sources** tab.
+Note that the `system-1` data source has been created by default.
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-configurations-default-with-nginx.png[{ingest-manager} app showing default agent configuration with nginx-1 datasource]
 
@@ -96,27 +147,117 @@ image::images/kibana-ingest-manager-configurations-default-with-nginx.png[{inges
 [[install-run-elastic-agent]]
 == Step 3: Install and run {agent}
 
-{agent} is a single, unified agent that you can deploy to hosts or containers to collect data and send it to the {stack}. Behind the scenes, {agent} runs the {beats} shippers or Endpoint required for your configuration. It can be configured manually or from the {ingest-manager} app in {kib}.
+{agent} is a single, unified agent that you can deploy to hosts or containers to
+collect data and send it to the {stack}. Behind the scenes, {agent} runs the
+{beats} shippers or Endpoint required for your configuration.
 
-To learn how to install {agent}, see the {agent} installation topic.
+To learn how to install {agent}, see <<elastic-agent-installation>>.
 
-//TODO: Make this an active link to <<elastic-agent-installation-configuration>>,
-//or use an asciidoc include to pull in installation instructions.
+//TODO: After the tabbed panel is ready, pull in the installation steps rather
+// than pointing users to the Beats agent docs.
+
+To configure {agent}, you can use the {ingest-manager} app in {kib} (see
+<<agent-fleet-mode,{fleet} mode>>), or configure it manually (see
+<<agent-standalone-mode, Standalone mode>>).
+
+[float]
+[[agent-fleet-mode]]
+=== {fleet} mode
+
+To use {fleet} to configure {agent}:
+
+. Enable {fleet} in the {ingest-manager} app. To do so, click the **{fleet}**
+tab and click **Create user and enable Fleet**.
++
+[role="screenshot"]
+image::images/kibana-ingest-manager-fleet-enable.png[{ingest-manager} app showing prompt to enable {fleet}]
+
+. On the **Fleet** tab, click **Enroll new agent** to start the enrollment.
+Select an Agent configuration (or accept the default) and copy the command for
+enrolling the Agent.
++
+The copied command contains your {kib} URL and an enrollment key that was
+generated by the {ingest-manager} app.
++
+[role="screenshot"]
+image::images/kibana-ingest-manager-fleet-enrol.png[{ingest-manager} app showing agent enrollment dialog]
+
+. In the directory where you installed {agent}, paste the command to enroll the
+Agent. Note that this command will overwrite the `elastic-agent.yml` file in
+that directory.
++
+[source,shell]
+----
+./elastic-agent enroll KIBANA_URL ENROLLMENT_KEY
+
+The {agent} is currently in Experimental and should not be used in production
+This will replace your current settings. Do you want to continue? [Y/n]:
+----
+
+. Run the Agent:
++
+[source,shell]
+----
+./elastic-agent run
+----
+
+. In the {ingest-manager} app, click **Continue** to go to the **{fleet}**
+tab, where you should see the newly enrolled agent.
++
+[role="screenshot"]
+image::images/kibana-ingest-manager-fleet-agents.png[{ingest-manager} app showing enrolled agents]
+
+//REVIEWERS: This is super cool, but we kind of gloss over the notion that this
+//only works if the logs are stored in the location expected for the service
+//your monitoring. Do we want to tell users how to override default paths, or
+//is that unnecessary for this release?
+
+TIP: If you run into problems, see <<ingest-management-troubleshooting>>.
+
+[float]
+[[unenroll-agent]]
+==== To unenroll an agent
+
+When you want to unenroll an agent, choose **Unenroll** from the **Actions**
+menu for the Agent. This will invalidate the API key the Agent uses to
+connect to {es}. The {agent} will continue to run, but will not be able to send
+data. It will show this error instead:
+
+[source,shell]
+----
+invalid api key to authenticate with fleet
+----
 
 [float]
 [[agent-standalone-mode]]
-=== Standalone mode
+=== Standalone mode (manual configuration)
 
-To configure {agent} manually, navigate to **Configurations** in the {ingest-manager} app and click on the Default config in the list. Then select the **YAML** tab to access the configuration for {agent}. Copy the content and put it into a file `elastic-agent-standalone.yml` on the system where you have installed {agent}.
+//REVIEWERS: Is there support for passwords stored in a keystore or environment
+//variabes?
 
+To configure {agent} manually:
+
+. In the {ingest-manager} app, click the **Configurations** tab, and in the
+Agent configurations list, click the default config.
+
+. Select the **YAML** tab to see the configuration for {agent}. Copy the
+content and put it into a file named `elastic-agent-standalone.yml` on the
+system where {agent} is installed.
++
 [role="screenshot"]
 image::images/kibana-ingest-manager-configurations-default-yaml.png[{ingest-manager} app showing default agent configuration in YAML format]
++
+NOTE: The configuration file generated by the {ingest-manager} app already
+contains the correct {es} address and port for your setup. If you run everything
+locally, the address is `127.0.0.1:9200`. If you use our
+https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on
+{ecloud}, the address corresponds to the {es} endpoint URL that is listed
+under **Endpoints** as described in
+{cloud}/ec-working-with-elasticsearch.html[Work with {es}].
 
-Please note that the configuration file generated by the {ingest-manager} app already contains the correct {es} address and port for your setup. If you run everything locally, this will be `127.0.0.1:9200`. If you are using our https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on
-{ecloud}, this will correspond to the {es} endpoint URL that is also available under **Endpoints** as described in {cloud}/ec-working-with-elasticsearch.html[Work with {es}].
-
-You will also have to add your {es} username and password to the `outputs` section in the configuration file:
-
+. Add your {es} username and password to the `outputs` section in the
+configuration file:
++
 [source,yaml]
 ----
 [...]
@@ -131,61 +272,31 @@ datasources:
 [...]
 ----
 
-Run {agent} with the command:
 
+. Run {agent}:
++
 [source,shell]
 ----
-$ ./elastic-agent -c elastic-agent-standalone.yml run
-----
-
-[float]
-[[agent-fleet-mode]]
-=== {fleet} mode
-
-To use {fleet} to configure {agent}, you first need to enable {fleet} in the {ingest-manager} app. To do so, navigate to the **{fleet}** tab and click **Create user and enable Fleet**.
-
-[role="screenshot"]
-image::images/kibana-ingest-manager-fleet-enable.png[{ingest-manager} app showing prompt to enable {fleet}]
-
-On the next page, click on **Enroll new agent** to start the enrollment. Select an agent configuration (or stay with the default) and copy the command to enroll the agent from the command line. This line contains your {kib} URL and an enrollment key that has been generated by the {ingest-manager} app.
-
-[role="screenshot"]
-image::images/kibana-ingest-manager-fleet-enrol.png[{ingest-manager} app showing agent enrollment dialog]
-
-In the directory where you installed {agent}, paste the copied command to enroll the agent. Please note that this command will overwrite the `elastic-agent.yml` file in that directory.
-
-[source,shell]
-----
-./elastic-agent enroll KIBANA_URL ENROLLMENT_KEY
-
-The {agent} is currently in Experimental and should not be used in production
-This will replace your current settings. Do you want to continue? [Y/n]:
-----
-
-After that, run the agent with:
-
-[source,shell]
-----
-./elastic-agent run
-----
-
-In the {ingest-manager} app, click **Continue** to get back to the **{fleet}** tab. This will now show the newly enrolled agent.
-
-[role="screenshot"]
-image::images/kibana-ingest-manager-fleet-agents.png[{ingest-manager} app showing enrolled agents]
-
-When you want to unenroll an agent, choose **Unenroll** from the **Actions** menu for this agent. This will invalidate the API key the agent is using to connect to {es}. The {agent} will continue to run, but will not be able to send data, and show this error instead:
-
-[source,shell]
-----
-invalid api key to authenticate with fleet
+./elastic-agent -c elastic-agent-standalone.yml run
 ----
 
 [float]
 [[view-data]]
 == Step 4: View your data
 
-Navigate to the **Data streams** tab in the {ingest-manager} app to inspect the data that is sent by the agent. From the **Actions** column you can navigate to the dashboards corresponding to the data type that is sent.
+In the {ingest-manager} app, click the **Data streams** tab to inspect the data
+that is sent by the Agent. From the **Actions** column, you can navigate to the
+dashboards corresponding to the data type that is sent.
 
 [role="screenshot"]
 image::images/kibana-ingest-manager-datastreams.png[{ingest-manager} app showing data streams list]
+
+//Adding this section for future use. Might be premature to add this for the
+//experimental release.
+
+//[float]
+//== What's next?
+
+//Now that you have your logs streaming into {es}, learn how to unify your logs,
+//metrics, uptime, and application performance data. Use the Observability apps in
+//{kib} to search across all your data.

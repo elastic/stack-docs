@@ -100,28 +100,34 @@ To predict whether a specific flight is delayed:
 You can use the wizard on the *Machine Learning* > *Data Frame Analaytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
-image::images/flights-classification-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%",role="screenshot left",align="text-left"]
+[role="screenshot"]
+image::images/flights-classification-job-1.png["Creating a {dfanalytics-job} in {kib}"]
 
-.. Choose `classification` as the job type.
+[role="screenshot"]
+image::images/flights-classification-job-2.png["Creating a {dfanalytics-job} in {kib} – continued"]
+
 .. Choose `kibana_sample_data_flights` as the source index.
-.. Add the name of the destination index that will contain the results of the
-analysis. It will contain a copy of the source index data where each document is
-annotated with the results. If the index does not exist, it will be created
-automatically.
+.. Choose `classification` as the job type.
 .. Choose `FlightDelay` as the dependent variable, which is the field that we
 want to predict with the {classanalysis}.
+.. Add `Cancelled`, `FlightDelayMin`, and `FlightDelayType` to the list of
+excluded fields. These fields will be excluded from the analysis. It is
+recommended to exclude fields that either contain erroneous data or describe the 
+`dependent_variable`.
 .. Choose a training percent of `10` which means it randomly selects 10% of the
 source data for training. While that value is low for this example, for many
 large data sets using a small training sample greatly reduces runtime without 
 impacting accuracy.
 .. Use the default feature importance values.
-.. Add `Cancelled`, `FlightDelayMin`, and `FlightDelayType` to the list of
-excluded fields. These fields will be excluded from the analysis. It is
-recommended to exclude fields that either contain erroneous data or describe the 
-`dependent_variable`.
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
+.. Add a job ID and optionally a job description.
+.. Add the name of the destination index that will contain the results of the
+analysis. It will contain a copy of the source index data where each document is
+annotated with the results. If the index does not exist, it will be created
+automatically.
+
 
 .API example
 [%collapsible]

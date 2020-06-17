@@ -46,7 +46,7 @@ see it in {kib}.
 //TODO: Add platform tabs when the tabbed panel widget is stable (possibly after
 // 7.8)
 
-**To enable {ingest-manager} on cloud:**
+**To enable {ingest-manager} on {ecloud}:**
 
 . Go to your deployment in the user console.
 
@@ -107,8 +107,8 @@ Then restart {kib}.
 
 In order to install {integrations}, the {ingest-manager} app needs to connect to
 an external service called the {package-registry}. For this to work, the {kib}
-server must be able to connect to `http://epr-experimental.elastic.co` on port
-80.
+server must be able to connect to `https://epr-experimental.elastic.co` on port
+443.
 
 [float]
 [[ingest-manager-app-crashes]]
@@ -118,14 +118,14 @@ To find more about the error, open your browser's development console, navigate
 to the **Network** tab, and refresh the page. One of the requests to the
 {ingest-manager} API will most likely have returned an error. If the error
 message doesn't give you enough information to fix the problem, please contact
-us https://ela.st/ingest-manager-feedback[here].
+us in the https://ela.st/ingest-manager-feedback[discuss forum].
 
 [float]
 [[agent-enrollment-timeout]]
 == {agent} enrollment fails on the host with a `Client.Timeout exceeded` message
 
 {agent} must be able to connect to the {kib} instance to enroll in {fleet}.
-If the agent is unable to connect, you will see the following failure:
+If the Agent is unable to connect, you will see the following failure:
 
 [source,output]
 -----
@@ -151,10 +151,10 @@ token when you run the `elastic-agent enroll` command.
 
 [float]
 [[enrolled-agent-not-showing-up]]
-== Why doesn't my enrolled agent show up in the {ingest-manager} app?
+== Why doesn't my enrolled Agent show up in the {ingest-manager} app?
 
 If {agent} was successfully enrolled, but doesn't show up in the {fleet} list,
-it might not be started. You need to start the agent.
+it might not be started. You need to start the Agent.
 
 // TODO: This should be single sourced. Update it when we add the tabbed widget
 // (probably after 7.8).
@@ -179,7 +179,7 @@ elastic-agent.exe run
 
 When started successfully, {metricbeat} logs are stored in
 `data/logs/metricbeat` under the folder where {agent} was started. If that log
-path does not exist, the agent was unable to start {metricbeat}, which is a
+path does not exist, the Agent was unable to start {metricbeat}, which is a
 higher level problem to triage.
 
 [float]
@@ -187,7 +187,7 @@ higher level problem to triage.
 == What configuration is the {agent} running?
 
 To find the configuration file, inspect the `elastic-agent.yml` file in the
-folder where you ran {agent}. If you're running the agent in {fleet} mode, this
+folder where you ran {agent}. If you're running the Agent in {fleet} mode, this
 file contains the following citation:
 
 [source,yaml]
@@ -241,7 +241,7 @@ problem with {agent}, and you should report it.
 == How do I restore an {agent} that I deleted from {fleet}?
 
 It's ok, we've got your back! The data is still in {es}. To add {agent}
-to {fleet} again, stop the agent, re-enroll the {agent} on the host, then run
+to {fleet} again, stop the Agent, re-enroll the {agent} on the host, then run
 {agent}.
 
 [float]
@@ -250,7 +250,7 @@ to {fleet} again, stop the agent, re-enroll the {agent} on the host, then run
 
 To stop {agent} and its related executables, stop the {agent} process.
 
-On Windows, if you installed the agent as a service, stop the service. If
+On Windows, if you installed the Agent as a service, stop the service. If
 necessary, use Task Manager on Windows to stop {agent}. This will kill the
 {agent} process and any sub-processes it created (such as {beats}).
 
@@ -270,7 +270,7 @@ Then kill the process.
 [[i-rebooted-my-host]]
 == How do I restart {agent} after rebooting my host?
 
-On Windows, if you used Powershell to install {agent} as a service, the agent
+On Windows, if you used Powershell to install {agent} as a service, the Agent
 should still be running after rebooting the host.
 
 On macOS and Linux, you need to restart {agent} from the command line after

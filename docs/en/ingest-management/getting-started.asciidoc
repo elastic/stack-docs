@@ -30,28 +30,31 @@ https://ela.st/ingest-manager-feedback[discuss forum].
 To use this **experimental** release of {ingest-management}, you need:
 
 * An {es} cluster and {kib} (version 7.8) with a basic license.
-+
 You can use our https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}]
 on {ecloud}, or {stack-gs}/get-started-elastic-stack.html[install the {stack} on
 your own hardware].
 
-* An {es} configuration with the following capabilities enabled. If you use our
-https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}] on {ecloud},
-these settings are already enabled.
-+
-- {ref}/configuring-security.html[{es} security]. The `xpack.security.enabled`
-setting must be `true`.
-- {ref}/security-settings.html#api-key-service-settings[API key service]. The
-`xpack.security.authc.api_key.enabled` setting must be `true`.
-
-* A {kib} configuration with the following capabilities enabled:
-+
-- {kibana-ref}/using-kibana-with-security.html[{kib} security]. The `xpack.security.enabled`
-setting must be `true`.
-- {kibana-ref}/configuring-tls.html[TLS] or the
-`pack.ingestManager.fleet.tlsCheckDisabled` setting must be `true`.
-
 * A user with the superuser role. See {ref}/built-in-roles.html[Built-in roles].
+
+* On self-managed clusters, the following settings are required. If you're using
+our https://www.elastic.co/cloud/elasticsearch-service[hosted  {ess}] on
+{ecloud},  the required settings are already enabled.
+
+** In your {es} configuration, enable: 
++
+- {ref}/configuring-security.html[{es} security]. Set `xpack.security.enabled`
+to `true`.
+- {ref}/security-settings.html#api-key-service-settings[API key service]. Set
+`xpack.security.authc.api_key.enabled` to `true`.
+
+** In your {kib} configuration, enable:
++
+- {kibana-ref}/using-kibana-with-security.html[{kib} security]. Set `xpack.security.enabled`
+to `true`.
+- {kibana-ref}/configuring-tls.html[TLS]. As an alternative, you can disable the
+TLS check by setting `xpack.ingestManager.fleet.tlsCheckDisabled` to `true`. For
+example, you might want to disable TLS checking if {kib} is behind a proxy that
+terminates the SSL connection.
 
 [float]
 [[enable-ingest-management]]
@@ -140,14 +143,14 @@ image::images/kibana-ingest-manager-configurations-default-with-nginx.png[{inges
 [[install-run-elastic-agent]]
 == Step 3: Install and run {agent}
 
-{agent} is a single, unified agent that you can deploy to hosts or containers to
-collect data and send it to the {stack}. Behind the scenes, {agent} runs the
-{beats} shippers or Endpoint required for your configuration.
+include::{beats-repo-dir}/x-pack/elastic-agent/docs/elastic-agent.asciidoc[tag=agent-install-intro]
 
-To learn how to install {agent}, see <<elastic-agent-installation>>.
+//REVIEWERS: I know this section makes the docs longer, but it's easier for users
+//Don't worry too much about the length because I have some code for a tabbed
+//panel that I will use to display this content. I'll follow up later with a PR
+//that adds this code. 
 
-//TODO: After the tabbed panel is ready, pull in the installation steps rather
-// than pointing users to the Beats agent docs.
+include::{beats-repo-dir}/x-pack/elastic-agent/docs/install-elastic-agent.asciidoc[tag=install-elastic-agent]
 
 To configure {agent}, you can use the {ingest-manager} app in {kib} (see
 <<agent-fleet-mode,{fleet} mode>>), or configure it manually (see
@@ -200,13 +203,9 @@ tab, where you should see the newly enrolled agent.
 [role="screenshot"]
 image::images/kibana-ingest-manager-fleet-agents.png[{ingest-manager} app showing enrolled agents]
 
-TIP: If you run into problems, see <<ingest-management-troubleshooting>>.
+If you run into problems, see <<ingest-management-troubleshooting>>.
 
-[float]
-[[unenroll-agent]]
-==== To unenroll an agent
-
-When you want to unenroll an agent, choose **Unenroll** from the **Actions**
+TIP: To unenroll an agent, choose **Unenroll** from the **Actions**
 menu for the Agent. This will invalidate the API key the Agent uses to
 connect to {es}. The {agent} will continue to run, but will not be able to send
 data. It will show this error instead:

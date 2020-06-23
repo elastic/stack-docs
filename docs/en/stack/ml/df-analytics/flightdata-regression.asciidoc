@@ -97,26 +97,33 @@ To predict the number of minutes delayed for each flight:
 You can use the wizard on the *Machine Learning* > *Data Frame Analaytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
-image::images/flights-regression-job.jpg[alt="Creating a {dfanalytics-job} in {kib}",width="50%",role="screenshot left",align="text-left"]
+[role="screenshot"]
+image::images/flights-regression-job-1.png["Creating a {dfanalytics-job} in {kib}"]
 
-.. Choose `regression` as the job type.
+[role="screenshot"]
+image::images/flights-regression-job-2.png["Creating a {dfanalytics-job} in {kib}" – continued]
+
+
 .. Choose `kibana_sample_data_flights` as the source index.
-.. Add the name of the destination index that will contain the results of the
-analysis. It will contain a copy of the source index data where each document is
-annotated with the results. If the index does not exist, it will be created
-automatically.
+.. Choose `regression` as the job type.
 .. Choose `FlightDelayMin` as the dependent variable, which is the field that we
 want to predict with the {reganalysis}.
-.. Choose a training percent of `90` which means it randomly selects 90% of the
-source data for training.
-.. Use the default feature importance values.
 .. Add `Cancelled`, `FlightDelay`, and `FlightDelayType` to the list of excluded
 fields. These fields will be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
+.. Choose a training percent of `90` which means it randomly selects 90% of the
+source data for training.
+.. Use the default feature importance values.
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
+.. Add a job ID and optionally a job description.
+.. Add the name of the destination index that will contain the results of the 
+analysis. It will contain a copy of the source index data where each document is 
+annotated with the results. If the index does not exist, it will be created 
+automatically.
+
 
 .API example
 [%collapsible]
@@ -188,11 +195,13 @@ POST _ml/data_frame/analytics/model-flight-delays/_start
 +
 --
 [role="screenshot"]
-image::images/flights-regression-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-details.png["Statistics for a {dfanalytics-job} in {kib}"]
 
-The job has four phases (reindexing, loading data, analyzing, and writing
+The job has four main phases (reindexing, loading data, analyzing, and writing
 results). When all the phases have completed, the job stops and the results are
-ready to view and evaluate.
+ready to view and evaluate. Consult <<ml-dfa-phases>> to learn more about the 
+different phases.
+
 
 .API example
 [%collapsible]
@@ -288,7 +297,7 @@ When you view the {regression} results in {kib}, it shows the contents of the
 destination index in a tabular format:
 
 [role="screenshot"]
-image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-results.png["Results for a {dfanalytics-job} in {kib}"]
 
 In this example, the table shows a column for the dependent variable
 (`FlightDelayMin`), which contains the ground truth values that we are trying to

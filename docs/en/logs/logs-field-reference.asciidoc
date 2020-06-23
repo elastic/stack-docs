@@ -1,8 +1,9 @@
-[[logs-ecs-fields]]
+[[logs-fields-reference]]
 [chapter, role="xpack"]
-= Logs ECS fields
+= Logs fields reference
 
-This section lists https://www.elastic.co/guide/en/ecs/current/ecs-reference.html#_what_is_ecs[ECS fields] the {logs-app} uses to display data.
+This section lists the required fields the {logs-app} uses to display data.
+Some of the fields listed are https://www.elastic.co/guide/en/ecs/current/ecs-reference.html#_what_is_ecs[ECS fields].
 
 IMPORTANT: Beat modules (for example, {filebeat-ref}/filebeat-modules.html[{filebeat} modules])
 are ECS-compliant so manual field mapping is not required, and all {logs-app}
@@ -20,9 +21,21 @@ Required field for all events.
 +
 type: date
 +
+required: True
++
+ECS field: True
++
 example: `May 27, 2020 @ 15:22:27.982`
+
+
+`_doc`::
+
+This field is used to break ties between two entries with the same timestamp.
 +
 required: True
++
+ECS field: False
+
 
 `container.id`::
 
@@ -30,9 +43,12 @@ Unique container id.
 +
 type: keyword
 +
-example: `data`
-+
 required: True
++
+ECS field: True
++
+example: `data`
+
 
 `event.dataset`::
 
@@ -44,9 +60,12 @@ It’s recommended but not required to start the dataset name with the module na
 +
 type: keyword
 +
-example: `apache.access`
-+
 required: True, if you want to enable and use the *View in Context* feature.
++
+ECS field: True
++
+example: `apache.access`
+
 
 `host.hostname`::
 
@@ -56,9 +75,12 @@ It normally contains what the `hostname` command returns on the host machine.
 +
 type: keyword
 +
-example: `Elastic.local`
-+
 required: True, if you want to use the {ml-features}.
++
+ECS field: True
++
+example: `Elastic.local`
+
 
 `host.name`::
 
@@ -68,9 +90,12 @@ It can contain what `hostname` returns on Unix systems, the fully qualified doma
 +
 type: keyword
 +
-example: `MacBook-Elastic.local`
-+
 required: True
++
+ECS field: True
++
+example: `MacBook-Elastic.local`
+
 
 `kubernetes.pod.uid`::
 
@@ -78,9 +103,12 @@ Kubernetes Pod UID.
 +
 type: keyword
 +
-example: `8454328b-673d-11ea-7d80-21010a840123`
-+
 required: True
++
+ECS field: False
++
+example: `8454328b-673d-11ea-7d80-21010a840123`
+
 
 `log.file.path`::
 
@@ -90,9 +118,12 @@ If the event wasn't read from a log file, do not populate this field.
 +
 type: keyword
 +
-example: `/var/log/fun-times.log`
-+
 required: True, if you want to use the *View in Context* feature.
++
+ECS field: False
++
+example: `/var/log/demo.log`
+
 
 `message`::
 
@@ -104,6 +135,8 @@ If multiple messages exist, they can be combined into one message.
 +
 type: text
 +
-example: `Hello World`
-+
 required: True
++
+ECS field: True
++
+example: `Hello World`

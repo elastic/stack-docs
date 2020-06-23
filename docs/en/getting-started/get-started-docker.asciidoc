@@ -155,9 +155,6 @@ and join the lines before running this command.
 ----
 docker exec es01 /bin/bash -c "bin/elasticsearch-setup-passwords \
 auto --batch \
--Expack.security.http.ssl.certificate=certificates/es01/es01.crt \
--Expack.security.http.ssl.certificate_authorities=certificates/ca/ca.crt \
--Expack.security.http.ssl.key=certificates/es01/es01.key \
 --url https://es01:9200"
 ----
 
@@ -209,7 +206,7 @@ endif::[]
 --
 ["source","sh"]
 ----
-docker-compose stop
+docker-compose -f elastic-docker-tls.yml stop
 docker-compose -f elastic-docker-tls.yml up -d
 ----
 --

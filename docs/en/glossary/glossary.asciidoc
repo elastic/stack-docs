@@ -3,24 +3,19 @@
 
 <<a_glos>> | <<b_glos>> | <<c_glos>> | <<d_glos>> | <<e_glos>> | <<f_glos>> | <<g_glos>> | <<h_glos>> | <<i_glos>> | <<j_glos>> | K | <<l_glos>> | <<m_glos>> | <<n_glos>> | <<o_glos>> | <<p_glos>> | <<q_glos>> | <<r_glos>> | <<s_glos>> | <<t_glos>> | U | V | <<w_glos>> | X | Y | <<z_glos>>
 
-[discrete]
-[[a_glos]]
-=== A
+[[a_glos]] A ::
 
 ifdef::cloud-terms[]
 
-[[glossary-admin-console]] administration console ::
-
+[[glossary-admin-console]] administration console :::
 A component of {ece} that provides the API server for the
 <<glossary-cloud-ui,Cloud UI>>. Also syncs cluster and allocator data from
 ZooKeeper to {es}.
-+
 //Source: Cloud
 endif::cloud-terms[]
 ifdef::cloud-terms[]
 
-[[glossary-allocator]] allocator ::
-
+[[glossary-allocator]] allocator :::
 Manages hosts that contain {es} and {kib} nodes. Controls the lifecycle of these
 nodes by creating new <<glossary-container,containers>> and managing the nodes
 within these containers when requested. Used to scale the capacity of your {ece}
@@ -30,7 +25,7 @@ installation.
 endif::cloud-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-analysis]] analysis ::
+[[glossary-analysis]] analysis :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=analysis-def]
@@ -38,8 +33,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=analysis-def]
 
 endif::elasticsearch-terms[]
 ifdef::xpack-terms[]
-[[glossary-anomaly-detection-job]] {anomaly-job} ::
-
+[[glossary-anomaly-detection-job]] {anomaly-job} :::
 {anomaly-jobs-cap} contain the configuration information and metadata
 necessary to perform an analytics task. See
 {ml-docs}/ml-jobs.html[{ml-jobs-cap}] and the
@@ -49,7 +43,7 @@ necessary to perform an analytics task. See
 endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-api-key]] API key ::
+[[glossary-api-key]] API key :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=api-key-def]
@@ -58,7 +52,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=api-key-def]
 endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-auto-follow-pattern]] auto-follow pattern ::
+[[glossary-auto-follow-pattern]] auto-follow pattern :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=auto-follow-pattern-def]
@@ -66,8 +60,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=auto-follow-pattern-def]
 
 endif::elasticsearch-terms[]
 ifdef::cloud-terms[]
-[[glossary-zone]] availability zone ::
-
+[[glossary-zone]] availability zone :::
 Contains resources available to a {ece} installation that are isolated from
 other availability zones to safeguard against failure. Could be a rack, a server
 zone or some other logical constraint that creates a failure boundary. In a
@@ -79,21 +72,17 @@ entire availability zone. Also see
 //Source: Cloud
 endif::cloud-terms[]
 
-[discrete]
-[[b_glos]]
-=== B
+[[b_glos]] B ::
 
 ifdef::cloud-terms[]
-[[glossary-beats-runner]] beats runner ::
-
-Used to send Filebeat and Metricbeat information to the logging cluster.
+[[glossary-beats-runner]] beats runner :::
+Used to send {filebeat} and {metricbeat} information to the logging cluster.
 +
 //Source: Cloud
 endif::cloud-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-ml-bucket]] bucket ::
-
+[[glossary-ml-bucket]] bucket :::
 The {ml-features} use the concept of a bucket to divide the time series into
 batches for processing. The _bucket span_ is part of the configuration
 information for {anomaly-jobs}. It defines the time interval that is used to
@@ -106,14 +95,10 @@ is required.
 //Source: X-Pack
 endif::xpack-terms[]
 
-[discrete]
-[[c_glos]]
-=== C
+[[c_glos]] C ::
 
 ifdef::cloud-terms[]
-
-[[glossary-client-forwarder]] client forwarder ::
-
+[[glossary-client-forwarder]] client forwarder :::
 Used for secure internal communications between various components of {ece} and
 ZooKeeper.
 +
@@ -121,7 +106,7 @@ ZooKeeper.
 endif::cloud-terms[]
 ifdef::cloud-terms[]
 
-[[glossary-cloud-ui]] Cloud UI ::
+[[glossary-cloud-ui]] Cloud UI :::
 
 Provides web-based access to manage your {ece} installation, supported by the
 <<glossary-admin-console,administration console>>.
@@ -130,7 +115,7 @@ Provides web-based access to manage your {ece} installation, supported by the
 endif::cloud-terms[]
 ifdef::elasticsearch-terms,cloud-terms[]
 
-[[glossary-cluster]] cluster ::
+[[glossary-cluster]] cluster :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=cluster-def]
@@ -138,9 +123,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=cluster-def]
 
 endif::elasticsearch-terms,cloud-terms[]
 ifdef::logstash-terms[]
-
-[[glossary-codec-plugin]] codec plugin ::
-
+[[glossary-codec-plugin]] codec plugin :::
 A Logstash <<glossary-plugin,plugin>> that changes the data representation
 of an <<glossary-event,event>>. Codecs are essentially stream filters that
 can operate as part of an input or output. Codecs enable you to separate the
@@ -151,7 +134,7 @@ json, msgpack, and plain (text).
 endif::logstash-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-cold-phase]] cold phase ::
+[[glossary-cold-phase]] cold phase :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=cold-phase-def]
@@ -160,8 +143,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=cold-phase-def]
 endif::xpack-terms[]
 ifdef::logstash-terms[]
 
-[[glossary-conditional]] conditional ::
-
+[[glossary-conditional]] conditional :::
 A control flow that executes certain actions based on whether a statement
 (also called a condition) is true or false. Logstash supports `if`,
 `else if`, and `else` statements. You can use conditional statements to
@@ -172,8 +154,7 @@ you specify.
 endif::logstash-terms[]
 ifdef::cloud-terms[]
 
-[[glossary-constructor]] constructor ::
-
+[[glossary-constructor]] constructor :::
 Directs <<glossary-allocator,allocators>> to manage containers of {es} and {kib}
 nodes and maximizes the utilization of allocators. Monitors plan change requests
 from the Cloud UI and determines how to transform the existing cluster. In a
@@ -185,8 +166,7 @@ entire availability zone.
 endif::cloud-terms[]
 ifdef::cloud-terms[]
 
-[[glossary-container]] container ::
-
+[[glossary-container]] container :::
 Includes an instance of {ece} software and its dependencies. Used to provision
 similar environments, to assign a guaranteed share of host resources to nodes,
 and to simplify operational effort in {ece}.
@@ -195,8 +175,7 @@ and to simplify operational effort in {ece}.
 endif::cloud-terms[]
 ifdef::cloud-terms[]
 
-[[glossary-coordinator]] coordinator ::
-
+[[glossary-coordinator]] coordinator :::
 Consists of a logical grouping of some {ece} services and acts as a distributed
 coordination system and resource scheduler.
 +
@@ -204,7 +183,7 @@ coordination system and resource scheduler.
 endif::cloud-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-ccr]] {ccr} (CCR)::
+[[glossary-ccr]] {ccr} (CCR) :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=ccr-def]
@@ -212,7 +191,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=ccr-def]
 
 endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
-[[glossary-ccs]] {ccs} (CCS)::
+[[glossary-ccs]] {ccs} (CCS) :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=ccs-def]
@@ -220,14 +199,10 @@ include::{es-repo-dir}/glossary.asciidoc[tag=ccs-def]
 
 endif::elasticsearch-terms[]
 
-[discrete]
-[[d_glos]]
-=== D
+[[d_glos]] D ::
 
 ifdef::xpack-terms[]
-
-[[glossary-ml-datafeed]] datafeed ::
-
+[[glossary-ml-datafeed]] datafeed :::
 {anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
 real time. {dfeeds-cap} retrieve data from {es} for analysis. Alternatively, you
 can post data from any source directly to a {ml} API.
@@ -235,8 +210,8 @@ can post data from any source directly to a {ml} API.
 //Source: X-Pack
 endif::xpack-terms[]
 ifdef::xpack-terms[]
-[[glossary-dataframe-job]] {dfanalytics-job} ::
 
+[[glossary-dataframe-job]] {dfanalytics-job} :::
 {dfanalytics-jobs-cap} contain the configuration information and metadata
 necessary to perform {ml} analytics tasks on a source index and store the
 outcome in a destination index. See
@@ -244,17 +219,17 @@ outcome in a destination index. See
 {ref}/put-dfanalytics.html[create {dfanalytics-job} API].
 //Source: X-Pack
 endif::xpack-terms[]
-
 ifdef::elasticsearch-terms[]
-[[glossary-data-stream]] data stream::
+
+[[glossary-data-stream]] data stream :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=data-stream-def]
 --
 endif::elasticsearch-terms[]
-
 ifdef::xpack-terms[]
-[[glossary-delete-phase]] delete phase ::
+
+[[glossary-delete-phase]] delete phase :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=delete-phase-def]
@@ -263,8 +238,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=delete-phase-def]
 endif::xpack-terms[]
 ifdef::xpack-terms[]
 
-[[glossary-ml-detector]] detector ::
-
+[[glossary-ml-detector]] detector :::
 As part of the configuration information that is associated with {anomaly-jobs},
 detectors define the type of analysis that needs to be done. They also specify
 which fields to analyze. You can have more than one detector in a job, which is
@@ -274,8 +248,7 @@ more efficient than running multiple jobs against the same data.
 endif::xpack-terms[]
 ifdef::cloud-terms[]
 
-[[glossary-director]] director ::
-
+[[glossary-director]] director :::
 Manages the <<glossary-zookeeper,ZooKeeper>> datastore. This role is often
 shared with the <<glossary-coordinator,coordinator>>, though in production
 deployments it can be separated.
@@ -284,7 +257,7 @@ deployments it can be separated.
 endif::cloud-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-document]] document ::
+[[glossary-document]] document :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=document-def]
@@ -292,21 +265,16 @@ include::{es-repo-dir}/glossary.asciidoc[tag=document-def]
 
 endif::elasticsearch-terms[]
 
-[discrete]
-[[e_glos]]
-=== E
+[[e_glos]] E ::
 
-[[glossary-ecs]] Elastic Common Schema (ECS) ::
-
+[[glossary-ecs]] Elastic Common Schema (ECS) :::
 A document schema for Elasticsearch, for use cases such as logging and metrics.
 ECS defines a common set of fields, their datatype, and gives guidance on their
 correct usage. ECS is used to improve uniformity of event data coming from
 different sources.
 
 ifdef::logstash-terms[]
-
-[[glossary-event]] event ::
-
+[[glossary-event]] event :::
 A single unit of information, containing a timestamp plus additional data. An
 event arrives via an input, and is subsequently parsed, timestamped, and
 passed through the Logstash <<glossary-pipeline,pipeline>>.
@@ -314,13 +282,10 @@ passed through the Logstash <<glossary-pipeline,pipeline>>.
 //Source: Logstash
 endif::logstash-terms[]
 
-[discrete]
-[[f_glos]]
-=== F
+[[f_glos]] F ::
 
 ifdef::xpack-terms[]
-[[glossary-feature-influence]] feature influence ::
-
+[[glossary-feature-influence]] feature influence :::
 In {oldetection}, feature influence scores indicate which features of a data
 point contribute to its outlier behavior. See
 {ml-docs}/dfa-outlier-detection.html#dfa-feature-influence[Feature influence].
@@ -328,8 +293,8 @@ point contribute to its outlier behavior. See
 //Source: X-Pack
 endif::xpack-terms[]
 ifdef::xpack-terms[]
-[[glossary-feature-importance]] feature importance ::
 
+[[glossary-feature-importance]] feature importance :::
 In supervised {ml} methods such as {regression} and {classification}, feature
 importance indicates the degree to which a specific feature affects a prediction.
 See
@@ -341,11 +306,10 @@ and
 endif::xpack-terms[]
 ifdef::elasticsearch-terms,logstash-terms[]
 
-[[glossary-field]] field ::
+[[glossary-field]] field :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=field-def]
-
 
 endif::elasticsearch-terms,logstash-terms[]
 ifdef::logstash-terms[]
@@ -360,8 +324,7 @@ properties.
 endif::logstash-terms[]
 ifdef::logstash-terms[]
 
-[[glossary-field-reference]] field reference ::
-
+[[glossary-field-reference]] field reference :::
 A reference to an event <<glossary-field,field>>. This reference may appear in
 an output block or filter block in the Logstash config file. Field references
 are typically wrapped in square (`[]`) brackets, for example `[fieldname]`. If
@@ -373,17 +336,15 @@ field: `[top-level field][nested field]`.
 endif::logstash-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-filter]] filter ::
+[[glossary-filter]] filter :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=filter-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::logstash-terms[]
 
-[[glossary-filter-plugin]] filter plugin ::
-
+[[glossary-filter-plugin]] filter plugin :::
 A Logstash <<glossary-plugin,plugin>> that performs intermediary processing on
 an <<glossary-event,event>>. Typically, filters act upon event data after it
 has been ingested via inputs, by mutating, enriching, and/or modifying the
@@ -394,38 +355,34 @@ grok, mutate, drop, clone, and geoip. Filter stages are optional.
 //Source: Logstash
 endif::logstash-terms[]
 ifdef::elasticsearch-terms[]
-[[glossary-flush]] flush ::
+
+[[glossary-flush]] flush :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=flush-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
-[[glossary-follower-index]] follower index ::  
+
+[[glossary-follower-index]] follower index :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=follower-index-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
-[[glossary-frozen-index]] frozen index ::  
+
+[[glossary-frozen-index]] frozen index :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=frozen-index-def]
 --
-
 endif::elasticsearch-terms[]
 
-[discrete]
-[[g_glos]]
-=== G
+[[g_glos]] G ::
 
 ifdef::logstash-terms[]
-
-[[glossary-gem]] gem ::
-
+[[glossary-gem]] gem :::
 A self-contained package of code that's hosted on
 https://rubygems.org[RubyGems.org]. Logstash <<glossary-plugin,plugins>> are
 packaged as Ruby Gems. You can use the Logstash
@@ -434,69 +391,60 @@ packaged as Ruby Gems. You can use the Logstash
 //Source: Logstash
 endif::logstash-terms[]
 
-[discrete]
-[[h_glos]]
-=== H
+[[h_glos]] H ::
 
 ifdef::xpack-terms[]
-[[glossary-hot-phase]] hot phase ::
+[[glossary-hot-phase]] hot phase :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=hot-phase-def]
 --
-
 endif::xpack-terms[]
 ifdef::logstash-terms[]
 
-[[glossary-hot-thread]] hot thread ::
-
+[[glossary-hot-thread]] hot thread :::
 A Java thread that has high CPU usage and executes for a longer than normal
 period of time.
 +
 //Source: Logstash
 endif::logstash-terms[]
 
-[discrete]
-[[i_glos]]
-=== I
+[[i_glos]] I ::
 
 ifdef::elasticsearch-terms[]
-
-[[glossary-id]] ID ::
+[[glossary-id]] ID :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=id-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-index]] index ::
+[[glossary-index]] index :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::elasticsearch-terms[]
 
-[[glossary-index-alias]] index alias ::
+[[glossary-index-alias]] index alias :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-alias-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::xpack-terms[]
-[[glossary-index-lifecycle]] index lifecycle ::
+
+[[glossary-index-lifecycle]] index lifecycle :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-lifecycle-def]
 --
-
 endif::xpack-terms[]
 ifdef::xpack-terms[]
-[[glossary-index-lifecycle-policy]] index lifecycle policy ::
+
+[[glossary-index-lifecycle-policy]] index lifecycle policy :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-lifecycle-policy-def]
@@ -504,25 +452,24 @@ include::{es-repo-dir}/glossary.asciidoc[tag=index-lifecycle-policy-def]
 
 endif::xpack-terms[]
 ifdef::elasticsearch-terms[]
-[[glossary-index-pattern]] index pattern ::
+
+[[glossary-index-pattern]] index pattern :::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-pattern-def]
 --
-
 endif::elasticsearch-terms[]
 ifdef::logstash-terms[]
 
-[[glossary-indexer]] indexer ::
-
+[[glossary-indexer]] indexer :::
 A Logstash instance that is tasked with interfacing with an {es} cluster in
 order to index <<glossary-event,event>> data.
 +
 //Source: Logstash
 endif::logstash-terms[]
 ifdef::xpack-terms[]
-[[glossary-influencer]] influencer ::
 
+[[glossary-influencer]] influencer :::
 Influencers are entities that might have contributed to an anomaly in a specific
 bucket in an {anomaly-job}. For more information, see
 {ml-docs}/ml-influencers.html[Influencers].
@@ -531,8 +478,7 @@ bucket in an {anomaly-job}. For more information, see
 endif::xpack-terms[]
 ifdef::logstash-terms[]
 
-[[glossary-input-plugin]] input plugin ::
-
+[[glossary-input-plugin]] input plugin :::
 A Logstash <<glossary-plugin,plugin>> that reads <<glossary-event,event>> data
 from a specific source. Input plugins are the first stage in the Logstash
 event processing <<glossary-pipeline,pipeline>>. Popular input plugins include

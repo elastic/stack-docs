@@ -85,8 +85,6 @@ for {ingest-manager}, {ingest-management} is successfully enabled.
 [role="screenshot"]
 image::images/kibana-ingest-manager-start.png[{ingest-manager} app in {kib}]
 
-//TODO: Add tabbed panel when the code is stable.
-
 [float]
 [[install-integration]]
 == Step 2: Install an integration and create a data source
@@ -174,22 +172,17 @@ image::images/kibana-ingest-manager-fleet-enrol.png[{ingest-manager} app showing
 
 . In the directory where you installed {agent}, paste the command to enroll the
 Agent. Note that this command will overwrite the `elastic-agent.yml` file in
-that directory.
+that directory. 
 +
-["source","sh",subs="attributes"]
-----
-./elastic-agent enroll KIBANA_URL ENROLLMENT_KEY
-
-The {agent} is currently in Experimental and should not be used in production
-This will replace your current settings. Do you want to continue? [Y/n]:
-----
+--
+include::{beats-repo-dir}/x-pack/elastic-agent/docs/tab-widgets/enroll-linux-mac-win-widget.asciidoc[]
+--
 
 . Run the Agent:
 +
-[source,shell]
-----
-./elastic-agent run
-----
+--
+include::{beats-repo-dir}/x-pack/elastic-agent/docs/tab-widgets/run-linux-mac-win-widget.asciidoc[]
+--
 
 . In the {ingest-manager} app, click **Continue** to go to the **{fleet}**
 tab, where you should see the newly enrolled Agent.
@@ -249,10 +242,9 @@ datasources:
 
 . Run {agent}:
 +
-[source,shell]
-----
-./elastic-agent -c elastic-agent-standalone.yml run
-----
+--
+include::{beats-repo-dir}/x-pack/elastic-agent/docs/tab-widgets/run-standalone-linux-mac-win-widget.asciidoc[]
+--
 
 [float]
 [[view-data]]
@@ -264,6 +256,9 @@ dashboards corresponding to the data type that is sent.
 
 [role="screenshot"]
 image::images/kibana-ingest-manager-datastreams.png[{ingest-manager} app showing data streams list]
+
+// Add Javascript and CSS for tabbed panels
+include::{libbeat-dir}/tab-widgets/code.asciidoc[]
 
 //Adding this section for future use. Might be premature to add this for the
 //experimental release.

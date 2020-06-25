@@ -42,63 +42,7 @@ Contact us in the {im-forum}[discuss forum]. Your feedback is very valuable to u
 In 7.8, the {ingest-manager} app is experimental. You must enable the app to
 see it in {kib}.
 
-//TODO: Add platform tabs when the tabbed panel widget is stable (possibly after
-// 7.8)
-
-**To enable {ingest-manager} on {ecloud}:**
-
-. Go to your deployment in the user console.
-
-. Under the deployment name in the side navigation, click **Edit**.
-
-. In the {kib} section, expand **User setting overrides** and enter the
-following setting:
-+
-[source,yaml]
-----
-xpack.ingestManager.enabled: true
-----
-
-. Click **Save**.
-
-{kib} will restart automatically. When {kib} is available, refresh the browser
-to see the {ingest-manager} app in the navigation menu.
-
-**To enable {ingest-manager} on a self-managed cluster:**
-
-. In the {es} configuration file, `config/elasticsearch.yml`, set the following
-security settings to enable security and API keys:
-+
-[source,yaml]
-----
-xpack.security.enabled: true
-xpack.security.authc.api_key.enabled: true
-----
-
-. In the {kib} configuration file, `config/kibana.yml`, enable {ingest-manager}
-and specify user credentials:
-+
-[source,yaml]
-----
-xpack.ingestManager.enabled: true
-xpack.ingestManager.fleet.tlsCheckDisabled: true <1>
-xpack.security.enabled: true
-elasticsearch.username: "elastic" <2>
-elasticsearch.password: "abc123iUnbRftkABC123"
-----
-<1> This setting is not required if you configure TLS checking.
-<2> Specify a user who is authorized to use {ingest-manager}.
-
-[TIP]
-=====
-To set up passwords, you can use the documented {es} APIs or the
-`elasticsearch-setup-passwords` command. For example:
-
-`./bin/elasticsearch-setup-passwords auto`
-=====
-
-After running the command, copy the Elastic user name to the {kib} config file.
-Then restart {kib}.
+include::tab-widgets/enable-ingest-manager-widget.asciidoc[]
 
 [float]
 [[ingest-management-setup-fails]]
@@ -155,22 +99,9 @@ token when you run the `elastic-agent enroll` command.
 If {agent} was successfully enrolled, but doesn't show up in the {fleet} list,
 it might not be started. You need to start the Agent.
 
-// TODO: This should be single sourced. Update it when we add the tabbed widget
-// (probably after 7.8).
+To start the Agent, run:
 
-On linux and macOS hosts, run:
-
-[source,shell]
-----
-./elastic-agent run
-----
-
-On Windows hosts, run:
-
-[source,shell]
-----
-elastic-agent.exe run
-----
+include::{beats-repo-dir}/x-pack/elastic-agent/docs/tab-widgets/run-linux-mac-win-widget.asciidoc[]
 
 [float]
 [[where-are-the-agent-logs]]
@@ -290,3 +221,6 @@ integration that will allow the Elastic Security app to have a dedicated
 executable running like {beats} to protect the host and respond to detected
 security concerns. Endpoint will be managed by {agent} in the same way that
 {beats} are managed.
+
+// Add Javascript and CSS for tabbed panels
+include::{libbeat-dir}/tab-widgets/code.asciidoc[]

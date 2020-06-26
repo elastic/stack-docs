@@ -11,8 +11,7 @@ model for each {anomaly-job} are saved to an internal index within the {es}
 cluster. The amount of time necessary to save these snapshots is proportional to
 the size of the model in memory. By default, snapshots are captured
 approximately every 3 to 4 hours. You can change this interval
-(`background_persist_interval`) when you
-{ref}/ml-put-job.html[create] or {ref}/ml-update-job.html[update] a job.
+(`background_persist_interval`) when you create update a job.
 
 To reduce the number of snapshots consuming space on your cluster, at the end of
 each day, old snapshots are automatically deleted. The age of each snapshot is
@@ -27,8 +26,8 @@ exempt a specific snapshot from this clean up, use {kib} or the
 `true`.
 
 You can see the list of model snapshots for each job with the
-{ref}/ml-get-snapshot.html[get model snapshots API] or on the *Job Management*
-page in {kib}:
+{ref}/ml-get-snapshot.html[get model snapshots API] or in the
+*Model snapshots* tab on the *Job Management* page in {kib}:
 
 [role="screenshot"]
 image::images/ml-model-snapshots.png["Example screenshot with a list of model snapshots"]

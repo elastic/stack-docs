@@ -23,6 +23,7 @@ Contact us in the {im-forum}[discuss forum]. Your feedback is very valuable to u
 * <<ingest-management-setup-fails>>
 * <<ingest-manager-app-crashes>>
 * <<agent-enrollment-timeout>>
+* <<es-apikey-failed>>
 
 **Frequently asked questions:**
 
@@ -121,7 +122,7 @@ us in the {im-forum}[discuss forum].
 
 [float]
 [[agent-enrollment-timeout]]
-== {agent} enrollment fails on the host with a `Client.Timeout exceeded` message
+== {agent} enrollment fails on the host with `Client.Timeout exceeded` message
 
 {agent} must be able to connect to the {kib} instance to enroll in {fleet}.
 If the Agent is unable to connect, you will see the following failure:
@@ -147,6 +148,22 @@ the key is valid. To do this:
 that you used to enroll {agent} on your host.
 .. If the secret doesn't match, create a new enrollment token and use the new
 token when you run the `elastic-agent enroll` command.
+
+//TODO: Modify this note when backporting to 7.8 to describe the problem
+//correctly for that release.
+
+[float]
+[[es-apikey-failed]]
+== {es} authentication service fails with `Authentication using apikey failed` message
+
+{fleet} requires an encryption key in order to save API keys and encrypt them in
+{kib}. To provide an API key, set the `xpack.encryptedSavedObjects.encryptionKey`
+property in the `kibana.yml` configuration file. For example:
+
+[source,yaml]
+----
+xpack.security.encryptionKey: "something_at_least_32_characters"
+----
 
 [float]
 [[enrolled-agent-not-showing-up]]

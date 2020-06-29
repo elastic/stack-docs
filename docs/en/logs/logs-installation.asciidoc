@@ -43,33 +43,39 @@ Install {kib}, start it up, and open up the web interface:
 . {stack-gs}/get-started-elastic-stack.html#_launch_the_kibana_web_interface[Launch the Kibana Web Interface].
 
 [[install-shippers]]
-=== Step 3: Install and enable {beats} shippers
+=== Step 3: Set up and run {filebeat}
 
-To start collecting logs data, you need to install and configure the {filebeat} {beats} shipper.
+IMPORTANT: This section describes using {filebeat} to ingest data. There are other available methods to ingest data, such as {logstash-ref}/introduction.html[{ls}] or Fluentd.
 
-You can install and configure {beats} shippers for most kinds of data directly from {kib}, or you can install {beats} yourself.
+To start collecting logs data, you need to install {filebeat} and configure the {filebeat} modules directly from Kibana.
+
+Alternatively, you can install {filebeat} and configure the {filebeat} modules yourself.
 
 [float]
-==== Install {beats} from {kib}
+==== Install {filebeat} from {kib}
 
-To install {beats} from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
+IMPORTANT: {filebeat-ref}/filebeat-modules.html[{filebeat} modules]
+are ECS-compliant so manual <<logs-fields-reference, ECS field>> mapping is not required, and all {logs-app}
+data is automatically populated. 
+
+To install a {filebeat} module from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
 In the *Observability* section displayed on the home page of {kib}, click *Add log data*.
 Now follow the instructions for the type of data you want to collect.
-The instructions include the steps required to download, install, and configure the appropriate Beats modules for your data.
+The instructions include how to install and configure {filebeat}, and enable the appropriate {filebeat} module for your data.
 
 [role="screenshot"]
 image::images/add-data.png[Add log data]
 
 [float]
-==== Install {beats} yourself
+==== Install {filebeat} yourself
 
-If your data source doesn't have a {beats} module, or if you want to install {beats} the old fashioned way, follow the instructions in {filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start] and enable modules for the logs you want to collect.
+If your data source doesn't have a {filebeat} module, or if you want to install one the old fashioned way, follow the instructions in {filebeat-ref}/filebeat-modules-quickstart.html[{filebeat} modules quick start] and enable modules for the logs you want to collect.
 If there is no module for the logs you want to collect, see the {filebeat-ref}/filebeat-getting-started.html[{filebeat} getting started] to learn how to configure inputs.
 
 [float]
-=== Enable modules
+=== Enable {filebeat} modules
 
-However you install {beats}, you need to enable the appropriate modules in {filebeat} to start collecting logs data.
+To start collecting logs data, you need to enable the appropriate modules in {filebeat}.
 
 To collect logs from your host system, enable:
 

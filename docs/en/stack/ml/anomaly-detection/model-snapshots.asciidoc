@@ -11,7 +11,7 @@ model for each {anomaly-job} are saved to an internal index within the {es}
 cluster. The amount of time necessary to save these snapshots is proportional to
 the size of the model in memory. By default, snapshots are captured
 approximately every 3 to 4 hours. You can change this interval
-(`background_persist_interval`) when you create update a job.
+(`background_persist_interval`) when you create or update a job.
 
 To reduce the number of snapshots consuming space on your cluster, at the end of
 each day, old snapshots are automatically deleted. The age of each snapshot is

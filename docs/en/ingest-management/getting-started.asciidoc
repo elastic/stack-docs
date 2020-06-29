@@ -35,25 +35,29 @@ your own hardware].
 
 * A user with the superuser role. See {ref}/built-in-roles.html[Built-in roles].
 
-* On self-managed clusters, the following settings are required. If you're using
-our https://www.elastic.co/cloud/elasticsearch-service[hosted  {ess}] on
-{ecloud}, these settings are already enabled.
+* On self-managed clusters, you must configure security and encryption settings.
+If you're using our https://www.elastic.co/cloud/elasticsearch-service[hosted {ess}]
+on {ecloud}, these settings are already enabled.
 
-** In your {es} configuration, enable: 
+** In your {es} configuration: 
 +
-- {ref}/configuring-security.html[{es} security]. Set `xpack.security.enabled`
-to `true`.
-- {ref}/security-settings.html#api-key-service-settings[API key service]. Set
-`xpack.security.authc.api_key.enabled` to `true`.
+- {ref}/configuring-security.html[Configure {es} security]. Set
+`xpack.security.enabled` to `true`.
+- {ref}/security-settings.html#api-key-service-settings[Enable the built-in API key service].
+Set `xpack.security.authc.api_key.enabled` to `true`.
 
-** In your {kib} configuration, enable:
+** In your {kib} configuration:
 +
-- {kibana-ref}/using-kibana-with-security.html[{kib} security]. Set `xpack.security.enabled`
-to `true`.
-- {kibana-ref}/configuring-tls.html[TLS]. As an alternative, you can disable the
-TLS check by setting `xpack.ingestManager.fleet.tlsCheckDisabled` to `true`. For
-example, you might want to disable TLS checking if {kib} is behind a proxy that
-terminates the SSL connection.
+- {kibana-ref}/using-kibana-with-security.html[Configure {kib} security]. Set
+`xpack.security.enabled` to `true`.
+- {kibana-ref}/configuring-tls.html[Configure TLS]. As an alternative, you can
+disable the TLS check by setting `xpack.ingestManager.fleet.tlsCheckDisabled`
+to `true`. For example, you might want to disable TLS checking if {kib} is
+behind a proxy that terminates the SSL connection.
+- Set `xpack.encryptedSavedObjects.encryptionKey` to any alphanumeric value of
+at least 32 characters. For example:
+`xpack.security.encryptionKey: "something_at_least_32_characters"`. {fleet}
+requires this setting in order to save API keys and encrypt them in {kib}.
 
 [float]
 [[enable-ingest-management]]

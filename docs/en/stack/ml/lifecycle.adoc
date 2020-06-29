@@ -3,9 +3,9 @@
                             
 +-----------+   +-----------+   +-----------+   +-=---------+
 |           |-->+           +-->+           +-->|           |
-| Define    |   | Prepare,  |   + Train,    |   | Deploy    |
-| problem/  |   | transform |   | test,     |   | model     |
-| question  |   | data      |   | model     |   |           |
+| Define    |   | Prepare,  |   + N/A       |   | N/A       |
+| problem/  |   | transform |   |           |   |           |
+| question  |   | data      |   |           |   |           |
 |           |   |           |   |           |   |           |
 +-----------+   +-----------+   +-----------+   +-----------+
 ....
@@ -15,24 +15,24 @@
 [ditaa, target="ml-dfa-lifecycle-diagram"]
 ....
                             
-+-----------+   +-----------+   +-----------+   +-----------+
-|           |-->+           +-->+           +-->|           |
-| Define    |   | Prepare,  |   + Train,    |   | Deploy    |
-| problem/  |   | transform |   | test,     |   | model     |
-| question  |   | data      |   | model     |   |           |
-|           |   |           |   |           |   |           |
-+-----------+   +-----------+   +-----------+   +-----------+
++-----------+   +-----------+   +-----------+   +-----------+   +-----------+
+|           |-->+           +-->+           +-->|           +-->|           |
+| Define    |   | Prepare,  |   + Train,    |   | Evaluate  |   | Deploy    |
+| problem/  |   | transform |   | test,     |   | results   |   | model     |
+| question  |   | data      |   | model     |   |           |   |           |
+|           |   |           |   |           |   |           |   |           |
++-----------+   +-----------+   +-----------+   +-----------+   +-----------+
 ....
 
 
 [ditaa, target="ml-outlier-lifecycle-diagram"]
 ....
                             
-+-----------+   +-----------+   +-----------+   
-|           |-->+           +-->+           |
-| Define    |   | Prepare,  |   + Train,    |   
-| problem/  |   | transform |   | test,     |   
-| question  |   | data      |   | model     |   
-|           |   |           |   |           |   
-+-----------+   +-----------+   +-----------+
++-----------+   +-----------+   +-----------+   +-----------+   
+|           |-->+           +-->+           +-->|           |
+| Define    |   | Prepare,  |   + Train,    |   | Evaluate  |
+| problem/  |   | transform |   | test,     |   | results   |
+| question  |   | data      |   | model     |   |           |
+|           |   |           |   |           |   |           |
++-----------+   +-----------+   +-----------+   +-----------+
 ....

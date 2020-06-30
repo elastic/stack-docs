@@ -1,17 +1,41 @@
 [[terms]]
 == Terminology
 
-<<a-glos>> | <<b-glos>> | <<c-glos>> | <<d-glos>> | <<e-glos>> | <<f-glos>> | <<g-glos>> | <<h-glos>> | <<i-glos>> | <<j-glos>> | K | <<l-glos>> | <<m-glos>> | <<n-glos>> | <<o-glos>> | <<p-glos>> | <<q-glos>> | <<r-glos>> | <<s-glos>> | <<t-glos>> | U | V | <<w-glos>> | X | Y | <<z-glos>>
+<<a-glos>> | <<b-glos>> | <<c-glos>> | <<d-glos>> | <<e-glos>> | <<f-glos>> | <<g-glos>> | <<h-glos>> | <<i-glos>> | <<j-glos>> | <<k-glos>> | <<l-glos>> | <<m-glos>> | <<n-glos>> | <<o-glos>> | <<p-glos>> | <<q-glos>> | <<r-glos>> | <<s-glos>> | <<t-glos>> | <<u-glos>> | <<v-glos>> | <<w-glos>> | X | Y | <<z-glos>>
 
 [discrete]
 [[a-glos]]
 === A
+
+[[glossary-action]] action::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=action-def]
+--
 
 [[glossary-admin-console]] administration console::
 A component of {ece} that provides the API server for the
 <<glossary-cloud-ui,Cloud UI>>. Also syncs cluster and allocator data from
 ZooKeeper to {es}.
 //Source: Cloud
+
+[[glossary-advanced-settings]] Advanced Settings::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=advanced-settings-def]
+--
+
+[[glossary-alert]] alert::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=alert-def]
+--
+
+[[glossary-alerts-and-actions]] Alerts and Actions::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=alerts-and-actions-def]
+--
 
 [[glossary-allocator]] allocator::
 Manages hosts that contain {es} and {kib} nodes. Controls the lifecycle of these
@@ -26,6 +50,12 @@ installation.
 include::{es-repo-dir}/glossary.asciidoc[tag=analysis-def]
 --
 
+[[glossary-annotation]] annotation::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=annotation-def]
+--
+
 [[glossary-anomaly-detection-job]] {anomaly-job}::
 {anomaly-jobs-cap} contain the configuration information and metadata
 necessary to perform an analytics task. See
@@ -37,6 +67,12 @@ necessary to perform an analytics task. See
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=api-key-def]
+--
+
+[[glossary-app]] app::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=app-def]
 --
 
 [[glossary-auto-follow-pattern]] auto-follow pattern::
@@ -59,24 +95,58 @@ entire availability zone. Also see
 [[b-glos]]
 === B
 
+[[glossary-basemap]] basemap::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=basemap-def]
+--
+
 [[glossary-beats-runner]] beats runner::
 Used to send {filebeat} and {metricbeat} information to the logging cluster.
 //Source: Cloud
 
 [[glossary-ml-bucket]] bucket::
-The {ml-features} use the concept of a bucket to divide the time series into
-batches for processing. The _bucket span_ is part of the configuration
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-def]
+
+The {ml-features} also use the concept of a bucket to divide the time series
+into batches for processing. The _bucket span_ is part of the configuration
 information for {anomaly-jobs}. It defines the time interval that is used to
 summarize and model the data. This is typically between 5 minutes to 1 hour and
 it depends on your data characteristics. When you set the bucket span, take into
 account the granularity at which you want to analyze, the frequency of the input
 data, the typical duration of the anomalies, and the frequency at which alerting
 is required.
-//Source: X-Pack
+--
+
+[[glossary-bucket-aggregation]] bucket aggregation::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-aggregation-def]
+--
 
 [discrete]
 [[c-glos]]
 === C
+
+[[glossary-canvas]] Canvas::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=canvas-def]
+--
+
+[[glossary-canvas-language]] Canvas expression language::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=canvas-language-def]
+--
+
+[[glossary-certainty]] certainty::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=certainty-def]
+--
 
 [[glossary-client-forwarder]] client forwarder::
 Used for secure internal communications between various components of {ece} and
@@ -95,7 +165,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=cluster-def]
 --
 
 [[glossary-codec-plugin]] codec plugin::
-A Logstash <<glossary-plugin,plugin>> that changes the data representation
+A {ls} <<glossary-plugin,plugin>> that changes the data representation
 of an <<glossary-event,event>>. Codecs are essentially stream filters that
 can operate as part of an input or output. Codecs enable you to separate the
 transport of messages from the serialization process. Popular codecs include
@@ -108,13 +178,31 @@ json, msgpack, and plain (text).
 include::{es-repo-dir}/glossary.asciidoc[tag=cold-phase-def]
 --
 
+[[glossary-condition]] condition::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=condition-def]
+--
+
 [[glossary-conditional]] conditional::
 A control flow that executes certain actions based on whether a statement
-(also called a condition) is true or false. Logstash supports `if`,
+(also called a condition) is true or false. {ls} supports `if`,
 `else if`, and `else` statements. You can use conditional statements to
 apply filters and send events to a specific output based on conditions that
 you specify.
 //Source: Logstash
+
+[[glossary-connector]] connector::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=connector-def]
+--
+
+[[glossary-console]] Console::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=console-def]
+--
 
 [[glossary-constructor]] constructor::
 Directs <<glossary-allocator,allocators>> to manage containers of {es} and {kib}
@@ -152,6 +240,12 @@ include::{es-repo-dir}/glossary.asciidoc[tag=ccs-def]
 [[d-glos]]
 === D
 
+[[glossary-dashboard]] dashboard::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=dashboard-def]
+--
+
 [[glossary-ml-datafeed]] datafeed::
 {anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
 real time. {dfeeds-cap} retrieve data from {es} for analysis. Alternatively, you
@@ -165,6 +259,12 @@ outcome in a destination index. See
 {ml-docs}//ml-dfa-overview.html[{dfanalytics-cap} overview] and the
 {ref}/put-dfanalytics.html[create {dfanalytics-job} API].
 //Source: X-Pack
+
+[[glossary-data-source]] data source::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=data-source-def]
+--
 
 [[glossary-data-stream]] data stream::
 +
@@ -191,6 +291,18 @@ shared with the <<glossary-coordinator,coordinator>>, though in production
 deployments it can be separated.
 //Source: Cloud
 
+[[glossary-discover]] Discover::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=discover-def]
+--
+
+[[glossary-drilldown]] drilldown::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=drilldown-def]
+--
+
 [[glossary-document]] document::
 +
 --
@@ -201,21 +313,45 @@ include::{es-repo-dir}/glossary.asciidoc[tag=document-def]
 [[e-glos]]
 === E
 
+[[glossary-edge]] edge::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=edge-def]
+--
+
 [[glossary-ecs]] Elastic Common Schema (ECS)::
 A document schema for Elasticsearch, for use cases such as logging and metrics.
 ECS defines a common set of fields, their datatype, and gives guidance on their
 correct usage. ECS is used to improve uniformity of event data coming from
 different sources.
 
+[[glossary-ems]] Elastic Maps Service (EMS)::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=ems-def]
+--
+
+[[glossary-element]] element::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=element-def]
+--
+
 [[glossary-event]] event::
 A single unit of information, containing a timestamp plus additional data. An
 event arrives via an input, and is subsequently parsed, timestamped, and
-passed through the Logstash <<glossary-pipeline,pipeline>>.
+passed through the {ls} <<glossary-pipeline,pipeline>>.
 //Source: Logstash
 
 [discrete]
 [[f-glos]]
 === F
+
+[[glossary-feature-controls]] Feature Controls::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=feature-controls-def]
+--
 
 [[glossary-feature-influence]] feature influence::
 In {oldetection}, feature influence scores indicate which features of a data
@@ -237,17 +373,17 @@ and
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=field-def]
 
-In Logstash, this term refers to an <<glossary-event,event>> property. For
+In {ls}, this term refers to an <<glossary-event,event>> property. For
 example, each event in an apache access log has properties, such as a status
 code (200, 404), request path ("/", "index.html"), HTTP verb (GET, POST), client
-IP address, and so on. Logstash uses the term "fields" to refer to these
+IP address, and so on. {ls} uses the term "fields" to refer to these
 properties.
 //Source: Logstash
 --
 
 [[glossary-field-reference]] field reference::
 A reference to an event <<glossary-field,field>>. This reference may appear in
-an output block or filter block in the Logstash config file. Field references
+an output block or filter block in the {ls} config file. Field references
 are typically wrapped in square (`[]`) brackets, for example `[fieldname]`. If
 you are referring to a top-level field, you can omit the `[]` and simply use
 the field name. To refer to a nested field, you specify the full path to that
@@ -261,7 +397,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=filter-def]
 --
 
 [[glossary-filter-plugin]] filter plugin::
-A Logstash <<glossary-plugin,plugin>> that performs intermediary processing on
+A {ls} <<glossary-plugin,plugin>> that performs intermediary processing on
 an <<glossary-event,event>>. Typically, filters act upon event data after it
 has been ingested via inputs, by mutating, enriching, and/or modifying the
 data according to configuration rules. Filters are often applied conditionally
@@ -293,10 +429,22 @@ include::{es-repo-dir}/glossary.asciidoc[tag=frozen-index-def]
 
 [[glossary-gem]] gem::
 A self-contained package of code that's hosted on
-https://rubygems.org[RubyGems.org]. Logstash <<glossary-plugin,plugins>> are
-packaged as Ruby Gems. You can use the Logstash
-<<glossary-plugin-manager,plugin manager>> to manage Logstash gems.
+https://rubygems.org[RubyGems.org]. {ls} <<glossary-plugin,plugins>> are
+packaged as Ruby Gems. You can use the {ls}
+<<glossary-plugin-manager,plugin manager>> to manage {ls} gems.
 //Source: Logstash
+
+[[glossary-graph]] graph::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=graph-def]
+--
+
+[[glossary-grok-debugger]] Grok Debugger::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=grok-debugger-def]
+--
 
 [discrete]
 [[h-glos]]
@@ -354,7 +502,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=index-pattern-def]
 --
 
 [[glossary-indexer]] indexer::
-A Logstash instance that is tasked with interfacing with an {es} cluster in
+A {ls} instance that is tasked with interfacing with an {es} cluster in
 order to index <<glossary-event,event>> data.
 //Source: Logstash
 
@@ -365,8 +513,8 @@ bucket in an {anomaly-job}. For more information, see
 //Source: X-Pack
 
 [[glossary-input-plugin]] input plugin::
-A Logstash <<glossary-plugin,plugin>> that reads <<glossary-event,event>> data
-from a specific source. Input plugins are the first stage in the Logstash
+A {ls} <<glossary-plugin,plugin>> that reads <<glossary-event,event>> data
+from a specific source. Input plugins are the first stage in the {ls}
 event processing <<glossary-pipeline,pipeline>>. Popular input plugins include
 file, syslog, redis, and beats.
 //Source: Logstash
@@ -383,19 +531,41 @@ necessary to perform an analytics task. There are two types:
 //Source: X-Pack
 
 [discrete]
+[[k-glos]]
+=== K
+
+[[glossary-kql]] {kib} Query Language (KQL)::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=kql-def]
+--
+
+[discrete]
 [[l-glos]]
 === L
 
-[[glossary-leader-index]] leader index::
+[[glossary-leader-index]] leader index::  
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=leader-index-def]
+--
+
+[[glossary-lens]] Lens::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=lens-def]
 --
 
 [[glossary-local-cluster]] local cluster::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=local-cluster-def]
+--
+
+[[glossary-lucene]] Lucene query syntax::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=lucene-def]
 --
 
 [discrete]
@@ -408,6 +578,12 @@ which is the default behavior. If you set `node.ml` to `false`, the node can
 service API requests but it cannot run {ml-jobs}. If you want to use
 {ml-features}, there must be at least one {ml} node in your cluster.
 //Source: X-Pack
+
+[[glossary-map]] map::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=map-def]
+--
 
 [[glossary-mapping]] mapping::
 +
@@ -425,9 +601,15 @@ Also see <<glossary-node,node>>.
 [[glossary-message-broker]] message broker::
 Also referred to as a _message buffer_ or _message queue_, a message broker is
 external software (such as Redis, Kafka, or RabbitMQ) that stores messages
-from the Logstash shipper instance as an intermediate store, waiting to be
-processed by the Logstash indexer instance.
+from the {ls} shipper instance as an intermediate store, waiting to be
+processed by the {ls} indexer instance.
 //Source: Logstash
+
+[[glossary-metric-aggregation]] metric aggregation::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=metric-aggregation-def]
+--
 
 [[glossary-metadata]] @metadata::
 A special field for storing content that you don't want to include in output
@@ -451,7 +633,7 @@ include::{es-repo-dir}/glossary.asciidoc[tag=node-def]
 === O
 
 [[glossary-output-plugin]] output plugin::
-A Logstash <<glossary-plugin,plugin>> that writes <<glossary-event,event>> data
+A {ls} <<glossary-plugin,plugin>> that writes <<glossary-event,event>> data
 to a specific destination. Outputs are the final stage in the event
 <<glossary-pipeline,pipeline>>. Popular output plugins include elasticsearch,
 file, graphite, and statsd.
@@ -461,9 +643,21 @@ file, graphite, and statsd.
 [[p-glos]]
 === P
 
+[[glossary-painless-lab]] Painless Lab::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=painless-lab-def]
+--
+
+[[glossary-panel]] panel::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=panel-def]
+--
+
 [[glossary-pipeline]] pipeline::
 A term used to describe the flow of <<glossary-event,events>> through the
-Logstash workflow. A pipeline typically consists of a series of input, filter,
+{ls} workflow. A pipeline typically consists of a series of input, filter,
 and output stages. <<glossary-input-plugin,Input>> stages get data from a source
 and generate events, <<glossary-filter-plugin,filter>> stages, which are
 optional, modify the event data, and <<glossary-output-plugin,output>> stages
@@ -481,7 +675,7 @@ cluster into the pending plan.
 
 [[glossary-plugin]] plugin::
 A self-contained software package that implements one of the stages in the
-Logstash event processing <<glossary-pipeline,pipeline>>. The list of available
+{ls} event processing <<glossary-pipeline,pipeline>>. The list of available
 plugins includes <<glossary-input-plugin,input plugins>>,
 <<glossary-output-plugin,output plugins>>,
 <<glossary-codec-plugin,codec plugins>>, and
@@ -493,7 +687,7 @@ by configuring plugins.
 
 [[glossary-plugin-manager]] plugin manager::
 Accessed via the `bin/logstash-plugin` script, the plugin manager enables
-you to manage the lifecycle of <<glossary-plugin,plugins>> in your Logstash
+you to manage the lifecycle of <<glossary-plugin,plugins>> in your {ls}
 deployment. You can install, remove, and upgrade plugins by using the
 plugin manager Command Line Interface (CLI).
 //Source: Logstash
@@ -518,6 +712,12 @@ nodes handling the user requests.
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=query-def]
+--
+
+[[glossary-query-profiler]] Query Profiler::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=query-profiler-def]
 --
 
 [discrete]
@@ -589,6 +789,24 @@ able to run, and creates or recreates the containers if necessary.
 [[s-glos]]
 === S
 
+[[glossary-saved-object]] saved object::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=saved-object-def]
+--
+
+[[glossary-saved-search]] saved search::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=saved-search-def]
+--
+
+[[glossary-scripted-field]] scripted field::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=scripted-field-def]
+--
+
 [[glossary-services-forwarder]] services forwarder::
 Routes data internally in an {ece} installation.
 //Source: Cloud
@@ -599,8 +817,14 @@ Routes data internally in an {ece} installation.
 include::{es-repo-dir}/glossary.asciidoc[tag=shard-def]
 --
 
+[[glossary-shareable]] shareable::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=shareable-def]
+--
+
 [[glossary-shipper]] shipper::
-An instance of Logstash that send events to another instance of Logstash, or
+An instance of {ls} that send events to another instance of {ls}, or
 some other application.
 //Source: Logstash
 
@@ -634,6 +858,12 @@ include::{es-repo-dir}/glossary.asciidoc[tag=snapshot-repository-def]
 include::{es-repo-dir}/glossary.asciidoc[tag=source-field-def]
 --
 
+[[glossary-space]] space::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=space-def]
+--
+
 [[glossary-split]] split::
 +
 --
@@ -654,16 +884,78 @@ Securely tunnels all traffic in an {ece} installation.
 include::{es-repo-dir}/glossary.asciidoc[tag=term-def]
 --
 
+[[glossary-term-join]] term join::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=term-join-def]
+--
+
 [[glossary-text]] text::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=text-def]
 --
 
+[[glossary-time-filter]] time filter::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=time-filter-def]
+--
+
+[[glossary-timelion]] Timelion::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=timelion-def]
+--
+
+[[glossary-time-series-data]] time series data::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=time-series-data-def]
+--
+
+[[glossary-tsvb]] TSVB::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=tsvb-def]
+--
+
 [[glossary-type]] type::
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=type-def]
+--
+
+[discrete]
+[[u-glos]]
+=== U
+
+[[glossary-upgrade-assistant]] Upgrade Assistant::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=upgrade-assistant-def]
+--
+
+[discrete]
+[[v-glos]]
+=== V
+
+[[glossary-vector]] vector data::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=vector-def]
+--
+
+[[glossary-vega]] Vega::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=vega-def]
+--
+
+[[glossary-visualization]] visualization::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=visualization-def]
 --
 
 [discrete]
@@ -676,12 +968,24 @@ include::{es-repo-dir}/glossary.asciidoc[tag=type-def]
 include::{es-repo-dir}/glossary.asciidoc[tag=warm-phase-def]
 --
 
+[[glossary-watcher]] Watcher::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=watcher-def]
+--
+
 [[glossary-worker]] worker::
-The filter thread model used by Logstash, where each worker receives an
+The filter thread model used by {ls}, where each worker receives an
 <<glossary-event,event>> and applies all filters, in order, before emitting
 the event to the output queue. This allows scalability across CPUs because
 many filters are CPU intensive.
 //Source: Logstash
+
+[[glossary-workpad]] workpad::
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=workpad-def]
+--
 
 [discrete]
 [[z-glos]]

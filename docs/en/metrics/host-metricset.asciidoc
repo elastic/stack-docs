@@ -1,14 +1,7 @@
 [[host-metricset]]
 [role="xpack"]
 
-=== Hosts Fields
-
-*ID*:: `host.name`
-*Name*:: `host.name`
-*IP Address*:: `host.ip`
-
-[float]
-=== Host Metrics
+== Host metrics
 
 *CPU Usage*:: Average of `system.cpu.user.pct` added to the average of `system.cpu.system.pct` divided by `system.cpu.cores`
 
@@ -22,3 +15,5 @@
 
 *Log Rate*:: Derivative of the cumulative sum of the document count scaled to a 1 second rate.
 This metric relies on the same indices as the logs.
+
+For information about which required fields the {metrics-app} uses to display host metrics, see the <<metrics-fields-reference, metrics field reference>>.

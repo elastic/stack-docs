@@ -42,31 +42,32 @@ Install {kib}, start it up, and open up the web interface:
 . {stack-gs}/get-started-elastic-stack.html#_launch_the_kibana_web_interface[Launch the Kibana Web Interface].
 
 [[install-beats-for-metrics]]
-=== Step 3: Install and enable {beats} shippers
+=== Step 3: Set up and run {metricbeat}
 
-To start collecting metrics data, you need to install and configure the {metricbeat} {beats} shipper.
+To start collecting metrics data, you need to install {metricbeat} and configure the {metricbeat} modules directly from {kib}.
 
-You can install and configure {beats} shippers for most kinds of data directly from {kib}, or you can install {beats} yourself.
+Alternatively, you can install {metricbeat} and configure the {metricbeat} modules yourself.
 
 [float]
-==== Install {beats} from {kib}
+==== Install {metricbeat} from {kib}
 
-To install {beats} from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
+To install {metricbeat} from {kib}, on the machine where you want to collect the data, open a {kib} browser window.
 In the *Observability* section displayed on the home page of {kib}, click *Add metric data*.
 Now follow the instructions for the type of data you want to collect.
-The instructions include the steps required to download, install, and configure the appropriate Beats modules for your data.
+The instructions include how to install and configure {metricbeat}, and enable the appropriate {metricbeat} module for your data.
 
 [role="screenshot"]
 image::images/add-data.png[Add metrics data]
 
 [float]
-==== Install {beats} yourself
+==== Install {metricbeat} yourself
 
-If your data source doesn't have a {beats} module, or if you want to install {beats} the old fashioned way, follow the instructions in {metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started] and enable modules for the metrics you want to collect.
+If your data source doesn't have a {metricbeat} module, or if you want to install one the old fashioned way, follow the instructions in {metricbeat-ref}/metricbeat-getting-started.html[{metricbeat} getting started] and enable modules for the metrics you want to collect.
 
 [float]
-=== Enable modules
-However you install {beats}, you need to enable the appropriate modules in {metricbeat} to start collecting metrics data.
+=== Enable {metricbeat} modules
+
+To start collecting metrics data, to enable the appropriate modules in {metricbeat}.
 
 To populate the *Hosts* view with metrics data, enable:
 

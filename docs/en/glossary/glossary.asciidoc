@@ -13,12 +13,6 @@
 include::{kib-repo-dir}/glossary.asciidoc[tag=action-def]
 --
 
-[[glossary-action-type]] action type::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=action-type-def]
---
-
 [[glossary-admin-console]] administration console::
 A component of {ece} that provides the API server for the
 <<glossary-cloud-ui,Cloud UI>>. Also syncs cluster and allocator data from
@@ -104,32 +98,22 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=basemap-def]
 --
 
 [[glossary-beats-runner]] beats runner::
-
-Used to send {filebeat} and {metricbeat} information to the logging cluster.
-//Source: Cloud
-
-[[glossary-blocklist]] block list::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=blocklist-def]
---
-
-[[glossary-beats-runner]] beats runner::
 Used to send {filebeat} and {metricbeat} information to the logging cluster.
 //Source: Cloud
 
 [[glossary-ml-bucket]] bucket::
-The {ml-features} use the concept of a bucket to divide the time series into
-batches for processing. The _bucket span_ is part of the configuration
++
+--
+include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-def]
+
+The {ml-features} also use the concept of a bucket to divide the time series
+into batches for processing. The _bucket span_ is part of the configuration
 information for {anomaly-jobs}. It defines the time interval that is used to
 summarize and model the data. This is typically between 5 minutes to 1 hour and
 it depends on your data characteristics. When you set the bucket span, take into
 account the granularity at which you want to analyze, the frequency of the input
 data, the typical duration of the anomalies, and the frequency at which alerting
 is required.
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-def]
 --
 
 [[glossary-bucket-aggregation]] bucket aggregation::
@@ -307,12 +291,6 @@ deployments it can be separated.
 +
 --
 include::{kib-repo-dir}/glossary.asciidoc[tag=discover-def]
---
-
-[[glossary-diversity-field]] diversity field::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=diversity-field-def]
 --
 
 [[glossary-drilldown]] drilldown::
@@ -732,12 +710,6 @@ nodes handling the user requests.
 include::{es-repo-dir}/glossary.asciidoc[tag=query-def]
 --
 
-[[glossary-query-bar]] query bar::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=query-bar-def]
---
-
 [[glossary-query-profiler]] Query Profiler::
 +
 --
@@ -841,7 +813,7 @@ Routes data internally in an {ece} installation.
 include::{es-repo-dir}/glossary.asciidoc[tag=shard-def]
 --
 
-[[glossary-certainty]] shareable::
+[[glossary-shareable]] shareable::
 +
 --
 include::{kib-repo-dir}/glossary.asciidoc[tag=shareable-def]

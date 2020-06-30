@@ -1,24 +1,20 @@
 [[infrastructure-metrics]]
 [role="xpack"]
 
-== Infrastructure metrics
+= Infrastructure metrics
 
-This section contains detailed information about each of the metricsets the {metrics-app} supports. The metrics listed below are provided by the {beats} shippers.
+This section contains detailed information about each of the metricsets the {metrics-app} supports. 
+
+The metrics listed below are provided by the {beats} shippers.
 
 * <<host-metricset, Hosts>>
-* <<docker-metricset, Docker Containers>>
-* <<kubernetes-metricset, Kubernetes Pods>>
-* <<aws-ec2-metricset, AWS EC2 Instances>>
-* <<aws-s3-metricset, AWS S3 Buckets>>
-* <<aws-rds-metricset, AWS RDS Databases>>
-* <<aws-sqs-metricset, AWS SQS Queues>>
+* <<docker-metricset, Docker containers>>
+* <<kubernetes-metricset, Kubernetes pods>>
+* <<aws-ec2-metricset, AWS EC2 instances>>
+* <<aws-s3-metricset, AWS S3 buckets>>
+* <<aws-rds-metricset, AWS RDS databases>>
+* <<aws-sqs-metricset, AWS SQS queues>>
 
-[float]
-=== Additional field details
-
-To display data properly in some views, the `event.dataset` field is required. This field is a combination of `metricset.module`, which is the Metricbeat module name, and `metricset.name`, which is the metricset name.
-
-To determine the optimal time interval for each metric, all of the charts use the `metricset.period`. If `metricset.period` is not available then it falls back to 1 minute intervals.
 
 include::host-metricset.asciidoc[]
 

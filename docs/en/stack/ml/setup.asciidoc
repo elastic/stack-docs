@@ -19,13 +19,11 @@ trial of {ess}] in the cloud.
 === Machine learning nodes
 
 To use {ml-features}, there must be at least one {ml} node in your cluster. A
-{ml} node is a node that has `xpack.ml.enabled` and `node.ml` set to `true`,
-which is the default behavior.
+{ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in `node.roles`.
 
-You can limit which nodes run resource-intensive activity related to {ml} jobs
-by setting `node.ml` to `false` on some nodes. In that case, they can service
-API requests but cannot run {ml} jobs. For more information, see
-{ref}/modules-node.html#ml-node[Machine learning nodes].
+If nodes do not have the {ml} role, they cannot run {ml} jobs. If
+`xpack.ml.enabled` is `true`, however, they can service API requests. For more
+information, see {ref}/modules-node.html#ml-node[Machine learning nodes].
 
 [discrete]
 [[setup-privileges]]

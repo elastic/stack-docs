@@ -11,6 +11,7 @@
 :toc:                         left
 :toclevels:                   4
 :lang:                        en
+:obsrv:                       Observability
 
 // These root attributes are automatically created by the build but must be defined for Asciidoctor builds here:
 :beats-root:                  {docdir}/../../../../beats
@@ -42,11 +43,8 @@ include::{docs-root}/shared/attributes.asciidoc[]
 :p:                           ec
 
 include::{includedir}/landing-all.asciidoc[]
-
-[[elastic-stack]]
-== Elastic Stack
-
-TBD
-
-include::{includedir}/landing-stack.asciidoc[leveloffset=+1]
+include::{includedir}/landing-search.asciidoc[]
+include::{includedir}/landing-observability.asciidoc[]
+include::{includedir}/landing-security.asciidoc[]
+include::{includedir}/landing-stack.asciidoc[]
 include::{includedir}/redirects-landing.adoc[]

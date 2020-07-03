@@ -1,16 +1,17 @@
-:obsrv: Observability
+[[observability]]
+== Elastic Observability
 
 Welcome to the Elastic {obsrv} documentation! Logs, metrics, and traces
 never looked so good.
 
-|=== 
+|===
 
 | _What do you want to learn today?_
 
 |===
 
 [discrete]
-== What is Observability?
+=== What is Observability?
 
 {obsrv} allows you to detect undesirable behaviors in your systems, like
 service downtime, errors, slow responses, then view actionable information--
@@ -18,10 +19,10 @@ detailed event logs, granular resource usage information, and application traces
 -- to pin down root cause as quickly as possible.
 
 [discrete]
-== Get started with Elastic {obsrv}
+=== Get started with Elastic {obsrv}
 
 [cols="4*"]
-|=== 
+|===
 
 | 1. *Spin up the {stack}* > Store and visualize with {es} and {kib}.
 | 2. *Ingest data to {es}* > Use lightweight data collection modules to ingest logs and metrics.
@@ -31,10 +32,10 @@ detailed event logs, granular resource usage information, and application traces
 |===
 
 [discrete]
-== {obsrv} pillars
+=== {obsrv} pillars
 
 [cols=4*,options="header"]
-|=== 
+|===
 | Logs
 | Metrics
 | Traces
@@ -55,10 +56,10 @@ detailed event logs, granular resource usage information, and application traces
 |===
 
 [discrete]
-== Featured documentation
+=== Featured documentation
 
 [cols="2*"]
-|=== 
+|===
 
 a| 
 
@@ -73,214 +74,214 @@ a|
 // END of Observability landing page
 
 [[concepts-observability]]
-== Concepts
+=== Concepts
 
-=== What is {obsrv}?
-
-TBD
-
-=== {obsrv} architecture
+==== What is {obsrv}?
 
 TBD
 
-=== APM fundamentals
-
-==== Key terms
+==== {obsrv} architecture
 
 TBD
 
-==== Data model
+==== APM fundamentals
+
+===== Key terms
+
+TBD
+
+===== Data model
 
 [[get-started-observability]]
-== Get started
+=== Get started
 
 [[quickstart-observability]]
-=== Quick start
+==== Quick start
 
 include::{docs-root}/shared/cloud/ess-getting-started.asciidoc[]
 
-=== Sample data
+==== Sample data
 
-=== Release highlights
+==== Release highlights
 
 
-=== Breaking changes
+==== Breaking changes
 
-=== Migration tips
+==== Migration tips
 
 [[integrations-observability]]
-== Integrations
+=== Integrations
 
-=== Overview
-
-=== Logs
-
-=== Metrics
-
-[[admin-guides-observability]]
-== Admin how-to guides
-
-=== Spin up the {stack}
-
-==== Create a deployment
-
-==== Spin up APM server
-
-==== Manage the stack yourself
-
-==== Size your deployment
-
-=== Send data to Elasticsearch
-
-==== Ingest logs
-
-==== Ingest metrics
-
-==== Ingest uptime data
-
-===== Deployment architecture
-
-==== Start and stop ingest agents
-
-==== Instrument your apps (APM)
-
-===== Agent and Server compatibility
-
-===== Install an Agent
-
-===== Set up APM features
-
-====== Distributed tracing
-
-====== Real User Monitoring (RUM)
-
-====== Cross-cluster search
-
-====== Integrate APM with
-
-[discrete]
-====== Elastic SIEM
-
-[discrete]
-====== Elastic Logs
-
-==== Other ingest options
-
-===== Journalbeat
-
-===== Jaeger
-
-===== OpenTelemetry
-
-===== Third-party
-
-=== Secure your deployment
-
-==== Set up ingest users and roles
-
-==== Set up APM user and roles
-
-==== Store secrets in a keystore
-
-==== Secure communication with Elasticsearch
-
-==== Secure communication with APM Agents
-
-===== API Keys
-
-===== Secret Token
-
-=== Manage indices
-
-==== Index lifecycle management
-
-==== Daily indices
-
-=== Tune performance
-
-=== Troubleshoot    
-
-[[analyst-guides-observability]]
-== Analyst how-to guides
-
-=== Visualize data in Kibana
-
-==== Monitor logs
-
-===== Tail log files
-
-==== Analyze metrics
-
-===== View metrics by topology
-
-====== Monitor servers
-
-====== Monitor Docker containers
-
-====== Monitor Kubernetes pods
-
-====== Monitor AWS services
-
-===== Group and explore metrics visually
-
-==== Monitor uptime
-
-==== Analyze APM data
-
-===== View service health
-
-===== View traces
-
-===== Investigate error rate increases
-
-===== Track deployments
-
-===== Create custom links
-
-===== Enable error reports
-
-===== Filter data
-
-===== Explore application metrics
-
-==== Detect anomalies
-
-===== Detect and inspect log anomalies
-
-===== Integrate APM with machine learning
-
-==== Get alerted
-
-=== Change app settings
+==== Overview
 
 ==== Logs
 
 ==== Metrics
 
-==== APM
+[[admin-guides-observability]]
+=== Admin how-to guides
 
-==== Uptime
+==== Spin up the {stack}
 
-==== Data fields
+===== Create a deployment
 
-===== Change fields
+===== Spin up APM server
 
-===== Add custom fields
+===== Manage the stack yourself
+
+===== Size your deployment
+
+==== Send data to Elasticsearch
+
+===== Ingest logs
+
+===== Ingest metrics
+
+===== Ingest uptime data
+
+====== Deployment architecture
+
+===== Start and stop ingest agents
+
+===== Instrument your apps (APM)
+
+====== Agent and Server compatibility
+
+====== Install an Agent
+
+====== Set up APM features
+
+======= Distributed tracing
+
+======= Real User Monitoring (RUM)
+
+======= Cross-cluster search
+
+======= Integrate APM with
+
+[discrete]
+======= Elastic SIEM
+
+[discrete]
+======= Elastic Logs
+
+===== Other ingest options
+
+====== Journalbeat
+
+====== Jaeger
+
+====== OpenTelemetry
+
+====== Third-party
+
+==== Secure your deployment
+
+===== Set up ingest users and roles
+
+===== Set up APM user and roles
+
+===== Store secrets in a keystore
+
+===== Secure communication with Elasticsearch
+
+===== Secure communication with APM Agents
+
+====== API Keys
+
+====== Secret Token
+
+==== Manage indices
+
+===== Index lifecycle management
+
+===== Daily indices
+
+==== Tune performance
+
+==== Troubleshoot    
+
+[[analyst-guides-observability]]
+=== Analyst how-to guides
+
+==== Visualize data in Kibana
+
+===== Monitor logs
+
+====== Tail log files
+
+===== Analyze metrics
+
+====== View metrics by topology
+
+======= Monitor servers
+
+======= Monitor Docker containers
+
+======= Monitor Kubernetes pods
+
+======= Monitor AWS services
+
+====== Group and explore metrics visually
+
+===== Monitor uptime
+
+===== Analyze APM data
+
+====== View service health
+
+====== View traces
+
+====== Investigate error rate increases
+
+====== Track deployments
+
+====== Create custom links
+
+====== Enable error reports
+
+====== Filter data
+
+====== Explore application metrics
+
+===== Detect anomalies
+
+====== Detect and inspect log anomalies
+
+====== Integrate APM with machine learning
+
+===== Get alerted
+
+==== Change app settings
+
+===== Logs
+
+===== Metrics
+
+===== APM
+
+===== Uptime
+
+===== Data fields
+
+====== Change fields
+
+====== Add custom fields
 
 [[tutorials-observability]]
-== Tutorials
+=== Tutorials
 
-=== Tutorial about exploring metrics
+==== Tutorial about exploring metrics
 
-=== Tutorial about APM and machine learning
+==== Tutorial about APM and machine learning
 
 [[reference-observability]]
-== Related reference
+=== Related reference
 
-=== APM Agents Reference
+==== APM Agents Reference
 
-=== APM Server Reference
+==== APM Server Reference
 
-=== Filebeat Reference
+==== Filebeat Reference
 
-=== Metricbeat Reference
+==== Metricbeat Reference

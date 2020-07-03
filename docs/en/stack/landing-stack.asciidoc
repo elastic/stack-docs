@@ -1,93 +1,154 @@
+[[elastic-stack]]
+== {stack}
+
+Take data from any source, and search, analyze, and visualize it in real time.
+Learn how to get it done with the {stack}--{es}, {kib}, Beats, and Logstash.
+
+|===
+
+| _What do you want to learn today?_
+
+|===
+
+[discrete]
+== Get started with the {stack}
+
+[cols="4*"]
+|===
+
+| 1. *Try on {ecloud}* > Run the {stack} on our hosted {ess}.
+| 2. *Get data in* > Set up a data flow using our add data tutorials. 
+| 3. *Discover data* > Search for hidden insights and relationships in your data.
+| 4. *Visualize* > Show off your data in graphs, metrics, tables, and more.
+
+|===
+
+[discrete]
+== Featured topics
+
+[cols="2*"]
+|===
+
+a| 
+
+* <<get-started,Get started>>
+* <<monitor,Monitor the {stack}>>
+* <<upgrading-elastic-stack,Upgrade the {stack}>>
+* ...
+
+a|
+
+* <<kibana-apis,Kibana APIs>>
+* ...
+
+|===
+
+[discrete]
+== Get the details
+
+[cols="3*"]
+|===
+
+| *Lens* Use our drag-and-drop interface, to rapidly build charts, tables, metrics, and more. We have examples.
+| *Canvas* Learn about workpads and elements and how to use them to  present your data in a visually compelling, 
+| *Elastic Maps* Follow our tutorial on how to ask (and answer) meaningful questions of your location-based data.
+
+| *ILM* Description goes here.
+| *Machine learning* Find anomalies and outliers, forecast based on trends, and identify areas of interest in your data with Elastic {ml-features}.
+| *Hot-warm architecture* If you have an {ess} deployment that is getting overwhelmed by the volume of incoming data or that contains logging data that doesn’t all need to be on fast storage, consider adding a hot-warm architecture.
+
+|===
+
 [[orchestration]]
-== Orchestration
+=== Orchestration
 
 TBD
 
 [[stack-admin-guides]]
-== Admin guides
+=== Admin guides
 
 [[deployment]]
-=== Deployment scenarios 
+==== Deployment scenarios 
 
 TBD
 
 [[setup]]
-=== Set up the stack
+==== Set up the stack
 
 [[install]]
-==== Install the stack
+===== Install the stack
 
 You can run the {stack} on your own hardware, or use our hosted {ess} on
 {ecloud}. The {ess} is available on both AWS and GCP.
 {ess-trial}[Try out the {ess} for free].
 
 [[linux]]
-===== Linux
+====== Linux
 
 [[windows]]
-===== Windows
+====== Windows
 
 [[deb]]
-===== Deb
+====== Deb
 
 [[rpm]]
-===== RPM
+====== RPM
 
 [[msi]]
-===== MSI
+====== MSI
 
 [[docker]]
-===== Docker
+====== Docker
 
 [[homebrew]]
-===== Homebrew
+====== Homebrew
 
 [[run]]
-==== Run the stack
+===== Run the stack
 
 [[start-stop]]
-===== Start and stop the stack
+====== Start and stop the stack
 
 [[run-service]]
-===== Run {es} as a service
+====== Run {es} as a service
   
 [[restart]]
-===== Restarting a cluster
+====== Restarting a cluster
 
 [[access]]
-==== Access {kib}
+===== Access {kib}
 
 TBD
 
 [[configure-elastic-stack]]
-=== Configure the stack
+==== Configure the stack
 
 [[upgrading-elastic-stack]]
-=== Upgrade the stack
+==== Upgrade the stack
 include::{stack-docs-root}/docs/en/install-upgrade/upgrading-stack.asciidoc[lines=3..132]
 
 [[secure-stack]]
-=== Secure the stack
+==== Secure the stack
 
 include::{xes-repo-dir}/security/index.asciidoc[lines=6..9]
 
 [[alert]]
-=== Alert and take action
+==== Alert and take action
 
 TBD
 
 [[manage-cluster]]
-=== Manage clusters
+==== Manage clusters
 
 TBD
 
 [[manage-indices]]
-=== Manage indices
+==== Manage indices
 
 TBD
 
 [[managing-licenses]]
-=== Manage subscriptions
+==== Manage subscriptions
 
 ifeval::["{buildtool}" != "asciidoctor"]
 :imagesdir: kibana/docs/
@@ -98,7 +159,7 @@ ifeval::["{buildtool}" != "asciidoctor"]
 endif::[]
 
 [[monitor]]
-=== Monitor the stack
+==== Monitor the stack
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ../../../../elasticsearch/docs/reference/monitoring/
@@ -112,272 +173,248 @@ ifeval::["{buildtool}" != "builddocs"]
 endif::[]
 
 [[troubleshoot]]
-=== Troubleshoot the stack
+==== Troubleshoot the stack
 
 TBD
 
 [[stack-analyst-guides]]
-== Analyst guides
+=== Analyst guides
 
 TBD
 
 [[add-data]]
-=== Add data
+==== Add data
 
 TBD
 
 [[explore-data]]
-=== Explore your data
+==== Explore your data
 
 TBD
 
 [[visualize-data]]
-=== Visualize your data
+==== Visualize your data
 
 TBD
 
 [[dashboards]]
-=== Build dashboards
+==== Build dashboards
 
 TBD
 
 [[canvas]]
-=== Create presentations with Canvas
+==== Create presentations with Canvas
 
 TBD
 
 [[maps]]
-=== Create maps
+==== Create maps
 
 TBD
 
 [[graph-data]]
-=== Graph data connections
+==== Graph data connections
 
 TBD
 
 [[reports]]
-=== Generate reports
+==== Generate reports
 
 TBD
 
 [[transform-data]]
-=== Transform your data
+==== Transform your data
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: {es-repo-dir}/transform
-include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
+include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+2]
 endif::[]
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: elasticsearch/docs/reference/transform
-include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
+include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+2]
 endif::[]
 ifeval::["{buildtool}" != "builddocs"]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: elasticsearch/docs/reference/transform
-include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+1]
+include::{es-repo-dir}/transform/index.asciidoc[lines=4..32,leveloffset=+2]
 :leveloffset: +1
 endif::[]
 
 [[analyze-data-ml]]
-=== Analyze your data with {ml}
+==== Analyze your data with {ml}
 
 TBD
 
 [[detect-anomalies]]
-==== Detect anomalies in timeseries data
+===== Detect anomalies in timeseries data
 
 TBD
 
 [[detect-outliers]]
-==== Detect outliers
+===== Detect outliers
 
 TBD
 
 [[make-predictions]]
-==== Make predictions with supervised {ml}
+===== Make predictions with supervised {ml}
 
 TBD
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ml/df-analytics/
-include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
-include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+3]
+include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+3]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
-include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
-include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+3]
+include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+3]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
-include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+2]
-include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-dfa-phases.asciidoc[leveloffset=+3]
+include::ml/df-analytics/evaluatedf-api.asciidoc[leveloffset=+3]
 :!imagesdir:
 :leveloffset: +1
 endif::[]
 
 [[manage-kibana]]
-=== Manage Kibana
+==== Manage Kibana
 
 TBD
 
 [[stack-developer-guides]]
-== Developer guides
+=== Developer guides
 
 TBD
 
 [[interact]]
-=== Interact with Elasticsearch
+==== Interact with Elasticsearch
 
 TBD
 
 [[store]]
-=== Store
+==== Store
 
 TBD
 
 [[search]]
-=== Search 
+==== Search 
 
 TBD
 
 [[analyze]]
-=== Analyze 
+==== Analyze 
 
 TBD
 
 [[profile]]
-=== Profile search queries
+==== Profile search queries
 
 TBD
 
 [[grok]]
-=== Debug grok patterns
+==== Debug grok patterns
 
 TBD
 
 [[script]]
-=== Script
+==== Script
 
 TBD
 
 [[stack-contributor-guides]]
-== Contributor/Plugin developer guides
+=== Contributor/Plugin developer guides
 
 [[core-dev]]
-=== Core development
+==== Core development
 
 TBD
 
 [[plugin-dev]]
-=== Plugin development
+==== Plugin development
 
 TBD
 
 [[visualizations]]
-=== Develop visualizations
+==== Develop visualizations
 
 TBD
 
 [[add-dev-data]]
-=== Add data
+==== Add data
 
 TBD
 
 [[dev-security]]
-=== Security
+==== Security
 
 TBD
 
 [[prs]]
-=== Pull request review guidelines
+==== Pull request review guidelines
 
 TBD
 
 [[ci-failures]]
-=== Interpreting CI failures
+==== Interpreting CI failures
 
 TBD
 
 [[stack-concepts]]
-== Concepts
+=== Concepts
 
 TBD
 
 [[anomaly-detection]]
-=== Machine learning - anomaly detection
+==== Machine learning - anomaly detection
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ml/anomaly-detection/
 include::ml/anomaly-detection/analyzing.asciidoc[]
 include::ml/anomaly-detection/forecasting.asciidoc[]
-include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/jobs.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/buckets.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/datafeeds.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/influencers.asciidoc[leveloffset=+1]
-:!imagesdir:
-endif::[]
-ifeval::["{buildtool}" == "gradle"]
-:imagesdir: stack-docs/docs/en/stack/ml/anomaly-detection/
-include::ml/anomaly-detection/analyzing.asciidoc[]
-include::ml/anomaly-detection/forecasting.asciidoc[]
-include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/jobs.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/buckets.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/datafeeds.asciidoc[leveloffset=+1]
-include::ml/anomaly-detection/influencers.asciidoc[leveloffset=+1]
-:!imagesdir:
-endif::[]
-ifeval::["{buildtool}" == "gradle-nooffsets"]
-:imagesdir: stack-docs/docs/en/stack/ml/anomaly-detection/
-include::ml/anomaly-detection/analyzing.asciidoc[]
-include::ml/anomaly-detection/forecasting.asciidoc[]
-include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+1]
+include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+2]
 include::ml/anomaly-detection/jobs.asciidoc[leveloffset=+2]
 include::ml/anomaly-detection/buckets.asciidoc[leveloffset=+2]
 include::ml/anomaly-detection/datafeeds.asciidoc[leveloffset=+2]
 include::ml/anomaly-detection/influencers.asciidoc[leveloffset=+2]
 :!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:imagesdir: stack-docs/docs/en/stack/ml/anomaly-detection/
+include::ml/anomaly-detection/analyzing.asciidoc[]
+include::ml/anomaly-detection/forecasting.asciidoc[]
+include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/jobs.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/buckets.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/datafeeds.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/influencers.asciidoc[leveloffset=+2]
+:!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:imagesdir: stack-docs/docs/en/stack/ml/anomaly-detection/
+include::ml/anomaly-detection/analyzing.asciidoc[]
+include::ml/anomaly-detection/forecasting.asciidoc[]
+include::ml/anomaly-detection/algorithms.asciidoc[leveloffset=+2]
+include::ml/anomaly-detection/jobs.asciidoc[leveloffset=+3]
+include::ml/anomaly-detection/buckets.asciidoc[leveloffset=+3]
+include::ml/anomaly-detection/datafeeds.asciidoc[leveloffset=+3]
+include::ml/anomaly-detection/influencers.asciidoc[leveloffset=+3]
+:!imagesdir:
 :leveloffset: +1
 endif::[]
 
 [data-frame-analytics]
-=== Machine learning - data frame analytics
+==== Machine learning - data frame analytics
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: ml/df-analytics/
 include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
-include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+1]
-include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+1]
-include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+1]
-include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+1]
-include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+1]
-include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+1]
-include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+1]
-:!imagesdir:
-endif::[]
-ifeval::["{buildtool}" == "gradle"]
-:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
-include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
-include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+1]
-include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+1]
-include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+1]
-include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+1]
-include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+1]
-include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+1]
-include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+1]
-:!imagesdir:
-endif::[]
-ifeval::["{buildtool}" == "gradle-nooffsets"]
-:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
-include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
-include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+1]
+include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+2]
 include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+2]
 include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+2]
 include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+2]
@@ -385,184 +422,208 @@ include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+2]
 include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+2]
 include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+2]
 :!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle"]
+:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
+include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+2]
+include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+2]
+include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+2]
+include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+2]
+include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+2]
+:!imagesdir:
+endif::[]
+ifeval::["{buildtool}" == "gradle-nooffsets"]
+:imagesdir: stack-docs/docs/en/stack/ml/df-analytics/
+include::ml/df-analytics/ml-dfa-overview.asciidoc[lines=5..39]
+include::ml/df-analytics/dfa-outlierdetection.asciidoc[leveloffset=+2]
+include::ml/df-analytics/dfa-classification.asciidoc[leveloffset=+3]
+include::ml/df-analytics/dfa-regression.asciidoc[leveloffset=+3]
+include::ml/df-analytics/ml-inference.asciidoc[leveloffset=+3]
+include::ml/df-analytics/ml-lang-ident.asciidoc[leveloffset=+3]
+include::ml/df-analytics/ml-feature-importance.asciidoc[leveloffset=+3]
+include::ml/df-analytics/hyperparameters.asciidoc[leveloffset=+3]
+:!imagesdir:
 :leveloffset: +1
 endif::[]
 
 [[security-concepts]]
-=== Security
+==== Security
 
 ifeval::["{buildtool}" == "asciidoctor"]
 :imagesdir: {xes-repo-dir}
-include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+1]
-include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+1]
+include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+2]
+include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+2]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle"]
 :imagesdir: elasticsearch/x-pack/docs/en/
-include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+1]
-include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+1]
+include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+2]
+include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+2]
 :!imagesdir:
 endif::[]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :imagesdir: elasticsearch/x-pack/docs/en/
-include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+1]
-include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+2]
+include::{xes-repo-dir}/security/authentication/realms.asciidoc[lines=1..53,leveloffset=+2]
+include::{xes-repo-dir}/security/authorization/overview.asciidoc[lines=13..-1,leveloffset=+3]
 :!imagesdir:
 :leveloffset: +1
 endif::[]
 
 [[stack-apis]]
-== APIs
+=== APIs
 
 [[elasticsearch-apis]]
-=== {es} APIs
+==== {es} APIs
 
 include::{es-repo-dir}/rest-api/index.asciidoc[lines=6..12]
 
-include::{es-repo-dir}/api-conventions.asciidoc[leveloffset=+2]
+include::{es-repo-dir}/api-conventions.asciidoc[leveloffset=+3]
 
-include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+2]
+include::{es-repo-dir}/ml/anomaly-detection/apis/ml-api.asciidoc[leveloffset=+3]
 
-include::{es-repo-dir}/ml/df-analytics/apis/index.asciidoc[leveloffset=+2]
+include::{es-repo-dir}/ml/df-analytics/apis/index.asciidoc[leveloffset=+3]
 
-include::{es-repo-dir}/transform/apis/index.asciidoc[leveloffset=+2]
+include::{es-repo-dir}/transform/apis/index.asciidoc[leveloffset=+3]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
 [[ess-apis]]
-=== {ess} APIs
+==== {ess} APIs
 
 include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=6..15]
 
-include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=19..-1,leveloffset=+2]
+include::{cloud-repo-dir}/saas/ec-restful-api.asciidoc[lines=19..-1,leveloffset=+3]
 
-include::{cloud-repo-dir}/saas/saas-api-swagger.asciidoc[leveloffset=+3]
+include::{cloud-repo-dir}/saas/saas-api-swagger.asciidoc[leveloffset=+4]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
 [[kibana-apis]]
-=== {kib} APIs
+==== {kib} APIs
 
 include::{kib-repo-dir}/user/api.asciidoc[lines=6..12]
-include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/using-api.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/features.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/spaces-management.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/role-management.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/saved-objects.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/dashboard-api.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/logstash-configuration-management.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/url-shortening.asciidoc[leveloffset=+3]
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
-include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+2]
+include::{kib-repo-dir}/api/upgrade-assistant.asciidoc[leveloffset=+3]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
 [[stack-reference]]
-== Reference
+=== Reference
 
 
 [[accessibility]]
-=== Accessibility
+==== Accessibility
 
 TBD
 
 [[ecs]]
-=== Elastic common schema
+==== Elastic common schema
 
 TBD
 
 [[elasticsearch-settings]]
-=== Elasticsearch settings
+==== Elasticsearch settings
 
-include::{es-repo-dir}/settings/ml-settings.asciidoc[leveloffset=+1]
+include::{es-repo-dir}/settings/ml-settings.asciidoc[leveloffset=+2]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
-include::{es-repo-dir}/settings/transform-settings.asciidoc[leveloffset=+1]
+include::{es-repo-dir}/settings/transform-settings.asciidoc[leveloffset=+2]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
 [[elasticsearch-plugins]]
-=== Elasticsearch plugins & integrations
+==== Elasticsearch plugins & integrations
 
 TBD
 
 [[ml-functions]]
-=== Machine learning functions
+==== Machine learning functions
 
-include::{es-repo-dir}/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+1]
+include::{es-repo-dir}/ml/anomaly-detection/functions.asciidoc[lines=5..-1,leveloffset=+2]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
 [[ml-modules]]
-=== Machine learning modules
+==== Machine learning modules
 
-include::{includedir}/ml/anomaly-detection/ootb-ml-jobs.asciidoc[lines=5..-1,leveloffset=+1]
+include::{includedir}/ml/anomaly-detection/ootb-ml-jobs.asciidoc[lines=5..-1,leveloffset=+2]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 :leveloffset: +1
 endif::[]
 
 [[ml-limitations]]
-=== Machine learning limitations
+==== Machine learning limitations
 
 TBD
 
 [[painless]]
-=== Painless
+==== Painless
 
 TBD
 
 [[security-users]]
-=== Security built-in users
+==== Security built-in users
 
 TBD
 
 [[built-in-roles]]
-=== Security built-in roles
+==== Security built-in roles
 
 TBD
 
-include::{xes-repo-dir}/security/authorization/privileges.asciidoc[]
+include::{xes-repo-dir}/security/authorization/privileges.asciidoc[leveloffset=+1]
 
 ifeval::["{buildtool}" == "gradle-nooffsets"]
 [[terms]]
-=== Terminology
+==== Terminology
 
 TBD
 endif::[]
@@ -576,6 +637,6 @@ ifeval::["{buildtool}" == "gradle-nooffsets"]
 endif::[]
 
 [[stack-release-notes]]
-== Release notes
+=== Release notes
 
 TBD

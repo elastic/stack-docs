@@ -1,0 +1,28 @@
+[[ootb-ml-jobs-logs-ui]]
+=== Logs {anomaly-detect} configurations
+++++
+<titleabbrev>Logs</titleabbrev>
+++++
+
+// tag::logs-jobs[]
+These {anomaly-jobs} appear by default in the
+{kibana-ref}/xpack-logs.html[Logs app] in {kib}. For more details, see the
+{dfeed} and job definitions in the `logs_ui_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+
+log_entry_categories_count::
+
+* For log entry categories via the Logs UI.
+* Models the occurrences of log events (`partition_field_name` is 
+  `event.dataset`).
+* Detects anomalies in count of log entries by category (using the 
+  <<ml-count,`count` function>>).
+
+log_entry_rate::
+
+* For log entries via the Logs UI.
+* Models ingestion rates (`partition_field_name` is `event.dataset`). 
+* Detects anomalies in the log entry ingestion rate (using the 
+  <<ml-count,`low_count` function>>).
+  
+// end::logs-jobs[]

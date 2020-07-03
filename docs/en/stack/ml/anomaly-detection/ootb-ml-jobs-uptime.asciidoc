@@ -1,0 +1,21 @@
+[[ootb-ml-jobs-uptime]]
+=== Uptime {anomaly-detect} configurations
+++++
+<titleabbrev>Uptime</titleabbrev>
+++++
+// tag::uptime-jobs[]
+
+If you have appropriate {heartbeat} data in {es}, you can enable this
+{anomaly-job} in the 
+{uptime-guide}/uptime-overview.html[Elastic Uptime] app in {kib}. For more
+details, see the {dfeed} and job definitions in 
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/ml[GitHub].
+
+high_latency_by_geo::
+
+* Detects unusually high average latency values (using the
+<<ml-metric-mean,`high_mean` function>> on the `monitor.duration.us` field).
+* Models the occurrences across geographical locations (`partition_field_name` 
+  is `observer.geo.name`).
+
+// end::uptime-jobs[]

@@ -15,6 +15,7 @@ answers for frequently asked questions.
 
 include::{stack-repo-dir}/help.asciidoc[tag=get-help]
 
+[discrete]
 [[ml-rollingupgrade]]
 === Machine learning features unavailable after rolling upgrade
 
@@ -39,6 +40,7 @@ current master node, which triggers the {ml-features} to re-initialize.
 
 For more information, see {ref}/rolling-upgrades.html[Rolling upgrades].
 
+[discrete]
 [[ml-mappingclash]]
 === Job creation failure due to mapping clash
 
@@ -64,6 +66,7 @@ To resolve this issue, click *Advanced > Use dedicated index* when you create
 the job in {kib}. If you are using the create {anomaly-job} job API, specify an
 index name in the `results_index_name` property.
 
+[discrete]
 [[ml-jobnames]]
 === {kib} cannot display jobs with invalid characters in their name
 
@@ -88,8 +91,8 @@ valid identifiers when you use the APIs. For more information about valid
 identifiers, see
 {ref}/ml-put-job.html[Create {anomaly-jobs} API].
 
+[discrete]
 [[ml-upgradedf]]
-
 === Upgraded nodes fail to start due to {dfeed} issues
 
 This problem occurs when you have a {dfeed} that contains search or query

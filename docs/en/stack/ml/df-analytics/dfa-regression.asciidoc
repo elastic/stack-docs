@@ -1,6 +1,6 @@
 [role="xpack"]
 [[dfa-regression]]
-=== {regression-cap}
+== {regression-cap}
 
 experimental[]
 
@@ -31,9 +31,9 @@ which floor it is, and whether the apartment has a riverside view or not, and so
 on. All of these factors can be considered _features_; they are measurable
 properties or characteristics of the phenomenon we're studying.
 
-
+[discrete]
 [[dfa-regression-features]]
-==== {feature-vars-cap}
+=== {feature-vars-cap}
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
 want to use to create a model for predicting other fields. We refer to these 
@@ -52,9 +52,9 @@ algorithm:
   apartment either has a riverside view or doesn't have one.
 Arrays are not supported.
 
-
+[discrete]
 [[dfa-regression-supervised]]
-==== Training the {regression} model
+=== Training the {regression} model
 
 {regression-cap} is a supervised {ml} method, which means that you need to 
 supply a labeled training data set that has some {feature-vars} and a {depvar}. 
@@ -74,9 +74,9 @@ predictions are combined.
 {regression-cap} works as a batch analysis. If new data comes into your index, 
 you must restart the {dfanalytics-job}.
 
-
+[discrete]
 [[dfa-regression-algorithm]]
-===== {regression-cap} algorithms
+==== {regression-cap} algorithms
 
 //tag::regression-algorithms[]
 The ensemble learning technique that we use in the {stack} is a type of boosting 
@@ -84,9 +84,9 @@ called extreme gradient boost (XGboost) which combines decision trees with
 gradient boosting methodologies.
 //end::regression-algorithms[]
 
-
+[discrete]
 [[dfa-regression-lossfunction]]
-===== Loss functions for {regression} analyses
+==== Loss functions for {regression} analyses
 
 A loss function measures how well a given {ml} model fits the specific data set. 
 It boils down all the different under- and overestimations of the model to a 
@@ -122,17 +122,17 @@ TIP: The default loss function parameter values work fine for most of the cases.
 It is highly recommended to use the default values, unless you fully understand 
 the impact of the different loss function parameters.
 
-
+[discrete]
 [[dfa-regression-feature-importance]]
-==== {feat-imp-cap}
+=== {feat-imp-cap}
 
 {feat-imp-cap} provides further information about the results of an analysis and 
 helps to interpret the results in a more subtle way. If you want to learn more 
 about {feat-imp}, <<ml-feature-importance,click here>>.
 
-
+[discrete]
 [[dfa-regression-evaluation]]
-==== Measuring model performance
+=== Measuring model performance
 
 You can measure how well the model has performed on your training data set by 
 using the `regression` evaluation type of the 
@@ -160,7 +160,8 @@ low MSE value on the training data set and a high MSE value on the testing
 data set. For more information about the evaluation metrics, see 
 <<ml-dfanalytics-regression-evaluation>>.
 
-
-==== Further readings
+[discrete]
+[[dfa-regression-readings]]
+=== Further readings
 
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Feature%20Importance[Feature importance for {dfanalytics} (Jupyter notebook)]

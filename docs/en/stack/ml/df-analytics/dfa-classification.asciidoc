@@ -1,6 +1,6 @@
 [role="xpack"]
 [[dfa-classification]]
-=== {classification-cap}
+== {classification-cap}
 
 experimental[]
 
@@ -27,9 +27,9 @@ can optionally include or exclude fields from the analysis. For more information
 about field selection, see the
 {ref}/explain-dfanalytics.html[explain data frame analytics API].
 
-
+[discrete]
 [[dfa-classification-supervised]]
-==== Training the {classification} model
+=== Training the {classification} model
 
 {classification-cap} – just like {regression} – is a supervised {ml} process.
 When you create the {dfanalytics-job}, you must provide a data set that contains
@@ -64,9 +64,9 @@ that is approximately balanced. That is to say, ideally your data set should
 have a similar number of data points for each class.
 ////
 
-
+[discrete]
 [[dfa-classification-algorithm]]
-===== {classification-cap} algorithms
+==== {classification-cap} algorithms
 
 //tag::classification-algorithms[]
 {classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
@@ -78,9 +78,9 @@ is an iteration of the last one, hence it improves the decision made by the
 previous tree.
 //end::classification-algorithms[]
 
-
+[discrete]
 [[dfa-classification-performance]]
-==== {classification-cap} performance
+=== {classification-cap} performance
 
 As a rule of thumb, a {classanalysis} with many classes takes more time to run 
 than a binary {classification} process when there are only two classes. The 
@@ -100,16 +100,16 @@ prepare your input data such that it has less classes. You can also remove the
 fields that are not relevant from the analysis by specifying `excludes` patterns 
 in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
  
-
+[discrete]
 [[dfa-classification-interpret]]
-==== Interpreting {classification} results
+=== Interpreting {classification} results
 
 The following sections help you understand and interpret the results of a 
 {classanalysis}.
 
-
+[discrete]
 [[dfa-classification-class-probability]]
-===== `class_probability`
+==== `class_probability`
 
 The value of `class_probability` shows how likely it is that a given data point 
 belongs to a certain class. It is a value between 0 and 1. The higher the 
@@ -119,9 +119,9 @@ in your destination index. See the
 {ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
 section in the {classification} example.
 
-
+[discrete]
 [[dfa-classification-class-score]]
-===== `class_score`
+==== `class_score`
 
 The value of `class_score` controls the probability at which a class label is 
 assigned to a data point. In normal case – that you maximize the number of 
@@ -147,17 +147,17 @@ recall for `class 1`. Instead of this behavior, the default scheme of the
 actual `class 0` predicted `class 1` errors, or in other words, a slight 
 degradation of the overall accuracy.
 
-
+[discrete]
 [[dfa-classification-feature-importance]]
-===== {feat-imp-cap}
+==== {feat-imp-cap}
 
 {feat-imp-cap} provides further information about the results of an analysis and 
 helps to interpret the results in a more subtle way. If you want to learn more 
 about {feat-imp}, <<ml-feature-importance,click here>>. 
 
-
+[discrete]
 [[dfa-classification-evaluation]]
-==== Measuring model performance
+=== Measuring model performance
 
 You can measure how well the model has performed on your data set by using the 
 `classification` evaluation type of the 

@@ -12,7 +12,6 @@ cycle, it goes through four main phases:
 
 Let's take a look at the phases one-by-one.
 
-[discrete]
 [[ml-dfa-phases-reindex]]
 === Reindexing
 
@@ -24,7 +23,6 @@ default settings.
 Once the destination index is built, the {dfanalytics-job} task calls the {es} 
 {ref}/docs-reindex.html[Reindex API] to launch the reindexing task.
 
-[discrete]
 [[ml-dfa-phases-load]]
 === Loading data
 
@@ -32,7 +30,6 @@ After the reindexing is finished, the job fetches the needed data from the
 destination index. It converts the data into the format that the analysis 
 process expects, then sends it to the analysis process.
 
-[discrete]
 [[ml-dfa-phases-analyze]]
 === Analyzing
 
@@ -51,7 +48,6 @@ in which they identify outliers in the data.
   hyperparameters. See <<hyperparameters,hyperparameter optimization>>.
 . `final_training`: Trains the {ml} model.
 
-[discrete]
 [[ml-dfa-phases-write]]
 === Writing results
 

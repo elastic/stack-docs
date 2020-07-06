@@ -1,0 +1,39 @@
+[role="xpack"]
+[[ootb-ml-jobs-metricbeat]]
+== {metricbeat} {anomaly-detect} configurations
+++++
+<titleabbrev>{metricbeat}</titleabbrev>
+++++
+
+// tag::metricbeat-jobs[]
+These {anomaly-job} wizards appear in {kib} if you use the 
+{metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to 
+monitor your servers. For more details, see the
+{dfeed} and job definitions in https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml[GitHub].
+
+high_mean_cpu_iowait_ecs::
+
+* For {metricbeat} data where `event.dataset` is `system.cpu` and 
+  `system.filesystem`.
+* Models CPU time spent in iowait (`partition_field_name` is `host.name`).
+* Detects unusual increases in cpu time spent in iowait (using the 
+  <<ml-metric-mean,`high_mean` function>>).
+
+max_disk_utilization_ecs::
+
+* For {metricbeat} data where `event.dataset` is `system.cpu` and 
+  `system.filesystem`.
+* Models disc utilization (`partition_field_name` is `host.name`).
+* Detects unusual increases in disk utilization (using the 
+  <<ml-metric-max,`max` function>>).
+
+metricbeat_outages_ecs::
+
+* For {metricbeat} data where `event.dataset` is `system.cpu` and 
+  `system.filesystem`.
+* Models counts of {metricbeat} documents 
+  (`partition_field_name` is `event.dataset`).
+* Detects unusual decreases in {metricbeat} documents (using the 
+  <<ml-count,`low_count` function>>).
+
+// end::metricbeat-jobs[]

@@ -1,0 +1,65 @@
+[role="xpack"]
+[[ootb-ml-jobs-apm]]
+== APM {anomaly-detect} configurations
+++++
+<titleabbrev>APM</titleabbrev>
+++++
+
+These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or
+an APM Server stored in {es}. For more details, see the {dfeed} and job
+definitions in the `apm_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+
+// tag::apm-jobs[]
+abnormal_span_durations_jsbase::
+abnormal_span_durations_nodejs::
+
+* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is `js-base` or `nodejs`).
+* Models the duration of spans (`partition_field_name` is `span.type`).
+* Detects for spans that are taking longer than usual to process (using the 
+  <<ml-metric-mean,`high_mean` function>>).
+
+abnormal_trace_durations_nodejs::
+
+* For data from {apm-node-agents} (where `agent.name` is `nodejs`).
+* Models the duration of trace transactions.
+* Detects trace transactions that are processing slower than usual (using the 
+  <<ml-metric-mean,`high_mean` function>>).
+
+anomalous_error_rate_for_user_agents_jsbase::
+
+* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
+* Models the error rate of user agents (`partition_field_name` is 
+  `user_agent.name`).
+* Detects user agents that are encountering errors at an above normal rate 
+  (using the <<ml-nonzero-count,`high_non_zero_count` function>>).
+  
+This job can help detect browser compatibility issues.
+
+decreased_throughput_jsbase::
+decreased_throughput_nodejs::
+
+* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is `js-base` or `nodejs`).
+* Models the transaction rate of the application.
+* Detects periods during which the application is processing fewer requests 
+than normal (using the <<ml-count,`low_count` function>>).
+
+high_count_by_user_agent_jsbase::
+
+* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
+* Models the request rate of user agents (`partition_field_name` is 
+  `user_agent.name`).
+* Detects user agents that are making requests at a suspiciously high rate 
+  (using the <<ml-nonzero-count,`high_non_zero_count` function>>).
+
+This job is useful in identifying bots.
+
+high_mean_response_time::
+
+* For transaction data where `processor.event` is `transaction` and 
+`transaction.type` is `request`.
+* Models response time duration of transactions.
+* Detects anomalies in high mean of transaction duration (using the 
+  <<ml-metric-mean,`high_mean` function>>).
+
+// end::apm-jobs[]

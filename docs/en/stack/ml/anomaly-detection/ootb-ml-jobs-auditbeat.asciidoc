@@ -1,0 +1,45 @@
+[[ootb-ml-jobs-auditbeat]]
+== {auditbeat} {anomaly-detect} configurations
+++++
+<titleabbrev>{auditbeat}</titleabbrev>
+++++
+
+// tag::auditbeat-jobs[]
+These {anomaly-job} wizards appear in {kib} if you use 
+{auditbeat-ref}/index.html[{auditbeat}] to audit process activity on your 
+systems. For more details, see the {dfeed} and job definitions in the
+`auditbeat_*` folders in
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+
+docker_high_count_process_events_ecs::
+
+* For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
+`docker`.
+* Models process execution rates (`partition_field_name` is `container.name`).
+* Detects unusual increases in process execution rates in Docker containers 
+  (using the <<ml-count,`high_count` function>>).
+
+docker_rare_process_activity_ecs::
+
+* For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
+`docker`.
+* Models occurrences of process execution (`partition_field_name` is 
+  `container.name`).
+* Detects rare process executions in Docker containers (using the 
+  <<ml-rare,`rare` function>>).
+
+hosts_high_count_process_events_ecs::
+
+* For Auditbeat data where `event.module` is `auditd`.
+* Models process execution rates (`partition_field_name` is `host.name`).
+* Detects unusual increases in process execution rates (using the 
+  <<ml-nonzero-count,`high_non_zero_count` function>>).
+
+hosts_rare_process_activity_ecs::
+
+* For Auditbeat data where `event.module` is `auditd`.
+* Models process execution rates (`partition_field_name` is `host.name`).
+* Detects rare process executions on hosts (using the 
+  <<ml-rare,`rare` function>>).
+
+// end::auditbeat-jobs[]

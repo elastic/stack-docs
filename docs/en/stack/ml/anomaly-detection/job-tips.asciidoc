@@ -1,6 +1,6 @@
 [role="xpack"]
 [[job-tips]]
-==== Machine learning job tips
+== Machine learning job tips
 ++++
 <titleabbrev>Job tips</titleabbrev>
 ++++
@@ -10,9 +10,9 @@ provide advice based on the characteristics of your data. By heeding these
 suggestions, you can create jobs that are more likely to produce insightful {ml}
 results.
 
-
+[discrete]
 [[bucket-span]]
-===== Bucket span
+=== Bucket span
 
 The bucket span is the time interval that {ml} analytics use to summarize and
 model data for your job. When you create an {anomaly-job} in {kib}, you can
@@ -25,9 +25,9 @@ If you choose a value that is larger than one day or is significantly different
 than the estimated value, you receive an informational message. For more 
 information about choosing an appropriate bucket span, see <<ml-buckets>>.
 
-
+[discrete]
 [[cardinality]]
-===== Cardinality
+=== Cardinality
 
 If there are logical groupings of related entities in your data, {ml} analytics
 can make data models and generate results that take these groupings into
@@ -43,9 +43,9 @@ Likewise if you are performing population analysis and the cardinality of the
 `over_field_name` is below 10, you are advised that this might not be a suitable
 field to use. For more information, see <<ml-configuring-pop>>.
 
-
+[discrete]
 [[detectors]]
-===== Detectors
+=== Detectors
 
 Each {anomaly-job} must have one or more _detectors_. A detector applies an
 analytical function to specific fields in your data. If your job does not
@@ -56,15 +56,15 @@ If a job contains duplicate detectors, you also receive an error. Detectors are
 duplicates if they have the same `function`, `field_name`, `by_field_name`, 
 `over_field_name` and `partition_field_name`. 
 
-
+[discrete]
 [[influencers]]
-===== Influencers
+=== Influencers
 
 See <<ml-influencers>>.
 
-
+[discrete]
 [[model-memory-limits]]
-===== Model memory limits
+=== Model memory limits
 
 For each {anomaly-job}, you can optionally specify a `model_memory_limit`, which
 is the approximate maximum amount of memory resources that are required for
@@ -105,9 +105,9 @@ that cannot be allocated to any {ml} nodes in the cluster. If you find that you
 cannot increase `model_memory_limit` for your {ml} jobs, the solution is to 
 increase the size of the {ml} nodes in your cluster.
 
-
+[discrete]
 [[dedicated-indices]]
-===== Dedicated indices
+=== Dedicated indices
 
 For each {anomaly-job}, you can optionally specify a dedicated index to store 
 the {anomaly-detect} results. As {anomaly-jobs} may produce a large amount 

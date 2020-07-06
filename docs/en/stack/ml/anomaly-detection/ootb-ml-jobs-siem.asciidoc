@@ -1,23 +1,16 @@
 [role="xpack"]
-[[ootb-ml-jobs]]
-== Supplied {anomaly-detect} configurations
+[[ootb-ml-jobs-siem]]
+== SIEM {anomaly-detect} configurations
+++++
+<titleabbrev>SIEM</titleabbrev>
+++++
 
-{anomaly-jobs-cap} contain the configuration information and metadata necessary 
-to perform an analytics task. {kib} can recognize certain types of data and 
-provide specialized wizards for that context. This page lists the categories of 
-the {anomaly-jobs} that are ready to use via {kib}.
+These {anomaly-jobs} appear by default in the Anomaly Detection interface of
+the {siem-guide}/machine-learning.html[SIEM app] in {kib}. They help you 
+automatically detect file system and network anomalies on your hosts. However,
+if you don't use Beats, you need to map your data to the ECS fields that are 
+listed for every job.
 
-* <<ootb-ml-jobs-apache>>
-* <<ootb-ml-jobs-apm>>
-* <<ootb-ml-jobs-auditbeat>>
-* <<ootb-ml-jobs-logs-ui>>
-* <<ootb-ml-jobs-metricbeat>>
-* <<ootb-ml-jobs-nginx>>
-* <<ootb-ml-jobs-siem>>
-* <<ootb-ml-jobs-uptime>>
-
-////
-This content will be removed in a subsequent PR:
 // tag::siem-jobs[]
 For more details, see the
 {dfeed} and job definitions in the `siem_*` folders in
@@ -579,4 +572,3 @@ Required {beats}:::
 NOTE: This job is available only when you use {winlogbeat} to ship data.
 
 // end::siem-jobs[]
-////

@@ -1,7 +1,7 @@
 [role="xpack"]
 [testenv="platinum"]
 [[flightdata-classification]]
-=== Predicting delayed flights with {classanalysis}
+== Predicting delayed flights with {classanalysis}
 
 Let's try to predict whether a flight will be delayed or not by using the 
 {kibana-ref}/add-sample-data.html[sample flight data]. The data set contains 
@@ -15,9 +15,8 @@ concepts, see <<dfa-classification>>.
 TIP: If you want to view this example in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[click here].
 
-
 [[flightdata-classification-data]]
-==== Preparing your data
+=== Preparing your data
 
 Each document in the sample flight data set contains details for a single flight,
 so this data is ready for analysis; it is already in a two-dimensional
@@ -88,9 +87,8 @@ inconsistencies. For example, a flight can be both delayed and canceled. This is
 a good reminder that the quality of your input data affects the quality of your
 results.
 
-
 [[flightdata-classification-model]]
-==== Creating a {classification} model
+=== Creating a {classification} model
 
 To predict whether a specific flight is delayed:
 
@@ -281,9 +279,8 @@ The API call returns the following response:
 ====
 --
 
-
 [[flightdata-classification-results]]
-==== Viewing {classification} results
+=== Viewing {classification} results
 
 Now you have a new index that contains a copy of your source data with 
 predictions for your dependent variable.
@@ -374,9 +371,8 @@ any class.
 ////
 ====
 
-
 [[flightdata-classification-evaluate]]
-==== Evaluating {classification} results
+=== Evaluating {classification} results
 
 Though you can look at individual results and compare the predicted value
 (`ml.FlightDelay_prediction`) to the actual value (`FlightDelay`), you

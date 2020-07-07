@@ -1,6 +1,6 @@
 [role="xpack"]
 [[dfa-outlier-detection]]
-=== {oldetection-cap}
+== {oldetection-cap}
 
 experimental[]
 
@@ -16,9 +16,8 @@ are unusual compared to the majority of the data points.
 You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
 
-
 [[dfa-outlier-algorithms]]
-==== {oldetection-cap} algorithms
+=== {oldetection-cap} algorithms
 
 //tag::outlier-detection-algorithms[]
 In the {stack}, we use an ensemble of four different distance and density based 
@@ -82,9 +81,8 @@ IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data
 once. If new data comes into the index, you need to do the analysis again on the 
 altered data.
 
-
 [[dfa-feature-influence]]
-==== Feature influence
+=== Feature influence
 
 Besides the {olscore}, another value is calculated during {oldetection}: 
 the feature influence score. As we mentioned, there are multiple features of a 

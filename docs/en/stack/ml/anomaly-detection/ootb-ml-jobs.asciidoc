@@ -27,3 +27,16 @@ be created via the related solution UI in {kib}.
 NOTE: The configurations are only available if data exists that matches the 
 queries specified in the manifest files. These recognizer queries are linked in 
 the descriptions of the individual configurations.
+
+[discrete]
+[[ootb-ml-model-memory]]
+== Model memory considerations
+
+By default, these jobs have
+{ref}/ml-put-job.html#put-analysislimits[model_memory_limit] values that are
+deemed appropriate for typical user environments. If the characteristics of your
+data cause these jobs to reach `soft_limit` or
+`hard_limit` {ref}/ml-get-job-stats.html#modelsizestats[memory_status] values,
+you can clone the job and increase the model memory limit. You might also need
+to update the {ref}/ml-settings.html[xpack.ml.max_model_memory_limit] setting
+before you clone the job.

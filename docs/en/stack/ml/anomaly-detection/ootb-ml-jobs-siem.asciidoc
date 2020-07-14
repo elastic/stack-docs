@@ -16,8 +16,11 @@ For more details, see the
 {dfeed} and job definitions in the `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
-[[security-auditbeat]]
+[discrete]
+[[security-auditbeat-jobs]]
 === SIEM {auditbeat}
+
+Detect suspicious network activity and unusual processes in {auditbeat} data.
 
 // tag::siem-auditbeat-jobs[]
 rare_process_by_host_linux_ecs::
@@ -219,8 +222,11 @@ Required ECS fields when not using {beats}:::
 
 // end::siem-auditbeat-jobs[]
 
-[[security-auditbeat-authentication]]
-=== SIEM {auditbeat} Authentication
+[discrete]
+[[security-auditbeat-authentication-jobs]]
+=== SIEM {auditbeat} authentication
+
+Detect suspicious authentication events in {auditbeat} data.
 
 // tag::siem-auditbeat-auth-jobs[]
 suspicious_login_activity_ecs::
@@ -249,8 +255,11 @@ Required ECS fields when not using {beats}:::
 
 // end::siem-auditbeat-auth-jobs[]
 
-[[security-packetbeat]]
+[discrete]
+[[security-packetbeat-jobs]]
 === SIEM {packetbeat}
+
+Detect suspicious network activity in {packetbeat} data.
 
 // tag::siem-packetbeat-jobs[]
 packetbeat_dns_tunneling::
@@ -420,8 +429,11 @@ Required ECS fields when not using {beats}:::
 
 // end::siem-packetbeat-jobs[]
 
-[[security-winlogbeat]]
+[discrete]
+[[security-winlogbeat-jobs]]
 === SIEM {winlogbeat}
+
+Detect unusual processes and network activity in {winlogbeat} data.
 
 // tag::siem-winlogbeat-jobs[]
 rare_process_by_host_windows_ecs::
@@ -685,8 +697,11 @@ Required ECS fields when not using {beats}:::
 
 // end::siem-winlogbeat-jobs[]
 
-[[security-winlogbeat-authentication]]
-=== SIEM {winlogbeat} Authentication
+[discrete]
+[[security-winlogbeat-authentication-jobs]]
+=== SIEM {winlogbeat} authentication
+
+Detect suspicious authentication events in {winlogbeat} data.
 
 // tag::siem-winlogbeat-auth-jobs[]
 windows_rare_user_type10_remote_login::

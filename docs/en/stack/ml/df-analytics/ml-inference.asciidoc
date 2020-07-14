@@ -19,6 +19,7 @@ trained the model on, and get a prediction.
 
 Let's take a closer look at the machinery behind {infer}.
 
+
 [[ml-inference-models]]
 === Trained {ml} models as functions
 
@@ -33,17 +34,35 @@ Alternatively, you can use a pre-trained language identification model to
 determine the language of text. {lang-ident-cap} supports 109 languages. For 
 more information and configuration details, check the <<ml-lang-ident>> page.
 
+
 [[ml-inference-processor]]
 === {infer-cap} processor
 
-{infer-cap} is a processor specified in an {ref}/pipeline.html[ingest pipeline]. 
-It uses a stored {dfanalytics} model to infer against the data that is being 
-ingested in the pipeline. The model is used on the 
-{ref}/ingest.html[ingest node]. {infer-cap} pre-processes the data by using the 
-model and provides a prediction. After the process, the pipeline continues 
-executing (if there is any other processor in the pipeline), finally the new 
-data together with the results are indexed into the destination index.
+{infer-cap} can be used as a processor specified in an 
+{ref}/pipeline.html[ingest pipeline]. It uses a stored {dfanalytics} model to 
+infer against the data that is being ingested in the pipeline. The model is used 
+on the {ref}/ingest.html[ingest node]. {infer-cap} pre-processes the data by 
+using the model and provides a prediction. After the process, the pipeline 
+continues executing (if there is any other processor in the pipeline), finally 
+the new data together with the results are indexed into the destination index.
 
 Check the {ref}/inference-processor.html[{infer} processor] and 
 {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
+learn more about the feature.
+
+
+[[ml-inference-aggregation]]
+=== {infer-cap} aggregation
+
+{infer-cap} can also be used as a pipeline aggregation. You can reference a 
+pre-trained {dfanalytics} model in the aggregation to infer on the result field 
+of the parent bucket aggregation. The {infer} aggregation uses the model on the 
+results to provide a prediction. This aggregation enables you to run 
+{classification} or {reganalysis} at search time. If you want to perform the 
+analysis on a small set of data, this aggregation enables you to generate 
+predictions without the need to set up a processor in the ingest pipeline.
+
+Check the 
+{ref}/search-aggregations-pipeline-inference-bucket-aggregation.html[{infer} bucket aggregation] 
+and {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
 learn more about the feature.

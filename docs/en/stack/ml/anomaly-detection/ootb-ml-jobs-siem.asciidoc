@@ -16,9 +16,38 @@ For more details, see the
 {dfeed} and job definitions in the `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
-linux_anomalous_network_activity_ecs::
+[[security-auditbeat]]
+=== SIEM {auditbeat}
+
+// tag::siem-auditbeat-jobs[]
+rare_process_by_host_linux_ecs::
+
+Identifies rare processes that do not usually run on individual hosts, which
+can indicate execution of unauthorized services, malware, or persistence
+mechanisms.
 +
-windows_anomalous_network_activity_ecs::
+Processes are considered rare when they only run occasionally as compared with
+other processes running on the host.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux).
+* Models occurrences of process activities on the host. 
+* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {auditbeat}
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
+
+linux_anomalous_network_activity_ecs::
 
 Identifies OS processes that do not usually use the network but have
 unexpected network activity, which can indicate command-and-control, lateral
@@ -31,15 +60,14 @@ execution of unauthorized network applications.
 
 Job details:::
 
-* Analyzes network activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
+* Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -125,8 +153,6 @@ Required ECS fields when not using {beats}:::
 * `agent.type`
 
 linux_anomalous_process_all_hosts_ecs::
-+
-windows_anomalous_process_all_hosts_ecs::
 
 Searches for rare processes running on multiple hosts in an entire fleet or
 network.
@@ -137,15 +163,14 @@ all or many hosts in a fleet.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all 
   hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -157,8 +182,6 @@ Required ECS fields when not using {beats}:::
 * `agent.type`
 
 linux_anomalous_user_name_ecs::
-+
-windows_anomalous_user_name_ecs::
 
 Searches for activity from users who are not normally active, which can
 indicate unauthorized changes, activity by unauthorized users, lateral
@@ -177,16 +200,14 @@ credentials are used to try and move laterally from one host to another.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or
-`winlogbeat` (Windows).
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -196,6 +217,42 @@ Required ECS fields when not using {beats}:::
 * `event.action`
 * `agent.type`
 
+// end::siem-auditbeat-jobs[]
+
+[[security-auditbeat-authentication]]
+=== SIEM {auditbeat} Authentication
+
+// tag::siem-auditbeat-auth-jobs[]
+suspicious_login_activity_ecs::
+
+Identifies an unusually high number of authentication attempts.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
+* Models occurrences of authentication attempts (`partition_field_name` is 
+  `host.name`).
+* Detects unusually high number of authentication attempts (using the 
+  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+
+Required {beats}:::
+
+* {auditbeat} (Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `source.ip`
+* `host.name`
+* `user.name`
+* `event.category`
+* `agent.type`
+
+// end::siem-auditbeat-auth-jobs[]
+
+[[security-packetbeat]]
+=== SIEM {packetbeat}
+
+// tag::siem-packetbeat-jobs[]
 packetbeat_dns_tunneling::
 
 Searches for unusually large numbers of DNS queries
@@ -361,8 +418,12 @@ Required ECS fields when not using {beats}:::
 * `user_agent.original`
 * `agent.type`
 
-rare_process_by_host_linux_ecs::
-+
+// end::siem-packetbeat-jobs[]
+
+[[security-winlogbeat]]
+=== SIEM {winlogbeat}
+
+// tag::siem-winlogbeat-jobs[]
 rare_process_by_host_windows_ecs::
 
 Identifies rare processes that do not usually run on individual hosts, which
@@ -374,14 +435,13 @@ other processes running on the host.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows) or `auditbeat` (Linux).
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {winlogbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -391,28 +451,35 @@ Required ECS fields when not using {beats}:::
 * `event.action`
 * `agent.type`
 
-suspicious_login_activity_ecs::
+windows_anomalous_network_activity_ecs::
 
-Identifies an unusually high number of authentication attempts.
+Identifies OS processes that do not usually use the network but have
+unexpected network activity, which can indicate command-and-control, lateral
+movement, persistence, or data exfiltration activity.
++
+A process with unusual network activity can denote process exploitation or
+injection, where the process is used to run persistence mechanisms that allow a
+malicious actor remote access or control of the host, data exfiltration, and
+execution of unauthorized network applications.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `auditbeat`.
-* Models occurrences of authentication attempts (`partition_field_name` is 
-  `host.name`).
-* Detects unusually high number of authentication attempts (using the 
-  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+* Analyzes network activity logs where `agent.type` is `winlogbeat`.
+* Models the occurrences of processes that cause network activity.
+* Detects network activity caused by processes that occur rarely compared to 
+  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
+* {winlogbeat}
 
 Required ECS fields when not using {beats}:::
 
-* `source.ip`
+* `destination.ip`
 * `host.name`
+* `process.name`
 * `user.name`
-* `event.category`
+* `event.action`
 * `agent.type`
 
 windows_anomalous_path_activity_ecs::
@@ -442,6 +509,35 @@ Required ECS fields when not using {beats}:::
 * `process.name`
 * `user.name`
 * `process.working_directory`
+* `event.action`
+* `agent.type`
+
+windows_anomalous_process_all_hosts_ecs::
+
+Searches for rare processes running on multiple hosts in an entire fleet or
+network.
++
+This reduces the detection of false positives since automated maintenance
+processes usually only run occasionally on a single machine but are common to
+all or many hosts in a fleet.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows).
+* Models the occurrences of processes on all hosts.
+* Detects processes that occur rarely compared to other processes on all 
+  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {winlogbeat}
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `process.executable`
 * `event.action`
 * `agent.type`
 
@@ -525,6 +621,42 @@ Required {beats}:::
 +
 NOTE: This job is available only when you use {winlogbeat} to ship data.
 
+windows_anomalous_user_name_ecs::
+
+Searches for activity from users who are not normally active, which can
+indicate unauthorized changes, activity by unauthorized users, lateral
+movement, and compromised credentials.
++
+In organizations, new usernames are not often created apart from specific types 
+of system activities, such as creating new accounts for new employees. These 
+user accounts quickly become active and routine.
++
+Events from rarely used usernames can point to suspicious activity. 
+Additionally, automated Linux fleets tend to see activity from rarely used 
+usernames only when personnel log in to make authorized or unauthorized 
+changes, or threat actors have acquired credentials and log in for malicious 
+purposes. Unusual usernames can also indicate pivoting, where compromised 
+credentials are used to try and move laterally from one host to another.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows).
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {winlogbeat}
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
+
 windows_rare_user_runas_event::
 
 Searches for unusual user context switches using the `runas` command or similar
@@ -551,6 +683,12 @@ Required ECS fields when not using {beats}:::
 * `event.code`
 * `agent.type`
 
+// end::siem-winlogbeat-jobs[]
+
+[[security-winlogbeat-authentication]]
+=== SIEM {winlogbeat} Authentication
+
+// tag::siem-winlogbeat-auth-jobs[]
 windows_rare_user_type10_remote_login::
 
 Searches for unusual remote desktop protocol (RDP) logins, which can indicate
@@ -571,4 +709,5 @@ Required {beats}:::
 +
 NOTE: This job is available only when you use {winlogbeat} to ship data.
 
+// end::siem-winlogbeat-auth-jobs[]
 // end::siem-jobs[]

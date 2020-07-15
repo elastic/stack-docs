@@ -158,9 +158,6 @@ There is a wizard for creating {dfanalytics-jobs} on the
 [role="screenshot"]
 image::images/ecommerce-outlier-job-1.png["Create a {dfanalytics-job} in {kib}"]
 
-[role="screenshot"]
-image::images/ecommerce-outlier-job-2.png["Create a {dfanalytics-job} in {kib}" – continued]
-
 Alternatively, you can use the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
 
@@ -223,7 +220,9 @@ on the outlier score:
 image::images/outliers.png["View {oldetection} results in {kib}"]
 
 The `ml.outlier` score is a value between 0 and 1. The larger the value, the
-more likely they are to be an outlier.
+more likely they are to be an outlier. In {kib}, you can optionally enable
+histogram charts to get a better understanding of the distribution of values for
+each column in the result.
 
 In addition to an overall outlier score, each document is annotated with feature
 influence values for each field. These values add up to 1 and indicate which
@@ -249,12 +248,12 @@ The search results include the following {oldetection} scores:
 [source,js]
 --------------------------------------------------
 ...
-"ml" :{
+"ml" : {
   "outlier_score" : 0.9653657078742981,
   "feature_influence.products.quantity.sum" : 0.00592468399554491,
   "feature_influence.order_id.value_count" : 0.01975759118795395,
   "feature_influence.products.taxful_price.sum" : 0.974317729473114
-}
+  }
 ...
 --------------------------------------------------
 // NOTCONSOLE

@@ -16,31 +16,41 @@ For more details, see the
 {dfeed} and job definitions in the `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
-high_distinct_count_error_message::
-Looks for a spike in the rate of an error message. These spikes might simply
-indicate an impending service failure but they can also be byproducts of
-attempted or successful persistence, privilege escalation, defense evasion,
-discovery, lateral movement, or collection activity by a threat actor.
+[discrete]
+[[security-auditbeat-jobs]]
+=== SIEM {auditbeat}
+
+Detect suspicious network activity and unusual processes in {auditbeat} data.
+
+// tag::siem-auditbeat-jobs[]
+rare_process_by_host_linux_ecs::
+
+Identifies rare processes that do not usually run on individual hosts, which
+can indicate execution of unauthorized services, malware, or persistence
+mechanisms.
++
+Processes are considered rare when they only run occasionally as compared with
+other processes running on the host.
 
 Job details:::
 
-* Analyzes Cloudtrail logs 
-* Detects anomalies where the number of distinct values in
-the `aws.cloudtrail.error_message` field is unusual
-(using the {ml-docs}/ml-count-functions.html#ml-distinct-count[`high_distinct_count` function]).
+* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux).
+* Models occurrences of process activities on the host. 
+* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {filebeat}
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
-* `source.ip`
-* `source.geo.city_name`
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
 
 linux_anomalous_network_activity_ecs::
-+
-windows_anomalous_network_activity_ecs::
 
 Identifies OS processes that do not usually use the network but have
 unexpected network activity, which can indicate command-and-control, lateral
@@ -53,15 +63,14 @@ execution of unauthorized network applications.
 
 Job details:::
 
-* Analyzes network activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
+* Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -147,8 +156,6 @@ Required ECS fields when not using {beats}:::
 * `agent.type`
 
 linux_anomalous_process_all_hosts_ecs::
-+
-windows_anomalous_process_all_hosts_ecs::
 
 Searches for rare processes running on multiple hosts in an entire fleet or
 network.
@@ -159,15 +166,14 @@ all or many hosts in a fleet.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or `winlogbeat` (Windows).
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all 
   hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -179,8 +185,6 @@ Required ECS fields when not using {beats}:::
 * `agent.type`
 
 linux_anomalous_user_name_ecs::
-+
-windows_anomalous_user_name_ecs::
 
 Searches for activity from users who are not normally active, which can
 indicate unauthorized changes, activity by unauthorized users, lateral
@@ -199,16 +203,14 @@ credentials are used to try and move laterally from one host to another.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux) or
-`winlogbeat` (Windows).
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {auditbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -218,6 +220,167 @@ Required ECS fields when not using {beats}:::
 * `event.action`
 * `agent.type`
 
+// end::siem-auditbeat-jobs[]
+
+[discrete]
+[[security-auditbeat-authentication-jobs]]
+=== SIEM {auditbeat} authentication
+
+Detect suspicious authentication events in {auditbeat} data.
+
+// tag::siem-auditbeat-auth-jobs[]
+suspicious_login_activity_ecs::
+
+Identifies an unusually high number of authentication attempts.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat`.
+* Models occurrences of authentication attempts (`partition_field_name` is 
+  `host.name`).
+* Detects unusually high number of authentication attempts (using the 
+  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+
+Required {beats}:::
+
+* {auditbeat} (Linux)
+
+Required ECS fields when not using {beats}:::
+
+* `source.ip`
+* `host.name`
+* `user.name`
+* `event.category`
+* `agent.type`
+
+// end::siem-auditbeat-auth-jobs[]
+
+[discrete]
+[[security-cloudtrail-jobs]]
+=== Security CloudTrail
+
+Detect suspicious activity recorded in your CloudTrail logs.
+
+// tag::security-cloudtrail-jobs[]
+
+high_distinct_count_error_message::
+Looks for a spike in the rate of an error message. These spikes might simply
+indicate an impending service failure but they can also be byproducts of
+attempted or successful persistence, privilege escalation, defense evasion,
+discovery, lateral movement, or collection activity by a threat actor.
+
+Job details:::
+
+* Analyzes CloudTrail logs 
+* Detects anomalies where the number of distinct values in
+the `aws.cloudtrail.error_message` field is unusual
+(using the {ml-docs}/ml-count-functions.html#ml-distinct-count[`high_distinct_count` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `source.ip`
+* `source.geo.city_name`
+
+rare_error_code::
+Looks for unusual errors. Rare and unusual errors might simply indicate an
+impending service failure but they can also be byproducts of attempted or
+successful persistence, privilege escalation, defence evasion, discovery,
+lateral movement, or collection activity by a threat actor.
+
+Job details:::
+
+* Analyzes CloudTrail logs
+* Detects `aws.cloudtrail.error_code` values that have never or rarely occurred
+before (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `source.ip`
+* `source.geo.city_name`
+
+rare_method_for_a_city::
+Looks for AWS API calls that--while not inherently suspicious or abnormal--are
+sourcing from a geolocation (city) that is unusual. These calls can be the
+result of compromised credentials or keys.
+
+Job details:::
+
+* Analyzes CloudTrail logs
+* Detects unusually rare `event.action` values compared to other cities (using
+the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `event.action`
+* `source.geo.city_name`
+* `source.ip`
+
+rare_method_for_a_country::
+Looks for AWS API calls that--while not inherently suspicious or abnormal--are
+sourcing from a geolocation (country) that is unusual. These calls can be the
+result of compromised credentials or keys.
+
+Job details:::
+
+* Analyzes CloudTrail logs
+* Detects unusually rare `event.action` values compared to other countries
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `event.action`
+* `source.geo.country_iso_code`
+* `source.ip`
+* `source.geo.country_iso_code`
+
+rare_method_for_a_username::
+Looks for AWS API calls that--while not inherently suspicious or abnormal--are
+sourcing from a user context that does not normally call the method. These calls
+can be the result of compromised credentials or keys as someone uses a valid
+account to persist, move laterally, or exfil data.
+
+Job details:::
+
+* Analyzes CloudTrail logs
+* Detects unusually rare `event.action` values compared to other users (using
+the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `event.action`
+* `user.name`
+* `source.geo.city_name`
+* `source.ip`
+
+// end::security-cloudtrail-jobs[]
+
+[discrete]
+[[security-packetbeat-jobs]]
+=== SIEM {packetbeat}
+
+Detect suspicious network activity in {packetbeat} data.
+
+// tag::siem-packetbeat-jobs[]
 packetbeat_dns_tunneling::
 
 Searches for unusually large numbers of DNS queries
@@ -383,95 +546,15 @@ Required ECS fields when not using {beats}:::
 * `user_agent.original`
 * `agent.type`
 
-rare_error_code::
-Looks for unusual errors. Rare and unusual errors might simply indicate an
-impending service failure but they can also be byproducts of attempted or
-successful persistence, privilege escalation, defence evasion, discovery,
-lateral movement, or collection activity by a threat actor.
+// end::siem-packetbeat-jobs[]
 
-Job details:::
+[discrete]
+[[security-winlogbeat-jobs]]
+=== SIEM {winlogbeat}
 
-* Analyzes Cloudtrail logs
-* Detects `aws.cloudtrail.error_code` values that have never or rarely occurred
-before (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+Detect unusual processes and network activity in {winlogbeat} data.
 
-Required {beats}:::
-
-* {filebeat}
-
-Required ECS fields when not using {beats}:::
-
-* `source.ip`
-* `source.geo.city_name`
-
-rare_method_for_a_city::
-Looks for AWS API calls that--while not inherently suspicious or abnormal--are
-sourcing from a geolocation (city) that is unusual. These calls can be the
-result of compromised credentials or keys.
-
-Job details:::
-
-* Analyzes Cloudtrail logs
-* Detects unusually rare `event.action` values compared to other cities (using
-the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats}:::
-
-* {filebeat}
-
-Required ECS fields when not using {beats}:::
-
-* `event.action`
-* `source.geo.city_name`
-* `source.ip`
-
-rare_method_for_a_country::
-Looks for AWS API calls that--while not inherently suspicious or abnormal--are
-sourcing from a geolocation (country) that is unusual. These calls can be the
-result of compromised credentials or keys.
-
-Job details:::
-
-* Analyzes Cloudtrail logs
-* Detects unusually rare `event.action` values compared to other countries
-(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats}:::
-
-* {filebeat}
-
-Required ECS fields when not using {beats}:::
-
-* `event.action`
-* `source.geo.country_iso_code`
-* `source.ip`
-* `source.geo.country_iso_code`
-
-rare_method_for_a_username::
-Looks for AWS API calls that--while not inherently suspicious or abnormal--are
-sourcing from a user context that does not normally call the method. These calls
-can be the result of compromised credentials or keys as someone uses a valid
-account to persist, move laterally, or exfil data.
-
-Job details:::
-
-* Analyzes Cloudtrail logs
-* Detects unusually rare `event.action` values compared to other users (using
-the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats}:::
-
-* {filebeat}
-
-Required ECS fields when not using {beats}:::
-
-* `event.action`
-* `user.name`
-* `source.geo.city_name`
-* `source.ip`
-
-rare_process_by_host_linux_ecs::
-+
+// tag::siem-winlogbeat-jobs[]
 rare_process_by_host_windows_ecs::
 
 Identifies rare processes that do not usually run on individual hosts, which
@@ -483,14 +566,13 @@ other processes running on the host.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows) or `auditbeat` (Linux).
+* Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
-* {winlogbeat} (Windows)
+* {winlogbeat}
 
 Required ECS fields when not using {beats}:::
 
@@ -500,28 +582,35 @@ Required ECS fields when not using {beats}:::
 * `event.action`
 * `agent.type`
 
-suspicious_login_activity_ecs::
+windows_anomalous_network_activity_ecs::
 
-Identifies an unusually high number of authentication attempts.
+Identifies OS processes that do not usually use the network but have
+unexpected network activity, which can indicate command-and-control, lateral
+movement, persistence, or data exfiltration activity.
++
+A process with unusual network activity can denote process exploitation or
+injection, where the process is used to run persistence mechanisms that allow a
+malicious actor remote access or control of the host, data exfiltration, and
+execution of unauthorized network applications.
 
 Job details:::
 
-* Analyzes host activity logs where `agent.type` is `auditbeat`.
-* Models occurrences of authentication attempts (`partition_field_name` is 
-  `host.name`).
-* Detects unusually high number of authentication attempts (using the 
-  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+* Analyzes network activity logs where `agent.type` is `winlogbeat`.
+* Models the occurrences of processes that cause network activity.
+* Detects network activity caused by processes that occur rarely compared to 
+  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
-* {auditbeat} (Linux)
+* {winlogbeat}
 
 Required ECS fields when not using {beats}:::
 
-* `source.ip`
+* `destination.ip`
 * `host.name`
+* `process.name`
 * `user.name`
-* `event.category`
+* `event.action`
 * `agent.type`
 
 windows_anomalous_path_activity_ecs::
@@ -551,6 +640,35 @@ Required ECS fields when not using {beats}:::
 * `process.name`
 * `user.name`
 * `process.working_directory`
+* `event.action`
+* `agent.type`
+
+windows_anomalous_process_all_hosts_ecs::
+
+Searches for rare processes running on multiple hosts in an entire fleet or
+network.
++
+This reduces the detection of false positives since automated maintenance
+processes usually only run occasionally on a single machine but are common to
+all or many hosts in a fleet.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows).
+* Models the occurrences of processes on all hosts.
+* Detects processes that occur rarely compared to other processes on all 
+  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {winlogbeat}
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `process.executable`
 * `event.action`
 * `agent.type`
 
@@ -634,6 +752,42 @@ Required {beats}:::
 +
 NOTE: This job is available only when you use {winlogbeat} to ship data.
 
+windows_anomalous_user_name_ecs::
+
+Searches for activity from users who are not normally active, which can
+indicate unauthorized changes, activity by unauthorized users, lateral
+movement, and compromised credentials.
++
+In organizations, new usernames are not often created apart from specific types 
+of system activities, such as creating new accounts for new employees. These 
+user accounts quickly become active and routine.
++
+Events from rarely used usernames can point to suspicious activity. 
+Additionally, automated Linux fleets tend to see activity from rarely used 
+usernames only when personnel log in to make authorized or unauthorized 
+changes, or threat actors have acquired credentials and log in for malicious 
+purposes. Unusual usernames can also indicate pivoting, where compromised 
+credentials are used to try and move laterally from one host to another.
+
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows).
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {winlogbeat}
+
+Required ECS fields when not using {beats}:::
+
+* `host.name`
+* `process.name`
+* `user.name`
+* `event.action`
+* `agent.type`
+
 windows_rare_user_runas_event::
 
 Searches for unusual user context switches using the `runas` command or similar
@@ -660,6 +814,15 @@ Required ECS fields when not using {beats}:::
 * `event.code`
 * `agent.type`
 
+// end::siem-winlogbeat-jobs[]
+
+[discrete]
+[[security-winlogbeat-authentication-jobs]]
+=== SIEM {winlogbeat} authentication
+
+Detect suspicious authentication events in {winlogbeat} data.
+
+// tag::siem-winlogbeat-auth-jobs[]
 windows_rare_user_type10_remote_login::
 
 Searches for unusual remote desktop protocol (RDP) logins, which can indicate
@@ -680,4 +843,5 @@ Required {beats}:::
 +
 NOTE: This job is available only when you use {winlogbeat} to ship data.
 
+// end::siem-winlogbeat-auth-jobs[]
 // end::siem-jobs[]

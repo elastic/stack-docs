@@ -87,11 +87,10 @@ This job is useful in identifying bots.
 // tag::apm-transaction-jobs[]
 Detect anomalies in transactions from your APM services.
 
-high_mean_response_time::
+high_mean_transaction_duration::
 
-* For transaction data where `processor.event` is `transaction` and 
-`transaction.type` is `request`.
-* Models response time duration of transactions.
+* For transaction data where `processor.event` is `transaction`.
+* Models duration of transactions by transaction type for APM services.
 * Detects anomalies in high mean of transaction duration (using the 
   <<ml-metric-mean,`high_mean` function>>).
 

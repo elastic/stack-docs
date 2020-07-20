@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-troubleshooting]]
-== Troubleshooting {ml} {anomaly-detect}
+= Troubleshooting {ml} {anomaly-detect}
 ++++
 <titleabbrev>Troubleshooting</titleabbrev>
 ++++
@@ -16,7 +16,7 @@ answers for frequently asked questions.
 include::{stack-repo-dir}/help.asciidoc[tag=get-help]
 
 [[ml-rollingupgrade]]
-=== Machine learning features unavailable after rolling upgrade
+== Machine learning features unavailable after rolling upgrade
 
 This problem occurs after you upgrade all of the nodes in your cluster to
 {version} by using rolling upgrades. When you try to use {ml-features} for
@@ -40,7 +40,7 @@ current master node, which triggers the {ml-features} to re-initialize.
 For more information, see {ref}/rolling-upgrades.html[Rolling upgrades].
 
 [[ml-mappingclash]]
-=== Job creation failure due to mapping clash
+== Job creation failure due to mapping clash
 
 This problem occurs when you try to create an {anomaly-job}.
 
@@ -65,7 +65,7 @@ the job in {kib}. If you are using the create {anomaly-job} job API, specify an
 index name in the `results_index_name` property.
 
 [[ml-jobnames]]
-=== {kib} cannot display jobs with invalid characters in their name
+== {kib} cannot display jobs with invalid characters in their name
 
 This problem occurs when you create an {anomaly-job} by using the
 {ref}/ml-put-job.html[Create {anomaly-jobs} API] then try to view that job in
@@ -89,8 +89,7 @@ identifiers, see
 {ref}/ml-put-job.html[Create {anomaly-jobs} API].
 
 [[ml-upgradedf]]
-
-=== Upgraded nodes fail to start due to {dfeed} issues
+== Upgraded nodes fail to start due to {dfeed} issues
 
 This problem occurs when you have a {dfeed} that contains search or query
 domain specific language (DSL) that was discontinued. For example, if you

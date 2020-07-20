@@ -1,6 +1,6 @@
 [role="xpack"]
 [[create-jobs]]
-== Create {anomaly-jobs}
+= Create {anomaly-jobs}
 
 {anomaly-jobs-cap} contain the configuration information and metadata
 necessary to perform an analytics task.
@@ -21,7 +21,7 @@ A _multi-metric job_ can contain more than one detector, which is more efficient
 than running multiple jobs against the same data.
 
 A _population job_ detects activity that is unusual compared to the behavior of
-the population. For more information, see <<ml-configuring-pop>>.
+the population. For more information, see <<ml-configuring-populations>>.
 
 A _categorization job_ groups log messages into categories and uses
 <<ml-count-functions,count>> or <<ml-rare-functions,rare>> functions to detect
@@ -73,7 +73,7 @@ These wizards create {anomaly-jobs}, dashboards, searches, and visualizations
 that are customized to help you analyze your {auditbeat}, {filebeat}, and
 {metricbeat} data.
 
-[NOTE] 
+[NOTE]
 ===============================
 If your data is located outside of {es}, you cannot use {kib} to create
 your jobs and you cannot use {dfeeds} to retrieve your data in real time.

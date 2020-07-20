@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-dfa-limitations]]
-== {dfanalytics-cap} limitations
+= {dfanalytics-cap} limitations
 [subs="attributes"]
 ++++
 <titleabbrev>Limitations</titleabbrev>
@@ -13,13 +13,13 @@ the Elastic {dfanalytics} feature:
 
 [float]
 [[dfa-ccs-limitations]]
-=== {ccs-cap} is not supported
+== {ccs-cap} is not supported
 
 {ccs-cap} is not supported for {dfanalytics}.
 
 [float]
 [[dfa-deletion-limitations]]
-=== Deleting a {dfanalytics-job} does not delete the destination index
+== Deleting a {dfanalytics-job} does not delete the destination index
 
 The {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API] does not delete
 the destination index that contains the annotated data of the {dfanalytics}. 
@@ -27,14 +27,14 @@ That index must be deleted separately.
 
 [float]
 [[dfa-update-limitations]]
-=== {dfanalytics-jobs-cap} cannot be updated
+== {dfanalytics-jobs-cap} cannot be updated
 
 You cannot update {dfanalytics} configurations. Instead, delete the 
 {dfanalytics-job} and create a new one.
 
 [float]
 [[dfa-dataframe-size-limitations]]
-=== {dfanalytics-cap} memory limitation
+== {dfanalytics-cap} memory limitation
 
 {dfanalytics-cap} can only perform analyses that fit into the memory available 
 for {ml}. Overspill to disk is not currently possible. For general {ml} 
@@ -42,7 +42,7 @@ settings, see {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
 [float]
 [[dfa-time-limitations]]
-=== {dfanalytics-jobs-cap} runtime may vary
+== {dfanalytics-jobs-cap} runtime may vary
 
 The runtime of {dfanalytics-jobs} depends on numerous factors, such as the
 number of data points in the data set, the type of analytics, the number of 
@@ -60,7 +60,7 @@ with an increased training percentage.
 
 [float]
 [[dfa-missing-fields-limitations]]
-=== Documents with missing values in analyzed fields are skipped
+== Documents with missing values in analyzed fields are skipped
 
 If there are missing values in feature fields (fields that are subjects of the 
 {dfanalytics}), the document that contains these fields is skipped 
@@ -68,7 +68,7 @@ during the analysis.
 
 [float]
 [[dfa-od-field-type-docs-limitations]]
-=== {oldetection-cap} field types
+== {oldetection-cap} field types
 
 {oldetection-cap} requires numeric or boolean data to analyze. The algorithms 
 don't support missing values (see also <<dfa-missing-fields-limitations>>), 
@@ -81,7 +81,7 @@ therefore no {olscore} is computed.
 
 [float]
 [[dfa-regression-field-type-docs-limitations]]
-=== {regression-cap} field types
+== {regression-cap} field types
 
 {regression-cap} supports fields that are numeric, boolean, text, keyword and 
 ip. It is also tolerant of missing values. Fields that are supported are 
@@ -91,7 +91,7 @@ that don't contain a results field are not included in the {reganalysis}.
 
 [float]
 [[dfa-classification-field-type-docs-limitations]]
-=== {classification-cap} field types
+== {classification-cap} field types
 
 {classification-cap} supports fields that have numeric, boolean, text, keyword, 
 or ip data types. It is also tolerant of missing values. Fields that are 
@@ -102,7 +102,7 @@ destination index that don't contain a results field are not included in the
 
 [float]
 [[dfa-classification-imbalanced-classes]]
-=== Imbalanced class sizes affect {classification} performance
+== Imbalanced class sizes affect {classification} performance
 
 If your training data is very imbalanced, {classanalysis} may not provide 
 good predictions. Try to avoid highly imbalanced situations. We recommend having 
@@ -113,7 +113,7 @@ minority class, or gathering more data.
 
 [float]
 [[dfa-inference-nested-limitation]]
-=== Deeply nested objects affect {infer} performance
+== Deeply nested objects affect {infer} performance
 
 If the data that you run inference against contains documents that have a series 
 of combinations of dot delimited and nested fields (for example: 
@@ -123,7 +123,7 @@ performance profile.
 
 [float]
 [[dfa-feature-importance-limitation]]
-=== Analytics runtime performance may significantly slow down with feature importance computation
+== Analytics runtime performance may significantly slow down with feature importance computation
 
 For complex models (such as those with many deep trees), the calculation of 
 feature importance takes significantly more time. Feature importance is 
@@ -138,7 +138,7 @@ values, or only selecting fields that are relevant for analysis.
 
 [float]
 [[dfa-inference-bwc]]
-=== {infer-cap} trained models created in 7.8 are not backwards compatible
+== {infer-cap} trained models created in 7.8 are not backwards compatible
 
 Inference models created in version 7.8.0 are not backwards compatible with 
 older node versions. In a mixed cluster environment, all nodes must be at 
@@ -146,7 +146,7 @@ least 7.8.0 to use a model created on a 7.8.0 node.
 
 [discrete]
 [[dfa-scheduling-priority]]
-=== CPU scheduling improvements apply to Linux and MacOS only
+== CPU scheduling improvements apply to Linux and MacOS only
 
 When there are many {ml} jobs running at the same time and there are insufficient
 CPU resources, the JVM performance must be prioritized so search and indexing

@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-limitations]]
-== {ml-cap} {anomaly-detect} limitations
+= {ml-cap} {anomaly-detect} limitations
 [subs="attributes"]
 ++++
 <titleabbrev>Limitations</titleabbrev>
@@ -11,7 +11,7 @@ the Elastic {ml-features}:
 
 [float]
 [[ml-limitations-sse]]
-=== CPUs must support SSE4.2
+== CPUs must support SSE4.2
 
 {ml-cap} uses Streaming SIMD Extensions (SSE) 4.2 instructions, so it works only
 on machines whose CPUs https://en.wikipedia.org/wiki/SSE4#Supporting_CPUs[support]
@@ -20,7 +20,7 @@ SSE4.2. If you run {es} on older hardware you must disable {ml} by setting
 {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
 [float]
-=== Categorization uses English dictionary words
+== Categorization uses English dictionary words
 //See x-pack-elasticsearch/#3021
 Categorization identifies static parts of unstructured logs and groups similar
 messages together. The default categorization tokenizer assumes English language
@@ -34,7 +34,7 @@ in other languages. The ability to customize the dictionary will be added in a
 future release.
 
 [float]
-=== Pop-ups must be enabled in browsers
+== Pop-ups must be enabled in browsers
 //See x-pack-elasticsearch/#844
 
 The {ml-features} in {kib} use pop-ups. You must configure your
@@ -42,7 +42,7 @@ web browser so that it does not block pop-up windows or create an
 exception for your {kib} URL.
 
 [float]
-=== Anomaly Explorer omissions and limitations
+== Anomaly Explorer omissions and limitations
 //See x-pack-elasticsearch/#844 and x-pack-kibana/#1461
 
 In {kib}, Anomaly Explorer charts are not displayed for anomalies
@@ -60,7 +60,7 @@ represented as a single dot. If there are only two data points, they are joined
 by a line.
 
 [float]
-=== Jobs close on the {dfeed} end date
+== Jobs close on the {dfeed} end date
 //See x-pack-elasticsearch/#1037
 
 If you start a {dfeed} and specify an end date, it will close the job when
@@ -71,7 +71,7 @@ remains open when you stop the {dfeed}. This behavior avoids the overhead
 of closing and re-opening large jobs when there are pauses in the {dfeed}.
 
 [float]
-=== Jobs created in {kib} must use {dfeeds}
+== Jobs created in {kib} must use {dfeeds}
 
 If you create jobs in {kib}, you must use {dfeeds}. If the data that you want to
 analyze is not stored in {es}, you cannot use {dfeeds} and therefore you cannot
@@ -80,7 +80,7 @@ and to send batches of data directly to the jobs. For more information, see
 <<ml-datafeeds>> and <<ml-api-quickref>>.
 
 [float]
-=== Post data API requires JSON format
+== Post data API requires JSON format
 
 The post data API enables you to send data to a job for analysis. The data that
 you send to the job must use the JSON format.
@@ -90,7 +90,7 @@ For more information about this API, see
 
 
 [float]
-=== Misleading high missing field counts
+== Misleading high missing field counts
 //See x-pack-elasticsearch/#684
 
 One of the counts associated with a {ml} job is `missing_field_count`,
@@ -107,7 +107,7 @@ see the {ref}/ml-get-job-stats.html[get {anomaly-job} statistics API].
 
 
 [float]
-=== Terms aggregation size affects data analysis
+== Terms aggregation size affects data analysis
 //See x-pack-elasticsearch/#601
 
 By default, the `terms` aggregation returns the buckets for the top ten terms.
@@ -118,7 +118,7 @@ that the `size` is configured correctly. Otherwise, some data might not be
 analyzed.
 
 [float]
-=== Fields named "by", "count", or "over" cannot be used to split data
+== Fields named "by", "count", or "over" cannot be used to split data
 //See x-pack-elasticsearch/#858
 
 You cannot use the following field names in the `by_field_name` or
@@ -127,7 +127,7 @@ also applies to those properties when you create advanced jobs in {kib}.
 
 
 [float]
-=== Jobs created in {kib} use model plot config and pre-aggregated data
+== Jobs created in {kib} use model plot config and pre-aggregated data
 //See x-pack-elasticsearch/#844
 
 If you create single or multi-metric jobs in {kib}, it might enable some
@@ -159,7 +159,7 @@ poorer precision worthwhile. If you want to view or change the aggregations
 that are used in your job, refer to the `aggregations` property in your {dfeed}.
 
 [float]
-=== Security integration
+== Security integration
 
 When the {es} {security-features} are enabled, a {dfeed} stores the roles of the
 user who created or updated the {dfeed} **at that time**. This means that if those
@@ -170,14 +170,14 @@ permissions that were associated with the original roles. For more information,
 see <<ml-datafeeds>>.
 
 [float]
-=== Jobs must be stopped before upgrades
+== Jobs must be stopped before upgrades
 
 You must stop any {ml} jobs that are running before you start the upgrade
 process. For more information, see <<stopping-ml>> and
 {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
 
 [float]
-=== Rollup indices and index patterns are not supported
+== Rollup indices and index patterns are not supported
 
 Rollup indices and index patterns cannot be used in machine learning jobs or 
 {dfeeds}. This limitation applies irrespective of whether you create the jobs in 
@@ -188,7 +188,7 @@ See {ref}/xpack-rollup.html[Rolling up historical data].
 
 [float]
 [[ml-space-limitations]]
-=== Machine learning objects do not belong to {kib} spaces
+== Machine learning objects do not belong to {kib} spaces
 
 If you create {kibana-ref}/xpack-spaces.html[spaces] in {kib}, you see only the  
 saved objects that belong to that space. This limited scope does not apply to 
@@ -216,7 +216,7 @@ the dashboards or visualizations might fail.
 
 [float]
 [[ml-result-size-limitations]]
-=== Job and {dfeed} APIs have a maximum search size
+== Job and {dfeed} APIs have a maximum search size
 //https://github.com/elastic/elasticsearch/issues/34864
 
 In 6.6 and later releases, the {ref}/ml-get-job.html[get jobs API] and the
@@ -227,7 +227,7 @@ jobs. Likewise, the {ref}/ml-get-datafeed.html[get {dfeeds} API] and the
 
 [float]
 [[ml-limitations-nanos]]
-=== Date nanoseconds data types are not supported
+== Date nanoseconds data types are not supported
 // https://github.com/elastic/elasticsearch/issues/49889
 
 When you create an {anomaly-job}, you cannot use a field with the
@@ -237,7 +237,7 @@ create jobs in {kib} or by using APIs.
 
 [discrete]
 [[ml-forecast-limitations]]
-=== Forecast limitations
+== Forecast limitations
 
 There are some limitations that affect your ability to create a forecast:
 
@@ -268,7 +268,7 @@ of the data analysis are less accurate.
 
 [float]
 [[ml-frozen-limitations]]
-=== Frozen indices are not supported
+== Frozen indices are not supported
 
 {ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
 {dfeeds}. This limitation applies irrespective of whether you create the jobs in 
@@ -279,7 +279,7 @@ in {dfeeds} or jobs. See
 
 [discrete]
 [[ml-scheduling-priority]]
-=== CPU scheduling improvements apply to Linux and MacOS only
+== CPU scheduling improvements apply to Linux and MacOS only
 
 When there are many {ml} jobs running at the same time and there are insufficient
 CPU resources, the JVM performance must be prioritized so search and indexing

@@ -1,6 +1,6 @@
 [role="xpack"]
 [[job-tips]]
-== Machine learning job tips
+= Machine learning job tips
 ++++
 <titleabbrev>Job tips</titleabbrev>
 ++++
@@ -12,7 +12,7 @@ results.
 
 [discrete]
 [[bucket-span]]
-=== Bucket span
+== Bucket span
 
 The bucket span is the time interval that {ml} analytics use to summarize and
 model data for your job. When you create an {anomaly-job} in {kib}, you can
@@ -27,7 +27,7 @@ information about choosing an appropriate bucket span, see <<ml-buckets>>.
 
 [discrete]
 [[cardinality]]
-=== Cardinality
+== Cardinality
 
 If there are logical groupings of related entities in your data, {ml} analytics
 can make data models and generate results that take these groupings into
@@ -41,11 +41,11 @@ job uses more memory resources. In particular, if the cardinality of the
 
 Likewise if you are performing population analysis and the cardinality of the
 `over_field_name` is below 10, you are advised that this might not be a suitable
-field to use. For more information, see <<ml-configuring-pop>>.
+field to use. For more information, see <<ml-configuring-populations>>.
 
 [discrete]
 [[detectors]]
-=== Detectors
+== Detectors
 
 Each {anomaly-job} must have one or more _detectors_. A detector applies an
 analytical function to specific fields in your data. If your job does not
@@ -58,13 +58,13 @@ duplicates if they have the same `function`, `field_name`, `by_field_name`,
 
 [discrete]
 [[influencers]]
-=== Influencers
+== Influencers
 
 See <<ml-influencers>>.
 
 [discrete]
 [[model-memory-limits]]
-=== Model memory limits
+== Model memory limits
 
 For each {anomaly-job}, you can optionally specify a `model_memory_limit`, which
 is the approximate maximum amount of memory resources that are required for
@@ -107,7 +107,7 @@ increase the size of the {ml} nodes in your cluster.
 
 [discrete]
 [[dedicated-indices]]
-=== Dedicated indices
+== Dedicated indices
 
 For each {anomaly-job}, you can optionally specify a dedicated index to store 
 the {anomaly-detect} results. As {anomaly-jobs} may produce a large amount 

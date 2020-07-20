@@ -1,7 +1,7 @@
 [role="xpack"]
 [testenv="platinum"]
 [[flightdata-regression]]
-== Predicting flight delays with {reganalysis}
+= Predicting flight delays with {reganalysis}
 
 Let's try to predict flight delays by using the 
 {kibana-ref}/add-sample-data.html[sample flight data]. The data set contains
@@ -13,7 +13,7 @@ _dependent variable_, which in this case is the numeric `FlightDelayMins` field.
 For an overview of these concepts, see <<dfa-regression>>.
 
 [[flightdata-regression-data]]
-=== Preparing your data
+== Preparing your data
 
 Each document in the data set contains details for a single flight, so this data 
 is ready for analysis; it is already in a two-dimensional entity-based data 
@@ -85,7 +85,7 @@ a good reminder that the quality of your input data affects the quality of your
 results.
 
 [[flightdata-regression-model]]
-=== Creating a {regression} model
+== Creating a {regression} model
 
 To predict the number of minutes delayed for each flight:
 
@@ -276,7 +276,7 @@ The API call returns the following response:
 --
 
 [[flightdata-regression-results]]
-=== Viewing {regression} results
+== Viewing {regression} results
 
 Now you have a new index that contains a copy of your source data with 
 predictions for your dependent variable.
@@ -325,7 +325,7 @@ The snippet below shows a part of a document with the annotated results:
 ====
 
 [[flightdata-regression-evaluate]]
-=== Evaluating {regression} results
+== Evaluating {regression} results
 
 Though you can look at individual results and compare the predicted value
 (`ml.FlightDelayMin_prediction`) to the actual value (`FlightDelayMins`), you

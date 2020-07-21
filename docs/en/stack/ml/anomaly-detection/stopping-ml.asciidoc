@@ -1,6 +1,6 @@
 [role="xpack"]
 [[stopping-ml]]
-== Stop {ml} {anomaly-detect}
+= Stop {ml} {anomaly-detect}
 
 An orderly shutdown ensures that:
 
@@ -16,7 +16,7 @@ subsequently re-open them.
 
 [discrete]
 [[stopping-ml-datafeeds]]
-=== Stopping {dfeeds}
+== Stopping {dfeeds}
 
 When you stop a {dfeed}, it ceases to retrieve data from {es}. You can stop a
 {dfeed} by using {kib} or the
@@ -38,7 +38,7 @@ A {dfeed} can be started and stopped multiple times throughout its lifecycle.
 
 [discrete]
 [[stopping-all-ml-datafeeds]]
-=== Stopping all {dfeeds}
+== Stopping all {dfeeds}
 
 If you are upgrading your cluster, you can use the following request to stop all
 {dfeeds}:
@@ -51,7 +51,7 @@ POST _ml/datafeeds/_all/_stop
 
 [discrete]
 [[closing-ml-jobs]]
-=== Closing {anomaly-jobs}
+== Closing {anomaly-jobs}
 
 When you close an {anomaly-job}, it cannot receive data or perform analysis
 operations. If a job is associated with a {dfeed}, you must stop the {dfeed}
@@ -76,7 +76,7 @@ lifecycle.
 
 [discrete]
 [[closing-all-ml-datafeeds]]
-=== Closing all {anomaly-jobs}
+== Closing all {anomaly-jobs}
 
 If you are upgrading your cluster, you can use the following request to close
 all open {anomaly-jobs} on the cluster:

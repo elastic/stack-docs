@@ -256,6 +256,119 @@ Required ECS fields when not using {beats}:::
 // end::siem-auditbeat-auth-jobs[]
 
 [discrete]
+[[security-cloudtrail-jobs]]
+== Security CloudTrail
+
+Detect suspicious activity recorded in your CloudTrail logs.
+
+// tag::security-cloudtrail-jobs[]
+
+high_distinct_count_error_message::
+Looks for a spike in the rate of an error message. These spikes might simply
+indicate an impending service failure but they can also be byproducts of
+attempted or successful persistence, privilege escalation, defense evasion,
+discovery, lateral movement, or collection activity by a threat actor.
+
+Job details:::
+ 
+* Detects anomalies where the number of distinct values in
+the `aws.cloudtrail.error_message` field is unusual
+(using the {ml-docs}/ml-count-functions.html#ml-distinct-count[`high_distinct_count` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `source.geo.city_name`
+* `source.ip`
+
+rare_error_code::
+Looks for unusual errors. Rare and unusual errors might simply indicate an
+impending service failure but they can also be byproducts of attempted or
+successful persistence, privilege escalation, defence evasion, discovery,
+lateral movement, or collection activity by a threat actor.
+
+Job details:::
+
+* Detects `aws.cloudtrail.error_code` values that have never or rarely occurred
+before (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `source.geo.city_name`
+* `source.ip`
+
+rare_method_for_a_city::
+Looks for AWS API calls that--while not inherently suspicious or abnormal--are
+sourcing from a geolocation (city) that is unusual. These calls can be the
+result of compromised credentials or keys.
+
+Job details:::
+
+* Detects unusually rare `event.action` values compared to other cities (using
+the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `event.action`
+* `source.geo.city_name`
+* `source.ip`
+
+rare_method_for_a_country::
+Looks for AWS API calls that--while not inherently suspicious or abnormal--are
+sourcing from a geolocation (country) that is unusual. These calls can be the
+result of compromised credentials or keys.
+
+Job details:::
+
+* Detects unusually rare `event.action` values compared to other countries
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `event.action`
+* `source.geo.country_iso_code`
+* `source.ip`
+
+rare_method_for_a_username::
+Looks for AWS API calls that--while not inherently suspicious or abnormal--are
+sourcing from a user context that does not normally call the method. These calls
+can be the result of compromised credentials or keys as someone uses a valid
+account to persist, move laterally, or exfil data.
+
+Job details:::
+
+* Detects unusually rare `event.action` values compared to other users (using
+the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats}:::
+
+* {filebeat}
+
+Required ECS fields when not using {beats}:::
+
+* `event.action`
+* `source.geo.city_name`
+* `source.ip`
+* `user.name`
+
+// end::security-cloudtrail-jobs[]
+
+[discrete]
 [[security-packetbeat-jobs]]
 == SIEM {packetbeat}
 

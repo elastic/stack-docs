@@ -11,15 +11,15 @@ your {es} cluster. If {stack} {security-features} are enabled, you must also
 ensure your users have the <<setup-privileges,necessary privileges>>.
 
 TIP: The fastest way to get started with {ml-features} is to
-{ess-trial}[start a free 14-day
-trial of {ess}] in the cloud.
+{ess-trial}[start a free 14-day trial of {ess}] in the cloud.
 
 [discrete]
 [[ml-nodes]]
 == Machine learning nodes
 
 To use {ml-features}, there must be at least one {ml} node in your cluster. A
-{ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in `node.roles`.
+{ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in
+`node.roles`.
 
 If nodes do not have the {ml} role, they cannot run {ml} jobs. If
 `xpack.ml.enabled` is `true`, however, they can service API requests. For more
@@ -54,8 +54,22 @@ To _manage_ {ml-features}, you must have:
 If you use {ml-features} in {kib}, you must also have:
 
 [%interactive]
-* [ ] `kibana_admin` built-in role or a custom role that
-{kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
+* [ ] `kibana_admin` built-in role. Alternatively, create a custom role that
+grants the desired {kibana-ref}/kibana-privileges.html[{kib} privileges] for the 
+{ml} feature in the appropriate {kibana-ref}/xpack-spaces.html[spaces]:
++
+--
+.. To grant full read-write access, give your custom role `all` privileges for
+the {ml-features}.
+.. To grant read-only access, give your custom role `read` privileges for the
+{ml-features}. Users with this role cannot create or delete {ml} objects (such
+as jobs or {dfeeds}) in the designated space. They also cannot stop or start
+existing jobs in that space.
+ 
+For more information, refer to
+{kibana-ref}/xpack-security-authorization.html[Granting access to {kib}] and
+{kibana-ref}/xpack-kibana-role-management.html[{kib} role management].
+--
 * [ ] `monitor` cluster privilege to manage {dfanalytics-jobs}
 
 If you use the *Data Visualizer* to upload files in {kib}, you must also have:

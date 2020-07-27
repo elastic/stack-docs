@@ -1,0 +1,139 @@
+[role="xpack"]
+[[ml-supervised-workflow]]
+= Supervised {ml} workflow
+
+Elastic supervised learning allows you to train a {ml} model based on training 
+examples that you provide. You can then use your model to make predictions on 
+unseen data. This page describes the end-to-end workflow to clarify how you can 
+train a model and deploy it to answer the right questions and solve your 
+problem. It gives a high-level overview of the steps required to identify and 
+implement a solution to a problem using supervised learning.
+
+The workflow for supervised learning consists of the following stages:
+
+* Define the problem
+* Prepare and transform data
+* Train and test the model
+* Deploy the model
+
+[DIAGRAM]
+
+These are iterative stages, meaning that after evaluating each step, you might 
+need to make adjustments before you move further.
+
+
+[[define-problem]]
+== Define the problem
+
+It’s important to take a moment and think about where {ml} can be most 
+impactful. Consider what type of data you have available and what value it 
+holds. What business problems do you want to solve by analyzing this data? The 
+better you know the data, the quicker you will be able to create {ml} models 
+that generate useful insights. It is crucial to think through the problem and 
+set clear objectives. Find the answer to questions like these: What kinds of 
+patterns do you want to discover in your data? What type of value do you want to 
+predict: a category, or a numerical value? The answers help you choose the type 
+of analysis that fits your use case.
+
+After you identify the problem, consider which of the {ml-features} are most 
+likely to help you solve it. Unsupervised learning – like {anomaly-detect} or 
+{oldetection} – does not require a labelled data set to train the model on while 
+supervised learning requires a data set that contains the known values or 
+examples that the model can be trained on.
+
+{stack} provides the following types of supervised learning: 
+
+* {regression}: Predicts **continuous, numerical values** like house prices. 
+* {classification}: Predicts **discrete, categorical values** like whether an 
+  email is spam or not. 
+
+
+[[prepare-transform-data]]
+== Prepare and transform data
+
+You have defined the problem and selected an appropriate type of analysis. The 
+next step is to produce a high-quality data set in {es} with a clear 
+relationship to your training objectives. If your data is not already in {es} or 
+you are not collecting all of the necessary information, this is the stage where 
+you develop your data pipeline. If you want to learn more about how to ingest 
+data into {es}, refer to the {ref}/ingest.html[documentation].
+
+{classification-cap} and {regression} are supervised {ml} techniques, therefore 
+you must 
+supply a labelled data set for training. This is often called the "ground truth" 
+as it consists of the observed examples on which you can train the model. The 
+"ground truth" allows the training process to identify relationships among the 
+various characteristics of the data and the predicted value as well as takes a 
+critical role in model evaluation.
+
+An important requirement is a data set that is large enough to train a model. 
+For example, if you would like to train a {classification} model that decides 
+whether an email is a spam or not, you need a labelled data set that contains 
+enough data points from each possible category to train the model. What counts 
+as "enough" depends on various factors like the complexity of the problem or 
+the {ml} solution you have chosen. There is no exact number that fits every 
+use case; deciding how much data is acceptable is rather a heuristic process 
+that might involve iterative trials.
+
+Before you train the model, consider preprocessing the data. In practice, the 
+type of preprocessing depends on the nature of the data set. Preprocessing can 
+include, but is not limited to, mitigating redundancy, reducing biases, applying 
+standards and/or conventions, data normalization, and so on.
+
+{regression-cap} and {classification} requires specifically structured source 
+data: a two dimensional tabular data structure. For this reason, you might need 
+to {ref}/transforms.html[{transform}] your data to create a {dataframe} which 
+can be used as the source for {dfanalytics} like {regression} and 
+{classification}.
+
+[[train-test-iterate]]
+== Train, test, iterate
+
+After your data is prepared and transformed into the right format, it is time to 
+train the model. Training is an iterative process — every round of iteration is 
+followed by an evaluation to see how the model performs. When you are satisfied 
+with the results, you are ready to deploy the model otherwise you may want to 
+adjust the training configuration or consider alternative ways to preprocess and 
+represent your data.
+
+The first step is defining the features – the relevant fields in the data set – 
+that will be used for training the model. By default, all the fields with 
+supported types are included in classification and regression automatically. 
+However, you can exclude irrelevant fields optionally from the process. Doing so 
+makes a large dataset more manageable and by reducing the computing resources 
+and time required for training.
+
+Now define how to split your training data, using what's called the train-test 
+split. There is no optimal percentage that fits for all use cases, it depends on 
+the amount of data and the time you have to train. The test set won’t be used to 
+train the model, but only for testing during the learning process.
+
+During the training process, the training data that contains the ground truth 
+you want to learn from is fed through the learning algorithm. The model predicts 
+the value and compares it to the ground truth then the model is fine-tuned to 
+make the predictions more accurate.
+
+Once the model has been trained, it will be tested on  how well it predicts for 
+previously unseen data. This test provides an estimate of a quantity known as 
+the model generalization error. There are further evaluation types for both 
+{classification} and {regression} analysis which provide metrics about training 
+performance. 
+
+
+[[deploy-model]]
+== Deploy model
+
+You have trained the model and are satisfied with the performance. The last step 
+is to deploy your trained model and start using it on new data.
+
+Trained models are stored as {es} documents in an internal index. The Elastic 
+{ml} feature called {infer} enables you to use the model in a continuous fashion 
+either by using it as a processor in an ingest pipeline, in a continuous 
+{transform} or as an aggregation at search time. When new data comes into your 
+ingest pipeline or you run a search on your data with an {infer} aggregation, 
+the model is used to infer against the data and make predictions on it.
+
+
+[[next-steps]]
+== What's next?
+

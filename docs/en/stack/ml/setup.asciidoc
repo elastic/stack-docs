@@ -7,7 +7,13 @@
 
 To use the {stack} {ml-features}, you must have the
 {subscriptions}[appropriate license] and at least one <<ml-nodes,{ml} node>> in
-your {es} cluster. If {stack} {security-features} are enabled, you must also
+your cluster.
+
+If you use {kib}, the {ml} feature must be visible in your
+{kibana-ref}/xpack-spaces.html[space] and your source indices must exist in the
+same space as your {ml} jobs.
+
+If {stack} {security-features} are enabled, you must also
 ensure your users have the <<setup-privileges,necessary privileges>>.
 
 TIP: The fastest way to get started with {ml-features} is to
@@ -29,51 +35,38 @@ information, see {ref}/modules-node.html#ml-node[Machine learning nodes].
 [[setup-privileges]]
 == Security privileges
 
-The {es} {security-features} provide {ref}/built-in-roles.html[built-in roles]
+The {stack-security-features} provide {ref}/built-in-roles.html[built-in roles]
 and {ref}/security-privileges.html[privileges] that make it easier to control
 which users can manage or view {ml} objects such as jobs, {dfeeds}, results, and
-model snapshots. 
+model snapshots. {kibana-ref}/kibana-privileges.html[{kib} privileges] enable
+you to control access to the {ml-features} within each space.
 
 To _view_ the configuration, status, and results of the {ml-features}, you
 must have:
 
 [%interactive]
-* [ ] `machine_learning_user` or `machine_learning_admin` built-in roles
+* [ ] `machine_learning_user` or `machine_learning_admin` built-in roles (if you
+use {es} {ml} APIs)
+* [ ] `kibana_admin` built-in role or a custom role that has `read` privileges
+for the {ml-features} in the appropriate spaces (if you use {kib})
 * [ ] `read` and `view_index_metadata` index privileges on source indices
 * [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
-  only)
+only)
 
 To _manage_ {ml-features}, you must have:
 
 [%interactive]
-* [ ] `machine_learning_admin` built-in role
+* [ ] `machine_learning_admin` built-in role (if you use {es} {ml} APIs)
+* [ ] `kibana_admin` built-in role or a custom role that has `all` privileges
+for the {ml-features} in the appropriate spaces (if you use {kib})
 * [ ] `read` and `view_index_metadata` index privileges on source indices
 * [ ] `read`, `manage`, and `index` index privileges on destination indices (for
   {dfanalytics-jobs} only)
 
-If you use {ml-features} in {kib}, you must also have:
+If you use the *File Data Visualizer* to upload files in {kib}, you must have:
 
 [%interactive]
-* [ ] `kibana_admin` built-in role. Alternatively, create a custom role that
-grants the desired {kibana-ref}/kibana-privileges.html[{kib} privileges] for the 
-{ml} feature in the appropriate {kibana-ref}/xpack-spaces.html[spaces]:
-+
---
-.. To grant full read-write access, give your custom role `all` privileges for
-the {ml-features}.
-.. To grant read-only access, give your custom role `read` privileges for the
-{ml-features}. Users with this role cannot create or delete {ml} objects (such
-as jobs or {dfeeds}) in the designated space. They also cannot stop or start
-existing jobs in that space.
- 
-For more information, refer to
-{kibana-ref}/xpack-security-authorization.html[Granting access to {kib}] and
-{kibana-ref}/xpack-kibana-role-management.html[{kib} role management].
---
-
-If you use the *Data Visualizer* to upload files in {kib}, you must also have:
-
-[%interactive]
+* [ ] `kibana_admin` built-in role or a custom role that has `all` privileges
+for the {ml-features} in the appropriate spaces
 * [ ] `monitor` and `manage_ingest_pipelines` cluster privileges
 * [ ] `read`, `manage`, and `index` index privileges for the destination index
-  

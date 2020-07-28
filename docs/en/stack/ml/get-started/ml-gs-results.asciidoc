@@ -9,7 +9,7 @@ TIP: Depending on the capacity of your machine, you might need to wait a few
 seconds for the {ml} analysis to generate initial results.
 
 [role="screenshot"]
-image::images/ml-gs-web-results.png["Create jobs for the sample web logs"]
+image::images/ml-gs-web-results.jpg["Create jobs for the sample web logs"]
 
 The {ml-features} analyze the input stream of data, model its behavior, and
 perform analysis based on the detectors in each job. When an event occurs
@@ -33,7 +33,7 @@ Let's start by looking at this simple job in the
 **Single Metric Viewer**:
 
 [role="screenshot"]
-image::images/ml-gs-job1-analysis.png["Single Metric Viewer for low_request_rate job"]
+image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for low_request_rate job"]
 
 This view contains a chart that represents the actual and expected values over
 time. It is available only if the job has `model_plot_config` enabled. It can
@@ -72,7 +72,7 @@ expected ("typical") values, and their probability in the **Anomalies** section
 of the viewer. For example:
 
 [role="screenshot"]
-image::images/ml-gs-job1-anomalies.png["Single Metric Viewer Anomalies for low_request_rate job"]
+image::images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for low_request_rate job"]
 
 By default, the table contains all anomalies that have a severity of "warning"
 or higher in the selected section of the timeline. If you are only interested in
@@ -120,12 +120,23 @@ view the results in the **Anomaly Explorer**, you can see separate swim lanes
 for the `404` and `200` responses:
 
 [role="screenshot"]
-image::images/ml-gs-job2-explorer.png["Anomaly explorer for response_code_rates job"]
+image::images/ml-gs-job2-explorer.jpg["Anomaly explorer for response_code_rates job"]
 
 In this scenario, the analysis is segmented such that you have completely
 different baselines for each distinct value of the _partition field_. By looking
 at temporal patterns on a per entity basis, you might spot things that might
 have otherwise been hidden in the lumped view.
+
+Under the anomaly timeline, there is a section that contains annotations. 
+Annotations are notes that refer to events in a specific time period. They can 
+be created by the user or generated automatically by the {anomaly-job} to 
+reflect model changes and noteworthy occurrences. You can filter the type of 
+events by using the selector on the right side of the **Annotations** section. 
+You can also add your own annotations by drag-selecting a period of time in the 
+**Single Metric Viewer** and adding a description.
+
+[role="screenshot"]
+image::images/ml-gs-annotations.jpg["Annotations section in the Anomaly Explorer"]
 
 On the left side of the **Anomaly Explorer**, there is a list of the top
 influencers for all of the detected anomalies in that same time period. The list
@@ -139,7 +150,7 @@ anomalies in that time period. For example, click on the red section in the
 swim lane for the `response.keyword` value of `404`:
 
 [role="screenshot"]
-image::images/ml-gs-job2-explorer-anomaly.png["Anomaly charts for the response_code_rates job"]
+image::images/ml-gs-job2-explorer-anomaly.jpg["Anomaly charts for the response_code_rates job"]
 
 You can see exact times when anomalies occurred. If there are multiple detectors
 or metrics in the job, you can see which caught the anomaly. You can also switch
@@ -150,7 +161,7 @@ typical and actual values and the influencers that contributed to the anomaly.
 For example:
 
 [role="screenshot"]
-image::images/ml-gs-job2-explorer-table.png["Anomaly tables for the response_code_rates job"]
+image::images/ml-gs-job2-explorer-table.jpg["Anomaly tables for the response_code_rates job"]
 
 If your job has multiple detectors, the table aggregates the anomalies to show
 the highest severity anomaly per detector and entity, which is the field value
@@ -187,7 +198,7 @@ If you examine the results from the `url_scanning` {anomaly-job} in the
 example:
 
 [role="screenshot"]
-image::images/ml-gs-job3-explorer.png["Anomaly charts for the url_scanning job"]
+image::images/ml-gs-job3-explorer.jpg["Anomaly charts for the url_scanning job"]
 
 In this case, the metrics for each client IP are analyzed relative to other
 client IPs in each bucket and we can once again see that the

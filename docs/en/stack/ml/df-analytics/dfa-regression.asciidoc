@@ -31,6 +31,7 @@ which floor it is, and whether the apartment has a riverside view or not, and so
 on. All of these factors can be considered _features_; they are measurable
 properties or characteristics of the phenomenon we're studying.
 
+
 [[dfa-regression-features]]
 == {feature-vars-cap}
 
@@ -50,6 +51,7 @@ algorithm:
 * Boolean. The riverside view in the example is a boolean value because an 
   apartment either has a riverside view or doesn't have one.
 Arrays are not supported.
+
 
 [[dfa-regression-supervised]]
 == Training the {regression} model
@@ -72,6 +74,7 @@ predictions are combined.
 {regression-cap} works as a batch analysis. If new data comes into your index, 
 you must restart the {dfanalytics-job}.
 
+
 [[dfa-regression-algorithm]]
 === {regression-cap} algorithms
 
@@ -80,6 +83,17 @@ The ensemble learning technique that we use in the {stack} is a type of boosting
 called extreme gradient boost (XGboost) which combines decision trees with 
 gradient boosting methodologies.
 //end::regression-algorithms[]
+
+
+[[dfa-regression-deploy]]
+=== Deploying the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference,{infer}>> feature enables you 
+to use your model in a preprocessor of an ingest pipeline to make predictions 
+about your data.
+
 
 [[dfa-regression-lossfunction]]
 === Loss functions for {regression} analyses

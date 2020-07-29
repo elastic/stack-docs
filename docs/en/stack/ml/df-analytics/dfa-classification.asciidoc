@@ -27,6 +27,7 @@ can optionally include or exclude fields from the analysis. For more information
 about field selection, see the
 {ref}/explain-dfanalytics.html[explain data frame analytics API].
 
+
 [[dfa-classification-supervised]]
 == Training the {classification} model
 
@@ -63,6 +64,7 @@ that is approximately balanced. That is to say, ideally your data set should
 have a similar number of data points for each class.
 ////
 
+
 [[dfa-classification-algorithm]]
 === {classification-cap} algorithms
 
@@ -75,6 +77,17 @@ and every decision tree learns from the mistakes of the previous one. Every tree
 is an iteration of the last one, hence it improves the decision made by the 
 previous tree.
 //end::classification-algorithms[]
+
+
+[[dfa-classification-deploy]]
+=== Deploying the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference,{infer}>> feature enables you 
+to use your model in a preprocessor of an ingest pipeline or in a pipeline 
+aggregation of a search query to make predictions about your data.
+
 
 [[dfa-classification-performance]]
 == {classification-cap} performance

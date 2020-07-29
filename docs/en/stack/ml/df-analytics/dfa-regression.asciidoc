@@ -72,6 +72,7 @@ predictions are combined.
 {regression-cap} works as a batch analysis. If new data comes into your index, 
 you must restart the {dfanalytics-job}.
 
+
 [[dfa-regression-algorithm]]
 === {regression-cap} algorithms
 
@@ -121,6 +122,16 @@ to learn more.
 TIP: The default loss function parameter values work fine for most of the cases. 
 It is highly recommended to use the default values, unless you fully understand 
 the impact of the different loss function parameters.
+
+
+[[dfa-regression-deploy]]
+=== Deploying the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference,{infer}>> feature enables you 
+to use your model in a preprocessor of an ingest pipeline or in a pipeline 
+aggregation of a search query to make predictions about your data.
 
 
 [[dfa-regression-feature-importance]]

@@ -27,6 +27,7 @@ can optionally include or exclude fields from the analysis. For more information
 about field selection, see the
 {ref}/explain-dfanalytics.html[explain data frame analytics API].
 
+
 [[dfa-classification-supervised]]
 == Training the {classification} model
 
@@ -63,6 +64,7 @@ that is approximately balanced. That is to say, ideally your data set should
 have a similar number of data points for each class.
 ////
 
+
 [[dfa-classification-algorithm]]
 === {classification-cap} algorithms
 
@@ -75,6 +77,17 @@ and every decision tree learns from the mistakes of the previous one. Every tree
 is an iteration of the last one, hence it improves the decision made by the 
 previous tree.
 //end::classification-algorithms[]
+
+
+[[dfa-classification-deploy]]
+=== Deploying the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference,{infer}>> feature enables you 
+to use your model in a preprocessor of an ingest pipeline to make predictions 
+about your data.
+
 
 [[dfa-classification-performance]]
 == {classification-cap} performance
@@ -97,11 +110,13 @@ prepare your input data such that it has less classes. You can also remove the
 fields that are not relevant from the analysis by specifying `excludes` patterns 
 in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
  
+ 
 [[dfa-classification-interpret]]
 == Interpreting {classification} results
 
 The following sections help you understand and interpret the results of a 
 {classanalysis}.
+
 
 [[dfa-classification-class-probability]]
 === `class_probability`
@@ -113,6 +128,7 @@ class. This information is stored in the `top_classes` array for each document
 in your destination index. See the
 {ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
 section in the {classification} example.
+
 
 [[dfa-classification-class-score]]
 === `class_score`
@@ -141,12 +157,14 @@ recall for `class 1`. Instead of this behavior, the default scheme of the
 actual `class 0` predicted `class 1` errors, or in other words, a slight 
 degradation of the overall accuracy.
 
+
 [[dfa-classification-feature-importance]]
 === {feat-imp-cap}
 
 {feat-imp-cap} provides further information about the results of an analysis and 
 helps to interpret the results in a more subtle way. If you want to learn more 
 about {feat-imp}, <<ml-feature-importance,click here>>. 
+
 
 [[dfa-classification-evaluation]]
 == Measuring model performance

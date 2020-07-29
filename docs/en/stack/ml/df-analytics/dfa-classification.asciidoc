@@ -65,6 +65,24 @@ have a similar number of data points for each class.
 ////
 
 
+[[dfa-classification-feature-encoding]]
+=== Feature encoding
+
+{classification-cap} predict categorical values, however, every {ml} model can 
+only work with numerical values. For this reason, it is required to transform 
+categorical values into numerical ones. This process is called feature encoding.
+
+{dfanalytics-cap} automatically performs feature encoding. During which the 
+input data is pre-processed with the following encoding techniques:
+
+* one-hot encoding,
+* target-mean encoding,
+* frequency encoding.
+
+After the model performed the prediction, {dfanalytics} maps the numerical 
+output provided by the model to the categorical labels.
+
+
 [[dfa-classification-algorithm]]
 === {classification-cap} algorithms
 

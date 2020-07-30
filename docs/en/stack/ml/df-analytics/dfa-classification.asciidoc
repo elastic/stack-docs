@@ -68,26 +68,26 @@ have a similar number of data points for each class.
 [[dfa-classification-feature-encoding]]
 === Feature encoding
 
-Every {ml} model can only work with numerical values. For this reason, it is 
-required to transform the categorical values of the relevant features into 
-numerical ones. This process is called feature encoding.
+{ml-cap} models can only work with numerical values. For this reason, it is 
+necessary to transform the categorical values of the relevant features into 
+numerical ones. This process is called _feature encoding_.
 
-{dfanalytics-cap} automatically performs feature encoding. During which the 
+{dfanalytics-cap} automatically performs feature encoding. The 
 input data is pre-processed with the following encoding techniques:
 
-* one-hot encoding: It is the process of assigning vectors consist of 0 and 1 to 
+* one-hot encoding: Assigns vectors to 
   each category. The vector represent whether the corresponding feature is 
   present (1) or not (0). The number of vectors correlates to the number of 
   categories and the number of relevant features.
 
-* target-mean encoding: In this method, the categorical values are replaced by 
+* target-mean encoding: Replaces categorical values with 
   the mean value of the target variable.
   
-* frequency encoding: This encoding technique takes into account how many times 
+* frequency encoding: Takes into account how many times 
   a given categorical value is present in relation with a feature.
 
 When the model makes predictions on new data, the data needs to be processed in 
-the same way in which it is trained. {ml-cap} model <<ml-inference,inference>> 
+the same way it was trained. {ml-cap} model <<ml-inference,inference>> 
 in the {stack} does this automatically, so the automatically applied encodings 
 are used in each call for inference.
 

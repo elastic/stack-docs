@@ -75,12 +75,24 @@ numerical ones. This process is called feature encoding.
 {dfanalytics-cap} automatically performs feature encoding. During which the 
 input data is pre-processed with the following encoding techniques:
 
-* one-hot encoding,
-* target-mean encoding,
-* frequency encoding.
+* one-hot encoding: It is the process of assigning vectors consist of 0 and 1 to 
+  each category. The vector represent whether the corresponding feature is 
+  present (1) or not (0). The number of vectors correlates to the number of 
+  categories and the number of relevant features.
 
-After the {classification} model performed the prediction, {dfanalytics} maps 
-the numerical output provided by the model to the categorical labels.
+* target-mean encoding: In this method, the categorical values are replaced by 
+  the mean value of the target variable.
+  
+* frequency encoding: This encoding technique takes into account how many times 
+  a given categorical value is present in relation with a feature.
+
+When the model makes predictions on new data, the data needs to be processed in 
+the same way in which it is trained. {ml-cap} model <<ml-inference,inference>> 
+in the {stack} does this automatically, so the automatically applied encodings 
+are used in each call for inference.
+
+{feat-imp-cap} is calculated for the original categorical fields, not the 
+automatically encoded features.
 
 
 [[dfa-classification-algorithm]]

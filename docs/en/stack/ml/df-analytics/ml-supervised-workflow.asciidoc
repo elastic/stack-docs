@@ -5,9 +5,8 @@
 Elastic supervised learning allows you to train a {ml} model based on training 
 examples that you provide. You can then use your model to make predictions on 
 unseen data. This page describes the end-to-end workflow to clarify how you can 
-train a model and deploy it to answer the right questions and solve your 
-problem. It gives a high-level overview of the steps required to identify and 
-implement a solution to a problem using supervised learning.
+train a model, evaluate it and deploy it. It gives a high-level overview of the 
+steps required to identify and implement a solution using supervised learning.
 
 The workflow for supervised learning consists of the following stages:
 
@@ -22,19 +21,17 @@ need to make adjustments before you move further.
 
 It’s important to take a moment and think about where {ml} can be most 
 impactful. Consider what type of data you have available and what value it 
-holds. What business problems do you want to solve by analyzing this data? The 
-better you know the data, the quicker you will be able to create {ml} models 
-that generate useful insights. It is crucial to think through the problem and 
-set clear objectives. Find the answer to questions like these: What kinds of 
-patterns do you want to discover in your data? What type of value do you want to 
-predict: a category, or a numerical value? The answers help you choose the type 
-of analysis that fits your use case.
+holds. The better you know the data, the quicker you will be able to create {ml} 
+models that generate useful insights. What kinds of patterns do you want to 
+discover in your data? What type of value do you want to predict: a category, or 
+a numerical value? The answers help you choose the type of analysis that fits 
+your use case.
 
 After you identify the problem, consider which of the {ml-features} are most 
 likely to help you solve it. Unsupervised learning – like {anomaly-detect} or 
 {oldetection} – does not require a labelled data set to train the model on while 
-supervised learning requires a data set that contains the known values or 
-examples that the model can be trained on.
+supervised learning requires a data set that contains the known values that the 
+model can be trained on.
 
 {stack} provides the following types of supervised learning: 
 
@@ -49,18 +46,16 @@ examples that the model can be trained on.
 
 You have defined the problem and selected an appropriate type of analysis. The 
 next step is to produce a high-quality data set in {es} with a clear 
-relationship to your training objectives. If your data is not already in {es} or 
-you are not collecting all of the necessary information, this is the stage where 
-you develop your data pipeline. If you want to learn more about how to ingest 
-data into {es}, refer to the {ref}/ingest.html[documentation].
+relationship to your training objectives. If your data is not already in {es}, 
+this is the stage where you develop your data pipeline. If you want to learn 
+more about how to ingest data into {es}, refer to the 
+{ref}/ingest.html[documentation].
 
 {classification-cap} and {regression} are supervised {ml} techniques, therefore 
-you must 
-supply a labelled data set for training. This is often called the "ground truth" 
-as it consists of the observed examples on which you can train the model. The 
-"ground truth" allows the training process to identify relationships among the 
-various characteristics of the data and the predicted value as well as takes a 
-critical role in model evaluation.
+you must supply a labelled data set for training. This is often called the 
+"ground truth". The "ground truth" allows the training process to identify 
+relationships among the various characteristics of the data and the predicted 
+value as well as takes a critical role in model evaluation.
 
 An important requirement is a data set that is large enough to train a model. 
 For example, if you would like to train a {classification} model that decides 
@@ -96,24 +91,27 @@ The first step is defining the features – the relevant fields in the data set 
 that will be used for training the model. By default, all the fields with 
 supported types are included in classification and regression automatically. 
 However, you can exclude irrelevant fields optionally from the process. Doing so 
-makes a large dataset more manageable and by reducing the computing resources 
-and time required for training.
+makes a large dataset more manageable, reducing the computing resources and time 
+required for training.
 
-Now define how to split your training data, using what's called the train-test 
-split. There is no optimal percentage that fits for all use cases, it depends on 
-the amount of data and the time you have to train. The test set won’t be used to 
-train the model, but only for testing during the learning process.
+Now define how to split your data into a training set and a test set. The test 
+set won’t be used to train the model, but is used to evaluate how the model 
+performs. There is no optimal percentage that fits all use cases, it depends on 
+the amount of data and the time you have to train. For large data sets, you may 
+want to start with a low training percent to complete an end-to-end iteration in 
+a short time.
 
 During the training process, the training data that contains the ground truth 
 you want to learn from is fed through the learning algorithm. The model predicts 
 the value and compares it to the ground truth then the model is fine-tuned to 
 make the predictions more accurate.
 
-Once the model has been trained, it will be tested on  how well it predicts for 
+Once the model has been trained, it will be tested on how well it predicts for 
 previously unseen data. This test provides an estimate of a quantity known as 
-the model generalization error. There are further evaluation types for both 
-{classification} and {regression} analysis which provide metrics about training 
-performance. 
+the model generalization error. There are further 
+<<ml-dfanalytics-evaluate,evaluation types>> for both {classification} and 
+{regression} analysis which provide metrics about training performance. 
+Depending on the evaluation results, you may wish to iterate.
 
 
 [[deploy-model]]
@@ -122,9 +120,8 @@ performance.
 You have trained the model and are satisfied with the performance. The last step 
 is to deploy your trained model and start using it on new data.
 
-Trained models are stored as {es} documents in an internal index. The Elastic 
-{ml} feature called {infer} enables you to use the model in a continuous fashion 
-either by using it as a processor in an ingest pipeline, in a continuous 
+The Elastic {ml} feature called {infer} enables you to make predictions for new 
+data either by using it as a processor in an ingest pipeline, in a continuous 
 {transform} or as an aggregation at search time. When new data comes into your 
 ingest pipeline or you run a search on your data with an {infer} aggregation, 
 the model is used to infer against the data and make predictions on it.

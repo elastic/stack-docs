@@ -6,20 +6,26 @@
 ++++
 
 To use the {stack} {ml-features}, you must have the
-{subscriptions}[appropriate license] and at least one <<ml-nodes,{ml} node>> in
-your {es} cluster. If {stack} {security-features} are enabled, you must also
-ensure your users have the <<setup-privileges,necessary privileges>>.
+{subscriptions}[appropriate subscription] and at least one
+<<ml-nodes,{ml} node>> in your cluster.
+
+In {kib}, the {ml-features} must be visible in your
+{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your 
+source index patterns must exist in the same space as your {ml} jobs.
+
+If {stack} {security-features} are enabled, you must also ensure your users have
+the <<setup-privileges,necessary privileges>>.
 
 TIP: The fastest way to get started with {ml-features} is to
-{ess-trial}[start a free 14-day
-trial of {ess}] in the cloud.
+{ess-trial}[start a free 14-day trial of {ess}] in the cloud.
 
 [discrete]
 [[ml-nodes]]
 == Machine learning nodes
 
 To use {ml-features}, there must be at least one {ml} node in your cluster. A
-{ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in `node.roles`.
+{ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in
+`node.roles`.
 
 If nodes do not have the {ml} role, they cannot run {ml} jobs. If
 `xpack.ml.enabled` is `true`, however, they can service API requests. For more
@@ -29,38 +35,45 @@ information, see {ref}/modules-node.html#ml-node[Machine learning nodes].
 [[setup-privileges]]
 == Security privileges
 
-The {es} {security-features} provide {ref}/built-in-roles.html[built-in roles]
-and {ref}/security-privileges.html[privileges] that make it easier to control
-which users can manage or view {ml} objects such as jobs, {dfeeds}, results, and
-model snapshots. 
+The {stack-security-features} provide roles and privileges that make it easier
+to control which users can manage or view {ml} objects such as jobs, {dfeeds},
+results, and model snapshots. {kib} also enables you to control access to the
+{ml-features} within each space. For more information, see {ref}/security-privileges.html[Security privileges] and
+{kibana-ref}/kibana-privileges.html[{kib} privileges].
 
-To _view_ the configuration, status, and results of the {ml-features}, you
-must have:
-
-[%interactive]
-* [ ] `machine_learning_user` or `machine_learning_admin` built-in roles
-* [ ] `read` and `view_index_metadata` index privileges on source indices
-* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
-  only)
-
-To _manage_ {ml-features}, you must have:
+For full access to the {ml-features} in {kib}, you must have:
 
 [%interactive]
-* [ ] `machine_learning_admin` built-in role
+* [ ] `all` {kib} privileges for the {ml-features} in the appropriate spaces
 * [ ] `read` and `view_index_metadata` index privileges on source indices
 * [ ] `read`, `manage`, and `index` index privileges on destination indices (for
   {dfanalytics-jobs} only)
-
-If you use {ml-features} in {kib}, you must also have:
-
-[%interactive]
-* [ ] `kibana_admin` built-in role or a custom role that
-{kibana-ref}/xpack-security-authorization.html[grants access to {kib}]
-* [ ] `monitor` cluster privilege to manage {dfanalytics-jobs}
-
-If you use the *Data Visualizer* to upload files in {kib}, you must also have:
-
-[%interactive]
-* [ ] `monitor` and `manage_ingest_pipelines` cluster privileges
-* [ ] `read`, `manage`, and `index` index privileges for the destination index
   
+For read-only access to the {ml-features} in {kib}, you must have:
+
+[%interactive]
+* [ ] `read` {kib} privileges for the {ml-features} in the appropriate spaces
+* [ ] `read` index privileges on source indices
+* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
+only)
+
+To upload files in {kib} with the *{file-data-viz}*, you must have:
+
+[%interactive]
+* [ ] `all` {kib} privileges for the {ml-features} in the appropriate spaces.
+Alternatively, `read` {kib} privileges for the {ml-features} and `all` {kib}
+privileges for the index pattern management feature
+* [ ] `ingest_admin` {ref}/built-in-roles.html[built-in role]
+* [ ] `read`, `manage`, and `index` index privileges for destination indices
+
+IMPORTANT: You cannot limit access to specific {ml} objects in each space. If
+the {ml} feature is visible in your space and you have `read` or `all` {kib}
+privileges for the feature, you have access to *all* {ml} objects in that space.
+
+If you call {ml} APIs directly, you must have the index privileges listed above
+as well as `machine_learning_admin` or `machine_learning_user` built-in roles.
+
+WARNING: The `machine_learning_admin` and `machine_learning_user` roles grant
+access to the {ml-features} in all {kib} spaces. Therefore, when you use {kib}, 
+use custom roles instead and set your {kib} privileges appropriately for each
+space.

@@ -9,9 +9,9 @@ To use the {stack} {ml-features}, you must have the
 {subscriptions}[appropriate subscription] and at least one
 <<ml-nodes,{ml} node>> in your cluster.
 
-If you use {kib}, the {ml-features} must be visible in your
-{kibana-ref}/xpack-spaces.html[space] and your source indices and index patterns
-must exist in the same space as your {ml} jobs.
+In {kib}, the {ml-features} must be visible in your
+{kibana-ref}/xpack-spaces.html[space] and your source index patterns must exist 
+in the same space as your {ml} jobs.
 
 If {stack} {security-features} are enabled, you must also ensure your users have
 the <<setup-privileges,necessary privileges>>.
@@ -63,8 +63,7 @@ To upload files in {kib} with the *{file-data-viz}*, you must have:
 * [ ] `all` {kib} privileges for the {ml-features} in the appropriate spaces.
 Alternatively, `read` {kib} privileges for the {ml-features} and `all` {kib}
 privileges for the index pattern management feature
-* [ ] `manage_ingest_pipelines` cluster privileges or the `ingest_admin`
-{ref}/built-in-roles.html[built-in role]
+* [ ] `ingest_admin` {ref}/built-in-roles.html[built-in role]
 * [ ] `read`, `manage`, and `index` index privileges for destination indices
 
 IMPORTANT: You cannot limit access to specific {ml} objects in each space. If
@@ -72,10 +71,9 @@ the {ml} feature is visible in your space and you have `read` or `all` {kib}
 privileges for the feature, you have access to *all* {ml} objects in that space.
 
 If you call {ml} APIs directly, you must have the index privileges listed above
-as well as `machine_learning_admin` or `machine_learning_user` built-in roles or 
-`manage_ml` or `monitor_ml` cluster privileges.
+as well as `machine_learning_admin` or `machine_learning_user` built-in roles.
 
 WARNING: The `machine_learning_admin` and `machine_learning_user` roles grant
-access to the {ml-features} in all {kib} spaces. Therefore, if you use {kib},
+access to the {ml-features} in all {kib} spaces. Therefore, when you use {kib}, 
 use custom roles instead and set your {kib} privileges appropriately for each
 space.

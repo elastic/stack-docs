@@ -51,7 +51,7 @@ this is the stage where you develop your data pipeline. If you want to learn
 more about how to ingest data into {es}, refer to the 
 {ref}/ingest.html[documentation].
 
-{classification-cap} and {regression} are supervised {ml} techniques, therefore 
+{regression-cap} and {classification} are supervised {ml} techniques, therefore 
 you must supply a labelled data set for training. This is often called the 
 "ground truth". The "ground truth" allows the training process to identify 
 relationships among the various characteristics of the data and the predicted 
@@ -81,21 +81,21 @@ can be used as the source for {dfanalytics} like {regression} and
 == Train, test, iterate
 
 After your data is prepared and transformed into the right format, it is time to 
-train the model. Training is an iterative process — every round of iteration is 
-followed by an evaluation to see how the model performs. When you are satisfied 
-with the results, you are ready to deploy the model otherwise you may want to 
-adjust the training configuration or consider alternative ways to preprocess and 
-represent your data.
+train the model. Training is an iterative process — every iteration is followed 
+by an evaluation to see how the model performs. When you are satisfied with the 
+results, you are ready to deploy the model otherwise you may want to adjust the 
+training configuration or consider alternative ways to preprocess and represent 
+your data.
 
 The first step is defining the features – the relevant fields in the data set – 
 that will be used for training the model. By default, all the fields with 
-supported types are included in classification and regression automatically. 
+supported types are included in {regression} and {classification} automatically. 
 However, you can exclude irrelevant fields optionally from the process. Doing so 
 makes a large dataset more manageable, reducing the computing resources and time 
 required for training.
 
-Now define how to split your data into a training set and a test set. The test 
-set won’t be used to train the model, but is used to evaluate how the model 
+Now define how to split your data into a training and a test set. The test set 
+won’t be used to train the model, but is used to evaluate how the model 
 performs. There is no optimal percentage that fits all use cases, it depends on 
 the amount of data and the time you have to train. For large data sets, you may 
 want to start with a low training percent to complete an end-to-end iteration in 
@@ -109,8 +109,8 @@ make the predictions more accurate.
 Once the model has been trained, it will be tested on how well it predicts for 
 previously unseen data. This test provides an estimate of a quantity known as 
 the model generalization error. There are further 
-<<ml-dfanalytics-evaluate,evaluation types>> for both {classification} and 
-{regression} analysis which provide metrics about training performance. 
+<<ml-dfanalytics-evaluate,evaluation types>> for both {regression} and 
+{classification} analysis which provide metrics about training performance. 
 Depending on the evaluation results, you may wish to iterate.
 
 
@@ -132,8 +132,8 @@ the model is used to infer against the data and make predictions on it.
 
 * Read more about how to {ref}/transforms.html[transform you data] into an 
   entity-centric index.
-* Consult the documentation to learn more about <<dfa-regression,regression>> and 
-  <<dfa-classification,classification>>.
+* Consult the documentation to learn more about <<dfa-regression,regression>> 
+  and <<dfa-classification,classification>>.
 * Learn how to evaluate <<ml-dfanalytics-regression-evaluation,regression>> and 
   <<ml-dfanalytics-classification,classification>> models.
 * Find out how to deploy your model by using <<ml-inference,inference>>.

@@ -89,10 +89,14 @@ results.
 
 To predict the number of minutes delayed for each flight:
 
+. Verify that your environment is set up properly to use {ml-features}. If the
+{stack} {security-features} are enabled, you need a user that has authority
+to create and manage {dfanalytics-jobs}. See <<setup>>.
+
 . Create a {dfanalytics-job}.
 +
 --
-You can use the wizard on the *Machine Learning* > *Data Frame Analaytics* tab
+You can use the wizard on the *{ml-app}* > *Data Frame Analytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
@@ -195,10 +199,8 @@ POST _ml/data_frame/analytics/model-flight-delays/_start
 [role="screenshot"]
 image::images/flights-regression-details.png["Statistics for a {dfanalytics-job} in {kib}"]
 
-The job has four main phases (reindexing, loading data, analyzing, and writing
-results). When all the phases have completed, the job stops and the results are
-ready to view and evaluate. Consult <<ml-dfa-phases>> to learn more about the 
-different phases.
+When the job stops, the results are ready to view and evaluate. To learn more
+about the job phases, see <<ml-dfa-phases>>.
 
 
 .API example
@@ -230,46 +232,63 @@ The API call returns the following response:
           "progress_percent" : 100
         },
         {
-          "phase" : "analyzing",
+          "phase" : "feature_selection",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "coarse_parameter_search",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "fine_tuning_parameters",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "final_training",
           "progress_percent" : 100
         },
         {
           "phase" : "writing_results",
           "progress_percent" : 100
+        },
+        {
+          "phase" : "inference",
+          "progress_percent" : 100
         }
       ],
       "data_counts" : {
-        "training_docs_count" : 11759,
-        "test_docs_count" : 1300,
+        "training_docs_count" : 11210,
+        "test_docs_count" : 1246,
         "skipped_docs_count" : 0
       },
       "memory_usage" : {
-        "timestamp" : 1587590328000,
-        "peak_usage_bytes" : 2424894
+        "timestamp" : 1596237978801,
+        "peak_usage_bytes" : 2204548,
+        "status" : "ok"
       },
       "analysis_stats" : {
         "regression_stats" : {
-          "timestamp" : 1587590328000,
+          "timestamp" : 1596237978801,
           "iteration" : 18,
           "hyperparameters" : {
-            "alpha" : 13913.440706141744,
-            "downsample_factor" : 0.8296546656515433,
-            "eta" : 0.04216457735949444,
-            "eta_growth_rate_per_tree" : 1.0264998162827081,
+            "alpha" : 168825.7788898173,
+            "downsample_factor" : 0.9033277769849748,
+            "eta" : 0.04884738703731517,
+            "eta_growth_rate_per_tree" : 1.0299887790757198,
             "feature_bag_fraction" : 0.5504020748926737,
-            "gamma" : 722.9233202705029,
-            "lambda" : 1.0278806525490607,
+            "gamma" : 1454.4275926774008,
+            "lambda" : 2.1114872989215074,
             "max_attempts_to_add_tree" : 3,
             "max_optimization_rounds_per_hyperparameter" : 2,
-            "max_trees" : 483,
+            "max_trees" : 427,
             "num_folds" : 4,
             "num_splits_per_feature" : 75,
-            "soft_tree_depth_limit" : 3.105960810136212,
+            "soft_tree_depth_limit" : 5.8014874129785,
             "soft_tree_depth_tolerance" : 0.13448633124842999
           },
           "timing_stats" : {
-            "elapsed_time" : 168362,
-            "iteration_time" : 9691
+            "elapsed_time" : 124851,
+            "iteration_time" : 15081
           },
           "validation_loss" : {
             "loss_type" : "mse",
@@ -302,7 +321,8 @@ predict with the {reganalysis}. It also shows a column for the prediction values
 (`ml.FlightDelayMin_prediction`) and a column that indicates whether the
 document was used in the training set (`ml.is_training`). You can filter the
 table to show only testing or training data and you can select which fields are
-shown in the table.
+shown in the table. You can also enable histogram charts to get a better
+understanding of the distribution of values in your data.
 
 If you do not use {kib}, you can see the same information by using the standard
 {es} search command to view the results in the destination index.
@@ -321,13 +341,13 @@ The snippet below shows a part of a document with the annotated results:
 [source,console-result]
 ----  
           ...
-          "DestRegion" : "UK",
-          "OriginAirportID" : "LHR",
+          "DestCountry" : "GB",
+          "DestRegion" : "GB-ENG",
+          "OriginAirportID" : "CAN",
           "DestCityName" : "London",
-          "FlightDelayMin" : 66,
           "ml" : {
-            "FlightDelayMin_prediction" : 62.527,
-            "is_training" : false
+            "FlightDelayMin_prediction" : 10.039840698242188,
+            "is_training" : true
           }
           ...
 ----
@@ -376,7 +396,7 @@ POST _ml/data_frame/_evaluate
      "predicted_field": "ml.FlightDelayMin_prediction", <4>
      "metrics": {  
        "r_squared": {},
-       "mean_squared_error": {}                            
+       "mse": {}                            
      }
    }
  }
@@ -395,11 +415,11 @@ The API returns a response like this:
 ----  
 {
   "regression" : {
-    "mean_squared_error" : {
-      "error" : 3006.517622042659
+    "mse" : {
+      "value" : 3125.3396943667544
     },
     "r_squared" : {
-      "value" : 0.6794200914263231
+      "value" : 0.6659988649180306
     }
   }
 }
@@ -423,7 +443,7 @@ POST _ml/data_frame/_evaluate
      "predicted_field": "ml.FlightDelayMin_prediction",
      "metrics": {  
        "r_squared": {},
-       "mean_squared_error": {}                            
+       "mse": {}                            
      }
    }
  }
@@ -436,4 +456,4 @@ POST _ml/data_frame/_evaluate
 
 If you don't want to keep the {dfanalytics-job}, you can delete it. For example,
 use {kib} or the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API].
-When you delete  {dfanalytics-jobs}, the destination indices remain intact.
+When you delete {dfanalytics-jobs}, the destination indices remain intact.

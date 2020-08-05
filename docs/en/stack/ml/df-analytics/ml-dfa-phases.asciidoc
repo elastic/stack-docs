@@ -3,12 +3,13 @@
 = How a {dfanalytics-job} works
 
 A {dfanalytics-job} is essentially a persistent {es} task. During its life 
-cycle, it goes through four main phases:
+cycle, it goes through four or five main phases depending on the analysis type:
 
 * reindexing,
 * loading data,
 * analyzing,
-* writing results.
+* writing results,
+* inference ({regression} and {classification} only).
 
 Let's take a look at the phases one-by-one.
 
@@ -58,6 +59,12 @@ ones that have been loaded in the loading data phase are not. The
 index, merges them, and indexes them back to the destination index. When the 
 process is complete, the task is marked as completed and the {dfanalytics-job} 
 stops. Your data is ready to be evaluated.
+
+[[ml-dfa-phases-inference]]
+== {infer-cap}
+
+
+
 
 Check the <<ml-dfa-concepts>> section if you'd like to know more about the 
 various {dfanalytics} types.

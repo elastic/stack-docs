@@ -42,7 +42,8 @@ in which they identify outliers in the data.
 
 {regression-cap} and {classification} jobs have four analysis phases:
 
-. `feature_selection`: Identifies which of the supplied fields are most relevant for predicting the dependent variable. 
+. `feature_selection`: Identifies which of the supplied fields are most relevant 
+  for predicting the dependent variable. 
 . `coarse_parameter_search`: Identifies initial values for undefined 
   hyperparameters.
 . `fine_tuning_parameters`: Identifies final values for undefined 
@@ -57,13 +58,16 @@ Only the additional fields that the analysis calculated are written back, the
 ones that have been loaded in the loading data phase are not. The 
 {dfanalytics-job} matches the results with the data rows in the destination 
 index, merges them, and indexes them back to the destination index. When the 
-process is complete, the task is marked as completed and the {dfanalytics-job} 
-stops. Your data is ready to be evaluated.
+process is complete in case of an {oldetection} job, the task is marked as 
+completed and the {dfanalytics-job} stops. Your data is ready to be evaluated.
 
 [[ml-dfa-phases-inference]]
 == {infer-cap}
 
-
+This phase exists only for {regression} and {classification} jobs. In this 
+phase, the job infers the test split of the data set agains the trained model. 
+When the process is complete, the task is marked as completed and the 
+{dfanalytics-job} stops. Your data is ready to be evaluated.
 
 
 Check the <<ml-dfa-concepts>> section if you'd like to know more about the 

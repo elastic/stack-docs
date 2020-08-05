@@ -57,16 +57,16 @@ After the loaded data is analyzed, the analysis process sends back the results.
 Only the additional fields that the analysis calculated are written back, the 
 ones that have been loaded in the loading data phase are not. The 
 {dfanalytics-job} matches the results with the data rows in the destination 
-index, merges them, and indexes them back to the destination index. When the 
-process is complete in case of an {oldetection} job, the task is marked as 
-completed and the {dfanalytics-job} stops. Your data is ready to be evaluated.
+index, merges them, and indexes them back to the destination index.
 
 [[ml-dfa-phases-inference]]
 == {infer-cap}
 
 This phase exists only for {regression} and {classification} jobs. In this 
-phase, the job infers the test split of the data set agains the trained model. 
-When the process is complete, the task is marked as completed and the 
+phase, the job infers the test split of the data set against the trained model. 
+
+
+Finally, after all phases are completed, the task is marked as completed and the 
 {dfanalytics-job} stops. Your data is ready to be evaluated.
 
 

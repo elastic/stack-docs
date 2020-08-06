@@ -2,10 +2,10 @@
 [[ml-supervised-workflow]]
 = Introduction to supervised learning
 
-Elastic supervised learning allows you to train a {ml} model based on training 
+Elastic supervised learning enables you to train a {ml} model based on training 
 examples that you provide. You can then use your model to make predictions on 
-new data. This page describes the end-to-end workflow to clarify how you can 
-train a model, evaluate it and deploy it. It gives a high-level overview of the 
+new data. This page summarizes the end-to-end workflow for
+training, evaluating and deploying a model. It gives a high-level overview of the 
 steps required to identify and implement a solution using supervised learning.
 
 The workflow for supervised learning consists of the following stages:
@@ -49,13 +49,13 @@ next step is to produce a high-quality data set in {es} with a clear
 relationship to your training objectives. If your data is not already in {es}, 
 this is the stage where you develop your data pipeline. If you want to learn 
 more about how to ingest data into {es}, refer to the 
-{ref}/ingest.html[documentation].
+{ref}/ingest.html[Ingest node documentation].
 
 {regression-cap} and {classification} are supervised {ml} techniques, therefore 
 you must supply a labelled data set for training. This is often called the 
-"ground truth". The "ground truth" allows the training process to identify 
+"ground truth". The training process uses this information to identify 
 relationships among the various characteristics of the data and the predicted 
-value as well as takes a critical role in model evaluation.
+value. It also plays a critical role in model evaluation.
 
 An important requirement is a data set that is large enough to train a model. 
 For example, if you would like to train a {classification} model that decides 
@@ -71,11 +71,10 @@ type of preprocessing depends on the nature of the data set. Preprocessing can
 include, but is not limited to, mitigating redundancy, reducing biases, applying 
 standards and/or conventions, data normalization, and so on.
 
-{regression-cap} and {classification} requires specifically structured source 
+{regression-cap} and {classification} require specifically structured source 
 data: a two dimensional tabular data structure. For this reason, you might need 
 to {ref}/transforms.html[{transform}] your data to create a {dataframe} which 
-can be used as the source for {dfanalytics} like {regression} and 
-{classification}.
+can be used as the source for these types of {dfanalytics}.
 
 [[train-test-iterate]]
 == Train, test, iterate
@@ -83,31 +82,31 @@ can be used as the source for {dfanalytics} like {regression} and
 After your data is prepared and transformed into the right format, it is time to 
 train the model. Training is an iterative process — every iteration is followed 
 by an evaluation to see how the model performs. When you are satisfied with the 
-results, you are ready to deploy the model otherwise you may want to adjust the 
+results, you are ready to deploy the model. Otherwise, you may want to adjust the 
 training configuration or consider alternative ways to preprocess and represent 
 your data.
 
 The first step is defining the features – the relevant fields in the data set – 
 that will be used for training the model. By default, all the fields with 
 supported types are included in {regression} and {classification} automatically. 
-However, you can exclude irrelevant fields optionally from the process. Doing so 
-makes a large dataset more manageable, reducing the computing resources and time 
+However, you can optionally exclude irrelevant fields from the process. Doing so 
+makes a large data set more manageable, reducing the computing resources and time 
 required for training.
 
-Now define how to split your data into a training and a test set. The test set 
-won’t be used to train the model, but is used to evaluate how the model 
+Next you must define how to split your data into a training and a test set. The test set 
+won’t be used to train the model; it is used to evaluate how the model 
 performs. There is no optimal percentage that fits all use cases, it depends on 
 the amount of data and the time you have to train. For large data sets, you may 
 want to start with a low training percent to complete an end-to-end iteration in 
 a short time.
 
-During the training process, the training data that contains the ground truth 
-you want to learn from is fed through the learning algorithm. The model predicts 
+During the training process, the training data 
+is fed through the learning algorithm. The model predicts 
 the value and compares it to the ground truth then the model is fine-tuned to 
 make the predictions more accurate.
 
-Once the model has been trained, it will be tested on how well it predicts for 
-previously unseen data. This test provides an estimate of a quantity known as 
+Once the model is trained, you can evaluate how well it predicts 
+previously unseen data with
 the model generalization error. There are further 
 <<ml-dfanalytics-evaluate,evaluation types>> for both {regression} and 
 {classification} analysis which provide metrics about training performance. 
@@ -134,6 +133,6 @@ the model is used to infer against the data and make predictions on it.
   entity-centric index.
 * Consult the documentation to learn more about <<dfa-regression,regression>> 
   and <<dfa-classification,classification>>.
-* Learn how to evaluate <<ml-dfanalytics-regression-evaluation,regression>> and 
-  <<ml-dfanalytics-classification,classification>> models.
+* Learn how to <<ml-dfanalytics-evaluate,evaluate>> regression and 
+classification models.
 * Find out how to deploy your model by using <<ml-inference,inference>>.

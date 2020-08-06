@@ -4,9 +4,9 @@
 
 Elastic supervised learning enables you to train a {ml} model based on training 
 examples that you provide. You can then use your model to make predictions on 
-new data. This page summarizes the end-to-end workflow for
-training, evaluating and deploying a model. It gives a high-level overview of the 
-steps required to identify and implement a solution using supervised learning.
+new data. This page summarizes the end-to-end workflow for training, evaluating 
+and deploying a model. It gives a high-level overview of the steps required to 
+identify and implement a solution using supervised learning.
 
 The workflow for supervised learning consists of the following stages:
 
@@ -28,10 +28,9 @@ a numerical value? The answers help you choose the type of analysis that fits
 your use case.
 
 After you identify the problem, consider which of the {ml-features} are most 
-likely to help you solve it. Unsupervised learning – like {anomaly-detect} or 
-{oldetection} – does not require a labelled data set to train the model on while 
-supervised learning requires a data set that contains the known values that the 
-model can be trained on.
+likely to help you solve it. Supervised learning requires a data set that 
+contains known values that the model can be trained on. Unsupervised learning – 
+like {anomaly-detect} or {oldetection} – does not have this requirement.
 
 {stack} provides the following types of supervised learning: 
 
@@ -81,36 +80,33 @@ can be used as the source for these types of {dfanalytics}.
 
 After your data is prepared and transformed into the right format, it is time to 
 train the model. Training is an iterative process — every iteration is followed 
-by an evaluation to see how the model performs. When you are satisfied with the 
-results, you are ready to deploy the model. Otherwise, you may want to adjust the 
-training configuration or consider alternative ways to preprocess and represent 
-your data.
+by an evaluation to see how the model performs.
 
 The first step is defining the features – the relevant fields in the data set – 
 that will be used for training the model. By default, all the fields with 
 supported types are included in {regression} and {classification} automatically. 
 However, you can optionally exclude irrelevant fields from the process. Doing so 
-makes a large data set more manageable, reducing the computing resources and time 
-required for training.
+makes a large data set more manageable, reducing the computing resources and 
+time required for training.
 
-Next you must define how to split your data into a training and a test set. The test set 
-won’t be used to train the model; it is used to evaluate how the model 
+Next you must define how to split your data into a training and a test set. The 
+test set won’t be used to train the model; it is used to evaluate how the model 
 performs. There is no optimal percentage that fits all use cases, it depends on 
 the amount of data and the time you have to train. For large data sets, you may 
 want to start with a low training percent to complete an end-to-end iteration in 
 a short time.
 
-During the training process, the training data 
-is fed through the learning algorithm. The model predicts 
-the value and compares it to the ground truth then the model is fine-tuned to 
-make the predictions more accurate.
+During the training process, the training data is fed through the learning 
+algorithm. The model predicts the value and compares it to the ground truth then 
+the model is fine-tuned to make the predictions more accurate.
 
-Once the model is trained, you can evaluate how well it predicts 
-previously unseen data with
-the model generalization error. There are further 
+Once the model is trained, you can evaluate how well it predicts previously 
+unseen data with the model generalization error. There are further 
 <<ml-dfanalytics-evaluate,evaluation types>> for both {regression} and 
 {classification} analysis which provide metrics about training performance. 
-Depending on the evaluation results, you may wish to iterate.
+When you are satisfied with the results, you are ready to deploy the model. 
+Otherwise, you may want to adjust the training configuration or consider 
+alternative ways to preprocess and represent your data.
 
 
 [[deploy-model]]

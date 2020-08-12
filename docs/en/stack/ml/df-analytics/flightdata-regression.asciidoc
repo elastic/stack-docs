@@ -10,7 +10,8 @@ distances, carriers, and the number of minutes each flight was delayed. When you
 create a {dfanalytics-job} for {reganalysis}, it learns the relationships
 between the fields in your data in order to predict the value of a
 _dependent variable_, which in this case is the numeric `FlightDelayMins` field.
-For an overview of these concepts, see <<dfa-regression>>.
+For an overview of these concepts, see <<dfa-regression>> and
+<<ml-supervised-workflow>>.
 
 [[flightdata-regression-data]]
 == Preparing your data
@@ -453,6 +454,9 @@ POST _ml/data_frame/_evaluate
 <1> Evaluate only the documents that are not part of the training data.
 ====
 
+When you have trained a satisfactory model, you can deploy it to make predictions
+about new data. Those steps are not covered in this example. See
+<<ml-inference>>. 
 
 If you don't want to keep the {dfanalytics-job}, you can delete it. For example,
 use {kib} or the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API].

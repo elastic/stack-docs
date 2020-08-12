@@ -10,7 +10,7 @@ destination, and whether or not the flight was delayed. When you create a
 {dfanalytics-job} for {classanalysis}, it learns the relationships between the
 fields in your data in order to predict the value of the _dependent variable_, 
 which in this case is the boolean `FlightDelay` field. For an overview of these
-concepts, see <<dfa-classification>>.
+concepts, see <<dfa-classification>> and <<ml-supervised-workflow>>.
 
 TIP: If you want to view this example in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[click here].
@@ -95,7 +95,7 @@ To predict whether a specific flight is delayed:
 . Create a {dfanalytics-job}.
 +
 --
-You can use the wizard on the *Machine Learning* > *Data Frame Analaytics* tab
+You can use the wizard on the *{ml-app}* > *Data Frame Analytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
@@ -188,11 +188,10 @@ POST _ml/data_frame/analytics/model-flight-delay-classification/_start
 +
 --
 [role="screenshot"]
-image::images/flights-classification-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
+image::images/flights-classification-details.png["Statistics for a {dfanalytics-job} in {kib}"]
 
-The job has four phases (reindexing, loading data, analyzing, and writing
-results). When all the phases have completed, the job stops and the results are 
-ready to view and evaluate.
+When the job stops, the results are ready to view and evaluate. To learn more
+about the job phases, see <<ml-dfa-phases>>.
 
 .API example
 [%collapsible]
@@ -224,47 +223,64 @@ The API call returns the following response:
           "progress_percent" : 100
         },
         {
-          "phase" : "analyzing",
+          "phase" : "feature_selection",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "coarse_parameter_search",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "fine_tuning_parameters",
+          "progress_percent" : 100
+        },
+        {
+          "phase" : "final_training",
           "progress_percent" : 100
         },
         {
           "phase" : "writing_results",
           "progress_percent" : 100
+        },
+        {
+          "phase" : "inference",
+          "progress_percent" : 100
         }
       ],
       "data_counts" : {
-        "training_docs_count" : 1306,
-        "test_docs_count" : 11753,
+        "training_docs_count" : 1305,
+        "test_docs_count" : 11754,
         "skipped_docs_count" : 0
       },
       "memory_usage" : {
-        "timestamp" : 1587424103000,
-        "peak_usage_bytes" : 923471
+        "timestamp" : 1597182490577,
+        "peak_usage_bytes" : 316613,
+        "status" : "ok"
       },
       "analysis_stats" : {
         "classification_stats" : {
-          "timestamp" : 1587424103000,
+          "timestamp" : 1597182490577,
           "iteration" : 18,
           "hyperparameters" : {
             "class_assignment_objective" : "maximize_minimum_recall",
-            "alpha" : 1.4193562525205259,
-            "downsample_factor" : 0.9351209341515412,
-            "eta" : 0.02331774683318904,
-            "eta_growth_rate_per_tree" : 1.0143154178910303,
+            "alpha" : 11.630957564710283,
+            "downsample_factor" : 0.9418550623091531,
+            "eta" : 0.032382816833064335,
+            "eta_growth_rate_per_tree" : 1.0198807182688074,
             "feature_bag_fraction" : 0.5504020748926737,
-            "gamma" : 0.08856070622714199,
-            "lambda" : 0.09965307629033043,
+            "gamma" : 0.08388388780939579,
+            "lambda" : 0.08628826657684924,
             "max_attempts_to_add_tree" : 3,
             "max_optimization_rounds_per_hyperparameter" : 2,
-            "max_trees" : 894,
+            "max_trees" : 644,
             "num_folds" : 5,
             "num_splits_per_feature" : 75,
-            "soft_tree_depth_limit" : 1.2312092443493399,
+            "soft_tree_depth_limit" : 7.550606337307592,
             "soft_tree_depth_tolerance" : 0.13448633124842999
           },
           "timing_stats" : {
-            "elapsed_time" : 71060,
-            "iteration_time" : 4513
+            "elapsed_time" : 44206,
+            "iteration_time" : 1884
           },
           "validation_loss" : {
             "loss_type" : "binomial_logistic",
@@ -289,15 +305,16 @@ When you view the {classification} results in {kib}, it shows contents of the
 destination index in a tabular format:
 
 [role="screenshot"]
-image::images/flights-classification-results.jpg["Results for a {dfanalytics-job} in {kib}"]
+image::images/flights-classification-results.png["Results for a {dfanalytics-job} in {kib}"]
 
 In this example, the table shows a column for the dependent variable
 (`FlightDelay`), which contains the ground truth values that you are trying to
 predict. It also shows a column for the predicted values
 (`ml.FlightDelay_prediction`), which were generated by the {classanalysis}. The
 `ml.is_training` column indicates whether the document was used in the training
-or testing data set. You can use this information to filter the table and the
-confusion matrix such that they contain only testing or training data.
+or testing data set. You can filter the table and the confusion matrix such that
+they contain only testing or training data. You can also enable histogram charts
+to get a better understanding of the distribution of values in your data.
 
 If you examine this destination index more closely in the *Discover* app in 
 {kib} or use the standard {es} search command, you can see that the analysis 
@@ -384,7 +401,7 @@ occurrences where the analysis classified data points correctly with their
 actual class and the percentage of occurrences where it misclassified them.
 
 [role="screenshot"]
-image::images/flights-classification-evaluation.jpg["Evaluation of a {dfanalytics-job} in {kib}"]
+image::images/flights-classification-evaluation.png["Evaluation of a {dfanalytics-job} in {kib}"]
 
 NOTE: As the sample data may change when it is loaded into {kib}, the results of 
 the {classanalysis} can vary even if you use the same configuration as the 
@@ -394,25 +411,26 @@ own results.
 If you want to see the exact number of occurrences, select a quadrant in the
 matrix. You can optionally filter the table to contain only testing data so you
 can see how well the model performs on previously unseen data. In this example,
-there are 2952 documents in the testing data that have the `true` class. 914 of
-them are predicted as `false`; this is called a _false negative_. 2038 are
+there are 2952 documents in the testing data that have the `true` class. 1893 of
+them are predicted as `false`; this is called a _false negative_. 1059 are
 predicted correctly as `true`; this is called a _true positive_. The confusion
-matrix therefore shows us that 69% of the actual `true` values were correctly
-predicted and 31% were incorrectly predicted in the test data set.
+matrix therefore shows us that 36% of the actual `true` values were correctly
+predicted and 64% were incorrectly predicted in the test data set.
 
 Likewise if you select other quadrants in the matrix, it shows the number of
 documents that have the `false` class as their actual value in the testing data
-set. In this example, the model labeled 7035 documents out of 8801 correctly as
-`false`; this is called a _true negative_. 1766 documents are predicted
-incorrectly as `true`; this is called a _false positive_. Thus 80% of the actual
-`false` values were correctly predicted and 20% were incorrectly predicted in
-the test data set.
-
-For more information about interpreting the evaluation metrics, see
-<<ml-dfanalytics-classification>>.
+set. In this example, the model labeled 1033 documents out of 8802 correctly as
+`false`; this is called a _true negative_. 7769 documents are predicted
+incorrectly as `true`; this is called a _false positive_. Thus 12% of the actual
+`false` values were correctly predicted and 88% were incorrectly predicted in
+the test data set. When you perform {classanalysis} on your own data, it might
+take multiple iterations before you are satisfied with the results and ready to
+deploy the model.
 
 You can also generate these metrics with the
-{ref}/evaluate-dfanalytics.html[{dfanalytics} evaluate API].
+{ref}/evaluate-dfanalytics.html[{dfanalytics} evaluate API]. For more
+information about interpreting the evaluation metrics, see
+<<ml-dfanalytics-classification>>.
 
 .API example
 [%collapsible]
@@ -487,15 +505,15 @@ were misclassified (`actual_class` does not match `predicted_class`):
       "confusion_matrix" : [
         {
           "actual_class" : "false", <1>
-          "actual_class_doc_count" : 8801, <2>
+          "actual_class_doc_count" : 8802, <2>
           "predicted_classes" : [
             {
               "predicted_class" : "false", <3>
-              "count" : 7035 <4>
+              "count" : 1033 <4>
             },
             {
               "predicted_class" : "true",
-              "count" : 1766
+              "count" : 7769
             }
           ],
           "other_predicted_class_doc_count" : 0
@@ -506,11 +524,11 @@ were misclassified (`actual_class` does not match `predicted_class`):
           "predicted_classes" : [
             {
               "predicted_class" : "false",
-              "count" : 914
+              "count" : 1893
             },
             {
               "predicted_class" : "true",
-              "count" : 2038
+              "count" : 1059
             }
           ],
           "other_predicted_class_doc_count" : 0
@@ -528,6 +546,10 @@ were misclassified (`actual_class` does not match `predicted_class`):
 <4> The number of documents belong to the actual class that are labeled as the 
 predicted class. 
 ====
+
+When you have trained a satisfactory model, you can deploy it to make predictions
+about new data. Those steps are not covered in this example. See
+<<ml-inference>>.
 
 If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
 {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 

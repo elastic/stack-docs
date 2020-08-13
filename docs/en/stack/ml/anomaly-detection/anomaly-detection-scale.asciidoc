@@ -5,7 +5,7 @@
 It is easy to <<ml-getting-started,get started>> with Elastic {anomaly-detect}. 
 However, working with large jobs in a production environment requires careful 
 planning; otherwise, the jobs may cause performance issues. This page contains 
-several guidelines to consider when using {anomaly-detect} at a larger scale and 
+several guidelines to consider when using {anomaly-detect} at scale and 
 helps you to avoid possible pitfalls.
 
 
@@ -14,11 +14,11 @@ helps you to avoid possible pitfalls.
 
 By using the 
 {ref}//ml-estimate-model-memory.html[Estimate {anomaly-jobs} model memory API], 
-you can get an idea of approximately how much memory each job will require. 
+you can get approximately how much memory each job will require. 
 Based on this information, decide how many {ml} nodes you need to add to the 
 cluster to support those jobs. A single job runs on a single node. There is no 
-way to split jobs between nodes. For this reason, if you have, for instance, a 
-job that requires 10 GB of memory to run, you need an {ml} node that can provide 
+way to split jobs between nodes. For this reason, if you have a 
+job that requires 10 GB of memory to run, you need a {ml} node that can provide 
 enough resources to run the job.
 
 You can control how much memory the node can use for {ml} processes via the 
@@ -47,18 +47,18 @@ fields it references.
 [[model-snapshots]]
 == Setting model snapshot retention time 
 
-Model snapshots are created every 3 to 4 hours by default. Although the model 
+Model snapshots are created every 3 to 4 hours by default. This is six model snapshots per day.
+ Although the model 
 snapshots are compressed, they can still be extensive for large jobs. For 
-example, if you have a 30 GB job, the model snapshot can be 5 GB. Calculating 
-with the default values, six model snapshots are taken from the job per day. If 
+example, if you have a 30 GB job, the model snapshot can be 5 GB. If 
 you keep them for ten days, it is 300 GB for a single job. By default, if there 
 are snapshots over one day older than the newest snapshot, they are deleted 
 except for the first snapshot each day. As well, all snapshots over ten days 
 older than the newest snapshot are deleted. There are two things to consider 
 about model snapshot retention:
 
-* how frequently you want to create snapshots from the model,
-* for how long you want to retain the snapshots.
+* How frequently you want to create snapshots from the model
+* How long you want to retain the snapshots.
 
 You can fine-tune the frequency of the model persistence and the snapshot 
 retention days by setting the following configuration options:
@@ -132,7 +132,7 @@ element of the job. Practically, it means that if you have a bucket span of 5
 minutes and you are forecasting one hour to the future, you have twelve 
 documents for every job partition that is being predicted. For jobs with high 
 partition field cardinality, forecasting results in a high number of documents 
-being written out to the result index, which will add a high load to your data 
+being written out to the result index, which may add a high load to your data 
 nodes.
 
 The memory usage of a forecast is restricted to 20 MB by default. From 7.9, you 
@@ -205,7 +205,7 @@ behavior with respect to itself over time as temporal analysis does. Population
 analysis builds a profile of what a "typical" entity does over a specified time 
 period and then identifies when one is behaving abnormally compared to the 
 population. Consider using population analysis for analyzing high cardinality 
-ields if you expect that the entities of the population generally behave in the 
+fields if you expect that the entities of the population generally behave in the 
 same way.
 
 

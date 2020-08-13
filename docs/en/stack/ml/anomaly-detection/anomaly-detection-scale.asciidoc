@@ -2,39 +2,50 @@
 [[anomaly-detection-scale]]
 = Using {anomaly-detect} at scale
 
-It is easy to <<ml-getting-started,get started>> with Elastic {anomaly-detect}. 
-However, working with large jobs in a production environment requires careful 
-planning; otherwise, the jobs may cause performance issues. This page contains 
-several guidelines to consider when using {anomaly-detect} at scale and 
+Working with large {anomaly-jobs} in a production environment requires careful 
+planning; otherwise, job performance could be adversely effected. This page 
+contains several guidelines to consider when using {anomaly-detect} at scale and 
 helps you to avoid possible pitfalls.
 
 
+[[infrastructure-config]]
+== Infrastructure configuration guidelines
+
+
 [[number-ml-nodes]]
-== Deciding the number of {ml} nodes 
+=== Deciding the number of {ml} nodes 
 
 By using the 
 {ref}//ml-estimate-model-memory.html[Estimate {anomaly-jobs} model memory API], 
-you can get approximately how much memory each job will require. 
-Based on this information, decide how many {ml} nodes you need to add to the 
-cluster to support those jobs. A single job runs on a single node. There is no 
-way to split jobs between nodes. For this reason, if you have a 
-job that requires 10 GB of memory to run, you need a {ml} node that can provide 
-enough resources to run the job.
+you can get approximately how much memory each job will require. Based on this 
+information, decide how many {ml} nodes you need to add to the cluster to 
+support those jobs. A single job runs on a single node. For this reason, if you 
+have a job that requires 10 GB of memory to run, you need a {ml} node that can 
+provide enough resources to run the job.
 
-You can control how much memory the node can use for {ml} processes via the 
+You can control how much of the available native memory the node can use for 
+{ml} processes (these processes are separate to {es} JVM) via the 
 `xpack.ml.max_machine_memory_percent` setting. If the node is a dedicated {ml} 
 node, increase this value from the default 30%. **If you have a cloud 
 deployment, you don't need to manually increase this value, it is automatically 
 set.**
 
 
-[[model-memory-limit]]
-== Setting model memory limit properly
+[[max-model-memory-limit]]
+=== Setting model memory limit properly
 
-Model memory limit is the approximate maximum amount of memory resources 
-required for analytical processing. If this variable is set too low for the 
-{anomaly-job} and it exceeds the limit, then data discarding becomes more 
-aggressive, and the model does not work properly.
+There are two model memory limit configuration options:
+
+* `xpack.ml.max_model_memory_limit` is a node setting that defines the maximum 
+  `model_memory_limit` value you can set for any {anomaly-job} on the node. If 
+  the memory requirement of a job is higher than this value, an error occurs 
+  and the job cannot be created.
+
+* `model_memory_limit` is a job variable that sets the approximate maximum 
+  amount of memory resources required for analytical processing. If this 
+  variable is set too low for the job and the limit is approached, data 
+  discarding becomes more aggressive. Upon exceeding this limit, new entities 
+  are not modeled.
 
 Use model memory estimation to have a better picture of the memory needs of the 
 model. Model memory estimation happens automatically when you create the job in 
@@ -44,18 +55,21 @@ analysis configuration details for the job and cardinality estimates for the
 fields it references.
 
 
-[[model-snapshots]]
-== Setting model snapshot retention time 
+[[job-config]]
+== Job configuration guidelines
 
-Model snapshots are created every 3 to 4 hours by default. This is six model snapshots per day.
- Although the model 
-snapshots are compressed, they can still be extensive for large jobs. For 
-example, if you have a 30 GB job, the model snapshot can be 5 GB. If 
-you keep them for ten days, it is 300 GB for a single job. By default, if there 
-are snapshots over one day older than the newest snapshot, they are deleted 
-except for the first snapshot each day. As well, all snapshots over ten days 
-older than the newest snapshot are deleted. There are two things to consider 
-about model snapshot retention:
+
+[[model-snapshots]]
+=== Setting model snapshot retention time 
+
+Model snapshots are created every 3 to 4 hours by default. This is six model 
+snapshots per day. Although the snapshots are compressed, they can still be 
+extensive for large jobs. If you have a 30 GB job, the model snapshot can be 5 
+GB. If you keep them for ten days, it is 300 GB for a single job. By default, if 
+there are snapshots over one day older than the newest snapshot, they are 
+deleted except for the first snapshot each day. As well, all snapshots over ten 
+days older than the newest snapshot are deleted. There are two things to 
+consider about snapshot retention:
 
 * How frequently you want to create snapshots from the model
 * How long you want to retain the snapshots.
@@ -88,52 +102,49 @@ the exact model state.
 
 
 [[results-retention]]
-== Setting result retention time
+=== Setting result retention time
 
 {anomaly-detect-cap} results are retained indefinitely by default. For big jobs, 
 results build up over time, and your result index will be quite large. Consider 
 how long you wish to retain the results and set `results_retention_days` 
 accordingly – for example, to 30 or 60 days – to avoid unnecessarily large 
-result indices.   
+result indices. Deleting old results does not affect the model behavior.
 
 
 [[renormalization]]
-== Configuring renormalization window days
+=== Configuring renormalization window days
 
-When a new anomaly has a higher score than any anomaly in the past, the anomaly 
-scores are adjusted on a range from 0 to 100 based on the new data. This process 
-is called renormalization. It can mean rewriting a large number of documents in 
-the results index. Renormalization happens for results from the last 30 days or 
-100 bucket spans (depending on which is the longer) by default. If you have a 
-lot of results, generate many anomalies, and have a short bucket span, consider 
-setting `renormalization_window_days` to a lower value. For example, for a large 
-job renormalization could involve rewriting half a million documents for the 
-last 30 days, so it would be reasonable to set `renormalization_window_days` to 
-14 days, so the workload is reduced.
+When a new anomaly has a much higher score than any anomaly in the past, the 
+anomaly scores are adjusted on a range from 0 to 100 based on the new data. This 
+process is called renormalization. It can mean rewriting a large number of 
+documents in the results index. Renormalization happens for results from the 
+last 30 days or 100 bucket spans (depending on which is the longer) by default. 
+If you have a lot of results, generate many anomalies, and have a short bucket 
+span, consider setting `renormalization_window_days` to a lower value, so the 
+workload is reduced.
 
 
 [[short-bucket-span]]
-== Avoiding short bucket span for large jobs
+=== Avoiding short bucket span for large jobs
 
-If you have a large amount of data that requires a short bucket span, consider 
-splitting it up to avoid having high cardinality. The combination of short 
-bucket span and high cardinality is a resource-intensive situation that you may 
-want to avoid.
+If you have a large amount of data, use longer bucket span. If your data 
+requires short bucket span, consider splitting the data to avoid having high 
+cardinality. The combination of short bucket span and high cardinality is a 
+resource-intensive situation that you may want to avoid.
 
 
 [[forecasting]]
-== Understanding the cost of forecasting
+=== Understanding the cost of forecasting
 
 There are two main factors to consider when you create a forecast: indexing load 
 and memory usage.
 
 Forecasting writes a new document to the result index for every forecasted 
-element of the job. Practically, it means that if you have a bucket span of 5 
-minutes and you are forecasting one hour to the future, you have twelve 
-documents for every job partition that is being predicted. For jobs with high 
-partition field cardinality, forecasting results in a high number of documents 
-being written out to the result index, which may add a high load to your data 
-nodes.
+element of the job. If you have a bucket span of 5 minutes and you are 
+forecasting one hour to the future, you have twelve documents for every job 
+partition that is being predicted. For jobs with high partition field 
+cardinality, forecasting results in a high number of documents being written out 
+to the result index, which may add a high load to your data nodes.
 
 The memory usage of a forecast is restricted to 20 MB by default. From 7.9, you 
 can extend this limit by setting `max_model_memory` to a higher value where the 
@@ -157,30 +168,30 @@ updated constantly, forecasting should be considered as a dynamic process.
 
 
 [[disabling-model-plot]]
-== Disabling model plot
+=== Disabling model plot
 
 Model plot calculates and stores the model bounds for each analyzed entity. That 
 means it generates a huge amount of results and has a significant impact on 
 performance. The indexing load is the same as for forecasting: one document per 
-bucket per split field value. For this reason, if you have high cardinality 
-fields and/or short bucket span, disable model plot if it is not needed.
+bucket per split field value. If you have high cardinality fields and/or short 
+bucket span, disable model plot if it is not needed.
 
 
 [[dedicated-results-index]]
-== Using a dedicated results index
+=== Using a dedicated results index
 
 If a {anomaly-job} generates a lot of data, use a dedicated index to store the 
 results. This way, you can retain results in a more reasonable amount of time. 
-If you use a shared index, then the different {anomaly-jobs} slow it down.
+If you use a shared index, the different {anomaly-jobs} may slow down.
 
-When you want to delete a job, the delete job API will instantly drop the index 
+When you want to delete a job, the delete job API instantly drops the index 
 containing the job’s results if you use a dedicated index. If you use a shared 
 one, however, it may take hours to delete all the individual documents related 
-to the deleted job from the index.
+to the deleted job.
 
 
 [[pre-aggregating-data]]
-== Pre-aggregating data
+=== Pre-aggregating data
 
 {anomaly-jobs-cap} always work on summary statistics calculated for the buckets. 
 The statistics can be calculated in the job itself or via aggregations. It is 
@@ -197,30 +208,28 @@ Consult <<ml-configuring-aggregation>> to learn more.
 
 
 [[population-analysis]]
-== Using population analysis
+=== Using population analysis
 
 Population analysis is more memory efficient than individual analysis of each 
-series. It does not create a different model for every entity and compare its 
-behavior with respect to itself over time as temporal analysis does. Population 
-analysis builds a profile of what a "typical" entity does over a specified time 
-period and then identifies when one is behaving abnormally compared to the 
+series. It builds a profile of what a "typical" entity does over a specified 
+time period and then identifies when one is behaving abnormally compared to the 
 population. Consider using population analysis for analyzing high cardinality 
 fields if you expect that the entities of the population generally behave in the 
 same way.
 
 
 [[search-optimization]]
-== Optimizing search queries
+=== Optimizing search queries
 
-There are different ways to write {es} queries. Some of them are more efficient 
-than others. If you are operating on a big scale, it is important to make sure 
-that your {dfeed} query is as efficient as possible. Consult 
-{ref}/tune-for-disk-usage.html[Tune for disk usage] to learn more about {es} 
+There are different ways to write {es} queries and some of them are more 
+efficient than others. If you are operating on a big scale, it is important to 
+make sure that your {dfeed} query is as efficient as possible. Consult 
+{ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
 performance tuning.
 
 
 [[influencers-detectors]]
-== Choosing influencer fields and detectors
+=== Choosing influencer fields and detectors
 
 Optimize your {anomaly-job} by choosing only relevant influencer fields and 
 detectors.

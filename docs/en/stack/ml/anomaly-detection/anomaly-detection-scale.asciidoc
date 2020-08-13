@@ -59,17 +59,115 @@ fields it references.
 == Job configuration guidelines
 
 
+[[dedicated-results-index]]
+=== Using a dedicated results index
+
+If a {anomaly-job} generates a lot of data, use a dedicated index to store the 
+results. This way, you can retain results in a more reasonable amount of time. 
+If you use a shared index, the different {anomaly-jobs} may slow down.
+
+When you want to delete a job, the delete job API instantly drops the index 
+containing the job’s results if you use a dedicated index. If you use a shared 
+one, however, it may take hours to delete all the individual documents related 
+to the deleted job.
+
+
+[[search-optimization]]
+=== Optimizing search queries
+
+There are different ways to write {es} queries and some of them are more 
+efficient than others. If you are operating on a big scale, it is important to 
+make sure that your {dfeed} query is as efficient as possible. Consult 
+{ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
+performance tuning.
+
+
+[[influencers-detectors]]
+=== Choosing influencer fields and detectors
+
+Optimize your {anomaly-job} by choosing only relevant influencer fields and 
+detectors.
+
+
+[[short-bucket-span]]
+=== Avoiding short bucket span for large jobs
+
+If you have a large amount of data, use longer bucket span. If your data 
+requires short bucket span, consider splitting the data to avoid having high 
+cardinality. The combination of short bucket span and high cardinality is a 
+resource-intensive situation that you may want to avoid.
+
+
+[[population-analysis]]
+=== Using population analysis
+
+Population analysis is more memory efficient than individual analysis of each 
+series. It builds a profile of what a "typical" entity does over a specified 
+time period and then identifies when one is behaving abnormally compared to the 
+population. Consider using population analysis for analyzing high cardinality 
+fields if you expect that the entities of the population generally behave in the 
+same way.
+
+
+[[pre-aggregating-data]]
+=== Pre-aggregating data
+
+{anomaly-jobs-cap} always work on summary statistics calculated for the buckets. 
+The statistics can be calculated in the job itself or via aggregations. It is 
+more efficient to use an aggregation when it's possible, as in this case, the 
+data node does the heavy-lifting instead of the {ml} node.
+
+In certain cases, you cannot do aggregations to increase performance. For 
+example, categorization jobs use the full log message to detect anomalies, so 
+this data cannot be aggregated. If you have many influencer fields, it may not 
+be beneficial to use an aggregation either, because only a few documents in each 
+bucket may have the combination of all the different influencer fields.
+
+Consult <<ml-configuring-aggregation>> to learn more.
+
+
+[[disabling-model-plot]]
+=== Disabling model plot
+
+Model plot calculates and stores the model bounds for each analyzed entity. That 
+means it generates a huge amount of results and has a significant impact on 
+performance. The indexing load is the same as for forecasting: one document per 
+bucket per split field value. If you have high cardinality fields and/or short 
+bucket span, disable model plot if it is not needed.
+
+
+[[results-retention]]
+=== Setting result retention time
+
+{anomaly-detect-cap} results are retained indefinitely by default. For big jobs, 
+results build up over time, and your result index will be quite large. Consider 
+how long you wish to retain the results and set `results_retention_days` 
+accordingly – for example, to 30 or 60 days – to avoid unnecessarily large 
+result indices. Deleting old results does not affect the model behavior.
+
+
+[[renormalization]]
+=== Configuring renormalization window days
+
+When a new anomaly has a much higher score than any anomaly in the past, the 
+anomaly scores are adjusted on a range from 0 to 100 based on the new data. This 
+process is called renormalization. It can mean rewriting a large number of 
+documents in the results index. Renormalization happens for results from the 
+last 30 days or 100 bucket spans (depending on which is the longer) by default. 
+If you have a lot of results, generate many anomalies, and have a short bucket 
+span, consider setting `renormalization_window_days` to a lower value, so the 
+workload is reduced.
+
+
 [[model-snapshots]]
 === Setting model snapshot retention time 
 
-Model snapshots are created every 3 to 4 hours by default. This is six model 
-snapshots per day. Although the snapshots are compressed, they can still be 
-extensive for large jobs. If you have a 30 GB job, the model snapshot can be 5 
-GB. If you keep them for ten days, it is 300 GB for a single job. By default, if 
-there are snapshots over one day older than the newest snapshot, they are 
-deleted except for the first snapshot each day. As well, all snapshots over ten 
-days older than the newest snapshot are deleted. There are two things to 
-consider about snapshot retention:
+Model snapshots are created every 3 to 4 hours by default. Although the 
+snapshots are compressed, they can still be extensive for large jobs. By 
+default, if there are snapshots over one day older than the newest snapshot, 
+they are deleted except for the first snapshot each day. As well, all snapshots 
+over ten days older than the newest snapshot are deleted. There are two things 
+to consider about snapshot retention:
 
 * How frequently you want to create snapshots from the model
 * How long you want to retain the snapshots.
@@ -99,38 +197,6 @@ TIP: When your job is shut down, and it is not closed properly, it rolls back to
 the last successfully saved snapshot when it is started again. Close the job 
 gracefully when it is possible instead of killing it so that you can preserve 
 the exact model state.
-
-
-[[results-retention]]
-=== Setting result retention time
-
-{anomaly-detect-cap} results are retained indefinitely by default. For big jobs, 
-results build up over time, and your result index will be quite large. Consider 
-how long you wish to retain the results and set `results_retention_days` 
-accordingly – for example, to 30 or 60 days – to avoid unnecessarily large 
-result indices. Deleting old results does not affect the model behavior.
-
-
-[[renormalization]]
-=== Configuring renormalization window days
-
-When a new anomaly has a much higher score than any anomaly in the past, the 
-anomaly scores are adjusted on a range from 0 to 100 based on the new data. This 
-process is called renormalization. It can mean rewriting a large number of 
-documents in the results index. Renormalization happens for results from the 
-last 30 days or 100 bucket spans (depending on which is the longer) by default. 
-If you have a lot of results, generate many anomalies, and have a short bucket 
-span, consider setting `renormalization_window_days` to a lower value, so the 
-workload is reduced.
-
-
-[[short-bucket-span]]
-=== Avoiding short bucket span for large jobs
-
-If you have a large amount of data, use longer bucket span. If your data 
-requires short bucket span, consider splitting the data to avoid having high 
-cardinality. The combination of short bucket span and high cardinality is a 
-resource-intensive situation that you may want to avoid.
 
 
 [[forecasting]]
@@ -165,71 +231,3 @@ performance issues that it can cause. It is also possible that the analyzed
 behavior changes significantly over time, making the forecast irrelevant 
 especially for jobs with a short bucket span. As the {anomaly-detect} model is 
 updated constantly, forecasting should be considered as a dynamic process. 
-
-
-[[disabling-model-plot]]
-=== Disabling model plot
-
-Model plot calculates and stores the model bounds for each analyzed entity. That 
-means it generates a huge amount of results and has a significant impact on 
-performance. The indexing load is the same as for forecasting: one document per 
-bucket per split field value. If you have high cardinality fields and/or short 
-bucket span, disable model plot if it is not needed.
-
-
-[[dedicated-results-index]]
-=== Using a dedicated results index
-
-If a {anomaly-job} generates a lot of data, use a dedicated index to store the 
-results. This way, you can retain results in a more reasonable amount of time. 
-If you use a shared index, the different {anomaly-jobs} may slow down.
-
-When you want to delete a job, the delete job API instantly drops the index 
-containing the job’s results if you use a dedicated index. If you use a shared 
-one, however, it may take hours to delete all the individual documents related 
-to the deleted job.
-
-
-[[pre-aggregating-data]]
-=== Pre-aggregating data
-
-{anomaly-jobs-cap} always work on summary statistics calculated for the buckets. 
-The statistics can be calculated in the job itself or via aggregations. It is 
-more efficient to use an aggregation when it's possible, as in this case, the 
-data node does the heavy-lifting instead of the {ml} node.
-
-In certain cases, you cannot do aggregations to increase performance. For 
-example, categorization jobs use the full log message to detect anomalies, so 
-this data cannot be aggregated. If you have many influencer fields, it may not 
-be beneficial to use an aggregation either, because only a few documents in each 
-bucket may have the combination of all the different influencer fields.
-
-Consult <<ml-configuring-aggregation>> to learn more.
-
-
-[[population-analysis]]
-=== Using population analysis
-
-Population analysis is more memory efficient than individual analysis of each 
-series. It builds a profile of what a "typical" entity does over a specified 
-time period and then identifies when one is behaving abnormally compared to the 
-population. Consider using population analysis for analyzing high cardinality 
-fields if you expect that the entities of the population generally behave in the 
-same way.
-
-
-[[search-optimization]]
-=== Optimizing search queries
-
-There are different ways to write {es} queries and some of them are more 
-efficient than others. If you are operating on a big scale, it is important to 
-make sure that your {dfeed} query is as efficient as possible. Consult 
-{ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
-performance tuning.
-
-
-[[influencers-detectors]]
-=== Choosing influencer fields and detectors
-
-Optimize your {anomaly-job} by choosing only relevant influencer fields and 
-detectors.

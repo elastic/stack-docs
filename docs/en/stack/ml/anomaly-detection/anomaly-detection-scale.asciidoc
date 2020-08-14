@@ -2,10 +2,10 @@
 [[anomaly-detection-scale]]
 = Using {anomaly-detect} at scale
 
-Working with large {anomaly-jobs} in a production environment requires careful 
-planning; otherwise, job performance could be adversely effected. This page 
-contains several guidelines to consider when using {anomaly-detect} at scale and 
-helps you to avoid possible pitfalls.
+Working with large {anomaly-jobs} requires careful planning; otherwise, job 
+performance could be adversely effected. This page contains several guidelines 
+to consider when using {anomaly-detect} at scale and helps you to avoid possible 
+pitfalls.
 
 
 [[infrastructure-config]]
@@ -63,8 +63,8 @@ fields it references.
 === Using a dedicated results index
 
 If a {anomaly-job} generates a lot of data, use a dedicated index to store the 
-results. This way, you can retain results in a more reasonable amount of time. 
-If you use a shared index, the different {anomaly-jobs} may slow down.
+results. This way, you can retain results in a shorter time. If you use a shared 
+index, the different {anomaly-jobs} may slow down.
 
 When you want to delete a job, the delete job API instantly drops the index 
 containing the job’s results if you use a dedicated index. If you use a shared 
@@ -76,8 +76,8 @@ to the deleted job.
 === Optimizing search queries
 
 There are different ways to write {es} queries and some of them are more 
-efficient than others. If you are operating on a big scale, it is important to 
-make sure that your {dfeed} query is as efficient as possible. Consult 
+efficient than others. If you are operating on a big scale, make sure that your 
+{dfeed} query is as efficient as possible. Consult 
 {ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
 performance tuning.
 
@@ -93,9 +93,9 @@ detectors.
 === Avoiding short bucket span for large jobs
 
 If you have a large amount of data, use longer bucket span. If your data 
-requires short bucket span, consider splitting the data to avoid having high 
-cardinality. The combination of short bucket span and high cardinality is a 
-resource-intensive situation that you may want to avoid.
+requires short bucket span, split the data to avoid having high cardinality. The 
+combination of short bucket span and high cardinality is a resource-intensive 
+situation that you may want to avoid.
 
 
 [[population-analysis]]
@@ -128,11 +128,11 @@ Consult <<ml-configuring-aggregation>> to learn more.
 [[disabling-model-plot]]
 === Disabling model plot
 
-Model plot calculates and stores the model bounds for each analyzed entity. That 
-means it generates a huge amount of results and has a significant impact on 
-performance. The indexing load is the same as for forecasting: one document per 
-bucket per split field value. If you have high cardinality fields and/or short 
-bucket span, disable model plot if it's not needed.
+Model plot calculates and stores the model bounds for each analyzed entity. It 
+generates a huge amount of results and has a significant impact on performance. 
+The indexing load is the same as for forecasting: one document per bucket per 
+split field value. If you have high cardinality fields and/or short bucket span, 
+disable model plot if it's not needed.
 
 
 [[results-retention]]
@@ -150,11 +150,11 @@ result indices. Deleting old results does not affect the model behavior.
 
 When a new anomaly has a much higher score than any anomaly in the past, the 
 anomaly scores are adjusted on a range from 0 to 100 based on the new data. This 
-process is called renormalization. It can mean rewriting a large number of 
-documents in the results index. Renormalization happens for results from the 
-last 30 days or 100 bucket spans (depending on which is the longer) by default. 
-When you are working at scale, consider setting `renormalization_window_days` to 
-a lower value, so the workload is reduced.
+is called renormalization. It can mean rewriting a large number of documents in 
+the results index. Renormalization happens for results from the last 30 days or 
+100 bucket spans (depending on which is the longer) by default. When you are 
+working at scale, set `renormalization_window_days` to a lower value, so the 
+workload is reduced.
 
 
 [[model-snapshots]]
@@ -193,8 +193,7 @@ For more information, refer to <<ml-model-snapshots>>.
 
 TIP: When your job is shut down, and it is not closed properly, it rolls back to 
 the last successfully saved snapshot when it is started again. Close the job 
-gracefully when it is possible instead of killing it so that you can preserve 
-the exact model state.
+gracefully when it is possible to preserve the exact model state.
 
 
 [[forecasting]]
@@ -216,11 +215,11 @@ that would take more than 500 MB to run won't start because this is the maximum
 limit of disk space that a forecast is allowed to use. Jobs with high memory 
 usage may have a significant impact on performance.
 
-Check the cluster monitoring data to have a better picture of the indexing rate 
-and the memory usage of your cluster. To avoid performance issues, configure 
-forecasting with a small window into the future (for example, a couple of 
-hours), then take action if needed. If it is necessary, create another forecast 
-with another small window.
+Check the cluster monitoring data to learn of the indexing rate and the memory 
+usage of your cluster. To avoid performance issues, configure forecasting with a 
+small window into the future (for example, a couple of hours), then take action 
+if needed. If it is necessary, create another forecast with another small 
+window.
 
 Predicting days into the future is not only problematic because of the possible 
 performance issues that it can cause. It is also possible that the analyzed 

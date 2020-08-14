@@ -19,9 +19,9 @@ By using the
 {ref}//ml-estimate-model-memory.html[Estimate {anomaly-jobs} model memory API], 
 you can get approximately how much memory each job will require. Based on this 
 information, decide how many {ml} nodes you need to add to the cluster to 
-support those jobs. A single job runs on a single node. For this reason, if you 
-have a job that requires 10 GB of memory to run, you need a {ml} node that can 
-provide enough resources to run the job.
+support those jobs. A single job runs on a single node. If you have a job that 
+requires 10 GB of memory to run, you need a {ml} node that can provide enough 
+resources to run the job.
 
 You can control how much of the available native memory the node can use for 
 {ml} processes (these processes are separate to {es} JVM) via the 
@@ -104,9 +104,8 @@ resource-intensive situation that you may want to avoid.
 Population analysis is more memory efficient than individual analysis of each 
 series. It builds a profile of what a "typical" entity does over a specified 
 time period and then identifies when one is behaving abnormally compared to the 
-population. Consider using population analysis for analyzing high cardinality 
-fields if you expect that the entities of the population generally behave in the 
-same way.
+population. Use population analysis for analyzing high cardinality fields if you 
+expect that the entities of the population generally behave in the same way.
 
 
 [[pre-aggregating-data]]
@@ -133,7 +132,7 @@ Model plot calculates and stores the model bounds for each analyzed entity. That
 means it generates a huge amount of results and has a significant impact on 
 performance. The indexing load is the same as for forecasting: one document per 
 bucket per split field value. If you have high cardinality fields and/or short 
-bucket span, disable model plot if it is not needed.
+bucket span, disable model plot if it's not needed.
 
 
 [[results-retention]]
@@ -154,9 +153,8 @@ anomaly scores are adjusted on a range from 0 to 100 based on the new data. This
 process is called renormalization. It can mean rewriting a large number of 
 documents in the results index. Renormalization happens for results from the 
 last 30 days or 100 bucket spans (depending on which is the longer) by default. 
-If you have a lot of results, generate many anomalies, and have a short bucket 
-span, consider setting `renormalization_window_days` to a lower value, so the 
-workload is reduced.
+When you are working at scale, consider setting `renormalization_window_days` to 
+a lower value, so the workload is reduced.
 
 
 [[model-snapshots]]
@@ -206,11 +204,9 @@ There are two main factors to consider when you create a forecast: indexing load
 and memory usage.
 
 Forecasting writes a new document to the result index for every forecasted 
-element of the job. If you have a bucket span of 5 minutes and you are 
-forecasting one hour to the future, you have twelve documents for every job 
-partition that is being predicted. For jobs with high partition field 
-cardinality, forecasting results in a high number of documents being written out 
-to the result index, which may add a high load to your data nodes.
+element of the job. For jobs with high partition field cardinality, forecasting 
+results in a high number of documents being written out to the result index, 
+which may add a high load to your data nodes.
 
 The memory usage of a forecast is restricted to 20 MB by default. From 7.9, you 
 can extend this limit by setting `max_model_memory` to a higher value where the 
@@ -223,8 +219,8 @@ usage may have a significant impact on performance.
 Check the cluster monitoring data to have a better picture of the indexing rate 
 and the memory usage of your cluster. To avoid performance issues, configure 
 forecasting with a small window into the future (for example, a couple of 
-hours), then take action if needed based on the results. If it is necessary, 
-create another forecast with another small window.
+hours), then take action if needed. If it is necessary, create another forecast 
+with another small window.
 
 Predicting days into the future is not only problematic because of the possible 
 performance issues that it can cause. It is also possible that the analyzed 

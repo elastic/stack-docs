@@ -31,30 +31,6 @@ deployment, you don't need to manually increase this value, it is automatically
 set.**
 
 
-[[max-model-memory-limit]]
-=== Setting model memory limit properly
-
-There are two model memory limit configuration options:
-
-* `xpack.ml.max_model_memory_limit` is a node setting that defines the maximum 
-  `model_memory_limit` value you can set for any {anomaly-job} on the node. If 
-  the memory requirement of a job is higher than this value, an error occurs 
-  and the job cannot be created.
-
-* `model_memory_limit` is a job variable that sets the approximate maximum 
-  amount of memory resources required for analytical processing. If this 
-  variable is set too low for the job and the limit is approached, data 
-  discarding becomes more aggressive. Upon exceeding this limit, new entities 
-  are not modeled.
-
-Use model memory estimation to have a better picture of the memory needs of the 
-model. Model memory estimation happens automatically when you create the job in 
-{kib} or you can call the {ref}//ml-estimate-model-memory.html[Estimate 
-{anomaly-jobs} model memory API] manually. The estimation is based on the 
-analysis configuration details for the job and cardinality estimates for the 
-fields it references.
-
-
 [[job-config]]
 == Job configuration guidelines
 
@@ -66,20 +42,20 @@ If a {anomaly-job} generates a lot of data, use a dedicated index to store the
 results. This way, you can retain results in a shorter time. If you use a shared 
 index, the different {anomaly-jobs} may slow down.
 
-When you want to delete a job, the delete job API instantly drops the index 
-containing the job’s results if you use a dedicated index. If you use a shared 
-one, however, it may take hours to delete all the individual documents related 
-to the deleted job.
+For large jobs use a dedicated results index. This ensures that results from a 
+single large job does not dominate the shared results index. It also ensures 
+that the job and results (if `results_retention_days` is set) can deleted more 
+efficiently and improves renormalization performance.
 
 
-[[search-optimization]]
-=== Optimizing search queries
+[[disabling-model-plot]]
+=== Disabling model plot
 
-There are different ways to write {es} queries and some of them are more 
-efficient than others. If you are operating on a big scale, make sure that your 
-{dfeed} query is as efficient as possible. Consult 
-{ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
-performance tuning.
+Model plot calculates and stores the model bounds for each analyzed entity which 
+are used to display the shaded area in the single metric viewer charts. Model 
+plot creates one result document per bucket per split field value. If you have 
+high cardinality fields and/or a short bucket span, disabling model plot will 
+reduce resource usage.
 
 
 [[influencers-detectors]]
@@ -87,15 +63,6 @@ performance tuning.
 
 Optimize your {anomaly-job} by choosing only relevant influencer fields and 
 detectors.
-
-
-[[short-bucket-span]]
-=== Avoiding short bucket span for large jobs
-
-If you have a large amount of data, use longer bucket span. If your data 
-requires short bucket span, split the data to avoid having high cardinality. The 
-combination of short bucket span and high cardinality is a resource-intensive 
-situation that you may want to avoid.
 
 
 [[population-analysis]]
@@ -106,6 +73,22 @@ series. It builds a profile of what a "typical" entity does over a specified
 time period and then identifies when one is behaving abnormally compared to the 
 population. Use population analysis for analyzing high cardinality fields if you 
 expect that the entities of the population generally behave in the same way.
+
+
+[[model-memory-limit]]
+=== Setting model memory limit properly
+
+The `model_memory_limit` job variable sets the approximate maximum amount of 
+memory resources required for analytical processing. If this variable is set too 
+low for the job and the limit is approached, data pruning becomes more 
+aggressive. Upon exceeding this limit, new entities are not modeled.
+
+Use model memory estimation to have a better picture of the memory needs of the 
+model. Model memory estimation happens automatically when you create the job in 
+{kib} or you can call the {ref}//ml-estimate-model-memory.html[Estimate 
+{anomaly-jobs} model memory API] manually. The estimation is based on the 
+analysis configuration details for the job and cardinality estimates for the 
+fields it references.
 
 
 [[pre-aggregating-data]]
@@ -122,17 +105,17 @@ this data cannot be aggregated. If you have many influencer fields, it may not
 be beneficial to use an aggregation either, because only a few documents in each 
 bucket may have the combination of all the different influencer fields.
 
-Consult <<ml-configuring-aggregation>> to learn more.
+Please consult <<ml-configuring-aggregation>> to learn more.
 
 
-[[disabling-model-plot]]
-=== Disabling model plot
+[[search-optimization]]
+=== Optimizing search queries
 
-Model plot calculates and stores the model bounds for each analyzed entity. It 
-generates a huge amount of results and has a significant impact on performance. 
-The indexing load is the same as for forecasting: one document per bucket per 
-split field value. If you have high cardinality fields and/or short bucket span, 
-disable model plot if it's not needed.
+There are different ways to write {es} queries and some of them are more 
+efficient than others. If you are operating on a big scale, make sure that your 
+{dfeed} query is as efficient as possible. Please consult 
+{ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
+performance tuning.
 
 
 [[results-retention]]
@@ -176,24 +159,44 @@ retention days by setting the following configuration options:
 * `background_persist_interval` sets the time between each periodic persistence 
   of the model. The default value is a randomized value between 3 to 4 hours, 
   which avoids all jobs persisting at the same time. Increase this value 
-  appropriately to fit your job.
+  appropriately to fit your job to reduce the work load. Note that a higher 
+  value means that the job may restore older model state in the event of a node 
+  failure.
 
 * `daily_model_snapshot_retention_after_days` affects the automatic removal of 
   old model snapshots for the job. It specifies a period of time (in days) after 
   which only the first snapshot per day is retained. This period is relative to 
   the timestamp of the most recent snapshot for this job. Consider setting this 
   value to only a couple of days after which one snapshot per day will be 
-  retained.
+  retained. Jobs created in 7.8 and above have this value set to 1. Consider 
+  setting this to 1 for jobs created prior to 7.8.
 
 * `model_snapshot_retention_days` defines the time in days that model snapshots 
   are retained for the job. The default value is ten days meaning snapshots ten 
-  days older than the newest snapshot are deleted.
+  days older than the newest snapshot are deleted. A smaller value reduces the 
+  size of the model state stored on disk, but the time window from which the 
+  model can be restored is also smaller. 
 
 For more information, refer to <<ml-model-snapshots>>.
 
 TIP: When your job is shut down, and it is not closed properly, it rolls back to 
 the last successfully saved snapshot when it is started again. Close the job 
 gracefully when it is possible to preserve the exact model state.
+
+
+[[short-bucket-span]]
+=== Avoiding short bucket span for large jobs
+
+For machine data, bucket span is typically between 15m and 1h. The recommended 
+value always depends on the data, the use case, and the latency required for 
+alerting. If you have a large amount of data, use longer bucket span because 
+less resources are required for processing each bucket and fewer results are 
+written. Bucket spans that are sensible dividers of an hour / day work best as 
+most periodic patterns have a daily cycle.
+
+If your data requires short bucket span, split the data to avoid having 
+high cardinality. The combination of short bucket span and high cardinality is a 
+resource-intensive situation that you may want to avoid.
 
 
 [[forecasting]]

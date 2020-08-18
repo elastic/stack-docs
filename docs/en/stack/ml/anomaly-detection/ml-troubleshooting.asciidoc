@@ -96,8 +96,14 @@ PUT .ml-config/_mapping
 --------------------------------------------------
 // TEST[skip:TBD]
 
-If the problem exists in your {ml} annotations index after you upgrade, you must
-reindex it. For example:
+NOTE: If {security-features} are enabled, you must have the
+{ref}/built-in-roles.html[`superuser` role] to alter the `.ml-config` index.
+
+If you did not manually update the mappings before the upgrade, you can
+nonetheless try to do it after the upgrade. If either update fails, you must
+reindex that index.
+
+For example, to reindex the {ml} annotations index, follow these steps:
 
 [source,console]
 --------------------------------------------------
@@ -135,10 +141,7 @@ DELETE temp_ml_annotations
 --------------------------------------------------
 // TEST[skip:TBD]
 
-If the problem exists in your {ml} config index after you upgrade, you have two
-options. If you discover this problem after you upgrade but before you open an
-{anomaly-job}, you can apply the mappings manually. If the incorrect mappings
-have already been applied, you must reindex to recover. For example:
+To reindex the {ml} config index, follow these steps:
 
 [source,console]
 --------------------------------------------------
@@ -164,20 +167,17 @@ PUT .ml-config
   "settings": { "auto_expand_replicas": "0-1"}
 }
 
-# 6. Reindex the temporary index into the .ml-config index
+# 6. Disable upgrade mode
+POST _ml/set_upgrade_mode?enabled=false&timeout=10m
+
+# 7. Reindex the temporary index into the .ml-config index
 POST _reindex
 {
   "source": { "index": "temp_ml_config" }, 
   "dest": { "index": ".ml-config" }
 }
 
-# 7. Disable upgrade mode
-POST _ml/set_upgrade_mode?enabled=false&timeout=10m
-
 # 8. Delete the temporary index
 DELETE temp_ml_config
 --------------------------------------------------
 // TEST[skip:TBD]
-
-NOTE: If {security-features} are enabled, you must have the
-{ref}/built-in-roles.html[`superuser` role] to alter the `.ml-config` index.

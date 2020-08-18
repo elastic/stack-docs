@@ -38,7 +38,7 @@ set.**
 === Using a dedicated results index
 
 For large jobs use a dedicated results index. This ensures that results from a 
-single large job does not dominate the shared results index. It also ensures 
+single large job do not dominate the shared results index. It also ensures 
 that the job and results (if `results_retention_days` is set) can be deleted 
 more efficiently and improves renormalization performance.
 
@@ -143,45 +143,25 @@ workload is reduced.
 [[model-snapshots]]
 === Setting model snapshot retention time 
 
-Model snapshots are created every 3 to 4 hours by default. Although the 
-snapshots are compressed, they can still be extensive for large jobs. By 
-default, if there are snapshots over one day older than the newest snapshot, 
-they are deleted except for the first snapshot each day. As well, all snapshots 
-over ten days older than the newest snapshot are deleted. There are two things 
-to consider about snapshot retention:
+Model snapshots are taken periodically, to ensure resilience in the event of a 
+system failure and to allow you to manually revert to a specific point in time. 
+These are stored in a compressed format in an internal index and kept according 
+to the configured retention policy. Load is placed on the cluster when indexing 
+a model snapshot and index size is increased as multiple snapshots are retained.  
 
-* How frequently you want to create snapshots from the model
-* How long you want to retain the snapshots.
-
-You can fine-tune the frequency of the model persistence and the snapshot 
-retention days by setting the following configuration options:
-
-* `background_persist_interval` sets the time between each periodic persistence 
-  of the model. The default value is a randomized value between 3 to 4 hours, 
-  which avoids all jobs persisting at the same time. Increase this value 
-  appropriately to fit your job to reduce the work load. Note that a higher 
-  value means that the job may restore older model state in the event of a node 
-  failure.
-
-* `daily_model_snapshot_retention_after_days` affects the automatic removal of 
-  old model snapshots for the job. It specifies a period of time (in days) after 
-  which only the first snapshot per day is retained. This period is relative to 
-  the timestamp of the most recent snapshot for this job. Consider setting this 
-  value to only a couple of days after which one snapshot per day will be 
-  retained. Jobs created in 7.8 and above have this value set to 1. Consider 
-  setting this to 1 for jobs created prior to 7.8.
-
-* `model_snapshot_retention_days` defines the time in days that model snapshots 
-  are retained for the job. The default value is ten days meaning snapshots ten 
-  days older than the newest snapshot are deleted. A smaller value reduces the 
-  size of the model state stored on disk, but the time window from which the 
-  model can be restored is also smaller. 
+When working with large model sizes, consider how frequently you want to create 
+model snapshots using `background_persist_interval`. The default is every 3 to 4 
+hours. Increasing this interval will reduce the periodic indexing load on your 
+cluster, but in the event of a system failure, you may be reverting to an older 
+version of the model. 
+ 
+Also consider how long you wish to retain snapshots for using 
+`model_snapshot_retention_days` and `daily_model_snapshot_retention_after_days`. 
+Retaining fewer snapshots substantially reduces index storage requirements for 
+model state, but also reduces the granularity of model snapshots from which you 
+can revert.
 
 For more information, refer to <<ml-model-snapshots>>.
-
-TIP: When your job is shut down, and it is not closed properly, it rolls back to 
-the last successfully saved snapshot when it is started again. Close the job 
-gracefully when it is possible to preserve the exact model state.
 
 
 [[population-analysis]]

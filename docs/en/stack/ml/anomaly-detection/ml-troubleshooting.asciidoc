@@ -63,10 +63,38 @@ PUT .ml-annotations-6/_mapping
     }
   }
 }
+
+PUT .ml-config/_mapping
+{
+  "properties": {
+    "analysis_config": {
+      "properties": {
+        "per_partition_categorization" : {
+          "properties" : {
+            "enabled" : {
+              "type" : "boolean"
+            },
+            "stop_on_warn" : {
+              "type" : "boolean"
+            }
+          }
+        }
+      }
+    },
+    "max_num_threads" : {
+      "type" : "integer"
+    },
+    "model_plot_config" : {
+      "properties" : {
+        "annotations_enabled" : {
+          "type" : "boolean"
+        }
+      }
+    }
+  }
+}
 --------------------------------------------------
 // TEST[skip:TBD]
-
-//TBD: Are the same mappings required for the .ml-config index?
 
 If the problem exists in your {ml} annotations index after you upgrade, you must
 reindex it. For example:
@@ -89,17 +117,18 @@ POST _reindex
 # 4. Delete the .ml-annotations-6 index
 DELETE .ml-annotations-6
 
-# 5. Wait for .ml-annotations-6 to be recreated
+# 5. Disable upgrade mode
+POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 
-# 6. Reindex the temporary index into the .ml-annotations-6 index
+
+# 6. Wait for .ml-annotations-6 to be recreated
+
+# 7. Reindex the temporary index into the .ml-annotations-6 index
 POST _reindex
 {
   "source": { "index": "temp_ml_annotations" }, 
   "dest": { "index": ".ml-annotations-6" }
 }
-
-# 7. Disable upgrade mode
-POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 
 # 8. Delete the temporary index
 DELETE temp_ml_annotations

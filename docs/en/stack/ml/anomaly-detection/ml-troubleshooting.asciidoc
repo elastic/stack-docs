@@ -1,118 +1,182 @@
 [role="xpack"]
 [[ml-troubleshooting]]
-= Troubleshooting {ml} {anomaly-detect}
+= Troubleshooting {anomaly-detect}
 ++++
 <titleabbrev>Troubleshooting</titleabbrev>
 ++++
 
-Use the information in this section to troubleshoot common problems and find
-answers for frequently asked questions.
+Use the information in this section to troubleshoot common problems and known
+issues.
 
-* <<ml-rollingupgrade>>
-* <<ml-mappingclash>>
-* <<ml-jobnames>>
-* <<ml-upgradedf>>
+[discrete]
+[[ml-troubleshooting-mappings]]
+== Upgrade to 7.9.0 causes incorrect mappings
 
-include::{stack-repo-dir}/help.asciidoc[tag=get-help]
-
-[[ml-rollingupgrade]]
-== Machine learning features unavailable after rolling upgrade
-
-This problem occurs after you upgrade all of the nodes in your cluster to
-{version} by using rolling upgrades. When you try to use {ml-features} for
-the first time, all attempts fail, though `GET _xpack` and `GET _xpack/usage`
-indicate that {xpack} is enabled.
+This problem occurs when you upgrade to 7.9.0 and incorrect mappings are
+added to the {ml} annotations index or the {ml} config index.
 
 *Symptoms:*
 
-* Errors when you click *Machine Learning* in {kib}.
-For example: `Jobs list could not be created` and `An internal server error occurred`.
-* Null pointer and remote transport exceptions when you run {ml} APIs such as
-`GET _ml/anomaly_detectors` and `GET _ml/datafeeds`.
-* Errors in the log files on the master nodes.
-For example: `unable to install ml metadata upon startup`
+* Some pages in the {ml-app} UI do not display correctly. For example, the
+*Anomaly Explorer* fails to load.
+* The following error occurs in {kib} when you try to view annotations for
+{anomaly-jobs}: `Error loading the list of annotations for this job`
+* Cannot create or update any {ml} jobs. The error messages in this case are
+illegal argument exceptions like `mapper [model_plot_config.annotations_enabled]
+cannot be changed from type [keyword] to [boolean]`. This problem is most likely
+to occur if after upgrading you open an existing {anomaly-job} in 7.9.0 before
+you create or update a job. 
 
 *Resolution:*
 
-After you upgrade all master-eligible nodes to {es} {version}, restart the
-current master node, which triggers the {ml-features} to re-initialize.
+To avoid this problem, manually update the mappings on the {ml} annotations and
+config indices in your old {es} version before you upgrade to 7.9.0. For example:
 
-For more information, see {ref}/rolling-upgrades.html[Rolling upgrades].
+[source,console]
+--------------------------------------------------
+PUT .ml-annotations-6/_mapping
+{
+  "properties": {
+    "event" : {
+      "type" : "keyword"
+    },
+    "detector_index" : {
+      "type" : "integer"
+    },
+    "partition_field_name" : {
+      "type" : "keyword"
+    },
+    "partition_field_value" : {
+      "type" : "keyword"
+    },
+    "over_field_name" : {
+      "type" : "keyword"
+    },
+    "over_field_value" : {
+      "type" : "keyword"
+    },
+    "by_field_name" : {
+      "type" : "keyword"
+    },
+    "by_field_value" : {
+      "type" : "keyword"
+    }
+  }
+}
 
-[[ml-mappingclash]]
-== Job creation failure due to mapping clash
+PUT .ml-config/_mapping
+{
+  "properties": {
+    "analysis_config": {
+      "properties": {
+        "per_partition_categorization" : {
+          "properties" : {
+            "enabled" : {
+              "type" : "boolean"
+            },
+            "stop_on_warn" : {
+              "type" : "boolean"
+            }
+          }
+        }
+      }
+    },
+    "max_num_threads" : {
+      "type" : "integer"
+    },
+    "model_plot_config" : {
+      "properties" : {
+        "annotations_enabled" : {
+          "type" : "boolean"
+        }
+      }
+    }
+  }
+}
+--------------------------------------------------
+// TEST[skip:TBD]
 
-This problem occurs when you try to create an {anomaly-job}.
+NOTE: If {security-features} are enabled, you must have the
+{ref}/built-in-roles.html[`superuser` role] to alter the `.ml-config` index.
 
-*Symptoms:*
+If you did not manually update the mappings before the upgrade, you can
+nonetheless try to do it after the upgrade. If either update fails, you must
+reindex that index.
 
-* Illegal argument exception occurs when you click *Create Job* in {kib} or run
-the create job API. For example:
-`Save failed: [status_exception] This job would cause a mapping clash
-with existing field [field_name] - avoid the clash by assigning a dedicated
-results index` or `Save failed: [illegal_argument_exception] Can't merge a non
-object mapping [field_name] with an object mapping [field_name]`.
+For example, to reindex the {ml} annotations index, follow these steps:
 
-*Resolution:*
+[source,console]
+--------------------------------------------------
+# 1. Enable upgrade mode
+POST _ml/set_upgrade_mode?enabled=true&timeout=10m
 
-This issue typically occurs when two or more jobs store their results in the
-same index and the results contain fields with the same name but different
-data types or different `fields` settings.
+# 2. Create a temporary index 
+PUT temp_ml_annotations
 
-By default, {ml} results are stored in the `.ml-anomalies-shared` index in {es}.
-To resolve this issue, click *Advanced > Use dedicated index* when you create
-the job in {kib}. If you are using the create {anomaly-job} job API, specify an
-index name in the `results_index_name` property.
+# 3. Reindex the `.ml-annotations-6` index into the temporary index
+POST _reindex
+{
+  "source": { "index": ".ml-annotations-6" }, 
+  "dest": { "index": "temp_ml_annotations" }
+}
 
-[[ml-jobnames]]
-== {kib} cannot display jobs with invalid characters in their name
+# 4. Delete the .ml-annotations-6 index
+DELETE .ml-annotations-6
 
-This problem occurs when you create an {anomaly-job} by using the
-{ref}/ml-put-job.html[Create {anomaly-jobs} API] then try to view that job in
-{kib}. In particular, the problem occurs when you use a period(.) in the job
-identifier.
+# 5. Disable upgrade mode
+POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 
-*Symptoms:*
+# 6. Wait for .ml-annotations-6 to be recreated
 
-* When you try to open a job (named, for example, `job.test` in the
-**Anomaly Explorer** or the **Single Metric Viewer**, the job name is split and
-the text after the period is assumed to be the job name. If a job does not exist
-with that abbreviated name, an error occurs. For example:
-`Warning Requested job test does not exist`. If a job exists with that
-abbreviated name, it is displayed.
+# 7. Reindex the temporary index into the .ml-annotations-6 index
+POST _reindex
+{
+  "source": { "index": "temp_ml_annotations" }, 
+  "dest": { "index": ".ml-annotations-6" }
+}
 
-*Resolution:*
+# 8. Delete the temporary index
+DELETE temp_ml_annotations
+--------------------------------------------------
+// TEST[skip:TBD]
 
-Create {anomaly-jobs} in {kib} or ensure that you create {anomaly-jobs} with
-valid identifiers when you use the APIs. For more information about valid
-identifiers, see
-{ref}/ml-put-job.html[Create {anomaly-jobs} API].
+To reindex the {ml} config index, follow these steps:
 
-[[ml-upgradedf]]
-== Upgraded nodes fail to start due to {dfeed} issues
+[source,console]
+--------------------------------------------------
+# 1. Enable upgrade mode
+POST _ml/set_upgrade_mode?enabled=true&timeout=10m
 
-This problem occurs when you have a {dfeed} that contains search or query
-domain specific language (DSL) that was discontinued. For example, if you
-created a {dfeed} query in 5.x using search syntax that was deprecated in 5.x
-and removed in 6.0, you must fix the {dfeed} before you upgrade to 6.0.
+# 2. Create a temporary index
+PUT temp_ml_config
 
-*Symptoms:*
+# 3. Reindex the .ml-config index into the temporary index
+POST _reindex
+{
+  "source": { "index": ".ml-config" }, 
+  "dest": { "index": "temp_ml_config" }
+}
 
-* If {ref}/logging.html#deprecation-logging[deprecation logging] is enabled
-before the upgrade, deprecation messages are generated when the {dfeeds} attempt
-to retrieve data.
-* After the upgrade, nodes fail to start and the error indicates that they
-failed to read the local state.
+# 4. Delete the .ml-config index
+DELETE .ml-config
 
-*Resolution:*
+# 5. Create the .ml-config index 
+PUT .ml-config
+{
+  "settings": { "auto_expand_replicas": "0-1"}
+}
 
-Before you upgrade, identify the problematic search or query DSL. In 5.6.5 and
-later, the Upgrade Assistant detects these scenarios. If you cannot fix the DSL
-before the upgrade, you must delete the {dfeed} then re-create it with valid DSL
-after the upgrade.
+# 6. Reindex the temporary index into the .ml-config index
+POST _reindex
+{
+  "source": { "index": "temp_ml_config" }, 
+  "dest": { "index": ".ml-config" }
+}
 
-If you do not fix or delete the {dfeed} before the upgrade, in order to successfully
-start the failing nodes you must downgrade the nodes then fix the problem per
-above.
+# 7. Disable upgrade mode
+POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 
-See also {stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
+# 8. Delete the temporary index
+DELETE temp_ml_config
+--------------------------------------------------
+// TEST[skip:TBD]

@@ -166,15 +166,15 @@ PUT .ml-config
   "settings": { "auto_expand_replicas": "0-1"}
 }
 
-# 6. Disable upgrade mode
-POST _ml/set_upgrade_mode?enabled=false&timeout=10m
-
-# 7. Reindex the temporary index into the .ml-config index
+# 6. Reindex the temporary index into the .ml-config index
 POST _reindex
 {
   "source": { "index": "temp_ml_config" }, 
   "dest": { "index": ".ml-config" }
 }
+
+# 7. Disable upgrade mode
+POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 
 # 8. Delete the temporary index
 DELETE temp_ml_config

@@ -2,10 +2,9 @@
 [[anomaly-detection-scale]]
 = Using {anomaly-detect} at scale
 
-Working with large {anomaly-jobs} requires careful planning; otherwise, job 
-performance could be adversely effected. This page contains several guidelines 
-to consider when using {anomaly-detect} at scale and helps you to avoid possible 
-pitfalls.
+Working with large {anomaly-jobs} requires careful planning as bigger jobs need 
+more resources. This page contains several guidelines and considerations when 
+using {anomaly-detect} at scale to get the best out of the feature.
 
 
 [[infrastructure-config]]
@@ -38,14 +37,10 @@ set.**
 [[dedicated-results-index]]
 === Using a dedicated results index
 
-If a {anomaly-job} generates a lot of data, use a dedicated index to store the 
-results. This way, you can retain results in a shorter time. If you use a shared 
-index, the different {anomaly-jobs} may slow down.
-
 For large jobs use a dedicated results index. This ensures that results from a 
 single large job does not dominate the shared results index. It also ensures 
-that the job and results (if `results_retention_days` is set) can deleted more 
-efficiently and improves renormalization performance.
+that the job and results (if `results_retention_days` is set) can be deleted 
+more efficiently and improves renormalization performance.
 
 
 [[disabling-model-plot]]
@@ -65,14 +60,19 @@ Optimize your {anomaly-job} by choosing only relevant influencer fields and
 detectors.
 
 
-[[population-analysis]]
-=== Using population analysis
+[[short-bucket-span]]
+=== Avoiding short bucket span for large jobs
 
-Population analysis is more memory efficient than individual analysis of each 
-series. It builds a profile of what a "typical" entity does over a specified 
-time period and then identifies when one is behaving abnormally compared to the 
-population. Use population analysis for analyzing high cardinality fields if you 
-expect that the entities of the population generally behave in the same way.
+For machine data, bucket span is typically between 15m and 1h. The recommended 
+value always depends on the data, the use case, and the latency required for 
+alerting. A job with a longer bucket span uses less resources because fewer 
+buckets require processing and fewer results are written. Bucket spans that are 
+sensible dividers of an hour or day work best as most periodic patterns have a 
+daily cycle.
+
+If your data requires short bucket span, split the data to avoid having 
+high cardinality. The combination of short bucket span and high cardinality is a 
+resource-intensive situation that you may want to avoid.
 
 
 [[model-memory-limit]]
@@ -184,19 +184,14 @@ the last successfully saved snapshot when it is started again. Close the job
 gracefully when it is possible to preserve the exact model state.
 
 
-[[short-bucket-span]]
-=== Avoiding short bucket span for large jobs
+[[population-analysis]]
+=== Using population analysis
 
-For machine data, bucket span is typically between 15m and 1h. The recommended 
-value always depends on the data, the use case, and the latency required for 
-alerting. If you have a large amount of data, use longer bucket span because 
-less resources are required for processing each bucket and fewer results are 
-written. Bucket spans that are sensible dividers of an hour / day work best as 
-most periodic patterns have a daily cycle.
-
-If your data requires short bucket span, split the data to avoid having 
-high cardinality. The combination of short bucket span and high cardinality is a 
-resource-intensive situation that you may want to avoid.
+Population analysis is more memory efficient than individual analysis of each 
+series. It builds a profile of what a "typical" entity does over a specified 
+time period and then identifies when one is behaving abnormally compared to the 
+population. Use population analysis for analyzing high cardinality fields if you 
+expect that the entities of the population generally behave in the same way.
 
 
 [[forecasting]]

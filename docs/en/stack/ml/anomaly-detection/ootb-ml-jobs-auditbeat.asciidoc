@@ -16,31 +16,26 @@ docker_high_count_process_events_ecs::
 
 * For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
 `docker`.
-* Models process execution rates (`partition_field_name` is `container.name`).
-* Detects unusual increases in process execution rates in Docker containers 
-  (using the <<ml-count,`high_count` function>>).
+* Models process execution rates for each `container.name`.
+* Detects unusual increases in process execution rates in Docker containers.
 
 docker_rare_process_activity_ecs::
 
 * For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
 `docker`.
-* Models occurrences of process execution (`partition_field_name` is 
-  `container.name`).
-* Detects rare process executions in Docker containers (using the 
-  <<ml-rare,`rare` function>>).
+* Models occurrences of process execution for each `container.name`.
+* Detects rare process executions in Docker containers.
 
 hosts_high_count_process_events_ecs::
 
 * For Auditbeat data where `event.module` is `auditd`.
-* Models process execution rates (`partition_field_name` is `host.name`).
-* Detects unusual increases in process execution rates (using the 
-  <<ml-nonzero-count,`high_non_zero_count` function>>).
+* Models process execution rates for each `host.name`.
+* Detects unusual increases in process execution rates.
 
 hosts_rare_process_activity_ecs::
 
 * For Auditbeat data where `event.module` is `auditd`.
-* Models process execution rates (`partition_field_name` is `host.name`).
-* Detects rare process executions on hosts (using the 
-  <<ml-rare,`rare` function>>).
+* Models process execution rates for each `host.name`.
+* Detects rare process executions on hosts.
 
 // end::auditbeat-jobs[]

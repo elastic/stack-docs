@@ -15,25 +15,21 @@ high_mean_cpu_iowait_ecs::
 
 * For {metricbeat} data where `event.dataset` is `system.cpu` and 
   `system.filesystem`.
-* Models CPU time spent in iowait (`partition_field_name` is `host.name`).
-* Detects unusual increases in cpu time spent in iowait (using the 
-  <<ml-metric-mean,`high_mean` function>>).
+* Models CPU time spent in iowait for every `host.name`.
+* Detects unusual increases in cpu time spent in iowait.
 
 max_disk_utilization_ecs::
 
 * For {metricbeat} data where `event.dataset` is `system.cpu` and 
   `system.filesystem`.
-* Models disk utilization (`partition_field_name` is `host.name`).
-* Detects unusual increases in disk utilization (using the 
-  <<ml-metric-max,`max` function>>).
+* Models disk utilization for each `host.name`.
+* Detects unusual increases in disk utilization.
 
 metricbeat_outages_ecs::
 
 * For {metricbeat} data where `event.dataset` is `system.cpu` and 
   `system.filesystem`.
-* Models counts of {metricbeat} documents 
-  (`partition_field_name` is `event.dataset`).
-* Detects unusual decreases in {metricbeat} documents (using the 
-  <<ml-count,`low_count` function>>).
+* Models counts of {metricbeat} documents.
+* Detects unusual decreases in {metricbeat} documents.
 
 // end::metricbeat-jobs[]

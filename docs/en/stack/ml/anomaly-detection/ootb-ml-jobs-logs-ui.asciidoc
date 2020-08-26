@@ -14,16 +14,13 @@ https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/
 log_entry_categories_count::
 
 * For log entry categories via the Logs UI.
-* Models the occurrences of log events (`partition_field_name` is 
-  `event.dataset`).
-* Detects anomalies in count of log entries by category (using the 
-  <<ml-count,`count` function>>).
+* Models the occurrences of log events.
+* Detects anomalies in the count of log entries by category.
 
 log_entry_rate::
 
 * For log entries via the Logs UI.
-* Models ingestion rates (`partition_field_name` is `event.dataset`). 
-* Detects anomalies in the log entry ingestion rate (using the 
-  <<ml-count,`low_count` function>>).
+* Models ingestion rates. 
+* Detects anomalies in the log entry ingestion rate.
   
 // end::logs-jobs[]

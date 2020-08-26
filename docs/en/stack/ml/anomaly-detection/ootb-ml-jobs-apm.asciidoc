@@ -20,23 +20,21 @@ throughput.
 abnormal_span_durations_nodejs::
 
 * For data from {apm-node-agents} (where `agent.name` is `nodejs`).
-* Models the duration of spans (`partition_field_name` is `span.type`).
-* Detects for spans that are taking longer than usual to process (using the 
-  <<ml-metric-mean,`high_mean` function>>).
+* Models the duration of spans.
+* Detects spans that are taking longer than usual to process.
 
 abnormal_trace_durations_nodejs::
 
 * For data from {apm-node-agents} (where `agent.name` is `nodejs`).
 * Models the duration of trace transactions.
-* Detects trace transactions that are processing slower than usual (using the 
-  <<ml-metric-mean,`high_mean` function>>).
+* Detects trace transactions that are processing slower than usual.
 
 decreased_throughput_nodejs::
 
 * For data from {apm-node-agents} (where `agent.name` is `nodejs`).
 * Models the transaction rate of the application.
 * Detects periods during which the application is processing fewer requests 
-than normal (using the <<ml-count,`low_count` function>>).
+than normal.
 
 // end::apm-nodejs-jobs[]
 
@@ -50,18 +48,15 @@ issues.
 abnormal_span_durations_jsbase::
 
 * For data from {apm-rum-agents} (where `agent.name` is `js-base`).
-* Models the duration of spans (`partition_field_name` is `span.type`).
-* Detects for spans that are taking longer than usual to process (using the 
-<<ml-metric-mean,`high_mean` function>>).
+* Models the duration of spans.
+* Detects spans that are taking longer than usual to process.
   
 anomalous_error_rate_for_user_agents_jsbase::
 This job can help detect browser compatibility issues.
 +
 * For data from {apm-rum-agents} (where `agent.name` is `js-base`).
-* Models the error rate of user agents (`partition_field_name` is 
-`user_agent.name`).
-* Detects user agents that are encountering errors at an above normal rate 
-(using the <<ml-nonzero-count,`high_non_zero_count` function>>).
+* Models the error rate of user agents.
+* Detects user agents that are encountering errors at an above normal rate.
 
 decreased_throughput_jsbase::
 
@@ -69,16 +64,14 @@ decreased_throughput_jsbase::
 `js-base`).
 * Models the transaction rate of the application.
 * Detects periods during which the application is processing fewer requests than
-normal (using the <<ml-count,`low_count` function>>).
+normal.
 
 high_count_by_user_agent_jsbase::
 This job is useful in identifying bots.
 +
 * For data from {apm-rum-agents} (where `agent.name` is `js-base`).
-* Models the request rate of user agents (`partition_field_name` is 
-`user_agent.name`).
-* Detects user agents that are making requests at a suspiciously high rate 
-(using the <<ml-nonzero-count,`high_non_zero_count` function>>).
+* Models the request rate of user agents.
+* Detects user agents that are making requests at a suspiciously high rate.
 
 // end::apm-rum-javascript-jobs[]
 
@@ -91,8 +84,7 @@ high_mean_transaction_duration::
 
 * For transaction data where `processor.event` is `transaction`.
 * Models duration of transactions by transaction type for APM services.
-* Detects anomalies in high mean of transaction duration (using the 
-  <<ml-metric-mean,`high_mean` function>>).
+* Detects anomalies in high mean of transaction duration.
 
 // end::apm-transaction-jobs[]
 // end::apm-jobs[]

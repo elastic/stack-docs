@@ -10,10 +10,18 @@ issues.
 
 [discrete]
 [[ml-troubleshooting-mappings]]
-== Upgrade to 7.9.0 causes incorrect mappings
+== Incorrect mappings in 7.9.0 or higher
 
 This problem occurs when you upgrade to 7.9.0 and incorrect mappings are
 added to the {ml} annotations index or the {ml} config index.
+
+It is also possible for this problem to occur for the {ml} config index when
+you upgrade to 7.9.1 or higher after previously upgrading to several prior 7.x
+versions. If you skip version 7.9.0 and upgrade directly to version 7.9.1 or
+higher then the mappings on the {ml} annotations index will be correct.
+However, if you upgraded to version 7.9.0 and suffered incorrect mappings then
+upgrading to 7.9.1 will not fix these; you will need to follow the procedure
+detailed below.
 
 *Symptoms:*
 

@@ -1,0 +1,258 @@
+[role="xpack"]
+[[anomaly-detection-scale]]
+= Working with {anomaly-detect} at scale
+
+There are many advanced configuration options for {anomaly-jobs}, some of them 
+affect the performance or resource usage significantly. This guide contains a 
+list of considerations to help you plan for using {anomaly-detect} at scale.
+
+In this guide, you’ll learn how to:
+
+* Understand the impact of configuration options on the performance of 
+  {anomaly-jobs}
+
+Prerequisites:
+
+* This guide assumes you’re already familiar with how to create {anomaly-jobs}. 
+  If not, refer to <<ml-overview>>.
+
+The following recommendations are not sequential – the numbers just help to 
+navigate between the list items; you can take action on one or more of them in 
+any order. You can implement some of these changes on existing jobs; others 
+require you to clone an existing job or create a new one.
+
+[discrete]
+[[node-sizing]]
+== 1. Consider node sizing and configuration
+
+An {anomaly-job} runs on a single node and requires sufficient resources to hold 
+its model in memory. When a job is opened, it will be placed on the node with 
+the most available memory at that time.  
+
+The available memory for {ml} on a node must be sufficient to accommodate the 
+size of the largest model. The total available memory across all {ml} nodes must 
+be sufficient to accommodate the memory requirement for all simultaneously open 
+jobs.
+
+In {ecloud}, dedicated {ml} nodes are provisioned with most of the RAM 
+automatically being available to the {ml} native processes. If deploying 
+self-managed, then we recommend deploying dedicated {ml} nodes and increasing 
+the value of `xpack.ml.max_machine_memory_percent` from the default 30%.
+
+Increasing the number of nodes allows distribution of job processing. If running 
+many jobs, even small memory ones, consider increasing the number of nodes in 
+your environment.
+
+
+[discrete]
+[[dedicated-results-index]]
+== 2. Use dedicated results indices
+
+For large jobs, use a dedicated results index. This ensures that results from a 
+single large job do not dominate the shared results index. It also ensures that 
+the job and results (if `results_retention_days` is set) can be deleted more 
+efficiently and improves renormalization performance. By default, {anomaly-job} 
+results are stored in a shared index. To change to use a dedicated result index, 
+you need to clone or create a new job.
+
+[discrete]
+[[model-plot]]
+== 3. Disable model plot
+
+By default, model plot is enabled when you create jobs in {kib}. If you have a 
+large job, however, consider disabling it. You can disable model plot for 
+existing jobs by using the {ref}/ml-update-job.html[Update {anomaly-jobs} API]. 
+
+Model plot calculates and stores the model bounds for each analyzed entity, 
+including both anomalous and non-anomalous entities. These bounds are used to 
+display the shaded area in the Single Metric Viewer charts. Model plot creates 
+one result document per bucket per split field value. If you have high 
+cardinality fields and/or a short bucket span, disabling model plot reduces 
+processing workload and results stored.
+
+
+[discrete]
+[[influencer-fields-detectors]]
+== 4. Choose the influencer fields and detectors
+
+The following factors are most significant in increasing the memory required for 
+a job:
+
+* High cardinality of the `by` or `partition` fields
+* Multiple detectors
+* A high distinct count of influencers within a bucket
+
+Optimize your {anomaly-job} by choosing only relevant influencer fields and 
+detectors. To change influencers and/or detectors, you need to clone or create a 
+new job.
+
+
+[discrete]
+[[optimize-bucket-span]]
+== 5. Optimize the bucket span
+
+Short bucket spans and high cardinality detectors are resource intensive and 
+require sufficient system resources. 
+
+Bucket span is typically between 15m and 1h. The recommended value always 
+depends on the data, the use case, and the latency required for alerting. A job 
+with a longer bucket span uses less resources because fewer buckets require 
+processing and fewer results are written. Bucket spans that are sensible 
+dividers of an hour or day work best as most periodic patterns have a daily 
+cycle.
+
+If your use case is suitable, consider increasing the bucket span to reduce 
+processing workload. To change the bucket span, you need to clone or create a 
+new job.
+
+
+[discrete]
+[[set-model-memory-limit]]
+== 6. Set the model memory limit
+
+The `model_memory_limit` job configuration option sets the approximate maximum 
+amount of memory resources required for analytical processing. If this variable 
+is set too low for the job and the limit is approached, data pruning becomes 
+more aggressive. Upon exceeding this limit, new entities are not modeled.
+
+Use model memory estimation to have a better picture of the memory needs of the 
+model. Model memory estimation happens automatically when you create the job in 
+{kib} or you can call the 
+{ref}/ml-estimate-model-memory.html[Estimate {anomaly-jobs} model memory API] 
+manually. The estimation is based on the analysis configuration details for the 
+job and cardinality estimates for the fields it references. You can update the 
+memory settings of an existing job, but the job must be closed.
+
+
+[discrete]
+[[pre-aggregate-data]]
+== 7. Pre-aggregate your data
+
+You can speed up the analysis by summarizing your data with aggregations. 
+
+{anomaly-jobs-cap} use summary statistics that are calculated for each bucket. 
+The statistics can be calculated in the job itself or via aggregations. It is 
+more efficient to use an aggregation when it’s possible, as in this case, the 
+data node does the heavy-lifting instead of the {ml} node.
+
+In certain cases, you cannot do aggregations to increase performance. For 
+example, categorization jobs use the full log message to detect anomalies, so 
+this data cannot be aggregated. If you have many influencer fields, it may not 
+be beneficial to use an aggregation either. This is because only a few documents 
+in each bucket may have the combination of all the different influencer fields.
+
+Please consult <<ml-configuring-aggregation>> to learn more.
+
+
+[discrete]
+[[results-retention]]
+== 8. Optimize the results retention
+
+Set a results retention window to reduce processing workload.
+
+{anomaly-detect-cap} results are retained indefinitely by default. Results build 
+up over time, and your result index may be quite large. A large results index is 
+slow to query and takes up significant space on your cluster. Consider how long 
+you wish to retain the results and set `results_retention_days` accordingly – 
+for example, to 30 or 60 days – to avoid unnecessarily large result indices. 
+Deleting old results does not affect the model behavior. You can change this 
+setting for existing jobs.
+
+
+[discrete]
+[[renormalization-window]]
+== 9. Optimize the renormalization window
+
+Reduce the renormalization window to reduce processing workload.
+
+When a new anomaly has a much higher score than any anomaly in the past, the 
+anomaly scores are adjusted on a range from 0 to 100 based on the new data. This 
+is called renormalization. It can mean rewriting a large number of documents in 
+the results index. Renormalization happens for results from the last 30 days or 
+100 bucket spans (depending on which is the longer) by default. When you are 
+working at scale, set `renormalization_window_days` to a lower value, so the 
+workload is reduced. You can change this setting for existing jobs and changes 
+will take effect after the job has been reopened.
+
+
+[discrete]
+[[model-snapshot-retention]]
+== 10. Optimize the model snapshot retention
+
+Model snapshots are taken periodically, to ensure resilience in the event of a 
+system failure and to allow you to manually revert to a specific point in time. 
+These are stored in a compressed format in an internal index and kept according 
+to the configured retention policy. Load is placed on the cluster when indexing 
+a model snapshot and index size is increased as multiple snapshots are retained.
+
+When working with large model sizes, consider how frequently you want to create 
+model snapshots using `background_persist_interval`. The default is every 3 to 4 
+hours. Increasing this interval reduces the periodic indexing load on your 
+cluster, but in the event of a system failure, you may be reverting to an older 
+version of the model.
+
+Also consider how long you wish to retain snapshots using 
+`model_snapshot_retention_days` and `daily_model_snapshot_retention_after_days`. 
+Retaining fewer snapshots substantially reduces index storage requirements for 
+model state, but also reduces the granularity of model snapshots from which you 
+can revert.
+
+For more information, refer to <<ml-model-snapshots>>.
+
+
+[discrete]
+[[search-queries]]
+== 11. Optimize your search queries
+
+If you are operating on a big scale, make sure that your {dfeed} query is as 
+efficient as possible. There are different ways to write {es} queries and some 
+of them are more efficient than others. Please consult 
+{ref}/tune-for-search-speed.html[Tune for search speed] to learn more about {es} 
+performance tuning.
+
+You need to clone or recreate an existing job if you want to optimize its search 
+query. 
+
+
+[discrete]
+[[population-analysis]]
+== 12. Consider using population analysis
+
+Population analysis is more memory efficient than individual analysis of each 
+series. It builds a profile of what a "typical" entity does over a specified 
+time period and then identifies when one is behaving abnormally compared to the 
+population. Use population analysis for analyzing high cardinality fields if you 
+expect that the entities of the population generally behave in the same way.
+
+For more information, refer to <<ml-configuring-populations>>.
+
+
+[discrete]
+[[forecasting]]
+== 13. Reduce the cost of forecasting
+
+There are two main performance factors to consider when you create a forecast: 
+indexing load and memory usage.
+
+Forecasting writes a new document to the result index for every forecasted 
+element of the job. For jobs with high partition field cardinality, forecasting 
+results in a high number of documents being written out to the result index, 
+which may add a high load to your data nodes.
+
+The memory usage of a forecast is restricted to 20 MB by default. From 7.9, you 
+can extend this limit by setting `max_model_memory` to a higher value. The 
+maximum value is 40% of the memory limit of the {anomaly-job} or 500 MB. If the 
+forecast needs more memory than the provided value, it spools to disk. Forecasts 
+that would take more than 500 MB to run won’t start because this is the maximum 
+limit of disk space that a forecast is allowed to use.
+
+Check the cluster monitoring data to learn the indexing rate and the memory 
+usage of your cluster. To avoid performance issues, start forecasting with a 
+small window into the future (for example, a couple of hours). If it is 
+necessary, create another forecast with another small window.
+
+Predicting days into the future is not only problematic because of the possible 
+performance issues that it can cause. It is also possible that the analyzed 
+behavior changes significantly over time, making the forecast irrelevant 
+especially for jobs with a short bucket span. As the {anomaly-detect} model is 
+updated constantly, forecasting should be considered as a dynamic process.

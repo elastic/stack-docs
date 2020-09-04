@@ -37,7 +37,13 @@ jobs.
 In {ecloud}, dedicated {ml} nodes are provisioned with most of the RAM 
 automatically being available to the {ml} native processes. If deploying 
 self-managed, then we recommend deploying dedicated {ml} nodes and increasing 
-the value of `xpack.ml.max_machine_memory_percent` from the default 30%.
+the value of `xpack.ml.max_machine_memory_percent` from the default 30%. The 
+default of 30% has to be set low in case other software is running on the same 
+machine and to leave memory free for an OS file system cache on {ml} nodes that 
+are also data nodes. If you use dedicated {ml} nodes as recommended and do not 
+run any other software on them then it would be reasonable to run with a 2GB JVM 
+heap and set `xpack.ml.max_machine_memory_percent` to 90% on machines with more 
+than 20GB of RAM. This maximizes the number of {ml} jobs that can be run.
 
 Increasing the number of nodes allows distribution of job processing. If running 
 many jobs, even small memory ones, consider increasing the number of nodes in 

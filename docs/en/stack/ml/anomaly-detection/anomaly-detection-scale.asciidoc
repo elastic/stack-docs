@@ -21,13 +21,18 @@ navigate between the list items; you can take action on one or more of them in
 any order. You can implement some of these changes on existing jobs; others 
 require you to clone an existing job or create a new one.
 
+
 [discrete]
 [[node-sizing]]
 == 1. Consider node sizing and configuration
 
 An {anomaly-job} runs on a single node and requires sufficient resources to hold 
 its model in memory. When a job is opened, it will be placed on the node with 
-the most available memory at that time.  
+the most available memory at that time.
+
+The memory available to the {ml} native processes can roughly be thought of as 
+total machine RAM minus that which is required for the operating system, {es} 
+and any other software that is running on the same machine.
 
 The available memory for {ml} on a node must be sufficient to accommodate the 
 size of the largest model. The total available memory across all {ml} nodes must 
@@ -42,12 +47,12 @@ default of 30% has to be set low in case other software is running on the same
 machine and to leave memory free for an OS file system cache on {ml} nodes that 
 are also data nodes. If you use dedicated {ml} nodes as recommended and do not 
 run any other software on them then it would be reasonable to run with a 2GB JVM 
-heap and set `xpack.ml.max_machine_memory_percent` to 90% on machines with more 
-than 20GB of RAM. This maximizes the number of {ml} jobs that can be run.
+heap and set `xpack.ml.max_machine_memory_percent` to 90% on machines with at 
+least 24GB of RAM. This maximizes the number of {ml} jobs that can be run.
 
-Increasing the number of nodes allows distribution of job processing. If running 
-many jobs, even small memory ones, consider increasing the number of nodes in 
-your environment.
+Increasing the number of nodes will allow distribution of job processing as well 
+as fault tolerance. If running many jobs, even small memory ones, then consider 
+increasing the number of nodes in your environment.
 
 
 [discrete]
@@ -61,13 +66,14 @@ efficiently and improves renormalization performance. By default, {anomaly-job}
 results are stored in a shared index. To change to use a dedicated result index, 
 you need to clone or create a new job.
 
+
 [discrete]
 [[model-plot]]
 == 3. Disable model plot
 
 By default, model plot is enabled when you create jobs in {kib}. If you have a 
 large job, however, consider disabling it. You can disable model plot for 
-existing jobs by using the {ref}/ml-update-job.html[Update {anomaly-jobs} API]. 
+existing jobs by using the {ref}/ml-update-job.html[Update {anomaly-jobs} API].
 
 Model plot calculates and stores the model bounds for each analyzed entity, 
 including both anomalous and non-anomalous entities. These bounds are used to 
@@ -78,8 +84,8 @@ processing workload and results stored.
 
 
 [discrete]
-[[influencer-fields-detectors]]
-== 4. Choose the influencer fields and detectors
+[[detector-configuration]]
+== 4. Understand how detector configuration can impact model memory
 
 The following factors are most significant in increasing the memory required for 
 a job:
@@ -89,8 +95,16 @@ a job:
 * A high distinct count of influencers within a bucket
 
 Optimize your {anomaly-job} by choosing only relevant influencer fields and 
-detectors. To change influencers and/or detectors, you need to clone or create a 
-new job.
+detectors.
+
+If you have high cardinality `by` or `partition` fields, ensure you have 
+sufficient memory resources available for the job. Alternatively, consider if 
+the job can be split into smaller jobs by using a {dfeed} query. For very high 
+cardinality, using a <<ml-configuring-populations,population analysis>> may be 
+more appropriate.
+
+To change partitioning fields, influencers and/or detectors, you need to clone 
+or create a new job.
 
 
 [discrete]
@@ -98,7 +112,7 @@ new job.
 == 5. Optimize the bucket span
 
 Short bucket spans and high cardinality detectors are resource intensive and 
-require sufficient system resources. 
+require more system resources.
 
 Bucket span is typically between 15m and 1h. The recommended value always 
 depends on the data, the use case, and the latency required for alerting. A job 
@@ -154,7 +168,7 @@ Please consult <<ml-configuring-aggregation>> to learn more.
 [[results-retention]]
 == 8. Optimize the results retention
 
-Set a results retention window to reduce processing workload.
+Set a results retention window to reduce the amount of results stored.
 
 {anomaly-detect-cap} results are retained indefinitely by default. Results build 
 up over time, and your result index may be quite large. A large results index is 
@@ -217,7 +231,7 @@ of them are more efficient than others. Please consult
 performance tuning.
 
 You need to clone or recreate an existing job if you want to optimize its search 
-query. 
+query.
 
 
 [discrete]

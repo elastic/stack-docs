@@ -252,12 +252,20 @@ For more information, refer to <<ml-configuring-populations>>.
 == 13. Reduce the cost of forecasting
 
 There are two main performance factors to consider when you create a forecast: 
-indexing load and memory usage.
+indexing load and memory usage. Check the cluster monitoring data to learn the 
+indexing rate and the memory usage.
 
 Forecasting writes a new document to the result index for every forecasted 
-element of the job. For jobs with high partition field cardinality, forecasting 
-results in a high number of documents being written out to the result index, 
-which may add a high load to your data nodes.
+element of the  for every bucket. Jobs with high partition or by field 
+cardinality create more result documents, as do jobs with small bucket span and 
+longer forecast duration. Only three concurrent forecasts may be run for a 
+single job.
+
+To reduce indexing load, consider a shorter forecast duration and/or try to 
+avoid concurrent forecast requests. Further performance gains can be achieved by 
+reviewing the job configuration; for example by using a dedicated results index, 
+increasing the bucket span and/or by having lower cardinality partitioning 
+fields.
 
 The memory usage of a forecast is restricted to 20 MB by default. From 7.9, you 
 can extend this limit by setting `max_model_memory` to a higher value. The 
@@ -265,14 +273,3 @@ maximum value is 40% of the memory limit of the {anomaly-job} or 500 MB. If the
 forecast needs more memory than the provided value, it spools to disk. Forecasts 
 that would take more than 500 MB to run won’t start because this is the maximum 
 limit of disk space that a forecast is allowed to use.
-
-Check the cluster monitoring data to learn the indexing rate and the memory 
-usage of your cluster. To avoid performance issues, start forecasting with a 
-small window into the future (for example, a couple of hours). If it is 
-necessary, create another forecast with another small window.
-
-Predicting days into the future is not only problematic because of the possible 
-performance issues that it can cause. It is also possible that the analyzed 
-behavior changes significantly over time, making the forecast irrelevant 
-especially for jobs with a short bucket span. As the {anomaly-detect} model is 
-updated constantly, forecasting should be considered as a dynamic process.

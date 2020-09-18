@@ -200,10 +200,15 @@ unusual user context. This can be due to uncommon troubleshooting activity or
 due to a compromised account. A compromised account may be used by a threat
 actor to engage in system network configuration discovery in order to increase
 their understanding of connected networks and hosts. This information may be
-used to shape follow-up behaviors such as lateral movement or additional
+used to shape follow-up behavior such as lateral movement or additional
 discovery.
 
-Job details::: TBD
+Job details:::
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `arp`, `echo`, or `ifconfig`, for example.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -226,7 +231,12 @@ their understanding of connected services and systems. This information may be
 used to shape follow-up behaviors such as lateral movement or additional
 discovery.
 
-Job details::: TBD
+Job details:::
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `netstat`, `ss`, or `route`, for example.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -243,7 +253,12 @@ linux_rare_kernel_module_arguments::
 
 Looks for unusual kernel modules which are often used for stealth.
 
-Job details::: TBD
+Job details:::
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `insmod`, `kmod`, or `rmod`, for example.
+* Models occurrences of process activity.
+* Detects processes that are rarely or unusually active compared to other processes 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -262,7 +277,12 @@ Looks for anomalous access to the metadata service by an unusual process. The
 metadata service may be targeted in order to harvest credentials or user data
 scripts containing secrets.    
 
-Job details::: TBD
+Job details:::
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`destination.ip` is commands the metadata service.
+* Models process activity.
+* Detects processes that are rarely or unusually active compared to other processes 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -280,7 +300,13 @@ Looks for anomalous access to the metadata service by an unusual user. The
 metadata service may be targeted in order to harvest credentials or user data
 scripts containing secrets.   
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`destination.ip` is the metadata service.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -295,7 +321,13 @@ linux_rare_sudo_user::
 
 Looks for sudo activity from an unusual user context.
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat`,
+`process.name` is `sudo`, and `event.action` is `executed`.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -315,7 +347,13 @@ compilers. This can be ad-hoc software changes or unauthorized software
 deployment. This can also be due to local privilege elevation via locally run
 exploits or malware activity.
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `compile`, `make`, or `gcc`, for example.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -337,7 +375,13 @@ information discovery in order to gather detailed information about system
 configuration and software versions. This may be a precursor to selection of a 
 persistence mechanism or a method of privilege elevation.  
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `cat`, `grep`, or `hostname`, for example.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -359,7 +403,13 @@ process discovery in order to increase their understanding of software
 applications running on a target host or network. This may be a precursor to
 selection of a persistence mechanism or a method of privilege elevation.
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `ps` or `top`, for example.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -381,7 +431,13 @@ or user discovery in order to identify currently active or primary users of a
 system. This may be a precursor to additional discovery, credential dumping or
 privilege elevation activity.
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `auditbeat` and
+`process.name` is commands like `users`, `whoami`, or `who`, for example.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -989,7 +1045,13 @@ Looks for anomalous access to the metadata service by an unusual process. The
 metadata service may be targeted in order to harvest credentials or user data
 scripts containing secrets.
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows) and
+  `destination.ip` is the metadata service.
+* Models process activity.
+* Detects processes that are rarely or unusually active compared to other processes 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 
@@ -1007,7 +1069,13 @@ Looks for anomalous access to the metadata service by an unusual user. The
 metadata service may be targeted in order to harvest credentials or user data
 scripts containing secrets.  
 
-Job details::: TBD
+Job details:::
+
+* Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows) and
+  `destination.ip` is the metadata service.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats}:::
 

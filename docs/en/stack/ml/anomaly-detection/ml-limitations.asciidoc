@@ -235,6 +235,16 @@ When you create an {anomaly-job}, you cannot use a field with the
 `data_description` object. This limitation applies irrespective of whether you
 create jobs in {kib} or by using APIs.
 
+[float]
+[[ml-limitations-runtime]]
+== {anomaly-detect-cap} performs better on indexed fields
+
+{anomaly-jobs-cap} sort all data by a user defined time field which is accessed 
+frequently. If the time field is a runtime field, the small performance 
+overhead of the runtime fields may be significant which slows down the job. 
+Please consider using an indexed field as a time field.
+
+
 [discrete]
 [[ml-forecast-limitations]]
 == Forecast limitations

@@ -114,45 +114,64 @@ in the `analyzed_fields` object when configuring the {dfanalytics-job}.
 == Interpreting {classification} results
 
 The following sections help you understand and interpret the results of a 
-{classanalysis}.
+{classanalysis}. To see example results, refer to
+<<flightdata-classification-results>>.
 
 [[dfa-classification-class-probability]]
 === `class_probability`
 
-The value of `class_probability` shows how likely it is that a given data point 
-belongs to a certain class. It is a value between 0 and 1. The higher the 
-number, the higher the probability that the data point belongs to the named 
-class. This information is stored in the `top_classes` array for each document 
-in your destination index. See the
-{ml-docs}/flightdata-classification.html#flightdata-classification-results[Viewing {classification} results]
-section in the {classification} example.
+The `class_probability` is a value between 0 and 1, which indicates how likely
+it is that a given data point belongs to a certain class.
+////
+//TMI?
+For each data point, {classanalysis} applies the
+inverse of the {wikipedia}/Logit(logit function) to the logarithm of the
+odds that were predicted by the decision forest.
+////
+The higher the number, the higher the probability that the data point belongs to
+the named class. This information is stored in the `top_classes` array for each
+document in your destination index.
 
 [[dfa-classification-class-score]]
 === `class_score`
 
-The value of `class_score` controls the probability at which a class label is 
-assigned to a data point. In normal case – that you maximize the number of 
-correct labels – a class label is assigned when its predicted probability is 
-greater than 0.5. The `class_score` makes it possible to change this behavior, 
-so it can be less than or greater than 0.5. For example, suppose our two classes 
-are denoted `class 0` and `class 1`, then the value of `class_score` is always 
-non-negative and its definition is:
+The `class_score` is a function of the `class_probability` and has a value that
+is greater than or equal to zero. It takes into consideration your objective (as
+defined in the `class_assignment_objective` job configuration option):
+_accuracy_ or _recall_.
 
+If your objective is to maximize accuracy, the scores are weighted to maximize
+the proportion of correct predictions in the training data set. For example, in
+the context of a binary <<ml-dfanalytics-confusion-matrix,confusion matrix>>,
+the predictions of interest are the cells where the actual and predicted labels
+are both `true` (also known as a true positive (TP)) or both `false` (also
+known as a true negative (TN)):
 
-stem:[\text{class_score(class 0)} = 0.5 / (1.0 - k) * probability(class 0)]
+[role="screenshot"]
+image::images/confusion-matrix-binary-accuracy.jpg["A confusion matrix with the correct predictions highlighted"]
 
-stem:[\text{class_score(class 1)}= 0.5 / k * probability(class 1)]
+TIP: If there is an imbalanced distribution of classes in your training data set,
+focusing on accuracy can decrease your model's sensitivity to incorrect
+predictions in the classes that are under-represented in your data.
 
-Here, `k` is a positive constant less than one. It represents the predicted 
-probability of `class 1` for a data point at which to label it `class 1` and is 
-chosen to maximize the minimum recall of any class. This is useful for example 
-in case of highly imbalanced data. If `class 0` is much more frequent in the 
-training data than `class 1`, then it can mean that you achieve the best 
-accuracy by assigning `class 0` to every data point. This is equivalent to zero 
-recall for `class 1`. Instead of this behavior, the default scheme of the 
-{stack} {classanalysis} is to choose `k < 0.5` and accept a higher rate of 
-actual `class 0` predicted `class 1` errors, or in other words, a slight 
-degradation of the overall accuracy.
+//TBD: Provide example use case where this objective is acceptable?
+
+By default, {classanalysis} jobs accept a slight degradation of the overall
+accuracy in return for greater sensitivity to classes that are predicted
+incorrectly. That is to say, their objective is to maximize the minimum recall.
+For example, in the context of a multi-class confusion matrix, the predictions
+of interest are in each row:
+
+[role="screenshot"]
+image::images/confusion-matrix-multiclass-recall.jpg["A confusion matrix with a row highlighted"]
+
+For each class, the recall is calculated as the number of correct predictions
+(where the actual label matches the predicted label) divided by the sum of all
+the other predicted labels in that row. This value is represented as a
+percentage in each cell of the confusion matrix. The class scores are then
+weighted to favor predictions that result in the highest recall values across
+the training data. This objective typically performs better than accuracy when
+you have highly imbalanced data.
 
 [[dfa-classification-feature-importance]]
 === {feat-imp-cap}

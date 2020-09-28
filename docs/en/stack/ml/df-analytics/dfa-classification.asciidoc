@@ -2,7 +2,7 @@
 [[dfa-classification]]
 = {classification-cap}
 
-experimental[]
+experimental:[]
 
 {classification-cap} is a {ml} process that enables you to predict the class or
 category of a data point in your data set. Typical examples of {classification}
@@ -121,16 +121,10 @@ The following sections help you understand and interpret the results of a
 === `class_probability`
 
 The `class_probability` is a value between 0 and 1, which indicates how likely
-it is that a given data point belongs to a certain class.
-////
-//TMI?
-For each data point, {classanalysis} applies the
-inverse of the {wikipedia}/Logit(logit function) to the logarithm of the
-odds that were predicted by the decision forest.
-////
-The higher the number, the higher the probability that the data point belongs to
-the named class. This information is stored in the `top_classes` array for each
-document in your destination index.
+it is that a given data point belongs to a certain class. The higher the number,
+the higher the probability that the data point belongs to the named class. This
+information is stored in the `top_classes` array for each document in your
+destination index.
 
 [[dfa-classification-class-score]]
 === `class_score`
@@ -142,19 +136,17 @@ _accuracy_ or _recall_.
 
 If your objective is to maximize accuracy, the scores are weighted to maximize
 the proportion of correct predictions in the training data set. For example, in
-the context of a binary <<ml-dfanalytics-confusion-matrix,confusion matrix>>,
-the predictions of interest are the cells where the actual and predicted labels
-are both `true` (also known as a true positive (TP)) or both `false` (also
-known as a true negative (TN)):
+the context of a binary <<ml-dfanalytics-confusion-matrix,confusion matrix>>
+with classes `false` and `true`, the predictions of interest are the cells where
+the actual and predicted labels are both `true` (also known as a true positive
+(TP)) or both `false` (also known as a true negative (TN)):
 
 [role="screenshot"]
-image::images/confusion-matrix-binary-accuracy.jpg["A confusion matrix with the correct predictions highlighted"]
+image::images/confusion-matrix-binary-accuracy.jpg[alt="A confusion matrix with the correct predictions highlighted",width="75%"]
 
 TIP: If there is an imbalanced distribution of classes in your training data set,
 focusing on accuracy can decrease your model's sensitivity to incorrect
 predictions in the classes that are under-represented in your data.
-
-//TBD: Provide example use case where this objective is acceptable?
 
 By default, {classanalysis} jobs accept a slight degradation of the overall
 accuracy in return for greater sensitivity to classes that are predicted

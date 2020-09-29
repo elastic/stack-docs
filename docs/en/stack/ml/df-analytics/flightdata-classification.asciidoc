@@ -106,6 +106,9 @@ image::images/flights-classification-job-1.png["Creating a {dfanalytics-job} in 
 [role="screenshot"]
 image::images/flights-classification-job-2.png["Creating a {dfanalytics-job} in {kib} – continued"]
 
+[role="screenshot"]
+image::images/flights-classification-job-3.png["Creating a {dfanalytics-job} in {kib} – advanced options"]
+
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `classification` as the job type.
 .. Choose `FlightDelay` as the dependent variable, which is the field that we
@@ -118,15 +121,18 @@ recommended to exclude fields that either contain erroneous data or describe the
 source data for training. While that value is low for this example, for many
 large data sets using a small training sample greatly reduces runtime without 
 impacting accuracy.
-.. Use the default feature importance values.
+.. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify
+a value in the advanced configuration options. In this example, we choose to
+return a maximum of 10 feature importance values per document. This option
+affects the speed of the analysis, so by default it is disabled. 
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
 .. Add a job ID and optionally a job description.
 .. Add the name of the destination index that will contain the results of the
-analysis. It will contain a copy of the source index data where each document is
-annotated with the results. If the index does not exist, it will be created
-automatically.
+analysis. In {kib}, the index name matches the job ID by default. It will
+contain a copy of the source index data where each document is annotated with
+the results. If the index does not exist, it will be created automatically.
 
 
 .API example
@@ -142,13 +148,14 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
     ]
   },
   "dest": {
-    "index": "df-flight-delayed",
+    "index": "model-flight-delay-classification",
     "results_field": "ml" <1>
   },
   "analysis": {
     "classification": {
       "dependent_variable": "FlightDelay",
-      "training_percent": 10
+      "training_percent": 10,
+      "num_top_feature_importance_values": 10 <2>
     }
   },
   "analyzed_fields": {
@@ -162,7 +169,8 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
 }
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
-<1> The field name in the `dest` index that contains the analysis results. 
+<1> The field name in the `dest` index that contains the analysis results.
+<2> To disable feature importance calculations, omit this option. 
 ====
 --
 
@@ -332,7 +340,7 @@ probability of all possible classes for the dependent variable. The
 ====
 [source,console]
 --------------------------------------------------
-GET df-flight-delayed/_search
+GET model-flight-delay-classification/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -440,7 +448,7 @@ performed on the training data set.
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "df-flight-delayed",
+ "index": "model-flight-delay-classification",
    "query": {
     "term": {
       "ml.is_training": {
@@ -469,7 +477,7 @@ performed on previously unseen data:
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "df-flight-delayed",
+ "index": "model-flight-delay-classification",
    "query": {
     "term": {
       "ml.is_training": {
@@ -550,6 +558,7 @@ When you have trained a satisfactory model, you can deploy it to make prediction
 about new data. Those steps are not covered in this example. See
 <<ml-inference>>.
 
-If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
-{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 
-{dfanalytics-jobs}, the destination indices remain intact.
+If you don't want to keep the {dfanalytics-job}, you can delete it in {kib} or
+by using the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When
+you delete {dfanalytics-jobs} in {kib}, you have the option to also remove the 
+destination indices and index patterns.

@@ -18,10 +18,18 @@ in future iterations of your trained model.
 
 You can see the average magnitude of the {feat-imp} values for each field across
 all the training data in {kib} or by using the
-{ref}/get-inference.html[get trained model API]. For example:
+{ref}/get-inference.html[get trained model API]. For example, {kib} shows the
+total feature importance for each field in {regression} or binary
+{classanalysis} results as follows:
 
 [role="screenshot"]
 image::images/flights-regression-total-importance.png["Total {feat-imp} values for a {regression} {dfanalytics-job} in {kib}"]
+
+If the {classanalysis} involves more than two classes, {kib} uses colors to show
+how the impact of each field varies by class. For example:
+
+[role="screenshot"]
+image::images/diamonds-classification-total-importance.png["Total {feat-imp} values for a {classification} {dfanalytics-job} in {kib}"]
 
 You can also examine the feature importance values for each individual
 prediction. In {kib}, you can see these values in JSON objects or decision plots:
@@ -41,8 +49,7 @@ value is positive, it increases the prediction value.
 By default, {feat-imp} values are not calculated. To generate this information,
 when you create a {dfanalytics-job} you must specify the
 `num_top_feature_importance_values` property. For example, see
-<<flightdata-regression>>.
-//and <<flightdata-classification>>.
+<<flightdata-regression>> and <<flightdata-classification>>.
 
 The {feat-imp} values are stored in the {ml} results field for each document in
 the destination index. The number of {feat-imp} values for each document might

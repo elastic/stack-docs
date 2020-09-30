@@ -106,6 +106,9 @@ image::images/flights-classification-job-1.png["Creating a {dfanalytics-job} in 
 [role="screenshot"]
 image::images/flights-classification-job-2.png["Creating a {dfanalytics-job} in {kib} – continued"]
 
+[role="screenshot"]
+image::images/flights-classification-job-3.png["Creating a {dfanalytics-job} in {kib} – advanced options"]
+
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `classification` as the job type.
 .. Choose `FlightDelay` as the dependent variable, which is the field that we
@@ -118,15 +121,18 @@ recommended to exclude fields that either contain erroneous data or describe the
 source data for training. While that value is low for this example, for many
 large data sets using a small training sample greatly reduces runtime without 
 impacting accuracy.
-.. Use the default feature importance values.
+.. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify
+a value in the advanced configuration options. In this example, we choose to
+return a maximum of 10 feature importance values per document. This option
+affects the speed of the analysis, so by default it is disabled. 
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
 .. Add a job ID and optionally a job description.
 .. Add the name of the destination index that will contain the results of the
-analysis. It will contain a copy of the source index data where each document is
-annotated with the results. If the index does not exist, it will be created
-automatically.
+analysis. In {kib}, the index name matches the job ID by default. It will
+contain a copy of the source index data where each document is annotated with
+the results. If the index does not exist, it will be created automatically.
 
 
 .API example
@@ -142,13 +148,14 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
     ]
   },
   "dest": {
-    "index": "df-flight-delayed",
+    "index": "model-flight-delay-classification",
     "results_field": "ml" <1>
   },
   "analysis": {
     "classification": {
       "dependent_variable": "FlightDelay",
-      "training_percent": 10
+      "training_percent": 10,
+      "num_top_feature_importance_values": 10 <2>
     }
   },
   "analyzed_fields": {
@@ -162,7 +169,8 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
 }
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
-<1> The field name in the `dest` index that contains the analysis results. 
+<1> The field name in the `dest` index that contains the analysis results.
+<2> To disable feature importance calculations, omit this option. 
 ====
 --
 
@@ -208,7 +216,7 @@ GET _ml/data_frame/analytics/model-flight-delay-classification/_stats
 The API call returns the following response: 
 
 [source,console-result]
-----  
+--------------------------------------------------  
 {
   "count" : 1,
   "data_frame_analytics" : [
@@ -261,39 +269,38 @@ The API call returns the following response:
       },
       "analysis_stats" : {
         "classification_stats" : {
-          "timestamp" : 1597182490577,
+          "timestamp" : 1601405047110,
           "iteration" : 18,
           "hyperparameters" : {
             "class_assignment_objective" : "maximize_minimum_recall",
-            "alpha" : 11.630957564710283,
-            "downsample_factor" : 0.9418550623091531,
-            "eta" : 0.032382816833064335,
-            "eta_growth_rate_per_tree" : 1.0198807182688074,
+            "alpha" : 0.7633136599817167,
+            "downsample_factor" : 0.9473152348018332,
+            "eta" : 0.02331774683318904,
+            "eta_growth_rate_per_tree" : 1.0143154178910303,
             "feature_bag_fraction" : 0.5504020748926737,
-            "gamma" : 0.08388388780939579,
-            "lambda" : 0.08628826657684924,
+            "gamma" : 0.26389161802240446,
+            "lambda" : 0.6309726978583623,
             "max_attempts_to_add_tree" : 3,
             "max_optimization_rounds_per_hyperparameter" : 2,
-            "max_trees" : 644,
+            "max_trees" : 894,
             "num_folds" : 5,
             "num_splits_per_feature" : 75,
-            "soft_tree_depth_limit" : 7.550606337307592,
+            "soft_tree_depth_limit" : 4.672705943455812,
             "soft_tree_depth_tolerance" : 0.13448633124842999
-          },
-          "timing_stats" : {
-            "elapsed_time" : 44206,
-            "iteration_time" : 1884
-          },
-          "validation_loss" : {
-            "loss_type" : "binomial_logistic",
-            "fold_values" : [ ]
+            },
+            "timing_stats" : {
+              "elapsed_time" : 76459,
+              "iteration_time" : 1861
+            },
+            "validation_loss" : {
+              "loss_type" : "binomial_logistic"
+            }
           }
-        }
       }
     }
   ]
 }
-----
+--------------------------------------------------
 ====
 --
 
@@ -307,7 +314,7 @@ When you view the {classification} results in {kib}, it shows contents of the
 destination index in a tabular format:
 
 [role="screenshot"]
-image::images/flights-classification-results.png["Results for a {dfanalytics-job} in {kib}"]
+image::images/flights-classification-results.png["Destination index table for a classification job in {kib}"]
 
 In this example, the table shows a column for the dependent variable
 (`FlightDelay`), which contains the ground truth values that you are trying to
@@ -332,59 +339,166 @@ probability of all possible classes for the dependent variable. The
 ====
 [source,console]
 --------------------------------------------------
-GET df-flight-delayed/_search
+GET model-flight-delay-classification/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
 The snippet below shows a part of a document with the annotated results:
 
 [source,console-result]
-----  
+--------------------------------------------------  
           ...
           "FlightDelay" : false,
           ...
           "ml" : {
+            "FlightDelay_prediction" : false,
             "top_classes" : [ <1>
               {
-                "class_probability" : 0.9198146781161334, 
-               "class_score" : 0.36964390728677926, 
-               "class_name" : false
+                "class_name" : false,
+                "class_probability" : 0.9427605087816684,
+                "class_score" : 0.3462468700158476
               },
               {
-                "class_probability" : 0.08018532188386665,
-                 "class_score" : 0.08018532188386665,
-                 "class_name" : true
+                "class_name" : true,
+                "class_probability" : 0.057239491218331606,
+                "class_score" : 0.057239491218331606
               }
             ],
-            "prediction_score" : 0.36964390728677926,
-            "FlightDelay_prediction" : false,
-            "prediction_probability" : 0.9198146781161334,
+            "prediction_probability" : 0.9427605087816684,
+            "prediction_score" : 0.3462468700158476,
             "feature_importance" : [
               {
                 "feature_name" : "DistanceMiles",
-                "importance" : -3.039025449178423
+                "classes" : [
+                  {
+                    "class_name" : false,
+                    "importance" : -1.4766536146534828
+                  },
+                  {
+                    "class_name" : true,
+                    "importance" : 1.4766536146534828
+                  }
+                ]
               },
               {
                 "feature_name" : "FlightTimeMin",
-                "importance" : 2.4980756273399045
-              }
-            ],
-            "is_training" : false
-          }
-----
+                "classes" : [
+                  {
+                    "class_name" : false,
+                    "importance" : 1.0919201754729184
+                  },
+                  {
+                    "class_name" : true,
+                    "importance" : -1.0919201754729184
+                  }
+                ]
+              },
+              ...
+--------------------------------------------------
 <1> An array of values specifying the probability of the prediction and the 
 score for each class. 
 
 The class with the highest score is the prediction. In this example, `false` has
-a `class_score` of 0.37 while `true` has only 0.08, so the prediction will be
+a `class_score` of 0.35 while `true` has only 0.06, so the prediction will be
 `false`. For more details about these values, see
 <<dfa-classification-interpret>>.
+====
 
-////
-It is chosen so that the decision to assign the 
-data point to the class with the highest score maximizes the minimum recall of 
-any class.
-////
+If you chose to calculate {feat-imp}, the destination index also contains
+`ml.feature_importance` objects. Every field that is included in the
+{classanalysis} (known as a _feature_ of the data point) is assigned a {feat-imp}
+value. This value has both a magnitude and a direction (positive or negative),
+which indicates how each field affects a particular prediction. Only the most
+significant values (in this case, the top 10) are stored in the index. However,
+the trained model metadata also contains the average magnitude of the {feat-imp}
+values for each field across all the training data. You can view this
+summarized information in {kib}:
+
+[role="screenshot"]
+image::images/flights-classification-total-importance.png["Total {feat-imp} values in {kib}"]
+
+This type of information can help you to understand how models arrive at their
+predictions. It can also indicate which aspects of your data set are most
+influential or least useful when you are training and tuning your model.
+
+If you do not use {kib}, you can see summarized {feat-imp} values by using the
+{ref}/get-inference.html[get trained model API].
+
+.API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+GET _ml/inference/model-flight-delay-classification*?include=total_feature_importance
+--------------------------------------------------
+// TEST[skip:TBD]
+
+The snippet below shows an example of the total {feat-imp} details in the
+trained model metadata:
+
+[source,console-result]
+--------------------------------------------------
+{
+  "count" : 1,
+  "trained_model_configs" : [
+    {
+      "model_id" : "model-flight-delay-classification-1601405047985",
+      ...
+      "metadata" : {
+        ...
+        "total_feature_importance" : [
+          {
+            "feature_name" : "dayOfWeek",
+            "classes" : [
+              {
+                "class_name" : false,
+                "importance" : {
+                  "mean_magnitude" : 0.037513174351966404, <1>
+                  "min" : -0.20132653028125566, <2>
+                  "max" : 0.20132653028125566 <3>
+                }
+              },
+              {
+                "class_name" : true,
+                "importance" : {
+                  "mean_magnitude" : 0.037513174351966404,
+                  "min" : -0.20132653028125566,
+                  "max" : 0.20132653028125566
+                }
+              }
+            ]
+          },
+          {
+            "feature_name" : "OriginWeather",
+            "classes" : [
+              {
+                "class_name" : false,
+                "importance" : {
+                  "mean_magnitude" : 0.05486662317369895,
+                  "min" : -0.3337477336556598,
+                  "max" : 0.3337477336556598
+                }
+              },
+              {
+                "class_name" : true,
+                "importance" : {
+                  "mean_magnitude" : 0.05486662317369895,
+                  "min" : -0.3337477336556598,
+                  "max" : 0.3337477336556598
+                }
+              }
+            ]
+          },
+          ...
+--------------------------------------------------
+<1> This value is the average of the absolute {feat-imp} values for the
+`dayOfWeek` field across all the training data when the predicted class is
+`false`.
+<2> This value is the minimum {feat-imp} value across all the training data for
+this field when the predicted class is `false`.
+<3> This value is the maximum {feat-imp} value across all the training data for
+this field when the predicted class is `false`.
+
 ====
 
 [[flightdata-classification-evaluate]]
@@ -400,7 +514,7 @@ occurrences where the analysis classified data points correctly with their
 actual class and the percentage of occurrences where it misclassified them.
 
 [role="screenshot"]
-image::images/flights-classification-evaluation.png["Evaluation of a {dfanalytics-job} in {kib}"]
+image::images/flights-classification-evaluation.png["Evaluation of a classification job in {kib}"]
 
 NOTE: As the sample data may change when it is loaded into {kib}, the results of 
 the {classanalysis} can vary even if you use the same configuration as the 
@@ -408,20 +522,21 @@ example. Therefore, use this information as a guideline for interpreting your
 own results.
 
 If you want to see the exact number of occurrences, select a quadrant in the
-matrix. You can optionally filter the table to contain only testing data so you
-can see how well the model performs on previously unseen data. In this example,
-there are 2952 documents in the testing data that have the `true` class. 1893 of
-them are predicted as `false`; this is called a _false negative_. 1059 are
-predicted correctly as `true`; this is called a _true positive_. The confusion
-matrix therefore shows us that 36% of the actual `true` values were correctly
-predicted and 64% were incorrectly predicted in the test data set.
+matrix. You can optionally filter the destination index table to contain only 
+testing data, which also affects the confusion matrix. Thus you can see how well
+the model performs on previously unseen data. In this example, there are 2952
+documents in the testing data that have the `true` class. 197 of them are
+predicted as `false`; this is called a _false negative_. 1973 are predicted
+correctly as `true`; this is called a _true positive_. The confusion matrix
+therefore shows us that 33% of the actual `true` values were correctly
+predicted and 67% were incorrectly predicted in the test data set.
 
 Likewise if you select other quadrants in the matrix, it shows the number of
 documents that have the `false` class as their actual value in the testing data
-set. In this example, the model labeled 1033 documents out of 8802 correctly as
-`false`; this is called a _true negative_. 7769 documents are predicted
-incorrectly as `true`; this is called a _false positive_. Thus 12% of the actual
-`false` values were correctly predicted and 88% were incorrectly predicted in
+set. In this example, the model labeled 7530 documents out of 8802 correctly as
+`false`; this is called a _true negative_. 1272 documents are predicted
+incorrectly as `true`; this is called a _false positive_. Thus 86% of the actual
+`false` values were correctly predicted and 14% were incorrectly predicted in
 the test data set. When you perform {classanalysis} on your own data, it might
 take multiple iterations before you are satisfied with the results and ready to
 deploy the model.
@@ -436,11 +551,12 @@ information about interpreting the evaluation metrics, see
 ====
 First, we want to know the training error that represents how well the model
 performed on the training data set.
+
 [source,console]
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "df-flight-delayed",
+ "index": "model-flight-delay-classification",
    "query": {
     "term": {
       "ml.is_training": {
@@ -469,7 +585,7 @@ performed on previously unseen data:
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "df-flight-delayed",
+ "index": "model-flight-delay-classification",
    "query": {
     "term": {
       "ml.is_training": {
@@ -489,7 +605,6 @@ POST _ml/data_frame/_evaluate
 }
 --------------------------------------------------
 // TEST[skip:TBD]
-
 <1> We evaluate only the documents that are not part of the training data.
 
 The returned confusion matrix shows us how many data points were classified 
@@ -508,11 +623,11 @@ were misclassified (`actual_class` does not match `predicted_class`):
           "predicted_classes" : [
             {
               "predicted_class" : "false", <3>
-              "count" : 1033 <4>
+              "count" : 7530 <4>
             },
             {
               "predicted_class" : "true",
-              "count" : 7769
+              "count" : 1272
             }
           ],
           "other_predicted_class_doc_count" : 0
@@ -523,11 +638,11 @@ were misclassified (`actual_class` does not match `predicted_class`):
           "predicted_classes" : [
             {
               "predicted_class" : "false",
-              "count" : 1893
+              "count" : 979
             },
             {
               "predicted_class" : "true",
-              "count" : 1059
+              "count" : 1973
             }
           ],
           "other_predicted_class_doc_count" : 0
@@ -542,14 +657,15 @@ were misclassified (`actual_class` does not match `predicted_class`):
 `true` and `false`.
 <2> The number of documents in the data set that belong to the actual class.
 <3> The name of the predicted class.
-<4> The number of documents belong to the actual class that are labeled as the 
-predicted class. 
+<4> The number of documents that belong to the actual class and are labeled as
+the predicted class.
 ====
 
 When you have trained a satisfactory model, you can deploy it to make predictions
 about new data. Those steps are not covered in this example. See
 <<ml-inference>>.
 
-If you don't want to keep the {dfanalytics-job}, you can delete it by using the 
-{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete 
-{dfanalytics-jobs}, the destination indices remain intact.
+If you don't want to keep the {dfanalytics-job}, you can delete it in {kib} or
+by using the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When
+you delete {dfanalytics-jobs} in {kib}, you have the option to also remove the 
+destination indices and index patterns.

@@ -6,20 +6,16 @@ experimental::[]
 
 When you use a {dfanalytics-job} to perform {classification} or {reganalysis},
 it creates a {ml} model that is trained and tested against a labelled data set.
-In particular, the data set contains the correct values for a field (known as a
-_dependent variable_) that you want to ultimately predict based on its
-relationships to other fields (known as _feature variables_) in your data. When
-you are satisfied with your trained model, you can use it to make predictions
-against new data. For example, you can use it in the preprocessor of an ingest
-pipeline or in a pipeline aggregation within a search query. For more
+When you are satisfied with your trained model, you can use it to make
+predictions against new data. For example, you can use it in the preprocessor of
+an ingest pipeline or in a pipeline aggregation within a search query. For more
 information about this process, see <<ml-supervised-workflow>> and
 <<ml-inference>>.
 
 You can also supply trained models that are not created by {dfanalytics-job} but
 adhere to the appropriate https://github.com/elastic/ml-json-schemas[JSON schema].
 If you want to use these trained models in the {stack}, you must store them in
-{es} documents in internal indices by using the
-{ref}/put-inference.html[create trained model API].
+{es} documents by using the {ref}/put-inference.html[create trained model API].
 
 In {kib}, you can view and manage your trained models within
 *{ml-app}* > *Data Frame Analytics*:
@@ -27,6 +23,6 @@ In {kib}, you can view and manage your trained models within
 [role="screenshot"]
 image::images/trained-model-management.png["List of trained models in the {ml-app} app in {kib}"]
 
-Alternatively, you can use the appropriate
-{ref}/ml-df-analytics-apis.html[{ml} APIs].
-
+Alternatively, you can use APIs like
+{ref}/get-trained-models.html[get trained models] and
+{ref}/delete-trained-models.html[delete trained models].

@@ -60,6 +60,22 @@ with an increased training percentage.
 
 
 [float]
+[[dfa-restart]]
+== {dfanalytics-jobs-cap} may restart after an {es} upgrade
+  
+A {dfanalytics-job} may be restarted from the beginning in the following cases:
+
+* the job is in progress during an {es} update,
+* the job resumes on a node with a higher version,
+* the results format has changed requiring different mappings in the destination 
+  index.
+
+If any of these conditions applies, the destination index of the 
+{dfanalytics-job} is deleted and the job starts again from the beginning – 
+regardless of the phase where the job was in.
+
+
+[float]
 [[dfa-training-docs]]
 == {dfanalytics-jobs-cap} cannot use more than 2^32^ documents for training
 

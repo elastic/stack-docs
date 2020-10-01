@@ -239,10 +239,10 @@ create jobs in {kib} or by using APIs.
 [[ml-limitations-runtime]]
 == {anomaly-detect-cap} performs better on indexed fields
 
-{anomaly-jobs-cap} sort all data by a user defined time field which is accessed 
-frequently. If the time field is a {ref}/runtime.html[runtime field], the small 
-performance overhead of the runtime field may become significant which slows 
-down the job. Please consider using an indexed field as a time field.
+{anomaly-jobs-cap} sort all data by a user-defined time field, which is frequently 
+accessed. If the time field is a {ref}/runtime.html[runtime field], the 
+performance impact of calculating field values at query time can significantly slow
+the job. Use an indexed field as a time field when running anomaly detection jobs.
 
 
 [discrete]

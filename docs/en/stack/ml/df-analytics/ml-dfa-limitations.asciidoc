@@ -67,7 +67,8 @@ A {dfanalytics-job} may be restarted from the beginning in the following cases:
 
 * the job is in progress during an {es} update,
 * the job resumes on a node with a higher version,
-* the results field mapping has changed in the destination index.
+* the results format has changed requiring different mappings in the destination 
+  index.
 
 If any of these conditions applies, the destination index of the 
 {dfanalytics-job} is deleted and the job starts again from the beginning – 

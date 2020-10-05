@@ -16,7 +16,8 @@ In this guide, you’ll learn how to:
   models for {dfanalytics-jobs}.
 
 
-Prerequisites:
+**Prerequisites:**
+
 This guide assumes you’re already familiar with: 
 
 * How to create data frame analytics jobs. If not, refer to <<ml-dfa-overview>>.
@@ -113,11 +114,11 @@ from the increased number of threads. This can be seen in phases
 `coarse_parameter_search`, `fine_tuning_parameters`, and `writing_results`. The 
 rest of the phases are not affected by the increased number of threads.
 
-To learn more about the individual phases, please refer to <<ml-dfa-phases>>.
+To learn more about the individual phases, refer to <<ml-dfa-phases>>.
 
-NOTE: If your {ml} nodes are running concurrent jobs (either {anomaly-detect} or 
-{dfanalytics}), then you may want to keep the maximum number of threads set to a 
-low number – for example the default 1 – to prevent jobs competing for 
+NOTE: If your {ml} nodes are running concurrent {anomaly-detect} or 
+{dfanalytics-jobs}, then you may want to keep the maximum number of threads set 
+to a low number – for example the default 1 – to prevent jobs competing for 
 resources.
 
 

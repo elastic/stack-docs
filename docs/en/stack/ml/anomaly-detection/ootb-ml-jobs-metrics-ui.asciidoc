@@ -7,20 +7,12 @@
 
 // tag::metrics-jobs[]
 These {anomaly-jobs} can be created in the
-{kibana-ref}/xpack-infra.html[Metrics app] in {kib}. When you create one of 
-these jobs, you need to select a field that splits the data to establish 
-separate baselines for the job. This is called a partion field. Each value of 
-the partition field is modeled individually which enables more independent 
-anomaly scoring.
-
-When you select partition field for a job, take into account field cardinality; 
-the number of different values that the field contains. If the partition field 
-has more than 1000 distinct values per job, you are advised that there might be 
-high memory usage.
+{observability-guide}/analyze-metrics.html[Metrics app] in {kib}.
 
 The jobs below detect anomalous memory and network behavior on hosts and 
 Kubernetes pods. For more details, see the {dfeed} and job definitions in the 
-`metrics_ui_*` folders in https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+`metrics_ui_*` folders in 
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
 
 hosts_memory_usage::

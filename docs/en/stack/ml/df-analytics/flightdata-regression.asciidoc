@@ -103,13 +103,13 @@ You can use the wizard on the *{ml-app}* > *Data Frame Analytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
-image::images/flights-regression-job-1.png["Creating a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-job-1.jpg["Creating a {dfanalytics-job} in {kib}"]
 
 [role="screenshot"]
-image::images/flights-regression-job-2.png["Creating a {dfanalytics-job} in {kib}" – continued]
+image::images/flights-regression-job-2.jpg["Creating a {dfanalytics-job} in {kib}" – continued]
 
 [role="screenshot"]
-image::images/flights-regression-job-3.png["Creating a {dfanalytics-job} in {kib}" – advanced options]
+image::images/flights-regression-job-3.jpg["Creating a {dfanalytics-job} in {kib}" – advanced options]
 
 
 .. Choose `kibana_sample_data_flights` as the source index.
@@ -203,7 +203,7 @@ POST _ml/data_frame/analytics/model-flight-delays/_start
 +
 --
 [role="screenshot"]
-image::images/flights-regression-details.png["Statistics for a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
 
 When the job stops, the results are ready to view and evaluate. To learn more
 about the job phases, see <<ml-dfa-phases>>.
@@ -318,7 +318,7 @@ When you view the {regression} results in {kib}, it shows the contents of the
 destination index in a tabular format:
 
 [role="screenshot"]
-image::images/flights-regression-results.png["Results for a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
 
 In this example, the table shows a column for the dependent variable
 (`FlightDelayMin`), which contains the ground truth values that we are trying to
@@ -340,7 +340,7 @@ values for each field across all the training data. You can view this
 summarized information in {kib}:
 
 [role="screenshot"]
-image::images/flights-regression-total-importance.png["Total {feat-imp} values in {kib}"]
+image::images/flights-regression-total-importance.jpg["Total {feat-imp} values in {kib}"]
 
 You can also see the {feat-imp} values for each individual prediction in the
 form of a decision plot:
@@ -470,7 +470,7 @@ performed on the training data set. It also provides _generalization error_
 metrics, which represent how well the model performed on testing data.
 
 [role="screenshot"]
-image::images/flights-regression-evaluation.png["Evaluating {reganalysis} results in {kib}"]
+image::images/flights-regression-evaluation.jpg["Evaluating {reganalysis} results in {kib}"]
 
 A mean squared error (MSE) of zero means that the models predicts the dependent 
 variable with perfect accuracy. This is the ideal, but is typically not possible. 

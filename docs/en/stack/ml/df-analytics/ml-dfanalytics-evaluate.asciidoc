@@ -107,6 +107,8 @@ performance:
 
 * Mean squared error (MSE)
 * R-squared (R^2^)
+* Pseudo-Huber loss
+* Mean squared logarithmic error (MSLE)
 
 [[ml-dfanalytics-mse]]
 === Mean squared error
@@ -119,13 +121,32 @@ the {reganalysis} model is performing.
 [[ml-dfanalytics-r-sqared]]
 === R-squared
 
-Another evaluation metrics for {reganalysis} is R-squared (R^2^). It represents 
+Another evaluation metric for {reganalysis} is R-squared (R^2^). It represents 
 the goodness of fit and measures how much of the variation in the data the 
 predictions are able to explain. The value of R^2^ are less than or equal to 1, 
 where 1 indicates that the predictions and true values are equal. A value of 0 
 is obtained when all the predictions are set to the mean of the true values. A 
 value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
 (about 30%) closer to true values than their mean.
+
+[[ml-dfanalytics-huber]]
+=== Pseudo-Huber loss
+
+https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss metric] 
+behaves as mean absolute error (MAE) for errors larger than a predefined value 
+(defaults to `1`) and as mean squared error (MSE) for errors smaller than the 
+predefined value. This loss function uses the `delta` parameter to define the 
+transition point between MAE and MSE. Consult the 
+<<dfa-regression-lossfunction>> page to learn more about loss functions.
+
+[[ml-dfanalytics-msle]]
+=== Mean squared logarithmic error
+
+This evaluation metric is a variation of mean squared error. It can be used for 
+cases when the target values are positive and distributed with a long tail such 
+as data on prices or population. Consult the <<dfa-regression-lossfunction>> 
+page to learn more about loss functions.
+
 
 [[ml-dfanalytics-classification]]
 == {classification-cap} evaluation

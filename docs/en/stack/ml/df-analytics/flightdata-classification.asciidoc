@@ -424,24 +424,11 @@ form of a decision plot:
 
 [role="screenshot"]
 image::images/flights-classification-importance.png["A decision plot for {feat-imp} values in {kib}"]
-////
-The sum of the {feat-imp} values for a class (in this example, `false`)
-in this data point approximates the logarithm of its odds
-(or {wikipedia}/Logit[log-odds]).
 
-While the probability of a class ranges between 0 and 1, its log-odds range 
-between negative and positive infinity. In {kib}, the decision path for each
-class starts at the average probability for that class over the training data
-set. From there, the {feat-imp} values are added to the decision path.
 The features with the most significant positive or negative impact appear at the
-top. Thus in this example, the features related to flight time and distance had
-the most significant influence on this prediction. This type of information can
-help you to understand how models arrive at their predictions. It can also
-indicate which aspects of your data set are most influential or least useful
-when you are training and tuning your model.
-////
-
-This type of information can help you to understand how models arrive at their
+top of the decision plot. Thus in this example, the features related to flight
+time and distance had the most significant influence on this prediction. This
+type of information can help you to understand how models arrive at their 
 predictions. It can also indicate which aspects of your data set are most
 influential or least useful when you are training and tuning your model.
 
@@ -453,7 +440,7 @@ If you do not use {kib}, you can see summarized {feat-imp} values by using the
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/inference/model-flight-delay-classification*?include=total_feature_importance
+GET _ml/trained_models/model-flight-delay-classification*?include=total_feature_importance
 --------------------------------------------------
 // TEST[skip:TBD]
 

@@ -123,7 +123,7 @@ large data sets using a small training sample greatly reduces runtime without
 impacting accuracy.
 .. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify
 a value in the advanced configuration options. In this example, we choose to
-return a maximum of 10 feature importance values per document. This option
+return a maximum of 10 {feat-imp} values per document. This option
 affects the speed of the analysis, so by default it is disabled. 
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
@@ -170,7 +170,7 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 <1> The field name in the `dest` index that contains the analysis results.
-<2> To disable feature importance calculations, omit this option. 
+<2> To disable {feat-imp} calculations, omit this option. 
 ====
 --
 
@@ -333,7 +333,7 @@ can examine its probability and score (`ml.prediction_probability` and
 model is that the data point belongs to the named class. If you examine the
 destination index more closely in the *Discover* app in {kib} or use the
 standard {es} search command, you can see that the analysis predicts the
-probability of all possible classes for the dependent variable. The 
+probability of all possible classes for the dependent variable. The
 `top_classes` object contains the predicted classes with the highest scores.
 
 .API example
@@ -419,7 +419,16 @@ summarized information in {kib}:
 [role="screenshot"]
 image::images/flights-classification-total-importance.jpg["Total {feat-imp} values in {kib}"]
 
-This type of information can help you to understand how models arrive at their
+You can also see the {feat-imp} values for each individual prediction in the
+form of a decision plot:
+
+[role="screenshot"]
+image::images/flights-classification-importance.png["A decision plot for {feat-imp} values in {kib}"]
+
+The features with the most significant positive or negative impact appear at the
+top of the decision plot. Thus in this example, the features related to flight
+time and distance had the most significant influence on this prediction. This
+type of information can help you to understand how models arrive at their 
 predictions. It can also indicate which aspects of your data set are most
 influential or least useful when you are training and tuning your model.
 
@@ -431,7 +440,7 @@ If you do not use {kib}, you can see summarized {feat-imp} values by using the
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/inference/model-flight-delay-classification*?include=total_feature_importance
+GET _ml/trained_models/model-flight-delay-classification*?include=total_feature_importance
 --------------------------------------------------
 // TEST[skip:TBD]
 

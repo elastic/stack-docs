@@ -48,7 +48,7 @@ trained models.
 
 [source,console]
 --------------------------------------------------
-GET _ml/inference/
+GET _ml/trained_models/
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 
@@ -57,9 +57,9 @@ The API response contains the `model_id` of the trained models. Check the
 call in the next step.
 --
 
-2. Use the {ref}/get-inference.html[GET trained model API] to get the trained 
-model definition. You need to specify the following query parameters in the 
-call:
+2. Use the {ref}/get-trained-models.html[GET trained model API] to get the 
+trained model definition. You need to specify the following query parameters in 
+the call:
 +
 --
 * `for_export`: This parameter allows the model to be in an acceptable format to 
@@ -79,7 +79,7 @@ The following call is an example to get the trained model definition. (Replace
 
 [source,console]
 --------------------------------------------------
-GET _ml/inference/<model_id>?for_export=true&include_model_definition=true&decompress_definition=false
+GET _ml/trained_models/<model_id>?for_export=true&include_model_definition=true&decompress_definition=false
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 
@@ -90,8 +90,8 @@ information.
 
 3. Copy the content of `trained_model_configs`.
 
-4. Use the {ref}/put-inference.html[Create trained model API] in the cluster you 
-want to move the trained model to. Paste the content of the 
+4. Use the {ref}/put-trained-models.html[Create trained model API] in the 
+cluster you want to move the trained model to. Paste the content of the 
 `trained_model_configs` to the request body of the API call.
 +
 --
@@ -103,7 +103,7 @@ The following call is an example to create the trained model. The actual
 ====
 [source,console]
 --------------------------------------------------
-PUT _ml/inference/<my_model_id>
+PUT _ml/trained_models/<my_model_id>
 {
    "compressed_definition":"<definition value of the trained model>",
    "tags":[

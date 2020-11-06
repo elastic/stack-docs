@@ -13,16 +13,223 @@ information about this process, see <<ml-supervised-workflow>> and
 <<ml-inference>>.
 
 You can also supply trained models that are not created by {dfanalytics-job} but
-adhere to the appropriate https://github.com/elastic/ml-json-schemas[JSON schema].
-If you want to use these trained models in the {stack}, you must store them in
-{es} documents by using the {ref}/put-trained-models.html[create trained models API].
+adhere to the appropriate 
+https://github.com/elastic/ml-json-schemas[JSON schema]. If you want to use 
+these trained models in the {stack}, you must store them in {es} documents by 
+using the {ref}/put-trained-models.html[create trained models API].
 
-In {kib}, you can view and manage your trained models within
-*{ml-app}* > *Data Frame Analytics*:
+In {kib}, you can view and manage your trained models within *{ml-app}* > *Data 
+Frame Analytics*:
 
 [role="screenshot"]
 image::images/trained-model-management.png["List of trained models in the {ml-app} app in {kib}"]
 
-Alternatively, you can use APIs like
+Alternatively, you can use APIs like 
 {ref}/get-trained-models.html[get trained models] and
 {ref}/delete-trained-models.html[delete trained models].
+
+
+[discrete]
+[[move-between-clusters]]
+== Moving a trained model between clusters
+
+It is a common scenario that the {ml} models are trained in a cluster that is 
+used for development and test purposes, and they are used in another cluster 
+which is the production environment. In this case, you need to move your trained 
+model from one cluster to another. The trained model APIs enable you to move 
+your trained model between clusters. The following description shows you the 
+process step by step.
+
+1. (Optional) In the cluster where you trained the model, make the call below by 
+using the console in **Dev Tools** to get the configuration information of your 
+trained models.
++
+--
+
+[source,console]
+--------------------------------------------------
+GET _ml/inference/
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+
+The API response contains the `model_id` of the trained models. Check the 
+`model_id` of the trained model you want to move, you need to add it to the API 
+call in the next step.
+--
+
+2. Use the {ref}/get-inference.html[GET trained model API] to get the trained 
+model definition. You need to specify the following query parameters in the 
+call:
++
+--
+* `for_export`: This parameter allows the model to be in an acceptable format to 
+be retrieved and then added to another cluster. Set it to `true`.
+
+* `include_model_definition`: It specifies whether the model definition is 
+returned in the response. Set it to `true`.
+
+* `decompress_definition`: It specifies in what format the included model 
+definition should be returned. Set it to `false` for getting a custom compressed 
+format. It is also valid to use the JSON format, but it is not optimal. As the 
+decompressed definition may be significantly larger, it is recommended to use 
+the compressed format.
+   
+The following call is an example to get the trained model definition. (Replace 
+`<model_id>` with the actual ID of the trained model.)
+
+[source,console]
+--------------------------------------------------
+GET _ml/inference/<model_id>?for_export=true&include_model_definition=true&decompress_definition=false
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+
+The API response returns a `trained_model_configs` array that contains a 
+`compressed_definition` object and the analytics and inference configuration 
+information.
+--
+
+3. Copy the content of `trained_model_configs`.
+
+4. Use the {ref}/put-inference.html[Create trained model API] in the cluster you 
+want to move the trained model to. Paste the content of the 
+`trained_model_configs` to the request body of the API call.
++
+--
+The following call is an example to create the trained model. The actual 
+`compressed_definition` value is replaced by a place holder.
+
+.Create trained model API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+PUT _ml/inference/<my_model_id>
+{
+   "compressed_definition":"<definition value of the trained model>",
+   "tags":[
+      "reg-trained-model"
+   ],
+   "metadata":{
+      "analytics_config":{
+         "max_num_threads":1,
+         "model_memory_limit":"25mb",
+         "create_time":1604579862340,
+         "allow_lazy_start":false,
+         "description":"",
+         "analyzed_fields":{
+            "excludes":[
+            ],
+            "includes":[
+               "AvgTicketPrice",
+               "Carrier",
+               "Dest",
+               "DestCityName",
+               "DestCountry",
+               "DestWeather",
+               "DistanceKilometers",
+               "DistanceMiles",
+               "FlightDelay",
+               "FlightDelayMin",
+               "FlightTimeHour",
+               "FlightTimeMin",
+               "Origin",
+               "OriginCityName",
+               "OriginCountry",
+               "OriginWeather",
+               "dayOfWeek"
+            ]
+         },
+         "id":"reg-trained-model",
+         "source":{
+            "query":{
+               "match_all":{
+               }
+            },
+            "index":[
+               "kibana_sample_data_flights"
+            ]
+         },
+         "dest":{
+            "index":"reg-trained-model-ind",
+            "results_field":"ml"
+         },
+         "analysis":{
+            "regression":{
+               "randomize_seed":-5746203410061298773,
+               "dependent_variable":"FlightDelayMin",
+               "training_percent":10.0,
+               "loss_function":"mse",
+               "num_top_feature_importance_values":0,
+               "prediction_field_name":"FlightDelayMin_prediction"
+            }
+         },
+         "version":"7.9.0"
+      }
+   },
+   "input":{
+      "field_names":[
+        "AvgTicketPrice",
+        "Carrier",
+        "Dest",
+        "DestCityName",
+        "DestCountry",
+        "DestWeather",
+        "DistanceKilometers",
+        "DistanceMiles",
+        "FlightDelay",
+        "FlightDelayMin",
+        "FlightTimeHour",
+        "FlightTimeMin",
+        "Origin",
+        "OriginCityName",
+        "OriginCountry",
+        "OriginWeather",
+        "dayOfWeek"
+      ]
+   },
+   "inference_config":{
+      "regression":{
+         "results_field":"FlightDelayMin_prediction",
+         "num_top_feature_importance_values":0
+      }
+   }
+}
+--------------------------------------------------
+// TEST[skip:setup kibana sample data]
+====
+
+The API response contains the model information with metadata.
+--
+
+Your trained model is ready to be used as a <<ml-inference-processor,processor>> 
+in an ingest pipeline or as an <<ml-inference-aggregation,aggregation>>.
+
+[NOTE]
+--
+The trained model definition can be so large that it may take a long time for a 
+computer clipboard to copy and paste it. It is recommended to do it 
+programmatically, for example via a bash script or via Client code. You can find 
+examples below.
+--
+
+// Bash and Python examples
+
+[discrete]
+[[move-trained-model-to-es]]
+=== Moving a model to {es}
+
+It is possible to add a model to your {es} cluster even if the model is not 
+trained by {dfanalytics}.
+
+You can find an example of training a model, then adding it to {es} by using 
+eland 
+https://eland.readthedocs.io/en/latest/examples/introduction_to_eland_webinar.html#Machine-Learning-Demo[in eland docs].
+The example uses Python to train and move the model, however, you can use any 
+Client as long as the format of your trained model meets 
+https://github.com/elastic/ml-json-schemas[the required schema].
+
+////
+This blog post is a step by step description of how to create a random forest 
+classifier {ml} model outside of {es} by using Python, load it into {es}, then 
+operationalize it with ingest pipelines.
+////

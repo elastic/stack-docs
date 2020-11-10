@@ -212,7 +212,54 @@ programmatically, for example via a bash script or via Client code. You can find
 examples below.
 --
 
-// Bash and Python examples
+The following Python snippet exports the trained model that you reference to a 
+JSON file:
+
+[source, py]
+--------------------------------------------------
+es_client = Elasticsearch('URL to your ES instance', http_auth=(username, password), use_ssl=True)
+ml_client = MlClient(es_client)
+result = ml_client.get_trained_models(model_id='your-model-id', decompress_definition=False, include_model_definition=True)
+compressed_df = result['trained_model_configs'][0]
+with open('model_filename.json', 'w') as handle:
+    handle.write(json.dumps(compressed_df))
+--------------------------------------------------
+// NOTCONSOLE
+
+
+The following Python snippet imports the model that stored in the JSON file to 
+a cluster:
+
+[source, py]
+--------------------------------------------------
+es_client = Elasticsearch(args.es, http_auth=(username, password), use_ssl=True, timeout=60)
+ml_client = MlClient(es_client)
+with open(filename, 'r') as handle:
+  compressed_model = json.loads(handle.read())
+for field in ('version', 'create_time', 'estimated_heap_memory_usage_bytes', 'estimated_operations', 'license_level', 'id','created_by'):
+  if field in compressed_model:
+    del compressed_model[field]
+ml_client.put_trained_model(model_id=model_id, body=compressed_model)
+--------------------------------------------------
+// NOTCONSOLE
+
+
+You can achieve the same by running a bash script. Populate the environment 
+variables:
+
+`ES_ENDPOINT="https://username:password@elasticsearch-endpoint"`
+
+`MODEL="my_model_name"`
+
+
+Then run the script:
+
+[source, bash]
+--------------------------------------------------
+curl -H 'Content-Type: application/json' -XPUT "$ES_ENDPOINT/_ml/inference/$MODEL" -d@$MODEL.json
+--------------------------------------------------
+// NOTCONSOLE
+
 
 [discrete]
 [[move-trained-model-to-es]]

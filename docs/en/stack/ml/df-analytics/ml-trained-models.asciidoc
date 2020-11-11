@@ -33,9 +33,9 @@ Alternatively, you can use APIs like
 [[move-between-clusters]]
 == Moving a trained model between clusters
 
-It is a common scenario that the {ml} models are trained in a cluster that is 
-used for development and test purposes, and they are used in another cluster 
-which is the production environment. In this case, you need to move your trained 
+It is a common scenario that the {ml} models are trained in a development
+or test environment and then used in a production environment. 
+In this case, you need to move your trained 
 model from one cluster to another. The trained model APIs enable you to move 
 your trained model between clusters. The following description shows you the 
 process step by step.
@@ -65,8 +65,7 @@ the call:
 * `for_export`: This parameter allows the model to be in an acceptable format to 
 be retrieved and then added to another cluster. Set it to `true`.
 
-* `include_model_definition`: It specifies whether the model definition is 
-returned in the response. Set it to `true`.
+* `include`: Set this to `definition` for the API to include the definition in the response.
 
 * `decompress_definition`: It specifies in what format the included model 
 definition should be returned. Set it to `false` for getting a custom compressed 
@@ -79,7 +78,7 @@ The following call is an example to get the trained model definition. (Replace
 
 [source,console]
 --------------------------------------------------
-GET _ml/trained_models/<model_id>?for_export=true&include_model_definition=true&decompress_definition=false
+GET _ml/trained_models/<model_id>?for_export=true&include=definition&decompress_definition=false
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 

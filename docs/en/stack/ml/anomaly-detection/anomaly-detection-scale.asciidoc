@@ -132,7 +132,7 @@ new job.
 
 The `scroll_size` parameter of a {dfeed} specifies the number of hits to return 
 from {es} searches. The higher the `scroll_size` the more results are returned 
-by the search. When your {anomaly-job} has a high throughput, increasing 
+by a single search. When your {anomaly-job} has a high throughput, increasing 
 `scroll_size` may decrease the time the job needs to analyze incoming data. This 
 only applies to {dfeeds} that do not use aggregations. You cannot increase 
 `scroll_size` to more than the value of `index.max_result_window` which is 

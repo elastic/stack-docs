@@ -33,12 +33,11 @@ Alternatively, you can use APIs like
 [[move-between-clusters]]
 == Moving a trained model between clusters
 
-It is a common scenario that the {ml} models are trained in a development
-or test environment and then used in a production environment. 
-In this case, you need to move your trained 
-model from one cluster to another. The trained model APIs enable you to move 
-your trained model between clusters. The following description shows you the 
-process step by step.
+It is a common scenario that the {ml} models are trained in a development or 
+test environment and then used in a production environment. In this case, you 
+need to move your trained model from one cluster to another. The trained model 
+APIs enable you to move your trained model between clusters. The following 
+description shows you the process step by step.
 
 1. (Optional) In the cluster where you trained the model, make the call below by 
 using the console in **Dev Tools** to get the configuration information of your 
@@ -65,7 +64,8 @@ the call:
 * `for_export`: This parameter allows the model to be in an acceptable format to 
 be retrieved and then added to another cluster. Set it to `true`.
 
-* `include`: Set this to `definition` for the API to include the definition in the response.
+* `include`: Set this to `definition` for the API to include the definition in 
+the response.
 
 * `decompress_definition`: It specifies in what format the included model 
 definition should be returned. Set it to `false` for getting a custom compressed 
@@ -91,114 +91,8 @@ information.
 
 4. Use the {ref}/put-trained-models.html[Create trained model API] in the 
 cluster you want to move the trained model to. Paste the content of the 
-`trained_model_configs` to the request body of the API call.
-+
---
-The following call is an example to create the trained model. The actual 
-`compressed_definition` value is replaced by a place holder.
-
-.Create trained model API example
-[%collapsible]
-====
-[source,console]
---------------------------------------------------
-PUT _ml/trained_models/<my_model_id>
-{
-   "compressed_definition":"<definition value of the trained model>",
-   "tags":[
-      "reg-trained-model"
-   ],
-   "metadata":{
-      "analytics_config":{
-         "max_num_threads":1,
-         "model_memory_limit":"25mb",
-         "create_time":1604579862340,
-         "allow_lazy_start":false,
-         "description":"",
-         "analyzed_fields":{
-            "excludes":[
-            ],
-            "includes":[
-               "AvgTicketPrice",
-               "Carrier",
-               "Dest",
-               "DestCityName",
-               "DestCountry",
-               "DestWeather",
-               "DistanceKilometers",
-               "DistanceMiles",
-               "FlightDelay",
-               "FlightDelayMin",
-               "FlightTimeHour",
-               "FlightTimeMin",
-               "Origin",
-               "OriginCityName",
-               "OriginCountry",
-               "OriginWeather",
-               "dayOfWeek"
-            ]
-         },
-         "id":"reg-trained-model",
-         "source":{
-            "query":{
-               "match_all":{
-               }
-            },
-            "index":[
-               "kibana_sample_data_flights"
-            ]
-         },
-         "dest":{
-            "index":"reg-trained-model-ind",
-            "results_field":"ml"
-         },
-         "analysis":{
-            "regression":{
-               "randomize_seed":-5746203410061298773,
-               "dependent_variable":"FlightDelayMin",
-               "training_percent":10.0,
-               "loss_function":"mse",
-               "num_top_feature_importance_values":0,
-               "prediction_field_name":"FlightDelayMin_prediction"
-            }
-         },
-         "version":"7.9.0"
-      }
-   },
-   "input":{
-      "field_names":[
-        "AvgTicketPrice",
-        "Carrier",
-        "Dest",
-        "DestCityName",
-        "DestCountry",
-        "DestWeather",
-        "DistanceKilometers",
-        "DistanceMiles",
-        "FlightDelay",
-        "FlightDelayMin",
-        "FlightTimeHour",
-        "FlightTimeMin",
-        "Origin",
-        "OriginCityName",
-        "OriginCountry",
-        "OriginWeather",
-        "dayOfWeek"
-      ]
-   },
-   "inference_config":{
-      "regression":{
-         "results_field":"FlightDelayMin_prediction",
-         "num_top_feature_importance_values":0
-      }
-   }
-}
---------------------------------------------------
-// TEST[skip:setup kibana sample data]
-====
-
-The API response contains the model information with metadata.
---
+`trained_model_configs` to the request body of the API call. The API response 
+contains the model information with metadata.
 
 Your trained model is ready to be used as a <<ml-inference-processor,processor>> 
 in an ingest pipeline or as an <<ml-inference-aggregation,aggregation>>.
@@ -218,7 +112,7 @@ JSON file:
 --------------------------------------------------
 es_client = Elasticsearch('URL to your ES instance', http_auth=(username, password), use_ssl=True)
 ml_client = MlClient(es_client)
-result = ml_client.get_trained_models(model_id='your-model-id', decompress_definition=False, include_model_definition=True)
+result = ml_client.get_trained_models(model_id='your-model-id', decompress_definition=False, include=definition)
 compressed_df = result['trained_model_configs'][0]
 with open('model_filename.json', 'w') as handle:
     handle.write(json.dumps(compressed_df))

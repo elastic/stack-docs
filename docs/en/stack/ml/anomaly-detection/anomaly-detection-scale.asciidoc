@@ -170,6 +170,11 @@ The statistics can be calculated in the job itself or via aggregations. It is
 more efficient to use an aggregation when it’s possible, as in this case, the 
 data node does the heavy-lifting instead of the {ml} node.
 
+You may want to use `chunking_config` to tune your search speed when your 
+{dfees} use aggregations. In these cases, set `chunking_config`.`mode` to 
+`manual` and experiment with the `time_span` value. Its maximum value is the 
+value of `search.max_buckets` which is 10,000 by default.
+
 In certain cases, you cannot do aggregations to increase performance. For 
 example, categorization jobs use the full log message to detect anomalies, so 
 this data cannot be aggregated. If you have many influencer fields, it may not 

@@ -174,9 +174,8 @@ You may want to use `chunking_config` to tune your search speed when your
 {dfees} use aggregations. In these cases, set `chunking_config.mode` to `manual` 
 and experiment with the `time_span` value. Increasing it may speed up search. 
 However, the higher the chunking `time_span`, the higher number of buckets are 
-included in the search response. Thus, if you hit the `search.max_buckets` limit 
-(10,000 by default), decrease `time_span` to reduce the number of buckets per 
-response.
+included in the search response. Thus, if you hit the `search.max_buckets` 
+limit, decrease `time_span` to reduce the number of buckets per response.
 
 In certain cases, you cannot do aggregations to increase performance. For 
 example, categorization jobs use the full log message to detect anomalies, so 

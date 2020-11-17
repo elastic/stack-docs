@@ -140,7 +140,7 @@ ml_client.put_trained_model(model_id=model_id, body=compressed_model)
 You can achieve the same by running a bash script. Populate the environment 
 variables:
 
-`ES_ENDPOINT="https://username:password@elasticsearch-endpoint"`
+`ES_ADDRESS="https://username:password@elasticsearch-address"`
 
 `MODEL="my_model_name"`
 
@@ -149,7 +149,7 @@ Then run the script:
 
 [source, bash]
 --------------------------------------------------
-curl -H 'Content-Type: application/json' -XPUT "$ES_ENDPOINT/_ml/inference/$MODEL" -d@$MODEL.json
+curl -H 'Content-Type: application/json' -XPUT "$ES_ADDRESS/_ml/inference/$MODEL" -d@$MODEL.json
 --------------------------------------------------
 // NOTCONSOLE
 

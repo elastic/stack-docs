@@ -103,12 +103,6 @@ in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 [role="screenshot"]
 image::images/flights-classification-job-1.jpg["Creating a {dfanalytics-job} in {kib}"]
 
-[role="screenshot"]
-image::images/flights-classification-job-2.jpg["Creating a {dfanalytics-job} in {kib} – continued"]
-
-[role="screenshot"]
-image::images/flights-classification-job-3.jpg["Creating a {dfanalytics-job} in {kib} – advanced options"]
-
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `classification` as the job type.
 .. Choose `FlightDelay` as the dependent variable, which is the field that we
@@ -128,11 +122,13 @@ affects the speed of the analysis, so by default it is disabled.
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
-.. Add a job ID and optionally a job description.
+.. Add a job ID (such as `model-flight-delay-classification`) and optionally a
+job description.
 .. Add the name of the destination index that will contain the results of the
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
 the results. If the index does not exist, it will be created automatically.
+.. Use default values for all other options.
 
 
 .API example
@@ -336,6 +332,11 @@ standard {es} search command, you can see that the analysis predicts the
 probability of all possible classes for the dependent variable. The
 `top_classes` object contains the predicted classes with the highest scores.
 
+TIP: If you have a large number of classes, your destination index contains a
+large number of predicted probabilities for each document. When you create the
+{classification} job, you can use the `num_top_classes` option to modify this
+behavior.
+
 .API example
 [%collapsible]
 ====
@@ -404,6 +405,7 @@ The class with the highest score is the prediction. In this example, `false` has
 a `class_score` of 0.35 while `true` has only 0.06, so the prediction will be
 `false`. For more details about these values, see
 <<dfa-classification-interpret>>.
+
 ====
 
 If you chose to calculate {feat-imp}, the destination index also contains

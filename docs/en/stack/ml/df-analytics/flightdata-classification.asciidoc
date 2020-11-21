@@ -346,7 +346,8 @@ GET model-flight-delay-classification/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
-The snippet below shows a part of a document with the annotated results:
+The snippet below shows the probability and score details for a document in the
+destination index:
 
 [source,console-result]
 --------------------------------------------------  
@@ -369,37 +370,10 @@ The snippet below shows a part of a document with the annotated results:
             ],
             "prediction_probability" : 0.9427605087816684,
             "prediction_score" : 0.3462468700158476,
-            "feature_importance" : [
-              {
-                "feature_name" : "DistanceMiles",
-                "classes" : [
-                  {
-                    "class_name" : false,
-                    "importance" : -1.4766536146534828
-                  },
-                  {
-                    "class_name" : true,
-                    "importance" : 1.4766536146534828
-                  }
-                ]
-              },
-              {
-                "feature_name" : "FlightTimeMin",
-                "classes" : [
-                  {
-                    "class_name" : false,
-                    "importance" : 1.0919201754729184
-                  },
-                  {
-                    "class_name" : true,
-                    "importance" : -1.0919201754729184
-                  }
-                ]
-              },
-              ...
+            ...
 --------------------------------------------------
 <1> An array of values specifying the probability of the prediction and the 
-score for each class. 
+score for each class.
 
 The class with the highest score is the prediction. In this example, `false` has
 a `class_score` of 0.35 while `true` has only 0.06, so the prediction will be
@@ -427,15 +401,18 @@ form of a decision plot:
 [role="screenshot"]
 image::images/flights-classification-importance.png["A decision plot for {feat-imp} values in {kib}"]
 
-The features with the most significant positive or negative impact appear at the
-top of the decision plot. Thus in this example, the features related to flight
-time and distance had the most significant influence on this prediction. This
-type of information can help you to understand how models arrive at their 
-predictions. It can also indicate which aspects of your data set are most
-influential or least useful when you are training and tuning your model.
+In {kib}, the decision path shows the relative impact of each feature on the
+probability of the prediction. The features with the most significant positive
+or negative impact appear at the top of the decision plot. Thus in this example,
+the features related to flight time and distance had the most significant
+influence on the probability value for this prediction. This type of information
+can help you to understand how models arrive at their predictions. It can also
+indicate which aspects of your data set are most influential or least useful
+when you are training and tuning your model.
 
-If you do not use {kib}, you can see summarized {feat-imp} values by using the
-{ref}/get-inference.html[get trained model API].
+If you do not use {kib}, you can see the summarized {feat-imp} values by using
+the {ref}/get-inference.html[get trained model API] and the individual values by
+searching the destination index.
 
 .API example
 [%collapsible]
@@ -446,8 +423,8 @@ GET _ml/trained_models/model-flight-delay-classification*?include=total_feature_
 --------------------------------------------------
 // TEST[skip:TBD]
 
-The snippet below shows an example of the total {feat-imp} details in the
-trained model metadata:
+The snippet below shows an example of the total and baseline {feat-imp} details
+in the trained model metadata:
 
 [source,console-result]
 --------------------------------------------------
@@ -459,6 +436,18 @@ trained model metadata:
       ...
       "metadata" : {
         ...
+        "feature_importance_baseline" : { <1>
+          "classes" : [
+            {
+              "class_name" : true,
+              "baseline" : -1.5869016940485443
+            },
+            {
+              "class_name" : false,
+              "baseline" : 1.5869016940485443 
+            }
+          ]
+        },
         "total_feature_importance" : [
           {
             "feature_name" : "dayOfWeek",
@@ -466,9 +455,9 @@ trained model metadata:
               {
                 "class_name" : false,
                 "importance" : {
-                  "mean_magnitude" : 0.037513174351966404, <1>
-                  "min" : -0.20132653028125566, <2>
-                  "max" : 0.20132653028125566 <3>
+                  "mean_magnitude" : 0.037513174351966404, <2>
+                  "min" : -0.20132653028125566, <3>
+                  "max" : 0.20132653028125566 <4>
                 }
               },
               {
@@ -504,13 +493,70 @@ trained model metadata:
           },
           ...
 --------------------------------------------------
-<1> This value is the average of the absolute {feat-imp} values for the
+<1> This object contains the baselines that are used to calculate the {feat-imp}
+decision paths in {kib}.
+<2> This value is the average of the absolute {feat-imp} values for the
 `dayOfWeek` field across all the training data when the predicted class is
 `false`.
-<2> This value is the minimum {feat-imp} value across all the training data for
+<3> This value is the minimum {feat-imp} value across all the training data for
 this field when the predicted class is `false`.
-<3> This value is the maximum {feat-imp} value across all the training data for
+<4> This value is the maximum {feat-imp} value across all the training data for
 this field when the predicted class is `false`.
+
+To see the top {feat-imp} values for each prediction, search the destination
+index. For example:
+
+[source,console]
+--------------------------------------------------
+GET model-flight-delay-classification/_search
+--------------------------------------------------
+// TEST[skip:TBD]
+
+The snippet below shows an example of the {feat-imp} details for a document in
+the search results:
+
+[source,console-result]
+--------------------------------------------------  
+          ...
+          "FlightDelay" : false,
+          ...
+          "ml" : {
+            "FlightDelay_prediction" : false,
+            ...
+            "prediction_probability" : 0.9427605087816684,
+            "prediction_score" : 0.3462468700158476,
+            "feature_importance" : [
+              {
+                "feature_name" : "DistanceMiles",
+                "classes" : [
+                  {
+                    "class_name" : false,
+                    "importance" : -1.4766536146534828
+                  },
+                  {
+                    "class_name" : true,
+                    "importance" : 1.4766536146534828
+                  }
+                ]
+              },
+              {
+                "feature_name" : "FlightTimeMin",
+                "classes" : [
+                  {
+                    "class_name" : false,
+                    "importance" : 1.0919201754729184
+                  },
+                  {
+                    "class_name" : true,
+                    "importance" : -1.0919201754729184
+                  }
+                ]
+              },
+              ...
+--------------------------------------------------
+
+The sum of the {feat-imp} values for each class in this data point approximates
+the logarithm of its odds.
 
 ====
 

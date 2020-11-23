@@ -84,16 +84,6 @@ See {ref}/xpack-rollup.html[Rolling up historical data].
 
 
 [discrete]
-[[ml-limitations-nanos]]
-=== Date nanoseconds data types are not supported
-// https://github.com/elastic/elasticsearch/issues/49889
-
-When you create an {anomaly-job}, you cannot use a field with the
-{ref}/date_nanos.html[`date_nanos` data type] as the `time_field` in the
-`data_description` object. This limitation applies irrespective of whether you
-create jobs in {kib} or by using APIs.
-
-[discrete]
 [[ml-frozen-limitations]]
 === Frozen indices are not supported
 
@@ -165,14 +155,6 @@ information, see <<ml-datafeeds>>.
 
 
 [discrete]
-=== Jobs must be stopped before upgrades
-
-You must stop any {ml} jobs that are running before you start the upgrade
-process. For more information, see <<stopping-ml>> and
-{stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
-
-
-[discrete]
 [[ml-result-size-limitations]]
 === Job and {dfeed} APIs have a maximum search size
 //https://github.com/elastic/elasticsearch/issues/34864
@@ -234,16 +216,22 @@ exception for your {kib} URL.
 === Anomaly Explorer omissions and limitations
 //See x-pack-elasticsearch/#844 and x-pack-kibana/#1461
 
-In {kib}, Anomaly Explorer charts are not displayed for anomalies
-that were due to categorization, `time_of_day` functions, or `time_of_week`
-functions. Those particular results do not display well as time series
-charts.
+In {kib}, **Anomaly Explorer** charts are not displayed for anomalies
+that were due to categorization, `time_of_day` functions, `time_of_week`
+functions, or `lat_long` geographic functions. Those particular results do not 
+display well as time series charts.
 
 The charts are also not displayed for detectors that use script fields. In that
 case, the original source data cannot be easily searched because it has been
 somewhat transformed by the script.
 
-The Anomaly Explorer charts can also look odd in circumstances where there
+If your <<aggs-dfeeds,{dfeed} uses aggregations with nested `terms` aggs>> and 
+model plot is not enabled for the {anomaly-job}, neither the **Anomaly 
+Explorer** nor the **Single Metric Viewer** can plot and display an anomaly 
+chart for the job. In these cases, the charts are not visible and an explanatory 
+message is shown.
+
+The **Anomaly Explorer** charts can also look odd in circumstances where there
 is very little data to plot. For example, if there is only one data point, it is
 represented as a single dot. If there are only two data points, they are joined
 by a line.
@@ -268,28 +256,36 @@ options under the covers that you'd want to reconsider for large or
 long-running jobs.
 
 For example, when you create a single metric job in {kib}, it generally
-enables the `model_plot_config` advanced configuration option. That configuration
-option causes model information to be stored along with the results and provides
-a more detailed view into anomaly detection. It is specifically used by the
-**Single Metric Viewer** in {kib}. When this option is enabled, however, it can
-add considerable overhead to the performance of the system. If you have jobs
-with many entities, for example data from tens of thousands of servers, storing
-this additional model information for every bucket might be problematic. If you
-are not certain that you need this option or if you experience performance
-issues, edit your job configuration to disable this option.
+enables the `model_plot_config` advanced configuration option. That 
+configuration option causes model information to be stored along with the 
+results and provides a more detailed view into {anomaly-detect}. It is 
+specifically used by the **Single Metric Viewer** in {kib}. When this option is 
+enabled, however, it can add considerable overhead to the performance of the 
+system. If you have jobs with many entities, for example data from tens of 
+thousands of servers, storing this additional model information for every bucket 
+might be problematic. If you are not certain that you need this option or if you 
+experience performance issues, edit your job configuration to disable this 
+option.
 
 Likewise, when you create a single or multi-metric job in {kib}, in some cases
 it uses aggregations on the data that it retrieves from {es}. One of the
 benefits of summarizing data this way is that {es} automatically distributes
 these calculations across your cluster. This summarized data is then fed into
 {ml} instead of raw results, which reduces the volume of data that must
-be considered while detecting anomalies.  However, if you have two jobs, one of
+be considered while detecting anomalies. However, if you have two jobs, one of
 which uses pre-aggregated data and another that does not, their results might
 differ. This difference is due to the difference in precision of the input data.
 The {ml} analytics are designed to be aggregation-aware and the likely increase
 in performance that is gained by pre-aggregating the data makes the potentially
 poorer precision worthwhile. If you want to view or change the aggregations
-that are used in your job, refer to the `aggregations` property in your {dfeed}.
+that are used in your job, refer to the `aggregations` property in your {dfeed}. 
+
+When the aggregation interval of the {dfeed} and the bucket span of the job 
+don't match, the values of the chart plotted in both the **Single Metric 
+Viewer** and the **Anomaly Explorer** differ from the actual values of the job. 
+To avoid this behavior, make sure that the aggregation interval in the {dfeed} 
+configuration and the bucket span in the {anomaly-job} configuration have the 
+same values.
 
 
 [discrete]

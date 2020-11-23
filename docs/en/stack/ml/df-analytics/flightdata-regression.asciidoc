@@ -360,7 +360,7 @@ searching the destination index.
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/inference/model-flight-delays*?include=total_feature_importance
+GET _ml/inference/model-flight-delays*?include=total_feature_importance,feature_importance_baseline
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -377,13 +377,16 @@ the trained model metadata:
       ...
       "metadata" : {
         ...
+        "feature_importance_baseline" : {
+          "baseline" : 47.43643652716527 <1>
+        },
         "total_feature_importance" : [
           {
             "feature_name" : "dayOfWeek",
             "importance" : {
-              "mean_magnitude" : 0.38674590521018903, <1>
-              "min" : -9.42823116446923, <2>
-              "max" : 8.707461689065173 <3>
+              "mean_magnitude" : 0.38674590521018903, <2>
+              "min" : -9.42823116446923, <3>
+              "max" : 8.707461689065173 <4>
             }
           },
           {
@@ -395,11 +398,13 @@ the trained model metadata:
           }
           ...
 ----
-<1> This value is the average of the absolute {feat-imp} values for the
+<1> This value is the baseline for the {feat-imp} decision path. It is the
+average of the prediction values across all the training data.
+<2> This value is the average of the absolute {feat-imp} values for the
 `dayOfWeek` field across all the training data.
-<2> This value is the minimum {feat-imp} value across all the training data for
+<3> This value is the minimum {feat-imp} value across all the training data for
 this field.
-<3> This value is the maximum {feat-imp} value across all the training data for
+<4> This value is the maximum {feat-imp} value across all the training data for
 this field.
 
 To see the top {feat-imp} values for each prediction, search the destination

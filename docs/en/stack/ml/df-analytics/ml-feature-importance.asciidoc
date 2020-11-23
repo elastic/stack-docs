@@ -32,19 +32,27 @@ how the impact of each field varies by class. For example:
 image::images/diamonds-classification-total-importance.png["Total {feat-imp} values for a {classification} {dfanalytics-job} in {kib}"]
 
 You can also examine the feature importance values for each individual
-prediction. In {kib}, you can see these values in JSON objects or decision plots:
-
-[role="screenshot"]
-image::images/flights-regression-decision-plot.png["Feature importance values for a {regression} {dfanalytics-job} in {kib}"]
-
+prediction. In {kib}, you can see these values in JSON objects or decision plots.
 For {reganalysis}, each decision plot starts at a shared baseline, which is
 the average of the prediction values for all the data points in the training
 data set. When you add all of the feature importance values for a particular
 data point to that baseline, you arrive at the numeric prediction value. If a 
 {feat-imp} value is negative, it reduces the prediction value. If a {feat-imp}
-value is positive, it increases the prediction value.
+value is positive, it increases the prediction value. For example:
 
-//TBD: Add section about classification analysis.
+[role="screenshot"]
+image::images/flights-regression-decision-plot.png["Feature importance values for a {regression} {dfanalytics-job} in {kib}"]
+
+For {classanalysis}, the sum of the {feat-imp} values approximates the predicted 
+logarithm of odds for each data point. The simplest way to understand {feat-imp}
+in the context of {classanalysis} is to look at the decision plots in {kib}. For
+each data point, there is a chart which shows the relative impact of each
+feature on the prediction probability for that class. This information helps you
+to understand which features reduces or increase the prediction probability. For
+example:
+
+[role="screenshot"]
+image::images/flights-classification-decision-plot.png["A decision plot in {kib}for a {classification} {dfanalytics-job}"]
 
 By default, {feat-imp} values are not calculated. To generate this information,
 when you create a {dfanalytics-job} you must specify the

@@ -144,13 +144,12 @@ see the {ref}/ml-get-job-stats.html[get {anomaly-job} statistics API].
 [discrete]
 === Security integration
 
-When the {es} {security-features} are enabled, a {dfeed} stores the roles of the
-user who created or updated the {dfeed} **at that time**. This means that if 
-those roles are updated then the {dfeed} subsequently runs with the new 
-permissions that are associated with the roles. However, if the user's roles are 
-adjusted after creating or updating the {dfeed}, the {dfeed} continues to run 
-with the permissions that were associated with the original roles. For more 
-information, see <<ml-datafeeds>>.
+When the {es} {security-features} are enabled, a {dfeed} stores the roles of the 
+user who created or updated the {dfeed} **at that time**. This means that if the 
+roles the user has are changed after they create or update a {dfeed} then the 
+{dfeed} continues to run without change. However, if instead the permissions 
+associated with the roles that are stored with the {dfeed} are changed then this 
+affects the {dfeed}. For more information, see <<ml-datafeeds>>.
 
 
 [discrete]
@@ -215,9 +214,10 @@ exception for your {kib} URL.
 === Anomaly Explorer and Single Metric Viewer omissions and limitations
 //See x-pack-elasticsearch/#844 and x-pack-kibana/#1461
 
-In {kib}, **Anomaly Explorer** charts are not displayed for anomalies
-that were due to categorization (if model plot is not enabled), `time_of_day` 
-functions, `time_of_week` functions, or `lat_long` geographic functions.
+In {kib}, **Anomaly Explorer** and **Single Metric Viewer** charts are not 
+displayed for anomalies that were due to categorization (if model plot is not 
+enabled), `time_of_day` functions, `time_of_week` functions, or `lat_long` 
+geographic functions.
 
 If model plot is not enabled, the charts are not displayed for detectors that 
 use script fields either (except for scripts that define metric fields). In that 

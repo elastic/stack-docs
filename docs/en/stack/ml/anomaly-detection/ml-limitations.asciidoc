@@ -58,9 +58,8 @@ Windows environments.
 By default, the `terms` aggregation returns the buckets for the top ten terms.
 You can change this default behavior by setting the `size` parameter.
 
-If you are send pre-aggregated data to a job for analysis, you must ensure
-that the `size` is configured correctly. Otherwise, some data might not be
-analyzed.
+If you send pre-aggregated data to a job for analysis, you must ensure that the 
+`size` is configured correctly. Otherwise, some data might not be analyzed.
 
 
 [discrete]
@@ -213,17 +212,17 @@ exception for your {kib} URL.
 
 
 [discrete]
-=== Anomaly Explorer omissions and limitations
+=== Anomaly Explorer and Single Metric Viewer omissions and limitations
 //See x-pack-elasticsearch/#844 and x-pack-kibana/#1461
 
 In {kib}, **Anomaly Explorer** charts are not displayed for anomalies
-that were due to categorization, `time_of_day` functions, `time_of_week`
-functions, or `lat_long` geographic functions. Those particular results do not 
-display well as time series charts.
+that were due to categorization (if model plot is not enabled), `time_of_day` 
+functions, `time_of_week` functions, or `lat_long` geographic functions.
 
-The charts are also not displayed for detectors that use script fields. In that
-case, the original source data cannot be easily searched because it has been
-somewhat transformed by the script.
+If model plot is not enabled, the charts are not displayed for detectors that 
+use script fields either (except for scripts that define metric fields). In that 
+case, the original source data cannot be easily searched because it has been 
+transformed by the script.
 
 If your <<aggs-dfeeds,{dfeed} uses aggregations with nested `terms` aggs>> and 
 model plot is not enabled for the {anomaly-job}, neither the **Anomaly 
@@ -231,10 +230,9 @@ Explorer** nor the **Single Metric Viewer** can plot and display an anomaly
 chart for the job. In these cases, the charts are not visible and an explanatory 
 message is shown.
 
-The **Anomaly Explorer** charts can also look odd in circumstances where there
-is very little data to plot. For example, if there is only one data point, it is
-represented as a single dot. If there are only two data points, they are joined
-by a line.
+The charts can also look odd in circumstances where there is very little data to 
+plot. For example, if there is only one data point, it is represented as a 
+single dot. If there are only two data points, they are joined by a line.
 
 
 [discrete]

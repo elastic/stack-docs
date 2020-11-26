@@ -95,6 +95,29 @@ in {dfeeds} or jobs. See
 
 
 [discrete]
+[[ml-forecast-config-limitations]]
+=== Unsupported forecast configurations
+
+There are some limitations that affect your ability to create a forecast:
+
+* You can generate only three forecasts per {anomaly-job} concurrently. There is 
+no limit to the number of forecasts that you retain. Existing forecasts are not 
+overwritten when you create new forecasts. Rather, they are automatically 
+deleted when they expire.
+* If you use an `over_field_name` property in your {anomaly-job} (that is to 
+say, it's a _population job_), you cannot create a forecast.
+* If you use any of the following analytical functions in your {anomaly-job},
+you cannot create a forecast:
+** `lat_long`
+** `rare` and `freq_rare`
+** `time_of_day` and `time_of_week`
++
+--
+For more information about any of these functions, see <<ml-functions>>.
+--
+
+
+[discrete]
 [[ad-operational-limitations]]
 == Operational limitations
 
@@ -165,26 +188,11 @@ jobs. Likewise, the {ref}/ml-get-datafeed.html[get {dfeeds} API] and the
 
 
 [discrete]
-[[ml-forecast-limitations]]
-=== Forecast limitations
+[[ml-forecast-op-limitations]]
+=== Forecast operational limitations
 
-There are some limitations that affect your ability to create a forecast:
+There are some factors that may be considered when you run forecasts:
 
-* You can generate only three forecasts per {anomaly-job} concurrently. There is 
-no limit to the number of forecasts that you retain. Existing forecasts are not 
-overwritten when you create new forecasts. Rather, they are automatically 
-deleted when they expire.
-* If you use an `over_field_name` property in your {anomaly-job} (that is to say,
-it's a _population job_), you cannot create a forecast.
-* If you use any of the following analytical functions in your {anomaly-job},
-you cannot create a forecast:
-** `lat_long`
-** `rare` and `freq_rare`
-** `time_of_day` and `time_of_week`
-+
---
-For more information about any of these functions, see <<ml-functions>>.
---
 * Forecasts run concurrently with real-time {ml} analysis. That is to say, {ml}
 analysis does not stop while forecasts are generated. Forecasts can have an
 impact on {anomaly-jobs}, however, especially in terms of memory usage. For this
@@ -205,9 +213,8 @@ of the data analysis are less accurate.
 === Pop-ups must be enabled in browsers
 //See x-pack-elasticsearch/#844
 
-The {ml-features} in {kib} use pop-ups. You must configure your
-web browser so that it does not block pop-up windows or create an
-exception for your {kib} URL.
+The {ml-features} in {kib} use pop-ups. You must configure your web browser so 
+that it does not block pop-up windows or create an exception for your {kib} URL.
 
 
 [discrete]

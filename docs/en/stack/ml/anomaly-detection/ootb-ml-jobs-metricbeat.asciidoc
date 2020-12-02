@@ -11,6 +11,10 @@ These {anomaly-job} wizards appear in {kib} if you use the
 monitor your servers. For more details, see the
 {dfeed} and job definitions in https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml[GitHub].
 
+These configurations are only available if data exists that matches the 
+following terms query: `"event.dataset": ["system.cpu", "system.filesystem"]`.
+
+
 high_mean_cpu_iowait_ecs::
 
 * For {metricbeat} data where `event.dataset` is `system.cpu` and 

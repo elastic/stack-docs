@@ -12,6 +12,10 @@ If you have appropriate {heartbeat} data in {es}, you can enable this
 details, see the {dfeed} and job definitions in 
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/ml[GitHub].
 
+This configuration is only available if data exists that matches the following 
+term query: `"agent.type": "heartbeat"`.
+
+
 high_latency_by_geo::
 
 * Detects unusually high average latency values (using the

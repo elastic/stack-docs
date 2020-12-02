@@ -12,6 +12,10 @@ systems. For more details, see the {dfeed} and job definitions in the
 `auditbeat_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
+These configurations are only available if data exists that matches the 
+following term queries: `"event.module": "auditd"` and `"container.runtime": 
+"docker"`.
+
 docker_high_count_process_events_ecs::
 
 * For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
@@ -25,6 +29,11 @@ docker_rare_process_activity_ecs::
 `docker`.
 * Models occurrences of process execution for each `container.name`.
 * Detects rare process executions in Docker containers.
+
+
+These configurations are only available if data exists that matches the term 
+query: `"event.module": "auditd"`, `auditd.data.syscall` is an existing field, 
+and `container.runtime` field does not exist.
 
 hosts_high_count_process_events_ecs::
 

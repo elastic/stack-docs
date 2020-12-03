@@ -13,8 +13,8 @@ systems. For more details, see the {dfeed} and job definitions in the
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
 These configurations are only available if data exists that matches the 
-following term queries: `"event.module": "auditd"` and `"container.runtime": 
-"docker"`.
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_docker_ecs/manifest.json#L8[manifest file].
 
 docker_high_count_process_events_ecs::
 
@@ -31,9 +31,9 @@ docker_rare_process_activity_ecs::
 * Detects rare process executions in Docker containers.
 
 
-These configurations are only available if data exists that matches the term 
-query: `"event.module": "auditd"`, `auditd.data.syscall` is an existing field, 
-and `container.runtime` field does not exist.
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/manifest.json#L8[manifest file].
 
 hosts_high_count_process_events_ecs::
 

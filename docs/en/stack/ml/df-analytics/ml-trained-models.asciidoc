@@ -110,6 +110,9 @@ JSON file:
 
 [source, py]
 --------------------------------------------------
+import json
+from elasticsearch import Elasticsearch
+from elasticsearch.client.ml import MlClient
 es_client = Elasticsearch('URL to your ES instance', http_auth=(username, password), use_ssl=True)
 ml_client = MlClient(es_client)
 result = ml_client.get_trained_models(model_id='your-model-id', decompress_definition=False, include=definition)
@@ -125,6 +128,9 @@ a cluster:
 
 [source, py]
 --------------------------------------------------
+import json
+from elasticsearch import Elasticsearch
+from elasticsearch.client.ml import MlClient
 es_client = Elasticsearch(args.es, http_auth=(username, password), use_ssl=True, timeout=60)
 ml_client = MlClient(es_client)
 with open(filename, 'r') as handle:

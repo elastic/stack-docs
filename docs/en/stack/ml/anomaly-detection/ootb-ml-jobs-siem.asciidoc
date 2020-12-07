@@ -16,9 +16,14 @@ For more details, see the
 {dfeed} and job definitions in the `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
+
 [discrete]
 [[security-auditbeat-jobs]]
 == Security {auditbeat}
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/manifest.json#L8[manifest file].
 
 Detect suspicious network activity and unusual processes in {auditbeat} data.
 
@@ -483,6 +488,10 @@ Required ECS fields when not using {beats}:::
 [[security-auditbeat-authentication-jobs]]
 == Security {auditbeat} authentication
 
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/manifest.json#L8[manifest file].
+
 Detect suspicious authentication events in {auditbeat} data.
 
 // tag::siem-auditbeat-auth-jobs[]
@@ -515,6 +524,10 @@ Required ECS fields when not using {beats}:::
 [discrete]
 [[security-cloudtrail-jobs]]
 == Security CloudTrail
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/manifest.json#L8[manifest file].
 
 Detect suspicious activity recorded in your CloudTrail logs.
 
@@ -628,6 +641,10 @@ Required ECS fields when not using {beats}:::
 [discrete]
 [[security-packetbeat-jobs]]
 == Security {packetbeat}
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/manifest.json#L8[manifest file].
 
 Detect suspicious network activity in {packetbeat} data.
 
@@ -802,6 +819,10 @@ Required ECS fields when not using {beats}:::
 [discrete]
 [[security-winlogbeat-jobs]]
 == Security {winlogbeat}
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat/manifest.json#L8[manifest file].
 
 Detect unusual processes and network activity in {winlogbeat} data.
 
@@ -1117,6 +1138,10 @@ Required ECS fields when not using {beats}:::
 [discrete]
 [[security-winlogbeat-authentication-jobs]]
 == Security {winlogbeat} authentication
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/manifest.json#L8[manifest file].
 
 Detect suspicious authentication events in {winlogbeat} data.
 

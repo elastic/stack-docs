@@ -15,7 +15,9 @@ https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/
 == NodeJS
 // tag::apm-nodejs-jobs[]
 Detect abnormal traces, anomalous spans, and identify periods of decreased
-throughput.
+throughput. These configurations are only available if data exists that matches 
+the recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_nodejs/manifest.json#L8[mainfest file].
 
 abnormal_span_durations_nodejs::
 
@@ -43,7 +45,9 @@ than normal.
 == RUM Javascript
 // tag::apm-rum-javascript-jobs[]
 Detect problematic spans and identify user agents that are potentially causing
-issues.
+issues. These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/6c58e63a8674478a76758243ec707355a56ee3d9/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_jsbase/manifest.json#L8[manifest file].
 
 abnormal_span_durations_jsbase::
 
@@ -78,7 +82,9 @@ This job is useful in identifying bots.
 [[apm-transaction-jobs]]
 == Transactions
 // tag::apm-transaction-jobs[]
-Detect anomalies in transactions from your APM services.
+Detect anomalies in transactions from your APM services. These configurations 
+are only available if data exists that matches the following term query: 
+`"processor.event": "transaction"`.
 
 high_mean_transaction_duration::
 

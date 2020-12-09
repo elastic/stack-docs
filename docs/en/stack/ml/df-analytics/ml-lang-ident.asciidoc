@@ -4,7 +4,7 @@
 
 experimental[]
 
-{lang-ident-cap} is an trained model that you can use to determine the language
+{lang-ident-cap} is a trained model that you can use to determine the language
 of text. You can reference the {lang-ident} model in an
 {ref}/inference-processor.html[{infer} processor] of an ingest pipeline by 
 using its model ID (`lang_ident_model_1`). The input field name is `text`. If 
@@ -19,11 +19,12 @@ character stream.
 
 {lang-ident-cap} takes into account Unicode boundaries when the feature set is 
 built. If the text has diacritical marks, then the model uses that information 
-for identifying the language of the text.  In certain cases, the model can 
+for identifying the language of the text. In certain cases, the model can 
 detect the source language even if it is not written in the script that the 
 language traditionally uses. These languages are marked in the supported 
 languages table (see below) with the `Latn` subtag. {lang-ident-cap} supports 
 Unicode input.
+
 
 [[ml-lang-ident-supported-languages]]
 === Supported languages
@@ -76,6 +77,7 @@ script.
 | hi-Latn | Hindi              | no      | Norwegian      |         |   
 | hmn     | Hmong              | ny      | Chichewa       |         |   
 |===
+
 
 [[ml-lang-ident-example]]
 === Example of {lang-ident}
@@ -184,6 +186,7 @@ The request returns the following response:
 `num_top_classes`.
 <2> The predicted value is the ISO identifier of the language with the highest 
 probability.
+
 
 [[ml-lang-ident-readings]]
 === Further readings

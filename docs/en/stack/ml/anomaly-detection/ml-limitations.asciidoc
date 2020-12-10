@@ -118,6 +118,16 @@ For more information about any of these functions, see <<ml-functions>>.
 
 
 [discrete]
+[[ml-limitations-runtime]]
+=== {anomaly-detect-cap} performs better on indexed fields
+
+{anomaly-jobs-cap} sort all data by a user-defined time field, which is frequently 
+accessed. If the time field is a {ref}/runtime.html[runtime field], the 
+performance impact of calculating field values at query time can significantly slow
+the job. Use an indexed field as a time field when running {anomaly-jobs}.
+
+
+[discrete]
 [[ad-operational-limitations]]
 == Operational limitations
 
@@ -319,7 +329,7 @@ patterns.
 or NGINX web access logs), visualizations and dashboards are automatically 
 generated. These objects belong to the space that was active when you created 
 the job. If you change your active space, custom URLs from the {ml} results to 
-the dashboards or visualizations might fail. 
+the dashboards or visualizations might fail.
 
 
 ////

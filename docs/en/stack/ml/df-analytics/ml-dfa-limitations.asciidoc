@@ -6,7 +6,7 @@
 <titleabbrev>Limitations</titleabbrev>
 ++++
 
-experimental[]
+beta::[]
 
 The following limitations and known problems apply to the {version} release of 
 the Elastic {dfanalytics} feature:
@@ -57,6 +57,33 @@ linear fashion. For data sets of more than 100,000 points, start with a low
 training percent. Run a few {dfanalytics-jobs} to see how the runtime scales
 with the increased number of data points and how the quality of results scales
 with an increased training percentage.
+
+
+[float]
+[[dfa-restart]]
+== {dfanalytics-jobs-cap} may restart after an {es} upgrade
+  
+A {dfanalytics-job} may be restarted from the beginning in the following cases:
+
+* the job is in progress during an {es} update,
+* the job resumes on a node with a higher version,
+* the results format has changed requiring different mappings in the destination 
+  index.
+
+If any of these conditions applies, the destination index of the 
+{dfanalytics-job} is deleted and the job starts again from the beginning – 
+regardless of the phase where the job was in.
+
+
+[float]
+[[dfa-training-docs]]
+== {dfanalytics-jobs-cap} cannot use more than 2^32^ documents for training
+
+A {dfanalytics-job} that would use more than 2^32^ documents for training cannot 
+be started. The limitation applies only for documents participating in training 
+the model. If your source index contains more than 2^32^ documents, set the 
+`training_percent` to a value that represents less than 2^32^ documents.
+
 
 [float]
 [[dfa-missing-fields-limitations]]

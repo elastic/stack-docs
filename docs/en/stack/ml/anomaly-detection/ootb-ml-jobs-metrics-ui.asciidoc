@@ -1,0 +1,60 @@
+[role="xpack"]
+[[ootb-ml-jobs-metrics-ui]]
+= Metrics {anomaly-detect} configurations
+++++
+<titleabbrev>Metrics</titleabbrev>
+++++
+
+// tag::metrics-jobs[]
+These {anomaly-jobs} can be created in the
+{observability-guide}/analyze-metrics.html[{metrics-app}] in {kib}.
+
+The jobs below detect anomalous memory and network behavior on hosts and 
+Kubernetes pods. For more details, see the {dfeed} and job definitions in the 
+`metrics_ui_*` folders in 
+https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+
+
+hosts_memory_usage::
+
+* For memory usage data about hosts in the {metrics-app}.
+* Models system memory usage.
+* Detects unusual increases in memory usage across hosts.
+
+
+hosts_network_in::
+
+* For network traffic across hosts in the {metrics-app}.
+* Models inbound network traffic.
+* Detects unusually high inbound traffic across hosts.
+
+
+hosts_network_out::
+
+* For network traffic across hosts in the {metrics-app}. 
+* Models outbound network traffic.
+* Detects unusually high outbound traffic across hosts.
+
+
+k8s_memory_usage::
+
+* For memory usage data about Kubernetes pods in the {metrics-app}.
+* Models system memory usage.
+* Detects unusual increases in memory usage across Kubernetes pods.
+
+
+k8s_network_in::
+
+* For network traffic accross Kubernetes pods in the {metrics-app}. 
+* Models inbound network traffic.
+* Detects unusually high inbound traffic across Kubernetes pods.
+
+
+k8s_network_out::
+
+* For network traffic across Kubernetes pods in the {metrics-app}. 
+* Models outbound network traffic.
+* Detects unusually high outbound traffic across Kubernetes pods.
+
+  
+// end::metrics-jobs[]

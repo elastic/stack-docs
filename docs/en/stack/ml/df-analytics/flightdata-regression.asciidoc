@@ -3,6 +3,8 @@
 [[flightdata-regression]]
 = Predicting flight delays with {reganalysis}
 
+beta::[]
+
 Let's try to predict flight delays by using the 
 {kibana-ref}/add-sample-data.html[sample flight data]. The data set contains
 information such as weather conditions, flight destinations and origins, flight 
@@ -101,14 +103,7 @@ You can use the wizard on the *{ml-app}* > *Data Frame Analytics* tab
 in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
-image::images/flights-regression-job-1.png["Creating a {dfanalytics-job} in {kib}"]
-
-[role="screenshot"]
-image::images/flights-regression-job-2.png["Creating a {dfanalytics-job} in {kib}" – continued]
-
-[role="screenshot"]
-image::images/flights-regression-job-3.png["Creating a {dfanalytics-job} in {kib}" – advanced options]
-
+image::images/flights-regression-job-1.jpg["Creating a {dfanalytics-job} in {kib}"]
 
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `regression` as the job type.
@@ -121,10 +116,10 @@ exclude fields that either contain erroneous data or describe the
 `dependent_variable`.
 .. Choose a training percent of `90` which means it randomly selects 90% of the
 source data for training.
-.. If you want to experiment with <<ml-feature-importance,feature importance>>,
-specify a value in the advanced configuration options. In this example, we
-choose to return a maximum of 5 feature importance values per document. This
-option affects the speed of the analysis, so by default it is disabled.
+.. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify
+a value in the advanced configuration options. In this example, we choose to
+return a maximum of 5 {feat-imp} values per document. This option affects the
+speed of the analysis, so by default it is disabled.
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
@@ -201,7 +196,7 @@ POST _ml/data_frame/analytics/model-flight-delays/_start
 +
 --
 [role="screenshot"]
-image::images/flights-regression-details.png["Statistics for a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
 
 When the job stops, the results are ready to view and evaluate. To learn more
 about the job phases, see <<ml-dfa-phases>>.
@@ -316,7 +311,7 @@ When you view the {regression} results in {kib}, it shows the contents of the
 destination index in a tabular format:
 
 [role="screenshot"]
-image::images/flights-regression-results.png["Results for a {dfanalytics-job} in {kib}"]
+image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
 
 In this example, the table shows a column for the dependent variable
 (`FlightDelayMin`), which contains the ground truth values that we are trying to
@@ -327,16 +322,24 @@ table to show only testing or training data and you can select which fields are
 shown in the table. You can also enable histogram charts to get a better
 understanding of the distribution of values in your data.
 
-If you chose to calculate feature importance, the destination index also
-contains `ml.feature_importance` objects. Every field that is included in the
-{reganalysis} (known as a _feature_ of the data point) is assigned a feature
-importance value. However, only the most significant values (in this case, the
-top 5) are stored in the index. These values indicate which features had the
-biggest (positive or negative) impact on each prediction. In {kib}, you can see
-this information displayed in the form of a decision plot:
+If you chose to calculate {feat-imp}, the destination index also contains
+`ml.feature_importance` objects. Every field that is included in the
+{reganalysis} (known as a _feature_ of the data point) is assigned a {feat-imp}
+value. This value has both a magnitude and a direction (positive or negative),
+which indicates how each field affects a particular prediction. Only the most
+significant values (in this case, the top 5) are stored in the index. However,
+the trained model metadata also contains the average magnitude of the {feat-imp}
+values for each field across all the training data. You can view this
+summarized information in {kib}:
 
 [role="screenshot"]
-image::images/flights-regression-importance.png["A decision plot for feature importance values in {kib}"]
+image::images/flights-regression-total-importance.jpg["Total {feat-imp} values in {kib}"]
+
+You can also see the {feat-imp} values for each individual prediction in the
+form of a decision plot:
+
+[role="screenshot"]
+image::images/flights-regression-importance.png["A decision plot for {feat-imp} values in {kib}"]
 
 The decision path starts at a baseline, which is the average of the predictions
 for all the data points in the training data set. From there, the feature
@@ -348,12 +351,65 @@ delay. This type of information can help you to understand how models arrive at
 their predictions. It can also indicate which aspects of your data set are most
 influential or least useful when you are training and tuning your model.
 
-If you do not use {kib}, you can see the same information by using the standard
-{es} search command to view the results in the destination index.
+If you do not use {kib}, you can see summarized {feat-imp} values by using the
+{ref}/get-inference.html[get trained model API] and the individual values by
+searching the destination index.
 
 .API example
 [%collapsible]
 ====
+[source,console]
+--------------------------------------------------
+GET _ml/inference/model-flight-delays*?include=total_feature_importance,feature_importance_baseline
+--------------------------------------------------
+// TEST[skip:TBD]
+
+The snippet below shows an example of the total feature importance details in
+the trained model metadata:
+
+[source,console-result]
+----
+{
+  "count" : 1,
+  "trained_model_configs" : [
+    {
+      "model_id" : "model-flight-delays-1601312043770",
+      ...
+      "metadata" : {
+        ...
+        "feature_importance_baseline" : {
+          "baseline" : 47.43643652716527 <1>
+        },
+        "total_feature_importance" : [
+          {
+            "feature_name" : "dayOfWeek",
+            "importance" : {
+              "mean_magnitude" : 0.38674590521018903, <2>
+              "min" : -9.42823116446923, <3>
+              "max" : 8.707461689065173 <4>
+            }
+          },
+          {
+            "feature_name" : "OriginWeather",
+            "importance" : {
+            "mean_magnitude" : 0.18548393012368913,
+            "min" : -9.079576266629092,
+            "max" : 5.142479101907649
+          }
+          ...
+----
+<1> This value is the baseline for the {feat-imp} decision path. It is the
+average of the prediction values across all the training data.
+<2> This value is the average of the absolute {feat-imp} values for the
+`dayOfWeek` field across all the training data.
+<3> This value is the minimum {feat-imp} value across all the training data for
+this field.
+<4> This value is the maximum {feat-imp} value across all the training data for
+this field.
+
+To see the top {feat-imp} values for each prediction, search the destination
+index. For example:
+
 [source,console]
 --------------------------------------------------
 GET model-flight-delays/_search
@@ -397,6 +453,7 @@ The snippet below shows a part of a document with the annotated results:
           }
           ...
 ----
+
 ====
 
 [[flightdata-regression-evaluate]]
@@ -409,6 +466,9 @@ typically need to evaluate the success of the {regression} model as a whole.
 {kib} provides _training error_ metrics, which represent how well the model
 performed on the training data set. It also provides _generalization error_
 metrics, which represent how well the model performed on testing data.
+
+[role="screenshot"]
+image::images/flights-regression-evaluation.jpg["Evaluating {reganalysis} results in {kib}"]
 
 A mean squared error (MSE) of zero means that the models predicts the dependent 
 variable with perfect accuracy. This is the ideal, but is typically not possible. 
@@ -440,9 +500,11 @@ POST _ml/data_frame/_evaluate
    "regression": {
      "actual_field": "FlightDelayMin",   <2>
      "predicted_field": "ml.FlightDelayMin_prediction", <3>
-     "metrics": {  
+     "metrics": {
        "r_squared": {},
-       "mse": {}                            
+       "mse": {},
+       "msle": {},
+       "huber": {}                           
      }
    }
  }
@@ -460,11 +522,17 @@ The API returns a response like this:
 ----  
 {
   "regression" : {
+    "huber" : {
+      "value" : 30.216037330465102
+    },
     "mse" : {
-      "value" : 2604.920215688451
+      "value" : 2847.2211476422967
+    },
+    "msle" : {
+      "value" : "NaN"
     },
     "r_squared" : {
-      "value" : 0.7162091232654141
+      "value" : 0.6956530017255125
     }
   }
 }
@@ -488,7 +556,9 @@ POST _ml/data_frame/_evaluate
      "predicted_field": "ml.FlightDelayMin_prediction",
      "metrics": {  
        "r_squared": {},
-       "mse": {}                            
+       "mse": {},
+       "msle": {},
+       "huber": {}                           
      }
    }
  }

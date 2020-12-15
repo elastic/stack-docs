@@ -13,18 +13,18 @@ information about this process, see <<ml-supervised-workflow>> and
 <<ml-inference>>.
 
 You can also supply trained models that are not created by {dfanalytics-job} but
-adhere to the appropriate 
-https://github.com/elastic/ml-json-schemas[JSON schema]. If you want to use 
-these trained models in the {stack}, you must store them in {es} documents by 
+adhere to the appropriate
+https://github.com/elastic/ml-json-schemas[JSON schema]. If you want to use
+these trained models in the {stack}, you must store them in {es} documents by
 using the {ref}/put-trained-models.html[create trained models API].
 
-In {kib}, you can view and manage your trained models within *{ml-app}* > *Data 
+In {kib}, you can view and manage your trained models within *{ml-app}* > *Data
 Frame Analytics*:
 
 [role="screenshot"]
 image::images/trained-model-management.png["List of trained models in the {ml-app} app in {kib}"]
 
-Alternatively, you can use APIs like 
+Alternatively, you can use APIs like
 {ref}/get-trained-models.html[get trained models] and
 {ref}/delete-trained-models.html[delete trained models].
 
@@ -52,11 +52,9 @@ curl -s -u elastic:changeme \
     | more
 --------------------------------------------------
 // NOTCONSOLE
---
 
 If you wish to show just the model IDs available, use `jq` to select a subset.
 
---
 [source, bash]
 --------------------------------------------------
 curl -s -u elastic:changeme \
@@ -64,9 +62,7 @@ curl -s -u elastic:changeme \
     | jq -C -r '.trained_model_configs[].model_id'
 --------------------------------------------------
 // NOTCONSOLE
---
-+
---
+
 [source, bash]
 --------------------------------------------------
 flights1-1607953694065
@@ -91,8 +87,7 @@ curl -u elastic:changeme \
     > flights1.json
 --------------------------------------------------
 // NOTCONSOLE
-+
---
+
 A few observations:
 
 * Exporting models requires using `curl` or a similar tool that can *stream*
@@ -125,6 +120,7 @@ curl -u elastic:changeme \
   --data-binary @flights1.json
 --------------------------------------------------
 // NOTCONSOLE
+--
 
 [NOTE]
 --

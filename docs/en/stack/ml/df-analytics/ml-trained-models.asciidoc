@@ -30,151 +30,133 @@ Alternatively, you can use APIs like
 
 
 [discrete]
-[[move-between-clusters]]
-== Moving a trained model between clusters
+[[export-import]]
+== Exporting and importing models
 
-It is a common scenario that the {ml} models are trained in a development or 
-test environment and then used in a production environment. In this case, you 
-need to move your trained model from one cluster to another. The trained model 
-APIs enable you to move your trained model between clusters. The following 
-description shows you the process step by step.
+Models trained in Elasticsearch are portable and can be transferred between
+clusters. This is particularly useful when models are trained in isolation from
+the cluster where they are used for inference. The following instructions show
+how to use https://curl.se/[`curl`] and https://stedolan.github.io/jq/[`jq`] to
+export a model as JSON and import to another cluster.
 
-1. (Optional) In the cluster where you trained the model, make the call below by 
-using the console in **Dev Tools** to get the configuration information of your 
-trained models.
+1. Given a model _name_, find the model _ID_. Using `curl` we can call the
+{ref}/get-trained-models.html[Get Trained Model API] to list all models with
+their IDs.
 +
 --
-
-[source,console]
+[source, bash]
 --------------------------------------------------
-GET _ml/trained_models/
+curl -s -u elastic:changeme \
+  -X GET "http://localhost:9200/_ml/trained_models" \
+    | jq . -C \
+    | more
 --------------------------------------------------
-// TEST[skip:setup kibana sample data]
-
-The API response contains the `model_id` of the trained models. Check the 
-`model_id` of the trained model you want to move, you need to add it to the API 
-call in the next step.
+// NOTCONSOLE
 --
 
-2. Use the {ref}/get-trained-models.html[GET trained model API] to get the 
-trained model definition. You need to specify the following query parameters in 
-the call:
+If you wish to show just the model IDs available, use `jq` to select a subset.
+
+--
+[source, bash]
+--------------------------------------------------
+curl -s -u elastic:changeme \
+  -X GET "http://localhost:9200/_ml/trained_models" \
+    | jq -C -r '.trained_model_configs[].model_id'
+--------------------------------------------------
+// NOTCONSOLE
+--
 +
 --
-* `for_export`: This parameter allows the model to be in an acceptable format to 
-be retrieved and then added to another cluster. Set it to `true`.
-
-* `include`: Set this to `definition` for the API to include the definition in 
-the response.
-
-* `decompress_definition`: It specifies in what format the included model 
-definition should be returned. Set it to `false` for getting a custom compressed 
-format. It is also valid to use the JSON format, but it is not optimal. As the 
-decompressed definition may be significantly larger, it is recommended to use 
-the compressed format.
-   
-The following call is an example to get the trained model definition. (Replace 
-`<model_id>` with the actual ID of the trained model.)
-
-[source,console]
+[source, bash]
 --------------------------------------------------
-GET _ml/trained_models/<model_id>?for_export=true&include=definition&decompress_definition=false
+flights1-1607953694065
+flights0-1607953585123
+lang_ident_model_1
 --------------------------------------------------
-// TEST[skip:setup kibana sample data]
+// NOTCONSOLE
 
-The API response returns a `trained_model_configs` array that contains a 
-`compressed_definition` object and the analytics and inference configuration 
-information.
+In our case, we would like to export the model with ID `flights1-1607953694065`.
 --
 
-3. Copy the content of `trained_model_configs`.
+2. Using `curl` from the command line, again use the
+{ref}/get-trained-models.html[Get Trained Model API] to export the entire model
+definition and save it to a JSON file.
++
+--
+[source, bash]
+--------------------------------------------------
+curl -u elastic:changeme \
+  -X GET "http://localhost:9200/_ml/trained_models/flights1-1607953694065?exclude_generated=true&include=definition&decompress_definition=false" \
+    | jq '.trained_model_configs[0] | del(.model_id)' \
+    > flights1.json
+--------------------------------------------------
+// NOTCONSOLE
++
+--
+A few observations:
 
-4. Use the {ref}/put-trained-models.html[Create trained model API] in the 
-cluster you want to move the trained model to. Paste the content of the 
-`trained_model_configs` to the request body of the API call. The API response 
-contains the model information with metadata.
+* Exporting models requires using `curl` or a similar tool that can *stream*
+the model over HTTP into a file. Using the https://www.elastic.co/guide/en/
+kibana/current/console-kibana.html[Kibana Dev Tools console] will cause the
+browser to become unresponsive due to the size of exported models.
 
-Your trained model is ready to be used as a <<ml-inference-processor,processor>> 
-in an ingest pipeline or as an <<ml-inference-aggregation,aggregation>>.
+* Note the query parameters that are used during export. These are necessary to
+export the model in a way that it can later be imported again and used for
+inference.
+
+* We need to unnest the JSON object by one level to extract just the model
+definition. We also want to remove the existing model ID in order to not have
+ID collisions when we import again. We do these steps using `jq` inline but
+alternatively it can be done to the resulting JSON file after downloading using
+`jq` or other tools.
+--
+
+3. Import the saved model using `curl` to upload the JSON file to the {ref}/
+create-trained-models.html[Created Trained Model API]. When we specify the URL,
+we can also set the model ID to something new using the last path part of the
+URL.
++
+--
+[source, bash]
+--------------------------------------------------
+curl -u elastic:changeme \
+  -H 'Content-Type: application/json' \
+  -X PUT "http://localhost:9200/_ml/trained_models/flights1-imported" \
+  --data-binary @flights1.json
+--------------------------------------------------
+// NOTCONSOLE
 
 [NOTE]
 --
-The trained model definition can be so large that it may take a long time for a 
-computer clipboard to copy and paste it. It is recommended to do it 
-programmatically, for example via a bash script or via Client code. You can find 
-examples below.
+* Models exported from the {ref}/get-trained-models.html[Get Trained Model API]
+are limited in size by the https://www.elastic.co/guide/en/elasticsearch/
+reference/current/modules-http.html#_http_settings[http.max_content_length]
+global configuration value in Elasticsearch. The default value is `100mb` and
+may need to be increased depending on the size of model being exported.
+
+* Connection timeouts can occur when either the source or destination
+Elasticsearch is under load, or when model sizes are very large. Increasing
+https://ec.haxx.se/usingcurl/usingcurl-timeouts[timeout configurations] for
+`curl` (e.g. `curl --max-time 600`) or your client of choice will help
+alleviate the problem. In rare cases you may need to reduce load on the
+Elasticsearch cluster, for example by adding nodes.
 --
-
-The following Python snippet exports the trained model that you reference to a 
-JSON file:
-
-[source, py]
---------------------------------------------------
-import json
-from elasticsearch import Elasticsearch
-from elasticsearch.client.ml import MlClient
-es_client = Elasticsearch('URL to your ES instance', http_auth=(username, password), use_ssl=True)
-ml_client = MlClient(es_client)
-result = ml_client.get_trained_models(model_id='your-model-id', decompress_definition=False, include=definition)
-compressed_df = result['trained_model_configs'][0]
-with open('model_filename.json', 'w') as handle:
-    handle.write(json.dumps(compressed_df))
---------------------------------------------------
-// NOTCONSOLE
-
-
-The following Python snippet imports the model that stored in the JSON file to 
-a cluster:
-
-[source, py]
---------------------------------------------------
-import json
-from elasticsearch import Elasticsearch
-from elasticsearch.client.ml import MlClient
-es_client = Elasticsearch(args.es, http_auth=(username, password), use_ssl=True, timeout=60)
-ml_client = MlClient(es_client)
-with open(filename, 'r') as handle:
-  compressed_model = json.loads(handle.read())
-for field in ('version', 'create_time', 'estimated_heap_memory_usage_bytes', 'estimated_operations', 'license_level', 'id','created_by'):
-  if field in compressed_model:
-    del compressed_model[field]
-ml_client.put_trained_model(model_id=model_id, body=compressed_model)
---------------------------------------------------
-// NOTCONSOLE
-
-
-You can achieve the same by running a bash script. Populate the environment 
-variables:
-
-`ES_ADDRESS="https://username:password@elasticsearch-address"`
-
-`MODEL="my_model_name"`
-
-
-Then run the script:
-
-[source, bash]
---------------------------------------------------
-curl -H 'Content-Type: application/json' -XPUT "$ES_ADDRESS/_ml/inference/$MODEL" -d@$MODEL.json
---------------------------------------------------
-// NOTCONSOLE
 
 
 [discrete]
-[[move-trained-model-to-es]]
-== Moving a model to the {stack}
+[[import-external-model-to-es]]
+== Importing an external model to the {stack}
 
-It is possible to add a model to your {es} cluster even if the model is not 
+It is possible to import a model to your {es} cluster even if the model is not
 trained by Elastic {dfanalytics}.
 
-You can find an example of training a model, then adding it to {es} by using 
-eland 
-https://eland.readthedocs.io/en/latest/examples/introduction_to_eland_webinar.html#Machine-Learning-Demo[in eland docs].
-The example uses Python to train and move the model, however, you can use any 
-Client as long as the format of your trained model meets 
-https://github.com/elastic/ml-json-schemas[the required schema].
+You can find an example of training a model, then importing it to {es} with
+`eland` in the
+https://eland.readthedocs.io/en/latest/examples/introduction_to_eland_webinar.html#Machine-Learning-Demo[eland machine learning demo].
+The example uses Python to train, save and import the model, however, you can
+use any Client as long as the model conforms to the https://github.com/elastic/
+ml-json-schemas[schema].
 
-
-// This blog post is a step by step description of how to create a random forest 
-// classifier {ml} model outside of {es} by using Python, load it into {es}, then 
-// operationalize it with ingest pipelines.
+// This blog post is a step by step description of how to create a random forest
+// classifier {ml} model outside of {es} by using Python, load it into {es},
+// then operationalize it with ingest pipelines.

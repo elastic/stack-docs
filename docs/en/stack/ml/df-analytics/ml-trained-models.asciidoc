@@ -37,10 +37,10 @@ Models trained in Elasticsearch are portable and can be transferred between
 clusters. This is particularly useful when models are trained in isolation from
 the cluster where they are used for inference. The following instructions show
 how to use https://curl.se/[`curl`] and https://stedolan.github.io/jq/[`jq`] to
-export a model as JSON and import to another cluster.
+export a model as JSON and import it to another cluster.
 
-1. Given a model _name_, find the model _ID_. Using `curl` we can call the
-{ref}/get-trained-models.html[Get Trained Model API] to list all models with
+1. Given a model _name_, find the model _ID_. You can use `curl` to call the
+{ref}/get-trained-models.html[get trained model API] to list all models with
 their IDs.
 +
 --
@@ -53,7 +53,7 @@ curl -s -u elastic:changeme \
 --------------------------------------------------
 // NOTCONSOLE
 
-If you wish to show just the model IDs available, use `jq` to select a subset.
+If you want to show just the model IDs available, use `jq` to select a subset.
 
 [source, bash]
 --------------------------------------------------
@@ -71,11 +71,11 @@ lang_ident_model_1
 --------------------------------------------------
 // NOTCONSOLE
 
-In our case, we would like to export the model with ID `flights1-1607953694065`.
+In this example, you are exporting the model with ID `flights1-1607953694065`.
 --
 
 2. Using `curl` from the command line, again use the
-{ref}/get-trained-models.html[Get Trained Model API] to export the entire model
+{ref}/get-trained-models.html[get trained models API] to export the entire model
 definition and save it to a JSON file.
 +
 --
@@ -91,24 +91,23 @@ curl -u elastic:changeme \
 A few observations:
 
 * Exporting models requires using `curl` or a similar tool that can *stream*
-the model over HTTP into a file. Using the https://www.elastic.co/guide/en/
-kibana/current/console-kibana.html[Kibana Dev Tools console] will cause the
-browser to become unresponsive due to the size of exported models.
+the model over HTTP into a file. If you use the {kib} Console, 
+browser might be unresponsive due to the size of exported models.
 
-* Note the query parameters that are used during export. These are necessary to
+* Note the query parameters that are used during export. These parameters are necessary to
 export the model in a way that it can later be imported again and used for
 inference.
 
-* We need to unnest the JSON object by one level to extract just the model
-definition. We also want to remove the existing model ID in order to not have
-ID collisions when we import again. We do these steps using `jq` inline but
+* You must unnest the JSON object by one level to extract just the model
+definition. You must also remove the existing model ID in order to not have
+ID collisions when you import again. You can do these steps using `jq` inline or
 alternatively it can be done to the resulting JSON file after downloading using
 `jq` or other tools.
 --
 
 3. Import the saved model using `curl` to upload the JSON file to the {ref}/
-create-trained-models.html[Created Trained Model API]. When we specify the URL,
-we can also set the model ID to something new using the last path part of the
+create-trained-models.html[created trained model API]. When you specify the URL,
+you can also set the model ID to something new using the last path part of the
 URL.
 +
 --
@@ -124,14 +123,14 @@ curl -u elastic:changeme \
 
 [NOTE]
 --
-* Models exported from the {ref}/get-trained-models.html[Get Trained Model API]
-are limited in size by the https://www.elastic.co/guide/en/elasticsearch/
-reference/current/modules-http.html#_http_settings[http.max_content_length]
+* Models exported from the {ref}/get-trained-models.html[get trained models API]
+are limited in size by the
+{ref}/modules-http.html#_http_settings[http.max_content_length]
 global configuration value in Elasticsearch. The default value is `100mb` and
 may need to be increased depending on the size of model being exported.
 
 * Connection timeouts can occur when either the source or destination
-Elasticsearch is under load, or when model sizes are very large. Increasing
+cluster is under load, or when model sizes are very large. Increasing
 https://ec.haxx.se/usingcurl/usingcurl-timeouts[timeout configurations] for
 `curl` (e.g. `curl --max-time 600`) or your client of choice will help
 alleviate the problem. In rare cases you may need to reduce load on the
@@ -149,8 +148,8 @@ trained by Elastic {dfanalytics}.
 You can find an example of training a model, then importing it to {es} with
 `eland` in the
 https://eland.readthedocs.io/en/latest/examples/introduction_to_eland_webinar.html#Machine-Learning-Demo[eland machine learning demo].
-The example uses Python to train, save and import the model, however, you can
-use any Client as long as the model conforms to the https://github.com/elastic/
+The example uses Python to train, save and import the model. However, you can
+use any client as long as the model conforms to the https://github.com/elastic/
 ml-json-schemas[schema].
 
 // This blog post is a step by step description of how to create a random forest

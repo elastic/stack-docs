@@ -46,7 +46,7 @@ their IDs.
 --
 [source, bash]
 --------------------------------------------------
-curl -s -u elastic:changeme \
+curl -s -u username:password \
   -X GET "http://localhost:9200/_ml/trained_models" \
     | jq . -C \
     | more
@@ -57,7 +57,7 @@ If you want to show just the model IDs available, use `jq` to select a subset.
 
 [source, bash]
 --------------------------------------------------
-curl -s -u elastic:changeme \
+curl -s -u username:password \
   -X GET "http://localhost:9200/_ml/trained_models" \
     | jq -C -r '.trained_model_configs[].model_id'
 --------------------------------------------------
@@ -81,7 +81,7 @@ definition and save it to a JSON file.
 --
 [source, bash]
 --------------------------------------------------
-curl -u elastic:changeme \
+curl -u username:password \
   -X GET "http://localhost:9200/_ml/trained_models/flights1-1607953694065?exclude_generated=true&include=definition&decompress_definition=false" \
     | jq '.trained_model_configs[0] | del(.model_id)' \
     > flights1.json
@@ -113,7 +113,7 @@ URL.
 --
 [source, bash]
 --------------------------------------------------
-curl -u elastic:changeme \
+curl -u username:password \
   -H 'Content-Type: application/json' \
   -X PUT "http://localhost:9200/_ml/trained_models/flights1-imported" \
   --data-binary @flights1.json

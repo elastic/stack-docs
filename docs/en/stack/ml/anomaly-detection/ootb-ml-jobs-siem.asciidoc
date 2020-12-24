@@ -13,13 +13,12 @@ that are listed for every job.
 
 // tag::siem-jobs[]
 For more details, see the
-{dfeed} and job definitions in the `siem_*` folders in
+{dfeed} and job definitions in the `security_*` and `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
-
 
 [discrete]
 [[security-auditbeat-jobs]]
-== Security {auditbeat}
+== Security: {auditbeat}
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
@@ -284,7 +283,7 @@ scripts containing secrets.
 
 Job details:::
 * Analyzes host activity logs where `agent.type` is `auditbeat` and
-`destination.ip` is commands the metadata service.
+`destination.ip` is the metadata service.
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other processes 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -486,7 +485,7 @@ Required ECS fields when not using {beats}:::
 
 [discrete]
 [[security-auditbeat-authentication-jobs]]
-== Security {auditbeat} authentication
+== Security: {auditbeat} authentication
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
@@ -523,7 +522,7 @@ Required ECS fields when not using {beats}:::
 
 [discrete]
 [[security-cloudtrail-jobs]]
-== Security CloudTrail
+== Security: CloudTrail
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
@@ -639,8 +638,190 @@ Required ECS fields when not using {beats}:::
 // end::security-cloudtrail-jobs[]
 
 [discrete]
+[[security-linux-jobs]]
+== Security: Linux
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file].
+
+Detect suspicious activity using ECS Linux events. Tested with {auditbeat} and {agent}.
+
+// tag::security-linux-jobs[]
+v2_linux_anomalous_network_port_activity_ecs::
+
+Identifies unusual destination port activity that can indicate
+command-and-control, persistence mechanism, or data exfiltration activity.
++
+Rarely used destination port activity is generally unusual in Linux fleets, and 
+can indicate unauthorized access or threat actor activity.
+
+Job details:::
+
+* Analyzes network activity logs where `host.os.type` is `linux` or 
+`host.os.family` is `debian`, `redhat`, `suse`, or `ubuntu`.
+* Models destination port activity.
+* Detects destination port activity that occurs rarely compared to other port 
+activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `destination.ip`
+* `destination.port`
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_linux_anomalous_process_all_hosts_ecs::
+
+Looks for processes that are unusual to all Linux hosts. Such unusual processes may indicate unauthorized services, malware, or persistence mechanisms. 
++
+This reduces the detection of false positives since automated maintenance
+processes usually only run occasionally on a single machine but are common to
+all or many hosts in a fleet.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.type` is `linux` or `host.os.family`
+is `debian`, `redhat`, `suse`, or `ubuntu`.
+* Models the occurrences of processes on all Linux hosts.
+* Detects processes that occur rarely compared to other processes on all Linux 
+hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_linux_anomalous_user_name_ecs::
+
+Searches for activity from users who are not normally active, which can
+indicate unauthorized changes, activity by unauthorized users, lateral
+movement, and compromised credentials.
++
+In organizations, new usernames are not often created apart from specific types 
+of system activities, such as creating new accounts for new employees. These 
+user accounts quickly become active and routine.
++
+Events from rarely used usernames can point to suspicious activity. 
+Additionally, automated Linux fleets tend to see activity from rarely used 
+usernames only when personnel log in to make authorized or unauthorized 
+changes, or threat actors have acquired credentials and log in for malicious 
+purposes. Unusual usernames can also indicate pivoting, where compromised 
+credentials are used to try and move laterally from one host to another.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.type` is `linux` or `host.os.family`
+is `debian`, `redhat`, `suse`, or `ubuntu`.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.  
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_linux_rare_metadata_process::
+
+Looks for anomalous access to the metadata service by an unusual process. The 
+metadata service may be targeted in order to harvest credentials or user data 
+scripts containing secrets.  
+
+Job details:::
+* Analyzes host activity logs where `destination.ip` is the metadata service and 
+`host.os.type` is `linux` or `host.os.family` is `debian`, `redhat`, `suse`, or
+`ubuntu`.
+* Models process activity.
+* Detects processes that are rarely or unusually active compared to other 
+processes (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `destination.ip`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_linux_rare_metadata_user::
+
+Looks for anomalous access to the metadata service by an unusual user. The 
+metadata service may be targeted in order to harvest credentials or user data 
+scripts containing secrets. 
+
+Job details:::
+
+* Analyzes host activity logs where `destination.ip` is the metadata service and
+`host.os.type` is `linux` or `host.os.family` is `debian`, `redhat`, `suse`, or
+`ubuntu`.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `destination.ip`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `user.name`
+
+v2_rare_process_by_host_linux_ecs::
+
+Looks for processes that are unusual to a particular Linux host. Such unusual 
+processes might indicate unauthorized services, malware, or persistence 
+mechanisms. 
++
+Processes are considered rare when they only run occasionally as compared with
+other processes running on the host.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.type` is `linux` or 
+`host.os.family` is `debian`, `redhat`, `suse`, or `ubuntu`.
+* Models occurrences of process activities on the host. 
+* Detects unusually rare processes compared to other processes on the host 
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+// end::security-linux-jobs[]
+
+[discrete]
 [[security-packetbeat-jobs]]
-== Security {packetbeat}
+== Security: {packetbeat}
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
@@ -817,8 +998,258 @@ Required ECS fields when not using {beats}:::
 // end::siem-packetbeat-jobs[]
 
 [discrete]
+[[security-windows-jobs]]
+== Security: Windows
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file].
+
+Detects suspicious activity using ECS Windows events. Tested with {winlogbeat} 
+and {agent}.
+
+// tag::security-windows-jobs[]
+v2_rare_process_by_host_windows_ecs::
+
+Detects unusually rare processes on Windows hosts, which can indicate execution 
+of unauthorized services, malware, or persistence mechanisms.
++
+Processes are considered rare when they only run occasionally as compared with
+other processes running on the host.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.family` or `host.os.type` is 
+`windows`.
+* Models occurrences of process activities on the host. 
+* Detects unusually rare processes compared to other processes on the host 
+(using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_windows_anomalous_network_activity_ecs::
+
+Looks for unusual processes using the network which could indicate command-and-
+control, lateral movement, persistence, or data exfiltration activity.
++
+A process with unusual network activity can denote process exploitation or
+injection, where the process is used to run persistence mechanisms that allow a
+malicious actor remote access or control of the host, data exfiltration, and
+execution of unauthorized network applications.
+
+Job details:::
+
+* Analyzes network activity logs where `host.os.family` is `windows`.
+* Models the occurrences of processes that cause network activity.
+* Detects network activity caused by processes that occur rarely compared to 
+other processes (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `destination.ip`
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_windows_anomalous_path_activity_ecs::
+
+Looks for activity in unusual paths, which might indicate execution of malware 
+or persistence mechanisms.
++
+Windows payloads often execute from user profile paths. In corporate Windows 
+environments, software installation is centrally managed and it is unusual for 
+programs to be executed from user or temporary directories. Processes executed 
+from these locations can denote that a user downloaded software directly from 
+the internet or a malicious script/macro executed malware.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.family` or `host.os.type` is 
+`windows`.
+* Models occurrences of processes in paths.
+* Detects activity in unusual paths (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.os.family`
+* `host.name`
+* `host.os.type`
+* `process.name`
+* `process.working_directory`
+* `user.name`
+
+v2_windows_anomalous_process_all_hosts_ecs::
+
+Looks for processes that are unusual to all Windows hosts. Such unusual 
+processes may indicate execution of unauthorized services, malware, or 
+persistence mechanisms.
++
+This reduces the detection of false positives since automated maintenance
+processes usually only run occasionally on a single machine but are common to
+all or many hosts in a fleet.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.family` or `host.os.type` is 
+`windows`.
+* Models the occurrences of processes on all hosts.
+* Detects processes that occur rarely compared to other processes on all hosts 
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `process.executable`
+* `process.name`
+* `user.name`
+
+v2_windows_anomalous_process_creation::
+
+Identifies unusual process relationships that can indicate
+malware execution or persistence mechanisms.
++
+Malicious scripts often call on other applications and processes as part of
+their exploit payload. For example, when a malicious Office document runs
+scripts as part of an exploit payload, Excel or Word may start a script
+interpreter process, which, in turn, runs a script that downloads and executes
+malware. Another common scenario is Outlook running an unusual process when
+malware is downloaded in an email.
++
+Monitoring and identifying anomalous process relationships is an excellent way
+of detecting new and emerging malware that is not yet recognized by anti-virus
+scanners.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.family` or `host.os.family` is 
+`windows`.
+* Models occurrences of process creation activities (`partition_field_name` is 
+`process.parent.name`).
+* Detects process relationships that are rare compared to other process 
+relationships (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `process.parent.name`
+* `user.name`
+
+v2_windows_anomalous_user_name_ecs::
+
+Searches for activity from users who are not normally active, which can
+indicate unauthorized changes, activity by unauthorized users, lateral
+movement, and compromised credentials.
++
+In organizations, new usernames are not often created apart from specific types 
+of system activities, such as creating new accounts for new employees. These 
+user accounts quickly become active and routine.
++
+Events from rarely used usernames can point to suspicious activity. 
+Additionally, automated Linux fleets tend to see activity from rarely used 
+usernames only when personnel log in to make authorized or unauthorized 
+changes, or threat actors have acquired credentials and log in for malicious 
+purposes. Unusual usernames can also indicate pivoting, where compromised 
+credentials are used to try and move laterally from one host to another.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.type` or `host.os.family` is `windows`.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices
+
+Required ECS fields:::
+
+* `event.category`
+* `event.type`
+* `host.name`
+* `host.os.family`
+* `host.os.type`
+* `process.name`
+* `user.name`
+
+v2_windows_rare_metadata_process::
+
+Looks for anomalous access to the metadata service by an unusual process. The 
+metadata service may be targeted in order to harvest credentials or user data 
+scripts containing secrets.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.family` is `windows` and
+`destination.ip` is the metadata service.
+* Models process activity.
+* Detects processes that are rarely or unusually active compared to other 
+processes (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required ECS fields:::
+
+* `destination.ip`
+* `host.name`
+* `host.os.family`
+* `process.name`
+* `user.name`
+
+v2_windows_rare_metadata_user::
+
+Looks for anomalous access to the metadata service by an unusual user. The 
+metadata service may be targeted in order to harvest credentials or user data 
+scripts containing secrets.
+
+Job details:::
+
+* Analyzes host activity logs where `host.os.family` is `windows` and
+`destination.ip` is the metadata service.
+* Models user activity.
+* Detects users that are rarely or unusually active compared to other users 
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required ECS fields:::
+
+* `destination.ip`
+* `host.name`
+* `host.os.family`
+* `user.name`
+
+// end::security-windows-jobs[]
+
+[discrete]
 [[security-winlogbeat-jobs]]
-== Security {winlogbeat}
+== Security: {winlogbeat}
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
@@ -1137,7 +1568,7 @@ Required ECS fields when not using {beats}:::
 
 [discrete]
 [[security-winlogbeat-authentication-jobs]]
-== Security {winlogbeat} authentication
+== Security: {winlogbeat} authentication
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the

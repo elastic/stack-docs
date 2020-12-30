@@ -117,7 +117,7 @@ the `response.keyword` and then uses the `count` function to determine when the
 number of events is anomalous. You might use a job like this if you want to
 look at both high and low request rates partitioned by response code. When you
 view the results in the **Anomaly Explorer**, you can see separate swim lanes
-for the `404` and `200` responses:
+for each response code:
 
 [role="screenshot"]
 image::images/ml-gs-job2-explorer.jpg["Anomaly explorer for response_code_rates job"]
@@ -207,8 +207,8 @@ client IPs in each bucket and we can once again see that the
 If you want to play with another example of a population {anomaly-job}, add the
 sample eCommerce orders data set. Its `high_sum_total_sales` job determines
 which customers have made unusual amounts of purchases relative to other
-customers in each bucket of time. In this example, there is a low severity
-anomalous event found for `Abd Burton`:
+customers in each bucket of time. In this example, there are anomalous events 
+found for two customers:
 
 [role="screenshot"]
 image::images/ml-gs-job4-explorer.png["Anomaly charts for the high_sum_total_sales job"]

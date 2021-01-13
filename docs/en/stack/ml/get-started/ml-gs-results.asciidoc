@@ -18,7 +18,9 @@ immediately see that all three jobs have found anomalies, which are indicated by
 red blocks in the swim lanes for each job.
 
 There are two tools for examining the results from {anomaly-jobs} in {kib}: the
-**Anomaly Explorer** and the **Single Metric Viewer**.
+**Anomaly Explorer** and the **Single Metric Viewer**. You can switch between
+these tools by clicking the icons in the top left corner. You can also edit the
+job selection to examine a different subset of {anomaly-jobs}.
 
 [discrete]
 [[ml-gs-results-smv]]
@@ -31,6 +33,12 @@ request rate on your web site drops significantly.
 
 Let's start by looking at this simple job in the
 **Single Metric Viewer**:
+
+. Select the *Anomaly Detection* tab in *{ml-app}* to see the list of your
+{anomaly-jobs}.
+
+. Click the chart icon in the *Actions* column for your `low_request_rate` job
+to view its results in the **Single Metric Viewer**.
 
 [role="screenshot"]
 image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for low_request_rate job"]
@@ -79,6 +87,15 @@ or higher in the selected section of the timeline. If you are only interested in
 critical anomalies, for example, you can change the severity threshold for this
 table.
 
+You can optionally annotate your job results by drag-selecting a period of time
+in the **Single Metric Viewer** and adding a description. Annotations are notes
+that refer to events in a specific time period. They can be created by the
+user or generated automatically by the {anomaly-job} to reflect model changes
+and noteworthy occurrences.
+
+[role="screenshot"]
+image::images/ml-gs-user-annotation.jpg["A user annotation in the Single Metric Viewer"]
+
 After you have identified anomalies, often the next step is to try to determine
 the context of those situations. For example, are there other factors that are
 contributing to the problem? Are the anomalies confined to particular
@@ -115,25 +132,31 @@ multiple time series based on a categorical field. For example, the
 `response_code_rates` job has a single detector that splits the data based on
 the `response.keyword` and then uses the `count` function to determine when the
 number of events is anomalous. You might use a job like this if you want to
-look at both high and low request rates partitioned by response code. When you
-view the results in the **Anomaly Explorer**, you can see separate swim lanes
-for the `404` and `200` responses:
+look at both high and low request rates partitioned by response code.
+
+Let's start by looking at the `response_code_rates` job in the
+**Anomaly Explorer**:
+
+. Select the *Anomaly Detection* tab in *{ml-app}* to see the list of your
+{anomaly-jobs}.
+
+. Click the grid icon in the *Actions* column for your `response_code_rates` job
+to view its results in the **Anomaly Explorer**.
+
+For this particular job, you can choose to see separate swim lanes for each client
+IP or response code. For example:
 
 [role="screenshot"]
 image::images/ml-gs-job2-explorer.jpg["Anomaly explorer for response_code_rates job"]
 
-In this scenario, the analysis is segmented such that you have completely
-different baselines for each distinct value of the _partition field_. By looking
-at temporal patterns on a per entity basis, you might spot things that might
-have otherwise been hidden in the lumped view.
+Since the job uses `response.keyword` as its _partition field_, the analysis is
+segmented such that you have completely different baselines for each distinct
+value of that field. By looking at temporal patterns on a per entity basis, you
+might spot things that might have otherwise been hidden in the lumped view.
 
-Under the anomaly timeline, there is a section that contains annotations. 
-Annotations are notes that refer to events in a specific time period. They can 
-be created by the user or generated automatically by the {anomaly-job} to 
-reflect model changes and noteworthy occurrences. You can filter the type of 
-events by using the selector on the right side of the **Annotations** section. 
-You can also add your own annotations by drag-selecting a period of time in the 
-**Single Metric Viewer** and adding a description.
+Under the anomaly timeline, there is a section that contains annotations. You
+can filter the type of events by using the selector on the right side of the
+**Annotations** section.
 
 [role="screenshot"]
 image::images/ml-gs-annotations.jpg["Annotations section in the Anomaly Explorer"]
@@ -207,10 +230,10 @@ client IPs in each bucket and we can once again see that the
 If you want to play with another example of a population {anomaly-job}, add the
 sample eCommerce orders data set. Its `high_sum_total_sales` job determines
 which customers have made unusual amounts of purchases relative to other
-customers in each bucket of time. In this example, there is a low severity
-anomalous event found for `Abd Burton`:
+customers in each bucket of time. In this example, there are anomalous events 
+found for two customers:
 
 [role="screenshot"]
-image::images/ml-gs-job4-explorer.png["Anomaly charts for the high_sum_total_sales job"]
+image::images/ml-gs-job4-explorer.jpg["Anomaly charts for the high_sum_total_sales job"]
 
 For more information, see <<ml-configuring-populations>>.

@@ -20,9 +20,18 @@ a model, and calculate its performance on validation data.
 
 You can view the hyperparameter values that were ultimately chosen by expanding
 the job details in {kib} or by using the
-{ref}/get-dfanalytics-stats.html[get {dfanalytics-job} stats API]. You can also
-see the specific type of validation loss (such as mean squared error or binomial
-cross entropy) that was used to compare each round of optimization. 
+{ref}/get-trained-models.html[get trained models API]. You can also see the 
+specific type of validation loss (such as mean squared error or binomial cross 
+entropy) that was used to compare each round of optimization using the 
+{ref}/get-dfanalytics-stats.html[get {dfanalytics-job} stats API].
+
+Different hyperparameters may affect the model accuracy to a different 
+degree. To estimate the importance of the optimized hyperparameters, analysis of 
+variance decomposition is used. The resulting `absolute importance` shows how 
+much the variation of a hyperparameter impacts the variation in the final loss. 
+Additionally, `relative importance` is also computed which gives the importance 
+of the hyperparameter compared to the rest of the tuneable hyperparameters. The 
+sum of all relative importances is 1.
 
 TIP: Unless you fully understand the purpose of a hyperparameter, it is highly
 recommended that you leave it unset and allow hyperparameter optimization to

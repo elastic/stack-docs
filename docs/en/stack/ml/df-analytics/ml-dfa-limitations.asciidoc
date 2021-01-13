@@ -11,6 +11,15 @@ beta::[]
 The following limitations and known problems apply to the {version} release of 
 the Elastic {dfanalytics} feature:
 
+[discrete]
+[[dfa-space-limitations]]
+== Trained models are visible in all {kib} spaces
+
+{kibana-ref}/xpack-spaces.html[Spaces] enable you to organize your
+{dfanalytics-jobs} in {kib} and to see only the jobs and other saved objects
+that belong to your space. However, this limited scoped does not apply to
+<<ml-trained-models,trained models>>; they are are visible in all spaces. 
+
 [float]
 [[dfa-ccs-limitations]]
 == {ccs-cap} is not supported

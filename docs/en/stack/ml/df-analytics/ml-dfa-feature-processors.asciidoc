@@ -1,0 +1,48 @@
+[role="xpack"]
+[[feature-processors]]
+= {dfanalytics-caps} feature processors
+++++
+<titleabbrev>Feature processors</titleabbrev>
+++++
+
+beta::[]
+
+Feature processors enable you to extract process features from raw document 
+fields. These features can then be used in model training, model deployment, and 
+inference. The resulting features are ephemeral. This provides a mechanism to 
+create features (that can be used at search and ingest) that do not take up 
+space in the index. Additionally, it more tightly couples feature generation 
+with the resulting model. This simplifies model management as now both the 
+features and the model can follow the same life cycle easily.
+
+Available feature processors:
+
+* <<frequency-encoding>>
+* <<multi-encoding>>
+* <<ngram-encoding>>
+* <<one-hot-encoding>>
+* <<target-mean-encoding>>
+
+
+
+
+[[frequency-encoding]]
+== Frequency encoding
+
+
+[[multi-encoding]]
+== Multi encoding
+
+
+[[ngram-encoding]]
+== NGram encoding
+
+
+[[one-hot-encoding]]
+== One hot encoding
+
+
+[[target-mean-encoding]]
+== Target mean encoding
+
+

@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-feature-processors]]
-= {dfanalytics-caps} feature processors
+= {dfanalytics-cap} feature processors
 ++++
 <titleabbrev>Feature processors</titleabbrev>
 ++++
@@ -15,7 +15,7 @@ used at search and ingest time and don't take up space in the index.
 Additionally, it more tightly couples feature generation with the resulting 
 model. This simplifies model management as now both the features and the model 
 can follow the same life cycle. Automatic 
-<<ml-feature-encoding, categorical encoding>> is still done by the analytics 
+<<ml-feature-encoding, categorical encoding>> still occurs during the analytics 
 process even if custom feature processors are used. Refer to the 
 `feature_processors` property of the 
 {ref}/put-dfanalytics.html[Create {dfanalytics-job} API] to learn more.
@@ -40,10 +40,10 @@ categorical values after the encoding is done as different categories may have
 the same frequency.
 
 image::images/frequency-encoding.jpg["Frequency encoding"]
-*The figure shows a simple frequency encoding example. The Animal_freq value of 
+_The figure shows a simple frequency encoding example. The Animal_freq value of 
 `cat` is 0.5 as the feature is present at half of the number of related values. 
 The labels `dog` and `crocodile` occur only once each. For this reason, the 
-Animal_freq value of these labels is 0.25.*
+Animal_freq value of these labels is 0.25._
 
 
 [[multi-encoding]]
@@ -68,9 +68,9 @@ feature is present (1) or not present (0) at the given value, so the encoding
 method maps the different categorical features to the numerical values.
 
 image::images/one-hot-encoding.jpg["One hot encoding"]
-*One hot encoding maps each category to the corresponding value. If the category 
-is present at a given value, the assigned vector is `1`, if it is not, the 
-vector is `0`.*
+_One hot encoding maps each category to the corresponding value. If the 
+category is present at a given value, the assigned vector is `1`, if it is not, 
+the vector is `0`._
 
 
 [[target-mean-encoding]]
@@ -80,10 +80,10 @@ Target mean encoding replaces categorical values with the mean value of the
 target variable as it relates to the categorical variable itself.
 
 image::images/target-mean-encoding.jpg["Target mean encoding"]
-*The figure shows a simple target mean encoding example. The label `cat` has two 
-occurrences in the data set. One of them has a corresponding target variable of 
-`0`, the other one has a `1`.  The `Animal_target_mean` value of the `cat` label 
-is 0.5 after using the target mean encoding processor while the value of `dog` 
-and `crocodile` is 1 as each of their occurrences has a corresponding target 
-variable of `1`.*
+_The figure shows a simple target mean encoding example. The label `cat` has 
+two occurrences in the data set. One of them has a corresponding target variable 
+of `0`, the other one has a `1`.  The `Animal_target_mean` value of the `cat` 
+label is 0.5 after using the target mean encoding processor while the value of 
+`dog` and `crocodile` is 1 as each of their occurrences has a corresponding 
+target variable of `1`._
 

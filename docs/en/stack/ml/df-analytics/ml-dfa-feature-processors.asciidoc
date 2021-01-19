@@ -1,5 +1,5 @@
 [role="xpack"]
-[[feature-processors]]
+[[ml-feature-processors]]
 = {dfanalytics-caps} feature processors
 ++++
 <titleabbrev>Feature processors</titleabbrev>
@@ -8,12 +8,17 @@
 beta::[]
 
 Feature processors enable you to extract process features from raw document 
-fields. These features can then be used in model training, model deployment, and 
-inference. The resulting features are ephemeral. This provides a mechanism to 
-create features (that can be used at search and ingest) that do not take up 
-space in the index. Additionally, it more tightly couples feature generation 
-with the resulting model. This simplifies model management as now both the 
-features and the model can follow the same life cycle easily.
+fields of your index. These features can then be used in model training, model 
+deployment, and inference. The resulting features are ephemeral; they are not 
+stored in the index. This provides a mechanism to create features that can be 
+used at search and ingest time and don't take up space in the index. 
+Additionally, it more tightly couples feature generation with the resulting 
+model. This simplifies model management as now both the features and the model 
+can follow the same life cycle. Automatic 
+<<ml-feature-encoding, categorical encoding>> is still done by the analytics 
+process even if custom feature processors are used. Refer to the 
+`feature_processors` property of the 
+{ref}/put-dfanalytics.html[Create {dfanalytics-job} API] to learn more.
 
 Available feature processors:
 
@@ -24,25 +29,61 @@ Available feature processors:
 * <<target-mean-encoding>>
 
 
-
-
 [[frequency-encoding]]
 == Frequency encoding
+
+Frequency encoding takes into account how many times a given categorical feature 
+is present in relation to a particular value in the data set. The more 
+frequent the feature is present, the greater the weight of the feature in the 
+data set. With this encoding technique, it is not possible to get back to the 
+categorical values after the encoding is done as different categories may have 
+the same frequency.
+
+image::images/frequency-encoding.jpg["Frequency encoding"]
+*The figure shows a simple frequency encoding example. The Animal_freq value of 
+`cat` is 0.5 as the feature is present at half of the number of related values. 
+The labels `dog` and `crocodile` occur only once each. For this reason, the 
+Animal_freq value of these labels is 0.25.*
 
 
 [[multi-encoding]]
 == Multi encoding
+
+Multi encoding enables you to use multiple processors in the same 
+{dfanalytics-job}. You can define an ordered sequence of processors in which the 
+output of a processor can be forwarded to the next processor as an input.
 
 
 [[ngram-encoding]]
 == NGram encoding
 
 
+
 [[one-hot-encoding]]
 == One hot encoding
+
+One hot encoding transforms categorical values into numerical ones by assigning 
+vectors to each category. The vector represents whether the corresponding 
+feature is present (1) or not present (0) at the given value, so the encoding 
+method maps the different categorical features to the numerical values.
+
+image::images/one-hot-encoding.jpg["One hot encoding"]
+*One hot encoding maps each category to the corresponding value. If the category 
+is present at a given value, the assigned vector is `1`, if it is not, the 
+vector is `0`.*
 
 
 [[target-mean-encoding]]
 == Target mean encoding
 
+Target mean encoding replaces categorical values with the mean value of the 
+target variable as it relates to the categorical variable itself.
+
+image::images/target-mean-encoding.jpg["Target mean encoding"]
+*The figure shows a simple target mean encoding example. The label `cat` has two 
+occurrences in the data set. One of them has a corresponding target variable of 
+`0`, the other one has a `1`.  The `Animal_target_mean` value of the `cat` label 
+is 0.5 after using the target mean encoding processor while the value of `dog` 
+and `crocodile` is 1 as each of their occurrences has a corresponding target 
+variable of `1`.*
 

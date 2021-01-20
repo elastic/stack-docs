@@ -160,6 +160,17 @@ example:
 [role="screenshot"]
 image::images/ecommerce-outlier-job-1.png["Create a {dfanalytics-job} in {kib}"]
 
+The wizard includes a scatterplot matrix, which enables you to explore the 
+relationships between the fields. You can use that information to help you
+decide which fields to include or exclude from the analysis.
+
+[role="screenshot"]
+image::images/ecommerce-outlier-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
+
+If you want these charts to represent data from a larger sample size or from a
+randomized selection of documents, you can change the default behavior. However, 
+these options might slow down the performance of the matrix.
+
 Alternatively, you can use the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
 
@@ -272,10 +283,17 @@ The search results include the following {oldetection} scores:
 // NOTCONSOLE
 ====
 
-{kib} also provides a scatterplot matrix, which enables you to visualize the
-relationships between pairs of fields. Outliers are highlighted in each
-scatterplot and are affected by your choice of outlier score threshold.
+{kib} also provides a scatterplot matrix in the results. Outliers with a score 
+that exceeds the threshold are highlighted in each chart:
 
+[role="screenshot"]
+image::images/outliers-scatterplot.png["View scatterplot in {oldetection} results"]
+
+In addition to the sample size and random scoring options, there is a
+*Dynamic size* option. If you enable this option, the size of each point is 
+affected by its outlier score; that is to say, the largest points have the
+highest outlier scores. The goal of these charts and options is to help you 
+visualize and explore the outliers within your data.
 
 --
 

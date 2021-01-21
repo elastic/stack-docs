@@ -104,7 +104,7 @@ in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
 image::images/flights-regression-job-1.jpg["Creating a {dfanalytics-job} in {kib}"]
-
+--
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `regression` as the job type.
 .. Optionally improve the quality of the analysis by adding a query that removes erroneous data. In this case, we omit flights with a distance of 0 kilometers or less.
@@ -145,7 +145,8 @@ limited, this setting makes it possible to prevent job execution.
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
 the results. If the index does not exist, it will be created automatically.
-
++
+--
 .API example
 [%collapsible]
 ====

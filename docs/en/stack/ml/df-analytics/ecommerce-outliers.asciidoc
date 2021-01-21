@@ -169,7 +169,9 @@ image::images/ecommerce-outlier-scatterplot.png["A scatterplot matrix for three 
 
 If you want these charts to represent data from a larger sample size or from a
 randomized selection of documents, you can change the default behavior. However, 
-these options might slow down the performance of the matrix.
+a larger sample size might slow down the performance of the matrix and a
+randomized selection might put more load on the cluster due to the more
+intensive query.
 
 Alternatively, you can use the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].

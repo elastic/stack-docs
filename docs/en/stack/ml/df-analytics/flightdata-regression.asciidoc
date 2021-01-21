@@ -114,6 +114,23 @@ want to predict with the {reganalysis}.
 fields. These fields will be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
++
+--
+The wizard includes a scatterplot matrix, which enables you to explore the 
+relationships between the numeric fields. The color of each point is affected by 
+the value of the dependent variable for that document, as shown in the legend. 
+You can use this matrix to help you decide which fields to include or exclude 
+from the analysis.
+
+[role="screenshot"]
+image::images/flightdata-regression-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
+
+If you want these charts to represent data from a larger sample size or from a
+randomized selection of documents, you can change the default behavior. However, 
+a larger sample size might slow down the performance of the matrix and a
+randomized selection might put more load on the cluster due to the more
+intensive query.
+--
 .. Choose a training percent of `90` which means it randomly selects 90% of the
 source data for training.
 .. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify

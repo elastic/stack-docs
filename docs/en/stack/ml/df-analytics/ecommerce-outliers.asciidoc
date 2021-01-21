@@ -27,11 +27,12 @@ such that we get a new index that contains a sales summary for each customer.
 
 In particular, create a {transform} that calculates the sum of the products
 (`products.quantity`) and the sum of prices (`products.taxful_price`) in all of
-the orders, grouped by customer (`customer_full_name`). Also include a value
+the orders, grouped by customer (`customer_full_name.keyword`). Also include a value
 count aggregation, so that we know how many orders (`order_id`) exist for each
 customer.
 
-You can preview the {transform} before you create it in {kib}:
+You can preview the {transform} before you create it in *{stack-manage-app}*
+> *Transforms*:
 
 [role="screenshot"]
 image::images/ecommerce-transform-preview.png["Creating a {transform} in {kib}"]
@@ -152,11 +153,25 @@ POST _data_frame/transforms/ecommerce-customer-sales/_start
 . Create a {dfanalytics-job} to detect outliers in the new entity-centric index.
 +
 --
-There is a wizard for creating {dfanalytics-jobs} on the
-*Machine Learning* > *Data Frame Analytics* page in {kib}:
+In the wizard on the *Machine Learning* > *Data Frame Analytics* page in {kib},
+select your new index pattern then use the default values for {oldetection}. For
+example:
 
 [role="screenshot"]
 image::images/ecommerce-outlier-job-1.png["Create a {dfanalytics-job} in {kib}"]
+
+The wizard includes a scatterplot matrix, which enables you to explore the 
+relationships between the fields. You can use that information to help you
+decide which fields to include or exclude from the analysis.
+
+[role="screenshot"]
+image::images/ecommerce-outlier-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
+
+If you want these charts to represent data from a larger sample size or from a
+randomized selection of documents, you can change the default behavior. However, 
+a larger sample size might slow down the performance of the matrix and a
+randomized selection might put more load on the cluster due to the more
+intensive query.
 
 Alternatively, you can use the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
@@ -191,8 +206,8 @@ PUT _ml/data_frame/analytics/ecommerce
 +
 --
 You can start, stop, and manage {dfanalytics-jobs} on the
-*Machine Learning* > *Data Frame Analytics* page in {kib}. Alternatively, you
-can use the {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and
+*Machine Learning* > *Data Frame Analytics* page. Alternatively, you can use the
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and
 {ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs.
 
 .API example
@@ -248,16 +263,40 @@ The search results include the following {oldetection} scores:
 [source,js]
 --------------------------------------------------
 ...
-"ml" : {
-  "outlier_score" : 0.9653657078742981,
-  "feature_influence.products.quantity.sum" : 0.00592468399554491,
-  "feature_influence.order_id.value_count" : 0.01975759118795395,
-  "feature_influence.products.taxful_price.sum" : 0.974317729473114
+  "ml" : {
+    "outlier_score" : 0.9706582427024841,
+    "feature_influence" : [
+      {
+        "feature_name" : "order_id.value_count",
+        "influence" : 0.015179949812591076
+      },
+      {
+        "feature_name" : "products.quantity.sum",
+        "influence" : 0.003752298653125763
+      },
+      {
+        "feature_name" : "products.taxful_price.sum",
+        "influence" : 0.9810677766799927
+      }
+    ]
   }
 ...
 --------------------------------------------------
 // NOTCONSOLE
 ====
+
+{kib} also provides a scatterplot matrix in the results. Outliers with a score 
+that exceeds the threshold are highlighted in each chart:
+
+[role="screenshot"]
+image::images/outliers-scatterplot.png["View scatterplot in {oldetection} results"]
+
+In addition to the sample size and random scoring options, there is a
+*Dynamic size* option. If you enable this option, the size of each point is 
+affected by its {olscore}; that is to say, the largest points have the
+highest {olscores}. The goal of these charts and options is to help you 
+visualize and explore the outliers within your data.
+
 --
 
 Now that you've found unusual behavior in the sample data set, consider how you
@@ -269,9 +308,9 @@ algorithms perform by using the evaluate {dfanalytics} API. See
 TIP: If you do not want to keep the {transform} and the {dfanalytics-job}, you
 can delete them in {kib} or use the
 {ref}/delete-data-frame-transform.html[delete {transform} API] and
-{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When
-you delete {transforms} and {dfanalytics-jobs}, the destination indices and
-{kib} index patterns remain.
+{ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When you delete
+{transforms} and {dfanalytics-jobs} in {kib}, you have the option to also remove
+the destination indices and index patterns.
 
 If you want to see another example of {oldetection} in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Outlier%20Detection/Introduction[click here].

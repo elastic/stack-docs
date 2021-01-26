@@ -7,7 +7,7 @@
 
 beta::[]
 
-Feature processors enable you to extract process features from the raw document 
+Feature processors enable you to extract process features from raw document 
 fields of your index. These features can be used in model training and 
 inference. The resulting features are ephemeral; they are not stored in the 
 index. This provides a mechanism to create features that can be used at search 
@@ -31,11 +31,11 @@ Available feature processors:
 == Frequency encoding
 
 Frequency encoding takes into account how many times a given categorical feature 
-is present in relation to a particular value in the data set. The more 
-frequently the feature is present, the greater the weight of the feature in the 
-data set. With this encoding technique, it is not possible to get back to the 
-categorical values after the encoding is done as different categories may have 
-the same frequency.
+is present in relation to the value of the encoded field. The more frequently 
+the feature is present, the greater the weight of the feature in the data set. 
+With this encoding technique, it is not possible to get back to the categorical 
+values after the encoding is done as different categories may have the same 
+frequency.
 
 image::images/frequency-encoding.jpg["Frequency encoding"]
 _The figure shows a simple frequency encoding example. The Animal_freq value of 
@@ -70,9 +70,9 @@ bigram encoding (ngram of size 1 and 2) and goes to the string length of 3._
 [[one-hot-encoding]]
 == One hot encoding
 
-One hot encoding transforms from categorical to numerical values by assigning 
-a 1 or a 0 to each category. The value represents whether the corresponding 
-feature value is present (1) or not present (0), so the encoding 
+One hot encoding transforms categorical values into numerical ones by assigning 
+vectors to each category. The vector represents whether the corresponding 
+feature is present (1) or not present (0) at the given value, so the encoding 
 method maps the different categorical features to the numerical values.
 
 image::images/one-hot-encoding.jpg["One hot encoding"]
@@ -94,3 +94,4 @@ of `0`, the other one has a `1`.  The `Animal_target_mean` value of the `cat`
 label is 0.5 after using the target mean encoding processor while the value of 
 `dog` and `crocodile` is 1 as each of their occurrences has a corresponding 
 target variable of `1`._
+

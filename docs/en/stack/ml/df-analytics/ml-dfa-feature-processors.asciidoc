@@ -8,16 +8,14 @@
 beta::[]
 
 Feature processors enable you to extract process features from raw document 
-fields of your index. These features can then be used in model training, model 
-deployment, and inference. The resulting features are ephemeral; they are not 
-stored in the index. This provides a mechanism to create features that can be 
-used at search and ingest time and don't take up space in the index. 
-Additionally, it more tightly couples feature generation with the resulting 
-model. This simplifies model management as now both the features and the model 
-can follow the same life cycle. Automatic 
-<<ml-feature-encoding, categorical encoding>> still occurs during the analytics 
-process even if custom feature processors are used. Refer to the 
-`feature_processors` property of the 
+fields of your index. These features can be used in model training and 
+inference. The resulting features are ephemeral; they are not stored in the 
+index. This provides a mechanism to create features that can be used at search 
+and ingest time and don't take up space in the index. Additionally, it 
+simplifies model management as both the features and the model can follow the 
+same life cycle. Automatic <<ml-feature-encoding, categorical encoding>> still 
+occurs during the analytics process even if custom feature processors are used. 
+Refer to the `feature_processors` property of the 
 {ref}/put-dfanalytics.html[Create {dfanalytics-job} API] to learn more.
 
 Available feature processors:
@@ -34,7 +32,7 @@ Available feature processors:
 
 Frequency encoding takes into account how many times a given categorical feature 
 is present in relation to a particular value in the data set. The more 
-frequent the feature is present, the greater the weight of the feature in the 
+frequently the feature is present, the greater the weight of the feature in the 
 data set. With this encoding technique, it is not possible to get back to the 
 categorical values after the encoding is done as different categories may have 
 the same frequency.
@@ -51,12 +49,22 @@ Animal_freq value of these labels is 0.25._
 
 Multi encoding enables you to use multiple processors in the same 
 {dfanalytics-job}. You can define an ordered sequence of processors in which the 
-output of a processor can be forwarded to the next processor as an input.
+output of a processor can be forwarded to the next processor as an input. For 
+example, you can define an NGram feature processor that creates a series of 
+ngrams that can be encoded by a chained one hot encoding processor.
 
 
 [[ngram-encoding]]
 == NGram encoding
 
+NGram encoding encodes a string into a collection of ngrams (a sequence of n 
+items) of a configured length. The output of this encoding is categorical. 
+Consequently, additional automatic processing will be done to the resulting 
+ngrams.
+
+image::images/ngram-encoding.jpg["NGram encoding"]
+_The table shows the NGram encoding of the Animal field. It executes unigram and 
+bigram encoding (ngram of size 1 and 2) and goes to the string length of 3._
 
 
 [[one-hot-encoding]]

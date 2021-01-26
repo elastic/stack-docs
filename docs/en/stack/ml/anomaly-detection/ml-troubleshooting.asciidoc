@@ -195,14 +195,14 @@ DELETE temp_ml_config
 
 Where possible, {ml} jobs are assigned to nodes based on the memory requirement
 of the job and the memory available on the node. However, in certain cases, the
-amount of memory on a node cannot be accurately determined, and then jobs are
-assigned by balancing numbers of jobs per {ml} node. It may lead to a situation
-where all the jobs with high memory requirements are on one node and the less
+amount of memory on a node cannot be accurately determined and jobs are assigned
+by balancing the number of jobs per {ml} node. It may lead to a situation where
+all the jobs with high memory requirements are on one node and the less
 memory-intensive jobs on another.
 
 One particular case of this problem is that {es} fails to determine the amount
-of memory on a machine that is running Debian 8 with the default Cgroups setup,
-and certain updates of Java versions earlier than Java 15.  For example, Java
+of memory on a machine that is running Debian 8 with the default Cgroups setup
+and certain updates of Java versions earlier than Java 15. For example, Java
 8u271 is known to be affected while Java 8u272 is not. Java 15 was fixed from
 its initial release.
 
@@ -210,22 +210,17 @@ If you are running {es} on Debian 8 with an old version of Java and have not
 already modified the Cgroups setup then it is recommended to do one of the
 following:
 
-1. Upgrade Java to version 15.
-2. Upgrade to the latest Java update for the version of Java you are running.
-3. Enable the "memory" Cgroup by editing `/etc/default/grub` and adding:
+* Upgrade Java to version 15.
+* Upgrade to the latest Java update for the version of Java you are running.
+* Enable the "memory" Cgroup by editing `/etc/default/grub` and adding:
 +
 --
-```
+[source,sh]
+--------------------------------------------------
 GRUB_CMDLINE_LINUX_DEFAULT="quiet cgroup_enable=memory swapaccount=1"
-```
+--------------------------------------------------
+
+Update your GRUB configuration by running `sudo update-grub`, then reboot the
+machine.
+
 --
-+
-Then update your GRUB configuration by running:
-+
---
-```
-sudo update-grub
-```
---
-+
-Reboot the machine.

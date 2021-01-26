@@ -193,7 +193,7 @@ DELETE temp_ml_config
 [[ml-debian8-memory]]
 == Suboptimal job assignment on Debian 8
 
-Where possible {ml} jobs are assigned to nodes based on the memory requirement
+Where possible, {ml} jobs are assigned to nodes based on the memory requirement
 of the job and the memory available on the node. However, in certain cases, the
 amount of memory on a node cannot be accurately determined, and then jobs are
 assigned by balancing numbers of jobs per {ml} node. It may lead to
@@ -212,7 +212,8 @@ following:
 1. Upgrade Java to version 15.
 2. Upgrade to the latest Java update for the version of Java you are running.
 3. Enable the "memory" Cgroup by editing `/etc/default/grub` and adding:
-
++
+--
 ```
 GRUB_CMDLINE_LINUX_DEFAULT="quiet cgroup_enable=memory swapaccount=1"
 ```
@@ -223,4 +224,4 @@ Then update your GRUB configuration by running:
 sudo update-grub
 ```
 
-And finally reboot the machine.
+4.  Reboot the machine.

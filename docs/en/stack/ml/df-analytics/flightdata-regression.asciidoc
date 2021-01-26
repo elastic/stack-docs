@@ -104,7 +104,7 @@ in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
 image::images/flights-regression-job-1.jpg["Creating a {dfanalytics-job} in {kib}"]
-
+--
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `regression` as the job type.
 .. Optionally improve the quality of the analysis by adding a query that removes erroneous data. In this case, we omit flights with a distance of 0 kilometers or less.
@@ -114,6 +114,23 @@ want to predict with the {reganalysis}.
 fields. These fields will be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
++
+--
+The wizard includes a scatterplot matrix, which enables you to explore the 
+relationships between the numeric fields. The color of each point is affected by 
+the value of the dependent variable for that document, as shown in the legend. 
+You can use this matrix to help you decide which fields to include or exclude 
+from the analysis.
+
+[role="screenshot"]
+image::images/flightdata-regression-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
+
+If you want these charts to represent data from a larger sample size or from a
+randomized selection of documents, you can change the default behavior. However, 
+a larger sample size might slow down the performance of the matrix and a
+randomized selection might put more load on the cluster due to the more
+intensive query.
+--
 .. Choose a training percent of `90` which means it randomly selects 90% of the
 source data for training.
 .. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify
@@ -128,7 +145,8 @@ limited, this setting makes it possible to prevent job execution.
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
 the results. If the index does not exist, it will be created automatically.
-
++
+--
 .API example
 [%collapsible]
 ====

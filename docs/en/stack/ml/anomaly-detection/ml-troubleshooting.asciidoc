@@ -194,23 +194,23 @@ DELETE temp_ml_config
 == Suboptimal job assignment on Debian 8
 
 Where possible {ml} jobs are assigned to nodes based on the memory requirement
-of the job and the memory available on the node. This breaks down when the
+of the job and the memory available on the node. However, in certain cases, the
 amount of memory on a node cannot be accurately determined, and then jobs are
-assigned simply by balancing numbers of jobs per {ml} node. This could lead to
-a situation where all the big jobs are on one node and all the small jobs on
+assigned by balancing numbers of jobs per {ml} node. It may lead to
+a situation where all the jobs with high memory requirements are on one node and the less memory-intensive jobs on
 another.
 
-Elasticsearch will fail to determine the amount of memory on a machine that is
+{es} fails to determine the amount of memory on a machine that is
 running Debian 8 with the default Cgroups setup, and certain updates of Java
 versions earlier than Java 15.  For example, Java 8u271 is known to be affected
-while Java 8u272 is not.  Java 15 was fixed from its initial release.
+while Java 8u272 is not. Java 15 was fixed from its initial release.
 
-If you are running Elasticsearch on Debian 8 with an old version of Java and
-have not already modified the Cgroups setup then you should do one of the
+If you are running {es} on Debian 8 with an old version of Java and
+have not already modified the Cgroups setup then it is recommended to do one of the
 following:
 
-1. Upgrade Java to version 15
-2. Upgrade to the latest Java update for the version of Java you are running
+1. Upgrade Java to version 15.
+2. Upgrade to the latest Java update for the version of Java you are running.
 3. Enable the "memory" Cgroup by editing `/etc/default/grub` and adding:
 
 ```
@@ -224,4 +224,3 @@ sudo update-grub
 ```
 
 And finally reboot the machine.
-

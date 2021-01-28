@@ -7,15 +7,22 @@
 
 beta::[]
 
-Feature processors enable you to extract and process features from the raw document 
+{dfanalytics-cap} automatically performs <<ml-feature-encoding>> and transforms 
+categorical features to numerical ones. However, it is possible for you to 
+define and configure processors that encode the fields you want. Feature 
+processors enable you to extract and process features from the raw document 
 fields of your index. These features can be used in model training and 
 inference. The resulting features are ephemeral; they are not stored in the 
 index. This provides a mechanism to create features that can be used at search 
 and ingest time and don't take up space in the index. Additionally, it 
 simplifies model management as both the features and the model can follow the 
-same life cycle. Automatic <<ml-feature-encoding, categorical encoding>> still 
-occurs during the analytics process even if custom feature processors are used. 
-Refer to the `feature_processors` property of the 
+same life cycle.
+
+Automatic categorical encoding still occurs during the analytics process on 
+fields with categorical values, even if custom feature processors are used. If 
+the user provided feature processor transformed the categorical value of a field 
+into numerical one, then automatic feature encoding does not occur on the 
+respective field. Refer to the `feature_processors` property of the 
 {ref}/put-dfanalytics.html[Create {dfanalytics-job} API] to learn more.
 
 Available feature processors:

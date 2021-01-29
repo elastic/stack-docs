@@ -6,10 +6,16 @@
 ++++
 
 These {anomaly-jobs} appear by default in the Anomaly Detection interface of
-the {security-guide}/machine-learning.html[Elastic Security app] in {kib}. They
+the {security-guide}/machine-learning.html[{security-app}] in {kib}. They
 help you automatically detect file system and network anomalies on your hosts.
-However, if you don't use Beats, you need to map your data to the ECS fields
-that are listed for every job.
+However, if you don't use Beats or the {agent}, you need to map your data to 
+the ECS fields that are listed for every job.
+
+IMPORTANT: If the {agent} or Beat is version 7.10 or higher, use the
+<<security-linux-jobs>> and <<security-windows-jobs>> jobs. For earlier 
+versions, use the <<security-auditbeat-jobs>> and <<security-winlogbeat-jobs>>
+jobs. After you upgrade to 7.10 or later versions and start using the new jobs,
+disable the old jobs.
 
 // tag::siem-jobs[]
 For more details, see the
@@ -756,6 +762,11 @@ processes (using the
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
+
 Required ECS fields:::
 
 * `destination.ip`
@@ -1027,6 +1038,11 @@ Job details:::
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
+
 Required ECS fields:::
 
 * `event.category`
@@ -1055,6 +1071,11 @@ Job details:::
 other processes (using the
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
 
 Required ECS fields:::
 
@@ -1154,6 +1175,11 @@ relationships (using the
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
+
 Required ECS fields:::
 
 * `event.category`
@@ -1190,6 +1216,11 @@ Job details:::
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices
 
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
+
 Required ECS fields:::
 
 * `event.category`
@@ -1216,6 +1247,11 @@ processes (using the
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
+
 Required ECS fields:::
 
 * `destination.ip`
@@ -1237,6 +1273,11 @@ Job details:::
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
 
 Required ECS fields:::
 

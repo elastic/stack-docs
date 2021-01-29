@@ -51,7 +51,7 @@ Job details:::
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -80,7 +80,7 @@ Job details:::
   activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 +
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat} (Linux)
 
@@ -99,7 +99,7 @@ Job details:::
 * Detects listening port activity that occurs rarely compared to 
   other port activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat} (Linux)
 
@@ -125,7 +125,7 @@ Job details:::
 * Detects a web URL request that is rare compared to other web URL 
   requests (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat} (Linux)
 
@@ -154,7 +154,7 @@ Job details:::
 * Detects processes that occur rarely compared to other processes on all 
   hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -191,7 +191,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -220,7 +220,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -248,7 +248,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -270,7 +270,7 @@ Job details:::
 * Detects processes that are rarely or unusually active compared to other processes 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -294,7 +294,7 @@ Job details:::
 * Detects processes that are rarely or unusually active compared to other processes 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -318,7 +318,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -339,7 +339,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -365,7 +365,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -393,7 +393,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -421,7 +421,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -449,7 +449,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -475,7 +475,7 @@ Job details:::
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat}
 
@@ -512,7 +512,7 @@ Job details:::
 * Detects unusually high number of authentication attempts (using the 
   {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {auditbeat} (Linux)
 
@@ -550,7 +550,7 @@ Job details:::
 the `aws.cloudtrail.error_message` field is unusual
 (using the {ml-docs}/ml-count-functions.html#ml-distinct-count[`high_distinct_count` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
@@ -570,7 +570,7 @@ Job details:::
 * Detects `aws.cloudtrail.error_code` values that have never or rarely occurred
 before (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
@@ -589,7 +589,7 @@ Job details:::
 * Detects unusually rare `event.action` values compared to other cities (using
 the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
@@ -609,7 +609,7 @@ Job details:::
 * Detects unusually rare `event.action` values compared to other countries
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
@@ -630,7 +630,7 @@ Job details:::
 * Detects unusually rare `event.action` values compared to other users (using
 the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
@@ -671,6 +671,10 @@ Job details:::
 activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {auditbeat}
+
 Required ECS fields:::
 
 * `destination.ip`
@@ -699,6 +703,10 @@ is `debian`, `redhat`, `suse`, or `ubuntu`.
 * Detects processes that occur rarely compared to other processes on all Linux 
 hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {auditbeat}
 
 Required ECS fields:::
 
@@ -736,6 +744,10 @@ is `debian`, `redhat`, `suse`, or `ubuntu`.
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.  
 
+Required {beats} or {agent} integrations:::
+
+* {auditbeat}
+
 Required ECS fields:::
 
 * `event.category`
@@ -764,8 +776,7 @@ processes (using the
 
 Required {beats} or {agent} integrations:::
 
-* {elastic-endpoint} integration
-* {winlogbeat}
+* {auditbeat}
 
 Required ECS fields:::
 
@@ -792,6 +803,10 @@ Job details:::
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {auditbeat}
+
 Required ECS fields:::
 
 * `destination.ip`
@@ -817,6 +832,10 @@ Job details:::
 * Detects unusually rare processes compared to other processes on the host 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {auditbeat}
 
 Required ECS fields:::
 
@@ -857,7 +876,7 @@ Job details:::
 * Detects unusual DNS activity (using the 
   {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {packetbeat} (Windows and Linux)
 
@@ -894,7 +913,7 @@ Job details:::
 * Detects DNS activity that is rare compared to other DNS activities (using the 
   {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {packetbeat} (Windows and Linux)
 
@@ -926,7 +945,7 @@ Job details:::
 * Detects HTTP or TLS domain activity that is rare compared to other 
   activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {packetbeat} (Windows and Linux)
 
@@ -961,7 +980,7 @@ Job details:::
 * Detects URL activity that rarely occurs compared to other URL activities 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {packetbeat} (Windows and Linux)
 
@@ -994,7 +1013,7 @@ Job details:::
 * Detects HTTP user agent activity that occurs rarely compared to other HTTP 
   user agent activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {packetbeat} (Windows and Linux)
 
@@ -1108,6 +1127,10 @@ Job details:::
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
+Required {beats} or {agent} integrations:::
+
+* {winlogbeat}
+
 Required ECS fields:::
 
 * `event.category`
@@ -1137,6 +1160,11 @@ Job details:::
 * Detects processes that occur rarely compared to other processes on all hosts 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {winlogbeat}
 
 Required ECS fields:::
 
@@ -1314,7 +1342,7 @@ Job details:::
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat}
 
@@ -1344,7 +1372,7 @@ Job details:::
 * Detects network activity caused by processes that occur rarely compared to 
   other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat}
 
@@ -1374,7 +1402,7 @@ Job details:::
 * Models occurrences of processes in paths.
 * Detects activity in unusual paths (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1403,7 +1431,7 @@ Job details:::
 * Detects processes that occur rarely compared to other processes on all 
   hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat}
 
@@ -1440,7 +1468,7 @@ Job details:::
 * Detects process relationships that are rare compared to other process 
   relationships (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1467,7 +1495,7 @@ Job details:::
   script activities (using the 
   {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1489,7 +1517,7 @@ Job details:::
 * Models occurrences of Windows service activities.
 * Detects Windows service activities that occur rarely compared to other Windows service activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1520,7 +1548,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat}
 
@@ -1546,7 +1574,7 @@ Job details:::
 * Detects processes that are rarely or unusually active compared to other processes 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1570,7 +1598,7 @@ Job details:::
 * Detects users that are rarely or unusually active compared to other users 
   (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1593,7 +1621,7 @@ Job details:::
 * Models occurrences of user context switches.
 * Detects user context switches that occur rarely compared to other user context switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 
@@ -1631,7 +1659,7 @@ Job details:::
 * Detects user remote login activities that occur rarely compared to other 
   user remote login activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
-Required {beats}:::
+Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
 

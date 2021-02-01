@@ -26,7 +26,6 @@ Refer to the `feature_processors` property of the
 Available feature processors:
 
 * <<frequency-encoding>>
-* <<multi-encoding>>
 * <<ngram-encoding>>
 * <<one-hot-encoding>>
 * <<target-mean-encoding>>
@@ -47,16 +46,6 @@ _The figure shows a simple frequency encoding example. The Animal_freq value of
 `cat` is 0.5 as the feature is present at half of the number of related values. 
 The labels `dog` and `crocodile` occur only once each. For this reason, the 
 Animal_freq value of these labels is 0.25._
-
-
-[[multi-encoding]]
-== Multi encoding
-
-Multi encoding enables you to use multiple processors in the same 
-{dfanalytics-job}. You can define an ordered sequence of processors in which the 
-output of a processor can be forwarded to the next processor as an input. For 
-example, you can define an NGram feature processor that creates a series of 
-ngrams that can be encoded by a chained one hot encoding processor.
 
 
 [[ngram-encoding]]

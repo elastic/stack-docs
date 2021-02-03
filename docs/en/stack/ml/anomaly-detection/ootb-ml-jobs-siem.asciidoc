@@ -653,7 +653,7 @@ Required ECS fields when not using {beats}:::
 [[security-linux-jobs]]
 == Security: Linux
 
-Detect suspicious activity using ECS Linux events. Tested with {auditbeat} and {agent}.
+Detect suspicious activity using ECS Linux events.
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
@@ -681,6 +681,7 @@ activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function])
 
 Required {beats} or {agent} integrations:::
 
+* beta:[] {elastic-endpoint} integration
 * {auditbeat}
 
 Required ECS fields:::
@@ -714,6 +715,7 @@ hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
+* beta:[] {elastic-endpoint} integration
 * {auditbeat}
 
 Required ECS fields:::
@@ -754,6 +756,7 @@ is `debian`, `redhat`, `suse`, or `ubuntu`.
 
 Required {beats} or {agent} integrations:::
 
+* beta:[] {elastic-endpoint} integration
 * {auditbeat}
 
 Required ECS fields:::
@@ -784,6 +787,7 @@ processes (using the
 
 Required {beats} or {agent} integrations:::
 
+* beta:[] {elastic-endpoint} integration
 * {auditbeat}
 
 Required ECS fields:::
@@ -813,6 +817,7 @@ Job details:::
 
 Required {beats} or {agent} integrations:::
 
+* beta:[] {elastic-endpoint} integration
 * {auditbeat}
 
 Required ECS fields:::
@@ -843,6 +848,7 @@ Job details:::
 
 Required {beats} or {agent} integrations:::
 
+* beta:[] {elastic-endpoint} integration
 * {auditbeat}
 
 Required ECS fields:::
@@ -1039,8 +1045,7 @@ Required ECS fields when not using {beats}:::
 [[security-windows-jobs]]
 == Security: Windows
 
-Detects suspicious activity using ECS Windows events. Tested with {winlogbeat} 
-and {agent}.
+Detects suspicious activity using ECS Windows events.
 
 These configurations are available only if data exists that matches the 
 recognizer query specified in the

@@ -5,19 +5,15 @@
 <titleabbrev>Security</titleabbrev>
 ++++
 
-These {anomaly-jobs} appear by default in the Anomaly Detection interface of
-the {security-guide}/machine-learning.html[{security-app}] in {kib}. They
-help you automatically detect file system and network anomalies on your hosts.
-However, if you don't use Beats or the {agent}, you need to map your data to 
-the ECS fields that are listed for each job.
-
-IMPORTANT: If the {agent} or Beat is version 7.10 or higher, use the
-<<security-linux-jobs>> and <<security-windows-jobs>> jobs. For earlier 
-versions, use the <<security-auditbeat-jobs>> and <<security-winlogbeat-jobs>>
-jobs. After you upgrade to 7.10 or later versions and start using the new jobs,
-disable the old jobs.
-
 // tag::siem-jobs[]
+These {anomaly-jobs} automatically detect file system and network anomalies on
+your hosts. They appear in the Anomaly Detection interface of the
+{security-guide}/machine-learning.html[{security-app}] in {kib} when you have
+data that matches their configuration. Each job lists the type of {agent}
+integration or Beat that collects the pertinent data. If you do not use the
+{agent} or Beats, you must map your data to the ECS fields that are listed
+for each job.
+
 For more details, see the
 {dfeed} and job definitions in the `security_*` and `siem_*` folders in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
@@ -26,11 +22,21 @@ https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/
 [[security-auditbeat-jobs]]
 == Security: {auditbeat}
 
+Detect suspicious network activity and unusual processes in {auditbeat} data.
+
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/manifest.json#L8[manifest file].
 
-Detect suspicious network activity and unusual processes in {auditbeat} data.
+IMPORTANT: In 7.11 or later versions, use the <<security-linux-jobs>> jobs
+instead.footnote:duplicatelinuxjobs[If you cannot upgrade all your Beats to
+version 7.11 or later and you have both <<security-linux-jobs>> and
+<<security-auditbeat-jobs>> jobs running, you can avoid duplication by stopping
+the following jobs: `linux_anomalous_network_activity_ecs`, 
+`linux_anomalous_network_port_activity_ecs`,
+`linux_anomalous_process_all_hosts_ecs`, `linux_anomalous_user_name_ecs`, 
+`linux_rare_metadata_process`, `linux_rare_metadata_user`,
+`rare_process_by_host_linux_ecs`.]
 
 // tag::siem-auditbeat-jobs[]
 linux_anomalous_network_activity_ecs::
@@ -83,9 +89,10 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * {auditbeat} (Linux)
-
 +
 NOTE: This job is available only when you use {auditbeat} to ship data.
+footnote:compatible[Some jobs use fields that are not ECS-compliant. These jobs
+are available only when you use {beats} or the {agent} to ship data.]
 
 linux_anomalous_network_service::
 
@@ -102,9 +109,8 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * {auditbeat} (Linux)
-
 +
-NOTE: This job is available only when you use {auditbeat} to ship data.
+NOTE: This job is available only when you use {auditbeat} to ship data.footnote:compatible[]
 
 linux_anomalous_network_url_activity_ecs::
 
@@ -647,11 +653,13 @@ Required ECS fields when not using {beats}:::
 [[security-linux-jobs]]
 == Security: Linux
 
+Detect suspicious activity using ECS Linux events. Tested with {auditbeat} and {agent}.
+
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file].
 
-Detect suspicious activity using ECS Linux events. Tested with {auditbeat} and {agent}.
+IMPORTANT: In 7.11 or later versions, use these jobs instead of the <<security-auditbeat-jobs>> jobs.footnote:duplicatelinuxjobs[]
 
 // tag::security-linux-jobs[]
 v2_linux_anomalous_network_port_activity_ecs::
@@ -734,10 +742,6 @@ usernames only when personnel log in to make authorized or unauthorized
 changes, or threat actors have acquired credentials and log in for malicious 
 purposes. Unusual usernames can also indicate pivoting, where compromised 
 credentials are used to try and move laterally from one host to another.
-+
-NOTE: If you collect data from the Windows security event log and you configure 
-it to audit process creation, this job can use the 4688 events that occur every 
-time a new process starts.
 
 Job details:::
 
@@ -1035,12 +1039,26 @@ Required ECS fields when not using {beats}:::
 [[security-windows-jobs]]
 == Security: Windows
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file].
-
 Detects suspicious activity using ECS Windows events. Tested with {winlogbeat} 
 and {agent}.
+
+These configurations are available only if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file].
+If there are additional requirements such as installing the Windows System
+Monitor (Sysmon) or auditing process creation in the Windows security event log,
+they are listed for each job.
+
+IMPORTANT: In 7.11 or later versions, use these jobs instead of the
+<<security-winlogbeat-jobs>> jobs.footnote:duplicatewindowsjobs[If you cannot
+upgrade all your Beats to version 7.11 or later and you have both
+<<security-windows-jobs,Security:Windows jobs>> and
+<<security-winlogbeat-jobs,Security:Winlogbeat jobs>> running, you can avoid 
+duplication by stopping the following jobs: `rare_process_by_host_windows_ecs`, 
+`windows_anomalous_network_activity_ecs`, `windows_anomalous_path_activity_ecs`, 
+`windows_anomalous_process_all_hosts_ecs`, `windows_anomalous_process_creation`, 
+`windows_anomalous_user_name_ecs`, `windows_rare_metadata_process`, 
+`windows_rare_metadata_user`]
 
 // tag::security-windows-jobs[]
 v2_rare_process_by_host_windows_ecs::
@@ -1050,10 +1068,6 @@ of unauthorized services, malware, or persistence mechanisms.
 +
 Processes are considered rare when they only run occasionally as compared with
 other processes running on the host.
-+
-NOTE: If you collect data from the Windows security event log and you configure 
-it to audit process creation, this job can use the 4688 events that occur every 
-time a new process starts.
 
 Job details:::
 
@@ -1068,7 +1082,22 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, colecting data from the Windows System Monitor (Sysmon) or the
+Windows security event log
++
+TIP: If you collect data from the Windows security event log and you configure
+it to audit process creation, this job can analyze the 4688 events that occur
+every time a new process starts.footnote:auditing[The Windows security 4688
+events have `event.category: process`, `event.type: start`, and
+`event.provider: Microsoft-Windows-Security-Auditing`. The following jobs can
+use these events: `v2_rare_process_by_host_windows_ecs`,
+`v2_windows_anomalous_user_name_ecs`, 
+`v2_windows_anomalous_process_all_hosts_ecs`, and
+`v2_windows_anomalous_process_creation`. The Windows security event log cannot
+be used as a data source for jobs that pertain to network events since it does
+not contain that type of information. Network events can be collected by the
+{elastic-endpoint} integration, by {winlogbeat} from the Windows System Monitor,
+or by another ECS-compatible Windows agent.]
 
 Required ECS fields:::
 
@@ -1102,7 +1131,7 @@ other processes (using the
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, collecting data from Windows System Monitor (Sysmon)
 
 Required ECS fields:::
 
@@ -1137,7 +1166,7 @@ Job details:::
 
 Required {beats} or {agent} integrations:::
 
-* {winlogbeat}
+* {winlogbeat}, collecting data from the Windows System Monitor (Sysmon)
 
 Required ECS fields:::
 
@@ -1172,7 +1201,11 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, colecting data from the Windows System Monitor (Sysmon) or from the Windows security event log with process creation auditing enabled.
++
+TIP: If you collect data from the Windows security event log and you configure
+it to audit process creation, this job can analyze the 4688 events that occur
+every time a new process starts.footnote:auditing[]
 
 Required ECS fields:::
 
@@ -1186,8 +1219,8 @@ Required ECS fields:::
 
 v2_windows_anomalous_process_creation::
 
-Identifies unusual process relationships that can indicate
-malware execution or persistence mechanisms.
+Identifies unusual process relationships that can indicate malware execution or
+persistence mechanisms.
 +
 Malicious scripts often call on other applications and processes as part of
 their exploit payload. For example, when a malicious Office document runs
@@ -1214,7 +1247,12 @@ relationships (using the
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, collecting data from the Windows System Monitor (Sysmon) or the 
+Windows security event log
++
+TIP: If you collect data from the Windows security event log and you configure
+it to audit process creation, this job can analyze the 4688 events that occur
+every time a new process starts.footnote:auditing[]
 
 Required ECS fields:::
 
@@ -1243,10 +1281,6 @@ usernames only when personnel log in to make authorized or unauthorized
 changes, or threat actors have acquired credentials and log in for malicious 
 purposes. Unusual usernames can also indicate pivoting, where compromised 
 credentials are used to try and move laterally from one host to another.
-+
-NOTE: If you collect data from the Windows security event log and you configure 
-it to audit process creation, this job can use the 4688 events that occur every 
-time a new process starts.
 
 Job details:::
 
@@ -1259,7 +1293,12 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, collecting data from the Windows System Monitor (Sysmon) or the 
+Windows security event log
++
+TIP: If you collect data from the Windows security event log and you configure
+it to audit process creation, this job can analyze the 4688 events that occur
+every time a new process starts.footnote:auditing[]
 
 Required ECS fields:::
 
@@ -1276,10 +1315,6 @@ v2_windows_rare_metadata_process::
 Looks for anomalous access to the metadata service by an unusual process. The 
 metadata service may be targeted in order to harvest credentials or user data 
 scripts containing secrets.
-+
-NOTE: If you collect data from the Windows security event log and you configure 
-it to audit process creation, this job can use the 4688 events that occur every 
-time a new process starts.
 
 Job details:::
 
@@ -1294,7 +1329,7 @@ processes (using the
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, collecting data from the Windows System Monitor (Sysmon)
 
 Required ECS fields:::
 
@@ -1321,7 +1356,7 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * beta:[] {elastic-endpoint} integration
-* {winlogbeat}
+* {winlogbeat}, collecting data from the Windows System Monitor (Sysmon)
 
 Required ECS fields:::
 
@@ -1336,11 +1371,13 @@ Required ECS fields:::
 [[security-winlogbeat-jobs]]
 == Security: {winlogbeat}
 
+Detect unusual processes and network activity in {winlogbeat} data.
+
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat/manifest.json#L8[manifest file].
 
-Detect unusual processes and network activity in {winlogbeat} data.
+IMPORTANT: In 7.11 or later versions, use the <<security-windows-jobs>> jobs instead.footnote:duplicatewindowsjobs[]
 
 // tag::siem-winlogbeat-jobs[]
 rare_process_by_host_windows_ecs::
@@ -1514,9 +1551,8 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
-
 +
-NOTE: This job is available only when you use {winlogbeat} to ship data.
+NOTE: This job is available only when you use {winlogbeat} to ship data.footnote:compatible[]
 
 windows_anomalous_service::
 
@@ -1536,9 +1572,8 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
-
 +
-NOTE: This job is available only when you use {winlogbeat} to ship data.
+NOTE: This job is available only when you use {winlogbeat} to ship data.footnote:compatible[]
 
 windows_anomalous_user_name_ecs::
 
@@ -1678,9 +1713,8 @@ Job details:::
 Required {beats} or {agent} integrations:::
 
 * {winlogbeat} (Windows)
-
 +
-NOTE: This job is available only when you use {winlogbeat} to ship data.
+NOTE: This job is available only when you use {winlogbeat} to ship data.footnote:compatible[]
 
 // end::siem-winlogbeat-auth-jobs[]
 // end::siem-jobs[]

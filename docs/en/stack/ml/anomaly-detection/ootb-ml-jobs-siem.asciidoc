@@ -657,7 +657,9 @@ Detect suspicious activity using ECS Linux events.
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file]. For
+example, all of these jobs analyze network activity logs where `host.os.type` is 
+`linux` or `host.os.family` is `debian`, `redhat`, `suse`, or `ubuntu`.
 
 IMPORTANT: In 7.11 or later versions, use these jobs instead of the <<security-auditbeat-jobs>> jobs.footnote:duplicatelinuxjobs[]
 
@@ -672,8 +674,6 @@ can indicate unauthorized access or threat actor activity.
 
 Job details:::
 
-* Analyzes network activity logs where `host.os.type` is `linux` or 
-`host.os.family` is `debian`, `redhat`, `suse`, or `ubuntu`.
 * Models destination port activity.
 * Detects destination port activity that occurs rarely compared to other port 
 activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -706,8 +706,6 @@ all or many hosts in a fleet.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.type` is `linux` or `host.os.family`
-is `debian`, `redhat`, `suse`, or `ubuntu`.
 * Models the occurrences of processes on all Linux hosts.
 * Detects processes that occur rarely compared to other processes on all Linux 
 hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -747,8 +745,6 @@ credentials are used to try and move laterally from one host to another.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.type` is `linux` or `host.os.family`
-is `debian`, `redhat`, `suse`, or `ubuntu`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -776,9 +772,8 @@ metadata service may be targeted in order to harvest credentials or user data
 scripts containing secrets.  
 
 Job details:::
-* Analyzes host activity logs where `destination.ip` is the metadata service and 
-`host.os.type` is `linux` or `host.os.family` is `debian`, `redhat`, `suse`, or
-`ubuntu`.
+
+* Analyzes host activity logs where `destination.ip` is the metadata service
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other 
 processes (using the
@@ -807,9 +802,7 @@ scripts containing secrets.
 
 Job details:::
 
-* Analyzes host activity logs where `destination.ip` is the metadata service and
-`host.os.type` is `linux` or `host.os.family` is `debian`, `redhat`, `suse`, or
-`ubuntu`.
+* Analyzes host activity logs where `destination.ip` is the metadata service
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -839,8 +832,6 @@ other processes running on the host.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.type` is `linux` or 
-`host.os.family` is `debian`, `redhat`, `suse`, or `ubuntu`.
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -1049,7 +1040,10 @@ Detects suspicious activity using ECS Windows events.
 
 These configurations are available only if data exists that matches the 
 recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file]. For
+example, all of these jobs analyze host activity logs where `host.os.family` or 
+`host.os.type` is `windows`.
+
 If there are additional requirements such as installing the Windows System
 Monitor (Sysmon) or auditing process creation in the Windows security event log,
 they are listed for each job.
@@ -1076,8 +1070,6 @@ other processes running on the host.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.family` or `host.os.type` is 
-`windows`.
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host 
 (using the
@@ -1126,7 +1118,6 @@ execution of unauthorized network applications.
 
 Job details:::
 
-* Analyzes network activity logs where `host.os.family` is `windows`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
 other processes (using the
@@ -1162,8 +1153,6 @@ the internet or a malicious script/macro executed malware.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.family` or `host.os.type` is 
-`windows`.
 * Models occurrences of processes in paths.
 * Detects activity in unusual paths (using the
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -1196,8 +1185,6 @@ all or many hosts in a fleet.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.family` or `host.os.type` is 
-`windows`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all hosts 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -1240,8 +1227,6 @@ scanners.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.family` or `host.os.family` is 
-`windows`.
 * Models occurrences of process creation activities (`partition_field_name` is 
 `process.parent.name`).
 * Detects process relationships that are rare compared to other process 
@@ -1289,7 +1274,6 @@ credentials are used to try and move laterally from one host to another.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.type` or `host.os.family` is `windows`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
@@ -1323,8 +1307,7 @@ scripts containing secrets.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.family` is `windows` and
-`destination.ip` is the metadata service.
+* Analyzes host activity logs where `destination.ip` is the metadata service.
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other 
 processes (using the
@@ -1352,8 +1335,7 @@ scripts containing secrets.
 
 Job details:::
 
-* Analyzes host activity logs where `host.os.family` is `windows` and
-`destination.ip` is the metadata service.
+* Analyzes host activity logs where `destination.ip` is the metadata service.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
 (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).

@@ -19,7 +19,7 @@ services:
     ports:
       - 9200:9200
     networks:
-      - elastic    
+      - elastic
 
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:{version}
@@ -37,11 +37,9 @@ services:
         hard: -1
     volumes:
       - data02:/usr/share/elasticsearch/data
-    ports:
-      - 9201:9201
     networks:
       - elastic
-  
+
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:{version}
     container_name: es03
@@ -58,8 +56,6 @@ services:
         hard: -1
     volumes:
       - data03:/usr/share/elasticsearch/data
-    ports:
-      - 9202:9202     
     networks:
       - elastic
 
@@ -72,7 +68,7 @@ services:
       ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: http://es01:9200
     networks:
-      - elastic      
+      - elastic
 
 volumes:
   data01:
@@ -80,7 +76,7 @@ volumes:
   data02:
     driver: local
   data03:
-    driver: local    
+    driver: local
 
 networks:
   elastic:

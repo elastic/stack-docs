@@ -109,11 +109,10 @@ NOTE: If {security-features} are enabled, you must have the
 
 If you did not manually update the mappings before the upgrade, you can
 nonetheless try to do it after the upgrade. If either update fails, you must
-reindex that index.
+reindex that index. For example, follow these steps:
 
-For example, to reindex the {ml} annotations index, follow these steps:
-
-. Enable upgrade mode:
+. To reindex the {ml} annotations index:
+.. Enable upgrade mode:
 +
 --
 [source,console]
@@ -122,8 +121,7 @@ POST _ml/set_upgrade_mode?enabled=true&timeout=10m
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Create a temporary index:
+.. Create a temporary index:
 +
 --
 [source,console]
@@ -132,8 +130,7 @@ PUT temp_ml_annotations
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Reindex the `.ml-annotations-6` index into the temporary index:
+.. Reindex the `.ml-annotations-6` index into the temporary index:
 +
 --
 [source,console]
@@ -146,8 +143,7 @@ POST _reindex
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Delete the .ml-annotations-6 index:
+.. Delete the .ml-annotations-6 index:
 +
 --
 [source,console]
@@ -156,8 +152,7 @@ DELETE .ml-annotations-6
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Disable upgrade mode:
+.. Disable upgrade mode:
 +
 --
 [source,console]
@@ -166,10 +161,8 @@ POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Wait for .ml-annotations-6 to be recreated.
-
-. Reindex the temporary index into the .ml-annotations-6 index:
+.. Wait for .ml-annotations-6 to be recreated.
+.. Reindex the temporary index into the .ml-annotations-6 index:
 +
 --
 [source,console]
@@ -182,8 +175,7 @@ POST _reindex
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Delete the temporary index:
+.. Delete the temporary index:
 +
 --
 [source,console]
@@ -193,9 +185,8 @@ DELETE temp_ml_annotations
 // TEST[skip:TBD]
 --
 
-To reindex the {ml} config index, follow these steps:
-
-. Enable upgrade mode:
+. To reindex the {ml} config index, follow these steps:
+.. Enable upgrade mode:
 +
 --
 [source,console]
@@ -204,8 +195,7 @@ POST _ml/set_upgrade_mode?enabled=true&timeout=10m
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Create a temporary index:
+.. Create a temporary index:
 +
 --
 [source,console]
@@ -214,8 +204,7 @@ PUT temp_ml_config
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Reindex the .ml-config index into the temporary index:
+.. Reindex the .ml-config index into the temporary index:
 +
 --
 [source,console]
@@ -228,8 +217,7 @@ POST _reindex
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Delete the .ml-config index:
+.. Delete the .ml-config index:
 +
 --
 [source,console]
@@ -238,8 +226,7 @@ DELETE .ml-config
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Create the .ml-config index:
+.. Create the .ml-config index:
 +
 --
 [source,console]
@@ -251,8 +238,7 @@ PUT .ml-config
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Reindex the temporary index into the .ml-config index:
+.. Reindex the temporary index into the .ml-config index:
 +
 --
 [source,console]
@@ -265,8 +251,7 @@ POST _reindex
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Disable upgrade mode:
+.. Disable upgrade mode:
 +
 --
 [source,console]
@@ -275,8 +260,7 @@ POST _ml/set_upgrade_mode?enabled=false&timeout=10m
 --------------------------------------------------
 // TEST[skip:TBD]
 --
-
-. Delete the temporary index:
+.. Delete the temporary index:
 +
 --
 [source,console]

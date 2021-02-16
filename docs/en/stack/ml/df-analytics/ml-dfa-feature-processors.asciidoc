@@ -55,21 +55,21 @@ Animal_freq value of these labels is 0.25._
 Multi encoding enables you to use multiple processors in the same 
 {dfanalytics-job}. You can define an ordered sequence of processors in which the 
 output of a processor can be forwarded to the next processor as an input. For 
-example, you can define an NGram feature processor that creates a series of 
-ngrams that can be encoded by a chained one hot encoding processor.
+example, you can define an n-gram feature processor that creates a series of 
+n-grams that can be encoded by a chained one hot encoding processor.
 
 
 [[ngram-encoding]]
-== NGram encoding
+== n-gram encoding
 
-NGram encoding encodes a string into a collection of ngrams (a sequence of n 
+n-gram encoding encodes a string into a collection of n-grams (a sequence of n 
 items) of a configured length. The output of this encoding is categorical. 
 Consequently, additional automatic processing will be done to the resulting 
-ngrams.
+n-grams.
 
-image::images/ngram-encoding.jpg["NGram encoding"]
-_The table shows the NGram encoding of the Animal field. It executes unigram and 
-bigram encoding (ngram of size 1 and 2) and goes to the string length of 3._
+image::images/ngram-encoding.jpg["n-gram encoding"]
+_The table shows the n-gram encoding of the Animal field. It executes unigram and 
+bigram encoding (n-gram of size 1 and 2) and goes to the string length of 3._
 
 
 [[one-hot-encoding]]

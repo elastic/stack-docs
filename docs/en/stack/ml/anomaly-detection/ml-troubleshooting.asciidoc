@@ -109,82 +109,202 @@ NOTE: If {security-features} are enabled, you must have the
 
 If you did not manually update the mappings before the upgrade, you can
 nonetheless try to do it after the upgrade. If either update fails, you must
-reindex that index.
+reindex that index. For example, follow these steps:
 
-For example, to reindex the {ml} annotations index, follow these steps:
-
+. To reindex the {ml} annotations index:
+.. Enable upgrade mode:
++
+--
 [source,console]
 --------------------------------------------------
-# 1. Enable upgrade mode
 POST _ml/set_upgrade_mode?enabled=true&timeout=10m
-
-# 2. Create a temporary index 
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Create a temporary index:
++
+--
+[source,console]
+--------------------------------------------------
 PUT temp_ml_annotations
-
-# 3. Reindex the `.ml-annotations-6` index into the temporary index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Reindex the `.ml-annotations-6` index into the temporary index:
++
+--
+[source,console]
+--------------------------------------------------
 POST _reindex
 {
   "source": { "index": ".ml-annotations-6" }, 
   "dest": { "index": "temp_ml_annotations" }
 }
-
-# 4. Delete the .ml-annotations-6 index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Delete the .ml-annotations-6 index:
++
+--
+[source,console]
+--------------------------------------------------
 DELETE .ml-annotations-6
-
-# 5. Disable upgrade mode
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Disable upgrade mode:
++
+--
+[source,console]
+--------------------------------------------------
 POST _ml/set_upgrade_mode?enabled=false&timeout=10m
-
-# 6. Wait for .ml-annotations-6 to be recreated
-
-# 7. Reindex the temporary index into the .ml-annotations-6 index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Wait for .ml-annotations-6 to be recreated.
+.. Reindex the temporary index into the .ml-annotations-6 index:
++
+--
+[source,console]
+--------------------------------------------------
 POST _reindex
 {
   "source": { "index": "temp_ml_annotations" }, 
   "dest": { "index": ".ml-annotations-6" }
 }
-
-# 8. Delete the temporary index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Delete the temporary index:
++
+--
+[source,console]
+--------------------------------------------------
 DELETE temp_ml_annotations
 --------------------------------------------------
 // TEST[skip:TBD]
+--
 
-To reindex the {ml} config index, follow these steps:
-
+. To reindex the {ml} config index, follow these steps:
+.. Enable upgrade mode:
++
+--
 [source,console]
 --------------------------------------------------
-# 1. Enable upgrade mode
 POST _ml/set_upgrade_mode?enabled=true&timeout=10m
-
-# 2. Create a temporary index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Create a temporary index:
++
+--
+[source,console]
+--------------------------------------------------
 PUT temp_ml_config
-
-# 3. Reindex the .ml-config index into the temporary index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Reindex the .ml-config index into the temporary index:
++
+--
+[source,console]
+--------------------------------------------------
 POST _reindex
 {
   "source": { "index": ".ml-config" }, 
   "dest": { "index": "temp_ml_config" }
 }
-
-# 4. Delete the .ml-config index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Delete the .ml-config index:
++
+--
+[source,console]
+--------------------------------------------------
 DELETE .ml-config
-
-# 5. Create the .ml-config index 
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Create the .ml-config index:
++
+--
+[source,console]
+--------------------------------------------------
 PUT .ml-config
 {
   "settings": { "auto_expand_replicas": "0-1"}
 }
-
-# 6. Reindex the temporary index into the .ml-config index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Reindex the temporary index into the .ml-config index:
++
+--
+[source,console]
+--------------------------------------------------
 POST _reindex
 {
   "source": { "index": "temp_ml_config" }, 
   "dest": { "index": ".ml-config" }
 }
-
-# 7. Disable upgrade mode
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Disable upgrade mode:
++
+--
+[source,console]
+--------------------------------------------------
 POST _ml/set_upgrade_mode?enabled=false&timeout=10m
-
-# 8. Delete the temporary index
+--------------------------------------------------
+// TEST[skip:TBD]
+--
+.. Delete the temporary index:
++
+--
+[source,console]
+--------------------------------------------------
 DELETE temp_ml_config
 --------------------------------------------------
 // TEST[skip:TBD]
+<<<<<<< HEAD
+=======
+--
+
+[discrete]
+[[ml-debian8-memory]]
+== Suboptimal job assignment on Debian 8
+
+Where possible, {ml} jobs are assigned to nodes based on the memory requirement
+of the job and the memory available on the node. However, in certain cases, the
+amount of memory on a node cannot be accurately determined and jobs are assigned
+by balancing the number of jobs per {ml} node. It may lead to a situation where
+all the jobs with high memory requirements are on one node and the less
+memory-intensive jobs on another.
+
+One particular case of this problem is that {es} fails to determine the amount
+of memory on a machine that is running Debian 8 with the default Cgroups setup
+and certain updates of Java versions earlier than Java 15. For example, Java
+8u271 is known to be affected while Java 8u272 is not. Java 15 was fixed from
+its initial release.
+
+If you are running {es} on Debian 8 with an old version of Java and have not
+already modified the Cgroups setup then it is recommended to do one of the
+following:
+
+* Upgrade Java to version 15.
+* Upgrade to the latest Java update for the version of Java you are running.
+* Enable the "memory" Cgroup by editing `/etc/default/grub` and adding:
++
+--
+[source,sh]
+--------------------------------------------------
+GRUB_CMDLINE_LINUX_DEFAULT="quiet cgroup_enable=memory swapaccount=1"
+--------------------------------------------------
+
+Update your GRUB configuration by running `sudo update-grub`, then reboot the
+machine.
+
+--
+>>>>>>> bb7e54f7... [DOCS] Address feedback on ML troubleshooting (#1572)

@@ -618,6 +618,16 @@ the test data set. When you perform {classanalysis} on your own data, it might
 take multiple iterations before you are satisfied with the results and ready to
 deploy the model.
 
+{kib} also provides the _receiver operating characteristic (ROC) curve_ as part 
+of the model evaluation. The plot compares the true positive rate (y-axis) to 
+the false positive rate (x-axis) for each class; in this example, `true` and 
+`false`. From this plot, the area under the curve (AUC) value is computed. It is 
+a number between 0 and 1. The higher the AUC, the better the model is at 
+predicting the classes correctly.
+
+[role="screenshot"]
+image::images/flights-classification-roc-curve.jpg["Evaluation of a classification job in {kib} – ROC curve"]
+
 You can also generate these metrics with the
 {ref}/evaluate-dfanalytics.html[{dfanalytics} evaluate API]. For more
 information about interpreting the evaluation metrics, see

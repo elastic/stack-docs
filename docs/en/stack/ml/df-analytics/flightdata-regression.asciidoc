@@ -137,10 +137,10 @@ source data for training.
 a value in the advanced configuration options. In this example, we choose to
 return a maximum of 5 {feat-imp} values per document. This option affects the
 speed of the analysis, so by default it is disabled.
-.. Use the default memory limit for the job. If the job requires more than this 
-amount of memory, it fails to start. If the available memory on the node is
+.. Use a model memory limit of at least 50 MB. If the job requires more than
+this amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
-.. Add a job ID and optionally a job description.
+.. Add a job ID (such as `model-flight-delay-regression`) and optionally a job description.
 .. Add the name of the destination index that will contain the results of the 
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
@@ -152,7 +152,7 @@ the results. If the index does not exist, it will be created automatically.
 ====
 [source,console]
 --------------------------------------------------
-PUT _ml/data_frame/analytics/model-flight-delays
+PUT _ml/data_frame/analytics/model-flight-delays-regression
 {
   "source": {
     "index": [
@@ -167,7 +167,7 @@ PUT _ml/data_frame/analytics/model-flight-delays
     }
   },
   "dest": {
-    "index": "model-flight-delays"
+    "index": "model-flight-delays-regression"
   },
   "analysis": {
     "regression": {
@@ -203,7 +203,7 @@ is complete.
 ====
 [source,console]
 --------------------------------------------------
-POST _ml/data_frame/analytics/model-flight-delays/_start
+POST _ml/data_frame/analytics/model-flight-delays-regression/_start
 --------------------------------------------------
 // TEST[skip:TBD]
 ====
@@ -225,7 +225,7 @@ about the job phases, see <<ml-dfa-phases>>.
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/data_frame/analytics/model-flight-delays/_stats
+GET _ml/data_frame/analytics/model-flight-delays-regression/_stats
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -237,7 +237,7 @@ The API call returns the following response:
   "count" : 1,
   "data_frame_analytics" : [
     {
-      "id" : "model-flight-delays",
+      "id" : "model-flight-delays-regression",
       "state" : "stopped",
       "progress" : [
         {
@@ -326,7 +326,9 @@ Now you have a new index that contains a copy of your source data with
 predictions for your dependent variable.
 
 When you view the {regression} results in {kib}, it shows the contents of the
-destination index in a tabular format:
+destination index in a tabular format. It also provides information about the 
+analysis details, model evaluation metrics, total feature importance values, and
+a scatterplot matrix. Let’s start by looking at the results table:
 
 [role="screenshot"]
 image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
@@ -378,7 +380,7 @@ searching the destination index.
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/inference/model-flight-delays*?include=total_feature_importance,feature_importance_baseline
+GET _ml/inference/model-flight-delays-regression*?include=total_feature_importance,feature_importance_baseline
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -391,7 +393,7 @@ the trained model metadata:
   "count" : 1,
   "trained_model_configs" : [
     {
-      "model_id" : "model-flight-delays-1601312043770",
+      "model_id" : "model-flight-delays-regression-1601312043770",
       ...
       "metadata" : {
         ...
@@ -430,7 +432,7 @@ index. For example:
 
 [source,console]
 --------------------------------------------------
-GET model-flight-delays/_search
+GET model-flight-delays-regression/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -471,8 +473,12 @@ The snippet below shows a part of a document with the annotated results:
           }
           ...
 ----
-
 ====
+
+Lastly, {kib} provides a scatterplot matrix in the results. It has the same
+functionality as the matrix that you saw in the job wizard. Its purpose is to
+likewise help you visualize and explore the relationships between the numeric
+fields and the dependent variable in your data.
 
 [[flightdata-regression-evaluate]]
 == Evaluating {regression} results
@@ -508,7 +514,7 @@ You can alternatively generate these metrics with the
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "model-flight-delays",
+ "index": "model-flight-delays-regression",
   "query": {
       "bool": {
         "filter": [{ "term":  { "ml.is_training": true } }]  <1>
@@ -562,7 +568,7 @@ Next, we calculate the generalization error:
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "model-flight-delays",
+ "index": "model-flight-delays-regression",
   "query": {
       "bool": {
         "filter": [{ "term":  { "ml.is_training": false } }] <1>

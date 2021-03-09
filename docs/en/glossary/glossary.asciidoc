@@ -562,6 +562,24 @@ A {ls} instance that is tasked with interfacing with an {es} cluster in
 order to index <<glossary-event,event>> data.
 //Source: Logstash
 
+[[glossary-inference]] inference::
+A {ml} feature that enables you to use supervised learning processes – like 
+{regression} and {classification} – in a continuous fashion by using 
+<<glossary-trained-model,trained models>> against incoming data.
+//Source: Machine learning
+
+[[glossary-inference-aggregation]] inference aggregation::
+A pipeline aggregation that references a <<glossary-trained-model>> in an 
+aggregation to infer on the results field of the parent bucket aggregation. It 
+enables you to use supervised {ml} at search time.
+//Source: Machine learning
+
+[[glossary-inference-processor]] inference processor::
+A processor specified in an ingest pipeline that uses a 
+<<glossary-trained-model>> to infer against the data that is being ingested in 
+the pipeline.
+//Source: Machine learning
+
 [[glossary-influencer]] influencer::
 Influencers are entities that might have contributed to an anomaly in a specific
 bucket in an {anomaly-job}. For more information, see

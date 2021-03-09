@@ -7,20 +7,133 @@
 ++++
 
 The following limitations and known problems apply to the {version} release of 
-the Elastic {ml-features}:
+the Elastic {ml-features}. The limitations are grouped into four categories:
 
-[float]
+* <<ad-platform-limitations>> are related to the platform that hosts the {ml} 
+  feature of the {stack}.
+* <<ad-config-limitations>> apply to the configuration process of the 
+  {anomaly-jobs}.
+* <<ad-operational-limitations>> affect the behavior of the {anomaly-jobs} that 
+  are running.
+* <<ad-ui-limitations>> only apply to {anomaly-jobs} managed via the user 
+  interface.
+
+
+[discrete]
+[[ad-platform-limitations]]
+== Platform limitations
+
+[discrete]
 [[ml-limitations-sse]]
-== CPUs must support SSE4.2
+=== CPUs must support SSE4.2
 
 {ml-cap} uses Streaming SIMD Extensions (SSE) 4.2 instructions, so it works only
-on machines whose CPUs https://en.wikipedia.org/wiki/SSE4#Supporting_CPUs[support]
-SSE4.2. If you run {es} on older hardware you must disable {ml} by setting
-`xpack.ml.enabled` to `false`. See
-{ref}/ml-settings.html[{ml-cap} settings in {es}].
+on machines whose CPUs 
+https://en.wikipedia.org/wiki/SSE4#Supporting_CPUs[support] SSE4.2. If you run 
+{es} on older hardware you must disable {ml} by setting `xpack.ml.enabled` to 
+`false`. See {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
-[float]
-== Categorization uses English dictionary words
+
+[discrete]
+[[ml-scheduling-priority]]
+=== CPU scheduling improvements apply to Linux and MacOS only
+
+When there are many {ml} jobs running at the same time and there are 
+insufficient CPU resources, the JVM performance must be prioritized so search 
+and indexing latency remain acceptable. To that end, when CPU is constrained on 
+Linux and MacOS environments, the CPU scheduling priority of native analysis 
+processes is reduced to favor the {es} JVM. This improvement does not apply to 
+Windows environments.
+
+
+[discrete]
+[[ad-config-limitations]]
+== Configuration limitations
+
+
+[discrete]
+=== Terms aggregation size affects data analysis
+//See x-pack-elasticsearch/#601
+
+By default, the `terms` aggregation returns the buckets for the top ten terms.
+You can change this default behavior by setting the `size` parameter.
+
+If you send pre-aggregated data to a job for analysis, you must ensure that the 
+`size` is configured correctly. Otherwise, some data might not be analyzed.
+
+
+[discrete]
+=== Fields named "by", "count", or "over" cannot be used to split data
+//See x-pack-elasticsearch/#858
+
+You cannot use the following field names in the `by_field_name` or
+`over_field_name` properties in a job: `by`; `count`; `over`. This limitation
+also applies to those properties when you create advanced jobs in {kib}.
+
+[discrete]
+[[ml-rollup-limitations]]
+=== Rollup indices and index patterns are not supported in {kib}
+
+Rollup indices and index patterns cannot be used in {anomaly-jobs} or 
+{dfeeds} in {kib}. If you select an index, saved search, or index pattern that
+uses {ref}/xpack-rollup.html[{rollup-features}], the {anomaly-job} creation
+wizards fail. If you use APIs to create {anomaly-jobs} that use
+{rollup-features}, the job results might not display properly in the
+*Single Metric Viewer* or *Anomaly Explorer* in {kib}.
+
+
+[discrete]
+[[ml-frozen-limitations]]
+=== Frozen indices are not supported
+
+{ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
+{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
+{kib} or by using APIs. This limitation exists because it's currently not
+possible to specify the `ignore_throttled` query parameter for search requests
+in {dfeeds} or jobs. See
+{ref}/searching_a_frozen_index.html[Searching a frozen index].
+
+
+[discrete]
+[[ml-forecast-config-limitations]]
+=== Unsupported forecast configurations
+
+There are some limitations that affect your ability to create a forecast:
+
+* You can generate only three forecasts per {anomaly-job} concurrently. There is 
+no limit to the number of forecasts that you retain. Existing forecasts are not 
+overwritten when you create new forecasts. Rather, they are automatically 
+deleted when they expire.
+* If you use an `over_field_name` property in your {anomaly-job} (that is to 
+say, it's a _population job_), you cannot create a forecast.
+* If you use any of the following analytical functions in your {anomaly-job},
+you cannot create a forecast:
+** `lat_long`
+** `rare` and `freq_rare`
+** `time_of_day` and `time_of_week`
++
+--
+For more information about any of these functions, see <<ml-functions>>.
+--
+
+
+[discrete]
+[[ml-limitations-runtime]]
+=== {anomaly-detect-cap} performs better on indexed fields
+
+{anomaly-jobs-cap} sort all data by a user-defined time field, which is frequently 
+accessed. If the time field is a {ref}/runtime.html[runtime field], the 
+performance impact of calculating field values at query time can significantly slow
+the job. Use an indexed field as a time field when running {anomaly-jobs}.
+
+
+[discrete]
+[[ad-operational-limitations]]
+== Operational limitations
+
+
+[discrete]
+=== Categorization uses English dictionary words
 //See x-pack-elasticsearch/#3021
 Categorization identifies static parts of unstructured logs and groups similar
 messages together. The default categorization tokenizer assumes English language
@@ -33,54 +146,9 @@ only English words. This means categorization might work better in English than
 in other languages. The ability to customize the dictionary will be added in a
 future release.
 
-[float]
-== Pop-ups must be enabled in browsers
-//See x-pack-elasticsearch/#844
 
-The {ml-features} in {kib} use pop-ups. You must configure your
-web browser so that it does not block pop-up windows or create an
-exception for your {kib} URL.
-
-[float]
-== Anomaly Explorer omissions and limitations
-//See x-pack-elasticsearch/#844 and x-pack-kibana/#1461
-
-In {kib}, Anomaly Explorer charts are not displayed for anomalies
-that were due to categorization, `time_of_day` functions, or `time_of_week`
-functions. Those particular results do not display well as time series
-charts.
-
-The charts are also not displayed for detectors that use script fields. In that
-case, the original source data cannot be easily searched because it has been
-somewhat transformed by the script.
-
-The Anomaly Explorer charts can also look odd in circumstances where there
-is very little data to plot. For example, if there is only one data point, it is
-represented as a single dot. If there are only two data points, they are joined
-by a line.
-
-[float]
-== Jobs close on the {dfeed} end date
-//See x-pack-elasticsearch/#1037
-
-If you start a {dfeed} and specify an end date, it will close the job when
-the {dfeed} stops. This behavior avoids having numerous open one-time jobs.
-
-If you do not specify an end date when you start a {dfeed}, the job
-remains open when you stop the {dfeed}. This behavior avoids the overhead
-of closing and re-opening large jobs when there are pauses in the {dfeed}.
-
-[float]
-== Jobs created in {kib} must use {dfeeds}
-
-If you create jobs in {kib}, you must use {dfeeds}. If the data that you want to
-analyze is not stored in {es}, you cannot use {dfeeds} and therefore you cannot
-create your jobs in {kib}. You can, however, use the {ml} APIs to create jobs
-and to send batches of data directly to the jobs. For more information, see
-<<ml-datafeeds>> and <<ml-api-quickref>>.
-
-[float]
-== Post data API requires JSON format
+[discrete]
+=== Post data API requires JSON format
 
 The post data API enables you to send data to a job for analysis. The data that
 you send to the job must use the JSON format.
@@ -88,14 +156,13 @@ you send to the job must use the JSON format.
 For more information about this API, see
 {ref}/ml-post-data.html[Post Data to Jobs].
 
-
-[float]
-== Misleading high missing field counts
+[discrete]
+=== Misleading high missing field counts
 //See x-pack-elasticsearch/#684
 
 One of the counts associated with a {ml} job is `missing_field_count`,
 which indicates the number of records that are missing a configured field.
-//This information is most useful when your job analyzes CSV data.  In this case,
+//This information is most useful when your job analyzes CSV data. In this case,
 //missing fields indicate data is not being analyzed and you might receive poor results.
 
 Since jobs analyze JSON data, the `missing_field_count` might be misleading.
@@ -106,118 +173,20 @@ For more information about `missing_field_count`,
 see the {ref}/ml-get-job-stats.html[get {anomaly-job} statistics API].
 
 
-[float]
-== Terms aggregation size affects data analysis
-//See x-pack-elasticsearch/#601
+[discrete]
+=== Security integration
 
-By default, the `terms` aggregation returns the buckets for the top ten terms.
-You can change this default behavior by setting the `size` parameter.
-
-If you are send pre-aggregated data to a job for analysis, you must ensure
-that the `size` is configured correctly. Otherwise, some data might not be
-analyzed.
-
-[float]
-== Fields named "by", "count", or "over" cannot be used to split data
-//See x-pack-elasticsearch/#858
-
-You cannot use the following field names in the `by_field_name` or
-`over_field_name` properties in a job: `by`; `count`; `over`. This limitation
-also applies to those properties when you create advanced jobs in {kib}.
+When the {es} {security-features} are enabled, a {dfeed} stores the roles of the 
+user who created or updated the {dfeed} **at that time**. This means that if the 
+roles the user has are changed after they create or update a {dfeed} then the 
+{dfeed} continues to run without change. However, if instead the permissions 
+associated with the roles that are stored with the {dfeed} are changed then this 
+affects the {dfeed}. For more information, see <<ml-datafeeds>>.
 
 
-[float]
-== Jobs created in {kib} use model plot config and pre-aggregated data
-//See x-pack-elasticsearch/#844
-
-If you create single or multi-metric jobs in {kib}, it might enable some
-options under the covers that you'd want to reconsider for large or
-long-running jobs.
-
-For example, when you create a single metric job in {kib}, it generally
-enables the `model_plot_config` advanced configuration option. That configuration
-option causes model information to be stored along with the results and provides
-a more detailed view into anomaly detection. It is specifically used by the
-**Single Metric Viewer** in {kib}. When this option is enabled, however, it can
-add considerable overhead to the performance of the system. If you have jobs
-with many entities, for example data from tens of thousands of servers, storing
-this additional model information for every bucket might be problematic. If you
-are not certain that you need this option or if you experience performance
-issues, edit your job configuration to disable this option.
-
-Likewise, when you create a single or multi-metric job in {kib}, in some cases
-it uses aggregations on the data that it retrieves from {es}. One of the
-benefits of summarizing data this way is that {es} automatically distributes
-these calculations across your cluster. This summarized data is then fed into
-{ml} instead of raw results, which reduces the volume of data that must
-be considered while detecting anomalies.  However, if you have two jobs, one of
-which uses pre-aggregated data and another that does not, their results might
-differ. This difference is due to the difference in precision of the input data.
-The {ml} analytics are designed to be aggregation-aware and the likely increase
-in performance that is gained by pre-aggregating the data makes the potentially
-poorer precision worthwhile. If you want to view or change the aggregations
-that are used in your job, refer to the `aggregations` property in your {dfeed}.
-
-[float]
-== Security integration
-
-When the {es} {security-features} are enabled, a {dfeed} stores the roles of the
-user who created or updated the {dfeed} **at that time**. This means that if those
-roles are updated then the {dfeed} subsequently runs with the new permissions
-that are associated with the roles. However, if the user's roles are adjusted
-after creating or updating the {dfeed}, the {dfeed} continues to run with the
-permissions that were associated with the original roles. For more information,
-see <<ml-datafeeds>>.
-
-[float]
-== Jobs must be stopped before upgrades
-
-You must stop any {ml} jobs that are running before you start the upgrade
-process. For more information, see <<stopping-ml>> and
-{stack-ref}/upgrading-elastic-stack.html[Upgrading the Elastic Stack].
-
-[float]
-[[ml-rollup-limitations]]
-=== Rollup indices and index patterns are not supported in {kib}
-
-Rollup indices and index patterns cannot be used in {anomaly-jobs} or 
-{dfeeds} in {kib}. If you select an index, saved search, or index pattern that
-uses {ref}/xpack-rollup.html[{rollup-features}], the {anomaly-job} creation
-wizards fail. If you use APIs to create {anomaly-jobs} that use
-{rollup-features}, the job results might not display properly in the
-*Single Metric Viewer* or *Anomaly Explorer* in {kib}.
-
-[float]
-[[ml-space-limitations]]
-== Machine learning objects do not belong to {kib} spaces
-
-If you create {kibana-ref}/xpack-spaces.html[spaces] in {kib}, you see only the  
-saved objects that belong to that space. This limited scope does not apply to 
-{ml} objects; they are visible in all of your spaces.  
-
-However, the {kib} {ml-features} interact with some saved objects (such as 
-index patterns, dashboards, and visualizations) that might not be available in 
-all spaces. For example:
-
-* experimental[] If you upload a file on the *Machine Learning* page in {kib}, 
-the {ml-features} identify the file format and field mappings. You can then 
-optionally import that data into an {es} index and create an index pattern. This 
-index pattern belongs to the space that is active when you import the file. If 
-you want to use the index pattern in other spaces, you must create it as needed.  
-* Likewise, if you use the single-metric, multi-metric, or population job 
-wizards to create a job in {kib}, you can encounter problems if you subsequently 
-try to clone the job in a different space. In particular, problems occur when 
-you try to clone the job in a space that does not contain appropriate index 
-patterns. 
-* If you used a supplied configuration to create jobs (for example, for Apache 
-or NGINX web access logs), visualizations and dashboards are automatically 
-generated. These objects belong to the space that was active when you created 
-the job. If you change your active space, custom URLs from the {ml} results to 
-the dashboards or visualizations might fail. 
-
-[float]
+[discrete]
 [[ml-result-size-limitations]]
-== Job and {dfeed} APIs have a maximum search size
+=== Job and {dfeed} APIs have a maximum search size
 //https://github.com/elastic/elasticsearch/issues/34864
 
 In 6.6 and later releases, the {ref}/ml-get-job.html[get jobs API] and the
@@ -226,37 +195,13 @@ jobs. Likewise, the {ref}/ml-get-datafeed.html[get {dfeeds} API] and the
 {ref}/ml-get-datafeed-stats.html[get {dfeed} statistics API] return a maximum of
 10,000 {dfeeds}.
 
-[float]
-[[ml-limitations-nanos]]
-== Date nanoseconds data types are not supported
-// https://github.com/elastic/elasticsearch/issues/49889
-
-When you create an {anomaly-job}, you cannot use a field with the
-{ref}/date_nanos.html[`date_nanos` data type] as the `time_field` in the
-`data_description` object. This limitation applies irrespective of whether you
-create jobs in {kib} or by using APIs.
 
 [discrete]
 [[ml-forecast-limitations]]
-== Forecast limitations
+=== Forecast operational limitations
 
-There are some limitations that affect your ability to create a forecast:
+There are some factors that may be considered when you run forecasts:
 
-* You can generate only three forecasts per {anomaly-job} concurrently. There is 
-no limit to the number of forecasts that you retain. Existing forecasts are not 
-overwritten when you create new forecasts. Rather, they are automatically 
-deleted when they expire.
-* If you use an `over_field_name` property in your {anomaly-job} (that is to say,
-it's a _population job_), you cannot create a forecast.
-* If you use any of the following analytical functions in your {anomaly-job},
-you cannot create a forecast:
-** `lat_long`
-** `rare` and `freq_rare`
-** `time_of_day` and `time_of_week`
-+
---
-For more information about any of these functions, see <<ml-functions>>.
---
 * Forecasts run concurrently with real-time {ml} analysis. That is to say, {ml}
 analysis does not stop while forecasts are generated. Forecasts can have an
 impact on {anomaly-jobs}, however, especially in terms of memory usage. For this
@@ -267,24 +212,101 @@ occurs.
 error occurs. In general, forecasts that are created early in the learning phase
 of the data analysis are less accurate.
 
-[float]
-[[ml-frozen-limitations]]
-== Frozen indices are not supported
-
-{ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
-{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
-{kib} or by using APIs. This limitation exists because it's currently not
-possible to specify the `ignore_throttled` query parameter for search requests
-in {dfeeds} or jobs. See
-{ref}/searching_a_frozen_index.html[Searching a frozen index].
 
 [discrete]
-[[ml-scheduling-priority]]
-== CPU scheduling improvements apply to Linux and MacOS only
+[[ad-ui-limitations]]
+== Limitations in {kib}
 
-When there are many {ml} jobs running at the same time and there are insufficient
-CPU resources, the JVM performance must be prioritized so search and indexing
-latency remain acceptable. To that end, when CPU is constrained on Linux and
-MacOS environments, the CPU scheduling priority of native analysis processes is
-reduced to favor the {es} JVM. This improvement does not apply to Windows
-environments.
+
+[discrete]
+=== Pop-ups must be enabled in browsers
+//See x-pack-elasticsearch/#844
+
+The {ml-features} in {kib} use pop-ups. You must configure your web browser so 
+that it does not block pop-up windows or create an exception for your {kib} URL.
+
+
+[discrete]
+=== Anomaly Explorer and Single Metric Viewer omissions and limitations
+//See x-pack-elasticsearch/#844 and x-pack-kibana/#1461
+
+In {kib}, **Anomaly Explorer** and **Single Metric Viewer** charts are not 
+displayed for anomalies that were due to categorization (if model plot is not 
+enabled), `time_of_day` functions, `time_of_week` functions, or `lat_long` 
+geographic functions.
+
+If model plot is not enabled, the charts are not displayed for detectors that 
+use script fields either (except for scripts that define metric fields). In that 
+case, the original source data cannot be easily searched because it has been 
+transformed by the script.
+
+If your <<aggs-dfeeds,{dfeed} uses aggregations with nested `terms` aggs>> and 
+model plot is not enabled for the {anomaly-job}, neither the **Anomaly 
+Explorer** nor the **Single Metric Viewer** can plot and display an anomaly 
+chart for the job. In these cases, the charts are not visible and an explanatory 
+message is shown.
+
+The charts can also look odd in circumstances where there is very little data to 
+plot. For example, if there is only one data point, it is represented as a 
+single dot. If there are only two data points, they are joined by a line.
+
+
+[discrete]
+=== Jobs created in {kib} must use {dfeeds}
+
+If you create jobs in {kib}, you must use {dfeeds}. If the data that you want to
+analyze is not stored in {es}, you cannot use {dfeeds} and therefore you cannot
+create your jobs in {kib}. You can, however, use the {ml} APIs to create jobs. For more information, see
+<<ml-datafeeds>> and <<ml-api-quickref>>.
+
+
+[discrete]
+=== Jobs created in {kib} use model plot config and pre-aggregated data
+//See x-pack-elasticsearch/#844
+
+If you create single or multi-metric jobs in {kib}, it might enable some
+options under the covers that you'd want to reconsider for large or
+long-running jobs.
+
+For example, when you create a single metric job in {kib}, it generally
+enables the `model_plot_config` advanced configuration option. That 
+configuration option causes model information to be stored along with the 
+results and provides a more detailed view into {anomaly-detect}. It is 
+specifically used by the **Single Metric Viewer** in {kib}. When this option is 
+enabled, however, it can add considerable overhead to the performance of the 
+system. If you have jobs with many entities, for example data from tens of 
+thousands of servers, storing this additional model information for every bucket 
+might be problematic. If you are not certain that you need this option or if you 
+experience performance issues, edit your job configuration to disable this 
+option.
+
+Likewise, when you create a single or multi-metric job in {kib}, in some cases
+it uses aggregations on the data that it retrieves from {es}. One of the
+benefits of summarizing data this way is that {es} automatically distributes
+these calculations across your cluster. This summarized data is then fed into
+{ml} instead of raw results, which reduces the volume of data that must
+be considered while detecting anomalies. However, if you have two jobs, one of
+which uses pre-aggregated data and another that does not, their results might
+differ. This difference is due to the difference in precision of the input data.
+The {ml} analytics are designed to be aggregation-aware and the likely increase
+in performance that is gained by pre-aggregating the data makes the potentially
+poorer precision worthwhile. If you want to view or change the aggregations
+that are used in your job, refer to the `aggregations` property in your {dfeed}. 
+
+When the aggregation interval of the {dfeed} and the bucket span of the job 
+don't match, the values of the chart plotted in both the **Single Metric 
+Viewer** and the **Anomaly Explorer** differ from the actual values of the job. 
+To avoid this behavior, make sure that the aggregation interval in the {dfeed} 
+configuration and the bucket span in the {anomaly-job} configuration have the 
+same values.
+
+
+[discrete]
+[[ml-space-limitations]]
+=== Calendars and filters are visible in all {kib} spaces
+
+{kibana-ref}/xpack-spaces.html[Spaces] enable you to organize your
+{anomaly-jobs} in {kib} and to see only the jobs and other saved objects
+that belong to your space. However, this limited scope does not apply to 
+<<ml-calendars,calendars>> and <<ml-rules,filters>>; they are visible in all
+spaces.

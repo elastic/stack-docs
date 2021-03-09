@@ -13,12 +13,13 @@ information about this process, see <<ml-supervised-workflow>> and
 <<ml-inference>>.
 
 You can also supply trained models that are not created by {dfanalytics-job} but
-adhere to the appropriate https://github.com/elastic/ml-json-schemas[JSON schema].
-If you want to use these trained models in the {stack}, you must store them in
-{es} documents by using the {ref}/put-trained-models.html[create trained models API].
+adhere to the appropriate
+https://github.com/elastic/ml-json-schemas[JSON schema]. If you want to use
+these trained models in the {stack}, you must store them in {es} documents by
+using the {ref}/put-trained-models.html[create trained models API].
 
-In {kib}, you can view and manage your trained models within
-*{ml-app}* > *Data Frame Analytics*:
+In {kib}, you can view and manage your trained models within *{ml-app}* > *Data
+Frame Analytics*:
 
 [role="screenshot"]
 image::images/trained-model-management.png["List of trained models in the {ml-app} app in {kib}"]
@@ -26,3 +27,124 @@ image::images/trained-model-management.png["List of trained models in the {ml-ap
 Alternatively, you can use APIs like
 {ref}/get-trained-models.html[get trained models] and
 {ref}/delete-trained-models.html[delete trained models].
+
+
+[discrete]
+[[export-import]]
+== Exporting and importing models
+
+Models trained in Elasticsearch are portable and can be transferred between
+clusters. This is particularly useful when models are trained in isolation from
+the cluster where they are used for inference. The following instructions show
+how to use https://curl.se/[`curl`] and https://stedolan.github.io/jq/[`jq`] to
+export a model as JSON and import it to another cluster.
+
+1. Given a model _name_, find the model _ID_. You can use `curl` to call the
+{ref}/get-trained-models.html[get trained model API] to list all models with
+their IDs.
++
+--
+[source, bash]
+--------------------------------------------------
+curl -s -u username:password \
+  -X GET "http://localhost:9200/_ml/trained_models" \
+    | jq . -C \
+    | more
+--------------------------------------------------
+// NOTCONSOLE
+
+If you want to show just the model IDs available, use `jq` to select a subset.
+
+[source, bash]
+--------------------------------------------------
+curl -s -u username:password \
+  -X GET "http://localhost:9200/_ml/trained_models" \
+    | jq -C -r '.trained_model_configs[].model_id'
+--------------------------------------------------
+// NOTCONSOLE
+
+[source, bash]
+--------------------------------------------------
+flights1-1607953694065
+flights0-1607953585123
+lang_ident_model_1
+--------------------------------------------------
+// NOTCONSOLE
+
+In this example, you are exporting the model with ID `flights1-1607953694065`.
+--
+
+2. Using `curl` from the command line, again use the
+{ref}/get-trained-models.html[get trained models API] to export the entire model
+definition and save it to a JSON file.
++
+--
+[source, bash]
+--------------------------------------------------
+curl -u username:password \
+  -X GET "http://localhost:9200/_ml/trained_models/flights1-1607953694065?exclude_generated=true&include=definition&decompress_definition=false" \
+    | jq '.trained_model_configs[0] | del(.model_id)' \
+    > flights1.json
+--------------------------------------------------
+// NOTCONSOLE
+
+A few observations:
+
+* Exporting models requires using `curl` or a similar tool that can *stream*
+the model over HTTP into a file. If you use the {kib} Console, the
+browser might be unresponsive due to the size of exported models.
+
+* Note the query parameters that are used during export. These parameters are necessary to
+export the model in a way that it can later be imported again and used for
+inference.
+
+* You must unnest the JSON object by one level to extract just the model
+definition. You must also remove the existing model ID in order to not have
+ID collisions when you import again. You can do these steps using `jq` inline or
+alternatively it can be done to the resulting JSON file after downloading using
+`jq` or other tools.
+--
+
+3. Import the saved model using `curl` to upload the JSON file to the
+{ref}/put-trained-models.html[created trained model API]. When you specify the URL,
+you can also set the model ID to something new using the last path part of the
+URL.
++
+--
+[source, bash]
+--------------------------------------------------
+curl -u username:password \
+  -H 'Content-Type: application/json' \
+  -X PUT "http://localhost:9200/_ml/trained_models/flights1-imported" \
+  --data-binary @flights1.json
+--------------------------------------------------
+// NOTCONSOLE
+--
+
+[NOTE]
+--
+* Models exported from the {ref}/get-trained-models.html[get trained models API]
+are limited in size by the
+{ref}/modules-network.html[http.max_content_length]
+global configuration value in Elasticsearch. The default value is `100mb` and
+may need to be increased depending on the size of model being exported.
+
+* Connection timeouts can occur when either the source or destination
+cluster is under load, or when model sizes are very large. Increasing
+https://ec.haxx.se/usingcurl/usingcurl-timeouts[timeout configurations] for
+`curl` (e.g. `curl --max-time 600`) or your client of choice will help
+alleviate the problem. In rare cases you may need to reduce load on the
+Elasticsearch cluster, for example by adding nodes.
+--
+
+
+[discrete]
+[[import-external-model-to-es]]
+== Importing an external model to the {stack}
+
+It is possible to import a model to your {es} cluster even if the model is not
+trained by Elastic {dfanalytics}. https://eland.readthedocs.io/[Eland] supports
+https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html[importing models]
+directly through its APIs. Please refer to the latest
+https://eland.readthedocs.io/[Eland documentation] for more information
+on supported model types and other details of using Eland to import models with.

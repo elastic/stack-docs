@@ -12,6 +12,11 @@ fields and datatypes from the Elastic Common Schema (ECS). For more details, see
 the {dfeed} and job definitions in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml[GitHub].
 
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/manifest.json#L8[manifest file].
+
+
 low_request_rate_ecs::
 
 * For HTTP web access logs where `event.dataset` is `nginx.access`.

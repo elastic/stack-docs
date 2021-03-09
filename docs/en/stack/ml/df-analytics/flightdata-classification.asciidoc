@@ -102,12 +102,7 @@ in {kib} or the {ref}/put-dfanalytics.html[create {dfanalytics-jobs}] API.
 
 [role="screenshot"]
 image::images/flights-classification-job-1.jpg["Creating a {dfanalytics-job} in {kib}"]
-
-[role="screenshot"]
-image::images/flights-classification-job-2.jpg["Creating a {dfanalytics-job} in {kib} – continued"]
-
-[role="screenshot"]
-image::images/flights-classification-job-3.jpg["Creating a {dfanalytics-job} in {kib} – advanced options"]
+--
 
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `classification` as the job type.
@@ -117,6 +112,23 @@ want to predict with the {classanalysis}.
 excluded fields. These fields will be excluded from the analysis. It is
 recommended to exclude fields that either contain erroneous data or describe the 
 `dependent_variable`.
++
+--
+The wizard includes a scatterplot matrix, which enables you to explore the 
+relationships between the numeric fields. The color of each point is affected by
+the value of the dependent variable for that document, as shown in the legend.
+You can use this matrix to help you decide which fields to include or exclude
+from the analysis.
+
+[role="screenshot"]
+image::images/flights-classification-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
+
+If you want these charts to represent data from a larger sample size or from a
+randomized selection of documents, you can change the default behavior. However, 
+a larger sample size might slow down the performance of the matrix and a
+randomized selection might put more load on the cluster due to the more
+intensive query.
+--
 .. Choose a training percent of `10` which means it randomly selects 10% of the
 source data for training. While that value is low for this example, for many
 large data sets using a small training sample greatly reduces runtime without 
@@ -128,19 +140,21 @@ affects the speed of the analysis, so by default it is disabled.
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
-.. Add a job ID and optionally a job description.
+.. Add a job ID (such as `model-flight-delays-classification`) and optionally a
+job description.
 .. Add the name of the destination index that will contain the results of the
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
 the results. If the index does not exist, it will be created automatically.
-
-
+.. Use default values for all other options.
++
+--
 .API example
 [%collapsible]
 ====
 [source,console]
 --------------------------------------------------
-PUT _ml/data_frame/analytics/model-flight-delay-classification
+PUT _ml/data_frame/analytics/model-flight-delays-classification
 {
   "source": {
     "index": [
@@ -148,7 +162,7 @@ PUT _ml/data_frame/analytics/model-flight-delay-classification
     ]
   },
   "dest": {
-    "index": "model-flight-delay-classification",
+    "index": "model-flight-delays-classification",
     "results_field": "ml" <1>
   },
   "analysis": {
@@ -187,7 +201,7 @@ and documents, the longer the job runs. It stops automatically when the analysis
 ====
 [source,console]
 --------------------------------------------------
-POST _ml/data_frame/analytics/model-flight-delay-classification/_start
+POST _ml/data_frame/analytics/model-flight-delays-classification/_start
 --------------------------------------------------
 // TEST[skip:TBD]
 ====
@@ -208,7 +222,7 @@ about the job phases, see <<ml-dfa-phases>>.
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/data_frame/analytics/model-flight-delay-classification/_stats
+GET _ml/data_frame/analytics/model-flight-delays-classification/_stats
 --------------------------------------------------
 // TEST[skip:TBD]
 
@@ -221,7 +235,7 @@ The API call returns the following response:
   "count" : 1,
   "data_frame_analytics" : [
     {
-      "id" : "model-flight-delay-classification",
+      "id" : "model-flight-delays-classification",
       "state" : "stopped",
       "progress" : [
         {
@@ -312,8 +326,8 @@ predictions for your dependent variable.
 
 When you view the {classification} results in {kib}, it shows the contents of
 the destination index in a tabular format. It also provides information about
-the analysis details, total {feat-imp} values, and model evaluation
-metrics. Let's start by looking at the results table:  
+the analysis details, model evaluation metrics, total {feat-imp} values, and a
+scatterplot matrix. Let's start by looking at the results table:  
 
 [role="screenshot"]
 image::images/flights-classification-results.jpg["Destination index table for a classification job in {kib}"]
@@ -336,16 +350,22 @@ standard {es} search command, you can see that the analysis predicts the
 probability of all possible classes for the dependent variable. The
 `top_classes` object contains the predicted classes with the highest scores.
 
+TIP: If you have a large number of classes, your destination index contains a
+large number of predicted probabilities for each document. When you create the
+{classification} job, you can use the `num_top_classes` option to modify this
+behavior.
+
 .API example
 [%collapsible]
 ====
 [source,console]
 --------------------------------------------------
-GET model-flight-delay-classification/_search
+GET model-flight-delays-classification/_search
 --------------------------------------------------
 // TEST[skip:TBD]
 
-The snippet below shows a part of a document with the annotated results:
+The snippet below shows the probability and score details for a document in the
+destination index:
 
 [source,console-result]
 --------------------------------------------------  
@@ -368,42 +388,16 @@ The snippet below shows a part of a document with the annotated results:
             ],
             "prediction_probability" : 0.9427605087816684,
             "prediction_score" : 0.3462468700158476,
-            "feature_importance" : [
-              {
-                "feature_name" : "DistanceMiles",
-                "classes" : [
-                  {
-                    "class_name" : false,
-                    "importance" : -1.4766536146534828
-                  },
-                  {
-                    "class_name" : true,
-                    "importance" : 1.4766536146534828
-                  }
-                ]
-              },
-              {
-                "feature_name" : "FlightTimeMin",
-                "classes" : [
-                  {
-                    "class_name" : false,
-                    "importance" : 1.0919201754729184
-                  },
-                  {
-                    "class_name" : true,
-                    "importance" : -1.0919201754729184
-                  }
-                ]
-              },
-              ...
+            ...
 --------------------------------------------------
 <1> An array of values specifying the probability of the prediction and the 
-score for each class. 
+score for each class.
 
 The class with the highest score is the prediction. In this example, `false` has
 a `class_score` of 0.35 while `true` has only 0.06, so the prediction will be
 `false`. For more details about these values, see
 <<dfa-classification-interpret>>.
+
 ====
 
 If you chose to calculate {feat-imp}, the destination index also contains
@@ -425,27 +419,30 @@ form of a decision plot:
 [role="screenshot"]
 image::images/flights-classification-importance.png["A decision plot for {feat-imp} values in {kib}"]
 
-The features with the most significant positive or negative impact appear at the
-top of the decision plot. Thus in this example, the features related to flight
-time and distance had the most significant influence on this prediction. This
-type of information can help you to understand how models arrive at their 
-predictions. It can also indicate which aspects of your data set are most
-influential or least useful when you are training and tuning your model.
+In {kib}, the decision path shows the relative impact of each feature on the
+probability of the prediction. The features with the most significant positive
+or negative impact appear at the top of the decision plot. Thus in this example,
+the features related to flight time and distance had the most significant
+influence on the probability value for this prediction. This type of information
+can help you to understand how models arrive at their predictions. It can also
+indicate which aspects of your data set are most influential or least useful
+when you are training and tuning your model.
 
-If you do not use {kib}, you can see summarized {feat-imp} values by using the
-{ref}/get-inference.html[get trained model API].
+If you do not use {kib}, you can see the summarized {feat-imp} values by using
+the {ref}/get-inference.html[get trained model API] and the individual values by
+searching the destination index.
 
 .API example
 [%collapsible]
 ====
 [source,console]
 --------------------------------------------------
-GET _ml/trained_models/model-flight-delay-classification*?include=total_feature_importance
+GET _ml/trained_models/model-flight-delays-classification*?include=total_feature_importance
 --------------------------------------------------
 // TEST[skip:TBD]
 
-The snippet below shows an example of the total {feat-imp} details in the
-trained model metadata:
+The snippet below shows an example of the total {feat-imp} and the corresponding baseline
+in the trained model metadata:
 
 [source,console-result]
 --------------------------------------------------
@@ -453,10 +450,22 @@ trained model metadata:
   "count" : 1,
   "trained_model_configs" : [
     {
-      "model_id" : "model-flight-delay-classification-1601405047985",
+      "model_id" : "model-flight-delays-classification-1601405047985",
       ...
       "metadata" : {
         ...
+        "feature_importance_baseline" : { <1>
+          "classes" : [
+            {
+              "class_name" : true,
+              "baseline" : -1.5869016940485443
+            },
+            {
+              "class_name" : false,
+              "baseline" : 1.5869016940485443 
+            }
+          ]
+        },
         "total_feature_importance" : [
           {
             "feature_name" : "dayOfWeek",
@@ -464,9 +473,9 @@ trained model metadata:
               {
                 "class_name" : false,
                 "importance" : {
-                  "mean_magnitude" : 0.037513174351966404, <1>
-                  "min" : -0.20132653028125566, <2>
-                  "max" : 0.20132653028125566 <3>
+                  "mean_magnitude" : 0.037513174351966404, <2>
+                  "min" : -0.20132653028125566, <3>
+                  "max" : 0.20132653028125566 <4>
                 }
               },
               {
@@ -502,15 +511,77 @@ trained model metadata:
           },
           ...
 --------------------------------------------------
-<1> This value is the average of the absolute {feat-imp} values for the
+<1> This object contains the baselines that are used to calculate the {feat-imp}
+decision paths in {kib}.
+<2> This value is the average of the absolute {feat-imp} values for the
 `dayOfWeek` field across all the training data when the predicted class is
 `false`.
-<2> This value is the minimum {feat-imp} value across all the training data for
+<3> This value is the minimum {feat-imp} value across all the training data for
 this field when the predicted class is `false`.
-<3> This value is the maximum {feat-imp} value across all the training data for
+<4> This value is the maximum {feat-imp} value across all the training data for
 this field when the predicted class is `false`.
 
+To see the top {feat-imp} values for each prediction, search the destination
+index. For example:
+
+[source,console]
+--------------------------------------------------
+GET model-flight-delays-classification/_search
+--------------------------------------------------
+// TEST[skip:TBD]
+
+The snippet below shows an example of the {feat-imp} details for a document in
+the search results:
+
+[source,console-result]
+--------------------------------------------------  
+          ...
+          "FlightDelay" : false,
+          ...
+          "ml" : {
+            "FlightDelay_prediction" : false,
+            ...
+            "prediction_probability" : 0.9427605087816684,
+            "prediction_score" : 0.3462468700158476,
+            "feature_importance" : [
+              {
+                "feature_name" : "DistanceMiles",
+                "classes" : [
+                  {
+                    "class_name" : false,
+                    "importance" : -1.4766536146534828
+                  },
+                  {
+                    "class_name" : true,
+                    "importance" : 1.4766536146534828
+                  }
+                ]
+              },
+              {
+                "feature_name" : "FlightTimeMin",
+                "classes" : [
+                  {
+                    "class_name" : false,
+                    "importance" : 1.0919201754729184
+                  },
+                  {
+                    "class_name" : true,
+                    "importance" : -1.0919201754729184
+                  }
+                ]
+              },
+              ...
+--------------------------------------------------
+
+The sum of the {feat-imp} values for each class in this data point approximates
+the logarithm of its odds.
+
 ====
+
+Lastly, {kib} provides a scatterplot matrix in the results. It has the same
+functionality as the matrix that you saw in the job wizard. Its purpose is to
+likewise help you visualize and explore the relationships between the numeric
+fields and the dependent variable in your data.
 
 [[flightdata-classification-evaluate]]
 == Evaluating {classification} results
@@ -552,6 +623,16 @@ the test data set. When you perform {classanalysis} on your own data, it might
 take multiple iterations before you are satisfied with the results and ready to
 deploy the model.
 
+{kib} also provides the _receiver operating characteristic (ROC) curve_ as part 
+of the model evaluation. The plot compares the true positive rate (y-axis) to 
+the false positive rate (x-axis) for each class; in this example, `true` and 
+`false`. From this plot, the area under the curve (AUC) value is computed. It is 
+a number between 0 and 1. The higher the AUC, the better the model is at 
+predicting the classes correctly.
+
+[role="screenshot"]
+image::images/flights-classification-roc-curve.jpg["Evaluation of a classification job in {kib} – ROC curve"]
+
 You can also generate these metrics with the
 {ref}/evaluate-dfanalytics.html[{dfanalytics} evaluate API]. For more
 information about interpreting the evaluation metrics, see
@@ -567,7 +648,7 @@ performed on the training data set.
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "model-flight-delay-classification",
+ "index": "model-flight-delays-classification",
    "query": {
     "term": {
       "ml.is_training": {
@@ -596,7 +677,7 @@ performed on previously unseen data:
 --------------------------------------------------
 POST _ml/data_frame/_evaluate
 {
- "index": "model-flight-delay-classification",
+ "index": "model-flight-delays-classification",
    "query": {
     "term": {
       "ml.is_training": {

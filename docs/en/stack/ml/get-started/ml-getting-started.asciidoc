@@ -1,6 +1,54 @@
 [[ml-getting-started]]
 == Getting started with {ml}
 
+{ml-cap} features analyze your data and generate models for its patterns of
+behavior. The type of analysis that you choose depends on the questions or
+problems you want to address and the type of data you have available.
+
+[discrete]
+[[get-started-unsupervised]]
+=== Unsupervised {ml}
+
+There are two types of analysis that can deduce the patterns and relationships
+within your data without training or intervention: _{anomaly-detect}_ and
+_{oldetection}_.
+
+<<xpack-ml,{anomaly-detect-cap}>> requires time series data. It constructs a
+probability model and can run continuously to identify unusual events as they
+occur. The model evolves over time; you can use its insights to forecast future
+behavior.
+
+<<dfa-outlier-detection,{oldetection-cap}>> does not require time series data;
+it identifies unusual points in a data set by analyzing how close each data
+point is to others and the density of the cluster of points around it. It does
+not run continuously; it generates a copy of your data set where each data point
+is annotated with an {olscore}. The score indicates the extent to which a data
+point is an outlier compared to other data points.
+
+[discrete]
+[[get-started-supervised]]
+=== Supervised {ml}
+
+There are two types of analysis that require training data sets:
+_{classification}_ and _{regression}_.
+
+In both cases, the result is a copy of your data set where each data point is
+annotated with predictions and a trained model, which you can deploy to make
+predictions for new data. For more information, refer to
+<<ml-supervised-workflow>>.
+
+<<dfa-classification,{classification-cap}>> learns relationships between your
+data points in order to predict discrete categorical values, such as whether a
+DNS request originates from a malicious or benign domain.
+
+<<dfa-regression,{regression-cap}>> learns relationships between your data
+points in order to predict continuous numerical values, such as the response
+time for a web request.
+
+[discrete]
+[[get-started-prereqs]]
+=== Try it out
+
 Ready to take {ml} for a test drive? Follow this tutorial to:
 
 * Try out the **{data-viz}**
@@ -13,10 +61,6 @@ will hopefully be inspired to use it to detect anomalies in your own data.
 Need more context? Check out the
 {ref}/elasticsearch-intro.html[{es} introduction] to learn the lingo and
 understand the basics of how {es} works.
-
-[discrete]
-[[get-started-prereqs]]
-=== Prerequisites
 
 . Before you can play with the {ml-features}, you must install {es} and {kib}.
 {es} stores the data and the analysis results. {kib} provides a helpful user 
@@ -36,14 +80,11 @@ https://www.elastic.co/cloud/elasticsearch-service/signup[Try out the {ess} for 
 the {es} {security-features} are enabled, to complete this tutorial you need a
 user that has authority to manage {anomaly-jobs}. See <<setup>>.
 
-. {kibana-ref}/add-sample-data.html[Add the sample data sets that ship with {kib}]. 
+. {kibana-ref}/get-started.html#gs-get-data-into-kibana[Add the sample data sets that ship with {kib}]. 
 
-.. Click the Elastic logo in the upper left hand corner of your browser to 
-navigate to the {kib} home page.
-
-.. Click *Load a data set and a Kibana dashboard*.
+.. From the {kib} home page, click *Add data*, then select *Sample data*.
 
 .. Pick a data set. In this tutorial, you'll use the *Sample web logs*. While
-you're here, feel free to click *Add* on all of the available sample data sets.
+you're here, feel free to click *Add data* on all of the available sample data sets.
 
 These data sets are now ready be analyzed in {ml} jobs in {kib}.

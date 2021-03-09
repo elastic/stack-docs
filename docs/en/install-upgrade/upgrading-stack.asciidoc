@@ -26,17 +26,10 @@ By default, deprecation warnings are logged when the log level is set to `WARN`.
 . Review the <<elastic-stack-breaking-changes>> and upgrade your code to work
 with {version}.
 
-. Upgrade to 6.8 and use the {kibana-ref}/upgrade-assistant.html[{kib} Upgrade Assistant] to {ref}/docs-reindex.html[reindex]
-any indices that are not compatible with {version}.
-+
-[role="xpack"]
-.Upgrade Assistant
-******
-The Upgrade Assistant and migration APIs are enabled with both the Basic and
-Trial licenses. You can install the default distribution of 6.8 to use the
-Upgrade Assistant to prepare to upgrade even if you are upgrading to the OSS
-distribution of {version}.
-******
+. Upgrade to last version of {prev-major-version} and use the
+{kibana-ref}/upgrade-assistant.html[{kib} Upgrade Assistant] to
+{ref}/docs-reindex.html[reindex] any indices that are not compatible with
+{version}.
 
 . Use the Upgrade Assistant to identify any changes you need to make to your
 cluster configuration.
@@ -65,15 +58,26 @@ on the cluster during the upgrade process. For more information, see
 .. {es} Hadoop: {hadoop-ref}/install.html[install instructions]
 .. {es}: {ref}/setup-upgrade.html[upgrade instructions]
 .. Kibana: {kibana-ref}/upgrade.html[upgrade instructions]
+.. Java High Level REST Client: {java-rest}/java-rest-high-getting-started-maven.html[dependency configuration]
 .. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
 .. Beats: {beats-ref}/upgrading.html[upgrade instructions]
 .. APM Server: {apm-server-ref}/upgrading.html[upgrade instructions]
 
-NOTE: Logstash 6.8 and Beats 6.8 are compatible with all 7.x versions of
+
+
+[NOTE]
+====
+Logstash 6.8 and Beats 6.8 are compatible with all 7.x versions of
 {es}. This provides flexibility in when you schedule the upgrades
 for your Logstash instances and Beats agents, but we recommend upgrading as
 soon as possible to take advantage of performance improvements
 and other enhancements.
+
+The Java High Level REST Client can communicate with any {es} node running
+the same major version and greater or equal minor version.
+When you upgrade to the next major version, the client should be
+updated *after* all of the nodes in the cluster have been updated.
+====
 
 [discrete]
 [[oss-stack-upgrade]]

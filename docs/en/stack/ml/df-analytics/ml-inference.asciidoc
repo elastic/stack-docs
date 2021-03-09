@@ -50,3 +50,11 @@ Check the
 {ref}/search-aggregations-pipeline-inference-bucket-aggregation.html[{infer} bucket aggregation] 
 and {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
 learn more about the feature.
+
+NOTE: If you use trained model aliases to reference your trained model in an 
+{infer} processor or {infer} aggregation, you can replace your trained model 
+with a new one without the need of updating the processor or the aggregation. 
+Reassign the alias you used to a new trained model ID by using the 
+{ref}/put-trained-models-aliases.html[Create or update trained model aliases API].
+The new trained model needs to use the same type of {dfanalytics} as the old 
+one.

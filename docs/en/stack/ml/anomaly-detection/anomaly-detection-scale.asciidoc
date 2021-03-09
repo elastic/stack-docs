@@ -130,15 +130,15 @@ new job.
 [[set-scroll-size]]
 == 6. Set the `scroll_size` of the {dfeed}
 
-The `scroll_size` parameter of a {dfeed} specifies the number of hits to return 
-from {es} searches. The higher the `scroll_size` the more results are returned 
-by a single search. When your {anomaly-job} has a high throughput, increasing 
+This consideration only applies to {dfeeds} that *do not* use aggregations. The 
+`scroll_size` parameter of a {dfeed} specifies the number of hits to return from 
+{es} searches. The higher the `scroll_size` the more results are returned by a 
+single search. When your {anomaly-job} has a high throughput, increasing 
 `scroll_size` may decrease the time the job needs to analyze incoming data, 
-however may also increase the pressure on your cluster. This only applies to 
-{dfeeds} that *do not* use aggregations. You cannot increase `scroll_size` to 
-more than the value of `index.max_result_window` which is 10,000 by default. If 
-you update the settings of a {dfeed}, you must stop and start the {dfeed} for 
-the change to be applied.
+however may also increase the pressure on your cluster. You cannot increase 
+`scroll_size` to more than the value of `index.max_result_window` which is 
+10,000 by default. If you update the settings of a {dfeed}, you must stop and 
+start the {dfeed} for the change to be applied.
 
 
 [discrete]

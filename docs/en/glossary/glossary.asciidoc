@@ -117,11 +117,12 @@ Used to send {filebeat} and {metricbeat} information to the logging cluster.
 //Source: Cloud
 
 [[glossary-ml-bucket]] bucket::
+. {blank}
 +
 --
 include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-def]
-
-The {ml-features} also use the concept of a bucket to divide the time series
+--
+. The {ml-features} also use the concept of a bucket to divide the time series
 into batches for processing. The _bucket span_ is part of the configuration
 information for {anomaly-jobs}. It defines the time interval that is used to
 summarize and model the data. This is typically between 5 minutes to 1 hour and
@@ -129,7 +130,6 @@ it depends on your data characteristics. When you set the bucket span, take into
 account the granularity at which you want to analyze, the frequency of the input
 data, the typical duration of the anomalies, and the frequency at which alerting
 is required.
---
 
 [[glossary-bucket-aggregation]] bucket aggregation::
 +
@@ -170,10 +170,14 @@ Provides web-based access to manage your {ece} installation, supported by the
 //Source: Cloud
 
 [[glossary-cluster]] cluster::
+. {blank}
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=cluster-def]
-
+--
+. {blank}
++
+--
 include::{kib-repo-dir}/glossary.asciidoc[tag=clusters-def]
 --
 
@@ -415,10 +419,14 @@ and
 //Source: X-Pack
 
 [[glossary-field]] field::
+. {blank}
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=field-def]
-
+--
+. {blank}
++
+--
 In {ls}, this term refers to an <<glossary-event,event>> property. For
 example, each event in an apache access log has properties, such as a status
 code (200, 404), request path ("/", "index.html"), HTTP verb (GET, POST), client

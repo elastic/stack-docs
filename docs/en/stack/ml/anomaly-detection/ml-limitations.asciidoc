@@ -71,18 +71,6 @@ You cannot use the following field names in the `by_field_name` or
 also applies to those properties when you create advanced jobs in {kib}.
 
 [discrete]
-[[ml-rollup-limitations]]
-=== Rollup indices and index patterns are not supported in {kib}
-
-Rollup indices and index patterns cannot be used in {anomaly-jobs} or 
-{dfeeds} in {kib}. If you select an index, saved search, or index pattern that
-uses {ref}/xpack-rollup.html[{rollup-features}], the {anomaly-job} creation
-wizards fail. If you use APIs to create {anomaly-jobs} that use
-{rollup-features}, the job results might not display properly in the
-*Single Metric Viewer* or *Anomaly Explorer* in {kib}.
-
-
-[discrete]
 [[ml-frozen-limitations]]
 === Frozen indices are not supported
 
@@ -300,7 +288,6 @@ To avoid this behavior, make sure that the aggregation interval in the {dfeed}
 configuration and the bucket span in the {anomaly-job} configuration have the 
 same values.
 
-
 [discrete]
 [[ml-space-limitations]]
 === Calendars and filters are visible in all {kib} spaces
@@ -310,3 +297,14 @@ same values.
 that belong to your space. However, this limited scope does not apply to 
 <<ml-calendars,calendars>> and <<ml-rules,filters>>; they are visible in all
 spaces.
+
+[discrete]
+[[ml-rollup-limitations]]
+=== Rollup indices and index patterns are not supported in {kib}
+
+Rollup indices and index patterns cannot be used in {anomaly-jobs} or 
+{dfeeds} in {kib}. If you select an index, saved search, or index pattern that
+uses {ref}/xpack-rollup.html[{rollup-features}], the {anomaly-job} creation
+wizards fail. If you use APIs to create {anomaly-jobs} that use
+{rollup-features}, the job results might not display properly in the
+*Single Metric Viewer* or *Anomaly Explorer* in {kib}.

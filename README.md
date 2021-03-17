@@ -3,12 +3,18 @@ Elastic Stack Documentation
 
 This repository is the home for documentation about the [Elastic Stack](https://www.elastic.co/elastic-stack).
 
-- [Getting Started](#getting-started)
+- [Conditions of use](#conditions-of-use)
+- [Getting started](#getting-started)
 - [Documentation](#documentation)
-- [Version Compatibility with Elasticsearch](#version-compatibility-with-elasticsearch)
 - [Questions? Problems? Suggestions?](#questions-problems-suggestions)
 
-## Getting Started
+## Conditions of use
+
+The documents produced by this build process may be published only on
+https://www.elastic.co. They may not be published in any other form or
+on any other website without explicit permission.
+
+## Getting started
 
 If you just want to try it out, check out the [Elastic Stack Getting Started Page](https://www.elastic.co/start) to give it a whirl.
 

@@ -11,8 +11,9 @@ unusual location or a web request that has an unusual source location.
 [geographic-anomalies-prereqs]
 == Prerequisites
 
-To run this type of {anomaly-job}, you must have {ml-features} set up. You must
-also have data that contains spatial data types. In particular, you must have:
+To run this type of {anomaly-job}, you must have <<setup,{ml-features} set up>>.
+You must also have data that contains spatial data types. In particular, you
+must have:
 
 * two comma-separated numbers of the form `latitude,longitude`,
 * a {ref}/geo-point.html[`geo_point`] field,
@@ -43,8 +44,19 @@ image::images/weblogs-data-visualizer-geopoint.jpg[A screenshot of a geo_point f
 [geographic-anomalies-jobs]
 == Create an {anomaly-job}
 
-To create an {anomaly-job} that uses the <<ml-lat-long,`lat_long` function>>,
-you must use the advanced {ml} job wizard in {kib} or use the
+There are a few limitations to consider before you create this type of job:
+
+. You cannot create forecasts for {anomaly-jobs} that contain geographic
+functions.
+. You cannot add <<ml-rules,custom rules with conditions>> to detectors that use geographic functions.
+
+If those limitations are acceptable, try creating an {anomaly-job} that uses
+the <<ml-lat-long,`lat_long` function>> to analyze your own data or the sample
+data sets.
+
+To create an {anomaly-job} that uses the `lat_long` function, in {kib} you must
+click **Create job** on the **{ml-cap} > {anomaly-detect-cap}** page and select
+the advanced job wizard. Alternatively, use the
 {ref}/ml-put-job.html[create {anomaly-jobs} API].
 
 For example, create a job that analyzes the sample eCommerce orders data set to
@@ -53,154 +65,168 @@ of each `user` ID:
 
 [role="screenshot"]
 image::images/ecommerce-advanced-wizard-geopoint.jpg[A screenshot of creating an {anomaly-job} using the eCommerce data in {kib}]
-////
+
+.API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+PUT _ml/anomaly_detectors/ecommerce-geo <1>
 {
-  "job_id": "",
-  "description": "",
-  "analysis_config": {
-    "bucket_span": "15m",
+  "analysis_config" : {
+    "bucket_span":"15m",
     "detectors": [
       {
+        "detector_description": "Unusual coordinates",
         "function": "lat_long",
         "field_name": "geoip.location",
-        "by_field_name": "user",
-        "detector_description": """lat_long("geoip.location") by user"""
+        "by_field_name": "user"
       }
     ],
     "influencers": [
       "geoip.country_iso_code",
       "day_of_week",
       "category.keyword"
-    ]
+      ]
   },
-  "analysis_limits": {
-    "model_memory_limit": "12MB"
-  },
-  "data_description": {
+  "data_description" : {
     "time_field": "order_date",
     "time_format": "epoch_ms"
-  },
-  "model_plot_config": {
-    "enabled": false,
-    "annotations_enabled": false
-  },
-  "model_snapshot_retention_days": 10,
-  "daily_model_snapshot_retention_after_days": 1,
-  "results_index_name": "",
-  "allow_lazy_open": false,
-  "groups": []
+  }
 }
+
+PUT _ml/datafeeds/datafeed-ecommerce-geo <2>
 {
-  "query": {
-    "bool": {
-      "must": [
-        {
-          "match_all": {}
-        }
-      ]
-    }
-  },
-  "indices": [
-    "kibana_sample_data_ecommerce"
-  ],
-  "scroll_size": 1000,
-  "delayed_data_check_config": {
-    "enabled": true
-  },
-  "job_id": "",
-  "datafeed_id": "datafeed-"
+    "job_id": "ecommerce-geo",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match_all": {}
+          }
+        ]
+      }
+    },
+    "indices": [
+      "kibana_sample_data_ecommerce"
+    ]
 }
-////
+
+POST _ml/anomaly_detectors/ecommerce-geo/_open <3>
+
+POST _ml/datafeeds/datafeed-ecommerce-geo/_start <4>
+{
+  "end": "2021-04-18T18:00:00Z"
+}
+--------------------------------------------------
+<1> Create the {anomaly-job}.
+<2> Create the {dfeed}.
+<3> Open the job.
+<4> Start the {dfeed}. Since the sample data sets often contain timestamps that
+are later than the current date, it is a good idea to specify the appropriate
+end date for the {dfeed}.
+====
+
+.Influencers
+****
+include::../shared/influencers.asciidoc[]
+
+****
 
 Alternatively, create a job that analyzes the sample web logs data set to detect 
-unusual `geo.coordinates` values or anomalous behavior in the sum of the `bytes` 
-field:
+unusual `geo.coordinates` values for each host or anomalous behavior in the sum
+of the `bytes` field:
 
 [role="screenshot"]
 image::images/weblogs-advanced-wizard-geopoint.jpg[A screenshot of creating an {anomaly-job} using the web logs data in {kib}]
 
-//TBD: Mention multi-metric jobs and influencers
-
-////
+.API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+PUT _ml/anomaly_detectors/weblogs-geo <1>
 {
-  "job_id": "",
-  "description": "",
-  "analysis_config": {
-    "bucket_span": "15m",
+  "analysis_config" : {
+    "bucket_span":"15m",
     "detectors": [
       {
+        "detector_description": "Unusual coordinates partitioned by host",
         "function": "lat_long",
         "field_name": "geo.coordinates",
-        "detector_description": """lat_long("geo.coordinates")"""
+        "partition_field_name": "host.keyword"
       },
       {
+        "detector_description": "Sum of bytes",
         "function": "sum",
-        "field_name": "bytes",
-        "detector_description": "sum(bytes)"
+        "field_name": "bytes"
       }
     ],
     "influencers": [
-      "geo.srcdest",
-      "clientip",
-      "host.keyword"
+    "geo.src",
+    "agent.keyword",
+    "geo.dest"
     ]
   },
-  "analysis_limits": {
-    "model_memory_limit": "11MB"
-  },
-  "data_description": {
+  "data_description" : {
     "time_field": "timestamp",
     "time_format": "epoch_ms"
-  },
-  "model_plot_config": {
-    "enabled": false,
-    "annotations_enabled": false
-  },
-  "model_snapshot_retention_days": 10,
-  "daily_model_snapshot_retention_after_days": 1,
-  "results_index_name": "",
-  "allow_lazy_open": false,
-  "groups": []
+  }
 }
+
+PUT _ml/datafeeds/datafeed-weblogs-geo <2>
 {
-  "query": {
-    "bool": {
-      "must": [
-        {
-          "match_all": {}
-        }
-      ]
-    }
-  },
-  "indices": [
-    "kibana_sample_data_logs"
-  ],
-  "scroll_size": 1000,
-  "delayed_data_check_config": {
-    "enabled": true
-  },
-  "job_id": "",
-  "datafeed_id": "datafeed-"
+    "job_id": "weblogs-geo",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match_all": {}
+          }
+        ]
+      }
+    },
+    "indices": [
+      "kibana_sample_data_logs"
+    ]
 }
-////
 
-NOTE: You cannot create forecasts for {anomaly-jobs} that contain geographic
-functions. You also cannot add <<ml-rules,custom rules with conditions>> to
-detectors that use geographic functions.
+POST _ml/anomaly_detectors/weblogs-geo/_open <3>
 
+POST _ml/datafeeds/datafeed-weblogs-geo/_start <4>
+{
+  "end": "2021-05-21T22:00:00Z"
+}
+--------------------------------------------------
+<1> Create the {anomaly-job}.
+<2> Create the {dfeed}.
+<3> Open the job.
+<4> Start the {dfeed}. Since the sample data sets often contain timestamps that
+are later than the current date, it is a good idea to specify the appropriate
+end date for the {dfeed}.
+====
+
+.Multi-metric jobs
+****
+include::../shared/multi-metric-jobs.asciidoc[]
+****
 
 [discrete]
 [geographic-anomalies-results]
 == Analyze the results
 
-[role="screenshot"]
-image::images/weblogs-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous event in the web logs data in Anomaly Explorer]
+TIP: If you used APIs to create the jobs and {dfeeds}, you cannot see them
+in {kib} until you follow the prompts to synchronize the necessary saved objects.
 
 [role="screenshot"]
 image::images/ecommerce-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous event in the eCommerce data in Anomaly Explorer]
+
+[role="screenshot"]
+image::images/weblogs-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous event in the web logs data in Anomaly Explorer]
 
 [discrete]
 [geographic-anomalies-next]
 == What's next
 
 * {kibana-ref}/maps.html[Learn more about **Maps**]
+* <<ml-configuring-alerts,Generate alerts for your {anomaly-jobs}>>

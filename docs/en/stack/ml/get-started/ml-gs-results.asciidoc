@@ -106,24 +106,12 @@ layering additional jobs or creating multi-metric jobs.
 [[ml-gs-results-ae]]
 === Advanced or multi-metric job results
 
-Conceptually, you can think of _multi-metric {anomaly-jobs}_ as running multiple
-independent single metric jobs. By bundling them together in a multi-metric job,
-however, you can see an overall score and shared influencers for all the metrics
-and all the entities in the job. Multi-metric jobs therefore scale better than
-having many independent single metric jobs. They also provide better results
-when you have influencers that are shared across the detectors.
+include::../shared/multi-metric-jobs.asciidoc[]
 
 .Influencers
 ****
-When you create an {anomaly-job}, you can identify fields as _influencers_.
-These are fields that you think contain information about someone or something
-that influences or contributes to anomalies. There are influencers in both the
-`response_code_rates` and `url_scanning` jobs.
 
-As a best practice, do not pick too many influencers. For example, you generally
-do not need more than three. If you pick many influencers, the results can be
-overwhelming and there is a small overhead to the analysis. For more details,
-see <<ml-influencers>>.
+include::../shared/influencers.asciidoc[]
 
 ****
 

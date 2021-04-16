@@ -10,7 +10,7 @@ To use the {stack} {ml-features}, you must have the
 <<ml-nodes,{ml} node>> in your cluster.
 
 In {kib}, the {ml-features} must be visible in your
-{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your 
+{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your
 source index patterns must exist in the same space as your {ml} jobs.
 
 If {stack} {security-features} are enabled, you must also ensure your users have
@@ -52,7 +52,7 @@ For full access to the {ml-features} in {kib}, you must have:
 * [ ] `read` and `view_index_metadata` index privileges on source indices
 * [ ] `read`, `manage`, and `index` index privileges on destination indices (for
   {dfanalytics-jobs} only)
-  
+
 For read-only access to the {ml-features} in {kib}, you must have:
 
 [%interactive]
@@ -67,8 +67,8 @@ To upload files in {kib} with the *{file-data-viz}*, you must have:
 * [ ] `all` {kib} privileges for the {ml-features} in the appropriate spaces.
 Alternatively, `read` {kib} privileges for the {ml-features} and `all` {kib}
 privileges for the index pattern management feature
-* [ ] `ingest_admin` {ref}/built-in-roles.html[built-in role]
-* [ ] `read`, `manage`, and `index` index privileges for destination indices
+* [ ] `manage_pipeline` cluster privilege
+* [ ] `create` and `create_index` index privileges for destination indices
 
 IMPORTANT: You cannot limit access to specific {ml} objects in each space. If
 the {ml} feature is visible in your space and you have `read` or `all` {kib}
@@ -78,6 +78,6 @@ If you do not use {kib} and instead call {ml} APIs directly, you must have the
 index privileges listed above as well as `machine_learning_admin` or `machine_learning_user` built-in roles.
 
 WARNING: The `machine_learning_admin` and `machine_learning_user` roles grant
-access to the {ml-features} in all {kib} spaces. Therefore, when you use {kib}, 
+access to the {ml-features} in all {kib} spaces. Therefore, when you use {kib},
 use custom roles instead and set your {kib} privileges appropriately for each
 space.

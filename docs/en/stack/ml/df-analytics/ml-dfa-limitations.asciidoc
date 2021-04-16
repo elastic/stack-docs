@@ -6,52 +6,94 @@
 <titleabbrev>Limitations</titleabbrev>
 ++++
 
-beta::[]
 
 The following limitations and known problems apply to the {version} release of 
-the Elastic {dfanalytics} feature:
+the Elastic {dfanalytics} feature. The limitations are grouped into four 
+categories:
+
+* <<dfa-platform-limitations>> are related to the platform that hosts the {ml} 
+  feature of the {stack}.
+* <<dfa-config-limitations>> apply to the configuration process of the 
+  {dfanalytics-jobs}.
+* <<dfa-operational-limitations>> affect the behavior of the {dfanalytics-jobs} 
+  that are running.
+* <<dfa-ui-limitations>> only apply to {dfanalytics-jobs} managed via the user 
+  interface.
+  
+[discrete]
+[[dfa-platform-limitations]]
+== Platform limitations
 
 [discrete]
-[[dfa-space-limitations]]
-== Trained models are visible in all {kib} spaces
+[[dfa-scheduling-priority]]
+=== CPU scheduling improvements apply to Linux and MacOS only
 
-{kibana-ref}/xpack-spaces.html[Spaces] enable you to organize your
-{dfanalytics-jobs} in {kib} and to see only the jobs and other saved objects
-that belong to your space. However, this limited scoped does not apply to
-<<ml-trained-models,trained models>>; they are are visible in all spaces. 
+When there are many {ml} jobs running at the same time and there are insufficient
+CPU resources, the JVM performance must be prioritized so search and indexing
+latency remain acceptable. To that end, when CPU is constrained on Linux and
+MacOS environments, the CPU scheduling priority of native analysis processes is
+reduced to favor the {es} JVM. This improvement does not apply to Windows
+environments.
 
-[float]
+
+[discrete]
+[[dfa-config-limitations]]
+== Configuration limitations
+
+[discrete]
 [[dfa-ccs-limitations]]
-== {ccs-cap} is not supported
+=== {ccs-cap} is not supported
 
 {ccs-cap} is not supported for {dfanalytics}.
 
-[float]
-[[dfa-deletion-limitations]]
-== Deleting a {dfanalytics-job} does not delete the destination index
-
-The {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API] does not delete
-the destination index that contains the annotated data of the {dfanalytics}. 
-That index must be deleted separately.
-
-[float]
+[discrete]
 [[dfa-update-limitations]]
-== {dfanalytics-jobs-cap} cannot be updated
+=== {dfanalytics-jobs-cap} cannot be updated
 
 You cannot update {dfanalytics} configurations. Instead, delete the 
 {dfanalytics-job} and create a new one.
 
-[float]
+[discrete]
 [[dfa-dataframe-size-limitations]]
-== {dfanalytics-cap} memory limitation
+=== {dfanalytics-cap} memory limitation
 
 {dfanalytics-cap} can only perform analyses that fit into the memory available 
 for {ml}. Overspill to disk is not currently possible. For general {ml} 
 settings, see {ref}/ml-settings.html[{ml-cap} settings in {es}].
 
-[float]
+[discrete]
+[[dfa-training-docs]]
+=== {dfanalytics-jobs-cap} cannot use more than 2^32^ documents for training
+
+A {dfanalytics-job} that would use more than 2^32^ documents for training cannot 
+be started. The limitation applies only for documents participating in training 
+the model. If your source index contains more than 2^32^ documents, set the 
+`training_percent` to a value that represents less than 2^32^ documents.
+
+[discrete]
+[[dfa-inference-bwc]]
+=== Trained models created in 7.8 are not backwards compatible
+
+Trained models created in version 7.8.0 are not backwards compatible with 
+older node versions. In a mixed cluster environment, all nodes must be at 
+least 7.8.0 to use a model created on a 7.8.0 node.
+
+
+[discrete]
+[[dfa-operational-limitations]]
+== Operational limitations
+
+[discrete]
+[[dfa-deletion-limitations]]
+=== Deleting a {dfanalytics-job} does not delete the destination index
+
+The {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API] does not delete
+the destination index that contains the annotated data of the {dfanalytics}. 
+That index must be deleted separately.
+
+[discrete]
 [[dfa-time-limitations]]
-== {dfanalytics-jobs-cap} runtime may vary
+=== {dfanalytics-jobs-cap} runtime may vary
 
 The runtime of {dfanalytics-jobs} depends on numerous factors, such as the
 number of data points in the data set, the type of analytics, the number of 
@@ -67,10 +109,9 @@ training percent. Run a few {dfanalytics-jobs} to see how the runtime scales
 with the increased number of data points and how the quality of results scales
 with an increased training percentage.
 
-
-[float]
+[discrete]
 [[dfa-restart]]
-== {dfanalytics-jobs-cap} may restart after an {es} upgrade
+=== {dfanalytics-jobs-cap} may restart after an {es} upgrade
   
 A {dfanalytics-job} may be restarted from the beginning in the following cases:
 
@@ -83,41 +124,30 @@ If any of these conditions applies, the destination index of the
 {dfanalytics-job} is deleted and the job starts again from the beginning – 
 regardless of the phase where the job was in.
 
+[discrete]
+[[dfa-multi-arrays-limitations]]
+=== Documents with values of multi-element arrays in analyzed fields are skipped
 
-[float]
-[[dfa-training-docs]]
-== {dfanalytics-jobs-cap} cannot use more than 2^32^ documents for training
-
-A {dfanalytics-job} that would use more than 2^32^ documents for training cannot 
-be started. The limitation applies only for documents participating in training 
-the model. If your source index contains more than 2^32^ documents, set the 
-`training_percent` to a value that represents less than 2^32^ documents.
+If the value of an analyzed field (field that is subect of the {dfanalytics}) in 
+a document is an array with more than one element, the document that contains 
+this field is skipped during the analysis. 
 
 
-[float]
-[[dfa-missing-fields-limitations]]
-== Documents with missing values in analyzed fields are skipped
-
-If there are missing values in feature fields (fields that are subjects of the 
-{dfanalytics}), the document that contains these fields is skipped 
-during the analysis.
-
-[float]
+[discrete]
 [[dfa-od-field-type-docs-limitations]]
-== {oldetection-cap} field types
+=== {oldetection-cap} field types
 
 {oldetection-cap} requires numeric or boolean data to analyze. The algorithms 
-don't support missing values (see also <<dfa-missing-fields-limitations>>), 
-therefore fields that have data types other than numeric or boolean are ignored. 
-Documents where included fields contain missing values, null values, or an array 
-are also ignored. Therefore a destination index may contain documents that don't 
-have an {olscore}. These documents are still reindexed from the source index to the 
-destination index, but they are not included in the {oldetection} analysis and 
-therefore no {olscore} is computed.
+don't support missing values, therefore fields that have data types other than 
+numeric or boolean are ignored. Documents where included fields contain missing 
+values, null values, or an array are also ignored. Therefore a destination 
+index may contain documents that don't have an {olscore}. These documents are 
+still reindexed from the source index to the destination index, but they are not 
+included in the {oldetection} analysis and therefore no {olscore} is computed.
 
-[float]
+[discrete]
 [[dfa-regression-field-type-docs-limitations]]
-== {regression-cap} field types
+=== {regression-cap} field types
 
 {regression-cap} supports fields that are numeric, boolean, text, keyword and 
 ip. It is also tolerant of missing values. Fields that are supported are 
@@ -125,9 +155,9 @@ included in the analysis, other fields are ignored. Documents where included
 fields contain an array are also ignored. Documents in the destination index 
 that don't contain a results field are not included in the {reganalysis}.
 
-[float]
+[discrete]
 [[dfa-classification-field-type-docs-limitations]]
-== {classification-cap} field types
+=== {classification-cap} field types
 
 {classification-cap} supports fields that have numeric, boolean, text, keyword, 
 or ip data types. It is also tolerant of missing values. Fields that are 
@@ -136,9 +166,9 @@ where included fields contain an array are also ignored. Documents in the
 destination index that don't contain a results field are not included in the 
 {classanalysis}.
 
-[float]
+[discrete]
 [[dfa-classification-imbalanced-classes]]
-== Imbalanced class sizes affect {classification} performance
+=== Imbalanced class sizes affect {classification} performance
 
 If your training data is very imbalanced, {classanalysis} may not provide 
 good predictions. Try to avoid highly imbalanced situations. We recommend having 
@@ -147,9 +177,9 @@ majority to minority class labels in the training data. If your training data
 set is very imbalanced, consider downsampling the majority class, upsampling the 
 minority class, or gathering more data.
 
-[float]
+[discrete]
 [[dfa-inference-nested-limitation]]
-== Deeply nested objects affect {infer} performance
+=== Deeply nested objects affect {infer} performance
 
 If the data that you run inference against contains documents that have a series 
 of combinations of dot delimited and nested fields (for example: 
@@ -157,36 +187,27 @@ of combinations of dot delimited and nested fields (for example:
 slightly slower. Consider using as simple mapping as possible for the best 
 performance profile.
 
-[float]
+[discrete]
 [[dfa-feature-importance-limitation]]
-== Analytics runtime performance may significantly slow down with feature importance computation
+=== Analytics runtime performance may significantly slow down with {feat-imp} computation
 
 For complex models (such as those with many deep trees), the calculation of 
-feature importance takes significantly more time. Feature importance is 
-calculated at the end of the analysis and therefore the job may appear to be 
-stuck at 99% for several hours.
+{feat-imp} takes significantly more time. If a reduction in runtime is important 
+to you, try strategies such as disabling {feat-imp}, reducing the amount of 
+training data (for example by decreasing the training percentage), setting 
+<<hyperparameters,hyperparameter>> values, or only selecting fields that are 
+relevant for analysis.
 
-If a reduction in runtime is important to you, try strategies such as disabling 
-feature importance, reducing the amount of training data (for example by
-decreasing the training percentage), setting <<hyperparameters,hyperparameter>>
-values, or only selecting fields that are relevant for analysis.
-
-
-[float]
-[[dfa-inference-bwc]]
-== {infer-cap} trained models created in 7.8 are not backwards compatible
-
-Inference models created in version 7.8.0 are not backwards compatible with 
-older node versions. In a mixed cluster environment, all nodes must be at 
-least 7.8.0 to use a model created on a 7.8.0 node.
 
 [discrete]
-[[dfa-scheduling-priority]]
-== CPU scheduling improvements apply to Linux and MacOS only
+[[dfa-ui-limitations]]
+== Limitations in {kib}
 
-When there are many {ml} jobs running at the same time and there are insufficient
-CPU resources, the JVM performance must be prioritized so search and indexing
-latency remain acceptable. To that end, when CPU is constrained on Linux and
-MacOS environments, the CPU scheduling priority of native analysis processes is
-reduced to favor the {es} JVM. This improvement does not apply to Windows
-environments.
+[discrete]
+[[dfa-space-limitations]]
+=== Trained models are visible in all {kib} spaces
+
+{kibana-ref}/xpack-spaces.html[Spaces] enable you to organize your
+{dfanalytics-jobs} in {kib} and to see only the jobs and other saved objects
+that belong to your space. However, this limited scoped does not apply to
+<<ml-trained-models,trained models>>; they are are visible in all spaces. 

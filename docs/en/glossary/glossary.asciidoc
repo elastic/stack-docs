@@ -27,7 +27,8 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=advanced-settings-def]
 
 [[glossary-agent-policy]] Agent policy::
 A collection of inputs and settings that defines the data to be collected by {agent}.
-Each {agent} can only be enrolled in a single policy.
+An agent policy can be applied to a single agent or shared by a group of agents;
+this makes it easier to manage many agents at scale.
 See {fleet-guide}/agent-policy.html[{agent} policies].
 //Source: Observability
 
@@ -288,7 +289,8 @@ real time. {dfeeds-cap} retrieve data from {es} for analysis.
 //Source: X-Pack
 
 [[glossary-dataset]] dataset::
-A description of ingested data and its structure for each index.
+A collection of data that has the same structure.
+The name of a dataset typically signifies its source.
 See {fleet-guide}/data-streams.html[data stream naming scheme].
 //Source: Observability
 
@@ -388,6 +390,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=ems-def]
 
 [[glossary-epr]] Elastic Package Registry (EPR)::
 A service hosted by Elastic that stores Elastic package definitions in a central location.
+See the https://github.com/elastic/package-registry[EPR GitHub repository].
 //Source: Observability
 
 [[glossary-element]] element::
@@ -475,13 +478,13 @@ grok, mutate, drop, clone, and geoip. Filter stages are optional.
 //Source: Logstash
 
 [[glossary-fleet]] Fleet::
-A web-based UI in {kib} used to add and manage both {agent}s, and integrations for
-popular services and platforms.
+A web-based UI in {kib} used to add and manage {agent}s.
 See {fleet-guide}/fleet-overview.html[{agent} overview].
 //Source: Observability
 
-[[glossary-fleet-server]] Fleet Server::
-// tbd
+[[glossary-{fleet-server}]] {fleet-server}::
+{fleet-server} is a component used to centrally manage {agent}s.
+It serves as a control plane for updating agent policies, collecting status information, and coordinating actions across agents.
 //Source: Observability
 
 [[glossary-flush]] flush::
@@ -692,14 +695,15 @@ Code is considered instrumented when it collects and reports this performance da
 //Source: Observability
 
 [[glossary-integration]] integration::
-A bundle of assets for configuring the ingestion and visualization of data,
-or the protection of endpoints.
-Any number of integrations can be added to an <<glossary-agent-policy,{agent} policy>>.
+
+An easy way for external systems to connect to the {stack}.
+Whether it's collecting data or protecting systems from security threats,
+integrations provide out-of-the-box assets to make setup easy--many with just a single click.
 //Source: Observability
 
 [[glossary-integration-policy]] integration policy::
-A configuration definition for an input type.
-<<glossary-agent-policy,{agent} policies>> consist of one or more integration policies.
+An instance of an <<glossary-integration,integration>> that is configured for a specific use case,
+such as collecting logs from a specific file.
 //Source: Observability
 
 [discrete]

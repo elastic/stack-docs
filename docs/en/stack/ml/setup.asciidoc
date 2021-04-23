@@ -5,8 +5,8 @@
 <titleabbrev>Setup and security</titleabbrev>
 ++++
 
-To use the {stack} {ml-features}, you must have the
-{subscriptions}[appropriate subscription] and at least one
+To use the {stack} {ml-features}, you must have the 
+{subscriptions}[appropriate subscription] and at least one 
 <<ml-nodes,{ml} node>> in your cluster.
 
 In {kib}, the {ml-features} must be visible in your
@@ -37,12 +37,39 @@ information, see {ref}/modules-node.html#ml-node[{ml-cap} nodes] and
 [[setup-privileges]]
 == Security privileges
 
+[discrete]
+[[es-security-privileges]]
+=== {es} security privileges
+
 The {stack-security-features} provide roles and privileges that make it easier
 to control which users can manage or view {ml} objects such as jobs, {dfeeds},
-results, and model snapshots. {kib} also enables you to control access to the
-{ml-features} within each space. You can manage your roles, privileges, and
-spaces in the **{stack-manage-app}** app in {kib}. For more information, see
-{ref}/security-privileges.html[Security privileges] and
+results, and model snapshots.
+
+
+If you use {ml} APIs, you must have the `machine_learning_admin` or 
+`machine_learning_user` built-in roles or the equivalent cluster privileges and 
+the following index privileges:
+
+For full access:
+
+* [ ] `read` and `view_index_metadata` on source indices
+* [ ] `read`, `manage`, and `index` on destination indices (for 
+  {dfanalytics-jobs} only)
+
+For read-only access:
+
+* [ ] `read` index privileges on source indices
+* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
+only)
+
+[discrete]
+[[kib-security-privileges]]
+=== {kib} privileges
+
+{kib} also enables you to control access to the {ml-features} within each space. 
+You can manage your roles, privileges, and spaces in the **{stack-manage-app}** 
+app in {kib}. For more information, see 
+{ref}/security-privileges.html[Security privileges] and 
 {kibana-ref}/kibana-privileges.html[{kib} privileges].
 
 For full access to the {ml-features} in {kib}, you must have:
@@ -73,9 +100,6 @@ privileges for the index pattern management feature
 IMPORTANT: You cannot limit access to specific {ml} objects in each space. If
 the {ml} feature is visible in your space and you have `read` or `all` {kib}
 privileges for the feature, you have access to *all* {ml} objects in that space.
-
-If you do not use {kib} and instead call {ml} APIs directly, you must have the
-index privileges listed above as well as `machine_learning_admin` or `machine_learning_user` built-in roles.
 
 WARNING: The `machine_learning_admin` and `machine_learning_user` roles grant
 access to the {ml-features} in all {kib} spaces. Therefore, when you use {kib},

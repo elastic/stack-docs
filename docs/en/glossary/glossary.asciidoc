@@ -25,6 +25,13 @@ ZooKeeper to {es}.
 include::{kib-repo-dir}/glossary.asciidoc[tag=advanced-settings-def]
 --
 
+[[glossary-agent-policy]] Agent policy::
+A collection of inputs and settings that defines the data to be collected by {agent}.
+An agent policy can be applied to a single agent or shared by a group of agents;
+this makes it easier to manage many agents at scale.
+See {fleet-guide}/agent-policy.html[{agent} policies].
+//Source: Observability
+
 [[glossary-allocator]] allocator::
 Manages hosts that contain {es} and {kib} nodes. Controls the lifecycle of these
 nodes by creating new <<glossary-container,containers>> and managing the nodes
@@ -260,9 +267,9 @@ include::{es-repo-dir}/glossary.asciidoc[tag=ccs-def]
 --
 
 [[glossary-custom-rules]] custom rules::
-A set of conditions and actions that change the behavior of {anomaly-jobs}. You 
+A set of conditions and actions that change the behavior of {anomaly-jobs}. You
 can also use filters to further limit the scope of the rules. See
-{ml-docs}/ml-rules.html[Custom rules]. {kib} refers to custom rules as job 
+{ml-docs}/ml-rules.html[Custom rules]. {kib} refers to custom rules as job
 rules.
 //Source: Machine learning
 
@@ -280,6 +287,12 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=dashboard-def]
 {anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
 real time. {dfeeds-cap} retrieve data from {es} for analysis.
 //Source: X-Pack
+
+[[glossary-dataset]] dataset::
+A collection of data that has the same structure.
+The name of a dataset typically signifies its source.
+See {fleet-guide}/data-streams.html[data stream naming scheme].
+//Source: Observability
 
 [[glossary-dataframe-job]] {dfanalytics-job}::
 {dfanalytics-jobs-cap} contain the configuration information and metadata
@@ -358,6 +371,11 @@ include::{es-repo-dir}/glossary.asciidoc[tag=document-def]
 include::{kib-repo-dir}/glossary.asciidoc[tag=edge-def]
 --
 
+[[glossary-{agent}]] {agent}::
+A single, unified agent that you can deploy to hosts or containers to collect data and protect endpoints.
+See {fleet-guide}/fleet-overview.html[{agent} overview].
+//Source: Observability
+
 [[glossary-ecs]] Elastic Common Schema (ECS)::
 A document schema for Elasticsearch, for use cases such as logging and metrics.
 ECS defines a common set of fields, their datatype, and gives guidance on their
@@ -369,6 +387,11 @@ different sources.
 --
 include::{kib-repo-dir}/glossary.asciidoc[tag=ems-def]
 --
+
+[[glossary-epr]] Elastic Package Registry (EPR)::
+A service hosted by Elastic that stores Elastic package definitions in a central location.
+See the https://github.com/elastic/package-registry[EPR GitHub repository].
+//Source: Observability
 
 [[glossary-element]] element::
 +
@@ -453,6 +476,16 @@ data according to configuration rules. Filters are often applied conditionally
 depending on the characteristics of the event. Popular filter plugins include
 grok, mutate, drop, clone, and geoip. Filter stages are optional.
 //Source: Logstash
+
+[[glossary-fleet]] Fleet::
+Fleet provides a way to centrally manage {agent}s at scale. There are two parts: The Fleet app in {kib} provides a web-based UI to add and remotely manage agents, while the {fleet-server} provides the backend service that manages agents.
+See {fleet-guide}/fleet-overview.html[{agent} overview].
+//Source: Observability
+
+[[glossary-{fleet-server}]] {fleet-server}::
+{fleet-server} is a component used to centrally manage {agent}s.
+It serves as a control plane for updating agent policies, collecting status information, and coordinating actions across agents.
+//Source: Observability
 
 [[glossary-flush]] flush::
 +
@@ -622,20 +655,20 @@ order to index <<glossary-event,event>> data.
 //Source: Logstash
 
 [[glossary-inference]] inference::
-A {ml} feature that enables you to use supervised learning processes – like 
-{regression} and {classification} – in a continuous fashion by using 
+A {ml} feature that enables you to use supervised learning processes – like
+{regression} and {classification} – in a continuous fashion by using
 <<glossary-trained-model,trained models>> against incoming data.
 //Source: Machine learning
 
 [[glossary-inference-aggregation]] inference aggregation::
-A pipeline aggregation that references a <<glossary-trained-model>> in an 
-aggregation to infer on the results field of the parent bucket aggregation. It 
+A pipeline aggregation that references a <<glossary-trained-model>> in an
+aggregation to infer on the results field of the parent bucket aggregation. It
 enables you to use supervised {ml} at search time.
 //Source: Machine learning
 
 [[glossary-inference-processor]] inference processor::
-A processor specified in an ingest pipeline that uses a 
-<<glossary-trained-model>> to infer against the data that is being ingested in 
+A processor specified in an ingest pipeline that uses a
+<<glossary-trained-model>> to infer against the data that is being ingested in
 the pipeline.
 //Source: Machine learning
 
@@ -662,8 +695,15 @@ Code is considered instrumented when it collects and reports this performance da
 //Source: Observability
 
 [[glossary-integration]] integration::
-Out-of-the-box configurations for common data sources to simplify the collection,
-parsing, and visualization of logs and metrics. Also known as a <<glossary-module,module>>.
+
+An easy way for external systems to connect to the {stack}.
+Whether it's collecting data or protecting systems from security threats,
+integrations provide out-of-the-box assets to make setup easy--many with just a single click.
+//Source: Observability
+
+[[glossary-integration-policy]] integration policy::
+An instance of an <<glossary-integration,integration>> that is configured for a specific use case,
+such as collecting logs from a specific file.
 //Source: Observability
 
 [discrete]
@@ -778,7 +818,7 @@ statements.
 
 [[glossary-module]] module::
 Out-of-the-box configurations for common data sources to simplify the collection,
-parsing, and visualization of logs and metrics. Also known as an <<glossary-integration,integration>>.
+parsing, and visualization of logs and metrics.
 //Source: Observability
 
 [[glossary-monitor]] monitor::
@@ -789,6 +829,11 @@ applications and services.
 [discrete]
 [[n-glos]]
 === N
+
+[[glossary-namespace]] namespace::
+A user-configurable arbitrary data grouping, such as an environment (`dev`, `prod`, or `qa`),
+a team, or a strategic business unit.
+//Source: Observability
 
 [[glossary-node]] node::
 +
@@ -1102,6 +1147,12 @@ and can have a parent/child relationship with other spans.
 include::{es-repo-dir}/glossary.asciidoc[tag=split-def]
 --
 
+[[glossary-standalone]] standalone::
+This mode allows manual configuration and management of {agent}s locally
+on the systems where they are installed.
+See {fleet-guide}/run-elastic-agent-standalone.html[Run {agent} standalone].
+//Source: Observability
+
 [[glossary-stunnel]] stunnel::
 Securely tunnels all traffic in an {ece} installation.
 //Source: Cloud
@@ -1183,9 +1234,9 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=tracks-def]
 --
 
 [[glossary-trained-model]] trained model::
-A {ml} model that is trained and tested against a labelled data set and can be 
-referenced in an ingest pipeline or in a pipeline aggregation to perform 
-{classification} or {reganalysis} on new data. See 
+A {ml} model that is trained and tested against a labelled data set and can be
+referenced in an ingest pipeline or in a pipeline aggregation to perform
+{classification} or {reganalysis} on new data. See
 {ml-docs}/ml-trained-models.html[Trained models].
 //Source: Machine learning
 

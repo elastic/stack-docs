@@ -15,7 +15,8 @@ source index patterns must exist in the same space as your {ml} jobs.
 
 If {stack} {security-features} are enabled, you must also ensure your users have
 the <<setup-privileges,necessary privileges>>. If the {operator-feature} is
-enabled, there are some {ml} settings that can be updated only by operator users.
+enabled, there are some {ml} settings that can be updated only by operator 
+users.
 
 TIP: The fastest way to get started with {ml-features} is to
 {ess-trial}[start a free 14-day trial of {ess}] in the cloud.
@@ -72,6 +73,10 @@ app in {kib}. For more information, see
 {ref}/security-privileges.html[Security privileges] and 
 {kibana-ref}/kibana-privileges.html[{kib} privileges].
 
+The `machine_learning_admin` and `machine_learning_user` roles grant access to 
+the {ml-features} in all {kib} spaces. Therefore, when you use {kib}, use custom 
+roles instead and set your {kib} privileges appropriately for each space.
+
 For full access to the {ml-features} in {kib}, you must have:
 
 [%interactive]
@@ -100,8 +105,3 @@ privileges for the index pattern management feature
 IMPORTANT: You cannot limit access to specific {ml} objects in each space. If
 the {ml} feature is visible in your space and you have `read` or `all` {kib}
 privileges for the feature, you have access to *all* {ml} objects in that space.
-
-WARNING: The `machine_learning_admin` and `machine_learning_user` roles grant
-access to the {ml-features} in all {kib} spaces. Therefore, when you use {kib},
-use custom roles instead and set your {kib} privileges appropriately for each
-space.

@@ -70,6 +70,24 @@ You cannot use the following field names in the `by_field_name` or
 `over_field_name` properties in a job: `by`; `count`; `over`. This limitation
 also applies to those properties when you create advanced jobs in {kib}.
 
+
+[discrete]
+[[ml-arrays-limitations]]
+=== Handling arrays in analyzed fields
+
+If an {anomaly-job} is configured to analyze a field that contains an array, 
+then the array is turned into a comma-separated concatenated string. The items 
+in the array are sorted alphabetically and the duplicated items are removed. For 
+example, the array `["zebra", "dog", "cat", "alligator", "cat"]` becomes 
+`alligator,cat,dog,zebra`. The Anomaly Explorer charts does not display results 
+as the string does not exist in the source data. The Single Metric Viewer 
+display results if the model plot is enabled.
+
+Analyzing large arrays results in long strings which may require more system 
+resources. Consider using a query in the {dfeed} that filters only on the 
+relevant items of the array.
+
+
 [discrete]
 [[ml-frozen-limitations]]
 === Frozen indices are not supported
@@ -109,10 +127,11 @@ For more information about any of these functions, see <<ml-functions>>.
 [[ml-limitations-runtime]]
 === {anomaly-detect-cap} performs better on indexed fields
 
-{anomaly-jobs-cap} sort all data by a user-defined time field, which is frequently 
-accessed. If the time field is a {ref}/runtime.html[runtime field], the 
-performance impact of calculating field values at query time can significantly slow
-the job. Use an indexed field as a time field when running {anomaly-jobs}.
+{anomaly-jobs-cap} sort all data by a user-defined time field, which is 
+frequently accessed. If the time field is a {ref}/runtime.html[runtime field], 
+the performance impact of calculating field values at query time can 
+significantly slow the job. Use an indexed field as a time field when running 
+{anomaly-jobs}.
 
 
 [discrete]
@@ -143,6 +162,7 @@ you send to the job must use the JSON format.
 
 For more information about this API, see
 {ref}/ml-post-data.html[Post Data to Jobs].
+
 
 [discrete]
 === Misleading high missing field counts
@@ -288,6 +308,7 @@ To avoid this behavior, make sure that the aggregation interval in the {dfeed}
 configuration and the bucket span in the {anomaly-job} configuration have the 
 same values.
 
+
 [discrete]
 [[ml-space-limitations]]
 === Calendars and filters are visible in all {kib} spaces
@@ -297,6 +318,7 @@ same values.
 that belong to your space. However, this limited scope does not apply to 
 <<ml-calendars,calendars>> and <<ml-rules,filters>>; they are visible in all
 spaces.
+
 
 [discrete]
 [[ml-rollup-limitations]]

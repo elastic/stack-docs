@@ -9,10 +9,6 @@ To use the {stack} {ml-features}, you must have the
 {subscriptions}[appropriate subscription] and at least one 
 <<ml-nodes,{ml} node>> in your cluster.
 
-In {kib}, the {ml-features} must be visible in your
-{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your
-source index patterns must exist in the same space as your {ml} jobs.
-
 If {stack} {security-features} are enabled, you must also ensure your users have
 the <<setup-privileges,necessary privileges>>. If the {operator-feature} is
 enabled, there are some {ml} settings that can be updated only by operator 
@@ -66,9 +62,13 @@ only)
 [[kib-security-privileges]]
 === {kib} privileges
 
-{kib} also enables you to control access to the {ml-features} within each space. 
-You can manage your roles, privileges, and spaces in the **{stack-manage-app}** 
-app in {kib}. For more information, see 
+In {kib}, the {ml-features} must be visible in your
+{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your
+source index patterns must exist in the same space as your {ml} jobs.
+
+{kib} enables you to control access to the {ml-features} within each space. You 
+can manage your roles, privileges, and spaces in the **{stack-manage-app}** app 
+in {kib}. For more information, see 
 {ref}/security-privileges.html[Security privileges] and 
 {kibana-ref}/kibana-privileges.html[{kib} privileges].
 

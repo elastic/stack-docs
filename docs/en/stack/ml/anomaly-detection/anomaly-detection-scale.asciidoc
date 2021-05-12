@@ -24,7 +24,7 @@ require you to clone an existing job or create a new one.
 
 [discrete]
 [[node-sizing]]
-== 1. Consider node sizing and configuration
+== 1. Consider node sizing/autoscaling and configuration
 
 An {anomaly-job} runs on a single node and requires sufficient resources to hold 
 its model in memory. When a job is opened, it will be placed on the node with 
@@ -54,6 +54,16 @@ Increasing the number of nodes will allow distribution of job processing as well
 as fault tolerance. If running many jobs, even small memory ones, then consider 
 increasing the number of nodes in your environment.
 
+In {ecloud}, you can define policies that scales up or down your {ml} nodes 
+based on node requirements by using {ref}/xpack-autoscaling.html[autoscaling]. 
+Set `xpack.ml.max_ml_node_size` to define the maximum possible size of a {ml} 
+node. When you try to create a {anomaly-job} that is larger than the maximum 
+size a node can support, it instantly fails as autoscaling cannot add a node big 
+enough to run the job. On a self-managed deployment, make sure that 
+`xpack.ml.max_model_memory_limit` is set according to the available resources of 
+the {ml} node. In this case, if you have a job with a larger model, it instantly 
+fails otherwise it cannot be opened due to lack of resources and it remains in 
+the `opening` state.
 
 [discrete]
 [[dedicated-results-index]]

@@ -54,16 +54,19 @@ Increasing the number of nodes will allow distribution of job processing as well
 as fault tolerance. If running many jobs, even small memory ones, then consider 
 increasing the number of nodes in your environment.
 
-In {ecloud}, you can define policies that scale your {ml} nodes up or down
-based on node requirements by using {ref}/xpack-autoscaling.html[autoscaling]. 
-Set `xpack.ml.max_ml_node_size` to define the maximum possible size of a {ml} 
-node. If you try to create an {anomaly-job} that is larger than the maximum 
-size a node can support, it instantly fails as autoscaling cannot add a node big 
-enough to run the job. On a self-managed deployment, make sure that 
-`xpack.ml.max_model_memory_limit` is set according to the available resources of 
-the {ml} node. In this case, if you have a job with a larger model, it instantly 
-fails. Otherwise, it cannot be opened due to lack of resources and it remains in 
-the `opening` state.
+In {ecloud}, you can enable {ref}/xpack-autoscaling.html[autoscaling] so that the
+{ml} nodes in your cluster will scale up or down based on current {ml} memory
+requirements. The {ecloud} infrastructure will allow you to create {ml-jobs} up
+to the size that would fit on the maximum node size that the cluster can scale to
+(usually somewhere between 58GB and 64GB) rather than what would fit in the
+current cluster. If you are attempting to use autoscaling outside of {ecloud} then
+set `xpack.ml.max_ml_node_size` to define the maximum possible size of a {ml} 
+node. Creating {ml-jobs} with model memory limits larger than the maximum the
+maximum node size can support will not be allowed, as autoscaling cannot add
+a node big enough to run the job. On a self-managed deployment, you can set 
+`xpack.ml.max_model_memory_limit` according to the available resources of 
+the {ml} node. This will stop you creating jobs with model memory limits too high
+to open in your cluster.
 
 [discrete]
 [[dedicated-results-index]]

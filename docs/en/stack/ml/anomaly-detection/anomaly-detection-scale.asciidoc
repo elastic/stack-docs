@@ -54,19 +54,19 @@ Increasing the number of nodes will allow distribution of job processing as well
 as fault tolerance. If running many jobs, even small memory ones, then consider 
 increasing the number of nodes in your environment.
 
-In {ecloud}, you can enable {ref}/xpack-autoscaling.html[autoscaling] so that the
-{ml} nodes in your cluster will scale up or down based on current {ml} memory
-requirements. The {ecloud} infrastructure will allow you to create {ml-jobs} up
-to the size that would fit on the maximum node size that the cluster can scale to
-(usually somewhere between 58GB and 64GB) rather than what would fit in the
-current cluster. If you are attempting to use autoscaling outside of {ecloud} then
-set `xpack.ml.max_ml_node_size` to define the maximum possible size of a {ml} 
-node. Creating {ml-jobs} with model memory limits larger than the maximum the
-maximum node size can support will not be allowed, as autoscaling cannot add
-a node big enough to run the job. On a self-managed deployment, you can set 
-`xpack.ml.max_model_memory_limit` according to the available resources of 
-the {ml} node. This will stop you creating jobs with model memory limits too high
-to open in your cluster.
+In {ecloud}, you can enable {ref}/xpack-autoscaling.html[autoscaling] so that 
+the {ml} nodes in your cluster scale up or down based on current {ml} 
+memory requirements. The {ecloud} infrastructure allows you to create 
+{ml-jobs} up to the size that fits on the maximum node size that the 
+cluster can scale to (usually somewhere between 58GB and 64GB) rather than what 
+would fit in the current cluster. If you attempt to use autoscaling outside of 
+{ecloud}, then set `xpack.ml.max_ml_node_size` to define the maximum possible 
+size of a {ml} node. Creating {ml-jobs} with model memory limits larger than the 
+maximum node size can support is not allowed, as autoscaling cannot add a node 
+big enough to run the job. On a self-managed deployment, you can set 
+`xpack.ml.max_model_memory_limit` according to the available resources of the 
+{ml} node. This prevents you from you creating jobs with model memory limits too 
+high to open in your cluster.
 
 [discrete]
 [[dedicated-results-index]]

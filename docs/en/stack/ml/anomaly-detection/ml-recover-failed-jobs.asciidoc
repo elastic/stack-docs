@@ -1,0 +1,47 @@
+[role="xpack"]
+[[ml-recover-failed-jobs]]
+= Recover from a failed {anomaly-job}
+
+When an {anomaly-job} has failed, decide whether you want to investigate the 
+cause of the failure or restart the job without further investigation. If the 
+job failed due to a transient problem, then there is no need to investigate 
+further and you can follow the procedure described below.
+
+If a persistent problem caused the job to fail, find out which node the failed 
+job was running on by checking the job stats on the **Job management** pane in 
+{kib} before the recovery procedure. Then get the logs for that node and look 
+for exceptions and errors where the ID of the {anomaly-job} is in the message to 
+have a better understanding of the issue.
+
+If an {anomaly-job} has failed, do the following to recover from `failed` state: 
+
+. _Force_ stop the corresponding {dfeed} by using the 
+{ref}/ml-stop-datafeed.html[Stop {dfeed} API] with the `force` parameter being 
+`true`. For example, the following request force stops the `my_datafeed` 
+{dfeed}.
++
+--
+[source,console]
+--------------------------------------------------
+POST _ml/datafeeds/my_datafeed/_stop
+{
+  "force": "true"
+}
+--------------------------------------------------
+// TEST[skip]
+--
+
+. _Force_ close the {anomaly-job} by using the 
+{ref}/ml-close-job.html[Close {anomaly-job} API] with the `force` parameter 
+being `true`. For example, the following request force closes the `my_job` 
+{anomaly-job}:
++
+--
+[source,console]
+--------------------------------------------------
+POST _ml/anomaly_detectors/my_job/_close?force=true
+--------------------------------------------------
+// TEST[skip]
+--
+
+. Restart the {anomaly-job} on the **Job management** pane in {kib}. 

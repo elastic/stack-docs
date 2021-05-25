@@ -32,6 +32,12 @@ this makes it easier to manage many agents at scale.
 See {fleet-guide}/agent-policy.html[{agent} policies].
 //Source: Observability
 
+[[glossary-alias]] alias::
++
+--
+include::{es-repo-dir}/glossary.asciidoc[tag=alias-def]
+--
+
 [[glossary-allocator]] allocator::
 Manages hosts that contain {es} and {kib} nodes. Controls the lifecycle of these
 nodes by creating new <<glossary-container,containers>> and managing the nodes
@@ -482,7 +488,7 @@ Fleet provides a way to centrally manage {agent}s at scale. There are two parts:
 See {fleet-guide}/fleet-overview.html[{agent} overview].
 //Source: Observability
 
-[[glossary-{fleet-server}]] {fleet-server}::
+[[glossary-fleet-server]] {fleet-server}::
 {fleet-server} is a component used to centrally manage {agent}s.
 It serves as a control plane for updating agent policies, collecting status information, and coordinating actions across agents.
 //Source: Observability
@@ -503,18 +509,6 @@ include::{es-repo-dir}/glossary.asciidoc[tag=follower-index-def]
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=force-merge-def]
---
-
-[[glossary-freeze]] freeze::
-+
---
-include::{es-repo-dir}/glossary.asciidoc[tag=freeze-def]
---
-
-[[glossary-frozen-index]] frozen index::
-+
---
-include::{es-repo-dir}/glossary.asciidoc[tag=frozen-index-def]
 --
 
 [[glossary-frozen-phase]] frozen phase::
@@ -617,12 +611,6 @@ include::{es-repo-dir}/glossary.asciidoc[tag=id-def]
 +
 --
 include::{es-repo-dir}/glossary.asciidoc[tag=index-def]
---
-
-[[glossary-index-alias]] index alias::
-+
---
-include::{es-repo-dir}/glossary.asciidoc[tag=index-alias-def]
 --
 
 [[glossary-index-lifecycle]] index lifecycle::

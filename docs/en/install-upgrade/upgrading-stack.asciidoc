@@ -59,8 +59,15 @@ on the cluster during the upgrade process. For more information, see
 .. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
 .. Beats: {beats-ref}/upgrading.html[upgrade instructions]
 .. APM Server: {apm-server-ref}/upgrading.html[upgrade instructions]
+.. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
 
-
+[WARNING]
+====
+If using {agent} in 7.12 or lower, your {agent}s will automatically be unenrolled
+from {fleet} and will stop sending data when you upgrade to 7.13.
+You will need to uninstall your previous {agent}s before installing and enrolling
+{agent}s with {fleet-server}. To learn more, see {fleet-guide}/upgrade-elastic-agent.html[Upgrade {agent}].
+====
 
 [NOTE]
 ====

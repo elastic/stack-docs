@@ -75,13 +75,20 @@ also applies to those properties when you create advanced jobs in {kib}.
 [[ml-arrays-limitations]]
 === Arrays in analyzed fields are turned into comma-separated strings
 
-If an {anomaly-job} is configured to analyze a field that contains an array, 
-then the array is turned into a comma-separated concatenated string. The items 
-in the array are sorted alphabetically and the duplicated items are removed. For 
+If an {anomaly-job} is configured to analyze an aggregatable field (a field that 
+is part of the index mapping definition), and this field contains an array, then 
+the array is turned into a comma-separated concatenated string. The items in the 
+array are sorted alphabetically and the duplicated items are removed. For 
 example, the array `["zebra", "dog", "cat", "alligator", "cat"]` becomes 
-`alligator,cat,dog,zebra`. The Anomaly Explorer charts does not display results 
-as the string does not exist in the source data. The Single Metric Viewer 
-display results if the model plot is enabled.
+`alligator,cat,dog,zebra`. The Anomaly Explorer charts don't display results as 
+the string does not exist in the source data. The Single Metric Viewer displays 
+results if the model plot is enabled.
+
+If an array field is not aggregatable and is retrieved from `_source`, the array 
+is also turned into a comma-separated, concatenated list. However, the list 
+items are not sorted alphabetically, nor are they deduplicated. Taken the 
+example above, the comma-separated list, in this case, would be
+`zebra,dog,cat,alligator,cat`.
 
 Analyzing large arrays results in long strings which may require more system 
 resources. Consider using a query in the {dfeed} that filters on the relevant 

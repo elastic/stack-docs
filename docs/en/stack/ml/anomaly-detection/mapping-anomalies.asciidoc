@@ -1,0 +1,135 @@
+[role="xpack"]
+[testenv="platinum"]
+[[mapping-anomalies]]
+= Mapping anomalies by location
+
+If your data includes vector layers that are defined in the
+{kibana-ref}/maps-connect-to-ems.html[{ems} ({ems-init})], your {anomaly-jobs}
+can generate a map of the anomalies by location.
+
+[discrete]
+[mapping-anomalies-prereqs]
+== Prerequisites
+
+If you want to view choropleth maps in **{data-viz}** or {anomaly-job} results,
+you must have fields that contain valid vector layers
+(such as {elastic-maps-service}/#file/world_countries[country codes] or 
+{elastic-maps-service}/#file/usa_zip_codes[postal codes]).
+
+This example uses the sample web logs data set. For more information, see
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[Add the sample data].
+
+[discrete]
+[visualize-vector-layers]
+== Explore your data
+
+If you have fields that contain valid vector layers, you can use the
+**{data-viz}** in the **{ml-app}** app to see a choropleth map, in which each 
+area is colored based on its document count. For example:
+
+[role="screenshot"]
+image::images/weblogs-data-visualizer-choropleth.jpg[A screenshot of a field that contains vector layer values in {data-viz}]
+
+[discrete]
+[mapping-anomalies-jobs]
+== Create an {anomaly-job}
+
+To create an {anomaly-job} in {kib}, click **Create job** on the
+**{ml-cap} > {anomaly-detect-cap}** page and select an appropriate job wizard.
+Alternatively, use the {ref}/ml-put-job.html[create {anomaly-jobs} API].
+
+For example, use the multi-metric job wizard to create a job that analyzes the
+sample web logs data set to detect anomalous behavior in the sum of the data 
+transferred (`bytes` values) for each destination country (`geo.dest` values):
+
+[role="screenshot"]
+image::images/weblogs-multimetric-wizard-vector.jpg[A screenshot of creating an {anomaly-job} using the web logs data in {kib}]
+
+.API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+PUT _ml/anomaly_detectors/weblogs-vectors <1>
+{
+  "analysis_config" : {
+    "bucket_span":"15m",
+    "detectors": [
+      {
+        "detector_description": "Sum of bytes",
+        "function": "sum",
+        "field_name": "bytes",
+        "partition_field_name": "geo.dest",
+      }
+    ],
+    "influencers": [
+    "geo.src",
+    "agent.keyword",
+    "geo.dest"
+    ]
+  },
+  "data_description" : {
+    "time_field": "timestamp"
+  }
+}
+
+PUT _ml/datafeeds/datafeed-weblogs-vectors <2>
+{
+    "job_id": "weblogs-vectors",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match_all": {}
+          }
+        ]
+      }
+    },
+    "indices": [
+      "kibana_sample_data_logs"
+    ]
+}
+
+POST _ml/anomaly_detectors/weblogs-vectors/_open <3>
+
+POST _ml/datafeeds/datafeed-weblogs-vectors/_start <4>
+{
+  "end": "2021-07-15T22:00:00Z"
+}
+--------------------------------------------------
+<1> Create the {anomaly-job}.
+<2> Create the {dfeed}.
+<3> Open the job.
+<4> Start the {dfeed}. Since the sample data sets often contain timestamps that
+are later than the current date, it is a good idea to specify the appropriate
+end date for the {dfeed}.
+====
+
+[discrete]
+[mapping-anomalies-results]
+== Analyze the results
+
+After the {anomaly-jobs} have processed some data, you can view the results in
+{kib}.
+
+TIP: If you used APIs to create the jobs and {dfeeds}, you cannot see them
+in {kib} until you follow the prompts to synchronize the necessary saved objects.
+
+[role="screenshot"]
+image::images/weblogs-anomaly-explorer-vectors.jpg[A screenshot of the anomaly count by location in Anomaly Explorer]
+
+The **Anomaly Explorer** contains a map, which is affected by your swim lane
+selections. It colors each location to reflect the number of anomalies in that
+selected time period. Locations that have few anomalies are indicated in blue;
+locations with many anomalies are red.
+//TBD: Is it possible to view a legend as is the case in the Data Visualizer?
+Thus you can quickly see the locations that are generating the most anomalies.
+If your vector layers define regions, counties, or postal codes, you can zoom
+in for fine details.
+
+[discrete]
+[mapping-anomalies-next]
+== What's next
+
+* {kibana-ref}/maps.html[Learn more about **Maps**]
+* <<ml-configuring-alerts,Generate alerts for your {anomaly-jobs}>>

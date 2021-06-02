@@ -6,10 +6,12 @@
 ++++
 
 // tag::nginx-jobs[]
-These {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship access 
-logs from your http://nginx.org/[Nginx] HTTP servers to {es} and store it using 
-fields and datatypes from the Elastic Common Schema (ECS). For more details, see
-the {dfeed} and job definitions in
+These legacy {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship
+access logs from your http://nginx.org/[Nginx] HTTP servers to {es} and store it
+using fields and datatypes from the Elastic Common Schema (ECS). The latest
+versions are installed with the Nginx integration in {fleet}.
+
+For more details, see the {dfeed} and job definitions in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml[GitHub].
 
 These configurations are only available if data exists that matches the 

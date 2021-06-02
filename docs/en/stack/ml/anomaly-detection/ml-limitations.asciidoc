@@ -239,7 +239,12 @@ don't match, the values of the chart plotted in both the **Single Metric
 Viewer** and the **Anomaly Explorer** differ from the actual values of the job.
 To avoid this behavior, make sure that the aggregation interval in the {dfeed}
 configuration and the bucket span in the {anomaly-job} configuration have the
-same values.
+same values. However, if your detectors use 
+{ml-docs}/ml-metric-functions.html[metric] or 
+{ml-docs}/ml-sum-functions.html[sum] analytical functions, the recommendation is 
+to set the date_histogram or composite aggregation interval to a tenth of the 
+bucket span. You get finer, more granular time buckets this way, which are ideal 
+for this type of analysis.
 
 The charts can also look odd in circumstances where there is very little data to 
 plot. For example, if there is only one data point, it is represented as a 

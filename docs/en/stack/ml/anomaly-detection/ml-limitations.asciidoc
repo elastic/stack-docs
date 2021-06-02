@@ -80,9 +80,9 @@ is part of the index mapping definition), and this field contains an array, then
 the array is turned into a comma-separated concatenated string. The items in the 
 array are sorted alphabetically and the duplicated items are removed. For 
 example, the array `["zebra", "dog", "cat", "alligator", "cat"]` becomes 
-`alligator,cat,dog,zebra`. The Anomaly Explorer charts don't display results as 
-the string does not exist in the source data. The Single Metric Viewer displays 
-results if the model plot is enabled.
+`alligator,cat,dog,zebra`. The Anomaly Explorer charts don't display any results 
+for the job as the string does not exist in the source data. The Single Metric 
+Viewer displays results if the model plot is enabled.
 
 If an array field is not aggregatable and is retrieved from `_source`, the array 
 is also turned into a comma-separated, concatenated list. However, the list 

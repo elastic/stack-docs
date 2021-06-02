@@ -59,7 +59,7 @@ PUT _ml/anomaly_detectors/weblogs-vectors <1>
         "detector_description": "Sum of bytes",
         "function": "sum",
         "field_name": "bytes",
-        "partition_field_name": "geo.dest",
+        "partition_field_name": "geo.dest"
       }
     ],
     "influencers": [
@@ -121,11 +121,9 @@ image::images/weblogs-anomaly-explorer-vectors.jpg[A screenshot of the anomaly c
 The **Anomaly Explorer** contains a map, which is affected by your swim lane
 selections. It colors each location to reflect the number of anomalies in that
 selected time period. Locations that have few anomalies are indicated in blue;
-locations with many anomalies are red.
-//TBD: Is it possible to view a legend as is the case in the Data Visualizer?
-Thus you can quickly see the locations that are generating the most anomalies.
-If your vector layers define regions, counties, or postal codes, you can zoom
-in for fine details.
+locations with many anomalies are red. Thus you can quickly see the locations
+that are generating the most anomalies. If your vector layers define regions,
+counties, or postal codes, you can zoom in for fine details.
 
 [discrete]
 [[mapping-anomalies-next]]

@@ -234,6 +234,13 @@ Explorer** nor the **Single Metric Viewer** can plot and display an anomaly
 chart for the job. In these cases, the charts are not visible and an explanatory 
 message is shown.
 
+When the aggregation interval of the {dfeed} and the bucket span of the job
+don't match, the values of the chart plotted in both the **Single Metric
+Viewer** and the **Anomaly Explorer** differ from the actual values of the job.
+To avoid this behavior, make sure that the aggregation interval in the {dfeed}
+configuration and the bucket span in the {anomaly-job} configuration have the
+same values.
+
 The charts can also look odd in circumstances where there is very little data to 
 plot. For example, if there is only one data point, it is represented as a 
 single dot. If there are only two data points, they are joined by a line.

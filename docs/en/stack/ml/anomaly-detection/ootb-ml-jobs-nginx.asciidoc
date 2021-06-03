@@ -6,10 +6,96 @@
 ++++
 
 // tag::nginx-jobs[]
-These {anomaly-job} wizards appear in {kib} if you use {filebeat} to ship access 
-logs from your http://nginx.org/[Nginx] HTTP servers to {es} and store it using 
-fields and datatypes from the Elastic Common Schema (ECS). For more details, see
-the {dfeed} and job definitions in
+
+These {anomaly-job} wizards appear in {kib} if you use either {filebeat} or the
+Nginx integration in {fleet} to ship access logs from your
+http://nginx.org/[Nginx] HTTP servers to {es}. The jobs assume that you use
+fields and data types from the Elastic Common Schema (ECS).
+
+[[nginx-access-logs]]
+== Nginx access logs
+
+These {anomaly-jobs} find unusual activity in HTTP access logs.
+
+For more details, see the {dfeed} and job definitions in
+https://github.com/elastic/integrations/blob/{branch}/packages/nginx/kibana/ml_module/nginx-Logs-ml.json[GitHub].
+Note that these jobs are available in {kib} only if data exists that matches the
+{dfeed} query.
+
+Job details:::
+
+Required {beats} or {agent} integrations:::
+
+* Nginx integration 
+
+low_request_rate_nginx::
+Detects low request rates.
+
+Job details:::
+
+* Analyzes request rates (using the <<ml-count,`low_count` function>>).
+
+Required {beats} or {agent} integrations:::
+
+* Nginx integration 
+
+source_ip_request_rate_nginx::
+Detects unusual source IPs.
+
+Job details:::
+
+* Analyzes request rates (using the <<ml-count,`high_count` function>>)
+relative to all the source IPs (`over_field_name` is `source.address`).
+
+Required {beats} or {agent} integrations:::
+
+* Nginx integration 
+
+source_ip_url_count_nginx::
+Detects unusual source IPs.
+
+Job details:::
+
+* Analyzes distinct counts of URLs (using the
+<<ml-distinct-count,`high_distinct_count` function>> on the `url.original`
+field) relative to all the source IPs (`over_field_name` is `source.address`).
+
+Required {beats} or {agent} integrations:::
+
+* Nginx integration 
+
+status_code_rate_nginx::
+Detects unusual status code rates.
+
+Job details:::
+
+* Analyzes request rates (using the <<ml-count,`count` function>>) split by
+status code (`partition_field_name` is `http.response.status_code`).
+
+
+Required {beats} or {agent} integrations:::
+
+* Nginx integration 
+
+visitor_rate_nginx::
+Detects unusual visitor rates.
+
+Job details:::
+
+* Analyzes request rates using the <<ml-nonzero-count,`non_zero_count` function>>.
+
+Required {beats} or {agent} integrations:::
+
+* Nginx integration  
+
+[[nginx-access-logs-filebeat]]
+== Nginx access logs ({filebeat})
+
+These legacy {anomly-jobs} find unusual activity in HTTP access logs. For the 
+latest versions, install the Nginx integration in {fleet}; see
+<<nginx-access-logs>>.
+
+For more details, see the {dfeed} and job definitions in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml[GitHub].
 
 These configurations are only available if data exists that matches the 
@@ -19,37 +105,62 @@ https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/
 
 low_request_rate_ecs::
 
+Job details:::
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
 * Models the event rate of http requests. 
 * Detects unusually low counts of HTTP requests compared to the previous event 
   rate.
+  
+Required {beats} or {agent} integrations:::
+
+* {filebeat}  
 
 source_ip_request_rate_ecs::
 
+Job details:::
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
 * Models the event rate of HTTP requests by source IP.
 * Detects source IPs with unusually high request rates in the HTTP access log 
   compared to the previous rate. 
 
+Required {beats} or {agent} integrations:::
+
+* {filebeat}  
+
 source_ip_url_count_ecs::
 
+Job details:::
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
 * Models the event rate of HTTP requests by source IP.
 * Detects source IPs with unusually high distinct count of URLs in the HTTP 
   access log.
+  
+Required {beats} or {agent} integrations:::
+
+* {filebeat}  
 
 status_code_rate_ecs::
 
+Job details:::
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
 * Models the occurrences of HTTP response status codes.
 * Detects unusual status code rates in the HTTP access log compared to previous 
   rates.
 
+Required {beats} or {agent} integrations:::
+
+* {filebeat}  
+
 visitor_rate_ecs::
 
+Job details:::
 * For HTTP web access logs where `event.dataset` is `nginx.access`.
 * Models visitor rates.
 * Detects unusual visitor rates in the HTTP access log compared to previous 
   rates.
+  
+Required {beats} or {agent} integrations:::
+
+* {filebeat}  
 
 // end::nginx-jobs[]

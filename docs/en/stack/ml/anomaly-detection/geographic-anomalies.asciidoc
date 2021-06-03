@@ -1,0 +1,242 @@
+[role="xpack"]
+[testenv="platinum"]
+[[geographic-anomalies]]
+= Detecting anomalous locations in geographic data
+
+If your data includes geographic fields, you can use {ml-features} to detect
+anomalous behavior, such as a credit card transaction that occurs in an unusual
+location or a web request that has an unusual source location.
+
+[discrete]
+[[geographic-anomalies-prereqs]]
+== Prerequisites
+
+To run this type of {anomaly-job}, you must have <<setup,{ml-features} set up>>.
+You must also have time series data that contains spatial data types. In
+particular, you must have:
+
+* two comma-separated numbers of the form `latitude,longitude`,
+* a {ref}/geo-point.html[`geo_point`] field,
+* a {ref}/geo-shape.html[`geo_shape`] field that contains point values, or
+* a {ref}/search-aggregations-metrics-geocentroid-aggregation.html[`geo_centroid`] aggregation
+
+The latitude and longitude must be in the range -180 to 180 and represent a
+point on the surface of the Earth.
+
+This example uses the sample eCommerce orders and sample web logs data sets. For
+more information, see
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[Add the sample data].
+
+[discrete]
+[[geographic-anomalies-visualize]]
+== Explore your geographic data
+
+To get the best results from {ml} analytics, you must understand your data. You
+can use the **{data-viz}** in the **{ml-app}** app for this purpose. Search for
+specific fields or field types, such as geo-point fields in the sample data sets.
+You can see how many documents contain those fields within a specific time
+period and sample size. You can also see the number of distinct values, a list
+of example values, and preview them on a map. For example:
+
+[role="screenshot"]
+image::images/weblogs-data-visualizer-geopoint.jpg[A screenshot of a geo_point field in {data-viz}]
+
+[discrete]
+[[geographic-anomalies-jobs]]
+== Create an {anomaly-job}
+
+There are a few limitations to consider before you create this type of job:
+
+. You cannot create forecasts for {anomaly-jobs} that contain geographic
+functions.
+. You cannot add <<ml-rules,custom rules with conditions>> to detectors that use geographic functions.
+
+If those limitations are acceptable, try creating an {anomaly-job} that uses
+the <<ml-lat-long,`lat_long` function>> to analyze your own data or the sample
+data sets.
+
+To create an {anomaly-job} that uses the `lat_long` function, in {kib} you must
+click **Create job** on the **{ml-cap} > {anomaly-detect-cap}** page and select
+the advanced job wizard. Alternatively, use the
+{ref}/ml-put-job.html[create {anomaly-jobs} API].
+
+For example, create a job that analyzes the sample eCommerce orders data set to
+find orders with unusual coordinates (`geoip.location` values) relative to the
+past behavior of each customer (`user` ID):
+
+[role="screenshot"]
+image::images/ecommerce-advanced-wizard-geopoint.jpg[A screenshot of creating an {anomaly-job} using the eCommerce data in {kib}]
+
+.API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+PUT _ml/anomaly_detectors/ecommerce-geo <1>
+{
+  "analysis_config" : {
+    "bucket_span":"15m",
+    "detectors": [
+      {
+        "detector_description": "Unusual coordinates by user",
+        "function": "lat_long",
+        "field_name": "geoip.location",
+        "by_field_name": "user"
+      }
+    ],
+    "influencers": [
+      "geoip.country_iso_code",
+      "day_of_week",
+      "category.keyword"
+      ]
+  },
+  "data_description" : {
+    "time_field": "order_date"
+  }
+}
+
+PUT _ml/datafeeds/datafeed-ecommerce-geo <2>
+{
+    "job_id": "ecommerce-geo",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match_all": {}
+          }
+        ]
+      }
+    },
+    "indices": [
+      "kibana_sample_data_ecommerce"
+    ]
+}
+
+POST _ml/anomaly_detectors/ecommerce-geo/_open <3>
+
+POST _ml/datafeeds/datafeed-ecommerce-geo/_start <4>
+{
+  "end": "2021-06-19T23:00:00Z"
+}
+--------------------------------------------------
+<1> Create the {anomaly-job}.
+<2> Create the {dfeed}.
+<3> Open the job.
+<4> Start the {dfeed}. Since the sample data sets often contain timestamps that
+are later than the current date, it is a good idea to specify the appropriate
+end date for the {dfeed}.
+====
+
+Alternatively, create a job that analyzes the sample web logs data set to detect 
+events with unusual coordinates (`geo.coordinates` values) or unusually high
+sums of transferred data (`bytes` values):
+
+[role="screenshot"]
+image::images/weblogs-advanced-wizard-geopoint.jpg[A screenshot of creating an {anomaly-job} using the web logs data in {kib}]
+
+.API example
+[%collapsible]
+====
+[source,console]
+--------------------------------------------------
+PUT _ml/anomaly_detectors/weblogs-geo <1>
+{
+  "analysis_config" : {
+    "bucket_span":"15m",
+    "detectors": [
+      {
+        "detector_description": "Unusual coordinates",
+        "function": "lat_long",
+        "field_name": "geo.coordinates"
+      },
+      {
+        "function": "high_sum",
+        "field_name": "bytes"
+      }
+    ],
+    "influencers": [
+      "geo.src",
+      "extension.keyword",
+      "geo.dest"
+    ]
+  },
+  "data_description" : {
+    "time_field": "timestamp",
+     "time_format": "epoch_ms"
+  }
+}
+
+PUT _ml/datafeeds/datafeed-weblogs-geo <2>
+{
+    "job_id": "weblogs-geo",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match_all": {}
+          }
+        ]
+      }
+    },
+    "indices": [
+      "kibana_sample_data_logs"
+    ]
+}
+
+POST _ml/anomaly_detectors/weblogs-geo/_open <3>
+
+POST _ml/datafeeds/datafeed-weblogs-geo/_start <4>
+{
+  "end": "2021-07-15T22:00:00Z"
+}
+--------------------------------------------------
+<1> Create the {anomaly-job}.
+<2> Create the {dfeed}.
+<3> Open the job.
+<4> Start the {dfeed}. Since the sample data sets often contain timestamps that
+are later than the current date, it is a good idea to specify the appropriate
+end date for the {dfeed}.
+====
+
+[discrete]
+[[geographic-anomalies-results]]
+== Analyze the results
+
+After the {anomaly-jobs} have processed some data, you can view the results in
+{kib}.
+
+TIP: If you used APIs to create the jobs and {dfeeds}, you cannot see them
+in {kib} until you follow the prompts to synchronize the necessary saved objects.
+
+When you select a period that contains an anomaly in the swim lane results, you
+can see a map of the typical and actual coordinates. For example, the `jackson`
+user ID typically shops in Los Angeles so their purchase in New York is
+anomalous in the eCommerce sample data:
+
+[role="screenshot"]
+image::images/ecommerce-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous event in the eCommerce data in Anomaly Explorer]
+
+Likewise, there are time periods in the web logs sample data where there are
+both unusually high sums of data transferred and unusual geographical
+coordinates:
+
+[role="screenshot"]
+image::images/weblogs-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous event in the web logs data in Anomaly Explorer]
+
+You can use the top influencer values to further filter your results and
+identify possible contributing factors or patterns of behavior.
+
+When you try this type of {anomaly-job} with your own data, it might take
+some experimentation to find the best combination of buckets, detectors, and
+influencers to detect the type of behavior you're seeking.
+
+For more information about {anomaly-detect} concepts, see <<ml-concepts>>.
+For the full list of functions that you can use in {anomaly-jobs}, see
+<<ml-functions>>. For more {anomaly-detect} examples, see <<anomaly-examples>>.
+
+[discrete]
+[[geographic-anomalies-next]]
+== What's next
+
+* {kibana-ref}/maps.html[Learn more about **Maps**]
+* <<ml-configuring-alerts,Generate alerts for your {anomaly-jobs}>>

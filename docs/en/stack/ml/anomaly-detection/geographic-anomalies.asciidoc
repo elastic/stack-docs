@@ -116,7 +116,7 @@ POST _ml/anomaly_detectors/ecommerce-geo/_open <3>
 
 POST _ml/datafeeds/datafeed-ecommerce-geo/_start <4>
 {
-  "end": "2021-06-19T24:00:00Z"
+  "end": "2021-06-19T23:00:00Z"
 }
 --------------------------------------------------
 <1> Create the {anomaly-job}.
@@ -153,7 +153,7 @@ PUT _ml/anomaly_detectors/weblogs-geo <1>
         "function": "high_sum",
         "field_name": "bytes"
       }
-    ]
+    ],
     "influencers": [
       "geo.src",
       "extension.keyword",

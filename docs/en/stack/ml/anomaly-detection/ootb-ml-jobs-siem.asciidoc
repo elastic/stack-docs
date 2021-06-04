@@ -855,6 +855,140 @@ Required ECS fields:::
 // end::security-linux-jobs[]
 
 [discrete]
+[[security-network-jobs]]
+== Security: Network
+
+These configurations are only available if data exists that matches the 
+recognizer query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
+
+Detect anomalous network activity in your ECS-compatible network logs.
+
+// tag::security-network-jobs[]
+high_count_by_destination_country::
+Looks for an unusually large spike in network activity to one destination
+country in the network logs. This could be due to unusually large amounts of
+reconnaissance or enumeration traffic. Data exfiltration activity may also
+produce such a surge in traffic to a destination country which does not normally
+appear in network traffic or business work-flows. Malware instances and
+persistence mechanisms may communicate with command-and-control (C2)
+infrastructure in their country of origin, which may be an unusual destination
+country for the source network.
+  
+Job details:::
+
+* Analyzes network activity logs where `event.category` is `network`. 
+* Detects unusually high number of events by country (using the
+{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {filebeat}
+* {packetbeat}
+
+Required ECS fields:::
+
+* `destination.as.organization.name`
+* `destination.geo.country_name`
+* `destination.ip`
+* `event.category`
+* `source.ip`
+
+high_count_network_denies::
+Looks for an unusually large spike in network traffic that was denied by network
+access control lists (ACL) or firewall rules. Such a burst of denied traffic is
+usually either a misconfigured application or firewall, or suspicious or
+malicious activity. Unsuccessful attempts at network transit, in order to
+connect to command-and-control (C2), or engage in data exfiltration, may produce
+a burst of failed connections. This could also be due to unusually large amounts
+of reconnaissance or enumeration traffic. Denial-of-service attacks or traffic
+floods may also produce such a surge in traffic.
+
+Job details:::
+
+* Analyzes network activity logs where `event.category` is `network` and
+`event.outcome` is `deny`.
+* Detects unusually high numbers of events (using the
+{ml-docs}/ml-count-functions.html#ml-count[`high_count` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {filebeat}
+* {packetbeat}
+
+Required ECS fields:::
+
+* `destination.as.organization.name`
+* `destination.geo.country_name`
+* `destination.port`     
+* `event.category`
+* `event.outcome`
+* `source.ip`
+
+high_count_network_events::
+Looks for an unusually large spike in network traffic. Such a burst of traffic,
+if not caused by a surge in business activity, can be due to suspicious or
+malicious activity. Large-scale data exfiltration may produce a burst of network
+traffic; this could also be due to unusually large amounts of reconnaissance or
+enumeration traffic. Denial-of-service attacks or traffic floods may also
+produce such a surge in traffic.
+  
+Job details:::
+
+* Analyzes network activity logs where `event.category` is `network`.
+* Detects unusually high numbers of events (using the
+{ml-docs}/ml-count-functions.html#ml-count[`high_count` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {filebeat}
+* {packetbeat}
+
+Required ECS fields:::
+
+* `destination.as.organization.name`
+* `destination.geo.country_name`
+* `destination.port`     
+* `event.category`
+* `source.ip`
+
+rare_destination_country::
+Looks for an unusual destination country name in the network logs. This can be
+due to initial access, persistence, command-and-control, or exfiltration
+activity. For example, when a user clicks on a link in a phishing email or opens
+a malicious document, a request may be sent to download and run a payload from a
+server in a country which does not normally appear in network traffic or
+business work-flows. Malware instances and persistence mechanisms may
+communicate with command-and-control (C2) infrastructure in their country of
+origin, which may be an unusual destination country for the source network.
+
+Job details:::
+
+* Analyzes network activity logs where `event.category` is `network`. 
+* Detects activity that is rare by country name (using the
+{ml-docs}/ml-rare-functions.html[`rare` function]).
+* Works on ECS compatible events across multiple indices.
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+* {filebeat}
+* {packetbeat}
+
+Required ECS fields:::
+
+* `destination.geo.country_name`
+* `event.category`
+
+// end::security-network-jobs[]
+
+[discrete]
 [[security-packetbeat-jobs]]
 == Security: {packetbeat}
 

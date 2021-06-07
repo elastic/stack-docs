@@ -5,10 +5,10 @@
 <titleabbrev>Apache</titleabbrev>
 ++++
 // tag::apache-jobs[]
-These {anomaly-job} wizards appear in {kib} if you use either {filebeat} or the
-Apache integration in {fleet} to ship access logs from your 
-https://httpd.apache.org/[Apache] HTTP servers to {es}. The jobs assume that you use fields 
-and data types from the Elastic Common Schema (ECS).
+These {anomaly-job} wizards appear in {kib} if you use the Apache integration in
+{fleet} or you use {filebeat} to ship access logs from your
+https://httpd.apache.org/[Apache] HTTP servers to {es}. The jobs assume that you
+use fields and data types from the Elastic Common Schema (ECS).
 
 [[apache-access-logs]]
 == Apache access logs
@@ -94,39 +94,36 @@ recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apache_ecs/manifest.json#L8[manifest file].
 
 low_request_rate_ecs::
+Detects low request rates.
 
 Job details:::
 
-* For HTTP web access logs where `event.dataset` is `apache.access`.
-* Models the event rate of HTTP requests. 
-* Detects unusually low counts of HTTP requests compared to the previous event 
-  rate.
+* Analyzes request rates (using the <<ml-count,`low_count` function>>).
 
 Required {beats} or {agent} integrations:::
 
 * {filebeat}  
 
 source_ip_request_rate_ecs::
+Detects unusual source IPs.
 
 Job details:::
 
-* For HTTP web access logs where `event.dataset` is `apache.access`.
-* Models the event rate of HTTP requests by source IP.
-* Detects source IPs with unusually high request rates in the HTTP access log 
-  compared to the previous rate.
+* Analyzes request rates (using the <<ml-count,`high_count` function>>)
+relative to all the source IPs (`over_field_name` is `source.address`).
   
 Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
 source_ip_url_count_ecs::
+Detects unusal source IPs.
 
 Job details:::
 
-* For HTTP web access logs where `event.dataset` is `apache.access`.
-* Models the event rate of HTTP requests by source IP.
-* Detects source IPs with unusually high distinct count of URLs in the HTTP 
-access log.
+* Analyzes distinct counts of URLs (using the
+<<ml-distinct-count,`high_distinct_count` function>> on the `url.original`
+field) relative to all the source IPs (`over_field_name` is `source.address`).
 
 Required {beats} or {agent} integrations:::
 
@@ -134,25 +131,23 @@ Required {beats} or {agent} integrations:::
 
 status_code_rate_ecs::
 
+Detects unusual status code rates.
+
 Job details:::
 
-* For HTTP web access logs where `event.dataset` is `apache.access`.
-* Models the occurrences of HTTP response status codes.
-* Detects unusual status code rates in the HTTP access log compared to previous 
-  rates.
+* Analyzes request rates (using the <<ml-count,`count` function>>) split by
+status code (`partition_field_name` is `http.response.status_code`).
 
 Required {beats} or {agent} integrations:::
 
 * {filebeat}
 
 visitor_rate_ecs::
+Detects unusual visitor rates.
 
 Job details:::
 
-* For HTTP web access logs where `event.dataset` is `apache.access`.
-* Models visitor rates.
-* Detects unusual visitor rates in the HTTP access log compared to previous 
-  rates.
+* Analyzes request rates using the <<ml-nonzero-count,`non_zero_count` function>>.
   
 Required {beats} or {agent} integrations:::
 

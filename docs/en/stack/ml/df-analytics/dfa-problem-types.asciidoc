@@ -1,0 +1,704 @@
+[role="xpack"]
+[[dfa-problem-types]]
+= Problem types
+
+This page contains the various types of {dfanalytics} that you can use in the 
+{stack}.
+
+* <<dfa-outlier-detection>>
+* <<dfa-regression>>
+* <<dfa-classification>>
+
+
+[discrete]
+[[dfa-outlier-detection]]
+== {oldetection-cap}
+
+
+{oldetection-cap} is an analysis for identifying data points (outliers) whose 
+feature values are different from those of the normal data points in a 
+particular data set. Outliers may denote errors or unusual behavior.
+
+We use unsupervised {oldetection} which means there is no need to provide a 
+training data set to teach {oldetection} to recognize outliers. Unsupervised 
+{oldetection} uses various machine learning techniques to find which data points 
+are unusual compared to the majority of the data points.
+
+You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
+
+[discrete]
+[[dfa-outlier-algorithms]]
+=== {oldetection-cap} algorithms
+
+//tag::outlier-detection-algorithms[]
+In the {stack}, we use an ensemble of four different distance and density based 
+{oldetection} methods:
+
+* distance of K^th^ nearest neighbor
+* distance of K-nearest neighbors
+* local outlier factor (`lof`)
+* local distance-based outlier factor (`ldof`).
+//end::outlier-detection-algorithms[]
+
+By default, you don't need to select the methods or 
+provide any parameters, but you can override the default behavior if you like. 
+The basic assumption of the **distance based methods** is that normal data 
+points – in other words, points that are not outliers – have a lot of neighbors 
+nearby, because we expect that in a population the majority of the data points 
+have similar feature values, while the minority of the data points – the 
+outliers – have different feature values and will, therefore, be far away from 
+the normal points.
+
+//FIGURE ON DISTANCE BASED METHOD
+
+The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
+distance of the data point to its K^th^ nearest neighbor where K is a small 
+number and usually independent of the total number of data points. The higher 
+this distance the more the data point is an outlier.
+
+The distance of K-nearest neighbors method (`distance_knn`) calculates the 
+average distance of the data points to their nearest neighbors. Points with the 
+largest average distance will be the most outlying.
+
+While the results of the distance based methods are easy to interpret, their 
+drawback is that they don't take into account the density variations of a 
+data set. This is the point where **density based methods** come into the 
+picture, they are used for mitigating this problem. These methods take into 
+account not only the distance of the points to their K nearest neighbors but 
+also the distance of these neighbors to their neighbors.
+
+//[role="screenshot"]
+//image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
+
+Based on this approach, a metric is computed called local outlier factor 
+(`lof`) for each data point. The higher the local outlier factor, the more 
+outlying is the data point.
+
+The other density based method that {oldetection} uses is the local 
+distance-based outlier factor (`ldof`). Ldof is a ratio of two measures: the 
+first computes the average distance of the data point to its K nearest 
+neighbors; the second computes the average of the pairwise distances of the 
+neighbors themselves. Again, the higher the value the more the data point is an 
+outlier.
+
+As you can see, these four algorithms work differently, so they don't always 
+agree on which points are outliers. By default, we use all these methods during 
+{oldetection}, then normalize and combine their results and give every datapoint 
+in the index an {olscore}. The {olscore} ranges from 0 to 1, where the higher 
+number represents the chance that the data point is an outlier compared to the 
+other data points in the index.
+
+IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data 
+once. If new data comes into the index, you need to do the analysis again on the 
+altered data.
+
+[discrete]
+[[dfa-feature-influence]]
+=== Feature influence
+
+Besides the {olscore}, another value is calculated during {oldetection}: 
+the feature influence score. As we mentioned, there are multiple features of a 
+data point that are analyzed during {oldetection}. An influential feature is a 
+feature of a data point that is responsible for the point being an outlier. The 
+value of feature influence provides a relative ranking of features by their 
+contribution to a point being an outlier. Therefore, while {olscore} tells us 
+whether a data point is an outlier, feature influence shows which features make 
+the point an outlier. By doing this, this value provides context to help 
+understand more about the reasons for the data point being unusual and can drive 
+visualizations.
+
+//FIGURE ON FEATURE INFLUENCE
+
+[discrete]
+[[ml-oldetection-evaluate]]
+=== {oldetection-cap} evaluation
+
+This evaluation type is suitable for analyses which calculate a probability that 
+each data point in a data set is a member of a class or not. It offers the
+following metrics to evaluate the model performance:
+
+* confusion matrix
+* precision
+* recall
+* receiver operating characteristic (ROC) curve.
+
+[discrete]
+[[ml-dfanalytics-confusion-matrix]]
+==== Confusion matrix
+
+A confusion matrix provides four measures of how well the {dfanalytics} worked 
+on your data set:
+
+* True positives (TP): Class members that the analysis identified as class 
+members.
+* True negatives (TN): Not class members that the analysis identified as not 
+class members.
+* False positives (FP): Not class members that the analysis misidentified as 
+class members.
+* False negatives (FN): Class members that the analysis misidentified as not 
+class members.
+
+Although, the {evaluatedf-api} can compute the confusion matrix out of the 
+analysis results, these results are not binary values (class member/not 
+class member), but a number between 0 and 1 (which called the {olscore} in case 
+of {oldetection}). This value captures how likely it is for a data 
+point to be a member of a certain class. It means that it is up to the user who 
+is evaluating the results to decide what is the threshold or cutoff point at 
+which the data point will be considered as a member of the given class. For 
+example, in the case of {oldetection} the user can say that all the data points 
+with an {olscore} higher than 0.5 will be considered as outliers.
+
+To take this complexity into account, the {evaluatedf-api} returns the confusion 
+matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
+
+[discrete]
+[[ml-dfanalytics-precision-recall]]
+==== Precision and recall
+
+A confusion matrix is a useful measure, but it could be hard to compare the 
+results across the different algorithms. Precision and recall values
+summarize the algorithm performance as a single number that makes it easier to 
+compare the evaluation results.
+
+Precision shows how many of the data points that the algorithm identified as 
+class members were actually class members. It is the number of true positives 
+divided by the sum of the true positives and false positives (TP/(TP+FP)).
+
+Recall answers a slightly different question. This value shows how many of the 
+data points that are actual class members were identified correctly as class 
+members. It is the number of true positives divided by the sum of the true 
+positives and false negatives (TP/(TP+FN)).
+
+As was the case for the confusion matrix, you also need to define different 
+threshold levels for computing precision and recall.
+
+[discrete]
+[[ml-dfanalytics-roc]]
+==== Receiver operating characteristic curve
+
+The receiver operating characteristic (ROC) curve is a plot that represents the 
+performance of the binary classification process at different thresholds. It 
+compares the rate of true positives against the rate of false positives at the 
+different threshold levels to create the curve. From this plot, you can compute 
+the area under the curve (AUC) value, which is a number between 0 and 1. The 
+closer to 1, the better the algorithm performance.
+
+The {evaluatedf-api} can return the false positive rate (`fpr`) and the true 
+positive rate (`tpr`) at the different threshold levels, so you can visualize 
+the algorithm performance by using these values.
+
+
+[discrete]
+[[dfa-regression]]
+== {regression-cap}
+
+
+{reganalysis-cap} is a {ml} process for estimating the relationships among 
+different fields in your data, then making further predictions based on these 
+relationships.
+
+For example, suppose we are interested in finding the relationship between 
+apartment size and monthly rent in a city. Our imaginary data set consists of 
+three data points:
+
+|===
+| Size (m2) | Monthly rent 
+| 44        | 1600
+| 24        | 1055
+| 63        | 2300
+|===
+
+After the model determines the relationship between the apartment size and the
+rent, it can make predictions such as the monthly rent of a hundred square
+meter-size apartment.
+
+This is a simple example. Usually {regression} problems are multi-dimensional, 
+so the relationships that {reganalysis} tries to find are between multiple 
+fields. To extend our example, a more complex {reganalysis} could take into
+account additional factors such as the location of the apartment in the city, on
+which floor it is, and whether the apartment has a riverside view or not, and so
+on. All of these factors can be considered _features_; they are measurable
+properties or characteristics of the phenomenon we're studying.
+
+[discrete]
+[[dfa-regression-features]]
+=== {feature-vars-cap}
+
+When you perform {reganalysis}, you must identify a subset of fields that you 
+want to use to create a model for predicting other fields. We refer to these 
+fields as _feature variables_ and _dependent variables_, respectively.
+{feature-vars-cap} are the values that the {depvar} value depends on. If one or 
+more of the {feature-vars} changes, the {depvar} value also changes. There are 
+three different types of {feature-vars} that you can use with our {regression} 
+algorithm:
+
+* Numerical. In our example, the size of the apartment was a 
+  numerical {feature-var}.
+* Categorical. A variable that can have one value from a set of values. The 
+  value set has a fixed and limited number of possible items. In the example, 
+  the location of the apartment in the city (borough) is a categorical variable.
+* Boolean. The riverside view in the example is a boolean value because an 
+  apartment either has a riverside view or doesn't have one.
+Arrays are not supported.
+
+[discrete]
+[[dfa-regression-supervised]]
+=== Training the {regression} model
+
+{regression-cap} is a supervised {ml} method, which means that you need to 
+supply a labeled training data set that has some {feature-vars} and a {depvar}. 
+The {regression} algorithm identifies the relationships between the
+{feature-vars} and the {depvar}. Once you've trained the model on your training
+data set, you can reuse the knowledge that the model has learned to make
+inferences about new data.
+
+The relationships between the {feature-vars} and the {depvar} are described as a 
+mathematical function. {reganalysis-cap} tries to find the best prediction for 
+the {depvar} by combining the predictions from multiple base learners – 
+algorithms that generalize from the data set. The performance of an ensemble is 
+usually better than the performance of each individual base learner because the 
+individual learners will make different errors. These average out when their 
+predictions are combined.
+
+{regression-cap} works as a batch analysis. If new data comes into your index, 
+you must restart the {dfanalytics-job}.
+
+
+[discrete]
+[[dfa-regression-algorithm]]
+==== {regression-cap} algorithms
+
+//tag::regression-algorithms[]
+The ensemble learning technique that we use in the {stack} is a type of boosting 
+called extreme gradient boost (XGboost) which combines decision trees with 
+gradient boosting methodologies.
+//end::regression-algorithms[]
+
+[discrete]
+[[dfa-regression-lossfunction]]
+==== Loss functions for {regression} analyses
+
+A loss function measures how well a given {ml} model fits the specific data set. 
+It boils down all the different under- and overestimations of the model to a 
+single number, known as the prediction error. The bigger the difference between 
+the prediction and the ground truth, the higher the value of the loss function. 
+Loss functions are used automatically in the background during 
+<<hyperparameters,hyperparameter optimization>> and when training the decision 
+trees to compare the performance of various iterations of the model.
+
+In the {stack}, there are three different types of loss function:
+
+* https://en.wikipedia.org/wiki/Mean_squared_error[mean squared error (`mse`)]: 
+It is the default choice when no additional information about the data set is 
+available.
+* mean squared logarithmic error (`msle`; a variation of `mse`): It is for 
+cases where the target values are all positive with a long tail distribution 
+(for example, prices or population).
+* https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss (`huber`)]:
+Use it when you want to prevent the model trying to fit the outliers instead of 
+regular data.
+
+The various types of loss function calculate the prediction error differently. 
+The appropriate loss function for your use case depends on the target 
+distribution in your data set, the problem that you want to model, the number of 
+outliers in the data, and so on.
+
+You can specify the loss function to be used during {reganalysis} when you 
+create the {dfanalytics-job}. The default is mean squared error (`mse`). If you 
+choose `msle` or `huber`, you can also set up a parameter for the loss function. 
+With the parameter, you can further refine the behavior of the chosen functions.
+
+Consult 
+https://github.com/elastic/examples/tree/master/Machine%20Learning/Regression%20Loss%20Functions[the Jupyter notebook on regression loss functions] 
+to learn more.
+
+TIP: The default loss function parameter values work fine for most of the cases. 
+It is highly recommended to use the default values, unless you fully understand 
+the impact of the different loss function parameters.
+
+
+[discrete]
+[[dfa-regression-deploy]]
+==== Deploying the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference,{infer}>> feature enables you 
+to use your model in a preprocessor of an ingest pipeline or in a pipeline 
+aggregation of a search query to make predictions about your data.
+
+
+[discrete]
+[[dfa-regression-feature-importance]]
+=== {feat-imp-cap}
+
+{feat-imp-cap} provides further information about the results of an analysis and 
+helps to interpret the results in a more subtle way. If you want to learn more 
+about {feat-imp}, <<ml-feature-importance,click here>>.
+
+[discrete]
+[[dfa-regression-evaluation]]
+=== Measuring model performance
+
+You can measure how well the model has performed on your training data set by 
+using the `regression` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The mean squared 
+error (MSE) value that the evaluation provides you on the training data set is 
+the _training error_. Training the {regression} model means finding the 
+combination of model parameters that produces the lowest possible training 
+error.
+
+Another crucial measurement is how well your model performs on unseen 
+data points. To assess how well the trained model will perform on data it has 
+never seen before, you must set aside a proportion of the training data set for 
+testing. This split of the data set is the testing data set. Once the model has 
+been trained, you can let the model 
+predict the value of the data points it has never seen before and compare the 
+prediction to the actual value. This test provides an estimate of a quantity 
+known as the _model generalization error_.
+
+Two concepts describe how well the {regression} algorithm was able to learn the 
+relationship between the {feature-vars} and the {depvar}. _Underfitting_ is when 
+the model cannot capture the complexity of the data set. _Overfitting_ is when 
+the model is too specific to the training data set and is capturing details 
+which do not generalize to new data. A model that overfits the data has a 
+low MSE value on the training data set and a high MSE value on the testing 
+data set.
+
+[discrete]
+[[ml-dfanalytics-regression-evaluation]]
+=== {regression-cap} evaluation
+
+This evaluation type is suitable for evaluating {regression} models. The 
+{regression} evaluation type offers the following metrics to evaluate the model 
+performance:
+
+* Mean squared error (MSE)
+* R-squared (R^2^)
+* Pseudo-Huber loss
+* Mean squared logarithmic error (MSLE)
+
+[discrete]
+[[ml-dfanalytics-mse]]
+==== Mean squared error
+
+The API provides a MSE by computing the average squared sum of the difference 
+between the true value and the value that the {regression} model predicted. 
+(Avg (predicted value-actual value)^2^). You can use the MSE to measure how well 
+the {reganalysis} model is performing.
+
+[discrete]
+[[ml-dfanalytics-r-sqared]]
+==== R-squared
+
+Another evaluation metric for {reganalysis} is R-squared (R^2^). It represents 
+the goodness of fit and measures how much of the variation in the data the 
+predictions are able to explain. The value of R^2^ are less than or equal to 1, 
+where 1 indicates that the predictions and true values are equal. A value of 0 
+is obtained when all the predictions are set to the mean of the true values. A 
+value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
+(about 30%) closer to true values than their mean.
+
+[discrete]
+[[ml-dfanalytics-huber]]
+==== Pseudo-Huber loss
+
+https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss metric] 
+behaves as mean absolute error (MAE) for errors larger than a predefined value 
+(defaults to `1`) and as mean squared error (MSE) for errors smaller than the 
+predefined value. This loss function uses the `delta` parameter to define the 
+transition point between MAE and MSE. Consult the 
+<<dfa-regression-lossfunction>> page to learn more about loss functions.
+
+[discrete]
+[[ml-dfanalytics-msle]]
+==== Mean squared logarithmic error
+
+This evaluation metric is a variation of mean squared error. It can be used for 
+cases when the target values are positive and distributed with a long tail such 
+as data on prices or population. Consult the <<dfa-regression-lossfunction>> 
+page to learn more about loss functions.
+
+
+[discrete]
+[[dfa-regression-readings]]
+=== Further readings
+
+* https://github.com/elastic/examples/tree/master/Machine%20Learning/Feature%20Importance[Feature importance for {dfanalytics} (Jupyter notebook)]
+
+* https://github.com/elastic/examples/tree/master/Machine%20Learning/Regression%20Loss%20Functions[Regression loss functions (Jupyter notebook)]
+
+
+[discrete]
+[[dfa-classification]]
+== {classification-cap}
+
+
+{classification-cap} is a {ml} process that enables you to predict the class or
+category of a data point in your data set. Typical examples of {classification}
+problems are predicting loan risk, classifying music, or detecting the potential 
+for cancer in a DNA sequence. In the first case, for example, the data set might 
+contain the investment history, employment status, debit status, and other 
+financial details for loan applicants. Based on this data, you could use 
+{classanalysis} to create a model that predicts whether it is safe or risky to 
+lend money to applicants. In the second case, the data contains song details 
+that enable you to classify music into genres like hip-hop, country, or 
+classical, for example. {classification-cap} is for predicting discrete, 
+categorical values, whereas <<dfa-regression,{reganalysis}>> predicts 
+continuous, numerical values.
+
+When you create a {classification} job, you must specify which field contains 
+the classes that you want to predict. This field is known as the _{depvar}_. It
+must contain no more than 30 classes. By default, all other
+{ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included
+in the analysis and are known as _{feature-vars}_. The runtime and resources
+used by the job increase with the number of feature variables. Therefore, you
+can optionally include or exclude fields from the analysis. For more information
+about field selection, see the
+{ref}/explain-dfanalytics.html[explain data frame analytics API].
+
+
+[discrete]
+[[dfa-classification-supervised]]
+=== Training the {classification} model
+
+{classification-cap} – just like {regression} – is a supervised {ml} process.
+When you create the {dfanalytics-job}, you must provide a data set that contains
+the _ground truth_. That is to say, your data set must contain the {depvar} 
+and the {feature-vars} fields that are related to it. You can divide the data
+set into training and testing data by specifying a `training_percent`. By
+default when you use the
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API], 100% of the 
+<<dfa-classification-field-type-docs-limitations,eligible documents>> in the 
+data set are used for training. If you divide your data set, the job stratifies 
+the data to ensure that both the training and testing data sets contains classes 
+in proportions that are representative of the class proportions in the full data 
+set.
+
+When you are collecting a data set to train your model, ensure that it
+captures information for all of the classes. If some classes are poorly
+represented in the training data set (that is, you have very few data points per 
+class), the model might be unaware of them. In general, complex decision 
+boundaries between classes are harder to learn and require more data points per 
+class in the training data.
+
+////
+It means that you need to supply a labeled training data set that has a {depvar} 
+and some fields that are related to it. The {classification} algorithm learns 
+the relationships between these fields and the {depvar}. Once you’ve trained the 
+model on your training data set, you can reuse the knowledge that the model has 
+learned about the relationships between the data points to classify new data.
+
+The effects of imbalanced data are automatically mitigated before the 
+training. Nonetheless, it is a good idea to train your model with a data set 
+that is approximately balanced. That is to say, ideally your data set should 
+have a similar number of data points for each class.
+////
+
+
+[discrete]
+[[dfa-classification-algorithm]]
+==== {classification-cap} algorithms
+
+//tag::classification-algorithms[]
+{classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
+boosted tree regression model which combines multiple weak models into a 
+composite one. It uses decision trees to learn to predict the probability that a 
+data point belongs to a certain class. A sequence of decision trees are trained 
+and every decision tree learns from the mistakes of the previous one. Every tree 
+is an iteration of the last one, hence it improves the decision made by the 
+previous tree.
+//end::classification-algorithms[]
+
+[discrete]
+[[dfa-classification-deploy]]
+==== Deploying the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference,{infer}>> feature enables you 
+to use your model in a preprocessor of an ingest pipeline or in a pipeline 
+aggregation of a search query to make predictions about your data.
+
+
+[discrete]
+[[dfa-classification-performance]]
+=== {classification-cap} performance
+
+As a rule of thumb, a {classanalysis} with many classes takes more time to run 
+than a binary {classification} process when there are only two classes. The 
+relationship between the number of classes and the runtime is roughly linear.
+
+The runtime also scales approximately linearly with the number of involved 
+documents below 200,000 data points. Therefore, if you double the number of 
+documents, then the runtime of the analysis doubles respectively.
+
+To improve the performance of your {classanalysis}, consider using a smaller 
+`training_percent` value when you create the job. That is to say, use a smaller 
+percentage of your documents to train the model more quickly. It is a good 
+strategy to make progress iteratively: use a smaller training percentage first, 
+run the analysis, and evaluate the performance. Then, based on the results, 
+decide if it is necessary to increase the `training_percent` value. If possible, 
+prepare your input data such that it has less classes. You can also remove the 
+fields that are not relevant from the analysis by specifying `excludes` patterns 
+in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
+ 
+[discrete]
+[[dfa-classification-interpret]]
+=== Interpreting {classification} results
+
+The following sections help you understand and interpret the results of a 
+{classanalysis}. To see example results, refer to
+<<flightdata-classification-results>>.
+
+[discrete]
+[[dfa-classification-class-probability]]
+==== `class_probability`
+
+The `class_probability` is a value between 0 and 1, which indicates how likely
+it is that a given data point belongs to a certain class. The higher the number,
+the higher the probability that the data point belongs to the named class. This
+information is stored in the `top_classes` array for each document in your
+destination index.
+
+[discrete]
+[[dfa-classification-class-score]]
+==== `class_score`
+
+The `class_score` is a function of the `class_probability` and has a value that
+is greater than or equal to zero. It takes into consideration your objective (as
+defined in the `class_assignment_objective` job configuration option):
+_accuracy_ or _recall_.
+
+If your objective is to maximize accuracy, the scores are weighted to maximize
+the proportion of correct predictions in the training data set. For example, in
+the context of a binary <<ml-dfanalytics-confusion-matrix,confusion matrix>>
+with classes `false` and `true`, the predictions of interest are the cells where
+the actual and predicted labels are both `true` (also known as a true positive
+(TP)) or both `false` (also known as a true negative (TN)):
+
+[role="screenshot"]
+image::images/confusion-matrix-binary-accuracy.jpg[alt="A confusion matrix with the correct predictions highlighted",width="75%"]
+
+TIP: If there is an imbalanced distribution of classes in your training data 
+set, focusing on accuracy can decrease your model's sensitivity to incorrect
+predictions in the classes that are under-represented in your data.
+
+By default, {classanalysis} jobs accept a slight degradation of the overall
+accuracy in return for greater sensitivity to classes that are predicted
+incorrectly. That is to say, their objective is to maximize the minimum recall.
+For example, in the context of a multi-class confusion matrix, the predictions
+of interest are in each row:
+
+[role="screenshot"]
+image::images/confusion-matrix-multiclass-recall.jpg["A confusion matrix with a row highlighted"]
+
+For each class, the recall is calculated as the number of correct predictions
+(where the actual label matches the predicted label) divided by the sum of all
+the other predicted labels in that row. This value is represented as a
+percentage in each cell of the confusion matrix. The class scores are then
+weighted to favor predictions that result in the highest recall values across
+the training data. This objective typically performs better than accuracy when
+you have highly imbalanced data.
+
+To learn more about choosing the class assignment objective that fits your goal, 
+refer to this 
+https://github.com/elastic/examples/blob/master/Machine%20Learning/Class%20Assigment%20Objectives/classification-class-assignment-objective.ipynb[Jupyter notebook].
+
+[discrete]
+[[dfa-classification-feature-importance]]
+==== {feat-imp-cap}
+
+{feat-imp-cap} provides further information about the results of an analysis and 
+helps to interpret the results in a more subtle way. If you want to learn more 
+about {feat-imp}, <<ml-feature-importance,click here>>. 
+
+[discrete]
+[[dfa-classification-evaluation]]
+=== Measuring model performance
+
+You can measure how well the model has performed on your data set by using the 
+`classification` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The metric that the 
+evaluation provides you is a confusion matrix. The more classes you have, the 
+more complex the confusion matrix is. The matrix tells you how many data points 
+that belong to a given class were classified correctly and incorrectly.
+
+If you split your data set into training and testing data, you can determine how
+well your model performs on data it has never seen before and compare the
+prediction to the actual value.
+
+[discrete]
+[[ml-dfanalytics-classification]]
+=== {classification-cap} evaluation
+
+This evaluation type is suitable for evaluating {classification} models. The 
+{classification} evaluation offers the following metrics to evaluate the model 
+performance:
+
+* Multiclass confusion matrix
+* Area under the curve of receiver operating characteristic (AUC ROC) 
+
+[discrete]
+[[ml-dfanalytics-mccm]]
+==== Multiclass confusion matrix
+
+The multiclass confusion matrix provides a summary of the performance of the 
+{classanalysis}. It contains the number of occurrences where the analysis
+classified data points correctly with their actual class as well as the number
+of occurrences where it misclassified them.
+
+Let's see two examples of the confusion matrix. The first is a confusion matrix 
+of a binary problem:
+
+image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
+
+It is a two by two matrix because there are only two classes (`true` and
+`false`). The matrix shows the proportion of data points that is correctly
+identified as members of a each class and the proportion that is 
+misidentified.
+
+As the number of classes in your {classanalysis} increases, the confusion
+matrix also increases in complexity:
+
+image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
+
+
+The matrix contains the actual labels on the left side while the predicted 
+labels are on the top. The proportion of correct and incorrect predictions is 
+broken down for each class. This enables you to examine how the {classanalysis}
+confused the different classes while it made its predictions.
+
+[discrete]
+[[ml-dfanalytics-class-aucroc]]
+==== Area under the curve of receiver operating characteristic (AUC ROC)
+
+The receiver operating characteristic (ROC) curve is a plot that represents the 
+performance of the classification process at different predicted probability 
+thresholds. It compares the true positive rate for a specific class against the 
+rate of all the other classes combined ("one versus all" strategy) at the 
+different threshold levels to create the curve.
+
+Let's see an example. You have three classes: `A`, `B`, and `C`, you want to 
+calculate AUC ROC for `A`. In this case, the number of correctly classified 
+++A++s (true positives) are compared to the number of ++B++s and ++C++s that are 
+misclassified as ++A++s (false positives).
+
+From this plot, you can compute the area under the curve (AUC) value, which is a 
+number between 0 and 1. The higher the AUC, the better the model is at 
+predicting ++A++s as ++A++s, in this case.
+
+NOTE: To use this evaluation method, you must set `num_top_classes` to `-1`
+or a value greater than or equal to the total number of classes when you create
+the {dfanalytics-job}.
+
+////
+Another crucial measurement is how well your model performs on unseen data
+points. To assess how well the trained model will perform on data it has never
+seen before, you must set aside a proportion of the training data set for 
+testing. This split of the data set is the _testing data set_. Once the model has 
+been trained, you can let the model predict the value of the data points it has 
+never seen before and compare the prediction to the actual value by using the 
+evaluate {dfanalytics} API.
+////

@@ -3,6 +3,189 @@
 [[ecommerce-outliers]]
 = Finding outliers in your data with {oldetection}
 
+[discrete]
+[[dfa-outlier-detection]]
+== {oldetection-cap}
+
+
+{oldetection-cap} is an analysis for identifying data points (outliers) whose 
+feature values are different from those of the normal data points in a 
+particular data set. Outliers may denote errors or unusual behavior.
+
+We use unsupervised {oldetection} which means there is no need to provide a 
+training data set to teach {oldetection} to recognize outliers. Unsupervised 
+{oldetection} uses various machine learning techniques to find which data points 
+are unusual compared to the majority of the data points.
+
+You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
+
+[discrete]
+[[dfa-outlier-algorithms]]
+=== {oldetection-cap} algorithms
+
+//tag::outlier-detection-algorithms[]
+In the {stack}, we use an ensemble of four different distance and density based 
+{oldetection} methods:
+
+* distance of K^th^ nearest neighbor
+* distance of K-nearest neighbors
+* local outlier factor (`lof`)
+* local distance-based outlier factor (`ldof`).
+//end::outlier-detection-algorithms[]
+
+By default, you don't need to select the methods or 
+provide any parameters, but you can override the default behavior if you like. 
+The basic assumption of the **distance based methods** is that normal data 
+points – in other words, points that are not outliers – have a lot of neighbors 
+nearby, because we expect that in a population the majority of the data points 
+have similar feature values, while the minority of the data points – the 
+outliers – have different feature values and will, therefore, be far away from 
+the normal points.
+
+//FIGURE ON DISTANCE BASED METHOD
+
+The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
+distance of the data point to its K^th^ nearest neighbor where K is a small 
+number and usually independent of the total number of data points. The higher 
+this distance the more the data point is an outlier.
+
+The distance of K-nearest neighbors method (`distance_knn`) calculates the 
+average distance of the data points to their nearest neighbors. Points with the 
+largest average distance will be the most outlying.
+
+While the results of the distance based methods are easy to interpret, their 
+drawback is that they don't take into account the density variations of a 
+data set. This is the point where **density based methods** come into the 
+picture, they are used for mitigating this problem. These methods take into 
+account not only the distance of the points to their K nearest neighbors but 
+also the distance of these neighbors to their neighbors.
+
+//[role="screenshot"]
+//image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
+
+Based on this approach, a metric is computed called local outlier factor 
+(`lof`) for each data point. The higher the local outlier factor, the more 
+outlying is the data point.
+
+The other density based method that {oldetection} uses is the local 
+distance-based outlier factor (`ldof`). Ldof is a ratio of two measures: the 
+first computes the average distance of the data point to its K nearest 
+neighbors; the second computes the average of the pairwise distances of the 
+neighbors themselves. Again, the higher the value the more the data point is an 
+outlier.
+
+As you can see, these four algorithms work differently, so they don't always 
+agree on which points are outliers. By default, we use all these methods during 
+{oldetection}, then normalize and combine their results and give every datapoint 
+in the index an {olscore}. The {olscore} ranges from 0 to 1, where the higher 
+number represents the chance that the data point is an outlier compared to the 
+other data points in the index.
+
+IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data 
+once. If new data comes into the index, you need to do the analysis again on the 
+altered data.
+
+[discrete]
+[[dfa-feature-influence]]
+=== Feature influence
+
+Besides the {olscore}, another value is calculated during {oldetection}: 
+the feature influence score. As we mentioned, there are multiple features of a 
+data point that are analyzed during {oldetection}. An influential feature is a 
+feature of a data point that is responsible for the point being an outlier. The 
+value of feature influence provides a relative ranking of features by their 
+contribution to a point being an outlier. Therefore, while {olscore} tells us 
+whether a data point is an outlier, feature influence shows which features make 
+the point an outlier. By doing this, this value provides context to help 
+understand more about the reasons for the data point being unusual and can drive 
+visualizations.
+
+//FIGURE ON FEATURE INFLUENCE
+
+[discrete]
+[[ml-oldetection-evaluate]]
+=== {oldetection-cap} evaluation
+
+This evaluation type is suitable for analyses which calculate a probability that 
+each data point in a data set is a member of a class or not. It offers the
+following metrics to evaluate the model performance:
+
+* confusion matrix
+* precision
+* recall
+* receiver operating characteristic (ROC) curve.
+
+[discrete]
+[[ml-dfanalytics-confusion-matrix]]
+==== Confusion matrix
+
+A confusion matrix provides four measures of how well the {dfanalytics} worked 
+on your data set:
+
+* True positives (TP): Class members that the analysis identified as class 
+members.
+* True negatives (TN): Not class members that the analysis identified as not 
+class members.
+* False positives (FP): Not class members that the analysis misidentified as 
+class members.
+* False negatives (FN): Class members that the analysis misidentified as not 
+class members.
+
+Although, the {evaluatedf-api} can compute the confusion matrix out of the 
+analysis results, these results are not binary values (class member/not 
+class member), but a number between 0 and 1 (which called the {olscore} in case 
+of {oldetection}). This value captures how likely it is for a data 
+point to be a member of a certain class. It means that it is up to the user who 
+is evaluating the results to decide what is the threshold or cutoff point at 
+which the data point will be considered as a member of the given class. For 
+example, in the case of {oldetection} the user can say that all the data points 
+with an {olscore} higher than 0.5 will be considered as outliers.
+
+To take this complexity into account, the {evaluatedf-api} returns the confusion 
+matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
+
+[discrete]
+[[ml-dfanalytics-precision-recall]]
+==== Precision and recall
+
+A confusion matrix is a useful measure, but it could be hard to compare the 
+results across the different algorithms. Precision and recall values
+summarize the algorithm performance as a single number that makes it easier to 
+compare the evaluation results.
+
+Precision shows how many of the data points that the algorithm identified as 
+class members were actually class members. It is the number of true positives 
+divided by the sum of the true positives and false positives (TP/(TP+FP)).
+
+Recall answers a slightly different question. This value shows how many of the 
+data points that are actual class members were identified correctly as class 
+members. It is the number of true positives divided by the sum of the true 
+positives and false negatives (TP/(TP+FN)).
+
+As was the case for the confusion matrix, you also need to define different 
+threshold levels for computing precision and recall.
+
+[discrete]
+[[ml-dfanalytics-roc]]
+==== Receiver operating characteristic curve
+
+The receiver operating characteristic (ROC) curve is a plot that represents the 
+performance of the binary classification process at different thresholds. It 
+compares the rate of true positives against the rate of false positives at the 
+different threshold levels to create the curve. From this plot, you can compute 
+the area under the curve (AUC) value, which is a number between 0 and 1. The 
+closer to 1, the better the algorithm performance.
+
+The {evaluatedf-api} can return the false positive rate (`fpr`) and the true 
+positive rate (`tpr`) at the different threshold levels, so you can visualize 
+the algorithm performance by using these values.
+
+
+[discrete]
+[[detecting-outliers]]
+== Detecting outliers
+
 
 The goal of <<dfa-outlier-detection,{oldetection}>> is to find the most unusual
 documents in an index. Let's try to detect unusual customer behavior in the 

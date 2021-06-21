@@ -159,18 +159,29 @@ start the {dfeed} for the change to be applied.
 == 7. Set the model memory limit
 
 The `model_memory_limit` job configuration option sets the approximate maximum 
-amount of memory resources required for analytical processing. If this variable 
-is set too low for the job and the limit is approached, data pruning becomes 
-more aggressive. Upon exceeding this limit, new entities are not modeled.
+amount of memory resources required for analytical processing. When you create
+an {anomaly-job} in {kib}, it provides an estimate for this limit. The estimate 
+is based on the analysis configuration details for the job and cardinality 
+estimates for the fields it references. You can also obtain this information
+from the
+{ref}/ml-estimate-model-memory.html[estimate {anomaly-jobs} model memory API].  
 
-Use model memory estimation to have a better picture of the memory needs of the 
-model. Model memory estimation happens automatically when you create the job in 
-{kib} or you can call the 
-{ref}/ml-estimate-model-memory.html[Estimate {anomaly-jobs} model memory API] 
-manually. The estimation is based on the analysis configuration details for the 
-job and cardinality estimates for the fields it references. You can update the 
-memory settings of an existing job, but the job must be closed.
+If you change the resources available on your {ml} nodes or the characteristics 
+of your data, the memory requirements might also change. You can increase the 
+model memory limit for an existing job while it is closed. To decrease the limit, 
+you must clone and re-run the job.
 
+As a job approaches its model memory limit, the memory status is `soft_limit`
+and older models are more aggressively pruned to free up space. If you have
+categorization jobs, no further examples are stored. When a job exceeds its 
+limit, the memory status is `hard_limit` and the job no longer models new 
+entities. It is therefore important to have appropriate memory model limits for 
+each job. If you reach the hard limit and are concerned about the missing data,
+ensure that you have adequate resources then clone and re-run the job with a 
+larger model memory limit. For more information about retrieving the memory 
+status, see the
+{ref}ml-get-job-stats.html[get {anomaly-jobs} stats API] or the
+{ref}ml-get-snapshot.html[get model snapshots API].
 
 [discrete]
 [[pre-aggregate-data]]

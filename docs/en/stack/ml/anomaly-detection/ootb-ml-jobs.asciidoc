@@ -32,11 +32,8 @@ the descriptions of the individual configurations.
 [[ootb-ml-model-memory]]
 == Model memory considerations
 
-By default, these jobs have
-{ref}/ml-put-job.html#put-analysislimits[model_memory_limit] values that are
-deemed appropriate for typical user environments. If the characteristics of your
-data cause these jobs to reach `soft_limit` or
-`hard_limit` {ref}/ml-get-job-stats.html#modelsizestats[memory_status] values,
-you can clone the job and increase the model memory limit. Before you clone the
-job, you might also need to update the
-{ref}/ml-settings.html[xpack.ml.max_model_memory_limit] setting.
+By default, these jobs have `model_memory_limit` values that are deemed 
+appropriate for typical user environments and data characteristics. If your
+environment or your data is atypical and your jobs reach a memory status value
+of `soft_limit` or `hard_limit`, you might need to update the model memory
+limits. For more information, see <<set-model-memory-limit>>.

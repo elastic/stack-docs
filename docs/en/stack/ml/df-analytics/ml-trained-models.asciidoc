@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-trained-models]]
-= Trained models
+= Handling trained models
 
 
 When you use a {dfanalytics-job} to perform {classification} or {reganalysis},
@@ -8,8 +8,8 @@ it creates a {ml} model that is trained and tested against a labelled data set.
 When you are satisfied with your trained model, you can use it to make
 predictions against new data. For example, you can use it in the processor of
 an ingest pipeline or in a pipeline aggregation within a search query. For more
-information about this process, see <<ml-supervised-workflow>> and
-<<ml-inference>>.
+information about this process, see <<ml-supervised-workflow>>, 
+<<ml-inference-classification>> and <<ml-inference-regression>>.
 
 You can also supply trained models that are not created by {dfanalytics-job} but
 adhere to the appropriate
@@ -93,9 +93,9 @@ A few observations:
 the model over HTTP into a file. If you use the {kib} Console, the
 browser might be unresponsive due to the size of exported models.
 
-* Note the query parameters that are used during export. These parameters are necessary to
-export the model in a way that it can later be imported again and used for
-inference.
+* Note the query parameters that are used during export. These parameters are 
+necessary to export the model in a way that it can later be imported again and 
+used for inference.
 
 * You must unnest the JSON object by one level to extract just the model
 definition. You must also remove the existing model ID in order to not have
@@ -105,9 +105,9 @@ alternatively it can be done to the resulting JSON file after downloading using
 --
 
 3. Import the saved model using `curl` to upload the JSON file to the
-{ref}/put-trained-models.html[created trained model API]. When you specify the URL,
-you can also set the model ID to something new using the last path part of the
-URL.
+{ref}/put-trained-models.html[created trained model API]. When you specify the 
+URL, you can also set the model ID to something new using the last path part of 
+the URL.
 +
 --
 [source, bash]

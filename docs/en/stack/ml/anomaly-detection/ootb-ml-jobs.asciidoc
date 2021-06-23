@@ -27,3 +27,14 @@ be created via the related solution UI in {kib}.
 NOTE: The configurations are only available if data exists that matches the 
 queries specified in the manifest files. These recognizer queries are linked in 
 the descriptions of the individual configurations.
+
+[discrete]
+[[ootb-ml-model-memory]]
+== Model memory considerations
+
+By default, these jobs have `model_memory_limit` values that are deemed 
+appropriate for typical user environments and data characteristics. If your
+environment or your data is atypical and your jobs reach a memory status value
+of `soft_limit` or `hard_limit`, you might need to update the model memory
+limits. For more information, see
+<<set-model-memory-limit,Working with {anomaly-detect} at scale>>.

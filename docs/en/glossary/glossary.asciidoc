@@ -36,6 +36,7 @@ See {fleet-guide}/agent-policy.html[{agent} policies].
 Secondary name for a group of <<glossary-data-stream,data streams>> or
 <<glossary-index,indices>>. Most {es} APIs accept an alias in place of a data
 stream or index. See {ref}/alias.html[Aliases].
+//Source: Elasticsearch
 
 [[glossary-allocator]] allocator::
 Manages hosts that contain {es} and {kib} nodes. Controls the lifecycle of these
@@ -47,6 +48,7 @@ installation.
 [[glossary-analysis]] analysis::
 Process of converting unstructured <<glossary-text,text>> into a format
 optimized for search. See {ref}/analysis.html[Text analysis].
+//Source: Elasticsearch
 
 [[glossary-annotation]] annotation::
 +
@@ -66,6 +68,7 @@ Unique identifier for authentication in {es}. When
 {ref}/encrypting-communications.html[transport layer security (TLS)] is enabled,
 all requests must be authenticated using an API key or a username and password.
 See the {ref}/security-api-create-api-key.html[Create API key API].
+//Source: Elasticsearch
 
 [[glossary-apm-agent]] APM agent::
 An open-source library, written in the same language as your service,
@@ -89,6 +92,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=app-def]
 <<glossary-index,indices>> as <<glossary-follower-index,follower indices>> for
 <<glossary-ccr,{ccr}>>. See {ref}/ccr-auto-follow.html[Manage auto-follow
 patterns].
+//Source: Elasticsearch
 
 [[glossary-zone]] availability zone::
 Contains resources available to a {ece} installation that are isolated from
@@ -170,6 +174,7 @@ Provides web-based access to manage your {ece} installation, supported by the
 [[glossary-cluster]] cluster::
 . A group of one or more connected {es} <<glossary-node,nodes>>. See
 {ref}/scalability.html[Clusters, nodes, and shards].
+//Source: Elasticsearch
 . {blank}
 +
 --
@@ -189,17 +194,20 @@ Third possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In the
 cold phase, data is no longer updated and seldom <<glossary-query,queried>>. The
 data still needs to be searchable, but it’s okay if those queries are slower.
 See {ref}/ilm-index-lifecycle.html[Index lifecycle].
+//Source: Elasticsearch
 
 [[glossary-cold-tier]] cold tier::
 <<glossary-data-tier,Data tier>> that contains <<glossary-node,nodes>> that hold
 time series data that is accessed occasionally and not normally updated. See
 {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
 
 [[glossary-component-template]] component template::
 Building block for creating <<glossary-index-template,index templates>>. A
 component template can specify <<glossary-mapping,mappings>>,
 {ref}/index-modules.html[index settings], and <<glossary-alias,aliases>>. See
 {ref}/index-templates.html[index templates].
+//Source: Elasticsearch
 
 [[glossary-condition]] condition::
 +
@@ -246,6 +254,7 @@ and to simplify operational effort in {ece}.
 <<glossary-data-tier,Data tier>> that contains <<glossary-node,nodes>> that
 handle the <<glossary-index,indexing>> and <<glossary-query,query>> load for
 content, such as a product catalog. See {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
 
 [[glossary-coordinator]] coordinator::
 Consists of a logical grouping of some {ece} services and acts as a distributed
@@ -256,12 +265,14 @@ coordination system and resource scheduler.
 Replicates <<glossary-data-stream,data streams>> and <<glossary-index,indices>>
 from <<glossary-remote-cluster,remote clusters>> in a
 <<glossary-local-cluster,local cluster>>. See {ref}/xpack-ccr.html[{ccr-cap}].
+//Source: Elasticsearch
 
 [[glossary-ccs]] {ccs} (CCS)::
 Searches <<glossary-data-stream,data streams>> and <<glossary-index,indices>> on
 <<glossary-remote-cluster,remote clusters>> from a
 <<glossary-local-cluster,local cluster>>. See
 {ref}/modules-cross-cluster-search.html[Search across clusters].
+//Source: Elasticsearch
 
 [[glossary-custom-rules]] custom rules::
 A set of conditions and actions that change the behavior of {anomaly-jobs}. You
@@ -309,6 +320,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=data-source-def]
 Named resource used to manage time series data. A data stream stores data across
 multiple backing <<glossary-index,indices>>. See {ref}/data-streams.html[Data
 streams].
+//Source: Elasticsearch
 
 [[glossary-data-tier]] data tier::
 Collection of <<glossary-node,nodes>> with the same {ref}/modules-node.html[data
@@ -321,6 +333,7 @@ role] that typically share the same hardware profile. Data tiers include the
 Last possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In the
 delete phase, an <<glossary-index,index>> is no longer needed and can safely be
 deleted. See {ref}/ilm-index-lifecycle.html[Index lifecycle].
+//Source: Elasticsearch
 
 [[glossary-ml-detector]] detector::
 As part of the configuration information that is associated with {anomaly-jobs},
@@ -354,6 +367,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=drilldown-def]
 [[glossary-document]] document::
 JSON object containing data stored in {es}. See
 {ref}/documents-indices.html[Documents and indices].
+//Source: Elasticsearch
 
 [discrete]
 [[e-glos]]
@@ -365,7 +379,7 @@ JSON object containing data stored in {es}. See
 include::{kib-repo-dir}/glossary.asciidoc[tag=edge-def]
 --
 
-[[glossary-elastic-agent]] Elastic Agent::
+[[glossary-elastic-agent]] {agent}::
 A single, unified agent that you can deploy to hosts or containers to collect data and protect endpoints.
 See {fleet-guide}/fleet-overview.html[{agent} overview].
 //Source: Observability
@@ -403,6 +417,7 @@ passed through the {ls} <<glossary-pipeline,pipeline>>.
 <<glossary-query,Query>> language for event-based time series data, such as
 logs, metrics, and traces. EQL supports matching for event sequences. See
 {ref}/eql.html[EQL].
+//Source: Elasticsearch
 
 [discrete]
 [[f-glos]]
@@ -432,6 +447,7 @@ and
 [[glossary-field]] field::
 . Key-value pair in a <<glossary-document,document>>. See
 {ref}/mapping.html[Mapping].
+//Source: Elasticsearch
 . {blank}
 +
 --
@@ -455,6 +471,7 @@ field: `[top-level field][nested field]`.
 [[glossary-filter]] filter::
 <<glossary-query,Query>> that does not score matching documents. See
 {ref}/query-filter-context.html[filter context].
+//Source: Elasticsearch
 
 [[glossary-filter-plugin]] filter plugin::
 A {ls} <<glossary-plugin,plugin>> that performs intermediary processing on
@@ -478,16 +495,19 @@ It serves as a control plane for updating agent policies, collecting status info
 [[glossary-flush]] flush::
 Writes data from the {ref}/index-modules-translog.html[transaction log] to disk
 for permanent storage. See the {ref}/indices-flush.html[flush API].
+//Source: Elasticsearch
 
 [[glossary-follower-index]] follower index::
 Target <<glossary-index,index>> for <<glossary-ccr,{ccr}>>. A follower index
 exists in a <<glossary-local-cluster,local cluster>> and replicates a
 <<glossary-leader-index,leader index>>. See {ref}/xpack-ccr.html[{ccr-cap}].
+//Source: Elasticsearch
 
 [[glossary-force-merge]] force merge::
 Manually triggers a <<glossary-merge,merge>> to reduce the number of
 <<glossary-segment,segments>> in an index's <<glossary-shard,shards>>. See the
 {ref}/indices-forcemerge.html[force merge API].
+//Source: Elasticsearch
 
 [[glossary-frozen-phase]] frozen phase::
 Fourth possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In
@@ -495,11 +515,13 @@ the frozen phase, an <<glossary-index,index>> is no longer updated and
 <<glossary-query,queried>> rarely. The information still needs to be searchable,
 but it’s okay if those queries are extremely slow. See
 {ref}/ilm-index-lifecycle.html[Index lifecycle].
+//Source: Elasticsearch
 
 [[glossary-frozen-tier]] frozen tier::
 <<glossary-data-tier,Data tier>> that contains <<glossary-node,nodes>> that
 hold time series data that is accessed rarely and not normally updated. See
 {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
 
 [discrete]
 [[g-glos]]
@@ -556,11 +578,13 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=heat-map-def]
 <<glossary-data-stream,Data stream>> or <<glossary-index,index>> excluded from
 most <<glossary-index-pattern,index patterns>> by default. See
 {ref}/multi-index.html#hidden[Hidden data streams and indices].
+//Source: Elasticsearch
 
 [[glossary-hot-phase]] hot phase::
 First possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In
 the hot phase, an <<glossary-index,index>> is actively updated and queried. See
 {ref}/ilm-index-lifecycle.html[Index lifecycle].
+//Source: Elasticsearch
 
 [[glossary-hot-thread]] hot thread::
 A Java thread that has high CPU usage and executes for a longer than normal
@@ -572,6 +596,7 @@ period of time.
 handle the <<glossary-index,indexing>> load for time series data, such as logs or
 metrics. This tier holds your most recent, most frequently accessed data. See
 {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
 
 [discrete]
 [[i-glos]]
@@ -581,11 +606,14 @@ metrics. This tier holds your most recent, most frequently accessed data. See
 Identifier for a <<glossary-document,document>>. Document IDs must be unique
 within an <<glossary-index,index>>. See the {ref}/mapping-id-field.html[`_id`
 field].
+//Source: Elasticsearch
 
 [[glossary-index]] index::
 . Collection of JSON <<glossary-document,documents>>. See
 {ref}/documents-indices.html[Documents and indices].
+//Source: Elasticsearch
 . To add one or more JSON documents to {es}. This process is called indexing.
+//Source: Elasticsearch
 
 [[glossary-index-lifecycle]] index lifecycle::
 Five phases an <<glossary-index,index>> can transition through:
@@ -593,16 +621,19 @@ Five phases an <<glossary-index,index>> can transition through:
 <<glossary-cold-phase,cold>>, <<glossary-frozen-phase,frozen>>,
 and <<glossary-delete-phase,delete>>. See {ref}/ilm-policy-definition.html[Index
 lifecycle].
+//Source: Elasticsearch
 
 [[glossary-index-lifecycle-policy]] index lifecycle policy::
 Specifies how an <<glossary-index,index>> moves between phases in the
 <<glossary-index-lifecycle,index lifecycle>> and what actions to perform during
 each phase. See {ref}/ilm-policy-definition.html[Index lifecycle].
+//Source: Elasticsearch
 
 [[glossary-index-pattern]] index pattern::
 String containing a wildcard (`*`) pattern that can match multiple
 <<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
 <<glossary-alias,aliases>>. See {ref}/multi-index.html[Multi-target syntax].
+//Source: Elasticsearch
 
 [[glossary-index-template]] index template::
 Automatically configures the <<glossary-mapping,mappings>>,
@@ -611,6 +642,7 @@ of new <<glossary-index,indices>> that match its <<glossary-index-pattern,index
 pattern>>. You can also use index templates to create
 <<glossary-data-stream,data streams>>. See {ref}/index-templates.html[Index
 templates].
+//Source: Elasticsearch
 
 [[glossary-indexer]] indexer::
 A {ls} instance that is tasked with interfacing with an {es} cluster in
@@ -705,6 +737,7 @@ Source <<glossary-index,index>> for <<glossary-ccr,{ccr}>>. A leader index
 exists on a <<glossary-remote-cluster,remote cluster>> and is replicated to
 <<glossary-follower-index,follower indices>>. See
 {ref}/xpack-ccr.html[{ccr-cap}].
+//Source: Elasticsearch
 
 [[glossary-lens]] Lens::
 +
@@ -716,6 +749,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=lens-def]
 <<glossary-cluster,Cluster>> that pulls data from a
 <<glossary-remote-cluster,remote cluster>> in <<glossary-ccs,{ccs}>> or
 <<glossary-ccr,{ccr}>>. See {ref}/modules-remote-clusters.html[Remote clusters].
+//Source: Elasticsearch
 
 [[glossary-lucene]] Lucene query syntax::
 +
@@ -743,6 +777,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=map-def]
 Defines how a <<glossary-document,document>>, its <<glossary-field,fields>>, and
 its metadata are stored in {es}. Similar to a schema definition. See
 {ref}/mapping.html[Mapping].
+//Source: Elasticsearch
 
 [[glossary-master-node]] master node::
 Handles write requests for the cluster and publishes changes to other nodes in
@@ -755,6 +790,7 @@ Also see <<glossary-node,node>>.
 Process of combining a <<glossary-shard,shard>>'s smaller Lucene
 <<glossary-segment,segments>> into a larger one. {es} manages merges
 automatically.
+//Source: Elasticsearch
 
 [[glossary-message-broker]] message broker::
 Also referred to as a _message buffer_ or _message queue_, a message broker is
@@ -789,6 +825,7 @@ applications and services.
 [[glossary-multi-field]] multi-field::
 A <<glossary-field,field>> that's <<glossary-mapping,mapped>> in multiple ways.
 See the {ref}/multi-fields.html[`fields` mapping parameter].
+//Source: Elasticsearch
 
 [discrete]
 [[n-glos]]
@@ -802,6 +839,7 @@ a team, or a strategic business unit.
 [[glossary-node]] node::
 A single {es} server. One or more nodes can form a <<glossary-cluster,cluster>>.
 See {ref}/scalability.html[Clusters, nodes, and shards].
+//Source: Elasticsearch
 
 [discrete]
 [[o-glos]]
@@ -878,6 +916,7 @@ Lucene instance containing some or all data for an <<glossary-index,index>>.
 When you index a <<glossary-document,document>>, {es} adds the document to
 primary shards before <<glossary-replica-shard,replica shards>>. See
 {ref}/scalability.html[Clusters, nodes, and shards].
+//Source: Elasticsearch
 
 [[glossary-proxy]] proxy::
 A highly available, TLS-enabled proxy layer that routes user requests, mapping
@@ -893,6 +932,7 @@ nodes handling the user requests.
 Request for information about your data. You can think of a query as a
 question, written in a way {es} understands. See
 {ref}/search-your-data.html[Search your data].
+//Source: Elasticsearch
 
 [[glossary-query-profiler]] Query Profiler::
 +
@@ -912,11 +952,13 @@ Performance monitoring, metrics, and error tracking of web applications.
 Process of syncing a <<glossary-replica-shard,replica shard>> from a
 <<glossary-primary-shard,primary shard>>. Upon completion, the replica shard is
 available for searches. See the {ref}/indices-recovery.html[index recovery API].
+//Source: Elasticsearch
 
 [[glossary-reindex]] reindex::
 Copies documents from a source to a destination. The source and destination can
 be a <<glossary-data-stream,data stream>>, <<glossary-index,index>>, or
 <<glossary-alias,alias>>. See the {ref}/docs-reindex.html[Reindex API].
+//Source: Elasticsearch
 
 [[glossary-remote-cluster]] remote cluster::
 A separate <<glossary-cluster,cluster>>, often in a different data center or
@@ -924,12 +966,14 @@ locale, that contains <<glossary-index,indices>> that can be replicated or
 searched by the <<glossary-local-cluster,local cluster>>. The connection to a
 remote cluster is unidirectional. See {ref}/modules-remote-clusters.html[Remote
 clusters].
+//Source: Elasticsearch
 
 [[glossary-replica-shard]] replica shard::
 Copy of a <<glossary-primary-shard,primary shard>>. Replica shards can improve
 search performance and resiliency by distributing data across multiple
 <<glossary-node,nodes>>. See {ref}/scalability.html[Clusters, nodes, and
 shards].
+//Source: Elasticsearch
 
 [[glossary-roles-token]] roles token::
 Enables a host to join an existing {ece} installation and grants permission to
@@ -942,23 +986,27 @@ by making sure that only authorized hosts become part of the installation.
 Creates a new write index when the current one reaches a certain size, number of
 docs, or age. A rollover can target a <<glossary-data-stream,data stream>> or an
 <<glossary-alias,alias>> with a write index.
+//Source: Elasticsearch
 
 [[glossary-rollup]] rollup::
 Summarizes high-granularity data into a more compressed format to maintain access
 to historical data in a cost-effective way. See
 {ref}/xpack-rollup.html[Roll up your data].
+//Source: Elasticsearch
 
 [[glossary-rollup-index]] rollup index::
 Special type of <<glossary-index,index>> for storing historical data at reduced
 granularity. Documents are summarized and indexed into a rollup index by a
 <<glossary-rollup-job,rollup job>>. See {ref}/xpack-rollup.html[Rolling up
 historical data].
+//Source: Elasticsearch
 
 [[glossary-rollup-job]] {rollup-job}::
 Background task that runs continuously to summarize documents in an
 <<glossary-index,index>> and index the summaries into a separate rollup index.
 The job configuration controls what data is rolled up and how often. See
 {ref}/xpack-rollup.html[Rolling up historical data].
+//Source: Elasticsearch
 
 [[glossary-routing]] routing::
 Process of sending and retrieving data from a specific
@@ -966,6 +1014,7 @@ Process of sending and retrieving data from a specific
 choose this shard. You can provide a routing value in
 <<glossary-index,indexing>> and search requests to take advantage of caching.
 See the {ref}/mapping-routing-field.html[`_routing` field].
+//Source: Elasticsearch
 
 [[glossary-rule]] rule::
 +
@@ -989,6 +1038,7 @@ able to run, and creates or recreates the containers if necessary.
 <<glossary-field,Field>> that is evaluated at query time. You access runtime
 fields from the search API like any other field, and {es} sees runtime fields no
 differently. See {ref}/runtime.html[Runtime fields].
+//Source: Elasticsearch
 
 [discrete]
 [[s-glos]]
@@ -1023,6 +1073,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=search-session-def]
 <<glossary-searchable-snapshot-index,searchable snapshot index>>. You can search
 this index like a regular index. See {ref}/searchable-snapshots.html[searchable
 snapshots].
+//Source: Elasticsearch
 
 [[glossary-searchable-snapshot-index]] searchable snapshot index::
 <<glossary-index,Index>> whose data is stored in a
@@ -1030,10 +1081,12 @@ snapshots].
 <<glossary-replica-shard,replica shards>> for resilience, since their data is
 reliably stored outside the cluster. See
 {ref}/searchable-snapshots.html[searchable snapshots].
+//Source: Elasticsearch
 
 [[glossary-segment]] segment::
 Data file in a <<glossary-shard,shard>>'s Lucene instance. {es} manages Lucene
 segments automatically.
+//Source: Elasticsearch
 
 [[glossary-services-forwarder]] services forwarder::
 Routes data internally in an {ece} installation.
@@ -1045,6 +1098,7 @@ Lucene instance containing some or all data for an <<glossary-index,index>>.
 types of shards: <<glossary-primary-shard,primary>> and
 <<glossary-replica-shard,replica>>. See {ref}/scalability.html[Clusters, nodes,
 and shards].
+//Source: Elasticsearch
 
 [[glossary-shareable]] shareable::
 +
@@ -1060,26 +1114,31 @@ some other application.
 [[glossary-shrink]] shrink::
 Reduces the number of <<glossary-primary-shard,primary shards>> in an index. See
 the {ref}/indices-shrink-index.html[shrink index API].
+//Source: Elasticsearch
 
 [[glossary-snapshot]] snapshot::
 Backup taken of a running <<glossary-cluster,cluster>>. You can take snapshots
 of the entire cluster or only specific <<glossary-data-stream,data streams>> and
 <<glossary-index,indices>>. See {ref}/snapshot-restore.html[Snapshot and
 restore].
+//Source: Elasticsearch
 
 [[glossary-snapshot-lifecycle-policy]] snapshot lifecycle policy::
 Specifies how frequently to perform automatic backups of a cluster and how long
 to retain the resulting <<glossary-snapshot,snapshots>>. See
 {ref}/snapshot-lifecycle-management.html[Manage the snapshot lifecycle].
+//Source: Elasticsearch
 
 [[glossary-snapshot-repository]] snapshot repository::
 Location where <<glossary-snapshot,snapshots>> are stored. A snapshot repository
 can be a shared filesystem or a remote repository, such as Azure or Google Cloud
 Storage. See {ref}/snapshot-restore.html[Snapshot and restore].
+//Source: Elasticsearch
 
 [[glossary-source_field]] source field::
 Original JSON object provided during <<glossary-index,indexing>>. See the
 {ref}/mapping-source-field.html[`_source` field].
+//Source: Elasticsearch
 
 [[glossary-space]] space::
 +
@@ -1097,6 +1156,7 @@ and can have a parent/child relationship with other spans.
 Adds more <<glossary-primary-shard,primary shards>> to an
 <<glossary-index,index>>. See the {ref}/indices-split-index.html[split index
 API].
+//Source: Elasticsearch
 
 [[glossary-standalone]] standalone::
 This mode allows manual configuration and management of {agent}s locally
@@ -1112,6 +1172,7 @@ Securely tunnels all traffic in an {ece} installation.
 <<glossary-index,Index>> containing configurations and other data used
 internally by the {stack}. System index names start with a dot (`.`), such as
 `.security`. Do not directly access or change system indices.
+//Source: Elasticsearch
 
 [discrete]
 [[t-glos]]
@@ -1125,6 +1186,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=tag-def]
 
 [[glossary-term]] term::
 See <<glossary-token,token>>.
+//Source: Elasticsearch
 
 [[glossary-term-join]] term join::
 +
@@ -1136,6 +1198,7 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=term-join-def]
 Unstructured content, such as a product description or log message. You
 typically <<glossary-analysis,analyze>> text for better search. See
 {ref}/analysis.html[Text analysis].
+//Source: Elasticsearch
 
 [[glossary-time-filter]] time filter::
 +
@@ -1159,11 +1222,13 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=time-series-data-def]
 A chunk of unstructured <<glossary-text,text>> that's been optimized for search.
 In most cases, tokens are individual words. Tokens are also called terms. See
 {ref}/analysis.html[Text analysis].
+//Source: Elasticsearch
 
 [[glossary-tokenization]] tokenization::
 Process of breaking unstructured text down into smaller, searchable chunks
 called <<glossary-token,tokens>>. See
 {ref}/analysis-overview.html#tokenization[Tokenization].
+//Source: Elasticsearch
 
 [[glossary-trace]] trace::
 Defines the amount of time an application spends on a request.
@@ -1240,11 +1305,13 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=visualization-def]
 Second possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In
 the warm phase, an <<glossary-index,index>> is generally optimized for search
 and no longer updated. See {ref}/ilm-policy-definition.html[Index lifecycle].
+//Source: Elasticsearch
 
 [[glossary-warm-tier]] warm tier::
 <<glossary-data-tier,Data tier>> that contains <<glossary-node,nodes>> that hold
 time series data that is accessed less frequently and rarely needs to be
 updated. See {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
 
 [[glossary-watcher]] Watcher::
 +

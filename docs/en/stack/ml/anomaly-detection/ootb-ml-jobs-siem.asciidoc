@@ -55,7 +55,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
-  other processes (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -83,7 +83,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models destination port activity.
 * Detects destination port activity that occurs rarely compared to other port 
-  activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 +
 Required {beats} or {agent} integrations:::
@@ -104,7 +104,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models listening port activity.
 * Detects listening port activity that occurs rarely compared to 
-  other port activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  other port activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -129,7 +129,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of URL requests.
 * Detects a web URL request that is rare compared to other web URL 
-  requests (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  requests (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -158,7 +158,7 @@ Job details:::
 * Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all 
-  hosts (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -195,7 +195,7 @@ Job details:::
 * Analyzes host activity logs where `agent.type` is `auditbeat`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -224,7 +224,7 @@ Job details:::
 `process.name` is commands like `arp`, `echo`, or `ifconfig`, for example.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -252,7 +252,7 @@ Job details:::
 `process.name` is commands like `netstat`, `ss`, or `route`, for example.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -274,7 +274,7 @@ Job details:::
 `process.name` is commands like `insmod`, `kmod`, or `rmod`, for example.
 * Models occurrences of process activity.
 * Detects processes that are rarely or unusually active compared to other processes 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -298,7 +298,7 @@ Job details:::
 `destination.ip` is the metadata service.
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other processes 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -322,7 +322,7 @@ Job details:::
 `destination.ip` is the metadata service.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -343,7 +343,7 @@ Job details:::
 `process.name` is `sudo`, and `event.action` is `executed`.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -369,7 +369,7 @@ Job details:::
 `process.name` is commands like `compile`, `make`, or `gcc`, for example.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -397,7 +397,7 @@ Job details:::
 `process.name` is commands like `cat`, `grep`, or `hostname`, for example.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -425,7 +425,7 @@ Job details:::
 `process.name` is commands like `ps` or `top`, for example.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -453,7 +453,7 @@ Job details:::
 `process.name` is commands like `users`, `whoami`, or `who`, for example.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -479,7 +479,7 @@ Job details:::
 
 * Analyzes host activity logs where `agent.type` is `auditbeat` (Linux).
 * Models occurrences of process activities on the host. 
-* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -516,7 +516,7 @@ Job details:::
 * Models occurrences of authentication attempts (`partition_field_name` is 
   `host.name`).
 * Detects unusually high number of authentication attempts (using the 
-  {ml-docs}/ml-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -554,7 +554,7 @@ Job details:::
  
 * Detects anomalies where the number of distinct values in
 the `aws.cloudtrail.error_message` field is unusual
-(using the {ml-docs}/ml-functions.html#ml-distinct-count[`high_distinct_count` function]).
+(using the {ml-docs}/ml-count-functions.html#ml-distinct-count[`high_distinct_count` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -574,7 +574,7 @@ lateral movement, or collection activity by a threat actor.
 Job details:::
 
 * Detects `aws.cloudtrail.error_code` values that have never or rarely occurred
-before (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+before (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -593,7 +593,7 @@ result of compromised credentials or keys.
 Job details:::
 
 * Detects unusually rare `event.action` values compared to other cities (using
-the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -613,7 +613,7 @@ result of compromised credentials or keys.
 Job details:::
 
 * Detects unusually rare `event.action` values compared to other countries
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -634,7 +634,7 @@ account to persist, move laterally, or exfil data.
 Job details:::
 
 * Detects unusually rare `event.action` values compared to other users (using
-the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -676,7 +676,7 @@ Job details:::
 
 * Models destination port activity.
 * Detects destination port activity that occurs rarely compared to other port 
-activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -708,7 +708,7 @@ Job details:::
 
 * Models the occurrences of processes on all Linux hosts.
 * Detects processes that occur rarely compared to other processes on all Linux 
-hosts (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -747,7 +747,7 @@ Job details:::
 
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.  
 
 Required {beats} or {agent} integrations:::
@@ -777,7 +777,7 @@ Job details:::
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other 
 processes (using the
-{ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -805,7 +805,7 @@ Job details:::
 * Analyzes host activity logs where `destination.ip` is the metadata service
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -834,7 +834,7 @@ Job details:::
 
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host 
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -879,7 +879,7 @@ Job details:::
 
 * Analyzes network activity logs where `event.category` is `network`. 
 * Detects unusually high number of events by country (using the
-{ml-docs}/ml-functions.html#ml-nonzero-count[`high_non_zero` function]).
+{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -911,7 +911,7 @@ Job details:::
 * Analyzes network activity logs where `event.category` is `network` and
 `event.outcome` is `deny`.
 * Detects unusually high numbers of events (using the
-{ml-docs}/ml-functions.html#ml-count[`high_count` function]).
+{ml-docs}/ml-count-functions.html#ml-count[`high_count` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -941,7 +941,7 @@ Job details:::
 
 * Analyzes network activity logs where `event.category` is `network`.
 * Detects unusually high numbers of events (using the
-{ml-docs}/ml-functions.html#ml-count[`high_count` function]).
+{ml-docs}/ml-count-functions.html#ml-count[`high_count` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -972,7 +972,7 @@ Job details:::
 
 * Analyzes network activity logs where `event.category` is `network`. 
 * Detects activity that is rare by country name (using the
-{ml-docs}/ml-functions.html[`rare` function]).
+{ml-docs}/ml-rare-functions.html[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1013,7 +1013,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of DNS activity.
 * Detects unusual DNS activity (using the 
-  {ml-docs}/ml-functions.html#ml-info-content[`high_info_content` function]).
+  {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1050,7 +1050,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of DNS activity.
 * Detects DNS activity that is rare compared to other DNS activities (using the 
-  {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1082,7 +1082,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `packetbeat`.
 * Models HTTP or TLS domain activity.
 * Detects HTTP or TLS domain activity that is rare compared to other 
-  activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1117,7 +1117,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of web browsing URL activity.
 * Detects URL activity that rarely occurs compared to other URL activities 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1150,7 +1150,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `packetbeat`.
 * Models occurrences of HTTP user agent activity.
 * Detects HTTP user agent activity that occurs rarely compared to other HTTP 
-  user agent activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  user agent activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1207,7 +1207,7 @@ Job details:::
 * Models occurrences of process activities on the host. 
 * Detects unusually rare processes compared to other processes on the host 
 (using the
-{ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1255,7 +1255,7 @@ Job details:::
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
 other processes (using the
-{ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1289,7 +1289,7 @@ Job details:::
 
 * Models occurrences of processes in paths.
 * Detects activity in unusual paths (using the
-{ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1321,7 +1321,7 @@ Job details:::
 
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all hosts 
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1365,7 +1365,7 @@ Job details:::
 `process.parent.name`).
 * Detects process relationships that are rare compared to other process 
 relationships (using the
-{ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1410,7 +1410,7 @@ Job details:::
 
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices
 
 Required {beats} or {agent} integrations:::
@@ -1445,7 +1445,7 @@ Job details:::
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other 
 processes (using the
-{ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 * Works on ECS compatible events across multiple indices.
 
 Required {beats} or {agent} integrations:::
@@ -1472,7 +1472,7 @@ Job details:::
 * Analyzes host activity logs where `destination.ip` is the metadata service.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-(using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+(using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1514,7 +1514,7 @@ Job details:::
 
 * Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of process activities on the host. 
-* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1544,7 +1544,7 @@ Job details:::
 * Analyzes network activity logs where `agent.type` is `winlogbeat`.
 * Models the occurrences of processes that cause network activity.
 * Detects network activity caused by processes that occur rarely compared to 
-  other processes (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1574,7 +1574,7 @@ Job details:::
 
 * Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of processes in paths.
-* Detects activity in unusual paths (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+* Detects activity in unusual paths (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1603,7 +1603,7 @@ Job details:::
 * Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows).
 * Models the occurrences of processes on all hosts.
 * Detects processes that occur rarely compared to other processes on all 
-  hosts (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1640,7 +1640,7 @@ Job details:::
 * Models occurrences of process creation activities (`partition_field_name` is 
   `process.parent.name`).
 * Detects process relationships that are rare compared to other process 
-  relationships (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  relationships (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1667,7 +1667,7 @@ Job details:::
 * Models occurrences of PowerShell script activities.
 * Detects unusual PowerShell script execution compared to other PowerShell 
   script activities (using the 
-  {ml-docs}/ml-functions.html#ml-info-content[`high_info_content` function]).
+  {ml-docs}/ml-info-functions.html#ml-info-content[`high_info_content` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1688,7 +1688,7 @@ Job details:::
 
 * Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of Windows service activities.
-* Detects Windows service activities that occur rarely compared to other Windows service activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+* Detects Windows service activities that occur rarely compared to other Windows service activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1718,7 +1718,7 @@ Job details:::
 * Analyzes host activity logs where `agent.type` is `winlogbeat` (Windows).
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1744,7 +1744,7 @@ Job details:::
   `destination.ip` is the metadata service.
 * Models process activity.
 * Detects processes that are rarely or unusually active compared to other processes 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1768,7 +1768,7 @@ Job details:::
   `destination.ip` is the metadata service.
 * Models user activity.
 * Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1791,7 +1791,7 @@ Job details:::
 
 * Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user context switches.
-* Detects user context switches that occur rarely compared to other user context switches (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+* Detects user context switches that occur rarely compared to other user context switches (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -1829,7 +1829,7 @@ Job details:::
 * Analyzes host activity logs where `agent.type` is `winlogbeat`.
 * Models occurrences of user remote login activities.
 * Detects user remote login activities that occur rarely compared to other 
-  user remote login activities (using the {ml-docs}/ml-functions.html#ml-rare[`rare` function]).
+  user remote login activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 

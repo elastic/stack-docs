@@ -7,23 +7,26 @@
 :description: An introduction to {ml} {oldetection}, which enables you to  \
 find unusual data points in a data set compared to the normal data points.
 
-This page contains a conceptual overview of 
-{oldetection} in the {stack} and a simple
-<<ecommerce-outliers,example>> of how to use it.
+This page contains a conceptual overview of {oldetection} in the {stack} and a 
+simple <<ecommerce-outliers,example>> of how to use it.
+
 
 [discrete]
 [[dfa-outlier-detection]]
 == {oldetection-cap}
 
-
 {oldetection-cap} is an analysis for identifying data points (outliers) whose 
 feature values are different from those of the normal data points in a 
-particular data set. Outliers may denote errors or unusual behavior.
+particular data set. Outliers may denote errors or unusual behavior. 
+{oldetection-cap}, for example, can be used to detect malicious software on a 
+machine, unusual user behavior on a network, or any unusual entity in a given 
+population. As {oldetection} algorithms operate on the assumption that the 
+outliers make up a small proportion of the overall data population. 
 
-The {ml-features} provide unsupervised {oldetection}, which means there is no need to provide a 
-training data set. Unsupervised 
-{oldetection} uses various machine learning techniques to find which data points 
-are unusual compared to the majority of the data points.
+The {ml-features} provide unsupervised {oldetection}, which means there is no 
+need to provide a training data set. Unsupervised {oldetection} uses various 
+machine learning techniques to find which data points are unusual compared to 
+the majority of the data points.
 
 You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
 {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
@@ -218,9 +221,9 @@ such that we get a new index that contains a sales summary for each customer.
 
 In particular, create a {transform} that calculates the sum of the products
 (`products.quantity`) and the sum of prices (`products.taxful_price`) in all of
-the orders, grouped by customer (`customer_full_name.keyword`). Also include a value
-count aggregation, so that we know how many orders (`order_id`) exist for each
-customer.
+the orders, grouped by customer (`customer_full_name.keyword`). Also include a 
+value count aggregation, so that we know how many orders (`order_id`) exist for 
+each customer.
 
 You can preview the {transform} before you create it in *{stack-manage-app}*
 > *Transforms*:
@@ -396,8 +399,8 @@ PUT _ml/data_frame/analytics/ecommerce
 . Start the {dfanalytics-job}.
 +
 --
-You can start, stop, and manage {dfanalytics-jobs} on the
-*Machine Learning* > *Data Frame Analytics* page. Alternatively, you can use the
+You can start, stop, and manage {dfanalytics-jobs} on the *Machine Learning* > 
+*Data Frame Analytics* page. Alternatively, you can use the
 {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] and
 {ref}/stop-dfanalytics.html[stop {dfanalytics-jobs}] APIs.
 

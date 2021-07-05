@@ -56,7 +56,7 @@ image::images/flights-classification-decision-plot.png["A decision plot in {kib}
 By default, {feat-imp} values are not calculated. To generate this information,
 when you create a {dfanalytics-job} you must specify the
 `num_top_feature_importance_values` property. For example, see
-<<flightdata-regression>> and <<flightdata-classification>>.
+<<performing-regression>> and <<performing-classification>>.
 
 The {feat-imp} values are stored in the {ml} results field for each document in
 the destination index. The number of {feat-imp} values for each document might
@@ -67,9 +67,8 @@ prediction.
 [[ml-feature-importance-readings]]
 == Further reading
 
-{feat-imp-cap} in the {stack} is calculated using the SHAP (SHapley Additive 
+* {feat-imp-cap} in the {stack} is calculated using the SHAP (SHapley Additive 
 exPlanations) method as described in
 https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf[Lundberg, S. M., & Lee, S.-I. A Unified Approach to Interpreting Model Predictions. In NeurIPS 2017].
-
-See also
-https://www.elastic.co/blog/feature-importance-for-data-frame-analytics-with-elastic-machine-learning[{feat-imp-cap} for {dfanalytics} with Elastic {ml}].
+* https://www.elastic.co/blog/feature-importance-for-data-frame-analytics-with-elastic-machine-learning[{feat-imp-cap} for {dfanalytics} with Elastic {ml}].
+* https://github.com/elastic/examples/tree/master/Machine%20Learning/Feature%20Importance[Feature importance for {dfanalytics} (Jupyter notebook)].

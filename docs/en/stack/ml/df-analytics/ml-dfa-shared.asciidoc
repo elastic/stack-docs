@@ -1,0 +1,18 @@
+tag::dfa-evaluation-intro[]
+Using the {dfanalytics} features to gain insights from a data set is an 
+iterative process. After you defined the problem you want to solve, and chose 
+the analytics type that can help you to do so, you need to produce a 
+high-quality data set and create the appropriate {dfanalytics-job}. You might 
+need to experiment with different configurations, parameters, and ways to 
+transform data before you arrive at a result that satisfies your use case. A 
+valuable companion to this process is the 
+{ref}/evaluate-dfanalytics.html[{evaluatedf-api}], which enables you to evaluate 
+the {dfanalytics} performance. It helps you understand error distributions and 
+identifies the points where the {dfanalytics} model performs well or less 
+trustworthily.
+
+To evaluate the analysis with this API, you need to annotate your index that 
+contains the results of the analysis with a field that marks each document with 
+the ground truth. The {evaluatedf-api} evaluates the performance of the 
+{dfanalytics} against this manually provided ground truth.
+end::dfa-evaluation-intro[]

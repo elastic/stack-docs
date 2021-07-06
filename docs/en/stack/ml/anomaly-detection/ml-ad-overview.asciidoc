@@ -1,13 +1,23 @@
 [role="xpack"]
-[[ml-overview]]
-= {anomaly-detect-cap} overview
-[subs="attributes"]
-++++
-<titleabbrev>Overview</titleabbrev>
-++++
+[[ml-ad-overview]]
+= {anomaly-detect-cap}
+
 :keywords: {ml-init}, {stack}, {anomaly-detect}, overview
 :description: An introduction to {ml} {anomaly-detect}, which analyzes time \
 series data to identify and predict anomalous patterns in your data.
+
+Use {anomaly-detect} to analyze time series data by creating accurate baselines 
+of normal behavior and identifying anomalous patterns in your dataset. Data is 
+pulled from {es} for analysis and anomaly results are displayed in {kib} 
+dashboards. Consult <<setup>> to learn more about the licence and the security 
+privileges that are required to use {anomaly-detect}.
+
+* <<ml-concepts>>
+* <<ml-ad-concepts>>
+* <<ml-configuration>>
+* <<ml-api-quickref>>
+* <<anomaly-examples>>
+* <<ml-ad-resources>>
 
 [discrete]
 [[ml-analyzing]]
@@ -98,5 +108,3 @@ how anomalous new events are.
 These results include scores that are aggregated in order to reduce noise and
 normalized in order to rank the most mathematically significant anomalies. For
 more information, see <<ml-bucket-results>> and <<ml-influencer-results>>.
-
-

@@ -51,7 +51,7 @@ more information, see <<ml-bucket-results>> and <<ml-influencer-results>>.
 
 [discrete]
 [[ml-ad-define-problem]]
-== 1: Define the problem
+== 1. Define the problem
 
 The {ml-features} in {stack} enable you to seek anomalies in your data in many
 different ways. For example, there are functions that calculate metrics,
@@ -60,12 +60,12 @@ optionally analyze your data relative to a specific population or group the data
 based on specific attributes. For the full list of functions, see
 <<ml-functions>>.
 
-The most important decision is what type of anomalous behavior you want to
-detect and what type of data you have available for the task.
+The most important considerations are the data sets that you have available and
+the type of anomalous behavior you want to detect.
 
 [discrete]
 [[ml-ad-setup]]
-== 2: Set up environment
+== 2. Set up environment
 
 If you want to use {ml-features}, there must be at least one {ml} node in
 your cluster and all master-eligible nodes must have {ml} enabled. By default,
@@ -85,198 +85,19 @@ a {dfeed} will be required.
 
 [discrete]
 [[ml-ad-create-job]]
-== 3: Create a job
-
-{anomaly-jobs-cap} contain the configuration information and metadata
-necessary to perform an analytics task.
-
-You can create {anomaly-jobs} by using the
-{ref}/ml-put-job.html[Create {anomaly-jobs} API]. {kib} also provides the
-following wizards to make it easier to create jobs:
-
-[role="screenshot"]
-image::images/ml-create-job.jpg[Create New Job]
-
-A _single metric job_ is a simple job that contains a single _detector_. A
-detector defines the type of analysis that will occur and which fields to
-analyze. In addition to limiting the number of detectors, the single metric job
-creation wizard omits many of the more advanced configuration options.
-
-A _multi-metric job_ can contain more than one detector, which is more efficient
-than running multiple jobs against the same data.
-
-A _population job_ detects activity that is unusual compared to the behavior of
-the population. For more information, see <<ml-configuring-populations>>.
-
-A _categorization job_ groups log messages into categories and uses
-<<ml-count-functions,count>> or <<ml-rare-functions,rare>> functions to detect
-anomalies within them. See <<ml-configuring-categories>>.
-
-An _advanced job_ can contain multiple detectors and enables you to configure all
-job settings.
-
-{kib} can also recognize certain types of data and provide specialized wizards
-for that context. For example, if you added the sample web log data set, the
-following wizard appears:
-
-[role="screenshot"]
-image::images/ml-data-recognizer-sample.jpg[A screenshot of the {kib} sample data web log job creation wizard]
-
-TIP: Alternatively, after you load a sample data set on the {kib} home page, you
-can click *View data* > *ML jobs*. There are {anomaly-jobs} for both the sample
-eCommerce orders data set and the sample web logs data set.
+== 3. Create a job
 
 //TBD: Abbreviate this information and mention Fleet integration packages
 
-If you use {apm-get-started-ref}/overview.html[Elastic APM], {kib} also detects
-this data and provides wizards for {anomaly-jobs}. For example:
-
-[role="screenshot"]
-image::images/ml-data-recognizer-apm.jpg[A screenshot of the {kib} APM job creation wizard]
-
-If you use {filebeat-ref}/index.html[{filebeat}]
-to ship access logs from your
-http://nginx.org/[Nginx] and https://httpd.apache.org/[Apache] HTTP servers to
-{es} and store it using fields and datatypes from the
-{ecs-ref}/ecs-reference.html[Elastic Common Schema (ECS)], the following wizards
-appear:
-
-[role="screenshot"]
-image::images/ml-data-recognizer-filebeat.jpg[A screenshot of the {filebeat} job creation wizards]
-
-If you use {auditbeat-ref}/index.html[{auditbeat}] to audit process
-activity on your systems, the following wizards appear:
-
-[role="screenshot"]
-image::images/ml-data-recognizer-auditbeat.jpg[A screenshot of the {auditbeat} job creation wizards]
-
-Likewise, if you use the {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to monitor your servers, the following
-wizards appear:
-
-[role="screenshot"]
-image::images/ml-data-recognizer-metricbeat.jpg[A screenshot of the {metricbeat} job creation wizards]
-
-These wizards create {anomaly-jobs}, dashboards, searches, and visualizations 
-that are customized to help you analyze your {auditbeat}, {filebeat}, and
-{metricbeat} data.
+include::create-jobs.asciidoc[]
 
 For a list of all the customized jobs, see <<ootb-ml-jobs>>.
 
-When you create an {anomaly-job} in {kib}, the job creation wizards can
-provide advice based on the characteristics of your data. By heeding these
-suggestions, you can create jobs that are more likely to produce insightful {ml}
-results.
-
-[discrete]
-[[bucket-span]]
-=== Bucket span
-
-The bucket span is the time interval that {ml} analytics use to summarize and
-model data for your job. When you create an {anomaly-job} in {kib}, you can
-choose to estimate a bucket span value based on your data characteristics. 
-
-NOTE: The bucket span must contain a valid time interval. See
-{time-units}[Time units].
-
-If you choose a value that is larger than one day or is significantly different 
-than the estimated value, you receive an informational message. For more 
-information about choosing an appropriate bucket span, see <<ml-buckets>>.
-
-[discrete]
-[[cardinality]]
-=== Cardinality
-
-If there are logical groupings of related entities in your data, {ml} analytics
-can make data models and generate results that take these groupings into
-consideration. For example, you might choose to split your data by user ID and
-detect when users are accessing resources differently than they usually do.
-
-If the field that you use to split your data has many different values, the
-job uses more memory resources. In particular, if the cardinality of the
-`by_field_name`, `over_field_name`, or `partition_field_name` is greater than 
-1000, you are advised that there might be high memory usage. 
-
-Likewise if you are performing population analysis and the cardinality of the
-`over_field_name` is below 10, you are advised that this might not be a suitable
-field to use. For more information, see <<ml-configuring-populations>>.
-
-[discrete]
-[[detectors]]
-=== Detectors
-
-Each {anomaly-job} must have one or more _detectors_. A detector applies an
-analytical function to specific fields in your data. If your job does not
-contain a  detector or the detector does not contain a 
-<<ml-functions,valid function>>, you receive an error.
-
-If a job contains duplicate detectors, you also receive an error. Detectors are 
-duplicates if they have the same `function`, `field_name`, `by_field_name`, 
-`over_field_name` and `partition_field_name`. 
-
-[discrete]
-[[influencers]]
-=== Influencers
-
-See <<ml-influencers>>.
-
-
-[discrete]
-[[model-memory-limits]]
-=== Model memory limits
-
-For each {anomaly-job}, you can optionally specify a `model_memory_limit`, which
-is the approximate maximum amount of memory resources that are required for
-analytical processing. The default value is 1 GB. Once this limit is approached,
-data pruning becomes more aggressive. Upon exceeding this limit, new entities
-are not modeled. 
-
-You can also optionally specify the `xpack.ml.max_model_memory_limit` setting. 
-By default, it's not set, which means there is no upper bound on the acceptable 
-`model_memory_limit` values in your jobs. 
-
-TIP: If you set the `model_memory_limit` too high, it will be impossible to open 
-the job; jobs cannot be allocated to nodes that have insufficient memory to run 
-them.
-
-If the estimated model memory limit for an {anomaly-job} is greater than the
-model memory limit for the job or the maximum model memory limit for the cluster,
-the job creation wizards in {kib} generate a warning. If the estimated memory 
-requirement is only a little higher than the `model_memory_limit`, the job will 
-probably produce useful results. Otherwise, the actions you take to address 
-these warnings vary depending on the resources available in your cluster:
-
-* If you are using the default value for the `model_memory_limit` and the {ml} 
-nodes in the cluster have lots of memory, the best course of action might be to 
-simply increase the job's `model_memory_limit`. Before doing this, however, 
-double-check that the chosen analysis makes sense. The default 
-`model_memory_limit` is relatively low to avoid accidentally creating a job that 
-uses a huge amount of memory.
-* If the {ml} nodes in the cluster do not have sufficient memory to accommodate 
-a job of the estimated size, the only options are:
-** Add bigger {ml} nodes to the cluster, or 
-** Accept that the job will hit its memory limit and will not necessarily find 
-all the anomalies it could otherwise find.
-
-If you are using {ece} or the hosted Elasticsearch Service on Elastic Cloud, 
-`xpack.ml.max_model_memory_limit` is set to prevent you from creating jobs 
-that cannot be allocated to any {ml} nodes in the cluster. If you find that you 
-cannot increase `model_memory_limit` for your {ml} jobs, the solution is to 
-increase the size of the {ml} nodes in your cluster.
-
-[discrete]
-[[dedicated-indices]]
-=== Dedicated indices
-
-For each {anomaly-job}, you can optionally specify a dedicated index to store 
-the {anomaly-detect} results. As {anomaly-jobs} may produce a large amount 
-of results (for example, jobs with many time series, small bucket span, or with 
-long running period), it is recommended to use a dedicated results index by 
-choosing the **Use dedicated index** option in {kib} or specifying the 
-`results_index_name` via the {ref}/ml-put-job.html[Create {anomaly-jobs} API].
+include::job-tips.asciidoc[leveloffset=+1]
 
 [discrete]
 [[ml-ad-open-job]]
-== 4: Open the job
+== 4. Open the job
 
 An {anomaly-job} must be opened in order for it to be ready to receive and
 analyze data. It can be opened and closed multiple times throughout its
@@ -292,7 +113,7 @@ You can perform both these tasks in {kib} or use the
 
 [discrete]
 [[ml-ad-view-results]]
-== 5: View the job results
+== 5. View the job results
 
 After the {anomaly-job} has processed some data, you can view the results in
 {kib}.
@@ -305,7 +126,7 @@ There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 
 [discrete]
 [[ml-ad-forecast]]
-== 6: Forecast future behavior
+== 6. Forecast future behavior
 
 After the {ml-features} create baselines of normal behavior for your data,
 you can use that information to extrapolate future behavior.
@@ -345,86 +166,9 @@ different expiration period by using the `expires_in` parameter in the
 
 [discrete]
 [[ml-ad-close-job]]
-== 7: Close the job
+== 7. Close the job
 
-If you need to stop your {anomaly-job}, an orderly shutdown ensures that:
-
-* {dfeeds-cap} are stopped
-* Buffers are flushed
-* Model history is pruned
-* Final results are calculated
-* Model snapshots are saved
-* {anomaly-jobs-cap} are closed
-
-This process ensures that jobs are in a consistent state in case you want to
-subsequently re-open them.
-
-[discrete]
-=== Stopping {dfeeds}
-
-When you stop a {dfeed}, it ceases to retrieve data from {es}. You can stop a
-{dfeed} by using {kib} or the
-{ref}/ml-stop-datafeed.html[stop {dfeeds} API]. For example, the following
-request stops the `feed1` {dfeed}:
-
-[source,console]
---------------------------------------------------
-POST _ml/datafeeds/feed1/_stop
---------------------------------------------------
-// TEST[skip:setup:server_metrics_startdf]
-
-NOTE: You must have `manage_ml`, or `manage` cluster privileges to stop {dfeeds}.
-For more information, see {ref}/security-privileges.html[Security privileges].
-
-A {dfeed} can be started and stopped multiple times throughout its lifecycle.
-
-[discrete]
-=== Stopping all {dfeeds}
-
-If you are upgrading your cluster, you can use the following request to stop all
-{dfeeds}:
-
-[source,console]
-----------------------------------
-POST _ml/datafeeds/_all/_stop
-----------------------------------
-// TEST[skip:needs-licence]
-
-[discrete]
-=== Closing {anomaly-jobs}
-
-When you close an {anomaly-job}, it cannot receive data or perform analysis
-operations. If a job is associated with a {dfeed}, you must stop the {dfeed}
-before you can close the job. If the {dfeed} has an end date, the job closes
-automatically on that end date.
-
-You can close a job by using the
-{ref}/ml-close-job.html[close {anomaly-job} API]. For 
-example, the following request closes the `job1` job:
-
-[source,console]
---------------------------------------------------
-POST _ml/anomaly_detectors/job1/_close
---------------------------------------------------
-// TEST[skip:setup:server_metrics_openjob]
-
-NOTE: You must have `manage_ml`, or `manage` cluster privileges to stop {dfeeds}.
-For more information, see {ref}/security-privileges.html[Security privileges].
-
-{anomaly-jobs-cap} can be opened and closed multiple times throughout their
-lifecycle.
-
-[discrete]
-=== Closing all {anomaly-jobs}
-
-If you are upgrading your cluster, you can use the following request to close
-all open {anomaly-jobs} on the cluster:
-
-[source,console]
-----------------------------------
-POST _ml/anomaly_detectors/_all/_close
-----------------------------------
-// TEST[skip:needs-licence]
+include::stopping-ml.asciidoc[leveloffset=+1]
 
 [discrete]
 == Next steps

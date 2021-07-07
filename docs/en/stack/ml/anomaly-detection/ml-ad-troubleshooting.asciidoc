@@ -12,45 +12,4 @@ answers for frequently asked questions.
 [[ml-ad-restart-failed-jobs]]
 == Restart failed {anomaly-jobs}
 
-If an {anomaly-job} fails, try to restart the job by following the procedure 
-described below. If the restarted job runs as expected, then the problem that 
-caused the job to fail was transient and no further investigation is needed. If 
-the job quickly fails after the restart, then the problem is persistent and 
-needs further investigation. In this case, find out which node the failed job 
-was running on by checking the job stats on the **Job management** pane in 
-{kib}. Then get the logs for that node and look for exceptions and errors where 
-the ID of the {anomaly-job} is in the message to have a better understanding of 
-the issue.
-
-If an {anomaly-job} has failed, do the following to recover from `failed` state: 
-
-. _Force_ stop the corresponding {dfeed} by using the 
-{ref}/ml-stop-datafeed.html[Stop {dfeed} API] with the `force` parameter being 
-`true`. For example, the following request force stops the `my_datafeed` 
-{dfeed}.
-+
---
-[source,console]
---------------------------------------------------
-POST _ml/datafeeds/my_datafeed/_stop
-{
-  "force": "true"
-}
---------------------------------------------------
-// TEST[skip]
---
-
-. _Force_ close the {anomaly-job} by using the 
-{ref}/ml-close-job.html[Close {anomaly-job} API] with the `force` parameter 
-being `true`. For example, the following request force closes the `my_job` 
-{anomaly-job}:
-+
---
-[source,console]
---------------------------------------------------
-POST _ml/anomaly_detectors/my_job/_close?force=true
---------------------------------------------------
-// TEST[skip]
---
-
-. Restart the {anomaly-job} on the **Job management** pane in {kib}.
+include::ml-restart-failed-jobs.asciidoc[]

@@ -10,10 +10,10 @@ predict classes of data points in a data set.
 This page contains a conceptual overview of {classification} in the {stack} and 
 a simple <<performing-classification,example>> of how to use it.
 
+
 [discrete]
 [[dfa-classification]]
 == {classification-cap}
-
 
 {classification-cap} is a {ml} process that enables you to predict the class or
 category of a data point in your data set. Typical examples of {classification}
@@ -90,6 +90,7 @@ is an iteration of the last one, hence it improves the decision made by the
 previous tree.
 //end::classification-algorithms[]
 
+
 [discrete]
 [[dfa-classification-deploy]]
 === Deploying the model
@@ -99,6 +100,27 @@ other words, the characteristics of your trained model are saved and ready to be
 deployed and used as functions. The <<ml-inference-class>> section shows you how 
 to use your model in a preprocessor of an ingest pipeline or in a pipeline 
 aggregation of a search query to make predictions about your data.
+
+
+[discrete]
+[[ml-inference-class]]
+==== {infer-cap}
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference]
+
+
+[discrete]
+[[ml-inference-processor-class]]
+===== {infer-cap} processor
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
+
+
+[discrete]
+[[ml-inference-aggregation-class]]
+===== {infer-cap} aggregation
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
 
 
 [discrete]
@@ -123,6 +145,7 @@ prepare your input data such that it has less classes. You can also remove the
 fields that are not relevant from the analysis by specifying `excludes` patterns 
 in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
 
+
 [discrete]
 [[dfa-classification-interpret]]
 === Interpreting {classification} results
@@ -130,6 +153,7 @@ in the `analyzed_fields` object when configuring the {dfanalytics-job}.
 The following sections help you understand and interpret the results of a 
 {classanalysis}. To see example results, refer to
 <<flightdata-classification-results>>.
+
 
 [discrete]
 [[dfa-classification-class-probability]]
@@ -140,6 +164,7 @@ it is that a given data point belongs to a certain class. The higher the number,
 the higher the probability that the data point belongs to the named class. This
 information is stored in the `top_classes` array for each document in your
 destination index.
+
 
 [discrete]
 [[dfa-classification-class-score]]
@@ -185,6 +210,7 @@ To learn more about choosing the class assignment objective that fits your goal,
 refer to this 
 https://github.com/elastic/examples/blob/master/Machine%20Learning/Class%20Assigment%20Objectives/classification-class-assignment-objective.ipynb[Jupyter notebook].
 
+
 [discrete]
 [[dfa-classification-feature-importance]]
 ==== {feat-imp-cap}
@@ -192,6 +218,7 @@ https://github.com/elastic/examples/blob/master/Machine%20Learning/Class%20Assig
 {feat-imp-cap} provides further information about the results of an analysis and 
 helps to interpret the results in a more subtle way. If you want to learn more 
 about {feat-imp}, <<ml-feature-importance,click here>>. 
+
 
 [discrete]
 [[dfa-classification-evaluation]]
@@ -208,16 +235,6 @@ If you split your data set into training and testing data, you can determine how
 well your model performs on data it has never seen before and compare the
 prediction to the actual value.
 
-[discrete]
-[[dfa-classification-readings]]
-=== Further readings
-
-* https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[{classanalysis-cap} example (Jupyter notebook)]
-* https://www.elastic.co/blog/benchmarking-binary-classification-results-in-elastic-machine-learning[Benchmarking binary {classification} results in Elastic {ml}]
-* https://www.elastic.co/blog/using-elastic-supervised-machine-learning-for-binary-classification[Using Elastic supervised {ml} for binary {classification}]
-* https://www.elastic.co/blog/machine-learning-in-cybersecurity-training-supervised-models-to-detect-dga-activity[{ml-cap} in cybersecurity – part 1: Training supervised models to detect DGA activity]
-* https://www.elastic.co/blog/machine-learning-in-cybersecurity-detecting-dga-activity-in-network-data[{ml-cap} in cybersecurity – part 2: Detecting DGA activity in network data]
-* https://www.elastic.co/blog/supervised-and-unsupervised-machine-learning-for-dga-detection[Combining supervised and unsupervised machine learning for DGA detection]
 
 [discrete]
 [[ml-dfanalytics-classification-evaluation]]
@@ -231,6 +248,7 @@ performance:
 
 * Multiclass confusion matrix
 * Area under the curve of receiver operating characteristic (AUC ROC) 
+
 
 [discrete]
 [[ml-dfanalytics-mccm]]
@@ -261,6 +279,7 @@ The matrix contains the actual labels on the left side while the predicted
 labels are on the top. The proportion of correct and incorrect predictions is 
 broken down for each class. This enables you to examine how the {classanalysis}
 confused the different classes while it made its predictions.
+
 
 [discrete]
 [[ml-dfanalytics-class-aucroc]]
@@ -295,6 +314,7 @@ never seen before and compare the prediction to the actual value by using the
 evaluate {dfanalytics} API.
 ////
 
+
 [discrete]
 [[performing-classification]]
 == Performing {classanalysis} in the sample flight data set
@@ -310,6 +330,7 @@ concepts, see <<dfa-classification>> and <<ml-supervised-workflow>>.
 
 TIP: If you want to view this example in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[click here].
+
 
 [discrete]
 [[flightdata-classification-data]]
@@ -383,6 +404,7 @@ accessible. However, the data has been manually created and contains some
 inconsistencies. For example, a flight can be both delayed and canceled. This is
 a good reminder that the quality of your input data affects the quality of your
 results.
+
 
 [discrete]
 [[flightdata-classification-model]]
@@ -617,6 +639,7 @@ The API call returns the following response:
 --------------------------------------------------
 ====
 --
+
 
 [discrete]
 [[flightdata-classification-results]]
@@ -884,6 +907,7 @@ functionality as the matrix that you saw in the job wizard. Its purpose is to
 likewise help you visualize and explore the relationships between the numeric
 fields and the dependent variable in your data.
 
+
 [discrete]
 [[flightdata-classification-evaluate]]
 === Evaluating {classification} results
@@ -1063,20 +1087,14 @@ destination indices and index patterns.
 When you have trained a satisfactory model, you can deploy it to make 
 predictions about new data by using {infer}.
 
-[discrete]
-[[ml-inference-class]]
-== {infer-cap}
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference]
 
 [discrete]
-[[ml-inference-processor-class]]
-=== {infer-cap} processor
+[[dfa-classification-readings]]
+=== Further readings
 
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
-
-[discrete]
-[[ml-inference-aggregation-class]]
-== {infer-cap} aggregation
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
+* https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[{classanalysis-cap} example (Jupyter notebook)]
+* https://www.elastic.co/blog/benchmarking-binary-classification-results-in-elastic-machine-learning[Benchmarking binary {classification} results in Elastic {ml}]
+* https://www.elastic.co/blog/using-elastic-supervised-machine-learning-for-binary-classification[Using Elastic supervised {ml} for binary {classification}]
+* https://www.elastic.co/blog/machine-learning-in-cybersecurity-training-supervised-models-to-detect-dga-activity[{ml-cap} in cybersecurity – part 1: Training supervised models to detect DGA activity]
+* https://www.elastic.co/blog/machine-learning-in-cybersecurity-detecting-dga-activity-in-network-data[{ml-cap} in cybersecurity – part 2: Detecting DGA activity in network data]
+* https://www.elastic.co/blog/supervised-and-unsupervised-machine-learning-for-dga-detection[Combining supervised and unsupervised machine learning for DGA detection]

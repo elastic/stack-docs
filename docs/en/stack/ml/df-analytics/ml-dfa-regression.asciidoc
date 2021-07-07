@@ -10,6 +10,7 @@ predict numerical values in a data set.
 This page contains a conceptual overview of {classification} in the {stack} and 
 a simple <<performing-regression,example>> of how to use it.
 
+
 [discrete]
 [[dfa-regression]]
 == {regression-cap}
@@ -42,6 +43,7 @@ which floor it is, and whether the apartment has a riverside view or not, and so
 on. All of these factors can be considered _features_; they are measurable
 properties or characteristics of the phenomenon we're studying.
 
+
 [discrete]
 [[dfa-regression-features]]
 === {feature-vars-cap}
@@ -62,6 +64,7 @@ algorithm:
 * Boolean. The riverside view in the example is a boolean value because an 
   apartment either has a riverside view or doesn't have one.
 Arrays are not supported.
+
 
 [discrete]
 [[dfa-regression-supervised]]
@@ -85,6 +88,7 @@ predictions are combined.
 {regression-cap} works as a batch analysis. If new data comes into your index, 
 you must restart the {dfanalytics-job}.
 
+
 [discrete]
 [[dfa-regression-algorithm]]
 ==== {regression-cap} algorithms
@@ -94,6 +98,7 @@ The ensemble learning technique that we use in the {stack} is a type of boosting
 called extreme gradient boost (XGboost) which combines decision trees with 
 gradient boosting methodologies.
 //end::regression-algorithms[]
+
 
 [discrete]
 [[dfa-regression-lossfunction]]
@@ -137,15 +142,38 @@ TIP: The default loss function parameter values work fine for most of the cases.
 It is highly recommended to use the default values, unless you fully understand 
 the impact of the different loss function parameters.
 
+
 [discrete]
 [[dfa-regression-deploy]]
-==== Deploying the model
+=== Deploying the model
 
 The model that you created is stored as {es} documents in internal indices. In 
 other words, the characteristics of your trained model are saved and ready to be 
 deployed and used as functions. The <<ml-inference-reg,{infer}>> feature enables 
 you to use your model in a preprocessor of an ingest pipeline or in a pipeline 
 aggregation of a search query to make predictions about your data.
+
+
+[discrete]
+[[ml-inference-reg]]
+==== {infer-cap}
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference]
+
+
+[discrete]
+[[ml-inference-processor-reg]]
+===== {infer-cap} processor
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
+
+
+[discrete]
+[[ml-inference-aggregation-reg]]
+===== {infer-cap} aggregation
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
+
 
 [discrete]
 [[dfa-regression-feature-importance]]
@@ -154,6 +182,7 @@ aggregation of a search query to make predictions about your data.
 {feat-imp-cap} provides further information about the results of an analysis and 
 helps to interpret the results in a more subtle way. If you want to learn more 
 about {feat-imp}, <<ml-feature-importance,click here>>.
+
 
 [discrete]
 [[dfa-regression-evaluation]]
@@ -185,6 +214,7 @@ low MSE value on the training data set and a high MSE value on the testing
 data set. For more information about the evaluation metrics, see 
 <<ml-dfanalytics-regression-evaluation>>.
 
+
 [discrete]
 [[dfa-regression-readings]]
 === Further readings
@@ -209,6 +239,7 @@ performance:
 * Pseudo-Huber loss
 * Mean squared logarithmic error (MSLE)
 
+
 [discrete]
 [[ml-dfanalytics-mse]]
 ==== Mean squared error
@@ -217,6 +248,7 @@ The API provides a MSE by computing the average squared sum of the difference
 between the true value and the value that the {regression} model predicted. 
 (Avg (predicted value-actual value)^2^). You can use the MSE to measure how well 
 the {reganalysis} model is performing.
+
 
 [discrete]
 [[ml-dfanalytics-r-sqared]]
@@ -230,6 +262,7 @@ is obtained when all the predictions are set to the mean of the true values. A
 value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
 (about 30%) closer to true values than their mean.
 
+
 [discrete]
 [[ml-dfanalytics-huber]]
 ==== Pseudo-Huber loss
@@ -241,6 +274,7 @@ predefined value. This loss function uses the `delta` parameter to define the
 transition point between MAE and MSE. Consult the 
 <<dfa-regression-lossfunction>> page to learn more about loss functions.
 
+
 [discrete]
 [[ml-dfanalytics-msle]]
 ==== Mean squared logarithmic error
@@ -249,6 +283,7 @@ This evaluation metric is a variation of mean squared error. It can be used for
 cases when the target values are positive and distributed with a long tail such 
 as data on prices or population. Consult the <<dfa-regression-lossfunction>> 
 page to learn more about loss functions.
+
 
 [discrete]
 [[performing-regression]]
@@ -263,6 +298,7 @@ between the fields in your data in order to predict the value of a
 _dependent variable_, which in this case is the numeric `FlightDelayMins` field.
 For an overview of these concepts, see <<dfa-regression>> and
 <<ml-supervised-workflow>>.
+
 
 [discrete]
 [[flightdata-regression-data]]
@@ -336,6 +372,7 @@ accessible. However, the data has been manually created and contains some
 inconsistencies. For example, a flight can be both delayed and canceled. This is
 a good reminder that the quality of your input data affects the quality of your
 results.
+
 
 [discrete]
 [[flightdata-regression-model]]
@@ -574,6 +611,7 @@ The API call returns the following response:
 ====
 --
 
+
 [discrete]
 [[flightdata-regression-results]]
 === Viewing {regression} results
@@ -736,6 +774,7 @@ functionality as the matrix that you saw in the job wizard. Its purpose is to
 likewise help you visualize and explore the relationships between the numeric
 fields and the dependent variable in your data.
 
+
 [discrete]
 [[flightdata-regression-evaluate]]
 === Evaluating {regression} results
@@ -856,21 +895,3 @@ If you don't want to keep the {dfanalytics-job}, you can delete it. For example,
 use {kib} or the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API].
 When you delete {dfanalytics-jobs} in {kib}, you have the option to also remove
 the destination indices and index patterns.
-
-[discrete]
-[[ml-inference-reg]]
-== {infer-cap}
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference]
-
-[discrete]
-[[ml-inference-processor-reg]]
-=== {infer-cap} processor
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
-
-[discrete]
-[[ml-inference-aggregation-reg]]
-=== {infer-cap} aggregation
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]

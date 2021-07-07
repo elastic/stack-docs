@@ -51,28 +51,29 @@ more information, see <<ml-bucket-results>> and <<ml-influencer-results>>.
 
 [discrete]
 [[ml-ad-define-problem]]
-== Step 1: Define the problem
+== 1: Define the problem
 
-//TBD
-The {ml-features} in {stack} enable you to analyze your data in many different
-ways. For example, there are functions that count, summarize, or determine the 
-rarity of behavior in your data set. You can also optionally analyze your
-data relative to a specific population or group the data on specific
-attributes. For the full list of functions, see <<ml-functions>>.
+The {ml-features} in {stack} enable you to seek anomalies in your data in many
+different ways. For example, there are functions that calculate metrics,
+analyze geographic data, or seek rare events in your data set. You can also
+optionally analyze your data relative to a specific population or group the data
+based on specific attributes. For the full list of functions, see
+<<ml-functions>>.
 
-The most important decision is what type of problem you want to solve and
-what type of data you have available for the task.
+The most important decision is what type of anomalous behavior you want to
+detect and what type of data you have available for the task.
 
 [discrete]
 [[ml-ad-setup]]
-== Step 2: Set up environment
+== 2: Set up environment
 
 If you want to use {ml-features}, there must be at least one {ml} node in
 your cluster and all master-eligible nodes must have {ml} enabled. By default,
 all nodes are {ml} nodes. For more information about these settings, see 
 {ref}/modules-node.html#ml-node[{ml} nodes].
 
-See <<setup>>.
+If {stack-security-features} are enabled, you must also ensure your users have
+the necessary privileges. See <<setup>>.
 
 [NOTE]
 ===============================
@@ -84,7 +85,7 @@ a {dfeed} will be required.
 
 [discrete]
 [[ml-ad-create-job]]
-== Step 3: Create a job
+== 3: Create a job
 
 {anomaly-jobs-cap} contain the configuration information and metadata
 necessary to perform an analytics task.
@@ -159,7 +160,7 @@ These wizards create {anomaly-jobs}, dashboards, searches, and visualizations
 that are customized to help you analyze your {auditbeat}, {filebeat}, and
 {metricbeat} data.
 
-For a list of all the pre-built jobs, see <<ootb-ml-jobs>>.
+For a list of all the customized jobs, see <<ootb-ml-jobs>>.
 
 When you create an {anomaly-job} in {kib}, the job creation wizards can
 provide advice based on the characteristics of your data. By heeding these
@@ -275,7 +276,7 @@ choosing the **Use dedicated index** option in {kib} or specifying the
 
 [discrete]
 [[ml-ad-open-job]]
-== Step 4: Open the job
+== 4: Open the job
 
 An {anomaly-job} must be opened in order for it to be ready to receive and
 analyze data. It can be opened and closed multiple times throughout its
@@ -285,9 +286,13 @@ After you start the job, you can start the {dfeed}, which retrieves data from
 your cluster. A {dfeed} can be started and stopped multiple times throughout its
 lifecycle.
 
+You can perform both these tasks in {kib} or use the
+{ref}/ml-open-job.html[open {anomaly-jobs}] and
+{ref}/ml-start-datafeed.html[start {dfeeds}] APIs.
+
 [discrete]
 [[ml-ad-view-results]]
-== Step 5: View the job results
+== 5: View the job results
 
 After the {anomaly-job} has processed some data, you can view the results in
 {kib}.
@@ -300,7 +305,7 @@ There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 
 [discrete]
 [[ml-ad-forecast]]
-== Step 6: Forecast future behavior
+== 6: Forecast future behavior
 
 After the {ml-features} create baselines of normal behavior for your data,
 you can use that information to extrapolate future behavior.
@@ -340,7 +345,7 @@ different expiration period by using the `expires_in` parameter in the
 
 [discrete]
 [[ml-ad-close-job]]
-== Step 7: Close the job
+== 7: Close the job
 
 If you need to stop your {anomaly-job}, an orderly shutdown ensures that:
 

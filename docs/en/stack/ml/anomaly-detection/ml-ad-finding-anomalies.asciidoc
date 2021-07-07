@@ -1,0 +1,314 @@
+[role="xpack"]
+[[ml-ad-finding-anomalies]]
+= Finding anomalies in time series data
+++++
+<titleabbrev>Finding anomalies</titleabbrev>
+++++
+
+The {ml-features} automate the analysis of time series data by creating
+accurate baselines of normal behavior in the data and identifying anomalous
+patterns in that data.
+
+Using <<ml-ad-algorithms,proprietary {ml} algorithms>>, the following
+circumstances are detected, scored, and linked with statistically significant
+influencers in the data:
+
+* Anomalies related to temporal deviations in values, counts, or frequencies
+* Statistical rarity
+* Unusual behaviors for a member of a population
+
+Automated periodicity detection and quick adaptation to changing data ensure
+that you don’t need to specify algorithms, models, or other data science-related
+configurations in order to get the benefits of {ml}.
+
+You can view the {ml} results in {kib} where, for example, charts illustrate the
+actual data values, the bounds for the expected values, and the anomalies that
+occur outside these bounds.
+
+[role="screenshot"]
+image::images/overview-smv.jpg["Example screenshot from the Machine Learning Single Metric Viewer in Kibana"]
+
+[discrete]
+[[ml-ad-algorithms]]
+== {anomaly-detect-cap} algorithms
+
+The {anomaly-detect} {ml-features} use a bespoke amalgamation of different
+techniques such as clustering, various types of time series decomposition,
+Bayesian distribution modeling, and correlation analysis. These analytics
+provide sophisticated real-time automated {anomaly-detect} for time series data.
+
+The {ml} analytics statistically model the time-based characteristics of your
+data by observing historical behavior and adapting to new data. The model
+represents a baseline of normal behavior and can therefore be used to determine
+how anomalous new events are.
+
+{anomaly-detect-cap} results are written for each <<ml-buckets,bucket span>>.
+These results include scores that are aggregated in order to reduce noise and
+normalized in order to rank the most mathematically significant anomalies. For
+more information, see <<ml-bucket-results>> and <<ml-influencer-results>>.
+
+[discrete]
+[[ml-ad-define-problem]]
+== Step 1: Define the problem
+
+//TBD
+The {ml-features} in {stack} enable you to analyze your data in many different
+ways. For example, there are functions that count, summarize, or determine the 
+rarity of behavior in your data set. You can also optionally analyze your
+data relative to a specific population or group the data on specific
+attributes.
+
+The most important decision is what type of problem you want to solve and
+what type of data you have available for the task...
+
+[discrete]
+[[pre-reqs]]
+== Step 2: Set up environment
+
+//TBD
+See <<setup>>.
+
+[NOTE]
+===============================
+If your data is located outside of {es}, you cannot use {kib} to create
+your jobs and you cannot use {dfeeds} to retrieve your data in real time.
+Posting data directly to {anomaly-jobs} is deprecated, in a future major version
+a {dfeed} will be required.
+===============================
+
+[discrete]
+[[ml-ad-create-job]]
+== Step 3: Create an {anomaly-job}
+
+{anomaly-jobs-cap} contain the configuration information and metadata
+necessary to perform an analytics task.
+
+You can create {anomaly-jobs} by using the
+{ref}/ml-put-job.html[Create {anomaly-jobs} API]. {kib} also provides the
+following wizards to make it easier to create jobs:
+
+[role="screenshot"]
+image::images/ml-create-job.jpg[Create New Job]
+
+A _single metric job_ is a simple job that contains a single _detector_. A
+detector defines the type of analysis that will occur and which fields to
+analyze. In addition to limiting the number of detectors, the single metric job
+creation wizard omits many of the more advanced configuration options.
+
+A _multi-metric job_ can contain more than one detector, which is more efficient
+than running multiple jobs against the same data.
+
+A _population job_ detects activity that is unusual compared to the behavior of
+the population. For more information, see <<ml-configuring-populations>>.
+
+A _categorization job_ groups log messages into categories and uses
+<<ml-count-functions,count>> or <<ml-rare-functions,rare>> functions to detect
+anomalies within them. See <<ml-configuring-categories>>.
+
+An _advanced job_ can contain multiple detectors and enables you to configure all
+job settings.
+
+{kib} can also recognize certain types of data and provide specialized wizards
+for that context. For example, if you added the sample web log data set, the
+following wizard appears:
+
+[role="screenshot"]
+image::images/ml-data-recognizer-sample.jpg[A screenshot of the {kib} sample data web log job creation wizard]
+
+TIP: Alternatively, after you load a sample data set on the {kib} home page, you
+can click *View data* > *ML jobs*. There are {anomaly-jobs} for both the sample
+eCommerce orders data set and the sample web logs data set.
+
+//TBD: Abbreviate this information and mention Fleet integration packages
+
+If you use {apm-get-started-ref}/overview.html[Elastic APM], {kib} also detects
+this data and provides wizards for {anomaly-jobs}. For example:
+
+[role="screenshot"]
+image::images/ml-data-recognizer-apm.jpg[A screenshot of the {kib} APM job creation wizard]
+
+If you use {filebeat-ref}/index.html[{filebeat}]
+to ship access logs from your
+http://nginx.org/[Nginx] and https://httpd.apache.org/[Apache] HTTP servers to
+{es} and store it using fields and datatypes from the
+{ecs-ref}/ecs-reference.html[Elastic Common Schema (ECS)], the following wizards
+appear:
+
+[role="screenshot"]
+image::images/ml-data-recognizer-filebeat.jpg[A screenshot of the {filebeat} job creation wizards]
+
+If you use {auditbeat-ref}/index.html[{auditbeat}] to audit process
+activity on your systems, the following wizards appear:
+
+[role="screenshot"]
+image::images/ml-data-recognizer-auditbeat.jpg[A screenshot of the {auditbeat} job creation wizards]
+
+Likewise, if you use the {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to monitor your servers, the following
+wizards appear:
+
+[role="screenshot"]
+image::images/ml-data-recognizer-metricbeat.jpg[A screenshot of the {metricbeat} job creation wizards]
+
+These wizards create {anomaly-jobs}, dashboards, searches, and visualizations 
+that are customized to help you analyze your {auditbeat}, {filebeat}, and
+{metricbeat} data.
+
+For a list of all the pre-built jobs, see <<ootb-ml-jobs>>.
+
+
+[discrete]
+[[ml-ad-open-job]]
+== Step 4: Open the {anomaly-job}
+
+//TBD
+
+An {anomaly-job} must be opened in order for it to be ready to receive and
+analyze data. It can be opened and closed multiple times throughout its
+lifecycle.
+
+After you start the job, you can start the {dfeed}, which retrieves data from
+your cluster. A {dfeed} can be started and stopped multiple times throughout its
+lifecycle.
+
+[discrete]
+[[ml-ad-view-results]]
+== Step 5: View {anomaly-job} results
+
+//TBD
+
+After the {anomaly-job} has processed some data, you can view the results in
+{kib}.
+
+TIP: Depending on the capacity of your machine, you might need to wait a few
+seconds for the {ml} analysis to generate initial results.
+
+There are two tools for examining the results from {anomaly-jobs} in {kib}: the
+**Anomaly Explorer** and the **Single Metric Viewer**.
+
+[discrete]
+[[ml-ad-forecast]]
+== Step 6: Forecast future behavior
+
+After the {ml-features} create baselines of normal behavior for your data,
+you can use that information to extrapolate future behavior.
+
+You can use a forecast to estimate a time series value at a specific future date.
+For example, you might want to determine how many users you can expect to visit
+your website next Sunday at 0900.
+
+You can also use it to estimate the probability of a time series value occurring
+at a future date. For example, you might want to determine how likely it is that
+your disk utilization will reach 100% before the end of next week.
+
+Each forecast has a unique ID, which you can use to distinguish between forecasts
+that you created at different times. You can create a forecast by using the
+{ref}/ml-forecast.html[forecast {anomaly-jobs} API] or by using {kib}. For
+example:
+
+[role="screenshot"]
+image::images/overview-forecast.jpg["Example screenshot from the Machine Learning Single Metric Viewer in Kibana"]
+
+The yellow line in the chart represents the predicted data values. The
+shaded yellow area represents the bounds for the predicted values, which also
+gives an indication of the confidence of the predictions.
+
+When you create a forecast, you specify its _duration_, which indicates how far
+the forecast extends beyond the last record that was processed. By default, the
+duration is 1 day. Typically the farther into the future that you forecast, the
+lower the confidence levels become (that is to say, the bounds increase).
+Eventually if the confidence levels are too low, the forecast stops.
+For more information about limitations that affect your ability to create a
+forecast, see <<ml-forecast-config-limitations>>.
+
+You can also optionally specify when the forecast expires. By default, it
+expires in 14 days and is deleted automatically thereafter. You can specify a
+different expiration period by using the `expires_in` parameter in the
+{ref}/ml-forecast.html[forecast {anomaly-jobs} API].
+
+[discrete]
+[[ml-ad-close-job]]
+== Step 7: Close the {anomaly-job}
+
+If you need to stop your {anomaly-job}, an orderly shutdown ensures that:
+
+* {dfeeds-cap} are stopped
+* Buffers are flushed
+* Model history is pruned
+* Final results are calculated
+* Model snapshots are saved
+* {anomaly-jobs-cap} are closed
+
+This process ensures that jobs are in a consistent state in case you want to
+subsequently re-open them.
+
+[discrete]
+=== Stopping {dfeeds}
+
+When you stop a {dfeed}, it ceases to retrieve data from {es}. You can stop a
+{dfeed} by using {kib} or the
+{ref}/ml-stop-datafeed.html[stop {dfeeds} API]. For example, the following
+request stops the `feed1` {dfeed}:
+
+[source,console]
+--------------------------------------------------
+POST _ml/datafeeds/feed1/_stop
+--------------------------------------------------
+// TEST[skip:setup:server_metrics_startdf]
+
+NOTE: You must have `manage_ml`, or `manage` cluster privileges to stop {dfeeds}.
+For more information, see {ref}/security-privileges.html[Security privileges].
+
+A {dfeed} can be started and stopped multiple times throughout its lifecycle.
+
+[discrete]
+=== Stopping all {dfeeds}
+
+If you are upgrading your cluster, you can use the following request to stop all
+{dfeeds}:
+
+[source,console]
+----------------------------------
+POST _ml/datafeeds/_all/_stop
+----------------------------------
+// TEST[skip:needs-licence]
+
+[discrete]
+=== Closing {anomaly-jobs}
+
+When you close an {anomaly-job}, it cannot receive data or perform analysis
+operations. If a job is associated with a {dfeed}, you must stop the {dfeed}
+before you can close the job. If the {dfeed} has an end date, the job closes
+automatically on that end date.
+
+You can close a job by using the
+{ref}/ml-close-job.html[close {anomaly-job} API]. For 
+example, the following request closes the `job1` job:
+
+[source,console]
+--------------------------------------------------
+POST _ml/anomaly_detectors/job1/_close
+--------------------------------------------------
+// TEST[skip:setup:server_metrics_openjob]
+
+NOTE: You must have `manage_ml`, or `manage` cluster privileges to stop {dfeeds}.
+For more information, see {ref}/security-privileges.html[Security privileges].
+
+{anomaly-jobs-cap} can be opened and closed multiple times throughout their
+lifecycle.
+
+[discrete]
+=== Closing all {anomaly-jobs}
+
+If you are upgrading your cluster, you can use the following request to close
+all open {anomaly-jobs} on the cluster:
+
+[source,console]
+----------------------------------
+POST _ml/anomaly_detectors/_all/_close
+----------------------------------
+// TEST[skip:needs-licence]
+
+[discrete]
+== Next steps
+
+For a more detailed walk-through of {ml-features}, see <<ml-getting-started>>.

@@ -44,10 +44,10 @@ data by observing historical behavior and adapting to new data. The model
 represents a baseline of normal behavior and can therefore be used to determine
 how anomalous new events are.
 
-{anomaly-detect-cap} results are written for each <<ml-buckets,bucket span>>.
+{anomaly-detect-cap} results are written for each <<bucket-span,bucket span>>.
 These results include scores that are aggregated in order to reduce noise and
 normalized in order to rank the most mathematically significant anomalies. For
-more information, see <<ml-bucket-results>> and <<ml-influencer-results>>.
+more information, see <<ml-ad-bucket-results>> and <<ml-ad-influencer-results>>.
 
 [discrete]
 [[ml-ad-define-problem]]
@@ -87,6 +87,10 @@ a {dfeed} will be required.
 [[ml-ad-create-job]]
 == 3. Create a job
 
+include::ml-jobs.asciidoc[]
+
+include::ml-datafeeds.asciidoc[]
+
 //TBD: Abbreviate this information and mention Fleet integration packages
 
 include::create-jobs.asciidoc[]
@@ -125,8 +129,39 @@ There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 **Anomaly Explorer** and the **Single Metric Viewer**.
 
 [discrete]
+[[ml-ad-bucket-results]]
+=== Bucket results
+
+include::ml-buckets.asciidoc[tag=bucket-results]
+
+[discrete]
+[[ml-ad-influencer-results]]
+=== Influencer results
+
+include::ml-influencers.asciidoc[tag=influencer-results]
+
+[discrete]
+[[ml-ad-model-snapshots]]
+=== Model snapshots
+
+include::ml-model-snapshots.asciidoc[]
+
+[discrete]
+[[ml-ad-tune]]
+== 6. Tune the job
+
+While your {anomaly-job} is open, you might find that you need to alter its
+configuration or settings.
+
+[discrete]
+[[ml-ad-calendars]]
+=== Calendars and scheduled events
+
+include::ml-calendars.asciidoc[]
+
+[discrete]
 [[ml-ad-forecast]]
-== 6. Forecast future behavior
+== 7. Forecast future behavior
 
 After the {ml-features} create baselines of normal behavior for your data,
 you can use that information to extrapolate future behavior.
@@ -166,7 +201,7 @@ different expiration period by using the `expires_in` parameter in the
 
 [discrete]
 [[ml-ad-close-job]]
-== 7. Close the job
+== 8. Close the job
 
 include::stopping-ml.asciidoc[leveloffset=+1]
 
@@ -179,3 +214,9 @@ For more advanced settings and scenarios, see <<anomaly-examples>>.
 
 Refer to <<anomaly-detection-scale>> to learn more about the particularities of 
 large {anomaly-jobs}.
+
+[discrete]
+[[further-reading]]
+== Further reading
+
+https://www.elastic.co/blog/interpretability-in-ml-identifying-anomalies-influencers-root-causes[Interpretability in ML: Identifying anomalies, influencers, and root causes]

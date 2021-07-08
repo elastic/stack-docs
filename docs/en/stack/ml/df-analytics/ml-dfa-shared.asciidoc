@@ -1,12 +1,27 @@
-[role="xpack"]
-[[ml-inference]]
-= {infer-cap}
+tag::dfa-evaluation-intro[]
+Using the {dfanalytics} features to gain insights from a data set is an 
+iterative process. After you defined the problem you want to solve, and chose 
+the analytics type that can help you to do so, you need to produce a 
+high-quality data set and create the appropriate {dfanalytics-job}. You might 
+need to experiment with different configurations, parameters, and ways to 
+transform data before you arrive at a result that satisfies your use case. A 
+valuable companion to this process is the 
+{ref}/evaluate-dfanalytics.html[{evaluatedf-api}], which enables you to evaluate 
+the {dfanalytics} performance. It helps you understand error distributions and 
+identifies the points where the {dfanalytics} model performs well or less 
+trustworthily.
 
+To evaluate the analysis with this API, you need to annotate your index that 
+contains the results of the analysis with a field that marks each document with 
+the ground truth. The {evaluatedf-api} evaluates the performance of the 
+{dfanalytics} against this manually provided ground truth.
+end::dfa-evaluation-intro[]
 
+tag::dfa-inference[]
 {infer-cap} is a {ml} feature that enables you to use supervised {ml} processes 
-– like <<dfa-regression>> or <<dfa-classification>> – not only as a batch 
-analysis but in a continuous fashion. This means that {infer} makes it possible 
-to use <<ml-trained-models,trained {ml} models>> against incoming data.
+– like {regression} or {classification} – not only as a batch analysis but in a 
+continuous fashion. This means that {infer} makes it possible to use 
+<<ml-trained-models,trained {ml} models>> against incoming data.
 
 For instance, suppose you have an online service and you would like to predict 
 whether a customer is likely to churn. You have an index with historical data – 
@@ -15,12 +30,9 @@ a {classification} model that is trained on this data. The new information comes
 into a destination index of a {ctransform}. With {infer}, you can perform the 
 {classanalysis} against the new data with the same input fields that you've 
 trained the model on, and get a prediction.
+end::dfa-inference[]
 
-Let's take a closer look at the machinery behind {infer}.
-
-[[ml-inference-processor]]
-== {infer-cap} processor
-
+tag::dfa-inference-processor[]
 {infer-cap} can be used as a processor specified in an 
 {ref}/pipeline.html[ingest pipeline]. It uses a trained model to infer against
 the data that is being ingested in the pipeline. The model is used on the
@@ -32,11 +44,9 @@ data together with the results are indexed into the destination index.
 Check the {ref}/inference-processor.html[{infer} processor] and 
 {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
 learn more about the feature.
+end::dfa-inference-processor[]
 
-
-[[ml-inference-aggregation]]
-== {infer-cap} aggregation
-
+tag::dfa-inference-aggregation[]
 {infer-cap} can also be used as a pipeline aggregation. You can reference a 
 trained model in the aggregation to infer on the result field of the parent
 bucket aggregation. The {infer} aggregation uses the model on the results to
@@ -57,3 +67,4 @@ Reassign the alias you used to a new trained model ID by using the
 {ref}/put-trained-models-aliases.html[Create or update trained model aliases API].
 The new trained model needs to use the same type of {dfanalytics} as the old 
 one.
+end::dfa-inference-aggregation[]

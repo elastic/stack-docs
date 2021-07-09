@@ -1,7 +1,4 @@
-[role="xpack"]
-[[ml-influencers]]
-= Influencers
-
+tag::influencers[]
 When anomalous events occur, we want to know why. To determine the cause,
 however, you often need a broader knowledge of the domain. If you have
 suspicions about which entities in your dataset are likely causing
@@ -38,10 +35,10 @@ TIP: As a best practice, do not pick too many influencers. For example, you
 generally do not need more than three. If you pick many influencers, the results
 can be overwhelming and there is a small overhead to the analysis.
 
-[discrete]
-[[ml-influencer-results]]
-== Influencer results
 
+end::influencers[]
+
+tag::influencer-results[]
 The influencer results show which entities were anomalous and when. One
 influencer result is written per bucket for each influencer that affects the
 anomalousness of the bucket. The {ml} analytics determine the impact of an 
@@ -83,7 +80,4 @@ bucket-level anomaly scores. If you view swim lanes by influencer, it uses the
 influencer-level anomaly scores, as does the list of top influencers. The list
 of anomalies uses the record-level anomaly scores.
 
-[[further-reading]]
-== Further reading
-
-https://www.elastic.co/blog/interpretability-in-ml-identifying-anomalies-influencers-root-causes[Interpretability in ML: Identifying anomalies, influencers, and root causes]
+end::influencer-results[]

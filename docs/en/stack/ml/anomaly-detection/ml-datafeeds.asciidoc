@@ -19,15 +19,15 @@ the {ref}/ml-put-datafeed.html[create {dfeeds} API].
 
 To start retrieving data from {es}, you must start the {dfeed}. When you start
 it, you can optionally specify start and end times. If you do not specify an
-end time, the {dfeed} runs continuously. You can start and stop {dfeeds} in
+end time, the {dfeed} runs continuously. {dfeeds-cap} with an end time close 
+their corresponding jobs when they are stopped. For this reason, when historical 
+data is analysed, there is no need to stop the datafeed and/or close the job as 
+they are stopped and closed automatically when the end time is reached. However, 
+when a {dfeed} whid an end time is stopped, it does not close the corresponding 
+job automatically. You can start and stop {dfeeds} in
 {kib} or use the {ref}/ml-start-datafeed.html[start {dfeeds}] and
-{ref}/ml-stop-datafeed.html[stop {dfeeds}] APIs. {dfeeds-cap} with an end time 
-close their corresponding jobs when they are stopped. For this reason, when 
-historical data is analysed, there is no need to stop the datafeed and/or close 
-the job as they are stopped and closed automatically when the end time is 
-reached. However, when a {dfeed} whid an end time is stopped, it does not close 
-the corresponding job automatically. A {dfeed} can be started and stopped 
-multiple times throughout its lifecycle.
+{ref}/ml-stop-datafeed.html[stop {dfeeds}] APIs. A {dfeed} can be started and 
+stopped multiple times throughout its lifecycle.
 
 [IMPORTANT]
 --

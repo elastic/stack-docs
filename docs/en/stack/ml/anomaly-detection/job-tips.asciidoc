@@ -1,11 +1,16 @@
 When you create an {anomaly-job} in {kib}, the job creation wizards can
 provide advice based on the characteristics of your data. By heeding these
 suggestions, you can create jobs that are more likely to produce insightful {ml}
-results.
+results. The most important concepts are covered here. For a description of all
+the job properties, see the 
+{ref}/ml-put-job.html[create {anomaly-jobs} API].
+
+[role="screenshot"]
+image::images/ml-single-metric-job-summary.jpg["Example screenshot from the single metric job wizard in Kibana"]
 
 [discrete]
 [[ml-ad-bucket-span]]
-== Bucket span
+=== Bucket span
 
 include::ml-buckets.asciidoc[tag=buckets]
 
@@ -22,7 +27,7 @@ information about choosing an appropriate bucket span, see <<ml-buckets>>.
 
 [discrete]
 [[ml-ad-cardinality]]
-== Cardinality
+=== Cardinality
 
 If there are logical groupings of related entities in your data, {ml} analytics
 can make data models and generate results that take these groupings into
@@ -40,27 +45,34 @@ field to use. For more information, see <<ml-configuring-populations>>.
 
 [discrete]
 [[ml-ad-detectors]]
-== Detectors
+=== Detectors
 
-Each {anomaly-job} must have one or more _detectors_. A detector applies an
-analytical function to specific fields in your data. If your job does not
-contain a  detector or the detector does not contain a 
-<<ml-functions,valid function>>, you receive an error.
+Each {anomaly-job} must have one or more _detectors_. A detector defines the
+type of analysis that will occur and which fields to analyze.
 
-If a job contains duplicate detectors, you also receive an error. Detectors are 
+Detectors can also contain properties that affect which types of entities or
+events are considered anomalous. For example, you can specify whether entities
+are analyzed relative to their own previous behavior or relative to other
+entities in a population. There are also multiple options for splitting the data
+into categories and partitions. Some of these more advanced job configurations
+are described in <<anomaly-examples>>.
+
+If your job does not contain a  detector or the detector does not contain a 
+<<ml-functions,valid function>>, you receive an error. If a job contains
+duplicate detectors, you also receive an error. Detectors are 
 duplicates if they have the same `function`, `field_name`, `by_field_name`, 
 `over_field_name` and `partition_field_name`. 
 
 [discrete]
 [[ml-ad-influencers]]
-== Influencers
+=== Influencers
 
 include::ml-influencers.asciidoc[tag=influencers]
 
 
 [discrete]
 [[ml-ad-model-memory-limits]]
-== Model memory limits
+=== Model memory limits
 
 For each {anomaly-job}, you can optionally specify a `model_memory_limit`, which
 is the approximate maximum amount of memory resources that are required for
@@ -103,7 +115,7 @@ increase the size of the {ml} nodes in your cluster.
 
 [discrete]
 [[ml-ad-dedicated-indices]]
-== Dedicated indices
+=== Dedicated indices
 
 For each {anomaly-job}, you can optionally specify a dedicated index to store 
 the {anomaly-detect} results. As {anomaly-jobs} may produce a large amount 

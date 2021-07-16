@@ -15,21 +15,13 @@ simple <<weblogs-outliers,example>> of how to use it.
 [[dfa-outlier-detection]]
 == {oldetection-cap}
 
-{oldetection-cap} is an analysis for identifying data points whose feature 
-values are different from those of the normal data points in a particular data 
-set. Outliers may denote errors or unusual behavior. {oldetection-cap}, for 
-example, can be used to detect malicious software on a machine, unusual user 
-behavior on a network, or any unusual entity in a given population. As 
-{oldetection} algorithms operate on the assumption that the outliers make up a 
-small proportion of the overall data population. 
-
-The {ml-features} provide unsupervised {oldetection}, which means there is no 
-need to provide a training data set. {oldetection-cap} uses various {ml} 
-techniques to find which data points are unusual compared to the majority of the 
-data points.
+{oldetection-cap} is identification of data points that are significantly 
+different from other values in the data set. For example, outliers could be 
+errors or unusual entities in a data set.
 
 You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
+{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. Since {oldetection} 
+is an unsupervised {ml} technique, there is no need to provide training data.
 
 [discrete]
 [[dfa-outlier-algorithms]]
@@ -46,12 +38,9 @@ In the {stack}, we use an ensemble of four different distance and density based
 //end::outlier-detection-algorithms[]
 
 By default, you don't need to select the methods or provide any parameters, but 
-you can override the default behavior if you like. The basic assumption of the 
-**distance based methods** is that normal data points – in other words, points 
-that are not outliers – have a lot of neighbors nearby, because we expect that 
-in a population the majority of the data points have similar feature values, 
-while the minority of the data points – the outliers – have different feature 
-values and will, therefore, be far away from the normal points.
+you can override the default behavior if you like. **Distance based methods** 
+assume that normal data points remain closer or similar in value while outliers 
+are located far away or significantly differ in value.
 
 //FIGURE ON DISTANCE BASED METHOD
 
@@ -99,15 +88,11 @@ altered data.
 [[dfa-feature-influence]]
 === Feature influence
 
-Besides the {olscore}, another value is calculated during {oldetection}: the 
-feature influence score. There are multiple features of a data point that are 
-analyzed during {oldetection}. An influential feature is a feature of a data 
-point that is responsible for the point being an outlier. The value of feature 
-influence provides a relative ranking of features by their contribution to a 
-point being an outlier. Therefore, while {olscore} tells us whether a data point 
-is an outlier, feature influence shows which features make the point an outlier. 
-By doing this, this value provides context to help understand more about the 
-reasons for the data point being unusual and can drive visualizations.
+Feature influence – another score calculated while detecting outliers – provides 
+a relative ranking of the different features and their contribution towards a 
+point being an outlier. This score allows you to understand the context or 
+the reasoning on why a certain data point is an outlier.
+
 
 //FIGURE ON FEATURE INFLUENCE
 

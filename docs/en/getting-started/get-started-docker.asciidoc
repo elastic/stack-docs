@@ -11,7 +11,7 @@ the {stack}: https://www.docker.elastic.co/.
 To get the default distributions of {es} and {kib} up and running in Docker, 
 you can use Docker Compose.
 
-. Create a `docker-compose.yml` file for the Elastic Stack. 
+. Create an `.env` and `docker-compose.yml` file for the Elastic Stack.
 The following example brings up a three node cluster and Kibana so you can see how things work.
 This all-in-one configuration is a handy way to bring up your first dev cluster before
 you build a distributed deployment with multiple hosts.
@@ -22,6 +22,14 @@ so the sample compose file is not yet available for this version.
 See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
 endif::[]
 ifeval::["{release-state}"!="unreleased"]
+`.env`:
+["source","txt",subs="attributes"]
+----
+COMPOSE_PROJECT_NAME=es
+VERSION={version}
+----
+
+`.docker-compose.yml`:
 ["source","yaml",subs="attributes"]
 --------------------------------------------
 include::docker/docker-compose.yml[]

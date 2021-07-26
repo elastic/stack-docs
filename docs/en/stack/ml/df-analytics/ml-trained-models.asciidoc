@@ -126,15 +126,13 @@ curl -u username:password \
 * Models exported from the {ref}/get-trained-models.html[get trained models API]
 are limited in size by the
 {ref}/modules-network.html[http.max_content_length]
-global configuration value in Elasticsearch. The default value is `100mb` and
-may need to be increased depending on the size of model being exported.
+global configuration value in {es}. The default value is `100mb` and may need to 
+be increased depending on the size of model being exported.
 
-* Connection timeouts can occur when either the source or destination
-cluster is under load, or when model sizes are very large. Increasing
+* Connection timeouts can occur, for example, when model sizes are very large or 
+your cluster is under load. If needed, you can increase
 https://ec.haxx.se/usingcurl/usingcurl-timeouts[timeout configurations] for
-`curl` (e.g. `curl --max-time 600`) or your client of choice will help
-alleviate the problem. In rare cases you may need to reduce load on the
-Elasticsearch cluster, for example by adding nodes.
+`curl` (for example, `curl --max-time 600`) or your client of choice.
 --
 
 

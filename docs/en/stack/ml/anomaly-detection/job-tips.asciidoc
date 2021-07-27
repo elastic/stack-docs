@@ -1,12 +1,13 @@
 When you create an {anomaly-job} in {kib}, the job creation wizards can
 provide advice based on the characteristics of your data. By heeding these
 suggestions, you can create jobs that are more likely to produce insightful {ml}
-results. The most important concepts are covered here. For a description of all
+results. The most important concepts are covered here; for a description of all
 the job properties, see the 
 {ref}/ml-put-job.html[create {anomaly-jobs} API].
 
 [role="screenshot"]
 image::images/ml-single-metric-job-summary.jpg["Example screenshot from the single metric job wizard in Kibana"]
+//TBD: Replace with diagram of datafeeds, jobs, detectors, etc?
 
 [discrete]
 [[ml-ad-bucket-span]]
@@ -14,16 +15,11 @@ image::images/ml-single-metric-job-summary.jpg["Example screenshot from the sing
 
 include::ml-buckets.asciidoc[tag=buckets]
 
-The bucket span is the time interval that {ml} analytics use to summarize and
-model data for your job. When you create an {anomaly-job} in {kib}, you can
-choose to estimate a bucket span value based on your data characteristics. 
-
-NOTE: The bucket span must contain a valid time interval. See
-{time-units}[Time units].
-
-If you choose a value that is larger than one day or is significantly different 
-than the estimated value, you receive an informational message. For more 
-information about choosing an appropriate bucket span, see <<ml-buckets>>.
+The bucket span must contain a valid {time-units}[time interval]. When you
+create an {anomaly-job} in {kib}, you can choose to estimate a bucket span value
+based on your data characteristics. If you choose a value that is larger than
+one day or is significantly different than the estimated value, you receive an
+informational message.
 
 [discrete]
 [[ml-ad-cardinality]]
@@ -35,13 +31,12 @@ consideration. For example, you might choose to split your data by user ID and
 detect when users are accessing resources differently than they usually do.
 
 If the field that you use to split your data has many different values, the
-job uses more memory resources. In particular, if the cardinality of the
+job uses more memory resources. In {kib}, if the cardinality of the
 `by_field_name`, `over_field_name`, or `partition_field_name` is greater than 
-1000, you are advised that there might be high memory usage. 
-
+1000, the job creation wizards advise that there might be high memory usage. 
 Likewise if you are performing population analysis and the cardinality of the
 `over_field_name` is below 10, you are advised that this might not be a suitable
-field to use. For more information, see <<ml-configuring-populations>>.
+field to use.
 
 [discrete]
 [[ml-ad-detectors]]

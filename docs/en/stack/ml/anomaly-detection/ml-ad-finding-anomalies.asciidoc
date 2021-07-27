@@ -46,8 +46,7 @@ how anomalous new events are.
 
 {anomaly-detect-cap} results are written for each <<bucket-span,bucket span>>.
 These results include scores that are aggregated in order to reduce noise and
-normalized in order to rank the most mathematically significant anomalies. For
-more information, see <<ml-ad-bucket-results>> and <<ml-ad-influencer-results>>.
+normalized in order to rank the most mathematically significant anomalies.
 
 [discrete]
 [[ml-ad-define-problem]]
@@ -102,24 +101,26 @@ wizards to simplify the process:
 [role="screenshot"]
 image::images/ml-create-job.jpg[Create New Job]
 
-A _single metric job_ is a simple job that contains a single _detector_. A
-detector applies an analytical function to specific fields in your data. In
-addition to limiting the number of detectors, the single metric job
-creation wizard omits many of the more advanced configuration options.
+* The single metric wizard creates simple jobs that have a single detector. A
+_detector_ applies an analytical function to specific fields in your data. In
+addition to limiting the number of detectors, the single metric wizard omits
+many of the more advanced configuration options.
 
-A _multi-metric job_ can contain more than one detector, which is more efficient
-than running multiple jobs against the same data.
+* The multi-metric wizard creates jobs that can have more than one detector,
+which is more efficient than running multiple jobs against the same data.
 
-A _population job_ detects activity that is unusual compared to the behavior of
-the population. For more information, see <<ml-configuring-populations>>.
+* The population wizard creates jobs that detect activity that is unusual compared
+to the behavior of the population. For more information, see
+<<ml-configuring-populations>>.
 
-A _categorization job_ groups log messages into categories and uses count or
-rare functions to detect anomalies within them. See <<ml-configuring-categories>>.
+* The categorization wizard creates jobs that group log messages into categories
+and use `count` or `rare` functions to detect anomalies within them. See
+<<ml-configuring-categories>>.
 
-//TBD A _rare job_ ...
+* The advanced wizard creates jobs that can have multiple detectors and enables
+you to configure all job settings.
 
-An _advanced job_ can contain multiple detectors and enables you to configure all
-job settings.
+//TBD The rare wizard creates jobs that use `rare` or `freq_rare` functions to detect
 
 {kib} can also recognize certain types of data and provide specialized wizards
 for that context. For example, there are {anomaly-jobs} for the sample

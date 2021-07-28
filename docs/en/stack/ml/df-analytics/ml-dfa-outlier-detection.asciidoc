@@ -17,11 +17,13 @@ simple <<weblogs-outliers,example>> of how to use it.
 
 {oldetection-cap} is identification of data points that are significantly 
 different from other values in the data set. For example, outliers could be 
-errors or unusual entities in a data set.
+errors or unusual entities in a data set. {oldetection-cap} is an unsupervised 
+{ml} technique, there is no need to provide training data.
 
-You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. Since {oldetection} 
-is an unsupervised {ml} technique, there is no need to provide training data.
+IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data 
+once. If new data comes into the index, you need to do the analysis again on the 
+altered data.
+
 
 [discrete]
 [[dfa-outlier-algorithms]]
@@ -31,62 +33,38 @@ is an unsupervised {ml} technique, there is no need to provide training data.
 In the {stack}, we use an ensemble of four different distance and density based 
 {oldetection} methods:
 
-* distance of K^th^ nearest neighbor
-* distance of K-nearest neighbors
-* local outlier factor (`lof`)
-* local distance-based outlier factor (`ldof`).
-//end::outlier-detection-algorithms[]
-
-By default, you don't need to select the methods or provide any parameters, but 
-you can override the default behavior if you like. **Distance based methods** 
-assume that normal data points remain closer or similar in value while outliers 
-are located far away or significantly differ in value.
-
-//FIGURE ON DISTANCE BASED METHOD
-
-The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
-distance of the data point to its K^th^ nearest neighbor where K is a small 
-number and usually independent of the total number of data points. The higher 
-this distance the more the data point is an outlier.
-
-The distance of K-nearest neighbors method (`distance_knn`) calculates the 
-average distance of the data points to their nearest neighbors. Points with the 
-largest average distance will be the most outlying.
-
-While the results of the distance based methods are easy to interpret, their 
-drawback is that they don't take into account the density variations of a data 
-set. This is the point where **density based methods** come into the picture, 
-they are used for mitigating this problem. These methods take into account not 
-only the distance of the points to their K nearest neighbors but also the 
-distance of these neighbors to their neighbors.
-
-//[role="screenshot"]
-//image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
-
-Based on this approach, a metric is computed called local outlier factor (`lof`) 
-for each data point. The higher the local outlier factor, the more outlying the 
-data point is.
-
-The other density based method that {oldetection} uses is the local 
-distance-based outlier factor (`ldof`). Ldof is a ratio of two measures: the 
+* distance of K^th^ nearest neighbor: computes the distance of the data point to 
+its K^th^ nearest neighbor where K is a small number and usually independent of 
+the total number of data points.
+* distance of K-nearest neighbors: calculates the average distance of the data 
+points to their nearest neighbors. Points with the largest average distance will 
+be the most outlying.
+* local outlier factor (`lof`): takes into account the distance of the points to 
+their K nearest neighbors and also the distance of these neighbors to their 
+neighbors.
+* local distance-based outlier factor (`ldof`): is a ratio of two measures: the 
 first computes the average distance of the data point to its K nearest 
 neighbors; the second computes the average of the pairwise distances of the 
 neighbors themselves.
+//end::outlier-detection-algorithms[]
 
-These four algorithms work differently, so they don't always agree on which 
-points are outliers. By default, we use all these methods during {oldetection}, 
-then normalize and combine their results and give every datapoint in the index 
-an {olscore}. The {olscore} ranges from 0 to 1, where the higher number 
-represents the chance that the data point is an outlier compared to the other 
-data points in the index.
+You don't need to select the methods or provide any parameters, but you can 
+override the default behavior if you like. **Distance based methods** assume 
+that normal data points remain closer or similar in value while outliers are 
+located far away or significantly differ in value. The drawback of these methods 
+is that they don't take into account the density variations of a data set. 
+**Density based methods** are used for mitigating this problem.
 
-IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data 
-once. If new data comes into the index, you need to do the analysis again on the 
-altered data.
+The four algorithms don't always agree on which points are outliers. By default, 
+we use all these methods during {oldetection}, then normalize and combine their 
+results and give every datapoint in the index an {olscore}. The {olscore} ranges 
+from 0 to 1, where the higher number represents the chance that the data point 
+is an outlier compared to the other data points in the index.
+
 
 [discrete]
 [[dfa-feature-influence]]
-=== Feature influence
+==== Feature influence
 
 Feature influence – another score calculated while detecting outliers – provides 
 a relative ranking of the different features and their contribution towards a 
@@ -94,11 +72,86 @@ point being an outlier. This score allows you to understand the context or
 the reasoning on why a certain data point is an outlier.
 
 
-//FIGURE ON FEATURE INFLUENCE
+[discrete]
+[[dfa-outlier-detection-problem]]
+=== 1. Define the problem
+
+{oldetection-cap} in the {stack} can be used to detect any unusual enitity in a 
+given population. For example, to detect malicious software on a machine or
+unusual user behavior on a network. As {oldetection} operates on the assumption 
+that the outliers make up a small proportion of the overall data population, you 
+can use this feature in such cases. {oldetection-cap} is a batch analysis that 
+works best on an entity-centric index. If your use case is based on time series 
+data, you might want to use <<ml-ad-finding-anomalies, {anomaly-detect}>> 
+instead.
+
+The {ml-features} provide unsupervised {oldetection}, which means there is no 
+need to provide a training data set.
+
+
+[discrete]
+[[dfa-outlier-detection-environment]]
+=== 2. Set up the environment
+
+If you want to use {ml-features}, there must be at least one {ml} node in your 
+cluster and all master-eligible nodes must have {ml} enabled. By default, all 
+nodes are {ml} nodes. For more information about these settings, see 
+{ref}/modules-node.html#ml-node[{ml} nodes].
+
+If {stack-security-features} are enabled, you must also ensure your users have
+the necessary privileges. See <<setup>>.
+
+
+[discrete]
+[[dfa-outlier-detection-prepare-data]]
+=== 3. Prepare and transform data
+
+{oldetection-cap} requires specifically structured source data: a two 
+dimensional tabular data structure. For this reason, you might need to 
+{ref}/transforms.html[{transform}] your data to create a {dataframe} which can 
+be used as the source for {oldetection}.
+
+You can find an example of how to transform your data into an entity-centric 
+index in <<weblogs-outliers, this section>>.
+
+
+[discrete]
+[[dfa-outlier-detection-create-job]]
+=== 4. Create a job
+
+{dfanalytics-jobs-cap} contain the configuration information and metadata 
+necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
+{kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
+Select {oldetection} as the analytics type that the {dfanalytics-job} performs. 
+You can also decide to include and exclude fields to/from the analysis when you 
+create the job.
+
+
+[discrete]
+[[dfa-outlier-detection-start]]
+=== 5. Start the job
+
+You can start the job via {kib} or using the 
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. An {oldetection} job 
+has four phases: 
+* `reindexing`: documents are copied from the source index to the destination 
+index.
+* `loading_data`: the job fatches the necessary data from the destination index.
+* `computing_outliers`: the job identifies outliers in the data.
+* `writing_results`: the job matches the results with the data rows in the 
+destination index, merges them, and indexes them back to the destination index.
+
+After the last phase is finished, the job stops and the results are ready for 
+evaluation.
+
+{oldetection-cap} jobs – unlike other {dfanalytics-jobs} – run one time in their 
+life cycle. If you'd like to run the analysis again, you need to create a new 
+job.
+
 
 [discrete]
 [[ml-outlier-detection-evaluate]]
-=== {oldetection-cap} evaluation
+=== 6. Evaluate the results
 
 include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
 
@@ -130,11 +183,10 @@ Although, the {evaluatedf-api} can compute the confusion matrix out of the
 analysis results, these results are not binary values (class member/not 
 class member), but a number between 0 and 1 (which called the {olscore} in case 
 of {oldetection}). This value captures how likely it is for a data point to be a 
-member of a certain class. It means that it is up to the user who is evaluating 
-the results to decide what is the threshold or cutoff point at which the data 
-point will be considered as a member of the given class. For example, in the 
-case of {oldetection} the user can say that all the data points with an 
-{olscore} higher than 0.5 will be considered as outliers.
+member of a certain class. It means that it is up to the user to decide what is 
+the threshold or cutoff point at which the data point will be considered as a 
+member of the given class. For example, the user can say that all the data 
+points with an {olscore} higher than 0.5 will be considered as outliers.
 
 To take this complexity into account, the {evaluatedf-api} returns the confusion 
 matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
@@ -146,14 +198,13 @@ matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
 Precision and recall values summarize the algorithm performance as a single 
 number that makes it easier to compare the evaluation results.
 
-Precision shows how many of the data points that the algorithm identified as 
-class members were actually class members. It is the number of true positives 
-divided by the sum of the true positives and false positives (TP/(TP+FP)).
+Precision shows how many of the data points that were identified as class 
+members are actually class members. It is the number of true positives divided 
+by the sum of the true positives and false positives (TP/(TP+FP)).
 
-Recall answers a slightly different question. This value shows how many of the 
-data points that are actual class members were identified correctly as class 
-members. It is the number of true positives divided by the sum of the true 
-positives and false negatives (TP/(TP+FN)).
+Recall shows how many of the data points that are actual class members were 
+identified correctly as class members. It is the number of true positives 
+divided by the sum of the true positives and false negatives (TP/(TP+FN)).
 
 Precision and recall are computed at different threshold levels.
 
@@ -508,8 +559,8 @@ the destination indices and index patterns.
 
 
 [discrete]
-[[outlier-detection-next]]
-=== What's next
+[[outlier-detection-reading]]
+=== Further reading
 
 * If you want to see another example of {oldetection} in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Outlier%20Detection/Introduction[click here].

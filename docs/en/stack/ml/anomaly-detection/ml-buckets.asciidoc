@@ -1,7 +1,4 @@
-[role="xpack"]
-[[ml-buckets]]
-= Buckets
-
+tag::buckets[]
 The {ml-features} use the concept of a _bucket_ to divide the time series into
 batches for processing.
 
@@ -17,11 +14,9 @@ The bucket span has two purposes: it dictates over what time span to look for an
 
 The bucket span has a significant impact on the analysis. When you’re trying to determine what value to use, take into account the granularity at which you want to perform the analysis, the frequency of the input data, the duration of typical anomalies, and the frequency at which alerting is required.
 ////
+end::buckets[]
 
-[discrete]
-[[ml-bucket-results]]
-== Bucket results
-
+tag::bucket-results[]
 When you view your {ml} results, each bucket has an anomaly score. This score is
 a statistically aggregated and normalized view of the combined anomalousness of
 all the record results in the bucket.
@@ -53,3 +48,4 @@ ideal for alerts. For example, the bucket results might indicate that at 16:05
 the system was unusual. This information is a summary of all the anomalies,
 pinpointing when they occurred. When you identify an anomalous bucket, you can
 investigate further by examining the pertinent records.
+end::bucket-results[]

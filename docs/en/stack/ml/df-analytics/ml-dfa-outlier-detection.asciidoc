@@ -7,14 +7,6 @@
 :description: An introduction to {ml} {oldetection}, which enables you to  \
 find unusual data points in a data set compared to the normal data points.
 
-This page contains a conceptual overview of {oldetection} in the {stack} and a 
-simple <<weblogs-outliers,example>> of how to use it.
-
-
-[discrete]
-[[dfa-outlier-detection]]
-== {oldetection-cap}
-
 {oldetection-cap} is identification of data points that are significantly 
 different from other values in the data set. For example, outliers could be 
 errors or unusual entities in a data set. {oldetection-cap} is an unsupervised 
@@ -27,7 +19,7 @@ altered data.
 
 [discrete]
 [[dfa-outlier-algorithms]]
-=== {oldetection-cap} algorithms
+== {oldetection-cap} algorithms
 
 //tag::outlier-detection-algorithms[]
 In the {stack}, we use an ensemble of four different distance and density based 
@@ -49,14 +41,14 @@ neighbors themselves.
 //end::outlier-detection-algorithms[]
 
 You don't need to select the methods or provide any parameters, but you can 
-override the default behavior if you like. **Distance based methods** assume 
+override the default behavior if you like. _Distance based methods_ assume 
 that normal data points remain closer or similar in value while outliers are 
 located far away or significantly differ in value. The drawback of these methods 
 is that they don't take into account the density variations of a data set. 
-**Density based methods** are used for mitigating this problem.
+_Density based methods_ are used for mitigating this problem.
 
 The four algorithms don't always agree on which points are outliers. By default, 
-we use all these methods during {oldetection}, then normalize and combine their 
+{oldetection} jobs use all these methods, then normalize and combine their 
 results and give every datapoint in the index an {olscore}. The {olscore} ranges 
 from 0 to 1, where the higher number represents the chance that the data point 
 is an outlier compared to the other data points in the index.
@@ -64,7 +56,7 @@ is an outlier compared to the other data points in the index.
 
 [discrete]
 [[dfa-feature-influence]]
-==== Feature influence
+=== Feature influence
 
 Feature influence – another score calculated while detecting outliers – provides 
 a relative ranking of the different features and their contribution towards a 
@@ -74,7 +66,7 @@ the reasoning on why a certain data point is an outlier.
 
 [discrete]
 [[dfa-outlier-detection-problem]]
-=== 1. Define the problem
+== 1. Define the problem
 
 {oldetection-cap} in the {stack} can be used to detect any unusual enitity in a 
 given population. For example, to detect malicious software on a machine or
@@ -91,7 +83,7 @@ need to provide a training data set.
 
 [discrete]
 [[dfa-outlier-detection-environment]]
-=== 2. Set up the environment
+== 2. Set up the environment
 
 If you want to use {ml-features}, there must be at least one {ml} node in your 
 cluster and all master-eligible nodes must have {ml} enabled. By default, all 
@@ -104,7 +96,7 @@ the necessary privileges. See <<setup>>.
 
 [discrete]
 [[dfa-outlier-detection-prepare-data]]
-=== 3. Prepare and transform data
+== 3. Prepare and transform data
 
 {oldetection-cap} requires specifically structured source data: a two 
 dimensional tabular data structure. For this reason, you might need to 
@@ -117,7 +109,7 @@ index in <<weblogs-outliers, this section>>.
 
 [discrete]
 [[dfa-outlier-detection-create-job]]
-=== 4. Create a job
+== 4. Create a job
 
 {dfanalytics-jobs-cap} contain the configuration information and metadata 
 necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
@@ -129,11 +121,12 @@ create the job.
 
 [discrete]
 [[dfa-outlier-detection-start]]
-=== 5. Start the job
+== 5. Start the job
 
 You can start the job via {kib} or using the 
 {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. An {oldetection} job 
 has four phases: 
+
 * `reindexing`: documents are copied from the source index to the destination 
 index.
 * `loading_data`: the job fatches the necessary data from the destination index.
@@ -151,7 +144,7 @@ job.
 
 [discrete]
 [[ml-outlier-detection-evaluate]]
-=== 6. Evaluate the results
+== 6. Evaluate the results
 
 include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
 
@@ -165,7 +158,7 @@ model performance:
 
 [discrete]
 [[ml-dfanalytics-confusion-matrix]]
-==== Confusion matrix
+=== Confusion matrix
 
 A confusion matrix provides four measures of how well the {dfanalytics} worked 
 on your data set:
@@ -193,7 +186,7 @@ matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
 
 [discrete]
 [[ml-dfanalytics-precision-recall]]
-==== Precision and recall
+=== Precision and recall
 
 Precision and recall values summarize the algorithm performance as a single 
 number that makes it easier to compare the evaluation results.
@@ -211,7 +204,7 @@ Precision and recall are computed at different threshold levels.
 
 [discrete]
 [[ml-dfanalytics-roc]]
-==== Receiver operating characteristic curve
+=== Receiver operating characteristic curve
 
 The receiver operating characteristic (ROC) curve is a plot that represents the 
 performance of the binary classification process at different thresholds. It 
@@ -560,7 +553,7 @@ the destination indices and index patterns.
 
 [discrete]
 [[outlier-detection-reading]]
-=== Further reading
+== Further reading
 
 * If you want to see another example of {oldetection} in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Outlier%20Detection/Introduction[click here].

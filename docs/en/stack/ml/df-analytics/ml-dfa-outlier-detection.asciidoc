@@ -7,122 +7,150 @@
 :description: An introduction to {ml} {oldetection}, which enables you to  \
 find unusual data points in a data set compared to the normal data points.
 
-This page contains a conceptual overview of {oldetection} in the {stack} and a 
-simple <<ecommerce-outliers,example>> of how to use it.
-
-
-[discrete]
-[[dfa-outlier-detection]]
-== {oldetection-cap}
-
-{oldetection-cap} is an analysis for identifying data points (outliers) whose 
-feature values are different from those of the normal data points in a 
-particular data set. Outliers may denote errors or unusual behavior. 
-{oldetection-cap}, for example, can be used to detect malicious software on a 
-machine, unusual user behavior on a network, or any unusual entity in a given 
-population. As {oldetection} algorithms operate on the assumption that the 
-outliers make up a small proportion of the overall data population. 
-
-The {ml-features} provide unsupervised {oldetection}, which means there is no 
-need to provide a training data set. Unsupervised {oldetection} uses various 
-machine learning techniques to find which data points are unusual compared to 
-the majority of the data points.
-
-You can create {oldetection} {dfanalytics-jobs} in {kib} or by using the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API].
-
-[discrete]
-[[dfa-outlier-algorithms]]
-=== {oldetection-cap} algorithms
-
-//tag::outlier-detection-algorithms[]
-In the {stack}, we use an ensemble of four different distance and density based 
-{oldetection} methods:
-
-* distance of K^th^ nearest neighbor
-* distance of K-nearest neighbors
-* local outlier factor (`lof`)
-* local distance-based outlier factor (`ldof`).
-//end::outlier-detection-algorithms[]
-
-By default, you don't need to select the methods or 
-provide any parameters, but you can override the default behavior if you like. 
-The basic assumption of the **distance based methods** is that normal data 
-points – in other words, points that are not outliers – have a lot of neighbors 
-nearby, because we expect that in a population the majority of the data points 
-have similar feature values, while the minority of the data points – the 
-outliers – have different feature values and will, therefore, be far away from 
-the normal points.
-
-//FIGURE ON DISTANCE BASED METHOD
-
-The distance of K^th^ nearest neighbor method (`distance_kth_nn`) computes the 
-distance of the data point to its K^th^ nearest neighbor where K is a small 
-number and usually independent of the total number of data points. The higher 
-this distance the more the data point is an outlier.
-
-The distance of K-nearest neighbors method (`distance_knn`) calculates the 
-average distance of the data points to their nearest neighbors. Points with the 
-largest average distance will be the most outlying.
-
-While the results of the distance based methods are easy to interpret, their 
-drawback is that they don't take into account the density variations of a 
-data set. This is the point where **density based methods** come into the 
-picture, they are used for mitigating this problem. These methods take into 
-account not only the distance of the points to their K nearest neighbors but 
-also the distance of these neighbors to their neighbors.
-
-//[role="screenshot"]
-//image::ml/images/ml-densitybm.jpg["Density based method – By Chire - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=10423954"]
-
-Based on this approach, a metric is computed called local outlier factor 
-(`lof`) for each data point. The higher the local outlier factor, the more 
-outlying is the data point.
-
-The other density based method that {oldetection} uses is the local 
-distance-based outlier factor (`ldof`). Ldof is a ratio of two measures: the 
-first computes the average distance of the data point to its K nearest 
-neighbors; the second computes the average of the pairwise distances of the 
-neighbors themselves. Again, the higher the value the more the data point is an 
-outlier.
-
-As you can see, these four algorithms work differently, so they don't always 
-agree on which points are outliers. By default, we use all these methods during 
-{oldetection}, then normalize and combine their results and give every datapoint 
-in the index an {olscore}. The {olscore} ranges from 0 to 1, where the higher 
-number represents the chance that the data point is an outlier compared to the 
-other data points in the index.
+{oldetection-cap} is identification of data points that are significantly 
+different from other values in the data set. For example, outliers could be 
+errors or unusual entities in a data set. {oldetection-cap} is an unsupervised 
+{ml} technique, there is no need to provide training data.
 
 IMPORTANT: {oldetection-cap} is a batch analysis, it runs against your data 
 once. If new data comes into the index, you need to do the analysis again on the 
 altered data.
 
+
+[discrete]
+[[dfa-outlier-algorithms]]
+== {oldetection-cap} algorithms
+
+//tag::outlier-detection-algorithms[]
+In the {stack}, we use an ensemble of four different distance and density based 
+{oldetection} methods:
+
+* distance of K^th^ nearest neighbor: computes the distance of the data point to 
+its K^th^ nearest neighbor where K is a small number and usually independent of 
+the total number of data points.
+* distance of K-nearest neighbors: calculates the average distance of the data 
+points to their nearest neighbors. Points with the largest average distance will 
+be the most outlying.
+* local outlier factor (`lof`): takes into account the distance of the points to 
+their K nearest neighbors and also the distance of these neighbors to their 
+neighbors.
+* local distance-based outlier factor (`ldof`): is a ratio of two measures: the 
+first computes the average distance of the data point to its K nearest 
+neighbors; the second computes the average of the pairwise distances of the 
+neighbors themselves.
+//end::outlier-detection-algorithms[]
+
+You don't need to select the methods or provide any parameters, but you can 
+override the default behavior if you like. _Distance based methods_ assume 
+that normal data points remain closer or similar in value while outliers are 
+located far away or significantly differ in value. The drawback of these methods 
+is that they don't take into account the density variations of a data set. 
+_Density based methods_ are used for mitigating this problem.
+
+The four algorithms don't always agree on which points are outliers. By default, 
+{oldetection} jobs use all these methods, then normalize and combine their 
+results and give every datapoint in the index an {olscore}. The {olscore} ranges 
+from 0 to 1, where the higher number represents the chance that the data point 
+is an outlier compared to the other data points in the index.
+
+
 [discrete]
 [[dfa-feature-influence]]
 === Feature influence
 
-Besides the {olscore}, another value is calculated during {oldetection}: 
-the feature influence score. As we mentioned, there are multiple features of a 
-data point that are analyzed during {oldetection}. An influential feature is a 
-feature of a data point that is responsible for the point being an outlier. The 
-value of feature influence provides a relative ranking of features by their 
-contribution to a point being an outlier. Therefore, while {olscore} tells us 
-whether a data point is an outlier, feature influence shows which features make 
-the point an outlier. By doing this, this value provides context to help 
-understand more about the reasons for the data point being unusual and can drive 
-visualizations.
+Feature influence – another score calculated while detecting outliers – provides 
+a relative ranking of the different features and their contribution towards a 
+point being an outlier. This score allows you to understand the context or 
+the reasoning on why a certain data point is an outlier.
 
-//FIGURE ON FEATURE INFLUENCE
+
+[discrete]
+[[dfa-outlier-detection-problem]]
+== 1. Define the problem
+
+{oldetection-cap} in the {stack} can be used to detect any unusual enitity in a 
+given population. For example, to detect malicious software on a machine or
+unusual user behavior on a network. As {oldetection} operates on the assumption 
+that the outliers make up a small proportion of the overall data population, you 
+can use this feature in such cases. {oldetection-cap} is a batch analysis that 
+works best on an entity-centric index. If your use case is based on time series 
+data, you might want to use <<ml-ad-finding-anomalies, {anomaly-detect}>> 
+instead.
+
+The {ml-features} provide unsupervised {oldetection}, which means there is no 
+need to provide a training data set.
+
+
+[discrete]
+[[dfa-outlier-detection-environment]]
+== 2. Set up the environment
+
+If you want to use {ml-features}, there must be at least one {ml} node in your 
+cluster and all master-eligible nodes must have {ml} enabled. By default, all 
+nodes are {ml} nodes. For more information about these settings, see 
+{ref}/modules-node.html#ml-node[{ml} nodes].
+
+If {stack-security-features} are enabled, you must also ensure your users have
+the necessary privileges. See <<setup>>.
+
+
+[discrete]
+[[dfa-outlier-detection-prepare-data]]
+== 3. Prepare and transform data
+
+{oldetection-cap} requires specifically structured source data: a two 
+dimensional tabular data structure. For this reason, you might need to 
+{ref}/transforms.html[{transform}] your data to create a {dataframe} which can 
+be used as the source for {oldetection}.
+
+You can find an example of how to transform your data into an entity-centric 
+index in <<weblogs-outliers, this section>>.
+
+
+[discrete]
+[[dfa-outlier-detection-create-job]]
+== 4. Create a job
+
+{dfanalytics-jobs-cap} contain the configuration information and metadata 
+necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
+{kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
+Select {oldetection} as the analytics type that the {dfanalytics-job} performs. 
+You can also decide to include and exclude fields to/from the analysis when you 
+create the job.
+
+
+[discrete]
+[[dfa-outlier-detection-start]]
+== 5. Start the job
+
+You can start the job via {kib} or using the 
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. An {oldetection} job 
+has four phases: 
+
+* `reindexing`: documents are copied from the source index to the destination 
+  index.
+* `loading_data`: the job fatches the necessary data from the destination index.
+* `computing_outliers`: the job identifies outliers in the data.
+* `writing_results`: the job matches the results with the data rows in the 
+  destination index, merges them, and indexes them back to the destination 
+  index.
+
+After the last phase is finished, the job stops and the results are ready for 
+evaluation.
+
+{oldetection-cap} jobs – unlike other {dfanalytics-jobs} – run one time in their 
+life cycle. If you'd like to run the analysis again, you need to create a new 
+job.
+
 
 [discrete]
 [[ml-outlier-detection-evaluate]]
-=== {oldetection-cap} evaluation
+== 6. Evaluate the results
 
 include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
 
-The {oldetection} evaluation type is suitable for analyses which calculate a 
-probability that each data point in a data set is a member of a class or not. It 
-offers the following metrics to evaluate the model performance:
+The {oldetection} evaluation type offers the following metrics to evaluate the 
+model performance:
 
 * confusion matrix
 * precision
@@ -131,7 +159,7 @@ offers the following metrics to evaluate the model performance:
 
 [discrete]
 [[ml-dfanalytics-confusion-matrix]]
-==== Confusion matrix
+=== Confusion matrix
 
 A confusion matrix provides four measures of how well the {dfanalytics} worked 
 on your data set:
@@ -148,40 +176,36 @@ class members.
 Although, the {evaluatedf-api} can compute the confusion matrix out of the 
 analysis results, these results are not binary values (class member/not 
 class member), but a number between 0 and 1 (which called the {olscore} in case 
-of {oldetection}). This value captures how likely it is for a data 
-point to be a member of a certain class. It means that it is up to the user who 
-is evaluating the results to decide what is the threshold or cutoff point at 
-which the data point will be considered as a member of the given class. For 
-example, in the case of {oldetection} the user can say that all the data points 
-with an {olscore} higher than 0.5 will be considered as outliers.
+of {oldetection}). This value captures how likely it is for a data point to be a 
+member of a certain class. It means that it is up to the user to decide what is 
+the threshold or cutoff point at which the data point will be considered as a 
+member of the given class. For example, the user can say that all the data 
+points with an {olscore} higher than 0.5 will be considered as outliers.
 
 To take this complexity into account, the {evaluatedf-api} returns the confusion 
 matrix at different thresholds (by default, 0.25, 0.5, and 0.75).
 
 [discrete]
 [[ml-dfanalytics-precision-recall]]
-==== Precision and recall
+=== Precision and recall
 
-A confusion matrix is a useful measure, but it could be hard to compare the 
-results across the different algorithms. Precision and recall values
-summarize the algorithm performance as a single number that makes it easier to 
-compare the evaluation results.
+Precision and recall values summarize the algorithm performance as a single 
+number that makes it easier to compare the evaluation results.
 
-Precision shows how many of the data points that the algorithm identified as 
-class members were actually class members. It is the number of true positives 
-divided by the sum of the true positives and false positives (TP/(TP+FP)).
+Precision shows how many of the data points that were identified as class 
+members are actually class members. It is the number of true positives divided 
+by the sum of the true positives and false positives (TP/(TP+FP)).
 
-Recall answers a slightly different question. This value shows how many of the 
-data points that are actual class members were identified correctly as class 
-members. It is the number of true positives divided by the sum of the true 
-positives and false negatives (TP/(TP+FN)).
+Recall shows how many of the data points that are actual class members were 
+identified correctly as class members. It is the number of true positives 
+divided by the sum of the true positives and false negatives (TP/(TP+FN)).
 
-As was the case for the confusion matrix, you also need to define different 
-threshold levels for computing precision and recall.
+Precision and recall are computed at different threshold levels.
+
 
 [discrete]
 [[ml-dfanalytics-roc]]
-==== Receiver operating characteristic curve
+=== Receiver operating characteristic curve
 
 The receiver operating characteristic (ROC) curve is a plot that represents the 
 performance of the binary classification process at different thresholds. It 
@@ -196,19 +220,19 @@ the algorithm performance by using these values.
 
 
 [discrete]
-[[ecommerce-outliers]]
-== Detecting unusual behavior in the eCommerce data set
+[[weblogs-outliers]]
+== Detecting unusual behavior in the logs data set
 
-The goal of <<dfa-outlier-detection,{oldetection}>> is to find the most unusual
-documents in an index. Let's try to detect unusual customer behavior in the 
-{kibana-ref}/get-started.html#gs-get-data-into-kibana[eCommerce sample data set]. 
+The goal of {oldetection} is to find the most unusual documents in an index. 
+Let's try to detect unusual behavior in the 
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[data logs sample data set]. 
 
-. Verify that your environment is set up properly to use {ml-features}. 
-If the {es} {security-features} are enabled, you need a user that has authority
-to create and manage {dfanalytics-jobs}. See <<setup>>.
+. Verify that your environment is set up properly to use {ml-features}. If the 
+{es} {security-features} are enabled, you need a user that has authority to 
+create and manage {dfanalytics-jobs}. See <<setup>>.
 +
 --
-Since we'll be creating {transforms}, you also need
+Since we'll be creating {transforms}, you also need 
 `manage_data_frame_transforms` cluster privileges.
 --
 
@@ -216,20 +240,22 @@ Since we'll be creating {transforms}, you also need
 boolean data to analyze.
 +
 --
-In this example, we'll use the eCommerce orders sample data and pivot the data
-such that we get a new index that contains a sales summary for each customer.
+In this example, we'll use the web logs sample data and pivot the data such 
+that we get a new index that contains a network usage summary for each client 
+IP.
 
-In particular, create a {transform} that calculates the sum of the products
-(`products.quantity`) and the sum of prices (`products.taxful_price`) in all of
-the orders, grouped by customer (`customer_full_name.keyword`). Also include a 
-value count aggregation, so that we know how many orders (`order_id`) exist for 
-each customer.
+In particular, create a {transform} that calculates the number of occasions when 
+a specific client IP communicated with the network (`@timestamp.value_count`), 
+the sum of the bytes that are exchanged between the network and the client's 
+machine (`bytes.sum`), the maximum excanged bytes during a single occasion 
+(`bytes.max`), and the total number of requests (`request.value_count`) 
+initiated by a specific client IP.
 
 You can preview the {transform} before you create it in *{stack-manage-app}*
 > *Transforms*:
 
 [role="screenshot"]
-image::images/ecommerce-transform-preview.png["Creating a {transform} in {kib}"]
+image::images/logs-transform-preview.jpg["Creating a {transform} in {kib}"]
 
 Alternatively, you can use the
 {ref}/preview-transform.html[preview {transform} API] and the
@@ -244,73 +270,83 @@ POST _data_frame/transforms/_preview
 {
   "source": {
     "index": [
-      "kibana_sample_data_ecommerce"
+      "kibana_sample_data_logs"
     ]
   },
   "pivot": {
     "group_by": {
-      "customer_full_name.keyword": {
+      "clientip": {
         "terms": {
-          "field": "customer_full_name.keyword"
+          "field": "clientip"
         }
       }
     },
     "aggregations": {
-      "products.quantity.sum": {
-        "sum": {
-          "field": "products.quantity"
-        }
-      },
-      "products.taxful_price.sum": {
-        "sum": {
-          "field": "products.taxful_price"
-        }
-      },
-      "order_id.value_count": {
+      "@timestamp.value_count": {
         "value_count": {
-          "field": "order_id"
+          "field": "@timestamp"
+        }
+      },
+      "bytes.max": {
+        "max": {
+          "field": "bytes"
+        }
+      },
+      "bytes.sum": {
+        "sum": {
+          "field": "bytes"
+        }
+      },
+      "request.value_count": {
+        "value_count": {
+          "field": "request"
         }
       }
     }
   }
 }
 
-PUT _data_frame/transforms/ecommerce-customer-sales
+PUT _data_frame/transforms/logs-by-clientip
 {
   "source": {
     "index": [
-      "kibana_sample_data_ecommerce"
+      "kibana_sample_data_logs"
     ]
   },
   "pivot": {
     "group_by": {
-      "customer_full_name.keyword": {
+      "clientip": {
         "terms": {
-          "field": "customer_full_name.keyword"
+          "field": "clientip"
         }
       }
     },
     "aggregations": {
-      "products.quantity.sum": {
-        "sum": {
-          "field": "products.quantity"
-        }
-      },
-      "products.taxful_price.sum": {
-        "sum": {
-          "field": "products.taxful_price"
-        }
-      },
-      "order_id.value_count": {
+      "@timestamp.value_count": {
         "value_count": {
-          "field": "order_id"
+          "field": "@timestamp"
+        }
+      },
+      "bytes.max": {
+        "max": {
+          "field": "bytes"
+        }
+      },
+      "bytes.sum": {
+        "sum": {
+          "field": "bytes"
+        }
+      },
+      "request.value_count": {
+        "value_count": {
+          "field": "request"
         }
       }
     }
   },
-  "description": "E-commerce sales by customer",
+  "description": "Web logs by client IP",
   "dest": {
-    "index": "ecommerce-customer-sales"
+    "index": "weblog-clientip"
   }
 }
 --------------------------------------------------
@@ -338,7 +374,7 @@ use the {ref}/start-data-frame-transform.html[start {transforms}] API.
 ====
 [source,console]
 --------------------------------------------------
-POST _data_frame/transforms/ecommerce-customer-sales/_start
+POST _data_frame/transforms/logs-by-clientip/_start
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 ====
@@ -352,14 +388,14 @@ select your new index pattern then use the default values for {oldetection}. For
 example:
 
 [role="screenshot"]
-image::images/ecommerce-outlier-job-1.png["Create a {dfanalytics-job} in {kib}"]
+image::images/weblog-outlier-job-1.jpg["Create a {dfanalytics-job} in {kib}"]
 
 The wizard includes a scatterplot matrix, which enables you to explore the 
 relationships between the fields. You can use that information to help you
 decide which fields to include or exclude from the analysis.
 
 [role="screenshot"]
-image::images/ecommerce-outlier-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
+image::images/weblog-outlier-scatterplot.jpg["A scatterplot matrix for three fields in {kib}"]
 
 If you want these charts to represent data from a larger sample size or from a
 randomized selection of documents, you can change the default behavior. However, 
@@ -375,20 +411,20 @@ Alternatively, you can use the
 ====
 [source,console]
 --------------------------------------------------
-PUT _ml/data_frame/analytics/ecommerce
+PUT _ml/data_frame/analytics/weblog-outliers
 {
   "source": {
-    "index": "ecommerce-customer-sales"
+    "index": "weblog-clientip"
   },
   "dest": {
-    "index": "ecommerce-outliers"
+    "index": "weblog-outliers"
   },
   "analysis": {
     "outlier_detection": {
     }
   },
   "analyzed_fields" : {
-    "includes" : ["products.quantity.sum","products.taxful_price.sum","order_id.value_count"]
+    "includes" : ["@timestamp.value_count","bytes.max","bytes.sum","request.value_count"]
   }
 }
 --------------------------------------------------
@@ -414,7 +450,7 @@ You can start, stop, and manage {dfanalytics-jobs} on the *Machine Learning* >
 ====
 [source,console]
 --------------------------------------------------
-POST _ml/data_frame/analytics/ecommerce/_start
+POST _ml/data_frame/analytics/weblog-outliers/_start
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 ====
@@ -431,7 +467,7 @@ In {kib}, you can view the results from the {dfanalytics-job} and sort them
 on the outlier score:
 
 [role="screenshot"]
-image::images/outliers.png["View {oldetection} results in {kib}"]
+image::images/outliers.jpg["View {oldetection} results in {kib}"]
 
 The `ml.outlier` score is a value between 0 and 1. The larger the value, the
 more likely they are to be an outlier. In {kib}, you can optionally enable
@@ -441,9 +477,9 @@ each column in the result.
 In addition to an overall outlier score, each document is annotated with feature
 influence values for each field. These values add up to 1 and indicate which
 fields are the most important in deciding whether an entity is an outlier or
-inlier. For example, the dark shading on the `products.taxful_price.sum` field
-for Wagdi Shaw indicates that the sum of the product prices was the most
-influential feature in determining that Wagdi is an outlier.
+inlier. For example, the dark shading on the `bytes.sum` field for the client IP 
+`111.237.144.54` indicates that the sum of the excanged bytes was the most
+influential feature in determining that that client IP is an outlier.
 
 If you want to see the exact feature influence values, you can retrieve them
 from the index that is associated with your {dfanalytics-job}.
@@ -453,7 +489,7 @@ from the index that is associated with your {dfanalytics-job}.
 ====
 [source,console]
 --------------------------------------------------
-GET ecommerce-outliers/_search?q="Wagdi Shaw"
+GET weblog-outliers/_search?q="111.237.144.54"
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 
@@ -463,20 +499,24 @@ The search results include the following {oldetection} scores:
 --------------------------------------------------
 ...
   "ml" : {
-    "outlier_score" : 0.9706582427024841,
+    "outlier_score" : 0.9830020666122437,
     "feature_influence" : [
       {
-        "feature_name" : "order_id.value_count",
-        "influence" : 0.015179949812591076
+        "feature_name" : "@timestamp.value_count",
+        "influence" : 0.005870792083442211
       },
       {
-        "feature_name" : "products.quantity.sum",
-        "influence" : 0.003752298653125763
+        "feature_name" : "bytes.max",
+        "influence" : 0.12034820765256882
       },
       {
-        "feature_name" : "products.taxful_price.sum",
-        "influence" : 0.9810677766799927
-      }
+        "feature_name" : "bytes.sum",
+        "influence" : 0.8679102063179016
+      },
+     {
+        "feature_name" : "request.value_count",
+        "influence" : 0.005870792083442211
+      } 
     ]
   }
 ...
@@ -488,7 +528,7 @@ The search results include the following {oldetection} scores:
 that exceeds the threshold are highlighted in each chart:
 
 [role="screenshot"]
-image::images/outliers-scatterplot.png["View scatterplot in {oldetection} results"]
+image::images/outliers-scatterplot.jpg["View scatterplot in {oldetection} results"]
 
 In addition to the sample size and random scoring options, there is a
 *Dynamic size* option. If you enable this option, the size of each point is 
@@ -513,8 +553,8 @@ the destination indices and index patterns.
 
 
 [discrete]
-[[outlier-detection-next]]
-=== What's next
+[[outlier-detection-reading]]
+== Further reading
 
 * If you want to see another example of {oldetection} in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Outlier%20Detection/Introduction[click here].

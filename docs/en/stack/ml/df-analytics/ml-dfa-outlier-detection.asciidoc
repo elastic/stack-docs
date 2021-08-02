@@ -128,11 +128,12 @@ You can start the job via {kib} or using the
 has four phases: 
 
 * `reindexing`: documents are copied from the source index to the destination 
-index.
+  index.
 * `loading_data`: the job fatches the necessary data from the destination index.
 * `computing_outliers`: the job identifies outliers in the data.
 * `writing_results`: the job matches the results with the data rows in the 
-destination index, merges them, and indexes them back to the destination index.
+  destination index, merges them, and indexes them back to the destination 
+  index.
 
 After the last phase is finished, the job stops and the results are ready for 
 evaluation.

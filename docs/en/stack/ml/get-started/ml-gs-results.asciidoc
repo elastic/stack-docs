@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-gs-results]]
-== View {anomaly-detect} results
+= View {anomaly-detect} results
 
 After the {dfeeds} are started and the {anomaly-jobs} have processed some data,
 you can view the results in {kib}.
@@ -24,7 +24,7 @@ job selection to examine a different subset of {anomaly-jobs}.
 
 [discrete]
 [[ml-gs-results-smv]]
-=== Single metric job results
+== Single metric job results
 
 One of the sample jobs (`low_request_rate`), is a _single metric {anomaly-job}_.
 It has a single detector that uses the `low_count` function and limited job
@@ -104,7 +104,7 @@ layering additional jobs or creating multi-metric jobs.
 
 [discrete]
 [[ml-gs-results-ae]]
-=== Advanced or multi-metric job results
+== Advanced or multi-metric job results
 
 Conceptually, you can think of _multi-metric {anomaly-jobs}_ as running multiple
 independent single metric jobs. By bundling them together in a multi-metric job,
@@ -123,7 +123,7 @@ that influences or contributes to anomalies. There are influencers in both the
 As a best practice, do not pick too many influencers. For example, you generally
 do not need more than three. If you pick many influencers, the results can be
 overwhelming and there is a small overhead to the analysis. For more details,
-see <<ml-influencers>>.
+see <<ml-ad-influencers>>.
 
 ****
 
@@ -205,7 +205,7 @@ scores. The list of anomalies uses the record-level anomaly scores.
 
 [discrete]
 [[ml-gs-results-population]]
-=== Population job results
+== Population job results
 
 The final sample job (`url_scanning`) is a _population {anomaly-job}_. As we
 saw in the `response_code_rates` job results, there are some clients that seem

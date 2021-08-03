@@ -1,5 +1,5 @@
 [[ml-getting-started]]
-== Getting started with {ml}
+= Getting started with {ml}
 :keywords: {ml-init}, {stack}, {anomaly-detect}, tutorial
 :description: This tutorial shows you how to create {anomaly-jobs}, \
 interpret the results, and forecast future behavior in {kib}. 
@@ -10,27 +10,27 @@ problems you want to address and the type of data you have available.
 
 [discrete]
 [[get-started-unsupervised]]
-=== Unsupervised {ml}
+== Unsupervised {ml}
 
 There are two types of analysis that can deduce the patterns and relationships
 within your data without training or intervention: _{anomaly-detect}_ and
 _{oldetection}_.
 
-<<xpack-ml,{anomaly-detect-cap}>> requires time series data. It constructs a
+<<ml-ad-overview,{anomaly-detect-cap}>> requires time series data. It constructs a
 probability model and can run continuously to identify unusual events as they
 occur. The model evolves over time; you can use its insights to forecast future
 behavior.
 
-<<dfa-outlier-detection,{oldetection-cap}>> does not require time series data;
-it identifies unusual points in a data set by analyzing how close each data
-point is to others and the density of the cluster of points around it. It does
-not run continuously; it generates a copy of your data set where each data point
-is annotated with an {olscore}. The score indicates the extent to which a data
+<<ml-dfa-finding-outliers,{oldetection-cap}>> does not require time series data; 
+it identifies unusual points in a data set by analyzing how close each data 
+point is to others and the density of the cluster of points around it. It does 
+not run continuously; it generates a copy of your data set where each data point 
+is annotated with an {olscore}. The score indicates the extent to which a data 
 point is an outlier compared to other data points.
 
 [discrete]
 [[get-started-supervised]]
-=== Supervised {ml}
+== Supervised {ml}
 
 There are two types of analysis that require training data sets:
 _{classification}_ and _{regression}_.
@@ -50,7 +50,7 @@ time for a web request.
 
 [discrete]
 [[get-started-prereqs]]
-=== Try it out
+== Try it out
 
 Ready to take {ml} for a test drive? Follow this tutorial to:
 

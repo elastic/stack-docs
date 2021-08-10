@@ -71,6 +71,10 @@ predictions are combined.
 {regression-cap} works as a batch analysis. If new data comes into your index, 
 you must restart the {dfanalytics-job}.
 
+NOTE: When you create a {dfanalytics-job}, the inference step of the process 
+might fail if the model is too large to fit into JVM. For a workaround, refer 
+to https://github.com/elastic/elasticsearch/issues/76093[this GitHub issue].
+
 
 [[dfa-regression-algorithm]]
 === {regression-cap} algorithms

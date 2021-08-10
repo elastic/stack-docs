@@ -92,14 +92,15 @@ For read-only access to the {ml-features} in {kib}, you must have:
 * [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
 only)
 
+[[upload-file-security-privileges]]
 To upload files in {kib} with the *{file-data-viz}*, you must have:
 
 [%interactive]
-* [ ] `all` {kib} privileges for the {ml-features} in the appropriate spaces.
-Alternatively, `read` {kib} privileges for the {ml-features} and `all` {kib}
-privileges for the index pattern management feature
-* [ ] `manage_pipeline` cluster privilege
-* [ ] `create` and `create_index` index privileges for destination indices
+* [ ] `all` {kib} privileges for the {ml-app} or Discover features in
+the appropriate spaces. Alternatively, `read` {kib} privileges for the {ml-app}  feature and `all` {kib} privileges for the {ipm-app} feature
+* [ ] `manage_pipeline` or `manage_ingest_pipelines` cluster privileges
+* [ ] `create`, `create_index`, `manage` and `read` index privileges for
+destination indices
 
 IMPORTANT: You cannot limit access to specific {ml} objects in each space. If
 the {ml} feature is visible in your space and you have `read` or `all` {kib}

@@ -68,3 +68,9 @@ Reassign the alias you used to a new trained model ID by using the
 The new trained model needs to use the same type of {dfanalytics} as the old 
 one.
 end::dfa-inference-aggregation[]
+
+tag::dfa-model-jvm[]
+NOTE: When you create a {dfanalytics-job}, the inference step of the process 
+might fail if the model is too large to fit into JVM. For a workaround, refer 
+to https://github.com/elastic/elasticsearch/issues/76093[this GitHub issue].
+end::dfa-model-jvm[]

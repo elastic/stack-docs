@@ -50,6 +50,10 @@ class), the model might be unaware of them. In general, complex decision
 boundaries between classes are harder to learn and require more data points per 
 class in the training data.
 
+NOTE: When you create a {dfanalytics-job}, the inference step of the process 
+might fail if the model is too large to fit into JVM. For a workaround, refer 
+to https://github.com/elastic/elasticsearch/issues/76093[this GitHub issue].
+
 ////
 It means that you need to supply a labeled training data set that has a {depvar} 
 and some fields that are related to it. The {classification} algorithm learns 

@@ -7,11 +7,12 @@
 
 The {ml-features} automate the analysis of time series data by creating
 accurate baselines of normal behavior in your data and using them to identify
-anomalous events or patterns. The results of {ml} analysis are stored in {es}
-and you can use {kib} to help you visualize and explore the results. For example,
-the *{ml-app}* app provides charts that illustrate the actual data values, the
-bounds for the expected values, and the anomalies that occur outside these
-bounds:
+anomalous events or patterns.
+
+The results of {ml} analysis are stored in {es} and you can use {kib} to help
+you visualize and explore the results. For example, the *{ml-app}* app provides
+charts that illustrate the actual data values, the bounds for the expected
+values, and the anomalies that occur outside these bounds:
 
 [role="screenshot"]
 image::images/overview-smv.jpg["Example screenshot from the Machine Learning Single Metric Viewer in Kibana"]
@@ -134,6 +135,8 @@ job groups to view the results from multiple jobs more easily and to expedite
 administrative tasks by opening or closing multiple jobs at once.
 ////
 
+//TBD Mention impact of model plot config?
+
 [discrete]
 [[ml-datafeeds]]
 === {dfeeds-cap}
@@ -175,6 +178,10 @@ seconds for the {ml} analysis to generate initial results.
 There are two tools for examining the results from {anomaly-jobs} in {kib}: the
 **Anomaly Explorer** and the **Single Metric Viewer**.
 
+//TBD Provide overview of the different purposes of the two interfaces.
+
+//Intro to swimlanes in Anomaly Explorer
+
 [discrete]
 [[ml-ad-bucket-results]]
 === Bucket results
@@ -186,12 +193,6 @@ include::ml-buckets.asciidoc[tag=bucket-results]
 === Influencer results
 
 include::ml-influencers.asciidoc[tag=influencer-results]
-
-[discrete]
-[[ml-ad-model-snapshots]]
-=== Model snapshots
-
-include::ml-model-snapshots.asciidoc[]
 
 [discrete]
 [[ml-ad-tune]]
@@ -211,6 +212,12 @@ include::ml-calendars.asciidoc[]
 === Custom rules
 
 include::ml-rules.asciidoc[]
+
+[discrete]
+[[ml-ad-model-snapshots]]
+=== Model snapshots
+
+include::ml-model-snapshots.asciidoc[]
 
 [discrete]
 [[ml-ad-forecast]]

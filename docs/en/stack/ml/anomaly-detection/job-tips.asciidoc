@@ -22,23 +22,6 @@ one day or is significantly different than the estimated value, you receive an
 informational message.
 
 [discrete]
-[[ml-ad-cardinality]]
-=== Cardinality
-
-If there are logical groupings of related entities in your data, {ml} analytics
-can make data models and generate results that take these groupings into
-consideration. For example, you might choose to split your data by user ID and
-detect when users are accessing resources differently than they usually do.
-
-If the field that you use to split your data has many different values, the
-job uses more memory resources. In {kib}, if the cardinality of the
-`by_field_name`, `over_field_name`, or `partition_field_name` is greater than 
-1000, the job creation wizards advise that there might be high memory usage. 
-Likewise if you are performing population analysis and the cardinality of the
-`over_field_name` is below 10, you are advised that this might not be a suitable
-field to use.
-
-[discrete]
 [[ml-ad-detectors]]
 === Detectors
 
@@ -64,6 +47,22 @@ duplicates if they have the same `function`, `field_name`, `by_field_name`,
 
 include::ml-influencers.asciidoc[tag=influencers]
 
+[discrete]
+[[ml-ad-cardinality]]
+=== Cardinality
+
+If there are logical groupings of related entities in your data, {ml} analytics
+can make data models and generate results that take these groupings into
+consideration. For example, you might choose to split your data by user ID and
+detect when users are accessing resources differently than they usually do.
+
+If the field that you use to split your data has many different values, the
+job uses more memory resources. In {kib}, if the cardinality of the
+`by_field_name`, `over_field_name`, or `partition_field_name` is greater than 
+1000, the job creation wizards advise that there might be high memory usage. 
+Likewise if you are performing population analysis and the cardinality of the
+`over_field_name` is below 10, you are advised that this might not be a suitable
+field to use.
 
 [discrete]
 [[ml-ad-model-memory-limits]]

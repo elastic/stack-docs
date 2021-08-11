@@ -6,12 +6,18 @@
 ++++
 
 The {ml-features} automate the analysis of time series data by creating
-accurate baselines of normal behavior in the data and identifying anomalous
-patterns in that data.
+accurate baselines of normal behavior in your data and using them to identify
+anomalous events or patterns. The results of {ml} analysis are stored in {es}
+and you can use {kib} to help you visualize and explore the results. For example,
+the *{ml-app}* app provides charts that illustrate the actual data values, the
+bounds for the expected values, and the anomalies that occur outside these
+bounds:
+
+[role="screenshot"]
+image::images/overview-smv.jpg["Example screenshot from the Machine Learning Single Metric Viewer in Kibana"]
 
 Using <<ml-ad-algorithms,proprietary {ml} algorithms>>, the following
-circumstances are detected, scored, and linked with statistically significant
-influencers in the data:
+circumstances are detected:
 
 * Anomalies related to temporal deviations in values, counts, or frequencies
 * Statistical rarity
@@ -20,15 +26,6 @@ influencers in the data:
 Automated periodicity detection and quick adaptation to changing data ensure
 that you don’t need to specify algorithms, models, or other data science-related
 configurations in order to get the benefits of {ml}.
-
-To use the {ml-features} to analyze your data, you can create an {anomaly-job}
-and send your data to that job. The results of {ml} analysis are stored in {es}
-and you can use {kib} to help you visualize and explore the results. For example,
-charts illustrate the actual data values, the bounds for the expected values,
-and the anomalies that occur outside these bounds:
-
-[role="screenshot"]
-image::images/overview-smv.jpg["Example screenshot from the Machine Learning Single Metric Viewer in Kibana"]
 
 [discrete]
 [[ml-ad-algorithms]]
@@ -72,8 +69,8 @@ visualizations that are customized to help you analyze your data.
 == 2. Set up the environment
 
 If you want to use {ml-features}, there must be at least one {ml} node in
-your cluster and all master-eligible nodes must have {ml} enabled. By default,
-all nodes are {ml} nodes. For more information about these settings, see 
+your cluster and all master-eligible nodes must have {ml} enabled. For more
+information about these settings, see 
 {ref}/modules-node.html#ml-node[{ml} nodes].
 
 If {stack-security-features} are enabled, you must also ensure your users have
@@ -92,7 +89,7 @@ a {dfeed} will be required.
 == 3. Create a job
 
 {anomaly-jobs-cap} contain the configuration information and metadata
-necessary to perform an analytics task.
+necessary to perform the {ml} analysis.
 
 You can create {anomaly-jobs} by using the
 {ref}/ml-put-job.html[create {anomaly-jobs} API]. {kib} also provides

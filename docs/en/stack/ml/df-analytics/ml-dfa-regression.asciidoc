@@ -11,7 +11,8 @@ predict numerical values in a data set.
 {reganalysis-cap} is a supervised {ml} process for estimating the relationships 
 among different fields in your data, then making further predictions on 
 numerical data based on these relationships. For example, you can predict the 
-response time of a web request.
+response time of a web request or the approximate amount of data that the 
+server exchanges.
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
 want to use to create a model for predicting other fields. We refer to the 
@@ -34,7 +35,11 @@ gradient boosting methodologies.
 [[dfa-regression-problem]]
 == 1. Define the problem
 
-{regression-cap} in the {stack} can be used to predict numerical data. (NEED TEXT)
+{regression-cap} in the {stack} can be useful in cases where a continuous 
+quantity needs to be predicted. It means the values that {reganalysis} can 
+predict are numerical values. If your use case requires predicting discrete, 
+categorical values, you might want to consider using 
+<<ml-dfa-classification, classification>> instead.
 
 [discrete]
 [[dfa-regression-environment]]
@@ -54,9 +59,19 @@ the necessary privileges. See <<setup>>.
 == 3. Prepare and transform data
 
 As {regression} is a supervised method, you need to supply a labeled training 
-data set that has some {feature-vars} and a {depvar}. You might also need to 
-{ref}/transforms.html[{transform}] your data to create a {dataframe} which can 
-be used as the source for {regression}.
+data set that has some {feature-vars} and a {depvar} so the data set contains 
+known values that the model can be trained on. The training process uses this 
+information to identify relationships among the various characteristics of the 
+data and the predicted value. This labeled data set also plays a critical role 
+in model evaluation.
+
+You might also need to {ref}/transforms.html[{transform}] your data to create a 
+{dataframe} which can be used as the source for {regression}.
+
+To learn more about how to prepeare your data, refer to 
+<<prepare-transform-data, the relevant section>> of the supervised learning 
+overview.
+
 
 [discrete]
 [[dfa-regression-create-job]]
@@ -65,10 +80,12 @@ be used as the source for {regression}.
 {dfanalytics-jobs-cap} contain the configuration information and metadata 
 necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
 {kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
+
 Select {regression} as the analytics type that the {dfanalytics-job} performs, 
 then select the field that you want to predict (the dependent variable). You can 
 also decide to include and exclude fields to/from the analysis when you create 
 the job.
+
 
 [discrete]
 [[dfa-regression-start]]
@@ -298,7 +315,7 @@ trained on the subset of the documents that contain it.
 ```
 ====
 
-TIP: The sample flight data is used in this example because it is easily
+NOTE: The sample flight data is used in this example because it is easily
 accessible. However, the data has been manually created and contains some
 inconsistencies. For example, a flight can be both delayed and canceled. This is
 a good reminder that the quality of your input data affects the quality of your

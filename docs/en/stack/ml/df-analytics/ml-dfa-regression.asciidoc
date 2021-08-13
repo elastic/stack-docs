@@ -12,14 +12,12 @@ predict numerical values in a data set.
 among different fields in your data, then making further predictions on 
 numerical data based on these relationships. For example, you can predict the 
 response time of a web request or the approximate amount of data that the 
-server exchanges.
+server exchanges with a client based on historical data.
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
 want to use to create a model for predicting other fields. We refer to the 
 fields that are used to create the model as _feature variables_ and the field 
-you want to predict as the _dependent variable_. There are three types of 
-{feature-vars} that you can use with our {regression} algorithm: numerical, 
-cathegorical, or Boolean. Arrays are not supported.
+you want to predict as the _dependent variable_.
 
 [discrete]
 [[dfa-regression-algorithm]]
@@ -29,29 +27,31 @@ cathegorical, or Boolean. Arrays are not supported.
 The ensemble learning technique that we use in the {stack} is a type of boosting 
 called extreme gradient boost (XGboost) which combines decision trees with 
 gradient boosting methodologies.
+
+There are three types of {feature-vars} that you can use with our algorithms: 
+numerical, cathegorical, or Boolean. Arrays are not supported.
 //end::regression-algorithms[]
 
 [discrete]
 [[dfa-regression-problem]]
 == 1. Define the problem
 
-{regression-cap} in the {stack} can be useful in cases where a continuous 
-quantity needs to be predicted. It means the values that {reganalysis} can 
-predict are numerical values. If your use case requires predicting discrete, 
-categorical values, you might want to consider using 
-<<ml-dfa-classification, classification>> instead.
+{regression-cap} can be useful in cases where a continuous quantity needs to be 
+predicted. The values that {reganalysis} can predict are numerical values. If 
+your use case requires predicting continuous, numerical values, then 
+{regression} might be the suitable choice for you.
 
 [discrete]
 [[dfa-regression-environment]]
 == 2. Set up the environment
 
-If you want to use {ml-features}, there must be at least one {ml} node in your 
-cluster and all master-eligible nodes must have {ml} enabled. By default, all 
-nodes are {ml} nodes. For more information about these settings, see 
+To use {ml-features}, there must be at least one {ml} node in your cluster and 
+all master-eligible nodes must have {ml} enabled. By default, all nodes are {ml} 
+nodes. For more information about these settings, refer to 
 {ref}/modules-node.html#ml-node[{ml} nodes].
 
-If {stack-security-features} are enabled, you must also ensure your users have
-the necessary privileges. See <<setup>>.
+The {stack-security-features} require you to ensure your users also have the 
+necessary security privileges. See <<setup>>.
 
 
 [discrete]
@@ -81,10 +81,9 @@ overview.
 necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
 {kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
 
-Select {regression} as the analytics type that the {dfanalytics-job} performs, 
-then select the field that you want to predict (the dependent variable). You can 
-also decide to include and exclude fields to/from the analysis when you create 
-the job.
+Select {regression} as the analytics type for the {dfanalytics-job}, then select 
+the field that you want to predict (the {depvar}). You can also include and 
+exclude fields to/from the analysis.
 
 
 [discrete]
@@ -103,8 +102,8 @@ has the following phases:
 * `coarse_parameter_search`: the process identifies initial values for undefined 
    hyperparameters.
 * `fine_tuning_parameters`: the job identifies final values for undefined 
-   hyperparameters. See <<hyperparameters,hyperparameter optimization>>.
-* `final_training`: the {ml} model training.
+   hyperparameters. Refer to <<hyperparameters,hyperparameter optimization>>.
+* `final_training`: the model training.
 * `writing_results`: the job matches the results with the data rows in the 
    destination index, merges them, and indexes them back to the destination 
    index.
@@ -127,15 +126,16 @@ using the `regression` evaluation type of the
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The 
 <<ml-dfanalytics-mse,mean squared error (MSE)>> value that the evaluation 
 provides you on the training data set is the _training error_. Training the 
-{regression} model means finding the combination of model parameters that 
-produces the lowest possible training error.
+{regression} model – which is an iterative process – means finding the 
+combination of model parameters that produces the lowest possible training 
+error.
 
 Another crucial measurement is how well your model performs on unseen 
-data points. To assess how well the trained model will perform on data it has 
-never seen before, you must set aside a proportion of the training data set for 
-testing (testing data set). Once the model has been trained, you can let the 
-model predict the value of the data points it has never seen before and compare 
-the prediction to the actual value. This test provides an estimate of a quantity 
+data. To assess how well the trained model will perform on data it has 
+never seen before, you must set aside a proportion of the training set for 
+testing (testing data set). Once the model is trained, you can let the it 
+predict the value of the data points it has never seen before and compare the 
+prediction to the actual value. This test provides an estimate of a quantity 
 known as the _model generalization error_.
 
 The {regression} evaluation type offers the following metrics to evaluate the 
@@ -152,19 +152,17 @@ model performance:
 === Mean squared error
 
 MSE is the average squared sum of the difference between the true value and the 
-value that the {regression} model predicted. 
-(Avg (predicted value-actual value)^2^). You can use the MSE to measure how well 
-the {reganalysis} model is performing.
+predicted value. (Avg (predicted value-actual value)^2^).
 
 
 [discrete]
 [[ml-dfanalytics-msle]]
 === Mean squared logarithmic error
 
-This evaluation metric is a variation of mean squared error. It can be used for 
-cases when the target values are positive and distributed with a long tail such 
-as data on prices or population. Consult the <<dfa-regression-lossfunction>> 
-page to learn more about loss functions.
+MSLE is a variation of mean squared error. It can be used for cases when the 
+target values are positive and distributed with a long tail such as data on 
+prices or population. Consult the <<dfa-regression-lossfunction>> page to learn 
+more about loss functions.
 
 
 [discrete]
@@ -183,13 +181,12 @@ transition point between MAE and MSE. Consult the
 [[ml-dfanalytics-r-sqared]]
 === R-squared
 
-Another evaluation metric for {reganalysis} is R-squared (R^2^). It represents 
-the goodness of fit and measures how much of the variation in the data the 
-predictions are able to explain. The value of R^2^ are less than or equal to 1, 
-where 1 indicates that the predictions and true values are equal. A value of 0 
-is obtained when all the predictions are set to the mean of the true values. A 
-value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
-(about 30%) closer to true values than their mean.
+R-squared (R^2^) represents the goodness of fit and measures how much of the 
+variation in the data the predictions are able to explain. The value of R^2^ are 
+less than or equal to 1, where 1 indicates that the predictions and true values 
+are equal. A value of 0 is obtained when all the predictions are set to the mean 
+of the true values. A value of 0.5 for R^2^ would indicate that the predictions 
+are 1 - 0.5^(1/2)^ (about 30%) closer to true values than their mean.
 
 
 [discrete]
@@ -242,9 +239,9 @@ Let's try to predict flight delays by using the
 data set contains information such as weather conditions, flight destinations 
 and origins, flight distances, carriers, and the number of minutes each flight 
 was delayed. When you create a {dfanalytics-job} for {reganalysis}, it learns 
-the relationships between the fields in your data in order to predict the value 
-of a _dependent variable_, which in this case is the numeric `FlightDelayMins` 
-field. For an overview of these concepts, see <<ml-dfa-regression>> and
+the relationships between the fields in your data to predict the value of a 
+_{depvar}_, which – in this case – is the numeric `FlightDelayMins` field. For 
+an overview of these concepts, see <<ml-dfa-regression>> and 
 <<ml-supervised-workflow>>.
 
 
@@ -254,15 +251,14 @@ field. For an overview of these concepts, see <<ml-dfa-regression>> and
 
 Each document in the data set contains details for a single flight, so this data 
 is ready for analysis; it is already in a two-dimensional entity-based data 
-structure. In general, you often need to 
-{ref}/transforms.html[transform] the data into an entity-centric index before 
-you analyze the data.
+structure. In general, you often need to {ref}/transforms.html[transform] the 
+data into an entity-centric index before you analyze it.
 
-In order to be analyzed, a document must contain at least one field with a
-supported data type (`numeric`, `boolean`, `text`, `keyword` or `ip`) and must
-not contain arrays with more than one item. If your source data consists of some
-documents that contain the dependent variable and some that do not, the model is
-trained on the subset of the documents that contain it.
+To be analyzed, a document must contain at least one field with a supported data 
+type (`numeric`, `boolean`, `text`, `keyword` or `ip`) and must not contain 
+arrays with more than one item. If your source data consists of some documents 
+that contain the {depvar} and some don't, the model is trained on the 
+subset of the documents that contain it.
 
 .Example source document
 [%collapsible]
@@ -316,10 +312,9 @@ trained on the subset of the documents that contain it.
 ====
 
 NOTE: The sample flight data is used in this example because it is easily
-accessible. However, the data has been manually created and contains some
-inconsistencies. For example, a flight can be both delayed and canceled. This is
-a good reminder that the quality of your input data affects the quality of your
-results.
+accessible. However, the data contains some inconsistencies. For example, a 
+flight can be both delayed and canceled. This is a good reminder that the 
+quality of your input data affects the quality of your results.
 
 
 [discrete]
@@ -328,9 +323,9 @@ results.
 
 To predict the number of minutes delayed for each flight:
 
-. Verify that your environment is set up properly to use {ml-features}. If the
-{stack} {security-features} are enabled, you need a user that has authority
-to create and manage {dfanalytics-jobs}. See <<setup>>.
+. Verify that your environment is set up properly to use {ml-features}. The
+{stack} {security-features} require a user that has authority to create and 
+manage {dfanalytics-jobs}. See <<setup>>.
 
 . Create a {dfanalytics-job}.
 +
@@ -343,9 +338,11 @@ image::images/flights-regression-job-1.jpg["Creating a {dfanalytics-job} in {kib
 --
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `regression` as the job type.
-.. Optionally improve the quality of the analysis by adding a query that removes erroneous data. In this case, we omit flights with a distance of 0 kilometers or less.
-.. Choose `FlightDelayMin` as the dependent variable, which is the field that we
-want to predict with the {reganalysis}.
+.. Optionally improve the quality of the analysis by adding a query that removes 
+erroneous data. In this case, we omit flights with a distance of 0 kilometers or 
+less.
+.. Choose `FlightDelayMin` as the {depvar}, which is the field that we want to 
+predict.
 .. Add `Cancelled`, `FlightDelay`, and `FlightDelayType` to the list of excluded
 fields. These fields will be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
@@ -354,9 +351,9 @@ exclude fields that either contain erroneous data or describe the
 --
 The wizard includes a scatterplot matrix, which enables you to explore the 
 relationships between the numeric fields. The color of each point is affected by 
-the value of the dependent variable for that document, as shown in the legend. 
-You can use this matrix to help you decide which fields to include or exclude 
-from the analysis.
+the value of the {depvar} for that document, as shown in the legend. You can use 
+this matrix to help you decide which fields to include or exclude from the 
+analysis.
 
 [role="screenshot"]
 image::images/flightdata-regression-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
@@ -376,7 +373,8 @@ speed of the analysis, so by default it is disabled.
 .. Use a model memory limit of at least 50 MB. If the job requires more than
 this amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
-.. Add a job ID (such as `model-flight-delay-regression`) and optionally a job description.
+.. Add a job ID (such as `model-flight-delay-regression`) and optionally a job 
+description.
 .. Add the name of the destination index that will contain the results of the 
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
@@ -567,22 +565,22 @@ The API call returns the following response:
 Now you have a new index that contains a copy of your source data with 
 predictions for your {depvar}.
 
-When you view the {regression} results in {kib}, it shows the contents of the
-destination index in a tabular format. It also provides information about the 
-analysis details, model evaluation metrics, total feature importance values, and
-a scatterplot matrix. Let’s start by looking at the results table:
+When you view the results in {kib}, it shows the contents of the destination 
+index in a tabular format. It also provides information about the analysis 
+details, model evaluation metrics, total feature importance values, and a 
+scatterplot matrix. Let’s start by looking at the results table:
 
 [role="screenshot"]
 image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
 
 In this example, the table shows a column for the {depvar} (`FlightDelayMin`), 
-which contains the ground truth values that we are trying to predict with the 
-{reganalysis}. It also shows a column for the prediction values 
-(`ml.FlightDelayMin_prediction`) and a column that indicates whether the
-document was used in the training set (`ml.is_training`). You can filter the
-table to show only testing or training data and you can select which fields are
-shown in the table. You can also enable histogram charts to get a better
-understanding of the distribution of values in your data.
+which contains the ground truth values that we are trying to predict. It also 
+shows a column for the prediction values (`ml.FlightDelayMin_prediction`) and a 
+column that indicates whether the document was used in the training set 
+(`ml.is_training`). You can filter the table to show only testing or training 
+data and you can select which fields are shown in the table. You can also enable 
+histogram charts to get a better understanding of the distribution of values in 
+your data.
 
 If you chose to calculate {feat-imp}, the destination index also contains
 `ml.feature_importance` objects. Every field that is included in the
@@ -660,14 +658,12 @@ the trained model metadata:
           }
           ...
 ----
-<1> This value is the baseline for the {feat-imp} decision path. It is the
-average of the prediction values across all the training data.
-<2> This value is the average of the absolute {feat-imp} values for the
-`dayOfWeek` field across all the training data.
-<3> This value is the minimum {feat-imp} value across all the training data for
-this field.
-<4> This value is the maximum {feat-imp} value across all the training data for
-this field.
+<1> The baseline for the {feat-imp} decision path. It is the average of the 
+prediction values across all the training data.
+<2> The average of the absolute {feat-imp} values for the `dayOfWeek` field 
+across all the training data.
+<3> The minimum {feat-imp} value across all the training data for this field.
+<4> The maximum {feat-imp} value across all the training data for this field.
 
 To see the top {feat-imp} values for each prediction, search the destination
 index. For example:
@@ -780,7 +776,7 @@ POST _ml/data_frame/_evaluate
 --------------------------------------------------
 // TEST[skip:TBD]
 
-<1> Calculate the training error by evaluating only the training data.
+<1> Calculates the training error by evaluating only the training data.
 <2> The field that contains the actual (ground truth) value.
 <3> The field that contains the predicted value.
 
@@ -833,11 +829,11 @@ POST _ml/data_frame/_evaluate
 }
 --------------------------------------------------
 // TEST[skip:TBD]
-<1> Evaluate only the documents that are not part of the training data.
+<1> Evaluates only the documents that are not part of the training data.
 ====
 
-When you have trained a satisfactory model, you can deploy it to make predictions
-about new data.
+When you have trained a satisfactory model, you can 
+<<dfa-regression-deploy, deploy it>> to make predictions about new data.
 
 If you don't want to keep the {dfanalytics-job}, you can delete it. For example,
 use {kib} or the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API].

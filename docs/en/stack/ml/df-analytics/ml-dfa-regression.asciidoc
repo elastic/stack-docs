@@ -15,20 +15,20 @@ response time of a web request or the approximate amount of data that the
 server exchanges with a client based on historical data.
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
-want to use to create a model for predicting other fields. We refer to the 
-fields that are used to create the model as _feature variables_ and the field 
-you want to predict as the _dependent variable_.
+want to use to create a model for predicting other fields. _Feature variables_ are the 
+fields that are used to create the model. The _dependent variable_ is the field 
+you want to predict.
 
 [discrete]
 [[dfa-regression-algorithm]]
 == {regression-cap} algorithms
 
 //tag::regression-algorithms[]
-The ensemble learning technique that we use in the {stack} is a type of boosting 
+This {ml} feature uses an ensemble learning technique that is a type of boosting 
 called extreme gradient boost (XGboost) which combines decision trees with 
 gradient boosting methodologies.
 
-There are three types of {feature-vars} that you can use with our algorithms: 
+There are three types of {feature-vars} that you can use with these algorithms: 
 numerical, cathegorical, or Boolean. Arrays are not supported.
 //end::regression-algorithms[]
 
@@ -81,7 +81,7 @@ overview.
 necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
 {kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
 
-Select {regression} as the analytics type for the {dfanalytics-job}, then select 
+Select {regression} as the analytics type for the job, then select 
 the field that you want to predict (the {depvar}). You can also include and 
 exclude fields to/from the analysis.
 
@@ -94,9 +94,9 @@ You can start the job via {kib} or using the
 {ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. A {regression} job 
 has the following phases: 
 
-* `reindexing`: documents are copied from the source index to the destination 
+* `reindexing`: Documents are copied from the source index to the destination 
   index.
-* `loading_data`: the job fatches the necessary data from the destination index.
+* `loading_data`: the job fetches the necessary data from the destination index.
 * `feature_selection`: the most relevant analyzed fields for predicting the 
    {depvar} are identified.
 * `coarse_parameter_search`: the process identifies initial values for undefined 
@@ -133,7 +133,7 @@ error.
 Another crucial measurement is how well your model performs on unseen 
 data. To assess how well the trained model will perform on data it has 
 never seen before, you must set aside a proportion of the training set for 
-testing (testing data set). Once the model is trained, you can let the it 
+testing (testing data set). Once the model is trained, you can let it 
 predict the value of the data points it has never seen before and compare the 
 prediction to the actual value. This test provides an estimate of a quantity 
 known as the _model generalization error_.
@@ -200,7 +200,7 @@ about {feat-imp}, <<ml-feature-importance,click here>>.
 
 [discrete]
 [[dfa-regression-deploy]]
-== 7. Deploying the model
+== 7. Deploy the model
 
 The model that you created is stored as {es} documents in internal indices. In 
 other words, the characteristics of your trained model are saved and ready to be 

@@ -58,12 +58,12 @@ necessary security privileges. See <<setup>>.
 [[dfa-regression-prepare-data]]
 == 3. Prepare and transform data
 
-As {regression} is a supervised method, you need to supply a labeled training 
-data set that has some {feature-vars} and a {depvar} so the data set contains 
-known values that the model can be trained on. The training process uses this 
-information to identify relationships among the various characteristics of the 
-data and the predicted value. This labeled data set also plays a critical role 
-in model evaluation.
+{regression-cap} is a supervised {ml} method, which means you need to supply a 
+labeled training data set. This data set must have values for the {feature-vars} 
+and the {depvar} which are used to train the model. The training process uses 
+this information to identify relationships among the various characteristics of 
+the data and the predicted value. This labeled data set also plays a critical 
+role in model evaluation.
 
 You might also need to {ref}/transforms.html[{transform}] your data to create a 
 {dataframe} which can be used as the source for {regression}.
@@ -96,18 +96,18 @@ has the following phases:
 
 * `reindexing`: Documents are copied from the source index to the destination 
   index.
-* `loading_data`: the job fetches the necessary data from the destination index.
-* `feature_selection`: the most relevant analyzed fields for predicting the 
-   {depvar} are identified.
-* `coarse_parameter_search`: the process identifies initial values for undefined 
+* `loading_data`: The job fetches the necessary data from the destination index.
+* `feature_selection`: The process identifies the most relevant analyzed fields 
+   for predicting the {depvar}.
+* `coarse_parameter_search`: The process identifies initial values for undefined 
    hyperparameters.
-* `fine_tuning_parameters`: the job identifies final values for undefined 
+* `fine_tuning_parameters`: The process identifies final values for undefined 
    hyperparameters. Refer to <<hyperparameters,hyperparameter optimization>>.
-* `final_training`: the model training.
-* `writing_results`: the job matches the results with the data rows in the 
+* `final_training`: The model training occurs.
+* `writing_results`: The job matches the results with the data rows in the 
    destination index, merges them, and indexes them back to the destination 
    index.
-* `inference`: the job validates the trained model against the test split of the 
+* `inference`: The job validates the trained model against the test split of the 
    data set.
 
 After the last phase is finished, the job stops and the results are ready for 
@@ -125,18 +125,17 @@ You can measure how well the model has performed on your training data set by
 using the `regression` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The 
 <<ml-dfanalytics-mse,mean squared error (MSE)>> value that the evaluation 
-provides you on the training data set is the _training error_. Training the 
-{regression} model – which is an iterative process – means finding the 
-combination of model parameters that produces the lowest possible training 
-error.
+provides you on the training data set is the _training error_. Training and 
+evaluating the {regression} model iteratively means finding the combination of 
+model parameters that produces the lowest possible training error.
 
-Another crucial measurement is how well your model performs on unseen 
-data. To assess how well the trained model will perform on data it has 
-never seen before, you must set aside a proportion of the training set for 
-testing (testing data set). Once the model is trained, you can let it 
-predict the value of the data points it has never seen before and compare the 
-prediction to the actual value. This test provides an estimate of a quantity 
-known as the _model generalization error_.
+Another crucial measurement is how well your model performs on unseen data. To 
+assess how well the trained model will perform on data it has never seen before, 
+you must set aside a proportion of the training set for testing (testing data 
+set). Once the model is trained, you can let it predict the value of the data 
+points it has never seen before and compare the prediction to the actual value. 
+This test provides an estimate of a quantity known as the 
+_model generalization error_.
 
 The {regression} evaluation type offers the following metrics to evaluate the 
 model performance:

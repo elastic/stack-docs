@@ -7,171 +7,185 @@
 :description: An introduction to {ml} {regression}, which enables you to  \
 predict numerical values in a data set.
 
-This page contains a conceptual overview of {classification} in the {stack} and 
-a simple <<performing-regression,example>> of how to use it.
 
-
-[discrete]
-[[dfa-regression]]
-== {regression-cap}
-
-
-{reganalysis-cap} is a {ml} process for estimating the relationships among 
-different fields in your data, then making further predictions based on these 
-relationships.
-
-For example, suppose we are interested in finding the relationship between 
-apartment size and monthly rent in a city. Our imaginary data set consists of 
-three data points:
-
-|===
-| Size (m2) | Monthly rent 
-| 44        | 1600
-| 24        | 1055
-| 63        | 2300
-|===
-
-After the model determines the relationship between the apartment size and the
-rent, it can make predictions such as the monthly rent of a hundred square
-meter-size apartment.
-
-This is a simple example. Usually {regression} problems are multi-dimensional, 
-so the relationships that {reganalysis} tries to find are between multiple 
-fields. To extend our example, a more complex {reganalysis} could take into
-account additional factors such as the location of the apartment in the city, on
-which floor it is, and whether the apartment has a riverside view or not, and so
-on. All of these factors can be considered _features_; they are measurable
-properties or characteristics of the phenomenon we're studying.
-
-
-[discrete]
-[[dfa-regression-features]]
-=== {feature-vars-cap}
+{reganalysis-cap} is a supervised {ml} process for estimating the relationships 
+among different fields in your data, then making further predictions on 
+numerical data based on these relationships. For example, you can predict the 
+response time of a web request or the approximate amount of data that the 
+server exchanges with a client based on historical data.
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
-want to use to create a model for predicting other fields. We refer to these 
-fields as _feature variables_ and _dependent variables_, respectively.
-{feature-vars-cap} are the values that the {depvar} value depends on. If one or 
-more of the {feature-vars} changes, the {depvar} value also changes. There are 
-three different types of {feature-vars} that you can use with our {regression} 
-algorithm:
-
-* Numerical. In our example, the size of the apartment was a 
-  numerical {feature-var}.
-* Categorical. A variable that can have one value from a set of values. The 
-  value set has a fixed and limited number of possible items. In the example, 
-  the location of the apartment in the city (borough) is a categorical variable.
-* Boolean. The riverside view in the example is a boolean value because an 
-  apartment either has a riverside view or doesn't have one.
-Arrays are not supported.
-
-
-[discrete]
-[[dfa-regression-supervised]]
-=== Training the {regression} model
-
-{regression-cap} is a supervised {ml} method, which means that you need to 
-supply a labeled training data set that has some {feature-vars} and a {depvar}. 
-The {regression} algorithm identifies the relationships between the
-{feature-vars} and the {depvar}. Once you've trained the model on your training
-data set, you can reuse the knowledge that the model has learned to make
-inferences about new data.
-
-The relationships between the {feature-vars} and the {depvar} are described as a 
-mathematical function. {reganalysis-cap} tries to find the best prediction for 
-the {depvar} by combining the predictions from multiple base learners – 
-algorithms that generalize from the data set. The performance of an ensemble is 
-usually better than the performance of each individual base learner because the 
-individual learners will make different errors. These average out when their 
-predictions are combined.
-
-include::ml-dfa-shared.asciidoc[tag=dfa-model-jvm]
-
+want to use to create a model for predicting other fields. _Feature variables_ are the 
+fields that are used to create the model. The _dependent variable_ is the field 
+you want to predict.
 
 [discrete]
 [[dfa-regression-algorithm]]
-==== {regression-cap} algorithms
+== {regression-cap} algorithms
 
 //tag::regression-algorithms[]
-The ensemble learning technique that we use in the {stack} is a type of boosting 
+This {ml} feature uses an ensemble learning technique that is a type of boosting 
 called extreme gradient boost (XGboost) which combines decision trees with 
 gradient boosting methodologies.
+
+There are three types of {feature-vars} that you can use with these algorithms: 
+numerical, cathegorical, or Boolean. Arrays are not supported.
 //end::regression-algorithms[]
 
+[discrete]
+[[dfa-regression-problem]]
+== 1. Define the problem
+
+{regression-cap} can be useful in cases where a continuous quantity needs to be 
+predicted. The values that {reganalysis} can predict are numerical values. If 
+your use case requires predicting continuous, numerical values, then 
+{regression} might be the suitable choice for you.
 
 [discrete]
-[[dfa-regression-lossfunction]]
-==== Loss functions for {regression} analyses
+[[dfa-regression-environment]]
+== 2. Set up the environment
 
-A loss function measures how well a given {ml} model fits the specific data set. 
-It boils down all the different under- and overestimations of the model to a 
-single number, known as the prediction error. The bigger the difference between 
-the prediction and the ground truth, the higher the value of the loss function. 
-Loss functions are used automatically in the background during 
-<<hyperparameters,hyperparameter optimization>> and when training the decision 
-trees to compare the performance of various iterations of the model.
+To use {ml-features}, there must be at least one {ml} node in your cluster and 
+all master-eligible nodes must have {ml} enabled. By default, all nodes are {ml} 
+nodes. For more information about these settings, refer to 
+{ref}/modules-node.html#ml-node[{ml} nodes].
 
-In the {stack}, there are three different types of loss function:
-
-* https://en.wikipedia.org/wiki/Mean_squared_error[mean squared error (`mse`)]: 
-It is the default choice when no additional information about the data set is 
-available.
-* mean squared logarithmic error (`msle`; a variation of `mse`): It is for 
-cases where the target values are all positive with a long tail distribution 
-(for example, prices or population).
-* https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss (`huber`)]:
-Use it when you want to prevent the model trying to fit the outliers instead of 
-regular data.
-
-The various types of loss function calculate the prediction error differently. 
-The appropriate loss function for your use case depends on the target 
-distribution in your data set, the problem that you want to model, the number of 
-outliers in the data, and so on.
-
-You can specify the loss function to be used during {reganalysis} when you 
-create the {dfanalytics-job}. The default is mean squared error (`mse`). If you 
-choose `msle` or `huber`, you can also set up a parameter for the loss function. 
-With the parameter, you can further refine the behavior of the chosen functions.
-
-Consult 
-https://github.com/elastic/examples/tree/master/Machine%20Learning/Regression%20Loss%20Functions[the Jupyter notebook on regression loss functions] 
-to learn more.
-
-TIP: The default loss function parameter values work fine for most of the cases. 
-It is highly recommended to use the default values, unless you fully understand 
-the impact of the different loss function parameters.
+The {stack-security-features} require you to ensure your users also have the 
+necessary security privileges. See <<setup>>.
 
 
 [discrete]
-[[dfa-regression-deploy]]
-=== Deploying the model
+[[dfa-regression-prepare-data]]
+== 3. Prepare and transform data
 
-The model that you created is stored as {es} documents in internal indices. In 
-other words, the characteristics of your trained model are saved and ready to be 
-deployed and used as functions. The <<ml-inference-reg,{infer}>> feature enables 
-you to use your model in a preprocessor of an ingest pipeline or in a pipeline 
-aggregation of a search query to make predictions about your data.
+{regression-cap} is a supervised {ml} method, which means you need to supply a 
+labeled training data set. This data set must have values for the {feature-vars} 
+and the {depvar} which are used to train the model. The training process uses 
+this information to identify relationships among the various characteristics of 
+the data and the predicted value. This labeled data set also plays a critical 
+role in model evaluation.
 
+You might also need to {ref}/transforms.html[{transform}] your data to create a 
+{dataframe} which can be used as the source for {regression}.
 
-[discrete]
-[[ml-inference-reg]]
-==== {infer-cap}
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference]
-
-
-[discrete]
-[[ml-inference-processor-reg]]
-===== {infer-cap} processor
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
+To learn more about how to prepeare your data, refer to 
+<<prepare-transform-data, the relevant section>> of the supervised learning 
+overview.
 
 
 [discrete]
-[[ml-inference-aggregation-reg]]
-===== {infer-cap} aggregation
+[[dfa-regression-create-job]]
+== 4. Create a job
 
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
+{dfanalytics-jobs-cap} contain the configuration information and metadata 
+necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
+{kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
+
+Select {regression} as the analytics type for the job, then select 
+the field that you want to predict (the {depvar}). You can also include and 
+exclude fields to/from the analysis.
+
+
+[discrete]
+[[dfa-regression-start]]
+== 5. Start the job
+
+You can start the job via {kib} or using the 
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. A {regression} job 
+has the following phases: 
+
+* `reindexing`: Documents are copied from the source index to the destination 
+  index.
+* `loading_data`: The job fetches the necessary data from the destination index.
+* `feature_selection`: The process identifies the most relevant analyzed fields 
+   for predicting the {depvar}.
+* `coarse_parameter_search`: The process identifies initial values for undefined 
+   hyperparameters.
+* `fine_tuning_parameters`: The process identifies final values for undefined 
+   hyperparameters. Refer to <<hyperparameters,hyperparameter optimization>>.
+* `final_training`: The model training occurs.
+* `writing_results`: The job matches the results with the data rows in the 
+   destination index, merges them, and indexes them back to the destination 
+   index.
+* `inference`: The job validates the trained model against the test split of the 
+   data set.
+
+After the last phase is finished, the job stops and the results are ready for 
+evaluation.
+
+include::ml-dfa-shared.asciidoc[tag=dfa-model-jvm]
+
+[discrete]
+[[ml-dfanalytics-regression-evaluation]]
+== 6. Evaluate the result
+
+include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
+
+You can measure how well the model has performed on your training data set by 
+using the `regression` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The 
+<<ml-dfanalytics-mse,mean squared error (MSE)>> value that the evaluation 
+provides you on the training data set is the _training error_. Training and 
+evaluating the {regression} model iteratively means finding the combination of 
+model parameters that produces the lowest possible training error.
+
+Another crucial measurement is how well your model performs on unseen data. To 
+assess how well the trained model will perform on data it has never seen before, 
+you must set aside a proportion of the training set for testing (testing data 
+set). Once the model is trained, you can let it predict the value of the data 
+points it has never seen before and compare the prediction to the actual value. 
+This test provides an estimate of a quantity known as the 
+_model generalization error_.
+
+The {regression} evaluation type offers the following metrics to evaluate the 
+model performance:
+
+* Mean squared error (MSE)
+* Mean squared logarithmic error (MSLE)
+* Pseudo-Huber loss
+* R-squared (R^2^)
+
+
+[discrete]
+[[ml-dfanalytics-mse]]
+=== Mean squared error
+
+MSE is the average squared sum of the difference between the true value and the 
+predicted value. (Avg (predicted value-actual value)^2^).
+
+
+[discrete]
+[[ml-dfanalytics-msle]]
+=== Mean squared logarithmic error
+
+MSLE is a variation of mean squared error. It can be used for cases when the 
+target values are positive and distributed with a long tail such as data on 
+prices or population. Consult the <<dfa-regression-lossfunction>> page to learn 
+more about loss functions.
+
+
+[discrete]
+[[ml-dfanalytics-huber]]
+=== Pseudo-Huber loss
+
+https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss metric] 
+behaves as mean absolute error (MAE) for errors larger than a predefined value 
+(defaults to `1`) and as mean squared error (MSE) for errors smaller than the 
+predefined value. This loss function uses the `delta` parameter to define the 
+transition point between MAE and MSE. Consult the 
+<<dfa-regression-lossfunction>> page to learn more about loss functions.
+
+
+[discrete]
+[[ml-dfanalytics-r-sqared]]
+=== R-squared
+
+R-squared (R^2^) represents the goodness of fit and measures how much of the 
+variation in the data the predictions are able to explain. The value of R^2^ are 
+less than or equal to 1, where 1 indicates that the predictions and true values 
+are equal. A value of 0 is obtained when all the predictions are set to the mean 
+of the true values. A value of 0.5 for R^2^ would indicate that the predictions 
+are 1 - 0.5^(1/2)^ (about 30%) closer to true values than their mean.
 
 
 [discrete]
@@ -184,104 +198,35 @@ about {feat-imp}, <<ml-feature-importance,click here>>.
 
 
 [discrete]
-[[dfa-regression-evaluation]]
-=== Measuring model performance
+[[dfa-regression-deploy]]
+== 7. Deploy the model
 
-You can measure how well the model has performed on your training data set by 
-using the `regression` evaluation type of the 
-{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The mean squared 
-error (MSE) value that the evaluation provides you on the training data set is 
-the _training error_. Training the {regression} model means finding the 
-combination of model parameters that produces the lowest possible training 
-error.
-
-Another crucial measurement is how well your model performs on unseen 
-data points. To assess how well the trained model will perform on data it has 
-never seen before, you must set aside a proportion of the training data set for 
-testing. This split of the data set is the testing data set. Once the model has 
-been trained, you can let the model 
-predict the value of the data points it has never seen before and compare the 
-prediction to the actual value. This test provides an estimate of a quantity 
-known as the _model generalization error_.
-
-Two concepts describe how well the {regression} algorithm was able to learn the 
-relationship between the {feature-vars} and the {depvar}. _Underfitting_ is when 
-the model cannot capture the complexity of the data set. _Overfitting_ is when 
-the model is too specific to the training data set and is capturing details 
-which do not generalize to new data. A model that overfits the data has a 
-low MSE value on the training data set and a high MSE value on the testing 
-data set. For more information about the evaluation metrics, see 
-<<ml-dfanalytics-regression-evaluation>>.
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference-reg,{infer}>> feature enables 
+you to use your model in a preprocessor of an ingest pipeline or in a pipeline 
+aggregation of a search query to make predictions about your data.
 
 
 [discrete]
-[[dfa-regression-readings]]
-=== Further readings
+[[ml-inference-reg]]
+=== {infer-cap}
 
-* https://github.com/elastic/examples/tree/master/Machine%20Learning/Feature%20Importance[Feature importance for {dfanalytics} (Jupyter notebook)]
-
-* https://github.com/elastic/examples/tree/master/Machine%20Learning/Regression%20Loss%20Functions[Regression loss functions (Jupyter notebook)]
+include::ml-dfa-shared.asciidoc[tag=dfa-inference]
 
 
 [discrete]
-[[ml-dfanalytics-regression-evaluation]]
-=== {regression-cap} evaluation
+[[ml-inference-processor-reg]]
+==== {infer-cap} processor
 
-include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
-
-This evaluation type is suitable for evaluating {regression} models. The 
-{regression} evaluation type offers the following metrics to evaluate the model 
-performance:
-
-* Mean squared error (MSE)
-* R-squared (R^2^)
-* Pseudo-Huber loss
-* Mean squared logarithmic error (MSLE)
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
 
 
 [discrete]
-[[ml-dfanalytics-mse]]
-==== Mean squared error
+[[ml-inference-aggregation-reg]]
+==== {infer-cap} aggregation
 
-The API provides a MSE by computing the average squared sum of the difference 
-between the true value and the value that the {regression} model predicted. 
-(Avg (predicted value-actual value)^2^). You can use the MSE to measure how well 
-the {reganalysis} model is performing.
-
-
-[discrete]
-[[ml-dfanalytics-r-sqared]]
-==== R-squared
-
-Another evaluation metric for {reganalysis} is R-squared (R^2^). It represents 
-the goodness of fit and measures how much of the variation in the data the 
-predictions are able to explain. The value of R^2^ are less than or equal to 1, 
-where 1 indicates that the predictions and true values are equal. A value of 0 
-is obtained when all the predictions are set to the mean of the true values. A 
-value of 0.5 for R^2^ would indicate that, the predictions are 1 - 0.5^(1/2)^ 
-(about 30%) closer to true values than their mean.
-
-
-[discrete]
-[[ml-dfanalytics-huber]]
-==== Pseudo-Huber loss
-
-https://en.wikipedia.org/wiki/Huber_loss#Pseudo-Huber_loss_function[Pseudo-Huber loss metric] 
-behaves as mean absolute error (MAE) for errors larger than a predefined value 
-(defaults to `1`) and as mean squared error (MSE) for errors smaller than the 
-predefined value. This loss function uses the `delta` parameter to define the 
-transition point between MAE and MSE. Consult the 
-<<dfa-regression-lossfunction>> page to learn more about loss functions.
-
-
-[discrete]
-[[ml-dfanalytics-msle]]
-==== Mean squared logarithmic error
-
-This evaluation metric is a variation of mean squared error. It can be used for 
-cases when the target values are positive and distributed with a long tail such 
-as data on prices or population. Consult the <<dfa-regression-lossfunction>> 
-page to learn more about loss functions.
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
 
 
 [discrete]
@@ -289,13 +234,13 @@ page to learn more about loss functions.
 == Performing {reganalysis} in the sample flight data set
 
 Let's try to predict flight delays by using the 
-{kibana-ref}/get-started.html#gs-get-data-into-kibana[sample flight data]. The data set contains
-information such as weather conditions, flight destinations and origins, flight 
-distances, carriers, and the number of minutes each flight was delayed. When you
-create a {dfanalytics-job} for {reganalysis}, it learns the relationships
-between the fields in your data in order to predict the value of a
-_dependent variable_, which in this case is the numeric `FlightDelayMins` field.
-For an overview of these concepts, see <<dfa-regression>> and
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[sample flight data]. The 
+data set contains information such as weather conditions, flight destinations 
+and origins, flight distances, carriers, and the number of minutes each flight 
+was delayed. When you create a {dfanalytics-job} for {reganalysis}, it learns 
+the relationships between the fields in your data to predict the value of a 
+_{depvar}_, which – in this case – is the numeric `FlightDelayMins` field. For 
+an overview of these concepts, see <<ml-dfa-regression>> and 
 <<ml-supervised-workflow>>.
 
 
@@ -305,15 +250,14 @@ For an overview of these concepts, see <<dfa-regression>> and
 
 Each document in the data set contains details for a single flight, so this data 
 is ready for analysis; it is already in a two-dimensional entity-based data 
-structure. In general, you often need to 
-{ref}/transforms.html[transform] the data into an entity-centric index before 
-you analyze the data.
+structure. In general, you often need to {ref}/transforms.html[transform] the 
+data into an entity-centric index before you analyze it.
 
-In order to be analyzed, a document must contain at least one field with a
-supported data type (`numeric`, `boolean`, `text`, `keyword` or `ip`) and must
-not contain arrays with more than one item. If your source data consists of some
-documents that contain the dependent variable and some that do not, the model is
-trained on the subset of the documents that contain it.
+To be analyzed, a document must contain at least one field with a supported data 
+type (`numeric`, `boolean`, `text`, `keyword` or `ip`) and must not contain 
+arrays with more than one item. If your source data consists of some documents 
+that contain the {depvar} and some don't, the model is trained on the 
+subset of the documents that contain it.
 
 .Example source document
 [%collapsible]
@@ -366,11 +310,10 @@ trained on the subset of the documents that contain it.
 ```
 ====
 
-TIP: The sample flight data is used in this example because it is easily
-accessible. However, the data has been manually created and contains some
-inconsistencies. For example, a flight can be both delayed and canceled. This is
-a good reminder that the quality of your input data affects the quality of your
-results.
+NOTE: The sample flight data is used in this example because it is easily
+accessible. However, the data contains some inconsistencies. For example, a 
+flight can be both delayed and canceled. This is a good reminder that the 
+quality of your input data affects the quality of your results.
 
 
 [discrete]
@@ -379,9 +322,9 @@ results.
 
 To predict the number of minutes delayed for each flight:
 
-. Verify that your environment is set up properly to use {ml-features}. If the
-{stack} {security-features} are enabled, you need a user that has authority
-to create and manage {dfanalytics-jobs}. See <<setup>>.
+. Verify that your environment is set up properly to use {ml-features}. The
+{stack} {security-features} require a user that has authority to create and 
+manage {dfanalytics-jobs}. See <<setup>>.
 
 . Create a {dfanalytics-job}.
 +
@@ -394,9 +337,11 @@ image::images/flights-regression-job-1.jpg["Creating a {dfanalytics-job} in {kib
 --
 .. Choose `kibana_sample_data_flights` as the source index.
 .. Choose `regression` as the job type.
-.. Optionally improve the quality of the analysis by adding a query that removes erroneous data. In this case, we omit flights with a distance of 0 kilometers or less.
-.. Choose `FlightDelayMin` as the dependent variable, which is the field that we
-want to predict with the {reganalysis}.
+.. Optionally improve the quality of the analysis by adding a query that removes 
+erroneous data. In this case, we omit flights with a distance of 0 kilometers or 
+less.
+.. Choose `FlightDelayMin` as the {depvar}, which is the field that we want to 
+predict.
 .. Add `Cancelled`, `FlightDelay`, and `FlightDelayType` to the list of excluded
 fields. These fields will be excluded from the analysis. It is recommended to 
 exclude fields that either contain erroneous data or describe the 
@@ -405,9 +350,9 @@ exclude fields that either contain erroneous data or describe the
 --
 The wizard includes a scatterplot matrix, which enables you to explore the 
 relationships between the numeric fields. The color of each point is affected by 
-the value of the dependent variable for that document, as shown in the legend. 
-You can use this matrix to help you decide which fields to include or exclude 
-from the analysis.
+the value of the {depvar} for that document, as shown in the legend. You can use 
+this matrix to help you decide which fields to include or exclude from the 
+analysis.
 
 [role="screenshot"]
 image::images/flightdata-regression-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
@@ -427,7 +372,8 @@ speed of the analysis, so by default it is disabled.
 .. Use a model memory limit of at least 50 MB. If the job requires more than
 this amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
-.. Add a job ID (such as `model-flight-delay-regression`) and optionally a job description.
+.. Add a job ID (such as `model-flight-delay-regression`) and optionally a job 
+description.
 .. Add the name of the destination index that will contain the results of the 
 analysis. In {kib}, the index name matches the job ID by default. It will
 contain a copy of the source index data where each document is annotated with
@@ -616,24 +562,24 @@ The API call returns the following response:
 === Viewing {regression} results
 
 Now you have a new index that contains a copy of your source data with 
-predictions for your dependent variable.
+predictions for your {depvar}.
 
-When you view the {regression} results in {kib}, it shows the contents of the
-destination index in a tabular format. It also provides information about the 
-analysis details, model evaluation metrics, total feature importance values, and
-a scatterplot matrix. Let’s start by looking at the results table:
+When you view the results in {kib}, it shows the contents of the destination 
+index in a tabular format. It also provides information about the analysis 
+details, model evaluation metrics, total feature importance values, and a 
+scatterplot matrix. Let’s start by looking at the results table:
 
 [role="screenshot"]
 image::images/flights-regression-results.jpg["Results for a {dfanalytics-job} in {kib}"]
 
-In this example, the table shows a column for the dependent variable
-(`FlightDelayMin`), which contains the ground truth values that we are trying to
-predict with the {reganalysis}. It also shows a column for the prediction values
-(`ml.FlightDelayMin_prediction`) and a column that indicates whether the
-document was used in the training set (`ml.is_training`). You can filter the
-table to show only testing or training data and you can select which fields are
-shown in the table. You can also enable histogram charts to get a better
-understanding of the distribution of values in your data.
+In this example, the table shows a column for the {depvar} (`FlightDelayMin`), 
+which contains the ground truth values that we are trying to predict. It also 
+shows a column for the prediction values (`ml.FlightDelayMin_prediction`) and a 
+column that indicates whether the document was used in the training set 
+(`ml.is_training`). You can filter the table to show only testing or training 
+data and you can select which fields are shown in the table. You can also enable 
+histogram charts to get a better understanding of the distribution of values in 
+your data.
 
 If you chose to calculate {feat-imp}, the destination index also contains
 `ml.feature_importance` objects. Every field that is included in the
@@ -711,14 +657,12 @@ the trained model metadata:
           }
           ...
 ----
-<1> This value is the baseline for the {feat-imp} decision path. It is the
-average of the prediction values across all the training data.
-<2> This value is the average of the absolute {feat-imp} values for the
-`dayOfWeek` field across all the training data.
-<3> This value is the minimum {feat-imp} value across all the training data for
-this field.
-<4> This value is the maximum {feat-imp} value across all the training data for
-this field.
+<1> The baseline for the {feat-imp} decision path. It is the average of the 
+prediction values across all the training data.
+<2> The average of the absolute {feat-imp} values for the `dayOfWeek` field 
+across all the training data.
+<3> The minimum {feat-imp} value across all the training data for this field.
+<4> The maximum {feat-imp} value across all the training data for this field.
 
 To see the top {feat-imp} values for each prediction, search the destination
 index. For example:
@@ -771,7 +715,7 @@ The snippet below shows a part of a document with the annotated results:
 Lastly, {kib} provides a scatterplot matrix in the results. It has the same
 functionality as the matrix that you saw in the job wizard. Its purpose is to
 likewise help you visualize and explore the relationships between the numeric
-fields and the dependent variable in your data.
+fields and the {depvar} in your data.
 
 
 [discrete]
@@ -789,12 +733,12 @@ metrics, which represent how well the model performed on testing data.
 [role="screenshot"]
 image::images/flights-regression-evaluation.jpg["Evaluating {reganalysis} results in {kib}"]
 
-A mean squared error (MSE) of zero means that the models predicts the dependent 
-variable with perfect accuracy. This is the ideal, but is typically not possible. 
+A mean squared error (MSE) of zero means that the models predicts the {depvar} 
+with perfect accuracy. This is the ideal, but is typically not possible. 
 Likewise, an R-squared value of 1 indicates that all of the variance in the 
-dependent variable can be explained by the feature variables. Typically, you 
-compare the MSE and R-squared values from multiple {regression} models to find
-the best balance or fit for your data.
+{depvar} can be explained by the feature variables. Typically, you compare the 
+MSE and R-squared values from multiple {regression} models to find the best 
+balance or fit for your data.
 
 For more information about the interpreting the evaluation metrics, see
 <<ml-dfanalytics-regression-evaluation>>.
@@ -831,7 +775,7 @@ POST _ml/data_frame/_evaluate
 --------------------------------------------------
 // TEST[skip:TBD]
 
-<1> Calculate the training error by evaluating only the training data.
+<1> Calculates the training error by evaluating only the training data.
 <2> The field that contains the actual (ground truth) value.
 <3> The field that contains the predicted value.
 
@@ -884,13 +828,22 @@ POST _ml/data_frame/_evaluate
 }
 --------------------------------------------------
 // TEST[skip:TBD]
-<1> Evaluate only the documents that are not part of the training data.
+<1> Evaluates only the documents that are not part of the training data.
 ====
 
-When you have trained a satisfactory model, you can deploy it to make predictions
-about new data.
+When you have trained a satisfactory model, you can 
+<<dfa-regression-deploy, deploy it>> to make predictions about new data.
 
 If you don't want to keep the {dfanalytics-job}, you can delete it. For example,
 use {kib} or the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API].
 When you delete {dfanalytics-jobs} in {kib}, you have the option to also remove
 the destination indices and index patterns.
+
+
+[discrete]
+[[dfa-regression-reading]]
+== Further reading
+
+* https://github.com/elastic/examples/tree/master/Machine%20Learning/Feature%20Importance[Feature importance for {dfanalytics} (Jupyter notebook)]
+
+* https://github.com/elastic/examples/tree/master/Machine%20Learning/Regression%20Loss%20Functions[Regression loss functions (Jupyter notebook)]

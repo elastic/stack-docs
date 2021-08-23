@@ -70,12 +70,10 @@ PUT _ml/anomaly_detectors/weblogs-vectors <1>
   },
   "data_description" : {
     "time_field": "timestamp"
-  }
-}
-
-PUT _ml/datafeeds/datafeed-weblogs-vectors <2>
-{
-    "job_id": "weblogs-vectors",
+  },
+  "datafeed_config": { <2>
+    "datafeed_id": "datafeed-weblogs-vectors",
+    "indices": ["kibana_sample_data_logs"],
     "query": {
       "bool": {
         "must": [
@@ -84,10 +82,8 @@ PUT _ml/datafeeds/datafeed-weblogs-vectors <2>
           }
         ]
       }
-    },
-    "indices": [
-      "kibana_sample_data_logs"
-    ]
+    }
+  }
 }
 
 POST _ml/anomaly_detectors/weblogs-vectors/_open <3>

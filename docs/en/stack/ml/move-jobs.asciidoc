@@ -6,9 +6,7 @@
 ++++
 :keywords: {ml-init}, {stack}, {anomaly-detect}, {dfanalytics}
 
-You can export and import your {ml} job and {dfeed} configuration details in the
-*{stack-manage-app}* app in {kib}. For example, you can export jobs from your
-test environment and import them into your production environment.
+In {kib}, you can export and import your {ml} job and {dfeed} configuration details in *{stack-manage-app} > {ml-app} Jobs*. For example, you can export jobs from your test environment and import them into your production environment.
 
 The exported file contains configuration details; it does not contain the {ml}
 models. For {anomaly-detect}, you must import and run the job to build a model
@@ -16,15 +14,18 @@ that is accurate for the new environment. For {dfanalytics}, trained models are
 portable and can be transferred between clusters as described in
 <<export-import>>.
 
-When you export {anomaly-jobs}, filter lists are not included. If your job uses 
-<<ml-configuring-detector-custom-rules,custom rules>> with filter lists, you
-must create the filter list before you import the job; otherwise, the import
-fails. You can create filter lists in {kib} or with the
-{ref}/ml-put-filter.html[create filters API].
+There are some additional actions that you must take before you can successfully
+import and run your jobs:
 
-Likewise, when you export {anomaly-jobs}, <<ml-calendars,calendars>> are not
-included. If you want to continue to use calendars in the new environment, you
-can use {kib} to create them and assign your imported jobs. Alternatively, use
-the {ref}/ml-put-calendar.html[create calendars],
+. The {kib} {kibana-ref}/index-patterns.html[index patterns] that are used by
+{anomaly-detect} {dfeeds} and {dfanalytics} source indices must exist; otherwise,
+the import fails.
+. If your {anomaly-jobs} use
+<<ml-configuring-detector-custom-rules,custom rules>> with filter lists, the
+filter lists must exist; otherwise, the import fails. To create filter lists,
+use {kib} or the {ref}/ml-put-filter.html[create filters API].
+. If your {anomaly-jobs} were associated with <<ml-calendars,calendars>>, you
+must create the calendar in the new environment and add your imported jobs to
+the calendar. Use {kib} or the {ref}/ml-put-calendar.html[create calendars],
 {ref}/ml-post-calendar-event.html[add events to calendar], and
 {ref}/ml-put-calendar-job.html[add jobs to calendar] APIs.

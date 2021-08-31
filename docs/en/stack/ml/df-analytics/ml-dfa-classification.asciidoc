@@ -7,37 +7,103 @@
 :description: An introduction to {ml} {classification}, which enables you to \
 predict classes of data points in a data set.
 
-This page contains a conceptual overview of {classification} in the {stack} and 
-a simple <<performing-classification,example>> of how to use it.
-
-
-[discrete]
-[[dfa-classification]]
-== {classification-cap}
-
 {classification-cap} is a {ml} process that enables you to predict the class or
 category of a data point in your data set. Typical examples of {classification}
 problems are predicting loan risk, classifying music, or detecting the potential 
-for cancer in a DNA sequence. In the first case, for example, the data set might 
-contain the investment history, employment status, debit status, and other 
-financial details for loan applicants. Based on this data, you could use 
-{classanalysis} to create a model that predicts whether it is safe or risky to 
-lend money to applicants. In the second case, the data contains song details 
-that enable you to classify music into genres like hip-hop, country, or 
-classical, for example. {classification-cap} is for predicting discrete, 
-categorical values, whereas <<ml-dfa-regression,{reganalysis}>> predicts 
-continuous, numerical values.
+for cancer in a DNA sequence. {classification-cap} is for predicting discrete, 
+categorical values.
 
 When you create a {classification} job, you must specify which field contains 
 the classes that you want to predict. This field is known as the _{depvar}_. It
 must contain no more than 30 classes. By default, all other
 {ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included
-in the analysis and are known as _{feature-vars}_. The runtime and resources
-used by the job increase with the number of feature variables. Therefore, you
-can optionally include or exclude fields from the analysis. For more information
-about field selection, see the
+in the analysis and are known as _{feature-vars}_. You can optionally include or 
+exclude fields from the analysis. For more information
+about field selection, refer to the
 {ref}/explain-dfanalytics.html[explain data frame analytics API].
 
+[discrete]
+[[dfa-classification-algorithm]]
+== {classification-cap} algorithms
+
+//tag::classification-algorithms[]
+{classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
+boosted tree regression model which combines multiple weak models into a 
+composite one. It uses decision trees to learn to predict the probability that a 
+data point belongs to a certain class. A sequence of decision trees are trained 
+and every decision tree learns from the mistakes of the previous one. Every tree 
+is an iteration of the last one, hence it improves the decision made by the 
+previous tree.
+//end::classification-algorithms[]
+
+[discrete]
+[[dfa-classification-problem]]
+== 1. Define the problem
+
+
+[discrete]
+[[dfa-classification-environment]]
+== 2. Set up the environment
+
+To use {ml-features}, there must be at least one {ml} node in your cluster and 
+all master-eligible nodes must have {ml} enabled. By default, all nodes are {ml} 
+nodes. For more information about these settings, refer to 
+{ref}/modules-node.html#ml-node[{ml} nodes].
+
+The {stack-security-features} require you to ensure your users also have the 
+necessary security privileges. See <<setup>>.
+
+
+[discrete]
+[[dfa-classification-prepare-data]]
+== 3. Prepare and transform data
+
+
+[discrete]
+[[dfa-classification-create-job]]
+== 4. Create a job
+
+
+[discrete]
+[[dfa-classification-start]]
+== 5. Start the job
+
+[discrete]
+[[ml-dfanalytics-classification-evaluation]]
+== 6. Evaluate the result
+
+include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
+
+[discrete]
+[[dfa-classification-deploy]]
+== 7. Deploy the model
+
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions. The <<ml-inference-class>> section shows you how 
+to use your model in a preprocessor of an ingest pipeline or in a pipeline 
+aggregation of a search query to make predictions about your data.
+
+
+[discrete]
+[[ml-inference-class]]
+=== {infer-cap}
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference]
+
+
+[discrete]
+[[ml-inference-processor-class]]
+==== {infer-cap} processor
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
+
+
+[discrete]
+[[ml-inference-aggregation-class]]
+==== {infer-cap} aggregation
+
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
 
 [discrete]
 [[dfa-classification-supervised]]
@@ -76,53 +142,6 @@ training. Nonetheless, it is a good idea to train your model with a data set
 that is approximately balanced. That is to say, ideally your data set should 
 have a similar number of data points for each class.
 ////
-
-
-[discrete]
-[[dfa-classification-algorithm]]
-==== {classification-cap} algorithms
-
-//tag::classification-algorithms[]
-{classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
-boosted tree regression model which combines multiple weak models into a 
-composite one. It uses decision trees to learn to predict the probability that a 
-data point belongs to a certain class. A sequence of decision trees are trained 
-and every decision tree learns from the mistakes of the previous one. Every tree 
-is an iteration of the last one, hence it improves the decision made by the 
-previous tree.
-//end::classification-algorithms[]
-
-
-[discrete]
-[[dfa-classification-deploy]]
-=== Deploying the model
-
-The model that you created is stored as {es} documents in internal indices. In 
-other words, the characteristics of your trained model are saved and ready to be 
-deployed and used as functions. The <<ml-inference-class>> section shows you how 
-to use your model in a preprocessor of an ingest pipeline or in a pipeline 
-aggregation of a search query to make predictions about your data.
-
-
-[discrete]
-[[ml-inference-class]]
-==== {infer-cap}
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference]
-
-
-[discrete]
-[[ml-inference-processor-class]]
-===== {infer-cap} processor
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
-
-
-[discrete]
-[[ml-inference-aggregation-class]]
-===== {infer-cap} aggregation
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
 
 
 [discrete]

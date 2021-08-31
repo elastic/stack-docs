@@ -15,18 +15,18 @@ response time of a web request or the approximate amount of data that the
 server exchanges with a client based on historical data.
 
 When you perform {reganalysis}, you must identify a subset of fields that you 
-want to use to create a model for predicting other fields. _Feature variables_ are the 
-fields that are used to create the model. The _dependent variable_ is the field 
-you want to predict.
+want to use to create a model for predicting other fields. _Feature variables_ 
+are the fields that are used to create the model. The _dependent variable_ is 
+the field you want to predict.
 
 [discrete]
 [[dfa-regression-algorithm]]
 == {regression-cap} algorithms
 
 //tag::regression-algorithms[]
-This {ml} feature uses an ensemble learning technique that is a type of boosting 
-called extreme gradient boost (XGboost) which combines decision trees with 
-gradient boosting methodologies.
+{regression-cap} uses an ensemble learning technique called extreme gradient 
+boost (XGboost) which combines decision trees with gradient boosting 
+methodologies.
 
 There are three types of {feature-vars} that you can use with these algorithms: 
 numerical, cathegorical, or Boolean. Arrays are not supported.
@@ -60,8 +60,8 @@ necessary security privileges. See <<setup>>.
 
 {regression-cap} is a supervised {ml} method, which means you need to supply a 
 labeled training data set. This data set must have values for the {feature-vars} 
-and the {depvar} which are used to train the model. The training process uses 
-this information to identify relationships among the various characteristics of 
+and the {depvar} which are used to train the model. This information is used 
+during training to identify relationships among the various characteristics of 
 the data and the predicted value. This labeled data set also plays a critical 
 role in model evaluation.
 
@@ -121,20 +121,20 @@ include::ml-dfa-shared.asciidoc[tag=dfa-model-jvm]
 
 include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
 
-You can measure how well the model has performed on your training data set by 
-using the `regression` evaluation type of the 
+You can measure how well the model has performed on your training data by using 
+the `regression` evaluation type of the 
 {ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The 
 <<ml-dfanalytics-mse,mean squared error (MSE)>> value that the evaluation 
 provides you on the training data set is the _training error_. Training and 
-evaluating the {regression} model iteratively means finding the combination of 
-model parameters that produces the lowest possible training error.
+evaluating the model iteratively means finding the combination of model 
+parameters that produces the lowest possible training error.
 
 Another crucial measurement is how well your model performs on unseen data. To 
 assess how well the trained model will perform on data it has never seen before, 
-you must set aside a proportion of the training set for testing (testing data 
-set). Once the model is trained, you can let it predict the value of the data 
-points it has never seen before and compare the prediction to the actual value. 
-This test provides an estimate of a quantity known as the 
+you must set aside a proportion of the training set for testing (testing data). 
+Once the model is trained, you can let it predict the value of the data points 
+it has never seen before and compare the prediction to the actual value. This 
+test provides an estimate of a quantity known as the 
 _model generalization error_.
 
 The {regression} evaluation type offers the following metrics to evaluate the 
@@ -237,11 +237,10 @@ Let's try to predict flight delays by using the
 {kibana-ref}/get-started.html#gs-get-data-into-kibana[sample flight data]. The 
 data set contains information such as weather conditions, flight destinations 
 and origins, flight distances, carriers, and the number of minutes each flight 
-was delayed. When you create a {dfanalytics-job} for {reganalysis}, it learns 
-the relationships between the fields in your data to predict the value of a 
-_{depvar}_, which – in this case – is the numeric `FlightDelayMins` field. For 
-an overview of these concepts, see <<ml-dfa-regression>> and 
-<<ml-supervised-workflow>>.
+was delayed. When you create a {regression} job, it learns the relationships 
+between the fields in your data to predict the value of a _{depvar}_, which – in 
+this case – is the numeric `FlightDelayMins` field. For an overview of these 
+concepts, see <<ml-dfa-regression>> and <<ml-supervised-workflow>>.
 
 
 [discrete]

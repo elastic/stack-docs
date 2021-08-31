@@ -28,12 +28,12 @@ categories:
 [[dfa-scheduling-priority]]
 === CPU scheduling improvements apply to Linux and MacOS only
 
-When there are many {ml} jobs running at the same time and there are insufficient
-CPU resources, the JVM performance must be prioritized so search and indexing
-latency remain acceptable. To that end, when CPU is constrained on Linux and
-MacOS environments, the CPU scheduling priority of native analysis processes is
-reduced to favor the {es} JVM. This improvement does not apply to Windows
-environments.
+When there are many {ml} jobs running at the same time and there are 
+insufficient CPU resources, the JVM performance must be prioritized so search 
+and indexing latency remain acceptable. To that end, when CPU is constrained on 
+Linux and MacOS environments, the CPU scheduling priority of native analysis 
+processes is reduced to favor the {es} JVM. This improvement does not apply to 
+Windows environments.
 
 
 [discrete]
@@ -68,6 +68,11 @@ You cannot update {dfanalytics} configurations. Instead, delete the
 {dfanalytics-cap} can only perform analyses that fit into the memory available 
 for {ml}. Overspill to disk is not currently possible. For general {ml} 
 settings, see {ref}/ml-settings.html[{ml-cap} settings in {es}].
+
+When you create a {dfanalytics-job} and the inference step of the process 
+fails due to the model is too large to fit into JVM, follow the steps in  
+https://github.com/elastic/elasticsearch/issues/76093[this GitHub issue] for a 
+workaround.
 
 [discrete]
 [[dfa-training-docs]]

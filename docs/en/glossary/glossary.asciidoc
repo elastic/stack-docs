@@ -8,10 +8,10 @@
 === A
 
 [[glossary-action]] action::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=action-def]
---
+The rule-specific response that occurs when an alerting <<glossary-rule,rule>>
+fires. A rule can have multiple actions. See
+{kibana-ref}/action-types.html[Connectors and actions].
+//Source: Kibana
 
 [[glossary-admin-console]] administration console::
 A component of {ece} that provides the API server for the
@@ -20,10 +20,11 @@ ZooKeeper to {es}.
 //Source: Cloud
 
 [[glossary-advanced-settings]] Advanced Settings::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=advanced-settings-def]
---
+Enables you to control the appearance and behavior of {kib}
+by setting the date format, default index, and other attributes.
+Part of {kib} Stack Management.
+See {kibana-ref}/advanced-options.html[Advanced Settings].
+//Source: Kibana
 
 [[glossary-agent-policy]] Agent policy::
 A collection of inputs and settings that defines the data to be collected by {agent}.
@@ -51,17 +52,15 @@ optimized for search. See {ref}/analysis.html[Text analysis].
 //Source: Elasticsearch
 
 [[glossary-annotation]] annotation::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=annotation-def]
---
+A way to augment a data display with descriptive domain knowledge.
+//Source: Kibana
 
 [[glossary-anomaly-detection-job]] {anomaly-job}::
 {anomaly-jobs-cap} contain the configuration information and metadata
 necessary to perform an analytics task. See
 {ml-docs}/ml-jobs.html[{ml-jobs-cap}] and the
 {ref}/ml-put-job.html[create {anomaly-job} API].
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-api-key]] API key::
 Unique identifier for authentication in {es}. When
@@ -82,10 +81,11 @@ it to {es}.
 //Source: Observability
 
 [[glossary-app]] app::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=app-def]
---
+A top-level {kib} component that is accessed through the side navigation.
+Apps include core {kib} components such as Discover and Dashboard,
+solutions like {observability} and Security, and special-purpose tools
+like Maps and {stack-manage-app}.
+//Source: Kibana
 
 [[glossary-auto-follow-pattern]] auto-follow pattern::
 <<glossary-index-pattern,Index pattern>> that automatically configures new
@@ -109,21 +109,17 @@ entire availability zone. Also see
 === B
 
 [[glossary-basemap]] basemap::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=basemap-def]
---
+The background detail necessary to orient the location of a map.
+//Source: Kibana
 
 [[glossary-beats-runner]] beats runner::
 Used to send {filebeat} and {metricbeat} information to the logging cluster.
 //Source: Cloud
 
 [[glossary-ml-bucket]] bucket::
-. {blank}
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-def]
---
+. A set of documents in {kib} that have certain characteristics in common. For
+example, matching documents might be bucketed by color, distance, or date range.
+//Soure: Kibana
 . The {ml-features} also use the concept of a bucket to divide the time series
 into batches for processing. The _bucket span_ is part of the configuration
 information for {anomaly-jobs}. It defines the time interval that is used to
@@ -132,34 +128,34 @@ it depends on your data characteristics. When you set the bucket span, take into
 account the granularity at which you want to analyze, the frequency of the input
 data, the typical duration of the anomalies, and the frequency at which alerting
 is required.
+//Soure: Machine learning
 
 [[glossary-bucket-aggregation]] bucket aggregation::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=bucket-aggregation-def]
---
+An aggregation that creates buckets of documents. Each bucket is associated with
+a criterion (depending on the aggregation type), which determines whether or not
+a document in the current context falls into the bucket.
+//Source: Kibana
 
 [discrete]
 [[c-glos]]
 === C
 
 [[glossary-canvas]] Canvas::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=canvas-def]
---
+Enables you to create presentations and infographics that pull live data
+directly from {es}. See {kibana-ref}/canvas.html[Canvas].
+//Source: Kibana
 
 [[glossary-canvas-language]] Canvas expression language::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=canvas-language-def]
---
+A pipeline-based expression language for manipulating and visualizing data.
+Includes dozens of functions and other capabilities, such as table transforms,
+type casting, and sub-expressions. Supports TinyMath functions for complex math
+calculations. See
+{kibana-ref}/canvas-function-reference.html[Canvas function reference].
 
 [[glossary-certainty]] certainty::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=certainty-def]
---
+Specifies how many documents must contain a pair of terms before it is
+considered a useful connection in a graph.
+//Source: Kibana
 
 [[glossary-client-forwarder]] client forwarder::
 Used for secure internal communications between various components of {ece} and
@@ -175,11 +171,10 @@ Provides web-based access to manage your {ece} installation, supported by the
 . A group of one or more connected {es} <<glossary-node,nodes>>. See
 {ref}/scalability.html[Clusters, nodes, and shards].
 //Source: Elasticsearch
-. {blank}
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=clusters-def]
---
+. A layer type and display option in the *Maps* application. Clusters display a
+cluster symbol across a grid on the map, one symbol per grid cluster. The
+cluster location is the weighted centroid for all documents in the grid cell.
+//Source: Kibana
 
 [[glossary-codec-plugin]] codec plugin::
 A {ls} <<glossary-plugin,plugin>> that changes the data representation
@@ -210,10 +205,9 @@ component template can specify <<glossary-mapping,mappings>>,
 //Source: Elasticsearch
 
 [[glossary-condition]] condition::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=condition-def]
---
+Specifies the circumstances that must be met to trigger an alerting
+<<glossary-rule,rule>>.
+//Source: Kibana
 
 [[glossary-conditional]] conditional::
 A control flow that executes certain actions based on whether a statement
@@ -224,16 +218,16 @@ you specify.
 //Source: Logstash
 
 [[glossary-connector]] connector::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=connector-def]
---
+A configuration that enables integration with an external system (the
+destination for an action). See
+{kibana-ref}/action-types.html[Connectors and actions].
+//Source: Kibana
 
 [[glossary-console]] Console::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=console-def]
---
+A tool for interacting with the {es} REST API. You can send requests to {es},
+view responses, view API documentation, and get your request history. See
+{kibana-ref}/console-kibana.html[Console].
+//Source: Kibana
 
 [[glossary-constructor]] constructor::
 Directs <<glossary-allocator,allocators>> to manage containers of {es} and {kib}
@@ -286,15 +280,15 @@ rules.
 === D
 
 [[glossary-dashboard]] dashboard::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=dashboard-def]
---
+A collection of <<glossary-visualization,visualizations>>,
+<<glossary-saved-search,saved searches>>, and <<glossary-map,maps>> that provide
+insights into your data from multiple perspectives.
+//Source: Kibana
 
 [[glossary-ml-datafeed]] datafeed::
 {anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
 real time. {dfeeds-cap} retrieve data from {es} for analysis.
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-dataset]] dataset::
 A collection of data that has the same structure.
@@ -308,13 +302,12 @@ necessary to perform {ml} analytics tasks on a source index and store the
 outcome in a destination index. See
 {ml-docs}/ml-dfa-overview.html[{dfanalytics-cap} overview] and the
 {ref}/put-dfanalytics.html[create {dfanalytics-job} API].
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-data-source]] data source::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=data-source-def]
---
+A file, database, or service that provides the underlying data for a map, Canvas
+element, or visualization.
+//Source: Kibana
 
 [[glossary-data-stream]] data stream::
 Named resource used to manage time series data. A data stream stores data across
@@ -341,7 +334,7 @@ As part of the configuration information that is associated with {anomaly-jobs},
 detectors define the type of analysis that needs to be done. They also specify
 which fields to analyze. You can have more than one detector in a job, which is
 more efficient than running multiple jobs against the same data.
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-director]] director::
 Manages the <<glossary-zookeeper,ZooKeeper>> datastore. This role is often
@@ -350,20 +343,20 @@ deployments it can be separated.
 //Source: Cloud
 
 [[glossary-discover]] Discover::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=discover-def]
---
+Enables you to search and filter your data to zoom in on the information
+that you are interested in.
+//Source: Kibana
 
 [[glossary-distributed-tracing]] distributed tracing::
 The end-to-end collection of performance data throughout your microservices architecture.
 //Source: Observability
 
 [[glossary-drilldown]] drilldown::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=drilldown-def]
---
+A navigation path that retains context (time range and filters) from the source
+to the destination, so you can view the data from a new perspective. A dashboard
+that shows the overall status of multiple data centers might have a drilldown to
+a dashboard for a single data center. See {kibana-ref}/dashboard.html[Drilldowns].
+//Source: Kibana
 
 [[glossary-document]] document::
 JSON object containing data stored in {es}. See
@@ -375,10 +368,10 @@ JSON object containing data stored in {es}. See
 === E
 
 [[glossary-edge]] edge::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=edge-def]
---
+A connection between nodes in a graph that shows that they are related. The line
+weight indicates the strength of the relationship.  See
+{kibana-ref}/xpack-graph.html[Graph].
+//Source: Kibana
 
 [[glossary-elastic-agent]] {agent}::
 A single, unified agent that you can deploy to hosts or containers to collect data and protect endpoints.
@@ -392,10 +385,9 @@ correct usage. ECS is used to improve uniformity of event data coming from
 different sources.
 
 [[glossary-ems]] Elastic Maps Service (EMS)::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=ems-def]
---
+A service that provides basemap tiles, shape files, and other key features that
+are essential for visualizing geospatial data.
+//Source: Kibana
 
 [[glossary-epr]] Elastic Package Registry (EPR)::
 A service hosted by Elastic that stores Elastic package definitions in a central location.
@@ -403,10 +395,9 @@ See the https://github.com/elastic/package-registry[EPR GitHub repository].
 //Source: Observability
 
 [[glossary-element]] element::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=element-def]
---
+A <<glossary-canvas,Canvas>> workpad object that displays an image, text, or
+visualization.
+//Source: Kibana
 
 [[glossary-event]] event::
 A single unit of information, containing a timestamp plus additional data. An
@@ -425,16 +416,16 @@ logs, metrics, and traces. EQL supports matching for event sequences. See
 === F
 
 [[glossary-feature-controls]] Feature Controls::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=feature-controls-def]
---
+Enables administrators to customize which features are available in each
+<<glossary-space,space>>. See
+{kibana-ref}//xpack-spaces.html#spaces-control-feature-visibility[Feature Controls].
+//Source: Kibana
 
 [[glossary-feature-influence]] feature influence::
 In {oldetection}, feature influence scores indicate which features of a data
 point contribute to its outlier behavior. See
 {ml-docs}/ml-dfa-finding-outliers.html#dfa-feature-influence[Feature influence].
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-feature-importance]] feature importance::
 In supervised {ml} methods such as {regression} and {classification}, feature
@@ -444,22 +435,18 @@ See
 {ml-docs}/ml-dfa-regression.html#dfa-regression-feature-importance[{regression-cap} feature importance]
 and
 {ml-docs}/ml-dfa-classification.html#dfa-classification-feature-importance[{classification-cap} feature importance].
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-field]] field::
 . Key-value pair in a <<glossary-document,document>>. See
 {ref}/mapping.html[Mapping].
 //Source: Elasticsearch
-. {blank}
-+
---
-In {ls}, this term refers to an <<glossary-event,event>> property. For
+. In {ls}, this term refers to an <<glossary-event,event>> property. For
 example, each event in an apache access log has properties, such as a status
 code (200, 404), request path ("/", "index.html"), HTTP verb (GET, POST), client
 IP address, and so on. {ls} uses the term "fields" to refer to these
 properties.
 //Source: Logstash
---
 
 [[glossary-field-reference]] field reference::
 A reference to an event <<glossary-field,field>>. This reference may appear in
@@ -537,44 +524,45 @@ packaged as Ruby Gems. You can use the {ls}
 //Source: Logstash
 
 [[glossary-geojson]] GeoJSON::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=geojson-def]
---
+A format for representing geospatial data. GeoJSON is also a file-type, commonly
+used in the *Maps* application to upload a file of geospatial data. See
+{kibana-ref}/indexing-geojson-data-tutorial.html[GeoJSON data].
+//Source: Kibana
 
 [[glossary-geo-point]] geo-point::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=geo-point-def]
---
+A field type in {es}. A geo-point field accepts latitude-longitude pairs for
+storing point locations. The latitude-longitude format can be from a string,
+geohash, array, well-known text, or object. See {ref}/geo-point.html[geo-point].
+//Source: Kibana
 
 [[glossary-geo-shape]] geo-shape::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=geo-shape-def]
---
+A field type in {es}. A geo-shape field accepts arbitrary geographic primitives,
+like polygons, lines, or rectangles (and more). You can populate a geo-shape
+field from GeoJSON or well-known text. See {ref}/geo-shape.html[geo-shape].
+//Source: Kibana
 
 [[glossary-graph]] graph::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=graph-def]
---
+A data structure and visualization that shows interconnections between a set of
+entities. Each entity is represented by a node. Connections between nodes are
+represented by <<glossary-edge,edges>>. See {kibana-ref}/xpack-graph.html[Graph].
+//Source: Kibana
 
 [[glossary-grok-debugger]] Grok Debugger::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=grok-debugger-def]
---
+A tool for building and debugging grok patterns. Grok is good for parsing syslog,
+Apache, and other webserver logs. See
+{kibana-ref}/xpack-grokdebugger.html[Debugging grok expressions].
+//Source: Kibana
 
 [discrete]
 [[h-glos]]
 === H
 
 [[glossary-heat-map]] heat map::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=heat-map-def]
---
+A layer type in the *Maps* application. Heat maps cluster locations to show
+higher (or lower) densities. Heat maps describe a visualization with color-coded
+cells or regions to analyze patterns across multiple dimensions. See
+{kibana-ref}/heatmap-layer.html[Heat map layer].
+//Source: Kibana
 
 [[glossary-hidden-index]] hidden data stream or index::
 <<glossary-data-stream,Data stream>> or <<glossary-index,index>> excluded from
@@ -673,7 +661,7 @@ the pipeline.
 Influencers are entities that might have contributed to an anomaly in a specific
 bucket in an {anomaly-job}. For more information, see
 {ml-docs}/ml-influencers.html[Influencers].
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-ingestion]] ingestion::
 The process of collecting and sending data from various data sources to {es}.
@@ -712,27 +700,31 @@ such as collecting logs from a specific file.
 necessary to perform an analytics task. There are two types:
 <<glossary-anomaly-detection-job,{anomaly-jobs}>> and
 <<glossary-dataframe-job,{dfanalytics-jobs}>>. See also <<glossary-rollup-job>>.
-//Source: X-Pack
+//Source: Machine learning
 
 [discrete]
 [[k-glos]]
 === K
 
 [[glossary-kibana-privileges]] {kib} privileges::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=kibana-privileges-def]
---
+Enable administrators to grant users read-only, read-write, or no access to
+individual features within <<glossary-space,spaces>> in {kib}. See
+{kibana-ref}/kibana-privileges.html[{kib} privileges].
+//Source: Kibana
 
 [[glossary-kql]] {kib} Query Language (KQL)::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=kql-def]
---
+The default language for querying in {kib}. KQL provides support for scripted
+fields. See {kibana-ref}/kuery-query.html[Kibana Query Language].
+//Source: Kibana
 
 [discrete]
 [[l-glos]]
 === L
+
+[[glossary-labs]] labs::
+An in-progress or experimental feature in *Canvas* or *Dashboard* that you can
+try out and provide feedback. When enabled, you’ll see *Labs* in the toolbar.
+//Source: Kibana
 
 [[glossary-leader-index]] leader index::
 Source <<glossary-index,index>> for <<glossary-ccr,{ccr}>>. A leader index
@@ -742,10 +734,10 @@ exists on a <<glossary-remote-cluster,remote cluster>> and is replicated to
 //Source: Elasticsearch
 
 [[glossary-lens]] Lens::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=lens-def]
---
+Enables you to build visualizations by dragging and dropping data fields. Lens
+makes makes smart visualization suggestions for your data, allowing you to
+switch between visualization types. See {kibana-ref}/dashboard.html[Lens].
+//Source: Kibana
 
 [[glossary-local-cluster]] local cluster::
 <<glossary-cluster,Cluster>> that pulls data from a
@@ -754,10 +746,10 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=lens-def]
 //Source: Elasticsearch
 
 [[glossary-lucene]] Lucene query syntax::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=lucene-def]
---
+The query syntax for {kib}’s legacy query language. The Lucene query syntax is
+available under the options menu in the query bar and from
+<<glossary-advanced-settings,Advanced Settings>>.
+//Source: Kibana
 
 [discrete]
 [[m-glos]]
@@ -767,13 +759,12 @@ include::{kib-repo-dir}/glossary.asciidoc[tag=lucene-def]
 A {ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in `node.roles`.
 If you want to use {ml-features}, there must be at least one {ml} node in your
 cluster. See {ref}/modules-node.html#ml-node[Machine learning nodes].
-//Source: X-Pack
+//Source: Machine learning
 
 [[glossary-map]] map::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=map-def]
---
+A representation of geographic data using symbols and labels. See
+{kibana-ref}/maps.html[Maps].
+//Source: Kibana
 
 [[glossary-mapping]] mapping::
 Defines how a <<glossary-document,document>>, its <<glossary-field,fields>>, and
@@ -802,10 +793,8 @@ processed by the {ls} indexer instance.
 //Source: Logstash
 
 [[glossary-metric-aggregation]] metric aggregation::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=metric-aggregation-def]
---
+An aggregation that calculates and tracks metrics for a set of documents.
+//Source: Kibana
 
 [[glossary-metadata]] @metadata::
 A special field for storing content that you don't want to include in output
@@ -865,16 +854,14 @@ file, graphite, and statsd.
 === P
 
 [[glossary-painless-lab]] Painless Lab::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=painless-lab-def]
---
+An interactive code editor that lets you test and debug Painless scripts in
+real-time. See {kibana-ref}/painlesslab.html[Painless Lab].
+//Source: Kibana
 
 [[glossary-panel]] panel::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=panel-def]
---
+A <<glossary-dashboard,dashboard>> component that contains a query element or
+visualization, such as a chart, table, or list.
+//Source: Kibana
 
 [[glossary-pipeline]] pipeline::
 A term used to describe the flow of <<glossary-event,events>> through the
@@ -937,10 +924,10 @@ question, written in a way {es} understands. See
 //Source: Elasticsearch
 
 [[glossary-query-profiler]] Query Profiler::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=query-profiler-def]
---
+A tool that enables you to inspect and analyze search queries to diagnose and
+debug poorly performing queries. See
+{kibana-ref}/xpack-profiler.html[Query Profiler].
+//Source: Kibana
 
 [discrete]
 [[r-glos]]
@@ -1019,16 +1006,16 @@ See the {ref}/mapping-routing-field.html[`_routing` field].
 //Source: Elasticsearch
 
 [[glossary-rule]] rule::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=rule-def]
---
+A set of <<glossary-condition,conditions>>, schedules, and
+<<glossary-action,actions>> that enable notifications. See
+<<glossary-rules-and-connectors,{rules-ui}>>.
+//Source: Kibana
 
 [[glossary-rules-and-connectors]] Rules and Connectors::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=rules-and-connectors-def]
---
+A comprehensive view of all your alerting rules. Enables you to access and
+manage rules for all {kib} apps from one place. See
+{kibana-ref}/alerting-getting-started.html[{rules-ui}].
+//Source: Kibana
 
 [[glossary-runner]] runner::
 A local control agent that runs on all hosts, used to deploy local containers
@@ -1047,28 +1034,25 @@ differently. See {ref}/runtime.html[Runtime fields].
 === S
 
 [[glossary-saved-object]] saved object::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=saved-object-def]
---
+A representation of a dashboard, visualization, map, index pattern, or Canvas
+workpad that can be stored and reloaded.
+//Source: Kibana
 
 [[glossary-saved-search]] saved search::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=saved-search-def]
---
+The query text, filters, and time filter that make up a search, saved for later
+retrieval and reuse.
+//Source: Kibana
 
 [[glossary-scripted-field]] scripted field::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=scripted-field-def]
---
+A field that computes data on the fly from the data in {es} indices. Scripted
+field data is shown in Discover and used in visualizations.
+//Source: Kibana
 
 [[glossary-search-session]] search session::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=search-session-def]
---
+A group of one or more queries that are executed asynchronously. The results of
+the session are stored for a period of time, so you can recall the query. Search
+sessions are user specific.
+//Source: Kibana
 
 [[glossary-search-template]] search template::
 A stored search you can run with different variables. See
@@ -1108,10 +1092,9 @@ and shards].
 //Source: Elasticsearch
 
 [[glossary-shareable]] shareable::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=shareable-def]
---
+A Canvas workpad that can be embedded on any webpage. Shareables enable you to
+display Canvas visualizations on internal wiki pages or public websites.
+//Source: Kibana
 
 [[glossary-shipper]] shipper::
 An instance of {ls} that send events to another instance of {ls}, or
@@ -1148,10 +1131,12 @@ Original JSON object provided during <<glossary-index,indexing>>. See the
 //Source: Elasticsearch
 
 [[glossary-space]] space::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=space-def]
---
+A place for organizing <<glossary-dashboard,dashboards>>,
+<<glossary-visualization,visualizations>>, and other
+<<glossary-saved-object,saved objects>> by category. For example, you might have
+different spaces for each team, use case, or individual. See
+{kibana-ref}/xpack-spaces.html[Spaces].
+//Source: Kibana
 
 [[glossary-span]] span::
 Information about the execution of a specific code path.
@@ -1164,6 +1149,11 @@ Adds more <<glossary-primary-shard,primary shards>> to an
 <<glossary-index,index>>. See the {ref}/indices-split-index.html[split index
 API].
 //Source: Elasticsearch
+
+[[glossary-stack-alerts]] stack alerts::
+The general purpose alert types {kib} provides out of the box. Index threshold
+and geo alerts are currently the two stack alert types.
+//Source: Kibana
 
 [[glossary-standalone]] standalone::
 This mode allows manual configuration and management of {agent}s locally
@@ -1186,20 +1176,21 @@ internally by the {stack}. System index names start with a dot (`.`), such as
 === T
 
 [[glossary-tag]] tag::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=tag-def]
---
+A keyword or label that you assign to {kib} saved objects, such as dashboards
+and visualizations, so you can classify them in a way that is meaningful to you.
+Tags makes it easier for you to manage your content. See
+{kibana-ref}/managing-tags.html[Tags].
+//Source: Kibana
 
 [[glossary-term]] term::
 See <<glossary-token,token>>.
 //Source: Elasticsearch
 
 [[glossary-term-join]] term join::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=term-join-def]
---
+A shared key that combines vector features with the results of an {es} terms
+aggregation. Term joins augment vector features with properties for data-driven
+styling and rich tooltip content in maps.
+//Source: Kibana
 
 [[glossary-text]] text::
 Unstructured content, such as a product description or log message. You
@@ -1208,22 +1199,18 @@ typically <<glossary-analysis,analyze>> text for better search. See
 //Source: Elasticsearch
 
 [[glossary-time-filter]] time filter::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=time-filter-def]
---
+A {kib} control that constrains the search results to a particular time period.
+//Source: Kibana
 
 [[glossary-timelion]] Timelion::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=timelion-def]
---
+A tool for building a time series visualization that analyzes data in time order.
+See {kibana-ref}/dashboard.html[Timelion].
+//Source: Kibana
 
 [[glossary-time-series-data]] time series data::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=time-series-data-def]
---
+Timestamped data such as logs, metrics, and events that is indexed on an ongoing
+basis.
+//Source: Kibana
 
 [[glossary-token]] token::
 A chunk of unstructured <<glossary-text,text>> that's been optimized for search.
@@ -1243,10 +1230,9 @@ Traces are made up of a collection of transactions and spans that have a common 
 //Source: Observability
 
 [[glossary-tracks]] tracks::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=tracks-def]
---
+A layer type in the *Maps* application. This layer converts a series of point
+locations into a line, often representing a path or route.
+//Source: Kibana
 
 [[glossary-trained-model]] trained model::
 A {ml} model that is trained and tested against a labelled data set and can be
@@ -1262,20 +1248,20 @@ Elastic <<glossary-apm-agent,APM agent>> instrumenting a service.
 //Source: Observability
 
 [[glossary-tsvb]] TSVB::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=tsvb-def]
---
+A time series data visualizer that allows you to combine an infinite number of
+aggregations to display complex data. See {kibana-ref}/dashboard.html[TSVB].
+//Source: Kibana
 
 [discrete]
 [[u-glos]]
 === U
 
 [[glossary-upgrade-assistant]] Upgrade Assistant::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=upgrade-assistant-def]
---
+A tool that helps you prepare for an upgrade to the next major version of {es}.
+The assistant identifies the deprecated settings in your cluster and indices and
+guides you through resolving issues, including reindexing. See
+{kibana-ref}/upgrade-assistant.html[Upgrade Assistant].
+//Source: Kibana
 
 [[glossary-uptime]] Uptime::
 A metric of system reliability used to monitor the status of network endpoints
@@ -1287,22 +1273,18 @@ via HTTP/S, TCP, and ICMP.
 === V
 
 [[glossary-vector]] vector data::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=vector-def]
---
+Points, lines, and polygons used to represent a map.
+//Source: Kibana
 
 [[glossary-vega]] Vega::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=vega-def]
---
+A declarative language used to create interactive visualizations. See
+{kibana-ref}/dashboard.html[Vega].
+//Source: Kibana
 
 [[glossary-visualization]] visualization::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=visualization-def]
---
+A graphical representation of query results in {kib} (e.g., a histogram, line
+graph, pie chart, or heat map).
+//Source: Kibana
 
 [discrete]
 [[w-glos]]
@@ -1321,16 +1303,15 @@ updated. See {ref}/data-tiers.html[Data tiers].
 //Source: Elasticsearch
 
 [[glossary-watcher]] Watcher::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=watcher-def]
---
+The original suite of alerting features. See
+{kibana-ref}/watcher-ui.html[Watcher].
+//Source: Kibana
 
 [[glossary-wms]] Web Map Service (WMS)::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=wms-def]
---
+A layer type in the *Maps* application. Add a WMS source to provide
+authoritative geographic context to your map. See the
+https://www.ogc.org/standards/wms[OpenGIS Web Map Service].
+//Source: Kibana
 
 [[glossary-worker]] worker::
 The filter thread model used by {ls}, where each worker receives an
@@ -1340,10 +1321,9 @@ many filters are CPU intensive.
 //Source: Logstash
 
 [[glossary-workpad]] workpad::
-+
---
-include::{kib-repo-dir}/glossary.asciidoc[tag=workpad-def]
---
+A workspace where you build presentations of your live data in
+<<glossary-canvas,Canvas>>. See {kibana-ref}/canvas.html[Create a workpad].
+//Source: Kibana
 
 [discrete]
 [[z-glos]]

@@ -37,13 +37,14 @@ host and network anomalies. The jobs are displayed in the `Anomaly Detection`
 interface. They are available when either:
 
 * You ship data using https://www.elastic.co/products/beats[Beats], and
-{kib} is configured with the required index patterns
-(`auditbeat-*`, `filebeat-*`, `packetbeat-*`, or `winlogbeat-*` via {kib} -> Management -> Index Patterns).
+{kib} is configured with the required {data-sources} (`auditbeat-*`,
+`filebeat-*`, `packetbeat-*`, or `winlogbeat-*` via {kib} -> *Management* ->
+*{Data-Sources}*).
 
 Or
 
 * Your shipped data is ECS-compliant, and {kib} is configured with the shipped
-data's index patterns.
+data's {data-sources}.
 
 <<prebuilt-ml-jobs>> describes all available {ml} jobs, and lists 
 which ECS fields are required on your hosts when you are not using {beats} to

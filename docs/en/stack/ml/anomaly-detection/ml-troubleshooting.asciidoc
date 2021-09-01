@@ -9,6 +9,42 @@ Use the information in this section to troubleshoot common problems and known
 issues.
 
 [discrete]
+[[ml-avoid-upgrade-closures]]
+== Avoiding spurious {anomaly-job} closures on upgrade
+
+When you perform a rolling upgrade to _or_ from versions
+7.14.0 or 7.14.1 you may find that {anomaly-jobs} that
+were `opened` during the upgrade incorrectly end up
+`closed` after the upgrade.
+
+*Symptoms:*
+
+* Some (but not necessarily all) {anomaly-jobs} that were
+  in the `opened` state before the upgrade show as `closed`
+  after upgrade.
+* The {dfeed} associated with a `closed` {anomaly-job} is
+  in the `started` state - this combination should be
+  impossible.
+
+To avoid this problem, enable {ml} upgrade mode before
+starting your rolling upgrade, and disable it once the
+rolling upgrade is complete. Do not enable and disable
+{ml} upgrade mode more than once; enable it before
+upgrading the first node of the rolling upgrade and
+disable it after upgrading the last node. It is only
+safe to enable {ml} upgrade mode again once all
+{anomaly-jobs} that were `opened` have been assigned to
+nodes and fully recovered, and this may take 30 minutes
+in large environments.
+
+To remediate the problem if you experience it:
+
+1. Force-stop the `started` {dfeed} associated with the
+   `closed` {anomaly-job}.
+2. Open the incorrectly `closed` {anomaly-job}.
+3. Start the associated {dfeed}.
+
+[discrete]
 [[ml-troubleshooting-mappings]]
 == Incorrect mappings in 7.9.0 or higher
 

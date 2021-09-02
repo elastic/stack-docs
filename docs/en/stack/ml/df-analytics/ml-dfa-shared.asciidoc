@@ -74,3 +74,21 @@ NOTE: When you create a {dfanalytics-job}, the inference step of the process
 might fail if the model is too large to fit into JVM. For a workaround, refer 
 to https://github.com/elastic/elasticsearch/issues/76093[this GitHub issue].
 end::dfa-model-jvm[]
+
+tag::dfa-phases[]
+* `reindexing`: Documents are copied from the source index to the destination 
+  index.
+* `loading_data`: The job fetches the necessary data from the destination index.
+* `feature_selection`: The process identifies the most relevant analyzed fields 
+   for predicting the {depvar}.
+* `coarse_parameter_search`: The process identifies initial values for undefined 
+   hyperparameters.
+* `fine_tuning_parameters`: The process identifies final values for undefined 
+   hyperparameters. Refer to <<hyperparameters,hyperparameter optimization>>.
+* `final_training`: The model training occurs.
+* `writing_results`: The job matches the results with the data rows in the 
+   destination index, merges them, and indexes them back to the destination 
+   index.
+* `inference`: The job validates the trained model against the test split of the 
+   data set.
+end::dfa-phases[]

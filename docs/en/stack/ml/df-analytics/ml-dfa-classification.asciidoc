@@ -7,20 +7,24 @@
 :description: An introduction to {ml} {classification}, which enables you to \
 predict classes of data points in a data set.
 
-{classification-cap} is a {ml} process that enables you to predict the class or
-category of a data point in your data set. Typical examples of {classification}
-problems are predicting loan risk, classifying music, or detecting the potential 
-for cancer in a DNA sequence. {classification-cap} is for predicting discrete, 
-categorical values.
+{classification-cap} is a {ml} process that predicts the class or category of a 
+data point in a data set. Typical examples of {classification} problems are 
+classifying malicious and benign domains to detect DGA activities for security 
+reasons or predicting customer churn based on customer calling data. 
+{classification-cap} is for predicting discrete, categorical values.
 
 When you create a {classification} job, you must specify which field contains 
 the classes that you want to predict. This field is known as the _{depvar}_. It
 must contain no more than 30 classes. By default, all other
 {ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included
 in the analysis and are known as _{feature-vars}_. You can optionally include or 
-exclude fields from the analysis. For more information
-about field selection, refer to the
+exclude fields. For more information about field selection, refer to the
 {ref}/explain-dfanalytics.html[explain data frame analytics API].
+
+// The runtime also scales approximately linearly with the number of involved 
+// documents below 200,000 data points. Therefore, if you double the number of 
+// documents, then the runtime of the analysis doubles respectively.
+  
 
 [discrete]
 [[dfa-classification-algorithm]]
@@ -40,6 +44,9 @@ previous tree.
 [[dfa-classification-problem]]
 == 1. Define the problem
 
+{classification-cap} can be useful in cases where discerte, categorical values 
+needs to be predicted. If your use case requires predicting such values, then 
+{classification} might be the suitable choice for you.
 
 [discrete]
 [[dfa-classification-environment]]
@@ -58,21 +65,123 @@ necessary security privileges. See <<setup>>.
 [[dfa-classification-prepare-data]]
 == 3. Prepare and transform data
 
+{classification-cap} is a supervised {ml} method, which means you need to supply 
+a labeled training data set. This data set must have values for the 
+{feature-vars} and the {depvar} which are used to train the model. The training 
+process uses this information to learn the releationships between the classes 
+and the {feature-vars}. This labeled data set also plays a critical role in 
+model evaluation.
+
+If possible, prepare your input data such that it has less classes. A 
+{classanalysis} with many classes takes more time to run than a binary 
+{classification} job. The relationship between the number of classes and the 
+runtime is roughly linear.
+
+You might also need to {ref}/transforms.html[{transform}] your data to create a 
+{dataframe} which can be used as the source for {classification}.
+
+To learn more about how to prepeare your data, refer to 
+<<prepare-transform-data, the relevant section>> of the supervised learning 
+overview.
 
 [discrete]
 [[dfa-classification-create-job]]
 == 4. Create a job
 
+{dfanalytics-jobs-cap} contain the configuration information and metadata 
+necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
+{kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
+
+Select {classification} as the analytics type, then select the field that you 
+want to predict (the {depvar}). You can also include and exclude fields.
+
+To improve performance, consider using a small `training_percent` value to train 
+the model more quickly. It is a good strategy to make progress iteratively: run 
+the analysis with a small training percentage, then evaluate the performance. 
+Based on the results, you can decide if it is necessary to increase the 
+`training_percent` value.
 
 [discrete]
 [[dfa-classification-start]]
 == 5. Start the job
+
+You can start the job via {kib} or using the 
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. A {classification} 
+job has the following phases: 
+
+include::ml-dfa-shared.asciidoc[tag=dfa-phases]
+
+After the last phase is finished, the job stops and the results are ready for 
+evaluation.
+
+include::ml-dfa-shared.asciidoc[tag=dfa-model-jvm]
 
 [discrete]
 [[ml-dfanalytics-classification-evaluation]]
 == 6. Evaluate the result
 
 include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
+
+You can measure how well the model has performed on your training data set by 
+using the `classification` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The 
+{classification} evaluation offers the following metrics to evaluate the model 
+performance:
+
+* Multiclass confusion matrix
+* Area under the curve of receiver operating characteristic (AUC ROC) 
+
+
+[discrete]
+[[ml-dfanalytics-mccm]]
+=== Multiclass confusion matrix
+
+The multiclass confusion matrix provides a summary of the performance of the 
+{classanalysis}. It contains the number of occurrences where the analysis
+classified data points correctly with their actual class as well as the number
+of occurrences where it misclassified them.
+
+This is an example of a confusion matrix for a binary problem:
+
+image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
+
+It is a two by two matrix because there are only two classes (`true` and
+`false`). It shows the proportion of data points that is correctly identified as 
+members of a each class and the proportion that is misidentified.
+
+As the number of classes increases, the confusion matrix becomes more complex:
+
+image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
+
+This matrix contains the actual labels on the left side while the predicted 
+labels are on the top. The proportion of correct and incorrect predictions is 
+broken down for each class. This enables you to examine how the {classanalysis}
+confused the different classes while it made its predictions.
+
+
+[discrete]
+[[ml-dfanalytics-class-aucroc]]
+=== Area under the curve of receiver operating characteristic (AUC ROC)
+
+The receiver operating characteristic (ROC) curve is a plot that represents the 
+performance of the {classification} process at different predicted probability 
+thresholds. It compares the true positive rate for a specific class against the 
+rate of all the other classes combined ("one versus all" strategy) at the 
+different threshold levels to create the curve.
+
+.Example 
+You have three classes: `A`, `B`, and `C`, you want to calculate AUC ROC for 
+`A`. In this case, the number of correctly classified ++A++s (true positives) 
+are compared to the number of ++B++s and ++C++s that are misclassified as ++A++s 
+(false positives).
+
+From this plot, you can compute the area under the curve (AUC) value, which is a 
+number between 0 and 1. The higher the AUC, the better the model is at 
+predicting ++A++s as ++A++s, in this case.
+
+NOTE: To use this evaluation method, you must set `num_top_classes` to `-1`
+or a value greater than or equal to the total number of classes when you create
+the {dfanalytics-job}.
 
 [discrete]
 [[dfa-classification-deploy]]
@@ -142,29 +251,6 @@ training. Nonetheless, it is a good idea to train your model with a data set
 that is approximately balanced. That is to say, ideally your data set should 
 have a similar number of data points for each class.
 ////
-
-
-[discrete]
-[[dfa-classification-performance]]
-=== {classification-cap} performance
-
-As a rule of thumb, a {classanalysis} with many classes takes more time to run 
-than a binary {classification} process when there are only two classes. The 
-relationship between the number of classes and the runtime is roughly linear.
-
-The runtime also scales approximately linearly with the number of involved 
-documents below 200,000 data points. Therefore, if you double the number of 
-documents, then the runtime of the analysis doubles respectively.
-
-To improve the performance of your {classanalysis}, consider using a smaller 
-`training_percent` value when you create the job. That is to say, use a smaller 
-percentage of your documents to train the model more quickly. It is a good 
-strategy to make progress iteratively: use a smaller training percentage first, 
-run the analysis, and evaluate the performance. Then, based on the results, 
-decide if it is necessary to increase the `training_percent` value. If possible, 
-prepare your input data such that it has less classes. You can also remove the 
-fields that are not relevant from the analysis by specifying `excludes` patterns 
-in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
 
 
 [discrete]
@@ -256,74 +342,6 @@ If you split your data set into training and testing data, you can determine how
 well your model performs on data it has never seen before and compare the
 prediction to the actual value.
 
-
-[discrete]
-[[ml-dfanalytics-classification-evaluation]]
-=== {classification-cap} evaluation
-
-include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
-
-This evaluation type is suitable for evaluating {classification} models. The 
-{classification} evaluation offers the following metrics to evaluate the model 
-performance:
-
-* Multiclass confusion matrix
-* Area under the curve of receiver operating characteristic (AUC ROC) 
-
-
-[discrete]
-[[ml-dfanalytics-mccm]]
-==== Multiclass confusion matrix
-
-The multiclass confusion matrix provides a summary of the performance of the 
-{classanalysis}. It contains the number of occurrences where the analysis
-classified data points correctly with their actual class as well as the number
-of occurrences where it misclassified them.
-
-Let's see two examples of the confusion matrix. The first is a confusion matrix 
-of a binary problem:
-
-image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
-
-It is a two by two matrix because there are only two classes (`true` and
-`false`). The matrix shows the proportion of data points that is correctly
-identified as members of a each class and the proportion that is 
-misidentified.
-
-As the number of classes in your {classanalysis} increases, the confusion
-matrix also increases in complexity:
-
-image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
-
-
-The matrix contains the actual labels on the left side while the predicted 
-labels are on the top. The proportion of correct and incorrect predictions is 
-broken down for each class. This enables you to examine how the {classanalysis}
-confused the different classes while it made its predictions.
-
-
-[discrete]
-[[ml-dfanalytics-class-aucroc]]
-==== Area under the curve of receiver operating characteristic (AUC ROC)
-
-The receiver operating characteristic (ROC) curve is a plot that represents the 
-performance of the classification process at different predicted probability 
-thresholds. It compares the true positive rate for a specific class against the 
-rate of all the other classes combined ("one versus all" strategy) at the 
-different threshold levels to create the curve.
-
-Let's see an example. You have three classes: `A`, `B`, and `C`, you want to 
-calculate AUC ROC for `A`. In this case, the number of correctly classified 
-++A++s (true positives) are compared to the number of ++B++s and ++C++s that are 
-misclassified as ++A++s (false positives).
-
-From this plot, you can compute the area under the curve (AUC) value, which is a 
-number between 0 and 1. The higher the AUC, the better the model is at 
-predicting ++A++s as ++A++s, in this case.
-
-NOTE: To use this evaluation method, you must set `num_top_classes` to `-1`
-or a value greater than or equal to the total number of classes when you create
-the {dfanalytics-job}.
 
 ////
 Another crucial measurement is how well your model performs on unseen data

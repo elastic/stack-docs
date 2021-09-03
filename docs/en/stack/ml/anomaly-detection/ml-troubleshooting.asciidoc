@@ -38,8 +38,14 @@ minutes in large environments.
 To remediate the problem if you experience it:
 
 1. Force-stop the `started` {dfeed} associated with the `closed` {anomaly-job}.
-2. Open the incorrectly `closed` {anomaly-job}.
-3. Start the associated {dfeed}.
+2. Complete the `revert` operation that the {anomaly-job} is blocked on by
+   calling the {ref}/ml-revert-snapshot.html[revert model snapshots API] with
+   `delete_intervening_results` set to `true`. To find the appropriate model
+   snapshot to revert to, look in the "Job Messages" tab for the {anomaly-job}
+   in {kib}, for the model snapshot reversion that started during your rolling
+   upgrade.
+3. Open the incorrectly `closed` {anomaly-job}.
+4. Start the associated {dfeed}.
 
 [discrete]
 [[ml-troubleshooting-mappings]]

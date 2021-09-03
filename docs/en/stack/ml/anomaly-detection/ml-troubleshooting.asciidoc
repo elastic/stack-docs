@@ -37,7 +37,9 @@ minutes in large environments.
 
 To remediate the problem if you experience it:
 
-1. Force-stop the `started` {dfeed} associated with the `closed` {anomaly-job}.
+1. Force-stop the `started` {dfeed} associated with the `closed` {anomaly-job}
+   by calling the {ref}/ml-stop-datafeed.html[stop {dfeeds} API] with `force`
+   set to `true`.
 2. Complete the `revert` operation that the {anomaly-job} is blocked on by
    calling the {ref}/ml-revert-snapshot.html[revert model snapshots API] with
    `delete_intervening_results` set to `true`. To find the appropriate model
@@ -46,6 +48,8 @@ To remediate the problem if you experience it:
    upgrade.
 3. Open the incorrectly `closed` {anomaly-job}.
 4. Start the associated {dfeed}.
+
+Steps 3 and 4 can be done by clicking the start button for the job in {kib}.
 
 [discrete]
 [[ml-troubleshooting-mappings]]

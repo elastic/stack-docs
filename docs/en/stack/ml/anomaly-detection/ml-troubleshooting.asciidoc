@@ -10,7 +10,7 @@ issues.
 
 [discrete]
 [[ml-avoid-upgrade-closures]]
-== Avoiding unintended {anomaly-job} closures on upgrade
+== Unintended {anomaly-job} closures on upgrade
 
 When you perform a {ref}/rolling-upgrades.html[rolling upgrade] to _or_ from 
 versions 7.14.0 or 7.14.1 you may find that {anomaly-jobs} that were `opened`
@@ -19,9 +19,9 @@ during the upgrade incorrectly end up `closed` after the upgrade.
 *Symptoms:*
 
 * Some (but not necessarily all) {anomaly-jobs} that were in the `opened` state
-before the upgrade show as `closed` after upgrade. The response from the
+before the upgrade are `closed` after the upgrade. The response from the
 {ref}/ml-get-job.html[get {anomaly-jobs} API] for these jobs contains a
-`blocked` property with a `revert` as its reason.
+`blocked` property with `revert` as its reason.
 * The {dfeed} associated with a `closed` {anomaly-job} is in the `started` state;
 this combination should be impossible.
 

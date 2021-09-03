@@ -9,6 +9,49 @@ Use the information in this section to troubleshoot common problems and known
 issues.
 
 [discrete]
+[[ml-avoid-upgrade-closures]]
+== Unintended {anomaly-job} closures on upgrade
+
+When you perform a {ref}/rolling-upgrades.html[rolling upgrade] to _or_ from 
+versions 7.14.0 or 7.14.1 you may find that {anomaly-jobs} that were `opened`
+during the upgrade incorrectly end up `closed` after the upgrade.
+
+*Symptoms:*
+
+* Some (but not necessarily all) {anomaly-jobs} that were in the `opened` state
+before the upgrade are `closed` after the upgrade. The response from the
+{ref}/ml-get-job.html[get {anomaly-jobs} API] for these jobs contains a
+`blocked` property with `revert` as its reason.
+* The {dfeed} associated with a `closed` {anomaly-job} is in the `started` state;
+this combination should be impossible.
+
+*Resolution:*
+
+To avoid this problem, enable {ml} upgrade mode before you start the rolling
+upgrade and disable it after the rolling upgrade is complete. Do not enable and
+disable {ml} upgrade mode more than once; enable it before upgrading the first
+node of the rolling upgrade and disable it after upgrading the last node. It is
+only safe to enable {ml} upgrade mode again after all {anomaly-jobs} that were
+`opened` have been assigned to nodes and fully recovered; this may take 30
+minutes in large environments.
+
+To remediate the problem if you experience it:
+
+1. Force-stop the `started` {dfeed} associated with the `closed` {anomaly-job}
+   by calling the {ref}/ml-stop-datafeed.html[stop {dfeeds} API] with `force`
+   set to `true`.
+2. Complete the `revert` operation that the {anomaly-job} is blocked on by
+   calling the {ref}/ml-revert-snapshot.html[revert model snapshots API] with
+   `delete_intervening_results` set to `true`. To find the appropriate model
+   snapshot to revert to, look in the "Job Messages" tab for the {anomaly-job}
+   in {kib}, for the model snapshot reversion that started during your rolling
+   upgrade.
+3. Open the incorrectly `closed` {anomaly-job}.
+4. Start the associated {dfeed}.
+
+Steps 3 and 4 can be done by clicking the start button for the job in {kib}.
+
+[discrete]
 [[ml-troubleshooting-mappings]]
 == Incorrect mappings in 7.9.0 or higher
 

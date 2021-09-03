@@ -1,7 +1,7 @@
 [role="xpack"]
 [[ml-trained-models]]
 = Trained models
-
+:keywords: {ml-init}, {stack}, {dfanalytics}
 
 When you use a {dfanalytics-job} to perform {classification} or {reganalysis},
 it creates a {ml} model that is trained and tested against a labelled data set.
@@ -135,6 +135,9 @@ https://ec.haxx.se/usingcurl/usingcurl-timeouts[timeout configurations] for
 `curl` (for example, `curl --max-time 600`) or your client of choice.
 --
 
+If you also want to copy the {dfanalytics-job} to the new cluster, you can 
+export and import jobs in the *{stack-manage-app}* app in {kib}. Refer to
+<<move-jobs>>.
 
 [discrete]
 [[import-external-model-to-es]]

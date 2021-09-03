@@ -1,0 +1,31 @@
+[chapter,role="xpack"]
+[[move-jobs]]
+= Export and import {ml} jobs
+++++
+<titleabbrev>Exporting and importing {ml} jobs</titleabbrev>
+++++
+:keywords: {ml-init}, {stack}, {anomaly-detect}, {dfanalytics}
+
+In {kib}, you can export and import your {ml} job and {dfeed} configuration details in *{stack-manage-app} > {ml-app} Jobs*. For example, you can export jobs from your test environment and import them into your production environment.
+
+The exported file contains configuration details; it does not contain the {ml}
+models. For {anomaly-detect}, you must import and run the job to build a model
+that is accurate for the new environment. For {dfanalytics}, trained models are
+portable and can be transferred between clusters as described in
+<<export-import>>.
+
+There are some additional actions that you must take before you can successfully
+import and run your jobs:
+
+. The {kib} {kibana-ref}/index-patterns.html[{data-sources}] that are used by
+{anomaly-detect} {dfeeds} and {dfanalytics} source indices must exist; otherwise,
+the import fails.
+. If your {anomaly-jobs} use
+<<ml-configuring-detector-custom-rules,custom rules>> with filter lists, the
+filter lists must exist; otherwise, the import fails. To create filter lists,
+use {kib} or the {ref}/ml-put-filter.html[create filters API].
+. If your {anomaly-jobs} were associated with <<ml-calendars,calendars>>, you
+must create the calendar in the new environment and add your imported jobs to
+the calendar. Use {kib} or the {ref}/ml-put-calendar.html[create calendars],
+{ref}/ml-post-calendar-event.html[add events to calendar], and
+{ref}/ml-put-calendar-job.html[add jobs to calendar] APIs.

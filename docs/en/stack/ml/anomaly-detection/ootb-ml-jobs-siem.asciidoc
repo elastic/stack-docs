@@ -538,7 +538,7 @@ These configurations are only available if data exists that matches the
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L8[manifest file].
 
-If you create these jobs in the *:ml-app:* app, you must first create the
+If you create these jobs in the *{ml-app}* app, you must first create the
 recommended
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}].
 
@@ -548,11 +548,11 @@ Looks for an unusually large spike in successful authentication events. This can
 be due to password spraying, user enumeration or brute force activity.
 
 Job details:::
-////
+
 * Detects anomalies where the number of events is unusually high and ignores
 cases where the count is zero (using the
 {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-////
+
 Required {beats} or {agent} integrations:::
 
 * {elastic-endpoint} integration
@@ -566,13 +566,13 @@ auth_high_count_logon_events_for_a_source_ip::
 Looks for an unusually large spike in successful authentication events events
 from a particular source IP address. This can be due to password spraying, user
 enumeration or brute force activity.
-////
+
 Job details:::
  
 * Detects anomalies where the number of events by source IP is unusually high
 and ignores cases where the count is zero (using the
 {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-////
+
 Required {beats} or {agent} integrations:::
 
 * {elastic-endpoint} integration
@@ -589,13 +589,13 @@ auth_high_count_logon_fails::
 Looks for an unusually large spike in authentication failure events. This can be
 due to password spraying, user enumeration or brute force activity and may be a
 precursor to account takeover or credentialed access.
-////
+
 Job details:::
  
 * Detects anomalies where the number of events is unusually high and ignores
 cases where the count is zero (using the
 {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-////
+
 Required {beats} or {agent} integrations:::
 
 * {elastic-endpoint} integration
@@ -610,12 +610,12 @@ Looks for a user logging in at a time of day that is unusual for the user. This
 can be due to credentialed access via a compromised account when the user and
 the threat actor are in different time zones. In addition, unauthorized user
 activity often takes place during non-business hours.
-////
+
 Job details:::
  
-* Detects anomalies where events by user happen at unusual times (using the
+* Detects anomalies where events happen at unusual times for a user (using the
 {ml-docs}/ml-time-functions.html#ml-time-of-day[`time_of_day` function]).
-////
+
 Required {beats} or {agent} integrations:::
 
 * {elastic-endpoint} integration
@@ -634,13 +634,12 @@ This can be due to credentialed access via a compromised account when the user
 and the threat actor are in different locations. An unusual source IP address
 for a username could also be due to lateral movement when a compromised account
 is used to pivot between hosts.
-////
+
 Job details:::
  
-//* Detects anomalies where the number of events is unusually high and ignores
-//cases where the count is zero
-//(using the {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-////
+* Detects unusually rare `source.ip` values compared to other users (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
 Required {beats} or {agent} integrations:::
 
 * {elastic-endpoint} integration
@@ -657,13 +656,12 @@ account. A user account that is normally inactive, because the user has left the
 organization, which becomes active, may be due to credentialed access using a
 compromised account password. Threat actors will sometimes also create new users
 as a means of persisting in a compromised web application.
-////
+
 Job details:::
  
-//* Detects anomalies where the number of distinct values in
-the `aws.cloudtrail.error_message` field is unusual
-(using the {ml-docs}/ml-count-functions.html#ml-distinct-count[`high_distinct_count` function]).
-////
+* Detects unusually rare `user.name` values (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
 Required {beats} or {agent} integrations:::
 
 * {elastic-endpoint} integration
@@ -1009,7 +1007,7 @@ These configurations are only available if data exists that matches the
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
 
-If you create these jobs in the *:ml-app:* app, you must first create the
+If you create these jobs in the *{ml-app}* app, you must first create the
 recommended
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[{data-source}].
 

@@ -538,9 +538,11 @@ These configurations are only available if data exists that matches the
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L8[manifest file].
 
-If you create these jobs in the *{ml-app}* app, you must first create the
-recommended
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}].
+By default, when you create these job in the {security-app}, it uses a
+{data-source} that applies to multiple indices. To get the same results if you
+use the {ml-app} app, create a similar 
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}]
+then select it in the job wizard.
 
 // tag::security-authentication-jobs[]
 auth_high_count_logon_events::
@@ -563,8 +565,8 @@ Required ECS fields:::
 * `event.outcome`
 
 auth_high_count_logon_events_for_a_source_ip::
-Looks for an unusually large spike in successful authentication events events
-from a particular source IP address. This can be due to password spraying, user
+Looks for an unusually large spike in successful authentication events from a
+particular source IP address. This can be due to password spraying, user
 enumeration or brute force activity.
 
 Job details:::
@@ -1007,9 +1009,11 @@ These configurations are only available if data exists that matches the
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
 
-If you create these jobs in the *{ml-app}* app, you must first create the
-recommended
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[{data-source}].
+By default, when you create these jobs in the {security-app}, it uses a
+{data-source} that applies to multiple indices. To get the same results if you
+use the {ml-app} app, create a similar 
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[{data-source}]
+then select it in the job wizard.
 
 // tag::security-network-jobs[]
 high_count_by_destination_country::

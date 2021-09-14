@@ -120,9 +120,9 @@ include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
 
 You can measure how well the model has performed on your training data set by 
 using the `classification` evaluation type of the 
-{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API] or by viewing the job results in {kib}. The 
-{classification} evaluation offers the following metrics to evaluate the model 
-performance:
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API] or by viewing the 
+job results in {kib}. The {classification} evaluation offers the following 
+metrics to evaluate the model performance:
 
 * Multiclass confusion matrix
 * Area under the curve of receiver operating characteristic (AUC ROC) 
@@ -171,11 +171,10 @@ thresholds. It compares the true positive rate for a specific class against the
 rate of all the other classes combined ("one versus all" strategy) at the 
 different threshold levels to create the curve.
 
-.Example 
-You have three classes: `A`, `B`, and `C`, you want to calculate AUC ROC for 
-`A`. In this case, the number of correctly classified ++A++s (true positives) 
-are compared to the number of ++B++s and ++C++s that are misclassified as ++A++s 
-(false positives).
+For example, there are three classes: `A`, `B`, and `C`, and AUC ROC is 
+calculated for `A`. In this case, the number of correctly classified ++A++s 
+(true positives) are compared to the number of ++B++s and ++C++s that are 
+misclassified as ++A++s (false positives).
 
 From this plot, you can compute the area under the curve (AUC) value, which is a 
 number between 0 and 1. The higher the AUC, the better the model is at 
@@ -252,9 +251,7 @@ https://github.com/elastic/examples/blob/master/Machine%20Learning/Class%20Assig
 
 The model that you created is stored as {es} documents in internal indices. In 
 other words, the characteristics of your trained model are saved and ready to be 
-deployed and used as functions. The <<ml-inference-class>> section shows you how 
-to use your model in a preprocessor of an ingest pipeline or in a pipeline 
-aggregation of a search query to make predictions about your data.
+deployed and used as functions.
 
 
 [discrete]
@@ -288,8 +285,7 @@ data set contains information such as weather conditions, carrier, flight
 distance, origin, destination, and whether or not the flight was delayed. The 
 {classification} model learns the relationships between the fields in your data 
 to predict the value of the _dependent variable_, which in this case is the 
-boolean `FlightDelay` field. For an overview of these concepts, see 
-<<ml-dfa-classification>> and <<ml-supervised-workflow>>.
+boolean `FlightDelay` field.
 
 TIP: If you want to view this example in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[click here].

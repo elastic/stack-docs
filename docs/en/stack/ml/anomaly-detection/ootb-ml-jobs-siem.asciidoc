@@ -638,8 +638,7 @@ for a username could also be due to lateral movement when a compromised account
 is used to pivot between hosts.
 
 Job details:::
- 
-* Detects unusually rare `source.ip` values compared to other users (using the
+* For each user, detects rare `source.ip` values (using the
 {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
@@ -736,7 +735,6 @@ sourcing from a geolocation (city) that is unusual. These calls can be the
 result of compromised credentials or keys.
 
 Job details:::
-
 * Detects unusually rare `event.action` values compared to other cities (using
 the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
@@ -777,7 +775,6 @@ can be the result of compromised credentials or keys as someone uses a valid
 account to persist, move laterally, or exfil data.
 
 Job details:::
-
 * Detects unusually rare `event.action` values compared to other users (using
 the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 

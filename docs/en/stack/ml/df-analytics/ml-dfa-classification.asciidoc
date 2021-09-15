@@ -7,80 +7,24 @@
 :description: An introduction to {ml} {classification}, which enables you to \
 predict classes of data points in a data set.
 
-This page contains a conceptual overview of {classification} in the {stack} and 
-a simple <<performing-classification,example>> of how to use it.
-
-
-[discrete]
-[[dfa-classification]]
-== {classification-cap}
-
-{classification-cap} is a {ml} process that enables you to predict the class or
-category of a data point in your data set. Typical examples of {classification}
-problems are predicting loan risk, classifying music, or detecting the potential 
-for cancer in a DNA sequence. In the first case, for example, the data set might 
-contain the investment history, employment status, debit status, and other 
-financial details for loan applicants. Based on this data, you could use 
-{classanalysis} to create a model that predicts whether it is safe or risky to 
-lend money to applicants. In the second case, the data contains song details 
-that enable you to classify music into genres like hip-hop, country, or 
-classical, for example. {classification-cap} is for predicting discrete, 
-categorical values, whereas <<ml-dfa-regression,{reganalysis}>> predicts 
-continuous, numerical values.
+{classification-cap} is a {ml} process that predicts the class or category of a 
+data point in a data set. Typical examples of {classification} problems are 
+classifying malicious and benign domains to detect DGA activities for security 
+reasons or predicting customer churn based on customer calling data. 
+{classification-cap} is for predicting discrete, categorical values.
 
 When you create a {classification} job, you must specify which field contains 
 the classes that you want to predict. This field is known as the _{depvar}_. It
 must contain no more than 30 classes. By default, all other
 {ref}/put-dfanalytics.html#dfa-supported-fields[supported fields] are included
-in the analysis and are known as _{feature-vars}_. The runtime and resources
-used by the job increase with the number of feature variables. Therefore, you
-can optionally include or exclude fields from the analysis. For more information
-about field selection, see the
+in the analysis and are known as _{feature-vars}_. You can optionally include or 
+exclude fields. For more information about field selection, refer to the
 {ref}/explain-dfanalytics.html[explain data frame analytics API].
-
-
-[discrete]
-[[dfa-classification-supervised]]
-=== Training the {classification} model
-
-{classification-cap} – just like {regression} – is a supervised {ml} process.
-When you create the {dfanalytics-job}, you must provide a data set that contains
-the _ground truth_. That is to say, your data set must contain the {depvar} 
-and the {feature-vars} fields that are related to it. You can divide the data
-set into training and testing data by specifying a `training_percent`. By
-default when you use the
-{ref}/put-dfanalytics.html[create {dfanalytics-jobs} API], 100% of the 
-<<dfa-classification-field-type-docs-limitations,eligible documents>> in the 
-data set are used for training. If you divide your data set, the job stratifies 
-the data to ensure that both the training and testing data sets contains classes 
-in proportions that are representative of the class proportions in the full data 
-set.
-
-When you are collecting a data set to train your model, ensure that it
-captures information for all of the classes. If some classes are poorly
-represented in the training data set (that is, you have very few data points per 
-class), the model might be unaware of them. In general, complex decision 
-boundaries between classes are harder to learn and require more data points per 
-class in the training data.
-
-include::ml-dfa-shared.asciidoc[tag=dfa-model-jvm]
-
-////
-It means that you need to supply a labeled training data set that has a {depvar} 
-and some fields that are related to it. The {classification} algorithm learns 
-the relationships between these fields and the {depvar}. Once you’ve trained the 
-model on your training data set, you can reuse the knowledge that the model has 
-learned about the relationships between the data points to classify new data.
-The effects of imbalanced data are automatically mitigated before the 
-training. Nonetheless, it is a good idea to train your model with a data set 
-that is approximately balanced. That is to say, ideally your data set should 
-have a similar number of data points for each class.
-////
-
+  
 
 [discrete]
 [[dfa-classification-algorithm]]
-==== {classification-cap} algorithms
+== {classification-cap} algorithms
 
 //tag::classification-algorithms[]
 {classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
@@ -92,85 +36,178 @@ is an iteration of the last one, hence it improves the decision made by the
 previous tree.
 //end::classification-algorithms[]
 
+[discrete]
+[[dfa-classification-problem]]
+== 1. Define the problem
+
+{classification-cap} can be useful in cases where discerte, categorical values 
+needs to be predicted. If your use case requires predicting such values, then 
+{classification} might be the suitable choice for you.
 
 [discrete]
-[[dfa-classification-deploy]]
-=== Deploying the model
+[[dfa-classification-environment]]
+== 2. Set up the environment
 
-The model that you created is stored as {es} documents in internal indices. In 
-other words, the characteristics of your trained model are saved and ready to be 
-deployed and used as functions. The <<ml-inference-class>> section shows you how 
-to use your model in a preprocessor of an ingest pipeline or in a pipeline 
-aggregation of a search query to make predictions about your data.
+To use {ml-features}, there must be at least one {ml} node in your cluster and 
+all master-eligible nodes must have {ml} enabled. By default, all nodes are {ml} 
+nodes. For more information about these settings, refer to 
+{ref}/modules-node.html#ml-node[{ml} nodes].
 
-
-[discrete]
-[[ml-inference-class]]
-==== {infer-cap}
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference]
-
-
-[discrete]
-[[ml-inference-processor-class]]
-===== {infer-cap} processor
-
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
+The {stack-security-features} require you to ensure your users also have the 
+necessary security privileges. See <<setup>>.
 
 
 [discrete]
-[[ml-inference-aggregation-class]]
-===== {infer-cap} aggregation
+[[dfa-classification-prepare-data]]
+== 3. Prepare and transform data
 
-include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
+{classification-cap} is a supervised {ml} method, which means you need to supply 
+a labeled training data set. This data set must have values for the 
+{feature-vars} and the {depvar} which are used to train the model. The training 
+process uses this information to learn the releationships between the classes 
+and the {feature-vars}. This labeled data set also plays a critical role in 
+model evaluation.
+
+If possible, prepare your input data such that it has less classes. A 
+{classanalysis} with many classes takes more time to run than a binary 
+{classification} job. The relationship between the number of classes and the 
+runtime is roughly linear.
+
+You might also need to {ref}/transforms.html[{transform}] your data to create a 
+{dataframe} which can be used as the source for {classification}.
+
+To learn more about how to prepeare your data, refer to 
+<<prepare-transform-data, the relevant section>> of the supervised learning 
+overview.
+
+[discrete]
+[[dfa-classification-create-job]]
+== 4. Create a job
+
+{dfanalytics-jobs-cap} contain the configuration information and metadata 
+necessary to perform an analytics task. You can create {dfanalytics-jobs} via 
+{kib} or using the {ref}/put-dfanalytics.html[create {dfanalytics-jobs} API]. 
+
+Select {classification} as the analytics type, then select the field that you 
+want to predict (the {depvar}). You can also include and exclude fields.
+
+To improve performance, consider using a small `training_percent` value to train 
+the model more quickly. It is a good strategy to make progress iteratively: run 
+the analysis with a small training percentage, then evaluate the performance. 
+Based on the results, you can decide if it is necessary to increase the 
+`training_percent` value.
+
+[discrete]
+[[dfa-classification-start]]
+== 5. Start the job
+
+You can start the job via {kib} or using the 
+{ref}/start-dfanalytics.html[start {dfanalytics-jobs}] API. A {classification} 
+job has the following phases: 
+
+include::ml-dfa-shared.asciidoc[tag=dfa-phases]
+
+After the last phase is finished, the job stops and the results are ready for 
+evaluation.
+
+include::ml-dfa-shared.asciidoc[tag=dfa-model-jvm]
+
+[discrete]
+[[ml-dfanalytics-classification-evaluation]]
+== 6. Evaluate and interpret the result
+
+include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
+
+You can measure how well the model has performed on your training data set by 
+using the `classification` evaluation type of the 
+{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API] or by viewing the 
+job results in {kib}. The {classification} evaluation offers the following 
+metrics to evaluate the model performance:
+
+* Multiclass confusion matrix
+* Area under the curve of receiver operating characteristic (AUC ROC) 
+
+The following metrics helps you interpret the analysis results:
+
+* {feat-imp}
+* `class_probability`
+* `class_score`
 
 
 [discrete]
-[[dfa-classification-performance]]
-=== {classification-cap} performance
+[[ml-dfanalytics-mccm]]
+=== Multiclass confusion matrix
 
-As a rule of thumb, a {classanalysis} with many classes takes more time to run 
-than a binary {classification} process when there are only two classes. The 
-relationship between the number of classes and the runtime is roughly linear.
+The multiclass confusion matrix provides a summary of the performance of the 
+{classanalysis}. It contains the number of occurrences where the analysis
+classified data points correctly with their actual class as well as the number
+of occurrences where it misclassified them.
 
-The runtime also scales approximately linearly with the number of involved 
-documents below 200,000 data points. Therefore, if you double the number of 
-documents, then the runtime of the analysis doubles respectively.
+This is an example of a confusion matrix for a binary problem:
 
-To improve the performance of your {classanalysis}, consider using a smaller 
-`training_percent` value when you create the job. That is to say, use a smaller 
-percentage of your documents to train the model more quickly. It is a good 
-strategy to make progress iteratively: use a smaller training percentage first, 
-run the analysis, and evaluate the performance. Then, based on the results, 
-decide if it is necessary to increase the `training_percent` value. If possible, 
-prepare your input data such that it has less classes. You can also remove the 
-fields that are not relevant from the analysis by specifying `excludes` patterns 
-in the `analyzed_fields` object when configuring the {dfanalytics-job}.  
+image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
+
+It is a two by two matrix because there are only two classes (`true` and
+`false`). It shows the proportion of data points that is correctly identified as 
+members of a each class and the proportion that is misidentified.
+
+As the number of classes increases, the confusion matrix becomes more complex:
+
+image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
+
+This matrix contains the actual labels on the left side while the predicted 
+labels are on the top. The proportion of correct and incorrect predictions is 
+broken down for each class. This enables you to examine how the {classanalysis}
+confused the different classes while it made its predictions.
 
 
 [discrete]
-[[dfa-classification-interpret]]
-=== Interpreting {classification} results
+[[ml-dfanalytics-class-aucroc]]
+=== Area under the curve of receiver operating characteristic (AUC ROC)
 
-The following sections help you understand and interpret the results of a 
-{classanalysis}. To see example results, refer to
-<<flightdata-classification-results>>.
+The receiver operating characteristic (ROC) curve is a plot that represents the 
+performance of the {classification} process at different predicted probability 
+thresholds. It compares the true positive rate for a specific class against the 
+rate of all the other classes combined ("one versus all" strategy) at the 
+different threshold levels to create the curve.
+
+For example, there are three classes: `A`, `B`, and `C`, and AUC ROC is 
+calculated for `A`. In this case, the number of correctly classified ++A++s 
+(true positives) are compared to the number of ++B++s and ++C++s that are 
+misclassified as ++A++s (false positives).
+
+From this plot, you can compute the area under the curve (AUC) value, which is a 
+number between 0 and 1. The higher the AUC, the better the model is at 
+predicting ++A++s as ++A++s, in this case.
+
+NOTE: To use this evaluation method, you must set `num_top_classes` to `-1`
+or a value greater than or equal to the total number of classes when you create
+the {dfanalytics-job}.
+
+
+[discrete]
+[[dfa-classification-feature-importance]]
+=== {feat-imp-cap}
+
+{feat-imp-cap} provides further information about the results of an analysis and 
+helps to interpret the results in a more subtle way. If you want to learn more 
+about {feat-imp}, refer to <<ml-feature-importance>>. 
 
 
 [discrete]
 [[dfa-classification-class-probability]]
-==== `class_probability`
+=== `class_probability`
 
 The `class_probability` is a value between 0 and 1, which indicates how likely
 it is that a given data point belongs to a certain class. The higher the number,
 the higher the probability that the data point belongs to the named class. This
-information is stored in the `top_classes` array for each document in your
+information is stored in the `top_classes` array for each document in the 
 destination index.
 
 
 [discrete]
 [[dfa-classification-class-score]]
-==== `class_score`
+=== `class_score`
 
 The `class_score` is a function of the `class_probability` and has a value that
 is greater than or equal to zero. It takes into consideration your objective (as
@@ -178,18 +215,14 @@ defined in the `class_assignment_objective` job configuration option):
 _accuracy_ or _recall_.
 
 If your objective is to maximize accuracy, the scores are weighted to maximize
-the proportion of correct predictions in the training data set. For example, in
-the context of a binary <<ml-dfanalytics-confusion-matrix,confusion matrix>>
-with classes `false` and `true`, the predictions of interest are the cells where
-the actual and predicted labels are both `true` (also known as a true positive
-(TP)) or both `false` (also known as a true negative (TN)):
+the proportion of correct predictions in the training data set.
 
 [role="screenshot"]
 image::images/confusion-matrix-binary-accuracy.jpg[alt="A confusion matrix with the correct predictions highlighted",width="75%"]
 
-TIP: If there is an imbalanced distribution of classes in your training data 
-set, focusing on accuracy can decrease your model's sensitivity to incorrect
-predictions in the classes that are under-represented in your data.
+TIP: If there is an imbalanced class distribution in your training data, 
+focusing on accuracy can decrease your model's sensitivity to incorrect
+predictions in the under-represented classes.
 
 By default, {classanalysis} jobs accept a slight degradation of the overall
 accuracy in return for greater sensitivity to classes that are predicted
@@ -201,12 +234,11 @@ of interest are in each row:
 image::images/confusion-matrix-multiclass-recall.jpg["A confusion matrix with a row highlighted"]
 
 For each class, the recall is calculated as the number of correct predictions
-(where the actual label matches the predicted label) divided by the sum of all
-the other predicted labels in that row. This value is represented as a
-percentage in each cell of the confusion matrix. The class scores are then
-weighted to favor predictions that result in the highest recall values across
-the training data. This objective typically performs better than accuracy when
-you have highly imbalanced data.
+divided by the sum of all the other predicted labels in that row. This value is 
+represented as a percentage in each cell of the confusion matrix. The class 
+scores are then weighted to favor predictions that result in the highest recall 
+values across the training data. This objective typically performs better than 
+accuracy when you have highly imbalanced data.
 
 To learn more about choosing the class assignment objective that fits your goal, 
 refer to this 
@@ -214,107 +246,33 @@ https://github.com/elastic/examples/blob/master/Machine%20Learning/Class%20Assig
 
 
 [discrete]
-[[dfa-classification-feature-importance]]
-==== {feat-imp-cap}
+[[dfa-classification-deploy]]
+== 7. Deploy the model
 
-{feat-imp-cap} provides further information about the results of an analysis and 
-helps to interpret the results in a more subtle way. If you want to learn more 
-about {feat-imp}, <<ml-feature-importance,click here>>. 
-
-
-[discrete]
-[[dfa-classification-evaluation]]
-=== Measuring model performance
-
-You can measure how well the model has performed on your data set by using the 
-`classification` evaluation type of the 
-{ref}/evaluate-dfanalytics.html[evaluate {dfanalytics} API]. The metric that the 
-evaluation provides you is a confusion matrix. The more classes you have, the 
-more complex the confusion matrix is. The matrix tells you how many data points 
-that belong to a given class were classified correctly and incorrectly.
-
-If you split your data set into training and testing data, you can determine how
-well your model performs on data it has never seen before and compare the
-prediction to the actual value.
+The model that you created is stored as {es} documents in internal indices. In 
+other words, the characteristics of your trained model are saved and ready to be 
+deployed and used as functions.
 
 
 [discrete]
-[[ml-dfanalytics-classification-evaluation]]
-=== {classification-cap} evaluation
+[[ml-inference-class]]
+=== {infer-cap}
 
-include::ml-dfa-shared.asciidoc[tag=dfa-evaluation-intro]
-
-This evaluation type is suitable for evaluating {classification} models. The 
-{classification} evaluation offers the following metrics to evaluate the model 
-performance:
-
-* Multiclass confusion matrix
-* Area under the curve of receiver operating characteristic (AUC ROC) 
+include::ml-dfa-shared.asciidoc[tag=dfa-inference]
 
 
 [discrete]
-[[ml-dfanalytics-mccm]]
-==== Multiclass confusion matrix
+[[ml-inference-processor-class]]
+==== {infer-cap} processor
 
-The multiclass confusion matrix provides a summary of the performance of the 
-{classanalysis}. It contains the number of occurrences where the analysis
-classified data points correctly with their actual class as well as the number
-of occurrences where it misclassified them.
-
-Let's see two examples of the confusion matrix. The first is a confusion matrix 
-of a binary problem:
-
-image::images/confusion-matrix-binary.jpg[alt="Confusion matrix of a binary problem",width="75%",align="center"]
-
-It is a two by two matrix because there are only two classes (`true` and
-`false`). The matrix shows the proportion of data points that is correctly
-identified as members of a each class and the proportion that is 
-misidentified.
-
-As the number of classes in your {classanalysis} increases, the confusion
-matrix also increases in complexity:
-
-image::images/confusion-matrix-multiclass.jpg[alt="Confusion matrix of a multiclass problem",width="100%",align="center"]
-
-
-The matrix contains the actual labels on the left side while the predicted 
-labels are on the top. The proportion of correct and incorrect predictions is 
-broken down for each class. This enables you to examine how the {classanalysis}
-confused the different classes while it made its predictions.
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-processor]
 
 
 [discrete]
-[[ml-dfanalytics-class-aucroc]]
-==== Area under the curve of receiver operating characteristic (AUC ROC)
+[[ml-inference-aggregation-class]]
+==== {infer-cap} aggregation
 
-The receiver operating characteristic (ROC) curve is a plot that represents the 
-performance of the classification process at different predicted probability 
-thresholds. It compares the true positive rate for a specific class against the 
-rate of all the other classes combined ("one versus all" strategy) at the 
-different threshold levels to create the curve.
-
-Let's see an example. You have three classes: `A`, `B`, and `C`, you want to 
-calculate AUC ROC for `A`. In this case, the number of correctly classified 
-++A++s (true positives) are compared to the number of ++B++s and ++C++s that are 
-misclassified as ++A++s (false positives).
-
-From this plot, you can compute the area under the curve (AUC) value, which is a 
-number between 0 and 1. The higher the AUC, the better the model is at 
-predicting ++A++s as ++A++s, in this case.
-
-NOTE: To use this evaluation method, you must set `num_top_classes` to `-1`
-or a value greater than or equal to the total number of classes when you create
-the {dfanalytics-job}.
-
-////
-Another crucial measurement is how well your model performs on unseen data
-points. To assess how well the trained model will perform on data it has never
-seen before, you must set aside a proportion of the training data set for 
-testing. This split of the data set is the _testing data set_. Once the model has 
-been trained, you can let the model predict the value of the data points it has 
-never seen before and compare the prediction to the actual value by using the 
-evaluate {dfanalytics} API.
-////
+include::ml-dfa-shared.asciidoc[tag=dfa-inference-aggregation]
 
 
 [discrete]
@@ -322,13 +280,12 @@ evaluate {dfanalytics} API.
 == Performing {classanalysis} in the sample flight data set
 
 Let's try to predict whether a flight will be delayed or not by using the 
-{kibana-ref}/get-started.html#gs-get-data-into-kibana[sample flight data]. The data set contains 
-information such as weather conditions, carrier, flight distance, origin,
-destination, and whether or not the flight was delayed. When you create a
-{dfanalytics-job} for {classanalysis}, it learns the relationships between the
-fields in your data in order to predict the value of the _dependent variable_, 
-which in this case is the boolean `FlightDelay` field. For an overview of these
-concepts, see <<dfa-classification>> and <<ml-supervised-workflow>>.
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[sample flight data]. The 
+data set contains information such as weather conditions, carrier, flight 
+distance, origin, destination, and whether or not the flight was delayed. The 
+{classification} model learns the relationships between the fields in your data 
+to predict the value of the _dependent variable_, which in this case is the 
+boolean `FlightDelay` field.
 
 TIP: If you want to view this example in a Jupyter notebook,
 https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20Jupyter%20Notebooks[click here].
@@ -338,11 +295,11 @@ https://github.com/elastic/examples/tree/master/Machine%20Learning/Analytics%20J
 [[flightdata-classification-data]]
 === Preparing your data
 
-Each document in the sample flight data set contains details for a single flight,
-so this data is ready for analysis; it is already in a two-dimensional
+Each document in the sample flight data set contains details for a single 
+flight, so the data is ready for analysis; it is already in a two-dimensional
 entity-based data structure. In general, you often need to
 {ref}/transforms.html[transform] the data into an entity-centric index before
-you can analyze the data.
+you can analyze it.
 
 In order to be analyzed, a document must contain at least one field with a
 supported data type (`numeric`, `boolean`, `text`, `keyword` or `ip`) and must
@@ -429,16 +386,14 @@ image::images/flights-classification-job-1.jpg["Creating a {dfanalytics-job} in 
 .. Choose `FlightDelay` as the dependent variable, which is the field that we
 want to predict with the {classanalysis}.
 .. Add `Cancelled`, `FlightDelayMin`, and `FlightDelayType` to the list of
-excluded fields. These fields will be excluded from the analysis. It is
-recommended to exclude fields that either contain erroneous data or describe the 
-`dependent_variable`.
+excluded fields. It is recommended to exclude fields that either contain 
+erroneous data or describe the `dependent_variable`.
 +
 --
 The wizard includes a scatterplot matrix, which enables you to explore the 
 relationships between the numeric fields. The color of each point is affected by
 the value of the dependent variable for that document, as shown in the legend.
-You can use this matrix to help you decide which fields to include or exclude
-from the analysis.
+You can use this matrix to help you decide which fields to include or exclude.
 
 [role="screenshot"]
 image::images/flights-classification-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
@@ -454,18 +409,18 @@ source data for training. While that value is low for this example, for many
 large data sets using a small training sample greatly reduces runtime without 
 impacting accuracy.
 .. If you want to experiment with <<ml-feature-importance,{feat-imp}>>, specify
-a value in the advanced configuration options. In this example, we choose to
-return a maximum of 10 {feat-imp} values per document. This option
-affects the speed of the analysis, so by default it is disabled. 
+a value in the advanced configuration options. In this example, a maximum of 10 
+{feat-imp} values per document will return. This option affects the speed of the 
+analysis, so by default it is disabled. 
 .. Use the default memory limit for the job. If the job requires more than this 
 amount of memory, it fails to start. If the available memory on the node is
 limited, this setting makes it possible to prevent job execution.
 .. Add a job ID (such as `model-flight-delays-classification`) and optionally a
 job description.
-.. Add the name of the destination index that will contain the results of the
-analysis. In {kib}, the index name matches the job ID by default. It will
-contain a copy of the source index data where each document is annotated with
-the results. If the index does not exist, it will be created automatically.
+.. Add the name of the destination index that will contain the results. In 
+{kib}, the index name matches the job ID by default. It will contain a copy of 
+the source index data where each document is annotated with the results. If the 
+index does not exist, it will be created automatically.
 .. Use default values for all other options.
 +
 --
@@ -507,8 +462,8 @@ PUT _ml/data_frame/analytics/model-flight-delays-classification
 <2> To disable {feat-imp} calculations, omit this option. 
 ====
 After you configured your job, the configuration details are automatically 
-validated. If the checks are successful, you can proceed and start the job. A 
-warning message is shown if the configuration is invalid. The message contains a 
+validated. If the checks are successful, you can start the job. A warning 
+message is shown if the configuration is invalid. The message contains a 
 suggestion to improve the configuration to be validated.
 --
 
@@ -518,7 +473,8 @@ suggestion to improve the configuration to be validated.
 --
 The job takes a few minutes to run. Runtime depends on the local hardware and 
 also on the number of documents and fields that are analyzed. The more fields 
-and documents, the longer the job runs. It stops automatically when the analysis is complete.
+and documents, the longer the job runs. It stops automatically when the analysis 
+is complete.
 
 .API example
 [%collapsible]
@@ -648,24 +604,24 @@ The API call returns the following response:
 === Viewing {classification} results
 
 Now you have a new index that contains a copy of your source data with 
-predictions for your dependent variable.
+predictions for your {depvar}.
 
 When you view the {classification} results in {kib}, it shows the contents of
 the destination index in a tabular format. It also provides information about
 the analysis details, model evaluation metrics, total {feat-imp} values, and a
-scatterplot matrix. Let's start by looking at the results table:  
+scatterplot matrix.
 
 [role="screenshot"]
 image::images/flights-classification-results.jpg["Destination index table for a classification job in {kib}"]
 
-In this example, the table shows a column for the dependent variable
-(`FlightDelay`), which contains the ground truth values that you are trying to
-predict. It also shows a column for the predicted values
-(`ml.FlightDelay_prediction`), which were generated by the {classanalysis}. The
-`ml.is_training` column indicates whether the document was used in the training
-or testing data set. You can use the *Training* and *Testing* filter options to
-refine the contents of the results table. You can also enable histogram charts
-to get a better understanding of the distribution of values in your data.
+The table shows a column for the {depvar} (`FlightDelay`), which contains the 
+ground truth values that you are trying to predict. It also shows a column for 
+the predicted values (`ml.FlightDelay_prediction`), which were generated by the 
+{classanalysis}. The `ml.is_training` column indicates whether the document was 
+used in the training or testing data set. You can use the *Training* and 
+*Testing* filter options to refine the contents of the results table. You can 
+also enable histogram charts to get a better understanding of the distribution 
+of values.
 
 If you want to understand how certain the model is about each prediction, you
 can examine its probability and score (`ml.prediction_probability` and
@@ -673,8 +629,8 @@ can examine its probability and score (`ml.prediction_probability` and
 model is that the data point belongs to the named class. If you examine the
 destination index more closely in the *Discover* app in {kib} or use the
 standard {es} search command, you can see that the analysis predicts the
-probability of all possible classes for the dependent variable. The
-`top_classes` object contains the predicted classes with the highest scores.
+probability of all possible classes for the {depvar}. The `top_classes` object 
+contains the predicted classes with the highest scores.
 
 TIP: If you have a large number of classes, your destination index contains a
 large number of predicted probabilities for each document. When you create the
@@ -722,15 +678,15 @@ score for each class.
 The class with the highest score is the prediction. In this example, `false` has
 a `class_score` of 0.35 while `true` has only 0.06, so the prediction will be
 `false`. For more details about these values, see
-<<dfa-classification-interpret>>.
+<<dfa-classification-class-score>>.
 
 ====
 
 If you chose to calculate {feat-imp}, the destination index also contains
 `ml.feature_importance` objects. Every field that is included in the
-{classanalysis} (known as a _feature_ of the data point) is assigned a {feat-imp}
-value. This value has both a magnitude and a direction (positive or negative),
-which indicates how each field affects a particular prediction. Only the most
+analysis (known as a _feature_ of the data point) is assigned a {feat-imp} 
+value. It has both a magnitude and a direction (positive or negative), which 
+indicates how each field affects a particular prediction. Only the most
 significant values (in this case, the top 10) are stored in the index. However,
 the trained model metadata also contains the average magnitude of the {feat-imp}
 values for each field across all the training data. You can view this
@@ -906,8 +862,8 @@ the logarithm of its odds.
 
 Lastly, {kib} provides a scatterplot matrix in the results. It has the same
 functionality as the matrix that you saw in the job wizard. Its purpose is to
-likewise help you visualize and explore the relationships between the numeric
-fields and the dependent variable in your data.
+help you visualize and explore the relationships between the numeric fields and 
+the {depvar}.
 
 
 [discrete]
@@ -927,9 +883,9 @@ actual class and the percentage of occurrences where it misclassified them.
 image::images/flights-classification-evaluation.png["Evaluation of a classification job in {kib}"]
 
 NOTE: As the sample data may change when it is loaded into {kib}, the results of 
-the {classanalysis} can vary even if you use the same configuration as the 
-example. Therefore, use this information as a guideline for interpreting your
-own results.
+the analysis can vary even if you use the same configuration as the example. 
+Therefore, use this information as a guideline for interpreting your own 
+results.
 
 If you want to see the exact number of occurrences, select a quadrant in the
 matrix. You can also use the *Training* and *Testing* filter options to refine
@@ -937,18 +893,18 @@ the contents of the matrix. Thus you can see how well the model performs on
 previously unseen data. In this example, there are 2952 documents in the testing
 data that have the `true` class. 794 of them are
 predicted as `false`; this is called a _false negative_. 2158 are predicted
-correctly as `true`; this is called a _true positive_. The confusion matrix
-therefore shows us that 27% of the actual `true` values were correctly
-predicted and 73% were incorrectly predicted in the test data set.
+correctly as `true`; this is called a _true positive_. The confusion matrix 
+shows us that 27% of the actual `true` values were correctly predicted and 73% 
+were incorrectly predicted in the test data.
 
 Likewise if you select other quadrants in the matrix, it shows the number of
-documents that have the `false` class as their actual value in the testing data
-set. In this example, the model labeled 7262 documents out of 8802 correctly as
+documents that have the `false` class as their actual value in the testing data. 
+In this example, the model labeled 7262 documents out of 8802 correctly as
 `false`; this is called a _true negative_. 1540 documents are predicted
 incorrectly as `true`; this is called a _false positive_. Thus 83% of the actual
 `false` values were correctly predicted and 17% were incorrectly predicted in
-the test data set. When you perform {classanalysis} on your own data, it might
-take multiple iterations before you are satisfied with the results and ready to
+the test data. When you perform {classanalysis} on your own data, it might take 
+multiple iterations before you are satisfied with the results and ready to 
 deploy the model.
 
 {kib} also provides the _receiver operating characteristic (ROC) curve_ as part 
@@ -1085,9 +1041,6 @@ If you don't want to keep the {dfanalytics-job}, you can delete it in {kib} or
 by using the {ref}/delete-dfanalytics.html[delete {dfanalytics-job} API]. When
 you delete {dfanalytics-jobs} in {kib}, you have the option to also remove the 
 destination indices and {data-sources}.
-
-When you have trained a satisfactory model, you can deploy it to make 
-predictions about new data by using {infer}.
 
 
 [discrete]

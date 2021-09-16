@@ -7,7 +7,7 @@
 
 // tag::siem-jobs[]
 These {anomaly-jobs} automatically detect file system and network anomalies on
-your hosts. They appear in the Anomaly Detection interface of the
+your hosts. They appear in the *Anomaly Detection* interface of the
 {security-guide}/machine-learning.html[{security-app}] in {kib} when you have
 data that matches their configuration. Each job lists the type of {agent}
 integration or Beat that collects the pertinent data. If you do not use the
@@ -24,9 +24,12 @@ https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/
 
 Detect suspicious network activity and unusual processes in {auditbeat} data.
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 IMPORTANT: In 7.11 or later versions, use the <<security-linux-jobs>> jobs
 instead.footnote:duplicatelinuxjobs[If you cannot upgrade all your Beats to
@@ -499,11 +502,13 @@ Required ECS fields when not using {beats}:::
 [[security-auditbeat-authentication-jobs]]
 == Security: {auditbeat} authentication
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/manifest.json#L8[manifest file].
-
 Detect suspicious authentication events in {auditbeat} data.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting] for data that matches the query.
 
 // tag::siem-auditbeat-auth-jobs[]
 suspicious_login_activity_ecs::
@@ -533,14 +538,168 @@ Required ECS fields when not using {beats}:::
 // end::siem-auditbeat-auth-jobs[]
 
 [discrete]
+[[security-authentication]]
+== Security: Authentication
+
+Detect anomalous activity in your ECS-compatible authentication logs.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
+
+By default, when you create these job in the {security-app}, it uses an index
+pattern that applies to multiple indices. To get the same results if you use the
+{ml-app} app, create a similar 
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[index pattern]
+then select it in the job wizard.
+
+// tag::security-authentication-jobs[]
+auth_high_count_logon_events::
+Looks for an unusually large spike in successful authentication events. This can
+be due to password spraying, user enumeration or brute force activity.
+
+Job details:::
+
+* Detects anomalies where the number of events is unusually high and ignores
+cases where the count is zero (using the
+{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+
+Required ECS fields:::
+
+* `event.category`
+* `event.outcome`
+
+auth_high_count_logon_events_for_a_source_ip::
+Looks for an unusually large spike in successful authentication events from a
+particular source IP address. This can be due to password spraying, user
+enumeration or brute force activity.
+
+Job details:::
+ 
+* Detects anomalies where the number of events by source IP is unusually high
+and ignores cases where the count is zero (using the
+{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+
+Required ECS fields:::
+
+* `event.category`
+* `event.outcome`
+* `source.ip`
+* `user.name`
+* `winlog.event_data.LogonType`
+
+auth_high_count_logon_fails::
+Looks for an unusually large spike in authentication failure events. This can be
+due to password spraying, user enumeration or brute force activity and may be a
+precursor to account takeover or credentialed access.
+
+Job details:::
+ 
+* Detects anomalies where the number of events is unusually high and ignores
+cases where the count is zero (using the
+{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+
+Required ECS fields:::
+
+* `event.category`
+* `event.outcome`
+
+auth_rare_hour_for_a_user::
+Looks for a user logging in at a time of day that is unusual for the user. This
+can be due to credentialed access via a compromised account when the user and
+the threat actor are in different time zones. In addition, unauthorized user
+activity often takes place during non-business hours.
+
+Job details:::
+ 
+* Detects anomalies where events happen at unusual times for a user (using the
+{ml-docs}/ml-time-functions.html#ml-time-of-day[`time_of_day` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+
+Required ECS fields:::
+
+* `event.category`
+* `event.outcome`
+* `source.ip`
+* `user.name`
+
+
+auth_rare_source_ip_for_a_user::
+Looks for a user logging in from an IP address that is unusual for the user.
+This can be due to credentialed access via a compromised account when the user
+and the threat actor are in different locations. An unusual source IP address
+for a username could also be due to lateral movement when a compromised account
+is used to pivot between hosts.
+
+Job details:::
+* For each user, detects rare `source.ip` values (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+
+Required ECS fields:::
+
+* `event.category`
+* `event.outcome`
+
+auth_rare_user::
+Looks for an unusual user name in the authentication logs. An unusual user name
+is one way of detecting credentialed access by means of a new or dormant user
+account. A user account that is normally inactive, because the user has left the
+organization, which becomes active, may be due to credentialed access using a
+compromised account password. Threat actors will sometimes also create new users
+as a means of persisting in a compromised web application.
+
+Job details:::
+ 
+* Detects unusually rare `user.name` values (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+
+Required {beats} or {agent} integrations:::
+
+* {elastic-endpoint} integration
+
+Required ECS fields:::
+
+* `event.category`
+* `event.outcome`
+* `source.ip`
+* `user.name`
+
+// end::security-authentication-jobs[]
+
+[discrete]
 [[security-cloudtrail-jobs]]
 == Security: CloudTrail
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/manifest.json#L8[manifest file].
-
 Detect suspicious activity recorded in your CloudTrail logs.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 // tag::security-cloudtrail-jobs[]
 
@@ -591,9 +750,8 @@ sourcing from a geolocation (city) that is unusual. These calls can be the
 result of compromised credentials or keys.
 
 Job details:::
-
-* Detects unusually rare `event.action` values compared to other cities (using
-the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
+* For each city, detects rare `event.action` values (using the
+{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
 Required {beats} or {agent} integrations:::
 
@@ -636,6 +794,7 @@ Job details:::
 * Detects unusually rare `event.action` values compared to other users (using
 the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
 
+
 Required {beats} or {agent} integrations:::
 
 * {filebeat}
@@ -655,11 +814,12 @@ Required ECS fields when not using {beats}:::
 
 Detect suspicious activity using ECS Linux events.
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file]. For
-example, all of these jobs analyze network activity logs where `host.os.type` is 
-`linux` or `host.os.family` is `debian`, `redhat`, `suse`, or `ubuntu`.
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 IMPORTANT: In 7.11 or later versions, use these jobs instead of the <<security-auditbeat-jobs>> jobs.footnote:duplicatelinuxjobs[]
 
@@ -858,11 +1018,20 @@ Required ECS fields:::
 [[security-network-jobs]]
 == Security: Network
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
-
 Detect anomalous network activity in your ECS-compatible network logs.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
+
+By default, when you create these jobs in the {security-app}, it uses an index
+pattern that applies to multiple indices. To get the same results if you use the
+{ml-app} app, create a similar 
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[index pattern]
+then select it in the job wizard.
 
 // tag::security-network-jobs[]
 high_count_by_destination_country::
@@ -992,11 +1161,14 @@ Required ECS fields:::
 [[security-packetbeat-jobs]]
 == Security: {packetbeat}
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/manifest.json#L8[manifest file].
-
 Detect suspicious network activity in {packetbeat} data.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 // tag::siem-packetbeat-jobs[]
 packetbeat_dns_tunneling::
@@ -1172,11 +1344,12 @@ Required ECS fields when not using {beats}:::
 
 Detects suspicious activity using ECS Windows events.
 
-These configurations are available only if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file]. For
-example, all of these jobs analyze host activity logs where `host.os.family` or 
-`host.os.type` is `windows`.
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 If there are additional requirements such as installing the Windows System
 Monitor (Sysmon) or auditing process creation in the Windows security event log,
@@ -1494,9 +1667,12 @@ Required ECS fields:::
 
 Detect unusual processes and network activity in {winlogbeat} data.
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 IMPORTANT: In 7.11 or later versions, use the <<security-windows-jobs>> jobs instead.footnote:duplicatewindowsjobs[]
 
@@ -1811,11 +1987,14 @@ Required ECS fields when not using {beats}:::
 [[security-winlogbeat-authentication-jobs]]
 == Security: {winlogbeat} authentication
 
-These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/manifest.json#L8[manifest file].
-
 Detect suspicious authentication events in {winlogbeat} data.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/manifest.json#L8[manifest file].
+In the {security-app}, it looks in the index pattern specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
 
 // tag::siem-winlogbeat-auth-jobs[]
 windows_rare_user_type10_remote_login::

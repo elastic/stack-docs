@@ -27,7 +27,7 @@ Detect suspicious network activity and unusual processes in {auditbeat} data.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
@@ -507,7 +507,7 @@ Detect suspicious authentication events in {auditbeat} data.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting] for data that matches the query.
 
 // tag::siem-auditbeat-auth-jobs[]
@@ -546,14 +546,14 @@ Detect anomalous activity in your ECS-compatible authentication logs.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
 By default, when you create these job in the {security-app}, it uses a
-{data-source} that applies to multiple indices. To get the same results if you
+index pattern that applies to multiple indices. To get the same results if you
 use the {ml-app} app, create a similar 
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}]
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[index pattern]
 then select it in the job wizard.
 
 // tag::security-authentication-jobs[]
@@ -697,7 +697,7 @@ Detect suspicious activity recorded in your CloudTrail logs.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
@@ -817,7 +817,7 @@ Detect suspicious activity using ECS Linux events.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
@@ -1023,14 +1023,14 @@ Detect anomalous network activity in your ECS-compatible network logs.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
 By default, when you create these jobs in the {security-app}, it uses a
-{data-source} that applies to multiple indices. To get the same results if you
+index pattern that applies to multiple indices. To get the same results if you
 use the {ml-app} app, create a similar 
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[{data-source}]
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[index pattern]
 then select it in the job wizard.
 
 // tag::security-network-jobs[]
@@ -1166,7 +1166,7 @@ Detect suspicious network activity in {packetbeat} data.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
@@ -1347,7 +1347,7 @@ Detects suspicious activity using ECS Windows events.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
@@ -1670,7 +1670,7 @@ Detect unusual processes and network activity in {winlogbeat} data.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
@@ -1992,7 +1992,7 @@ Detect suspicious authentication events in {winlogbeat} data.
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/manifest.json#L8[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
+In the {security-app}, it looks in the index pattern specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 

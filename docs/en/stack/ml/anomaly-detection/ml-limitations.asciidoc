@@ -329,11 +329,11 @@ spaces.
 
 [discrete]
 [[ml-rollup-limitations]]
-=== Rollup indices and {data-sources} are not supported in {kib}
+=== Rollup indices are not supported in {kib}
 
-Rollup indices and {data-sources} cannot be used in {anomaly-jobs} or 
-{dfeeds} in {kib}. If you select an index, saved search, or {data-source} that
-uses {ref}/xpack-rollup.html[{rollup-features}], the {anomaly-job} creation
-wizards fail. If you use APIs to create {anomaly-jobs} that use
-{rollup-features}, the job results might not display properly in the
+Rollup indices and {data-sources} with rolled up indices cannot be used in 
+{anomaly-jobs} or {dfeeds} in {kib}. If you try to analyze data that exists in 
+an index that uses {ref}/xpack-rollup.html[{rollup-features}], the 
+{anomaly-job} creation wizards fail. If you use APIs to create {anomaly-jobs} 
+that use {rollup-features}, the job results might not display properly in the
 *Single Metric Viewer* or *Anomaly Explorer* in {kib}.

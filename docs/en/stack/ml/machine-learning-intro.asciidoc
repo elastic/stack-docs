@@ -16,23 +16,24 @@ There are two types of analysis that can deduce the patterns and relationships
 within your data without training or intervention: _{anomaly-detect}_ and
 _{oldetection}_.
 
-<<ml-ad-overview,{anomaly-detect-cap}>> requires time series data. It constructs a
-probability model and can run continuously to identify unusual events as they
+<<ml-ad-overview,{anomaly-detect-cap}>> requires time series data. It constructs
+a probability model and can run continuously to identify unusual events as they
 occur. The model evolves over time; you can use its insights to forecast future
 behavior.
 
-<<ml-dfa-finding-outliers,{oldetection-cap}>> is a type of <<ml-dfanalytics,{dfanalytics}>> that does not require time series data; 
-it identifies unusual points in a data set by analyzing how close each data 
-point is to others and the density of the cluster of points around it. It does 
-not run continuously; it generates a copy of your data set where each data point 
-is annotated with an {olscore}. The score indicates the extent to which a data 
+<<ml-dfa-finding-outliers,{oldetection-cap}>> is a type of
+<<ml-dfanalytics,{dfanalytics}>> that does not require time series data; it
+identifies unusual points in a data set by analyzing how close each data point
+is to others and the density of the cluster of points around it. It does not run
+continuously; it generates a copy of your data set where each data point is
+annotated with an {olscore}. The score indicates the extent to which a data 
 point is an outlier compared to other data points.
 
 [discrete]
 [[machine-learning-supervised]]
 == Supervised {ml}
 
-There are two types of analysis that require training data sets:
+There are two types of {dfanalytics} that require training data sets:
 _{classification}_ and _{regression}_.
 
 In both cases, the result is a copy of your data set where each data point is

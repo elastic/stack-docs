@@ -1,0 +1,50 @@
+[chapter,role="xpack"]
+[[machine-learning-intro]]
+= What is Elastic {ml-app}?
+:keywords: {ml-init}, {stack}
+:description: An introduction to the breadth of Elastic {ml-features}.
+
+{ml-cap} features analyze your data and generate models for its patterns of
+behavior. The type of analysis that you choose depends on the questions or
+problems you want to address and the type of data you have available.
+
+[discrete]
+[[machine-learning-unsupervised]]
+== Unsupervised {ml}
+
+There are two types of analysis that can deduce the patterns and relationships
+within your data without training or intervention: _{anomaly-detect}_ and
+_{oldetection}_.
+
+<<ml-ad-overview,{anomaly-detect-cap}>> requires time series data. It constructs
+a probability model and can run continuously to identify unusual events as they
+occur. The model evolves over time; you can use its insights to forecast future
+behavior.
+
+<<ml-dfa-finding-outliers,{oldetection-cap}>> does not require time series data.
+It is a type of {dfanalytics} that identifies unusual points in a data set by
+analyzing how close each data point is to others and the density of the cluster
+of points around it. It does not run continuously; it generates a copy of your
+data set where each data point is annotated with an {olscore}. The score
+indicates the extent to which a data point is an outlier compared to other data
+points.
+
+[discrete]
+[[machine-learning-supervised]]
+== Supervised {ml}
+
+There are two types of {dfanalytics} that require training data sets:
+_{classification}_ and _{regression}_.
+
+In both cases, the result is a copy of your data set where each data point is
+annotated with predictions and a trained model, which you can deploy to make
+predictions for new data. For more information, refer to
+<<ml-supervised-workflow>>.
+
+<<ml-dfa-classification,{classification-cap}>> learns relationships between your
+data points in order to predict discrete categorical values, such as whether a
+DNS request originates from a malicious or benign domain.
+
+<<ml-dfa-regression,{regression-cap}>> learns relationships between your data
+points in order to predict continuous numerical values, such as the response
+time for a web request.

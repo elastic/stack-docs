@@ -80,19 +80,15 @@ This job is useful in identifying bots.
 [[apm-transaction-jobs]]
 == Transactions
 // tag::apm-transaction-jobs[]
-Detect anomalies in transactions from your APM services for metric data. These 
-configurations are only available if data exists that matches the recognizer 
-query specified in the 
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/manifest.json#L8[manifest file].
+Detect anomalies in transactions from your APM services. These configurations 
+are only available if data exists that matches the following term query: 
+`"processor.event": "transaction"`.
 
-apm_metrics::
+high_mean_transaction_duration::
 
-* For metric data where `processor.event` is `metric` and `metricset.name` is 
-  `transaction`.
-* Models duration, throughput, and error percentage of transactions by 
-  transaction type for APM services.
-* Detects anomalies in high mean of transaction duration, mean of transaction 
-  throughput, and high mean of transaction failure percentage.
+* For transaction data where `processor.event` is `transaction`.
+* Models duration of transactions by transaction type for APM services.
+* Detects anomalies in high mean of transaction duration.
 
 // end::apm-transaction-jobs[]
 // end::apm-jobs[]

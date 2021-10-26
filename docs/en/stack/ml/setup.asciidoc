@@ -10,9 +10,8 @@
 == Requirements overview
 
 The list below contains the requirements for enabling {ml-features}. Use the 
-list as a quick reference to check if your {es} cluster meets the conditions. 
-Refer to the <<ml-nodes>> and <<setup-privileges>> sections for more details 
-about the requirements.
+list as a quick reference to check if your setup meets the conditions. Refer to 
+the <<ml-nodes>> and <<setup-privileges>> sections for details.
 
 [%interactive]
 * [ ] the {subscriptions}[appropriate subscription] level or the free trial 
@@ -27,8 +26,6 @@ about the requirements.
 TIP: The fastest way to get started with {ml-features} is to
 {ess-trial}[start a free 14-day trial of {ess}] in the cloud.
 
-[role="screenshot"]
-image::license-management.jpg["License management in {kib}"]
 
 [discrete]
 [[ml-nodes]]
@@ -81,9 +78,12 @@ in {kib}. For more information, see
 {ref}/security-privileges.html[Security privileges] and 
 {kibana-ref}/kibana-privileges.html[{kib} privileges].
 
+[role="screenshot"]
+image::spaces.jpg["Manage spaces in {kib}"]
+
 The `machine_learning_admin` and `machine_learning_user` roles grant access to 
-the {ml-features} in all {kib} spaces. Therefore, when you use {kib}, use custom 
-roles instead and set your {kib} privileges appropriately for each space.
+the {ml-features} in all spaces. Therefore, when you use {kib}, use custom roles 
+instead and set your {kib} privileges appropriately for each space.
 
 For full access to the {ml-features} in {kib}, you must have:
 

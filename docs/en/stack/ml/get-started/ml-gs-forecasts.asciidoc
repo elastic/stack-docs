@@ -55,14 +55,15 @@ anomalies, the forecast data values, and the bounds for the forecast. This
 combination of actual and forecast data gives you an indication
 of how well the {ml-features} can extrapolate the future behavior of the data.
 
-To generate this comparison for the {kib} sample data, use only a subset of the
-data when you create the job. For example, follow the steps in <<ml-gs-jobs>>
-but add a different job ID prefix and deselect the
-**Use full kibana_sample_data_logs data** option. Choose a date part way
-through your sample data as the end date. By default, the {dfeed} stops and the
-{anomaly-job} closes when it reaches that date. Create the forecast. You can
-then restart the {dfeed} to process the remaining data and generate the type of
-results shown here.
+If you want to see this type of comparison for the {kib} sample data, which has
+a finite number of documents, you can reset the job and analyze only a subset of
+the data before you create a forecast. For example, reset one of your 
+{anomaly-jobs} from the *Job Management* page in {kib} or use the
+{ref}/ml-reset-job.html[reset {anomaly-jobs} API]. When you restart the {dfeed}
+for this job, choose a date part way through your sample data as the search end
+date. By default, the {dfeed} stops and the {anomaly-job} closes when it reaches
+that date. Create the forecast. You can then restart the {dfeed} to process the
+remaining data and generate the type of results shown here.
 
 TIP: The {kib} sample data sets have timestamps that are relative to when you
 added the data sets. However, some of these dates are in the future. Therefore,

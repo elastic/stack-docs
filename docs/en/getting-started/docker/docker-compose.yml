@@ -1,7 +1,7 @@
 version: '2.2'
 services:
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:{version}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
     container_name: es01
     environment:
       - node.name=es01
@@ -22,7 +22,7 @@ services:
       - elastic
 
   es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:{version}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
     container_name: es02
     environment:
       - node.name=es02
@@ -41,7 +41,7 @@ services:
       - elastic
 
   es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:{version}
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
     container_name: es03
     environment:
       - node.name=es03
@@ -60,7 +60,7 @@ services:
       - elastic
 
   kib01:
-    image: docker.elastic.co/kibana/kibana:{version}
+    image: docker.elastic.co/kibana/kibana:${VERSION}
     container_name: kib01
     ports:
       - 5601:5601

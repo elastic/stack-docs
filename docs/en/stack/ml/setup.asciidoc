@@ -9,9 +9,7 @@
 [[requirements-overview]]
 == Requirements overview
 
-The list below contains the requirements for enabling {ml-features}. Use the 
-list as a quick reference to check if your setup meets the conditions. Refer to 
-the <<ml-nodes>> and <<setup-privileges>> sections for details.
+To use the {stack} {ml-features}, you must have:
 
 [%interactive]
 * [ ] the {subscriptions}[appropriate subscription] level or the free trial 
@@ -20,8 +18,10 @@ the <<ml-nodes>> and <<setup-privileges>> sections for details.
   cluster
 * [ ] `ml` value defined in the list of `node.roles` on the {ml} nodes
 * [ ] {ml} features visible in the {kib} space
-* [ ] `machine_learning_admin` or `machine_learning_user` built-in roles or equivalent custom roles for 
-  users when {security-features} are enabled
+* [ ] `machine_learning_admin` or `machine_learning_user` built-in roles or 
+  equivalent custom roles for users when {security-features} are enabled
+
+Refer to the <<ml-nodes>> and <<setup-privileges>> sections for details.
 
 TIP: The fastest way to get started with {ml-features} is to
 {ess-trial}[start a free 14-day trial of {ess}] in the cloud.
@@ -73,13 +73,15 @@ In {kib}, the {ml-features} must be visible in your
 source {data-sources} must exist in the same space as your {ml} jobs.
 
 {kib} enables you to control access to the {ml-features} within each space. You 
-can manage your roles, privileges, and spaces in the **{stack-manage-app}** app 
-in {kib}. For more information, see 
-{ref}/security-privileges.html[Security privileges] and 
-{kibana-ref}/kibana-privileges.html[{kib} privileges].
+can manage your roles, privileges, and spaces in {kib}. For example, you can 
+change which features are visible in a specific space in 
+**{stack-manage-app}** > _Spaces_:
 
 [role="screenshot"]
 image::spaces.jpg["Manage spaces in {kib}"]
+
+For more information, see {ref}/security-privileges.html[Security privileges] 
+and {kibana-ref}/kibana-privileges.html[{kib} privileges].
 
 The `machine_learning_admin` and `machine_learning_user` roles grant access to 
 the {ml-features} in all spaces. Therefore, when you use {kib}, use custom roles 

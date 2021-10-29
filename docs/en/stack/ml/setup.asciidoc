@@ -89,7 +89,8 @@ Within a {kib} space, for full access to the {ml-features}, you must have:
 
 [%interactive]
 * [ ] `all` {kib} privileges for the {ml-features}
-* [ ] {data-sources} for your source data
+* [ ] {data-sources}, and `read`, and `view_index_metadata` index privileges on 
+  your source indices
 * [ ] `read`, `manage`, and `index` index privileges on destination indices (for 
   {dfanalytics-jobs} only)
 
@@ -98,7 +99,7 @@ Within a {kib} space, for read-only access to the {ml-features}, you must have:
 
 [%interactive]
 * [ ] `read` {kib} privileges for the {ml-features}
-* [ ] {data-sources} for your source data
+* [ ] {data-sources}, and `read` index privilege on your source indices
 * [ ] {data-sources} on destination indices (for {dfanalytics-jobs} only)
 
 For access to use {ml} APIs via _Dev Tools_ in {kib}, set the {es} security 

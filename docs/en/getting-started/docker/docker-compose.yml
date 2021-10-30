@@ -65,7 +65,6 @@ services:
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'
     networks:
       - elastic

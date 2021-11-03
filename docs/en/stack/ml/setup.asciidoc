@@ -52,8 +52,8 @@ For full access:
 
 [%interactive]
 * [ ] `machine_learning_admin` built-in role or the equivalent cluster 
-  privileges
-* [ ] `read` and `view_index_metadata` on source indices
+privileges 
+* [ ] `read` and `view_index_metadata` on source indices
 * [ ] `read`, `manage`, and `index` on destination indices (for 
   {dfanalytics-jobs} only)
 
@@ -80,7 +80,8 @@ image::spaces.jpg["Manage spaces in {kib}"]
 
 In addition to index privileges, source {data-sources} must also exist in the 
 same space as your {ml} jobs. These can be configured in **{stack-manage-app}** 
-> _{kib}_ > _{Data-Sources}_.
+> _{kib}_ > _{data-sources-caps}_.
+
 
 Each {ml} job can be assigned to all, one or multiple spaces. This can be 
 configured in **{stack-manage-app}** > _Alerts and Insights_ > 
@@ -114,7 +115,7 @@ Within a {kib} space, for read-only access to the {ml-features}, you must have:
 * [ ] {data-sources} and `read` index privilegeson destination indices (for 
   {dfanalytics-jobs} only)
 
-NOTE: {Data-sources} can be automatically created when creating a 
+NOTE: {data-sources-cap} can be automatically created when creating a 
 {dfanalytics-job}.
 
 For access to use {ml} APIs via _Dev Tools_ in {kib}, set the {es} security 
@@ -133,8 +134,8 @@ have:
 - [ ] Kibana feature privileges that grant use of File Upload, either:
   * `All` Machine Learning or
   * `All` Discover or
-  * `Read` Machine Learning and `All` {Data-Sources} Management 
-- [ ] `ingest_admin` built-in role, or`manage_pipeline` or 
+  * `Read` Machine Learning and `All` Data View Management 
+- [ ] `ingest_admin` built-in role, or `manage_pipeline` or 
   `manage_ingest_pipelines` cluster privileges
 - [ ] `create`, `create_index`, `manage` and `read` index privileges for
   destination indices

@@ -104,9 +104,10 @@ image::assign-job-spaces.jpg["Assign machine learning jobs to spaces"]
 Within a {kib} space, for full access to the {ml-features}, you must have:
 
 [%interactive]
-* [ ] `All` {kib} privileges for the {ml-features}
-* [ ] {data-sources} for your source indices
+* [ ] Machine Learning: `All` {kib} privileges
+* [ ] {data-sources-caps} Management: `All` {kib} feature privileges
 * [ ] `read`, and `view_index_metadata` index privileges on your source indices
+* [ ] {data-sources} for your source indices
 * [ ] {data-sources}, `read`, `manage`, and `index` index privileges on 
   destination indices (for {dfanalytics-jobs} only)
 
@@ -114,7 +115,7 @@ Within a {kib} space, for full access to the {ml-features}, you must have:
 Within a {kib} space, for read-only access to the {ml-features}, you must have:
 
 [%interactive]
-* [ ] `Read` {kib} privileges for the {ml-features}
+* [ ] Machine Learning: `Read` {kib} privileges
 * [ ] {data-sources} for your source indices
 * [ ] `read` index privilege on your source indices
 * [ ] {data-sources} and `read` index privilegeson destination indices (for 
@@ -136,10 +137,9 @@ Within a {kib} space, to upload and import files in the *{data-viz}*, you must
 have:
 
 [%interactive]
-- [ ] `All` or `Read` Machine Learning or `All` Discover {kib} feature 
+- [ ] Machine Learning: `All` or `Read` or Discover: `All` {kib} feature 
   privileges
-- [ ] `All` {data-sources-caps} Management {kib} feature privileges (required 
-  for automatic {data-source} creation)
+- [ ] {data-sources-caps} Management: `All` {kib} feature privileges
 - [ ] `ingest_admin` built-in role, or `manage_ingest_pipelines` cluster 
   privilege
 - [ ] `create`, `create_index`, `manage` and `read` index privileges for

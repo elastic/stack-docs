@@ -19,10 +19,9 @@ To use the {stack} {ml-features}, you must have:
 - [ ] `ml` value defined in the list of `node.roles` on the 
   {ref}/modules-node.html#ml-node[{ml} nodes]
 - [ ] {ml} features visible in the {kib} space
-- [ ] security privileges assigned to the user. Either of the following options:
-    * built-in roles: `machine_learning_admin` or `machine_learning_user`
-    * {kib} feature privileges: `Machine Learning All` or `Read` 
-    * equivalent custom roles.
+- [ ] security privileges assigned to the user that:
+    * grant use of {ml-features}, and
+    * grant access to source and destination indices.
 
 TIP: The fastest way to get started with {ml-features} is to
 {ess-trial}[start a free 14-day trial of {ess}] in the cloud.
@@ -39,7 +38,7 @@ via the respective {es} APIs.
 
 If you use {ml-features} via {es} APIs or _Dev Tools_ in {kib}, {es} security 
 privileges are required. If you use {ml} only in {kib}, you may configure either 
-{kib} feature privileges or {es} security privileges. If you contorol job level 
+{kib} feature privileges or {es} security privileges. If you control job level 
 visibility via _Spaces_, then it's recommended to use {kib} feature privileges.
 
 
@@ -47,76 +46,98 @@ visibility via _Spaces_, then it's recommended to use {kib} feature privileges.
 [[es-security-privileges]]
 === {es} security privileges
 
-If you use {ml} APIs, you must have the `machine_learning_admin` or 
-`machine_learning_user` built-in roles or the equivalent cluster privileges and 
-the following index privileges:
+If you use {ml} APIs, you must have the following cluster and index privileges:
 
 For full access:
 
 [%interactive]
-* [ ] `read` and `view_index_metadata` on source indices
+* [ ] `machine_learning_admin` built-in role or the equivalent cluster 
+  privileges
+* [ ] `read` and `view_index_metadata` on source indices
 * [ ] `read`, `manage`, and `index` on destination indices (for 
   {dfanalytics-jobs} only)
 
 For read-only access:
 
 [%interactive]
+* [ ] `machine_learning_user` built-in role or the equivalent cluster privileges
 * [ ] `read` index privileges on source indices
 * [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
   only)
 
 
 [discrete]
-[[kib-security-privileges]]
-=== {kib} privileges
+[[kib-visibility-spaces]]
+=== {kib} feature visibility in Spaces
 
 In {kib}, the {ml-features} must be visible in your
-{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your
-source {data-sources} must exist in the same space as your {ml} jobs.
-
-{kib} enables you to control access to the {ml-features} within each space. You 
-can manage your roles, privileges, and spaces in {kib}. For example, you can 
-change which features are visible in a specific space in 
-**{stack-manage-app}** > _Spaces_:
+{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space]. To 
+control which features are visible in your space, use **{stack-manage-app}** > 
+_{kib}_ > _Spaces_.
 
 [role="screenshot"]
 image::spaces.jpg["Manage spaces in {kib}"]
 
-For more information, see {ref}/security-privileges.html[Security privileges] 
-and {kibana-ref}/kibana-privileges.html[{kib} privileges].
+In addition to index privileges, source {data-sources} must also exist in the 
+same space as your {ml} jobs. These can be configured in **{stack-manage-app}** 
+> _{kib}_ > _{Data-Sources}_.
+
+Each {ml} job can be assigned to all, one or multiple spaces. This can be 
+configured in **{stack-manage-app}** > _Alerts and Insights_ > 
+_Machine Learning Jobs_. To assign a job to a space, select the spaces icon 
+shown in the job list.
+
+[role="screenshot"]
+image::assign-job-spaces.jpg["Assign machine learning jobs to spaces"]
+
+
+[discrete]
+[[kib-security-privileges]]
+=== {kib} feature privileges
 
 Within a {kib} space, for full access to the {ml-features}, you must have:
 
 [%interactive]
-* [ ] `all` {kib} privileges for the {ml-features}
-* [ ] {data-sources}, and `read`, and `view_index_metadata` index privileges on 
-  your source indices
-* [ ] `read`, `manage`, and `index` index privileges on destination indices (for 
-  {dfanalytics-jobs} only)
+* [ ] `All` {kib} privileges for the {ml-features}
+* [ ] {data-sources} for your source indices
+* [ ] `read`, and `view_index_metadata` index privileges on your source indices
+* [ ] {data-sources}, `read`, `manage`, and `index` index privileges on 
+  destination indices (for {dfanalytics-jobs} only)
 
 
 Within a {kib} space, for read-only access to the {ml-features}, you must have:
 
 [%interactive]
-* [ ] `read` {kib} privileges for the {ml-features}
-* [ ] {data-sources}, and `read` index privilege on your source indices
-* [ ] {data-sources} on destination indices (for {dfanalytics-jobs} only)
+* [ ] `Read` {kib} privileges for the {ml-features}
+* [ ] {data-sources} for your source indices
+* [ ] `read` index privilege on your source indices
+* [ ] {data-sources} and `read` index privilegeson destination indices (for 
+  {dfanalytics-jobs} only)
+
+NOTE: {Data-sources} can be automatically created when creating a 
+{dfanalytics-job}.
 
 For access to use {ml} APIs via _Dev Tools_ in {kib}, set the {es} security 
 privileges and grant access to `machine_learning_admin` or 
-`machine_learning_user` roles.
+`machine_learning_user` built-in roles.
 
 
 [discrete]
 [[upload-file-security-privileges]]
 === Security privileges for {data-viz}
 
-To upload and import files in the *{data-viz}*, you must have:
+Within a {kib} space, to upload and import files in the *{data-viz}*, you must 
+have:
 
 [%interactive]
-* [ ] `all` {kib} privileges for the {ml-app} or Discover features in
-  the appropriate spaces. Alternatively, `read` {kib} privileges for the 
-  {ml-app} feature and `all` {kib} privileges for the {ipm-app} feature
-* [ ] `manage_pipeline` or `manage_ingest_pipelines` cluster privileges
-* [ ] `create`, `create_index`, `manage` and `read` index privileges for
+- [ ] Kibana feature privileges that grant use of File Upload, either:
+  * `All` Machine Learning or
+  * `All` Discover or
+  * `Read` Machine Learning and `All` {Data-Sources} Management 
+- [ ] `ingest_admin` built-in role, or`manage_pipeline` or 
+  `manage_ingest_pipelines` cluster privileges
+- [ ] `create`, `create_index`, `manage` and `read` index privileges for
   destination indices
+
+For more information, see {ref}/security-privileges.html[Security privileges] 
+and {kibana-ref}/kibana-privileges.html[{kib} privileges].

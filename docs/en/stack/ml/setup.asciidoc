@@ -31,20 +31,25 @@ TIP: The fastest way to get started with {ml-features} is to
 [[setup-privileges]]
 == Security privileges
 
-Security privileges can be assigned as either {es} privileges or {kib} feature 
-privileges. The user is granted the most permissive combination of both. You can 
-configure these privileges under **{stack-manage-app}** > _Security_ in {kib} or 
-via the respective {es} APIs. 
+Assigning security privileges affects how users access {ml-features}. Consider 
+the two main categories:
 
-If you use {ml-features} via {es} APIs or _Dev Tools_ in {kib}, {es} security 
-privileges are required. If you use {ml} only in {kib}, you may configure either 
-{kib} feature privileges or {es} security privileges. If you control job level 
-visibility via _Spaces_, then it's recommended to use {kib} feature privileges.
+* *<<es-security-privileges>>*: uses an {es} client, cURL, or {kib} Dev Tools to 
+  access {ml-features} via {es} APIs. It requires {es} security privileges.
+* *<<kib-security-privileges>>*: uses the {ml-features} in {kib} and does not 
+use Dev Tools. It requires either {kib} feature privileges or {es} security 
+privileges and is granted the most permissive combination of both. {kib} feature 
+privileges are recommended if you control job level visibility via _Spaces_. 
+{ml-cap} features must be visible in the relevant space. Refer to 
+<<kib-visibility-spaces>> for configuration information.
+
+You can configure these privileges under **{stack-manage-app}** > _Security_ in 
+{kib} or via the respective {es} security APIs.
 
 
 [discrete]
 [[es-security-privileges]]
-=== {es} security privileges
+=== {es} API user
 
 If you use {ml} APIs, you must have the following cluster and index privileges:
 
@@ -94,7 +99,7 @@ image::assign-job-spaces.jpg["Assign machine learning jobs to spaces"]
 
 [discrete]
 [[kib-security-privileges]]
-=== {kib} feature privileges
+=== {kib} user
 
 Within a {kib} space, for full access to the {ml-features}, you must have:
 
@@ -131,12 +136,12 @@ Within a {kib} space, to upload and import files in the *{data-viz}*, you must
 have:
 
 [%interactive]
-- [ ] Kibana feature privileges that grant use of File Upload, either:
-  * `All` Machine Learning or
-  * `All` Discover or
-  * `Read` Machine Learning and `All` Data View Management 
-- [ ] `ingest_admin` built-in role, or `manage_pipeline` or 
-  `manage_ingest_pipelines` cluster privileges
+- [ ] `All` or `Read` Machine Learning or `All` Discover {kib} feature 
+  privileges
+- [ ] `All` {data-sources-caps} Management {kib} feature privileges (required 
+  for automatic {data-source} creation)
+- [ ] `ingest_admin` built-in role, or `manage_ingest_pipelines` cluster 
+  privilege
 - [ ] `create`, `create_index`, `manage` and `read` index privileges for
   destination indices
 

@@ -5,100 +5,148 @@
 <titleabbrev>Setup and security</titleabbrev>
 ++++
 
-To use the {stack} {ml-features}, you must have the 
-{subscriptions}[appropriate subscription] and at least one 
-<<ml-nodes,{ml} node>> in your cluster.
+[discrete]
+[[requirements-overview]]
+== Requirements overview
 
-If {stack} {security-features} are enabled, you must also ensure your users have
-the <<setup-privileges,necessary privileges>>. If the {operator-feature} is
-enabled, there are some {ml} settings that can be updated only by operator 
-users.
+To use the {stack} {ml-features}, you must have:
+
+[%interactive]
+- [ ] the {subscriptions}[appropriate subscription] level or the free trial 
+  period activated
+- [ ] `xpack.ml.enabled` set to its default value of `true` on every node in the 
+  cluster (refer to {ref}/ml-settings.html[{ml-cap} settings in {es}])
+- [ ] `ml` value defined in the list of `node.roles` on the 
+  {ref}/modules-node.html#ml-node[{ml} nodes]
+- [ ] {ml} features visible in the {kib} space
+- [ ] security privileges assigned to the user that:
+    * grant use of {ml-features}, and
+    * grant access to source and destination indices.
 
 TIP: The fastest way to get started with {ml-features} is to
 {ess-trial}[start a free 14-day trial of {ess}] in the cloud.
 
-[discrete]
-[[ml-nodes]]
-== Machine learning nodes
-
-To use {ml-features}, there must be at least one {ml} node in your cluster. A
-{ml} node is a node that has `xpack.ml.enabled` set to `true` and `ml` in
-`node.roles`.
-
-If nodes do not have the {ml} role, they cannot run {ml} jobs. If
-`xpack.ml.enabled` is `true`, however, they can service API requests. For more
-information, see {ref}/modules-node.html#ml-node[{ml-cap} nodes] and
-{ref}/ml-settings.html[{ml-cap} settings in {es}].
 
 [discrete]
 [[setup-privileges]]
 == Security privileges
 
+Assigning security privileges affects how users access {ml-features}. Consider 
+the two main categories:
+
+* *<<es-security-privileges>>*: uses an {es} client, cURL, or {kib} Dev Tools to 
+  access {ml-features} via {es} APIs. It requires {es} security privileges.
+* *<<kib-security-privileges>>*: uses the {ml-features} in {kib} and does not 
+use Dev Tools. It requires either {kib} feature privileges or {es} security 
+privileges and is granted the most permissive combination of both. {kib} feature 
+privileges are recommended if you control job level visibility via _Spaces_. 
+{ml-cap} features must be visible in the relevant space. Refer to 
+<<kib-visibility-spaces>> for configuration information.
+
+You can configure these privileges under **{stack-manage-app}** > _Security_ in 
+{kib} or via the respective {es} security APIs.
+
+
 [discrete]
 [[es-security-privileges]]
-=== {es} security privileges
+=== {es} API user
 
-The {stack-security-features} provide roles and privileges that make it easier
-to control which users can manage or view {ml} objects such as jobs, {dfeeds},
-results, and model snapshots.
-
-If you use {ml} APIs, you must have the `machine_learning_admin` or 
-`machine_learning_user` built-in roles or the equivalent cluster privileges and 
-the following index privileges:
+If you use {ml} APIs, you must have the following cluster and index privileges:
 
 For full access:
 
+[%interactive]
+* [ ] `machine_learning_admin` built-in role or the equivalent cluster 
+privileges 
 * [ ] `read` and `view_index_metadata` on source indices
 * [ ] `read`, `manage`, and `index` on destination indices (for 
   {dfanalytics-jobs} only)
 
 For read-only access:
 
+[%interactive]
+* [ ] `machine_learning_user` built-in role or the equivalent cluster privileges
 * [ ] `read` index privileges on source indices
 * [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
-only)
+  only)
+
+
+[discrete]
+[[kib-security]]
+=== {kib} security
+
+[discrete]
+[[kib-visibility-spaces]]
+==== Feature visibility in Spaces
+
+In {kib}, the {ml-features} must be visible in your
+{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space]. To 
+control which features are visible in your space, use **{stack-manage-app}** > 
+_{kib}_ > _Spaces_.
+
+[role="screenshot"]
+image::spaces.jpg["Manage spaces in {kib}"]
+
+In addition to index privileges, source {data-sources} must also exist in the 
+same space as your {ml} jobs. These can be configured in **{stack-manage-app}** 
+> _{kib}_ > _{data-sources-caps}_.
+
+
+Each {ml} job can be assigned to all, one or multiple spaces. This can be 
+configured in **{stack-manage-app}** > _Alerts and Insights_ > 
+_Machine Learning Jobs_. To assign a job to a space, select the spaces icon 
+shown in the job list.
+
+[role="screenshot"]
+image::assign-job-spaces.jpg["Assign machine learning jobs to spaces"]
+
 
 [discrete]
 [[kib-security-privileges]]
-=== {kib} privileges
+==== {kib} user
 
-In {kib}, the {ml-features} must be visible in your
-{kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space] and your
-source {data-sources} must exist in the same space as your {ml} jobs.
-
-{kib} enables you to control access to the {ml-features} within each space. You 
-can manage your roles, privileges, and spaces in the **{stack-manage-app}** app 
-in {kib}. For more information, see 
-{ref}/security-privileges.html[Security privileges] and 
-{kibana-ref}/kibana-privileges.html[{kib} privileges].
-
-The `machine_learning_admin` and `machine_learning_user` roles grant access to 
-the {ml-features} in all {kib} spaces. Therefore, when you use {kib}, use custom 
-roles instead and set your {kib} privileges appropriately for each space.
-
-For full access to the {ml-features} in {kib}, you must have:
+Within a {kib} space, for full access to the {ml-features}, you must have:
 
 [%interactive]
-* [ ] `all` {kib} privileges for the {ml-features} in the appropriate spaces
-* [ ] `read` and `view_index_metadata` index privileges on source indices
-* [ ] `read`, `manage`, and `index` index privileges on destination indices (for
+* [ ] `Machine Learning: All` {kib} privileges
+* [ ] `Data Views Management: All` {kib} feature privileges
+* [ ] `read`, and `view_index_metadata` index privileges on your source indices
+* [ ] {data-sources} for your source indices
+* [ ] {data-sources}, `read`, `manage`, and `index` index privileges on 
+  destination indices (for {dfanalytics-jobs} only)
+
+
+Within a {kib} space, for read-only access to the {ml-features}, you must have:
+
+[%interactive]
+* [ ] `Machine Learning: Read` {kib} privileges
+* [ ] {data-sources} for your source indices
+* [ ] `read` index privilege on your source indices
+* [ ] {data-sources} and `read` index privileges on destination indices (for 
   {dfanalytics-jobs} only)
 
-For read-only access to the {ml-features} in {kib}, you must have:
+NOTE: {data-sources-cap} can be automatically created when creating a 
+{dfanalytics-job}.
 
-[%interactive]
-* [ ] `read` {kib} privileges for the {ml-features} in the appropriate spaces
-* [ ] `read` index privileges on source indices
-* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
-only)
+For access to use {ml} APIs via _Dev Tools_ in {kib}, set the {es} security 
+privileges and grant access to `machine_learning_admin` or 
+`machine_learning_user` built-in roles.
 
+
+[discrete]
 [[upload-file-security-privileges]]
-To upload and import files in the *{data-viz}*, you must have:
+==== {data-viz} feature
+
+Within a {kib} space, to upload and import files in the *{data-viz}*, you must 
+have:
 
 [%interactive]
-* [ ] `all` {kib} privileges for the {ml-app} or Discover features in
-the appropriate spaces. Alternatively, `read` {kib} privileges for the {ml-app}
-feature and `all` {kib} privileges for the {ipm-app} feature
-* [ ] `manage_pipeline` or `manage_ingest_pipelines` cluster privileges
-* [ ] `create`, `create_index`, `manage` and `read` index privileges for
-destination indices
+- [ ] `Machine Learning: Read` or `Discover: All` {kib} feature privileges
+- [ ] `Data Views Management: All` {kib} feature privileges
+- [ ] `ingest_admin` built-in role, or `manage_ingest_pipelines` cluster 
+  privilege
+- [ ] `create`, `create_index`, `manage` and `read` index privileges for
+  destination indices
+
+For more information, see {ref}/security-privileges.html[Security privileges] 
+and {kibana-ref}/kibana-privileges.html[{kib} privileges].

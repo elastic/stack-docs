@@ -35,7 +35,7 @@ releases and master snapshots are not supported.
 TIP: You cannot downgrade after upgrading, so plan ahead to make sure that your applications still work after upgrading. For more information on changes that might affect your applications, see link:{ref}/breaking-changes.html[Breaking changes].
 
 The Upgrade Assistant::
-When you upgrade on Elastic Cloud, the deprecation API runs automatically to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any deprecation issues that would prevent the upgraded deployment from successfully performing, the upgrade fails. To resolve the deprecation issues, use the {ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana. If any indices in your Elasticsearch clusters need to be reindexed, the Upgrade Assistant will guide you through the steps.
+When you upgrade on Elastic Cloud, the deprecation API runs automatically to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any deprecation issues that would prevent the upgraded deployment from successfully performing, the upgrade fails. To resolve the deprecation issues, use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana. If any indices in your Elasticsearch clusters need to be reindexed, the Upgrade Assistant will guide you through the steps.
 +
 If your cluster does not include a Kibana instance yet, you can {cloud}/ec-enable-kibana.html[enable Kibana first], then use the Upgrade Assistant. After you resolve the deprecation issues, try the upgrade again.
 

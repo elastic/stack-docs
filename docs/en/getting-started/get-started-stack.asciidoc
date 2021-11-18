@@ -1,9 +1,9 @@
 [[get-started-elastic-stack]]
 == Getting started with the {stack}
 
-Looking for a guide that shows how to quickly install and configure the {stack}?
-You're in the right place! You can install the {stack} on a single VM, or even
-on your laptop. Install each component in the following order:
+Looking for a guide that shows how to quickly install and configure the {stack}
+("ELK")? You're in the right place! You can install the {stack} on a single VM, 
+or even on your laptop. Install each component in the following order:
 
 * <<install-elasticsearch,{es}>>
 * <<install-kibana,{kib}>>
@@ -67,6 +67,13 @@ generated for the transport and HTTP layers.
 
 You can then start {kib} and enter the enrollment token to securely connect 
 {kib} with {es}. The enrollment token is valid for 30 minutes.
+
+[NOTE]
+====
+On `deb` and `rpm` installations, an enrollment token isn't generated for {kib}
+during installation. To generate an enrollment token for {kib}, use the
+{ref}/create-enrollment-token.html[`elasticsearch-create-enrollment-token`] tool.
+====
 
 [[deb]]*deb:*
 
@@ -220,14 +227,15 @@ prompted:
 
 [source,shell]
 ----
-curl --cacert config/tls_auto_config_<timestamp>/http_ca.crt \
--u elastic https://localhost:9200 <1>
+curl --cacert $ES_PATH_CONF/tls_auto_config_<timestamp>/http_ca.crt \
+-u elastic https://localhost:9200
 ----
 // NOTCONSOLE
-<1> Ensure that you use `https` in your call, or the request will fail.
 +
 `--cacert`::
-Path to the generated `http_ca.crt` certificate for the HTTP layer.
+Path to the generated `http_ca.crt` certificate for the HTTP layer. This file
+is created in the {es} configuration directory, which is defined by the
+`$ES_PATH_CONF` {ref}/settings.html#config-files-location[environment variable].
 
 On Windows, if you don't have cURL installed, point your browser to the URL.
 

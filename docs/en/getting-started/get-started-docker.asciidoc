@@ -75,7 +75,7 @@ endif::[]
 --
 ifeval::["{release-state}"=="unreleased"]
 
-WARNING: Version {version} of {es} has not yet been released, so no
+WARNING: Version {version} of {kib}} has not yet been released, so no
 Docker image is currently available for this version.
 
 endif::[]
@@ -101,6 +101,13 @@ testing.
 output to the terminal, plus an enrollment token for enrolling {kib}.
 +
 --
+ifeval::["{release-state}"=="unreleased"]
+
+WARNING: Version {version} of {es} has not yet been released, so no
+Docker image is currently available for this version.
+
+endif::[]
+
 ifeval::["{release-state}"!="unreleased"]
 [source,sh,subs="attributes"]
 ----
@@ -198,6 +205,13 @@ GET /
 . In a new terminal session, start {kib} and connect it to your {es} container:
 +
 --
+ifeval::["{release-state}"=="unreleased"]
+
+WARNING: Version {version} of {kib} has not yet been released, so no
+Docker image is currently available for this version.
+
+endif::[]
+
 ifeval::["{release-state}"!="unreleased"]
 [source,sh,subs="attributes"]
 ----

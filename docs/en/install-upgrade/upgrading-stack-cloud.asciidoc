@@ -42,7 +42,7 @@ If your cluster does not include a Kibana instance yet, you can {cloud}/ec-enabl
 Snapshot behavior during upgrades::
 To keep your data safe, a snapshot is taken automatically before any changes are made to your cluster. After a major version upgrade is complete, and the first successful snapshot with the new major version is available, all snapshots taken with the previous version of Elasticsearch are removed.
 +
-For example, before upgrading from Elasticsearch version 7.x to version 8.x, a snapshot is taken. After the upgrade to version 8.x is complete, and a snapshot is available, all snapshots taken with version 8.x are removed.
+For example, before upgrading from Elasticsearch version 7.x to version 8.x, a snapshot is taken. After the upgrade to version 8.x is complete, and an 8.x snapshot is available, all snapshots taken with version 7.x are removed.
 + 
 On {ece}, you need to {ece-ref}/ece-manage-repositories.html[configure a snapshot repository] to enable snapshots.
 

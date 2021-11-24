@@ -13,14 +13,13 @@ and configured by default. This option is great for quickly getting started with
 
 You can also <<get-started-docker-tls,start the {stack} with Docker Compose>> to
 create a secured, multi-node cluster with a connected {kib} instance. This
-option requires more manual steps, but results in a more robust cluster.
+option requires more manual steps, but results in a more resilient cluster with
+greater capacity and reliability.
 
 [[run-docker-secure]]
 [discrete]
 === Start {es} and {kib} in Docker
-Starting in {es} 8.0, security is enabled by default. With security enabled,
-{stack} {security-features} require TLS encryption for the transport networking
-layer, or your cluster will fail to start.
+Starting in {es} 8.0, security is enabled and configured by default.
 
 If you're starting a single-node {es} cluster in a Docker container, security
 will be automatically enabled and configured for you. When you start {es} for
@@ -41,15 +40,9 @@ security settings from your {es} cluster, authenticates to {es} with the
 
 [discrete]
 ==== Prerequisites
+
 . Install the appropriate https://docs.docker.com/get-docker/[Docker application]
 for your operating system.
-+
-[NOTE]
-====
-Make sure that Docker is allotted at least 4GiB of memory. In Docker Desktop,
-you configure resource usage on the Advanced tab in Preference (macOS) or
-Settings (Windows).
-====
 
 . Pull the {es} Docker image.
 +
@@ -98,8 +91,16 @@ endif::[]
 The following command starts a single-node {es} cluster for development or
 testing.
 
+. Create an `elastic` network for your containers.
++
+[source,sh]
+----
+docker network create elastic
+----
+
 . Start {es} in Docker. A password is generated for the `elastic` user and
-output to the terminal, plus an enrollment token for enrolling {kib}.
+output to the terminal, plus enrollment tokens for enrolling {kib} and adding
+additional nodes to your cluster.
 +
 --
 ifeval::["{release-state}"=="unreleased"]
@@ -138,6 +139,14 @@ docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-reset-passw
 ----
 ====
 
+. Locate the CA certificate in your container. This command returns the path
+to the `http_ca.crt` certificate, which you'll use in the next step.
++
+[source,sh]
+----
+docker exec -it es-node01 /bin/bash -c "find /usr/share/elasticsearch -name http_ca.crt"
+----
+
 . Copy the `http_ca.crt` security certificate from your Docker container to
 your local machine. 
 +
@@ -146,8 +155,7 @@ your local machine.
 docker cp es-node01:/usr/share/elasticsearch/config/tls_auto_config_<timestamp>/http_ca.crt .
 ----
 `<timestamp>`:: The timestamp of when the auto-configuration process created
-the security files directory in your Docker container. Use the Docker CLI to
-locate the timestamp for this directory.
+the security files directory in your Docker container.
 
 . Open a new terminal and verify that you can connect to your {es}
 cluster by making an authenticated call, using the `http_ca.crt` file that you
@@ -264,13 +272,29 @@ docker rm kib01
 === Start the {stack} with Docker Compose
 
 To get a multi-node {es} cluster and {kib} up and running in Docker with
-security enabled, you can use Docker Compose:
+security enabled, you can use Docker Compose.
 
-. Create the following compose and configuration files.
-These files are also available from the
+[discrete]
+==== Prerequisites
+
+Install the appropriate https://docs.docker.com/get-docker/[Docker application]
+for your operating system.
+
+[NOTE]
+====
+Make sure that Docker is allotted at least 4GB of memory. In Docker Desktop,
+you configure resource usage on the Advanced tab in Preferences (macOS) or
+Settings (Windows).
+====
+
+[discrete]
+==== Prepare the environment
+
+Create the following Docker Compose and configuration files. These files are also
+available from the
 https://github.com/elastic/stack-docs/blob/master/docs/en/getting-started/docker/[elastic/stack-docs]
 repository on GitHub.
-+
+
 --
 ifeval::["{release-state}"=="unreleased"]
 NOTE: Version {version} of {es} has not been released,
@@ -289,25 +313,29 @@ This all-in-one configuration is a handy way to bring up your first dev cluster 
 you build a distributed deployment with multiple hosts.
 
 ifeval::["{release-state}"!="unreleased"]
-.`instances.yml`:
+[discrete]
+===== `instances.yml`
 ["source","yaml"]
 ----
 include::docker/instances.yml[]
 ----
 
-.`.env`:
+[discrete]
+===== `.env`
 ["source","txt",subs="attributes"]
 ----
 include::docker/.env[]
 ----
 
-.`create-certs.yml`:
+[discrete]
+===== `create-certs.yml`
 ["source","txt"]
 ----
 include::docker/create-certs.yml[]
 ----
 
-.`elastic-docker-tls.yml`:
+[discrete]
+===== `elastic-docker-tls.yml`
 ["source","txt"]
 ----
 include::docker/elastic-docker-tls.yml[]
@@ -320,9 +348,8 @@ include::docker/elastic-docker-tls.yml[]
 endif::[]
 --
 
-. Make sure that Docker is allotted at least 4GiB of memory. In Docker Desktop,
-you configure resource usage on the Advanced tab in Preference (macOS) or
-Settings (Windows).
+[discrete]
+==== Start your cluster with security enabled and configured
 
 . Generate certificates for {es} by bringing up the `create-certs` container:
 +

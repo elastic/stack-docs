@@ -34,12 +34,12 @@ end::dfa-inference[]
 
 tag::dfa-inference-processor[]
 {infer-cap} can be used as a processor specified in an 
-{ref}/pipeline.html[ingest pipeline]. It uses a trained model to infer against
-the data that is being ingested in the pipeline. The model is used on the
-{ref}/ingest.html[ingest node]. {infer-cap} pre-processes the data by using the
-model and provides a prediction. After the process, the pipeline continues
-executing (if there is any other processor in the pipeline), finally the new
-data together with the results are indexed into the destination index.
+{ref}/ingest.html[ingest pipeline]. It uses a trained model to infer against
+the data that is being ingested in the pipeline. The model is used on the ingest
+node. {infer-cap} pre-processes the data by using the model and provides a
+prediction. After the process, the pipeline continues executing (if there is any
+other processor in the pipeline), finally the new data together with the results
+are indexed into the destination index.
 
 Check the {ref}/inference-processor.html[{infer} processor] and 
 {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 

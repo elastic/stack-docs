@@ -32,11 +32,12 @@ for the transport and HTTP layers.
 `elasticsearch.yml`.
 * A password is generated for the `elastic` user.
 * An enrollment token is generated for {kib}.
+* An enrollment token is generated for other {es} nodes.
 
 You can then {kibana-ref}/docker.html[start {kib}] and enter the enrollment
 token, which is valid for 30 minutes. This token automatically applies the
 security settings from your {es} cluster, authenticates to {es} with the
-`kibana_system` user, and writes the security configuration to `kibana.yml`.
+`kibana` service account, and writes the security configuration to `kibana.yml`.
 
 [discrete]
 ==== Prerequisites

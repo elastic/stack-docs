@@ -7,7 +7,7 @@ high availability, all at the same time. During the upgrade process,
 {es}, Kibana, {xpack} and the officially included plugins are
 upgraded simultaneously.
 
-Although upgrading your Elastic Cloud clusters is easy, you still need to
+Although upgrading your Elastic Cloud deployments is easy, you still need to
 address breaking changes that affect your application. Minor version upgrades,
 upgrades from 6.8 to {version}, and all other cluster configuration
 changes can be performed with no downtime.
@@ -36,8 +36,6 @@ TIP: You cannot downgrade after upgrading, so plan ahead to make sure that your 
 
 The Upgrade Assistant::
 When you upgrade on Elastic Cloud, the deprecation API runs automatically to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any deprecation issues that would prevent the upgraded deployment from successfully performing, the upgrade fails. To resolve the deprecation issues, use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana. If any indices in your Elasticsearch clusters need to be reindexed, the Upgrade Assistant will guide you through the steps.
-+
-If your cluster does not include a Kibana instance yet, you can {cloud}/ec-enable-kibana.html[enable Kibana first], then use the Upgrade Assistant. After you resolve the deprecation issues, try the upgrade again.
 
 Snapshot behavior during upgrades::
 To keep your data safe, a snapshot is taken automatically before any changes are made to your cluster. After a major version upgrade is complete, and the first successful snapshot with the new major version is available, all snapshots taken with the previous version of Elasticsearch are removed.

@@ -323,6 +323,14 @@ role] that typically share the same hardware profile. Data tiers include the
 <<glossary-frozen-tier,frozen tier>>. See {ref}/data-tiers.html[Data tiers].
 //Source: Elasticsearch
 
+[[glossary-data-view]] data view::
+An object that enables you to select the data that you want to use in {kib} 
+and define the properties of the fields. A data view can point to one or more 
+<<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
+<<glossary-alias,aliases>>. For example, a data view can point to your log data from yesterday, 
+or all indices that contain your data.
+//Source: Kibana
+
 [[glossary-delete-phase]] delete phase::
 Last possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In the
 delete phase, an <<glossary-index,index>> is no longer needed and can safely be
@@ -629,7 +637,7 @@ each phase. See {ref}/ilm-policy-definition.html[Index lifecycle].
 //Source: Elasticsearch
 
 [[glossary-index-pattern]] index pattern::
-String containing a wildcard (`*`) pattern that can match multiple
+In {es}, a string containing a wildcard (`*`) pattern that can match multiple
 <<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
 <<glossary-alias,aliases>>. See {ref}/multi-index.html[Multi-target syntax].
 //Source: Elasticsearch
@@ -1125,7 +1133,8 @@ restore].
 [[glossary-snapshot-lifecycle-policy]] snapshot lifecycle policy::
 Specifies how frequently to perform automatic backups of a cluster and how long
 to retain the resulting <<glossary-snapshot,snapshots>>. See
-{ref}/snapshot-lifecycle-management.html[Manage the snapshot lifecycle].
+{ref}/snapshots-take-snapshot.html#automate-snapshots-slm[Automate snapshots
+with {slm-init}].
 //Source: Elasticsearch
 
 [[glossary-snapshot-repository]] snapshot repository::

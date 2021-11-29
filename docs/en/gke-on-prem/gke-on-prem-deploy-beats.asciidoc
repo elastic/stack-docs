@@ -79,22 +79,12 @@ kubectl create -f filebeat-kubernetes.yaml
 kubectl create -f metricbeat-kubernetes.yaml
 ----
 
-NOTE: Depending on your k8s node configuration, you may not need to deploy
-{journalbeat}. If your Nodes use journald for logging, then deploy {journalbeat}.
-Otherwise, {filebeat} will get the logs.
-
-[source,sh]
-----
-kubectl create -f journalbeat-kubernetes.yaml
-----
-
 [discrete]
 [[verify-beats]]
 === Verify
 
 Check for the running DaemonSets.
-Verify that there is one {filebeat}, {metricbeat}, and {journalbeat} pod per
-k8s Node running.
+Verify that there is one {filebeat} and {metricbeat} pod per k8s Node running.
 
 [source,sh]
 ----

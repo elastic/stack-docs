@@ -53,9 +53,9 @@ with {version}.
 Review known issues::
 The following known issues apply to the Elastic Stack 8.x releases:
 +
-* There are deprecated APIs that are still available for use. If you see warnings in the {n} logs about the deprecated APIs, you can ignore them.
+* There are deprecated APIs that are still available for use. If you see warnings in the {ess} or {ece} logs about the deprecated APIs, you can ignore them.
 +
-* {n} does not support the ability to upgrade to or from release candidate builds, such as 8.0.0-rc1.
+* {ess} and {ece} do not support the ability to upgrade to or from release candidate builds, such as 8.0.0-rc1.
 +
 * In {cloud} and {ece}, for Elasticsearch 7.8 and later the Index Lifecycle Managment (ILM) API is always enabled, even if the cluster is still using the deprecated index curation. If index curation and ILM are both configured to process the same indices the outcome can be unpredictable. As other stack products default to using ILM when it is available in Elasticsearch, we strongly encourage you to {cloud}/ec-migrate-index-management.html[Migrate to index lifecycle management]. ILM also has a superior feature set.
 

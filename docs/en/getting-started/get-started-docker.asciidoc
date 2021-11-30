@@ -179,7 +179,6 @@ ifeval::["{release-state}"!="unreleased"]
   kib01:
     image: docker.elastic.co/kibana/kibana:${VERSION}
     container_name: kib01
-    depends_on: {"es01": {"condition": "service_healthy"}}
     ports:
       - 5601:5601
     environment:

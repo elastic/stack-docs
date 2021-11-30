@@ -56,7 +56,7 @@ The following known issues apply to the Elastic Stack 8.x releases:
 +
 * {ess} and {ece} do not support the ability to upgrade to or from release candidate builds, such as 8.0.0-rc1.
 +
-* In {cloud} and {ece}, for Elasticsearch 7.8 and later the Index Lifecycle Managment (ILM) API is always enabled, even if the cluster is still using the deprecated index curation. If index curation and ILM are both configured to process the same indices the outcome can be unpredictable. As other stack products default to using ILM when it is available in Elasticsearch, we strongly encourage you to {cloud}/ec-migrate-index-management.html[Migrate to index lifecycle management]. ILM also has a superior feature set.
+* For Elasticsearch 7.8 and later the Index Lifecycle Managment (ILM) API is always enabled, even if the cluster is still using the deprecated index curation. If index curation and ILM are both configured to process the same indices the outcome can be unpredictable. As other stack products default to using ILM when it is available in Elasticsearch, we strongly encourage you to {cloud}/ec-migrate-index-management.html[Migrate to index lifecycle management]. ILM also has a superior feature set.
 
 Update the security realm settings::
 During the upgrade process, you are prompted to update the security realm settings when your `user_settings` include a `xpack.security.authc.realms` value. 

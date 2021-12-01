@@ -124,20 +124,6 @@ and enrollment token.
 
 . Copy the generated password and enrollment token and save them in a secure
 location. These values are shown only when you start {es} for the first time.
-+
-[NOTE]
-====
-If you need to reset the password for the `elastic` user or other
-built-in users, run the {ref}/reset-password.html[`elasticsearch-reset-password`]
-tool. This tool is available in the {es} `bin` directory of the Docker container.
-
-For example, to reset the password for the `elastic` user:
-
-[source,sh]
-----
-docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
-----
-====
 
 . Locate the CA certificate in your container. This command returns the path
 to the `http_ca.crt` certificate, which you'll use in the next step.
@@ -236,9 +222,24 @@ endif::[]
 
   .. In your browser, paste the enrollment token that you copied when starting
   {es} and click the button to connect your {kib} instance with {es}.
-+
-[NOTE]
-====
+
+  .. Log in to {kib} as the `elastic` user with the password that was generated
+  when you started {es}.
+
+[[docker-generate]]
+[discrete]
+==== Generate passwords and enrollment tokens
+If you need to reset the password for the `elastic` user or other
+built-in users, run the {ref}/reset-password.html[`elasticsearch-reset-password`]
+tool. This tool is available in the {es} `bin` directory of the Docker container.
+
+For example, to reset the password for the `elastic` user:
+
+[source,sh]
+----
+docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+----
+
 If you need to generate new enrollment tokens for {kib} or {es} nodes, run the
 {ref}/create-enrollment-token.html[`elasticsearch-create-enrollment-token`] tool.
 This tool is available in the {es} `bin` directory of the Docker container.
@@ -249,10 +250,7 @@ For example, to generate a new enrollment token for {kib}:
 ----
 docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
 ----
-====
 
-  .. Log in to {kib} as the `elastic` user with the password that was generated
-  when you started {es}.
 
 [[docker-remove-containers]]
 [discrete]

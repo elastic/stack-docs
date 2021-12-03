@@ -1,13 +1,13 @@
-version: '2.2'
+version: "2.2"
 services:
-  es01:
+  es-node01:
     image: docker.elastic.co/elasticsearch/elasticsearch:{version}
-    container_name: es01
+    container_name: es-node01
     environment:
-      - node.name=es01
+      - node.name=es-node01
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es02,es03
-      - cluster.initial_master_nodes=es01,es02,es03
+      - discovery.seed_hosts=es-node02,es-node03
+      - cluster.initial_master_nodes=es-node01,es-node02,es-node03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -21,14 +21,14 @@ services:
     networks:
       - elastic
 
-  es02:
+  es-node02:
     image: docker.elastic.co/elasticsearch/elasticsearch:{version}
-    container_name: es02
+    container_name: es-node02
     environment:
-      - node.name=es02
+      - node.name=es-node02
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es01,es03
-      - cluster.initial_master_nodes=es01,es02,es03
+      - discovery.seed_hosts=es-node01,es-node03
+      - cluster.initial_master_nodes=es-node01,es-node02,es-node03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -40,14 +40,14 @@ services:
     networks:
       - elastic
 
-  es03:
+  es-node03:
     image: docker.elastic.co/elasticsearch/elasticsearch:{version}
-    container_name: es03
+    container_name: es-node03
     environment:
-      - node.name=es03
+      - node.name=es-node03
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es01,es02
-      - cluster.initial_master_nodes=es01,es02,es03
+      - discovery.seed_hosts=es-node01,es-node02
+      - cluster.initial_master_nodes=es-node01,es-node02,es-node03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -65,8 +65,8 @@ services:
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_URL: http://es01:9200
-      ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'
+      ELASTICSEARCH_URL: http://es-node01:9200
+      ELASTICSEARCH_HOSTS: '["http://es-node01:9200","http://es-node02:9200","http://es-node03:9200"]'
     networks:
       - elastic
 

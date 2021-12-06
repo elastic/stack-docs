@@ -13,8 +13,7 @@ and configured by default. This option is great for quickly getting started with
 
 You can also <<get-started-docker-tls,start the {stack} with Docker Compose>> to
 create a secured, multi-node cluster with a connected {kib} instance. This
-option requires more manual steps, but results in a more resilient cluster with
-greater capacity and reliability.
+option results in a more resilient cluster with greater capacity and reliability.
 
 [[run-docker-secure]]
 [discrete]
@@ -272,6 +271,10 @@ docker rm kib01
 To get a multi-node {es} cluster and {kib} up and running in Docker with
 security enabled, you can use Docker Compose.
 
+This configuration provides a simple method of starting a secured cluster that
+you can use for development before building a distributed deployment with
+multiple hosts.
+
 [discrete]
 ==== Prerequisites
 
@@ -288,173 +291,112 @@ Settings (Windows).
 [discrete]
 ==== Prepare the environment
 
-Create the following Docker Compose and configuration files. These files are also
-available from the
+Create the following configuration files in a new, empty directory. These files
+are also available from the
 https://github.com/elastic/stack-docs/blob/master/docs/en/getting-started/docker/[elastic/stack-docs]
 repository on GitHub.
 
 --
 ifeval::["{release-state}"=="unreleased"]
 NOTE: Version {version} of {es} has not been released,
-so the sample compose and configuration files are not yet available for this version.
-See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
+so the sample Docker Compose and configuration files are not yet available for
+this version. See the {stack-gs-current}/get-started-docker.html[current version]
+for the latest sample files.
 endif::[]
+--
 
-* `instances.yml` identifies the instances you need to create certificates for.
-* `.env` sets environment variables to specify the {es} version and
-the location where the {es} certificates will be created.
-* `create-certs.yml` is a Docker Compose file that launches a container to generate the certificates
-for {es} and {kib}.
-* `elastic-docker-tls.yml` is a Docker Compose file that brings up a three-node {es} cluster
-and a {kib} instance with TLS enabled so you can see how things work.
-This all-in-one configuration is a handy way to bring up your first dev cluster before
-you build a distributed deployment with multiple hosts.
+* <<docker-env,`.env`>>
+* <<docker-compose,`docker-compose.yml`>>
 
+--
 ifeval::["{release-state}"!="unreleased"]
-[discrete]
-===== `instances.yml`
-["source","yaml"]
-----
-include::docker/instances.yml[]
-----
 
 [discrete]
+[[docker-env]]
 ===== `.env`
+
+The `.env` file sets environment variables that are used when you run the
+`docker-compose.yml` configuration file. Ensure that you specify a strong
+password for the `elastic` and `kibana_system` users with the
+`ELASTIC_PASSWORD` and `KIBANA_PASSWORD` variables. These variable are
+referenced by the `docker-compose.yml` file.
+
 ["source","txt",subs="attributes"]
 ----
 include::docker/.env[]
 ----
 
 [discrete]
-===== `create-certs.yml`
-["source","txt"]
+[[docker-compose]]
+===== `docker-compose.yml`
+
+The `docker-compose.yml` file is a Docker Compose file that defines generates
+node security certificates for {es}, configures a three-node {es} cluster with
+TLS enabled for client and internode communications, and securely enrolls a {kib}
+instance with the cluster. 
+
+.Exposing ports on Linux
+****
+This configuration exposes port `9200` on all network interfaces. Given how
+Docker manipulates `iptables` on Linux, this means that your {es} cluster is
+publicly accessible, potentially ignoring any firewall settings. If you don't
+want to expose port `9200` and instead use a reverse proxy, replace `9200:9200`
+with `127.0.0.1:9200:9200` in the `docker-compose.yml` file. {es} will then only
+be accessible from the host machine itself.
+****
+
+[source,yaml,subs="attributes"]
 ----
-include::docker/create-certs.yml[]
+include::docker/docker-compose.yml[]
 ----
 
-[discrete]
-===== `elastic-docker-tls.yml`
-["source","txt"]
-----
-include::docker/elastic-docker-tls.yml[]
-----
-
-<1> Generate and apply a trial license that supports Transport Layer Security.
-<2> Enable Transport Layer Security to encrypt client communications.
-<3> Enable Transport Layer Security to encrypt internode communications.
-<4> Allow the use of self-signed certificates by not requiring hostname verification.
 endif::[]
 --
 
 [discrete]
 ==== Start your cluster with security enabled and configured
 
-. Generate certificates for {es} by bringing up the `create-certs` container:
+. Modify the `.env` file and enter a password value for the `ELASTIC_PASSWORD`
+and `KIBANA_PASSWORD` variables.
+
+. Create and start the three-node {es} cluster:
 +
---
 ["source","sh"]
 ----
-docker-compose -f create-certs.yml run --rm create_certs
+docker-compose -f docker-compose.yml up -d
 ----
 
---
-
-. Bring up the three-node {es} cluster:
-+
---
-["source","sh"]
-----
-docker-compose -f elastic-docker-tls.yml up -d
-----
-
-IMPORTANT: At this point, {kib} cannot connect to the {es} cluster.
-You must generate a password for the built-in `kibana_system` user, update the `ELASTICSEARCH_PASSWORD`
-in the compose file, and restart to enable {kib} to communicate with the secured cluster.
-
---
-
-. Run the `elasticsearch-setup-passwords` tool to generate passwords for all built-in users,
-including the `kibana_system` user. If you don't use PowerShell on Windows, remove the trailing `\`characters
-and join the lines before running this command.
-+
---
-["source","sh"]
-----
-docker exec es-node01 /bin/bash -c "bin/elasticsearch-setup-passwords \
-auto --batch --url https://es-node01:9200"
-----
-
-IMPORTANT: Make a note of the generated passwords.
-You must configure the `kibana_system` user password in the compose file to enable {kib} to connect to {es},
-and you'll need the password for the `elastic` superuser to
-log in to {kib} and submit requests to {es}.
---
-
-. Set `ELASTICSEARCH_PASSWORD` in the `elastic-docker-tls.yml` compose file to the password
-generated for the `kibana_system` user.
-+
---
-ifeval::["{release-state}"=="unreleased"]
-NOTE: Version {version} of {es} has not been released,
-so the sample compose file is not yet available for this version.
-See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-["source","yaml",subs=+quotes]
-----
-  kib01:
-    image: docker.elastic.co/kibana/kibana:${VERSION}
-    container_name: kib01
-    depends_on: {"es-node01": {"condition": "service_healthy"}}
-    ports:
-      - 5601:5601
-    environment:
-      SERVERNAME: localhost
-      ELASTICSEARCH_URL: https://es-node01:9200
-      ELASTICSEARCH_HOSTS: https://es-node01:9200
-      ELASTICSEARCH_USERNAME: kibana_system
-      **ELASTICSEARCH_PASSWORD: CHANGEME**
-      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: $CERTS_DIR/ca/ca.crt
-      SERVER_SSL_ENABLED: "true"
-      SERVER_SSL_KEY: $CERTS_DIR/kib01/kib01.key
-      SERVER_SSL_CERTIFICATE: $CERTS_DIR/kib01/kib01.crt
-    volumes:
-      - certs:$CERTS_DIR
-    networks:
-      - elastic
-----
-endif::[]
---
-
-. Use `docker-compose` to restart the cluster and {kib}:
-+
---
-["source","sh"]
-----
-docker-compose stop
-docker-compose -f elastic-docker-tls.yml up -d
-----
---
-
-. Open {kib} to load sample data and interact with the cluster:
-https://localhost:5601.
-+
-NOTE: Because SSL is also enabled for communications between {kib} and client browsers,
-you must access {kib} via the HTTPS protocol.
+. Open a browser and navigate to http://localhost:5601[http://localhost:5601] to
+access {kib}, where you can load sample data and interact with your cluster.
 
 When you're done experimenting, you can tear down the containers, network, and
 volumes by running `docker-compose -f elastic-docker-tls.yml down -v`.
 
+[[docker-compose-remove-containers]]
+[discrete]
+==== Remove Docker Compose containers
+
+To remove the containers and their network, run:
+
+[source,sh]
+----
+docker network rm <directory-name>_default
+docker rm <directory-name>
+----
+
+`directory-name`:: Name of the directory that you created for the `.env` and
+`docker-compose.yml` files.
+
 [discrete]
 [[load-settings-file]]
-==== Loading settings from a file
+==== Load settings from a file
 
-Specifying settings for {es} and {{kib}} directly in the compose file is a convenient way to get started,
-but loading settings from a file is preferable once you get past the experimental stage.
+Specifying settings for {es} and {kib} directly in the Docker Compose file is a
+convenient way to get started, but loading settings from a file is preferable
+after you get past the experimental stage.
 
-For example, to use `es-node01.yml` as the configuration file for the `es-node01` {es} node,
-you can create a bind mount in the volumes section.
+For example, to use `es-node01.yml` as the configuration file for the `es-node01`
+{es} node, you can create a bind mount in the volumes section.
 
 ["source","yaml"]
 ----
@@ -464,7 +406,8 @@ you can create a bind mount in the volumes section.
       - ./es-node01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ----
 
-Similarly, to load {kib} settings from a file, you overwrite `/usr/share/kibana/config/kibana.yml`:
+Similarly, to load {kib} settings from a file, you overwrite
+`/usr/share/kibana/config/kibana.yml`:
 
 ["source","yaml"]
 ----

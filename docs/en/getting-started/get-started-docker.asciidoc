@@ -305,14 +305,14 @@ for the latest sample files.
 endif::[]
 --
 
-* <<docker-env,`.env`>>
-* <<docker-compose,`docker-compose.yml`>>
+* <<docker-env-file,`.env`>>
+* <<docker-compose-file,`docker-compose.yml`>>
 
 --
 ifeval::["{release-state}"!="unreleased"]
 
 [discrete]
-[[docker-env]]
+[[docker-env-file]]
 ===== `.env`
 
 The `.env` file sets environment variables that are used when you run the
@@ -327,7 +327,7 @@ include::docker/.env[]
 ----
 
 [discrete]
-[[docker-compose]]
+[[docker-compose-file]]
 ===== `docker-compose.yml`
 
 The `docker-compose.yml` file is a Docker Compose file that defines generates
@@ -369,19 +369,17 @@ docker-compose -f docker-compose.yml up -d
 . Open a browser and navigate to http://localhost:5601[http://localhost:5601] to
 access {kib}, where you can load sample data and interact with your cluster.
 
-When you're done experimenting, you can tear down the containers, network, and
-volumes by running `docker-compose -f elastic-docker-tls.yml down -v`.
-
 [[docker-compose-remove-containers]]
 [discrete]
 ==== Remove Docker Compose containers
 
-To remove the containers and their network, run:
+When you're done experimenting, you can remove the network, containers, and
+volumes:
 
 [source,sh]
 ----
 docker network rm <directory-name>_default
-docker rm <directory-name>
+docker-compose -f docker-compose.yml down --volumes
 ----
 
 `directory-name`:: Name of the directory that you created for the `.env` and

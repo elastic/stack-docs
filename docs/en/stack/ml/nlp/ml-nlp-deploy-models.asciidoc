@@ -1,16 +1,16 @@
 [[ml-nlp-deploy-models]]
-= Import and deploy trained models
+= Deploy trained models
 
 :keywords: {ml-init}, {stack}, {nlp}
-:description:  To make trained models available for inference, you must import \
-and deploy them in {es}.
+:description: You can import trained models into your cluster and configure them \
+for specific NLP tasks.
 
-If you want to perform {nlp} tasks in your cluster, you must import and deploy
-an appropriate trained model. There are {es} APIs and tooling support in eland
-to prepare and manage models. 
+If you want to perform {nlp} tasks in your cluster, you must deploy an
+appropriate trained model. There are {es} APIs and tooling support in eland
+to prepare and manage models.
 
 . <<ml-nlp-select-model,Select a trained model.>>
-. <<ml-nlp-upload-model,Upload the trained model and vocabulary.>>
+. <<ml-nlp-import-model,Import the trained model and vocabulary.>>
 . <<ml-nlp-deploy-model,Deploy the model in your cluster.>>
 
 [discrete]
@@ -27,34 +27,40 @@ the standard BERT model interface and use the WordPiece tokenization algorithm.
 
 The simplest method is to use a model that has already been fine-tuned for the
 type of analysis that you want to perform. For example, there are models and 
-data sets available for specific NLP tasks in
+data sets available for specific NLP tasks on
 https://huggingface.co/models[Hugging Face].
 
 [discrete]
-[[ml-nlp-upload-model]]
-== Upload the trained model and vocabulary
+[[ml-nlp-import-model]]
+== Import the trained model and vocabulary
 
-After you find or create a model, you must upload it and its tokenizer
+After you find or create a model, you must import it and its tokenizer
 vocabulary to your cluster. 
 
 Trained models must be in a TorchScript representation for use with
-{stack-ml-features}. To use scripts that format and upload the necessary
-artifacts, refer to https://github.com/elastic/eland#nlp-with-pytorch
+{stack-ml-features}. To use scripts that convert Hugging Face transformer models
+to their TorchScript representations and import them with their tokenizer
+vocabularies, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+
+If you used PyTorch to create your own trained model, you must create a
+TorchScript representation of the model. Then you can use eland to import the
+necessary artifacts into your cluster.
 
 Alternatively, you can use the
 {ref}/put-trained-model-vocabulary.html[create trained model vocabulary API] and
-{ref}/put-trained-models.html[create trained models API] or
+{ref}/put-trained-models.html[create trained models API] and
 {ref}/put-trained-model-definition-part.html[create trained model definition part API].
-// When you upload the model, it must be chunked and uploaded one chunk at a time. 
-//TBD Why? How?
-//Since eland encapsulates this process in a single Python method, it is the recommended method.
+When you import the model, however, it must be chunked and imported one chunk at
+a time for storage in parts due its size. Since eland encapsulates this process
+in a single Python method, it is the recommended import method.
 
 [discrete]
 [[ml-nlp-deploy-model]]
 == Deploy the model in your cluster
 
-After you upload the model and vocabulary, you can use {kib} to view and manage
-their deployment across your cluster under **{ml-app}** > _Model Management_. Alternatively, you can use the
+After you import the model and vocabulary, you can use {kib} to view and manage
+their deployment across your cluster under **{ml-app}** > *Model Management*.
+Alternatively, you can use the
 {ref}/start-trained-model-deployment.html[start trained model deployment API].
 
 When you deploy the model, it is allocated to all available {ml} nodes. You can

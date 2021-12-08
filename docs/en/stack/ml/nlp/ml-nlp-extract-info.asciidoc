@@ -1,0 +1,102 @@
+[[ml-nlp-extract-info]]
+= Extract information
+
+:keywords: {ml-init}, {stack}, {nlp}, named entity recognition, fill mask
+:description: NLP tasks that extract information from unstructured text. 
+
+These NLP tasks enable you to extract information from your unstructured text:
+
+* <<ml-nlp-ner>>
+* <<ml-nlp-mask>>
+
+
+[discrete]
+[[ml-nlp-ner]]
+== Named entity recognition
+
+The named entity recognition (NER) task can identify and categorize certain 
+entities – typically proper nouns – in your unstructured text. Named entities 
+usually refer to objects in the real world such as persons, locations, 
+organizations, and other miscellaneous entities that are consistently referenced 
+by a proper name.
+
+NER is a useful tool to identify key information, add structure and gain 
+insight into your content. It's particularly useful while processing and exploring large collections of text 
+such as news articles, wiki pages or websites. It makes it easier to understand 
+the subject of a text and group similar pieces of content together.
+
+In the following example, the short text is analyzed for any named entity and 
+the model extracts not only the individual words that make up the entities, but 
+also phrases, consisting of multiple words.
+
+[source,js]
+----------------------------------
+...
+{
+    "text_field": "Elastic is headquartered in Mountain View, California."
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+  "results": [
+    {
+      "entity": "Elastic",
+      "class": "organization"
+    },
+    {
+      "entity": "Mountain View",
+      "class": "location"
+    },
+    {
+      "entity": "California",
+      "class": "location"
+    }
+  ]
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+[discrete]
+[[ml-nlp-mask]]
+== Fill-mask
+
+The objective of the fill-mask task is to predict a missing word from a text 
+sequence. The model uses the context of the masked word to predict the most 
+likely word to complete the text.
+
+The fill-mask task can be used to quickly and easily test your model.
+
+In the following example, the special word “[MASK]” is used as a placeholder to 
+tell the model which word to predict.
+
+[source,js]
+----------------------------------
+...
+{
+    "input": "The capital city of France is [MASK]."
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+  "result": "Paris"
+}
+...
+----------------------------------
+// NOTCONSOLE

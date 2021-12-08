@@ -1,0 +1,158 @@
+[[ml-nlp-categorize-text]]
+= Categorize text
+
+:keywords: {ml-init}, {stack}, {nlp}, {lang-ident}, text classification, \
+zero-shot text classification
+
+:description: NLP tasks that classify input text into categories and determine \
+the language of text. 
+
+These NLP tasks enable you to identify the language of text and categorize 
+unstructured input text:
+
+* <<ml-nlp-lang-ident>>
+* <<ml-nlp-text-classification>>
+* <<ml-nlp-zero-shot>>
+
+include::ml-nlp-lang-ident.asciidoc[leveloffset=+1]
+
+
+[discrete]
+[[ml-nlp-text-classification]]
+== Text classification
+
+Text classification puts the input text into one of multiple classes or 
+categories that best describe the text. The categories and their numbers depend 
+on model training. Based on the number of classes, two main types of 
+classification exist: binary – where the number of classes is two – and 
+multi-class classification – where the number of classes is more than two.
+
+This task, for example, can help you analyze text for markers of positive or 
+negative sentiment or classify text into various topics.
+
+The example below is of binary classification where the model is trained to 
+perform sentiment analysis with classes "POSITIVE" and "NEGATIVE".
+
+[source,js]
+----------------------------------
+...
+{
+    "input_text": "This was the best movie I’ve seen in the last decade!"
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+    "result": "POSITIVE"
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+The second example is of multi-class classification where the model is trained 
+to classify text into news topics with classes "SPORTS", "BUSINESS", "LOCAL", 
+and "ENTERTAINMENT".
+
+[source,js]
+----------------------------------
+...
+{
+    "input_text": "The Blue Jays played their final game in Toronto last night and came out with a win over the Yankees, highlighting just how far the team has come this season."
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+    "result": "SPORTS"
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+[discrete]
+[[ml-nlp-zero-shot]]
+== Zero-shot text classification
+
+The zero-shot classification task offers the ability to classify text without 
+training a model on a specific set of classes. It uses a model trained on a 
+large dataset that has gained a general language understanding and asks the 
+model how well the labels you provided fit with your text.
+
+This task enables you to analyze and classify your input text even when you 
+don't have sufficient training data to train a text classification model.
+
+Let's see an example:
+
+[source,js]
+----------------------------------
+...
+{
+    "input_text": "The S&P 500 gained a meager 12 points in the day’s trading. Trade volumes remain consistent with those of the past week while investors await word from the Fed about possible rate increases.",
+    "labels": ["SPORTS", "BUSINESS", "LOCAL", "ENTERTAINMENT"]
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+    "result": "BUSINESS"
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+Note that – unlike in the case of the text classification task above – the model 
+that is used here is not trained specifically for news categorization; in fact, 
+the possible labels are provided together with the input text at inference time. 
+This task allows you to use the same model to perform a difference inference, 
+such as:
+
+[source,js]
+----------------------------------
+...
+{
+    "input_text": "Hello support team. I’m writing to inquire about the possibility of sending my broadband router in for repairs. The internet is really slow and the router keeps rebooting! It’s a big problem because I’m in the middle of binge-watching The Mandalorian!",
+    "labels": ["urgent", "internet", "phone", "cable", "mobile", "tv"]
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+    "result": ["urgent", "internet", "tv"]
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+While zero-shot text classification is a great tool to classify text by using 
+the same model and supplying different labels, a model trained on a specific set 
+of labels is likely more accurate.

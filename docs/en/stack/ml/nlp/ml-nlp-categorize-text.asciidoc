@@ -4,7 +4,7 @@
 :keywords: {ml-init}, {stack}, {nlp}, {lang-ident}, text classification, \
 zero-shot text classification
 
-:description: NLP tasks that classify input text into categories and determine \
+:description: NLP tasks that classify input text into categories or determine \
 the language of text. 
 
 These NLP tasks enable you to identify the language of text and categorize 
@@ -21,11 +21,13 @@ include::ml-nlp-lang-ident.asciidoc[]
 [[ml-nlp-text-classification]]
 == Text classification
 
-Text classification puts the input text into one of multiple classes or 
-categories that best describe the text. The categories and their numbers depend 
-on model training. Based on the number of classes, two main types of 
-classification exist: binary – where the number of classes is two – and 
-multi-class classification – where the number of classes is more than two.
+Text classification assigns the input text to one of multiple classes or 
+categories that best describe the text. The categories used depend 
+on model training and the dataset used to train with. Based on the
+number of classes, two main types of classification exist: binary
+classification, where the number of classes is exactly two, and
+multi-class classification, where the number of classes is more than
+two.
 
 This task, for example, can help you analyze text for markers of positive or 
 negative sentiment or classify text into various topics.
@@ -126,7 +128,7 @@ The task returns the following result:
 Note that – unlike in the case of the text classification task above – the model 
 that is used here is not trained specifically for news categorization; in fact, 
 the possible labels are provided together with the input text at inference time. 
-This task allows you to use the same model to perform a difference inference, 
+This task allows you to use the same model to perform inference on a different input, with different classes,
 such as:
 
 [source,js]
@@ -154,5 +156,5 @@ The task returns the following result:
 // NOTCONSOLE
 
 While zero-shot text classification is a great tool to classify text by using 
-the same model and supplying different labels, a model trained on a specific set 
+the same model and supplying different labels at inference time, a model trained on a specific set 
 of labels is likely more accurate.

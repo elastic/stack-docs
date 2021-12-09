@@ -23,7 +23,7 @@ include::ml-nlp-lang-ident.asciidoc[]
 
 Text classification assigns the input text to one of multiple classes or 
 categories that best describe the text. The categories used depend 
-on model training and the dataset used to train with. Based on the
+on the model and the data set that was used to train it. Based on the
 number of classes, two main types of classification exist: binary
 classification, where the number of classes is exactly two, and
 multi-class classification, where the number of classes is more than
@@ -91,14 +91,14 @@ The task returns the following result:
 == Zero-shot text classification
 
 The zero-shot classification task offers the ability to classify text without 
-training a model on a specific set of classes. It uses a model trained on a 
-large dataset that has gained a general language understanding and asks the 
+training a model on a specific set of classes. Instead, you provide the classes when you deploy the model or at inference time. It uses a model trained on a 
+large data set that has gained a general language understanding and asks the 
 model how well the labels you provided fit with your text.
 
 This task enables you to analyze and classify your input text even when you 
 don't have sufficient training data to train a text classification model.
 
-Let's see an example:
+For example, you might want to perform multi-class classification and determine whether a news topic is related to "SPORTS", "BUSINESS", "LOCAL", or "ENTERTAINMENT". However, in this case the model is not trained specifically for news categorization; instead, the possible labels are provided together with the input text at inference time:
 
 [source,js]
 ----------------------------------

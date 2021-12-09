@@ -1,0 +1,90 @@
+[[ml-nlp-deploy-models]]
+= Deploy trained models
+
+:keywords: {ml-init}, {stack}, {nlp}
+:description: You can import trained models into your cluster and configure them \
+for specific NLP tasks.
+
+If you want to perform {nlp} tasks in your cluster, you must deploy an
+appropriate trained model. There are {es} APIs and tooling support in
+https://github.com/elastic/eland[Eland] to prepare and manage models.
+
+. <<ml-nlp-select-model,Select a trained model.>>
+. <<ml-nlp-import-model,Import the trained model and vocabulary.>>
+. <<ml-nlp-deploy-model,Deploy the model in your cluster.>>
+
+[discrete]
+[[ml-nlp-select-model]]
+== Select a trained model
+
+Per the <<ml-nlp-overview>>, there are multiple ways that you can use NLP
+features within the {stack}. After you determine which type of NLP task you want
+to perform, you must choose an appropriate trained model. You can either create
+the model yourself or find one that meets your needs.
+
+IMPORTANT: The {stack-ml-features} support transformer models that conform to
+the standard BERT model interface and use the WordPiece tokenization algorithm.
+
+The simplest method is to use a model that has already been fine-tuned for the
+type of analysis that you want to perform. For example, there are models and 
+data sets available for specific NLP tasks on
+https://huggingface.co/models[Hugging Face].
+
+[discrete]
+[[ml-nlp-import-model]]
+== Import the trained model and vocabulary
+
+After you find or create a model, you must import it and its tokenizer
+vocabulary to your cluster. 
+
+Trained models must be in a TorchScript representation for use with
+{stack-ml-features}. To use scripts that convert Hugging Face transformer models
+to their TorchScript representations and import them with their tokenizer
+vocabularies, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+
+If you used PyTorch to create your own trained model, you must create a
+TorchScript representation of the model. Then you can use eland to import the
+necessary artifacts into your cluster.
+
+Alternatively, you can use the
+{ref}/put-trained-model-vocabulary.html[create trained model vocabulary API] and
+{ref}/put-trained-models.html[create trained models API] and
+{ref}/put-trained-model-definition-part.html[create trained model definition part API].
+When you import the model, however, it must be chunked and imported one chunk at
+a time for storage in parts due its size. Since eland encapsulates this process
+in a single Python method, it is the recommended import method.
+
+[discrete]
+[[ml-nlp-deploy-model]]
+== Deploy the model in your cluster
+
+After you import the model and vocabulary, you can use {kib} to view and manage
+their deployment across your cluster under **{ml-app}** > *Model Management*.
+Alternatively, you can use the
+{ref}/start-trained-model-deployment.html[start trained model deployment API].
+
+When you deploy the model, it is allocated to all available {ml} nodes. The
+model is loaded into memory in a native process that encapsulates `libtorch`,
+which is the underlying machine learning library of PyTorch.
+
+You can optionally specify the number of CPU cores it has access to on each node.
+If you choose to optimize for latency (that is to say, inference should return
+as fast as possible), you can increase `inference_threads` to lower latencies.
+If you choose to optimize for throughput (that is, maximize the number of
+parallel inference requests), you can increase `model_threads` to increase
+throughput. In general, the total size of threading settings across all models
+on a node should not exceed the number of physical CPU cores available on the
+node, minus one (for non-inference operations). In {ecloud} environments, the
+core count is virtualized CPUs (vCPUs) and this total size should typically be
+no more than half the available vCPUs, minus one.
+
+You can view the allocation status in {kib} or by using the
+{ref}/get-trained-models-stats.html[get trained model stats API]. When the
+model is deployed on at least one node in the cluster, you can begin to perform
+inference. For example, you can use the
+{ref}/infer-trained-model-deployment.html[infer trained model deployment API],
+{ref}/search-aggregations-pipeline-inference-bucket-aggregation.html[inference bucket aggregation],
+or add {ref}/inference-processor.html[inference processors] in your ingest
+pipelines.
+
+//TO-DO: Link to expanded inference details

@@ -43,6 +43,8 @@ security settings from your {es} cluster, authenticates to {es} with the
 . Install the appropriate https://docs.docker.com/get-docker/[Docker application]
 for your operating system.
 
+. If you're running on Linux, install https://docs.docker.com/compose/install/[Docker Compose].
+
 . Pull the {es} Docker image.
 +
 --
@@ -350,8 +352,12 @@ endif::[]
 [discrete]
 ==== Start your cluster with security enabled and configured
 
-. Modify the `.env` file and enter a password value for the `ELASTIC_PASSWORD`
-and `KIBANA_PASSWORD` variables.
+. Modify the `.env` file and enter a strong password values for both the
+`ELASTIC_PASSWORD` and `KIBANA_PASSWORD` variables.
++
+NOTE: You must use the `ELASTIC_PASSWORD` value for further interactions with
+the cluster. The `KIBANA_PASSWORD` value is only used internally when
+configuring {kib}.
 
 . Create and start the three-node {es} cluster and {kib} instance:
 +
@@ -387,7 +393,8 @@ convenient way to get started, but loading settings from a file is preferable
 after you get past the experimental stage.
 
 For example, to use a custom `es01.yml` as the configuration file for the `es01`
-{es} node, you can create a bind mount in the **volumes** section for the **es01** service.
+{es} node, you can create a bind mount in the `volumes` section for the `es01`
+service.
 
 ["source","yaml"]
 ----
@@ -397,11 +404,11 @@ For example, to use a custom `es01.yml` as the configuration file for the `es01`
       - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ----
 
-Similarly, to load {kib} settings from a file, you can add the following mount in the **volumes** section for the **kibana** service.
+Similarly, to load {kib} settings from a file, you can add the following mount
+in the `volumes` section for the `kibana` service.
 
 ["source","yaml"]
 ----
-      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     volumes:
       - certs:$CERTS_DIR
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml

@@ -4,10 +4,10 @@
 :keywords: {ml-init}, {stack}, {nlp}, {lang-ident}, text classification, \
 zero-shot text classification
 
-:description: NLP tasks that classify input text into categories or determine \
+:description: NLP tasks that classify input text or determine \
 the language of text. 
 
-These NLP tasks enable you to identify the language of text and categorize 
+These NLP tasks enable you to identify the language of text and classify or label 
 unstructured input text:
 
 * <<ml-nlp-lang-ident>>
@@ -21,8 +21,8 @@ include::ml-nlp-lang-ident.asciidoc[]
 [[ml-nlp-text-classification]]
 == Text classification
 
-Text classification assigns the input text to one of multiple classes or 
-categories that best describe the text. The categories used depend 
+Text classification assigns the input text to one of multiple classes
+ that best describe the text. The classes used depend 
 on the model and the data set that was used to train it. Based on the
 number of classes, two main types of classification exist: binary
 classification, where the number of classes is exactly two, and
@@ -76,7 +76,7 @@ don't have sufficient training data to train a text classification model.
 For example, you might want to perform multi-class classification and determine 
 whether a news topic is related to "SPORTS", "BUSINESS", "LOCAL", or 
 "ENTERTAINMENT". However, in this case the model is not trained specifically for 
-news categorization; instead, the possible labels are provided together with the 
+news classification; instead, the possible labels are provided together with the 
 input text at inference time:
 
 [source,js]

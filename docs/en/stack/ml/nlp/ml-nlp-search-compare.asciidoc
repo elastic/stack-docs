@@ -1,0 +1,48 @@
+[[ml-nlp-search-compare]]
+= Search and compare text
+
+:keywords: {ml-init}, {stack}, {nlp}, text embedding
+:description: NLP tasks that search in unstructured text and compare different \
+pieces of text. 
+
+
+[discrete]
+[[ml-nlp-text-embedding]]
+== Text embedding
+
+Text embedding is a task which produces a mathematical representation of a text 
+called embedding. The {ml} model turns the text into an array of numerical 
+values (a vector). Pieces of content with similar meaning have similar 
+representation. This means it is possible to determine whether different pieces 
+of text are either semantically similar, different, or even opposite by using a 
+mathematical similarity function.
+
+This task is only responsible for producing the embedding alone. When the 
+embedding is created, it can be stored in a `dense_vector` field and used at 
+search time. Then you can apply the similarity function to an embedding 
+representing a query, and create a semantic search capability.
+
+The following is an example of producing a text embedding:
+
+[source,js]
+----------------------------------
+...
+{
+    "input": "The quick brown fox jumps over the lazy dog."
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+The task returns the following result:
+
+[source,js]
+----------------------------------
+...
+{
+    "results": [0.293478, -0.23845, ..., 1.34589e2, 0.119376]
+}
+...
+----------------------------------
+// NOTCONSOLE

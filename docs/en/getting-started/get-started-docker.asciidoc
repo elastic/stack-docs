@@ -327,10 +327,7 @@ include::docker/.env[]
 [[docker-compose-file]]
 ===== `docker-compose.yml`
 
-The `docker-compose.yml` file is a Docker Compose file that defines generates
-node security certificates for {es}, configures a three-node {es} cluster with
-TLS enabled for client and internode communications, and securely enrolls a {kib}
-instance with the cluster. 
+This `docker-compose.yml` file creates a three-node secure {es} cluster with authentication and network encryption enabled, and a {kib} instance securely connected to it.
 
 .Exposing ports on Linux
 ****
@@ -338,7 +335,7 @@ This configuration exposes port `9200` on all network interfaces. Given how
 Docker manipulates `iptables` on Linux, this means that your {es} cluster is
 publicly accessible, potentially ignoring any firewall settings. If you don't
 want to expose port `9200` and instead use a reverse proxy, replace `9200:9200`
-with `127.0.0.1:9200:9200` in the `docker-compose.yml` file. {es} will then only
+with `localhost:9200:9200` in the `docker-compose.yml` file. {es} will then only
 be accessible from the host machine itself.
 ****
 
@@ -356,14 +353,14 @@ endif::[]
 . Modify the `.env` file and enter a password value for the `ELASTIC_PASSWORD`
 and `KIBANA_PASSWORD` variables.
 
-. Create and start the three-node {es} cluster:
+. Create and start the three-node {es} cluster and {kib} instance:
 +
 ["source","sh"]
 ----
-docker-compose -f docker-compose.yml up -d
+docker-compose up -d
 ----
 
-. Open a browser and navigate to http://localhost:5601[http://localhost:5601] to
+. When the deployment has started, open a browser and navigate to http://localhost:5601[http://localhost:5601] to
 access {kib}, where you can load sample data and interact with your cluster.
 
 [[docker-compose-remove-containers]]
@@ -375,8 +372,7 @@ volumes:
 
 [source,sh]
 ----
-docker network rm <directory-name>_default
-docker-compose -f docker-compose.yml down --volumes
+docker-compose down -v
 ----
 
 `directory-name`:: Name of the directory that you created for the `.env` and
@@ -390,22 +386,22 @@ Specifying settings for {es} and {kib} directly in the Docker Compose file is a
 convenient way to get started, but loading settings from a file is preferable
 after you get past the experimental stage.
 
-For example, to use `es-node01.yml` as the configuration file for the `es-node01`
-{es} node, you can create a bind mount in the volumes section.
+For example, to use a custom `es01.yml` as the configuration file for the `es01`
+{es} node, you can create a bind mount in the **volumes** section for the **es01** service.
 
 ["source","yaml"]
 ----
     volumes:
       - data01:/usr/share/elasticsearch/data
       - certs:$CERTS_DIR
-      - ./es-node01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ----
 
-Similarly, to load {kib} settings from a file, you overwrite
-`/usr/share/kibana/config/kibana.yml`:
+Similarly, to load {kib} settings from a file, you can add the following mount in the **volumes** section for the **kibana** service.
 
 ["source","yaml"]
 ----
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     volumes:
       - certs:$CERTS_DIR
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml

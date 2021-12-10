@@ -3,8 +3,8 @@
 
 :keywords: {ml-init}, {stack}, {nlp}, text embedding
 
-The {stack-ml-features} can generate embeddings, which you can use to search in unstructured text or
-compare different pieces of text.
+The {stack-ml-features} can generate embeddings, which you can use to search in 
+unstructured text or compare different pieces of text.
 
 
 [discrete]
@@ -13,17 +13,17 @@ compare different pieces of text.
 
 Text embedding is a task which produces a mathematical representation of text 
 called an embedding. The {ml} model turns the text into an array of numerical 
-values (also known as a _vector_). Pieces of content with similar meaning have similar 
-representations. This means it is possible to determine whether different pieces 
-of text are either semantically similar, different, or even opposite by using a 
-mathematical similarity function.
+values (also known as a _vector_). Pieces of content with similar meaning have 
+similar representations. This means it is possible to determine whether 
+different pieces of text are either semantically similar, different, or even 
+opposite by using a mathematical similarity function.
 
 This task is responsible for producing only the embedding. When the 
-embedding is created, it can be stored in a {ref}/dense-vector.html[dense_vector] field and used at 
-search time. Then you can apply the similarity function to an embedding 
-representing a query, and create a semantic search capability. For more 
-information on searching with embeddings, refer to 
-{ref}/knn-search.html[k-nearest neighbour (kNN) search].
+embedding is created, it can be stored in a 
+{ref}/dense-vector.html[dense_vector] field and used at search time. For 
+example, you can use these vectors in a 
+{ref}/knn-search.html[k-nearest neighbour (kNN) search] to achieve semantic 
+search capabilities.
 
 The following is an example of producing a text embedding:
 

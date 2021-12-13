@@ -9,9 +9,10 @@ If you want to perform {nlp} tasks in your cluster, you must deploy an
 appropriate trained model. There are {es} APIs and tooling support in
 https://github.com/elastic/eland[Eland] to prepare and manage models.
 
-. <<ml-nlp-select-model,Select a trained model.>>
-. <<ml-nlp-import-model,Import the trained model and vocabulary.>>
-. <<ml-nlp-deploy-model,Deploy the model in your cluster.>>
+. <<ml-nlp-select-model,Select a trained model>>.
+. <<ml-nlp-import-model,Import the trained model and vocabulary>>.
+. <<ml-nlp-deploy-model,Deploy the model in your cluster>>.
+. <<ml-nlp-test-inference,Test the deployment>>.
 
 [discrete]
 [[ml-nlp-select-model]]
@@ -83,12 +84,19 @@ core count is virtualized CPUs (vCPUs) and this total size should typically be
 no more than half the available vCPUs, minus one.
 
 You can view the allocation status in {kib} or by using the
-{ref}/get-trained-models-stats.html[get trained model stats API]. When the
-model is deployed on at least one node in the cluster, you can begin to perform
-inference. For example, you can use the
-{ref}/infer-trained-model-deployment.html[infer trained model deployment API],
-{ref}/search-aggregations-pipeline-inference-bucket-aggregation.html[inference bucket aggregation],
-or add {ref}/inference-processor.html[inference processors] in your ingest
-pipelines.
+{ref}/get-trained-models-stats.html[get trained model stats API].
 
-//TO-DO: Link to expanded inference details
+[discrete]
+[[ml-nlp-test-inference]]
+== Test the deployment
+
+When the model is deployed on at least one node in the cluster, you can begin to
+perform inference. _{infer-cap}_ is a {ml} feature that enables you to use your
+trained models to perform NLP tasks (such as text extraction, classification, or
+embeddings) on incoming data.
+
+The simplest method to test your model against new data is to use the 
+{ref}/infer-trained-model-deployment.html[infer trained model deployment API].
+
+If you are satisfied with the results, you can add these NLP tasks into
+<<ml-nlp-aggs,aggregations>> or <<ml-nlp-pipelines,ingestion pipelines>>.

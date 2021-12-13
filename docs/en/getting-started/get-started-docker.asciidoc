@@ -43,8 +43,6 @@ security settings from your {es} cluster, authenticates to {es} with the
 . Install the appropriate https://docs.docker.com/get-docker/[Docker application]
 for your operating system.
 
-. If you're running on Linux, install https://docs.docker.com/compose/install/[Docker Compose].
-
 . Pull the {es} Docker image.
 +
 --
@@ -114,7 +112,7 @@ endif::[]
 ifeval::["{release-state}"!="unreleased"]
 [source,sh,subs="attributes"]
 ----
-docker run --name es-node01 --net elastic -p 9200:9200 -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+docker run --name es01 --net elastic -p 9200:9200 -it docker.elastic.co/elasticsearch/elasticsearch:{version}
 ----
 
 endif::[]
@@ -131,7 +129,7 @@ to the `http_ca.crt` certificate, which you'll use in the next step.
 +
 [source,sh]
 ----
-docker exec -it es-node01 /bin/bash -c "find /usr/share/elasticsearch -name http_ca.crt"
+docker exec -it es01 /bin/bash -c "find /usr/share/elasticsearch -name http_ca.crt"
 ----
 
 . Copy the `http_ca.crt` security certificate from your Docker container to
@@ -139,7 +137,7 @@ your local machine.
 +
 [source,sh]
 ----
-docker cp es-node01:/usr/share/elasticsearch/config/tls_auto_config_<timestamp>/http_ca.crt .
+docker cp es01:/usr/share/elasticsearch/config/tls_auto_config_<timestamp>/http_ca.crt .
 ----
 `<timestamp>`:: The timestamp of when the auto-configuration process created
 the security files directory in your Docker container.
@@ -211,7 +209,7 @@ endif::[]
 ifeval::["{release-state}"!="unreleased"]
 [source,sh,subs="attributes"]
 ----
-docker run --name kib01 --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:{version}
+docker run --name kibana --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:{version}
 ----
 
 When you start {kib}, a unique link is output to your terminal.
@@ -238,7 +236,7 @@ For example, to reset the password for the `elastic` user:
 
 [source,sh]
 ----
-docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
 ----
 
 If you need to generate new enrollment tokens for {kib} or {es} nodes, run the
@@ -249,7 +247,7 @@ For example, to generate a new enrollment token for {kib}:
 
 [source,sh]
 ----
-docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
 ----
 
 
@@ -262,8 +260,8 @@ To remove the containers and their network, run:
 [source,sh]
 ----
 docker network rm elastic
-docker rm es-node01
-docker rm kib01
+docker rm es01
+docker rm kibana
 ----
 
 [discrete]
@@ -282,6 +280,8 @@ multiple hosts.
 
 Install the appropriate https://docs.docker.com/get-docker/[Docker application]
 for your operating system.
+
+If you're running on Linux, install https://docs.docker.com/compose/install/[Docker Compose].
 
 [NOTE]
 ====
@@ -396,9 +396,8 @@ service.
 ["source","yaml"]
 ----
     volumes:
-      - data01:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
       - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ...
 ----
 
 Similarly, to load {kib} settings from a file, you can add the following mount
@@ -407,8 +406,8 @@ in the `volumes` section for the `kibana` service.
 ["source","yaml"]
 ----
     volumes:
-      - certs:$CERTS_DIR
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ...
 ----
 
 [discrete]

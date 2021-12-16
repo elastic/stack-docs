@@ -130,7 +130,7 @@ to the `http_ca.crt` certificate, which you'll use in the next step.
 +
 [source,sh]
 ----
-docker exec -it es-node01 /bin/bash -c "find /usr/share/elasticsearch -name http_ca.crt"
+docker exec -it es01 /bin/bash -c "find /usr/share/elasticsearch -name http_ca.crt"
 ----
 
 . Copy the `http_ca.crt` security certificate from your Docker container to
@@ -138,7 +138,7 @@ your local machine.
 +
 [source,sh]
 ----
-docker cp es-node01:/usr/share/elasticsearch/config/tls_auto_config_<timestamp>/http_ca.crt .
+docker cp es01:/usr/share/elasticsearch/config/tls_auto_config_<timestamp>/http_ca.crt .
 ----
 `<timestamp>`:: The timestamp of when the auto-configuration process created
 the security files directory in your Docker container.
@@ -226,6 +226,57 @@ endif::[]
   .. Log in to {kib} as the `elastic` user with the password that was generated
   when you started {es}.
 
+[[docker-enroll-nodes]]
+[discrete]
+==== Enroll additional nodes
+
+When you start {es} for the first time, the installation process configures a single-node cluster by default. This process also generates an enrollment token
+and prints it to your terminal. If you want a node to join an existing cluster,
+start the new node with the generated enrollment token.
+
+--
+.Generating enrollment tokens
+****
+The enrollment token is valid for 30 minutes. If you need to generate a 
+new enrollment token, run the 
+{ref}/create-enrollment-token.html[`elasticsearch-create-enrollment-token`] tool
+on your existing node. This tool is available in the {es} `bin` directory of the 
+Docker container.
+
+For example, run the following command on the existing `es01` node to
+generate an enrollment token for new {es} nodes:
+
+[source,sh]
+----
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
+----
+****
+--
+
+. In the terminal where you started your first node, copy the generated
+enrollment token for adding new {es} nodes. 
+
+. On your new node, start {es} and include the generated enrollment token.
++
+[source,sh,subs="attributes"]
+----
+docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+----
++
+{es} is now configured to join the existing cluster.
+
+If you experience issues where the container where your first node is running
+exits when your second node starts, explicitly set values for the JVM heap size.
+To {ref}/docker.html#docker-set-heap-size[manually configure the heap size], 
+include the `ES_JAVA_OPTS` variable and set values for `-Xms` and `-Xmx` when 
+starting each node. For example, the following command starts node `es02` and 
+sets the minimum and maximum JVM heap size to 1 GB:
+
+[source,sh,subs="attributes"]
+----
+docker run -e ES_JAVA_OPTS="-Xms1g -Xmx1g" -e ENROLLMENT_TOKEN="<token>" --name es02 -p 9201:9200 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+----
+
 [[docker-generate]]
 [discrete]
 ==== Generate passwords and enrollment tokens
@@ -237,7 +288,7 @@ For example, to reset the password for the `elastic` user:
 
 [source,sh]
 ----
-docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
 ----
 
 If you need to generate new enrollment tokens for {kib} or {es} nodes, run the
@@ -248,7 +299,7 @@ For example, to generate a new enrollment token for {kib}:
 
 [source,sh]
 ----
-docker exec -it es-node01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
 ----
 
 
@@ -261,7 +312,7 @@ To remove the containers and their network, run:
 [source,sh]
 ----
 docker network rm elastic
-docker rm es-node01
+docker rm es01
 docker rm kib01
 ----
 
@@ -380,7 +431,7 @@ and join the lines before running this command.
 --
 ["source","sh"]
 ----
-docker exec es-node01 /bin/bash -c "bin/elasticsearch-setup-passwords \
+docker exec es01 /bin/bash -c "bin/elasticsearch-setup-passwords \
 auto --batch --url https://es-node01:9200"
 ----
 

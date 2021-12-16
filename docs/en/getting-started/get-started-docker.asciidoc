@@ -336,8 +336,8 @@ This `docker-compose.yml` file creates a three-node secure {es} cluster with aut
 This configuration exposes port `9200` on all network interfaces. Given how
 Docker manipulates `iptables` on Linux, this means that your {es} cluster is
 publicly accessible, potentially ignoring any firewall settings. If you don't
-want to expose port `9200` and instead use a reverse proxy, replace `9200:9200`
-with `localhost:9200:9200` in the `docker-compose.yml` file. {es} will then only
+want to expose port `9200` to external hosts, set the value for `ES_PORT` in 
+the `.env` file to something like `127.0.0.1:9200`. {es} will then only
 be accessible from the host machine itself.
 ****
 
@@ -371,7 +371,7 @@ access {kib}, where you can load sample data and interact with your cluster.
 
 [[docker-compose-remove-containers]]
 [discrete]
-==== Remove Docker Compose containers
+==== Stop and remove the deployment
 
 When you're done experimenting, you can remove the network, containers, and
 volumes:

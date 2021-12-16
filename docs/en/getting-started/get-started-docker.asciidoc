@@ -113,7 +113,7 @@ endif::[]
 ifeval::["{release-state}"!="unreleased"]
 [source,sh,subs="attributes"]
 ----
-docker run --name es-node01 --net elastic -p 9200:9200 -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+docker run --name es01 --net elastic -p 9200:9200 -it docker.elastic.co/elasticsearch/elasticsearch:{version}
 ----
 
 endif::[]
@@ -432,7 +432,7 @@ and join the lines before running this command.
 ["source","sh"]
 ----
 docker exec es01 /bin/bash -c "bin/elasticsearch-setup-passwords \
-auto --batch --url https://es-node01:9200"
+auto --batch --url https://es01:9200"
 ----
 
 IMPORTANT: Make a note of the generated passwords.
@@ -457,13 +457,13 @@ ifeval::["{release-state}"!="unreleased"]
   kib01:
     image: docker.elastic.co/kibana/kibana:${VERSION}
     container_name: kib01
-    depends_on: {"es-node01": {"condition": "service_healthy"}}
+    depends_on: {"es01": {"condition": "service_healthy"}}
     ports:
       - 5601:5601
     environment:
       SERVERNAME: localhost
-      ELASTICSEARCH_URL: https://es-node01:9200
-      ELASTICSEARCH_HOSTS: https://es-node01:9200
+      ELASTICSEARCH_URL: https://es01:9200
+      ELASTICSEARCH_HOSTS: https://es01:9200
       ELASTICSEARCH_USERNAME: kibana_system
       **ELASTICSEARCH_PASSWORD: CHANGEME**
       ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: $CERTS_DIR/ca/ca.crt
@@ -504,7 +504,7 @@ volumes by running `docker-compose -f elastic-docker-tls.yml down -v`.
 Specifying settings for {es} and {{kib}} directly in the compose file is a convenient way to get started,
 but loading settings from a file is preferable once you get past the experimental stage.
 
-For example, to use `es-node01.yml` as the configuration file for the `es-node01` {es} node,
+For example, to use `es01.yml` as the configuration file for the `es01` {es} node,
 you can create a bind mount in the volumes section.
 
 ["source","yaml"]
@@ -512,7 +512,7 @@ you can create a bind mount in the volumes section.
     volumes:
       - data01:/usr/share/elasticsearch/data
       - certs:$CERTS_DIR
-      - ./es-node01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ----
 
 Similarly, to load {kib} settings from a file, you overwrite `/usr/share/kibana/config/kibana.yml`:

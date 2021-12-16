@@ -74,7 +74,7 @@ services:
       - ${ES_PORT}:9200
     environment:
       - node.name=es01
-      - cluster.name=docker-cluster
+      - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es02,es03
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -115,7 +115,7 @@ services:
       - esdata02:/usr/share/elasticsearch/data
     environment:
       - node.name=es02
-      - cluster.name=docker-cluster
+      - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es03
       - bootstrap.memory_lock=true
@@ -155,7 +155,7 @@ services:
       - esdata03:/usr/share/elasticsearch/data
     environment:
       - node.name=es03
-      - cluster.name=docker-cluster
+      - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es02
       - bootstrap.memory_lock=true
@@ -202,7 +202,6 @@ services:
       - ${KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
-      - ELASTICSEARCH_URL=https://es01:9200
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}

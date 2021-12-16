@@ -260,7 +260,7 @@ enrollment token for adding new {es} nodes.
 +
 [source,sh,subs="attributes"]
 ----
-docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{docker-image}
+docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{version}
 ----
 +
 {es} is now configured to join the existing cluster.
@@ -274,7 +274,7 @@ sets the minimum and maximum JVM heap size to 1 GB:
 
 [source,sh,subs="attributes"]
 ----
-docker run -e ES_JAVA_OPTS="-Xms1g -Xmx1g" -e ENROLLMENT_TOKEN="<token>" --name es02 -p 9201:9200 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{docker-image}
+docker run -e ES_JAVA_OPTS="-Xms1g -Xmx1g" -e ENROLLMENT_TOKEN="<token>" --name es02 -p 9201:9200 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{version}
 ----
 
 [[docker-generate]]

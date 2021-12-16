@@ -1,29 +1,17 @@
 [[ml-nlp-inference]]
-= Add NLP to aggregations and pipelines
+= Add NLP to pipelines
 :keywords: {ml-init}, {stack}, {nlp}, inference 
 
 coming::[8.0.0]
 
 After you <<ml-nlp-deploy-models,deploy a trained model in your cluster>>, you
-can use it to perform {nlp} tasks at search and ingest time.
-
-[discrete]
-[[ml-nlp-aggs]]
-== Inference aggregations
-
-You can use the  
-{ref}/search-aggregations-pipeline-inference-bucket-aggregation.html[inference bucket aggregation]
-to load the model and perform NLP tasks on results from the parent bucket
-aggregation.
-
-//TO-DO: Add example
-//TBD: Add nlp options to inference agg's inference_config reference?
+can use it to perform {nlp} tasks at ingest time.
 
 [discrete]
 [[ml-nlp-pipelines]]
 == Inference processors
 
-You can also use trained models to perform {nlp} tasks in your
+You can use trained models to perform {nlp} tasks in your
 {ref}/ingest.html[ingest pipeline]. In particular, you can reference a trained
 model in an {ref}/inference-processor.html[inference processor].
 

@@ -7,17 +7,27 @@ can use it to perform {nlp} tasks in ingest pipelines.
 
 . Verify that all of the
 {ref}/ingest.html#ingest-prerequisites[ingest pipeline prerequisites] are met.
-. In {kib}, open the main menu and select **Stack Management** >
-**Ingest Pipelines**.
-. Click **Create pipeline**.
-. Provide a name and description for the pipeline.
-. Add an {ref}/inference-processor.html[inference processor] to your pipeline:
-.. Click **Add a processor** and select the **Inference** processor type.
-.. Set **Model ID** to the name of your trained model, for example
+. In {kib}, create a new pipeline in **Stack Management** > **Ingest Pipelines**.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-pipeline-ner.png[Creating a pipeline in the Stack Management app,align="center"]
+--
+.. Click **Create pipeline**.
+.. Provide a name and description for the pipeline.
+.. Add an {ref}/inference-processor.html[inference processor] to your pipeline:
+... Click **Add a processor** and select the **Inference** processor type.
+... Set **Model ID** to the name of your trained model, for example
 `elastic__distilbert-base-cased-finetuned-conll03-english`.
-.. Click **Add** to save the processor.
-. To test the pipeline, click **Add documents**.
-.. In the **Documents** tab, provide a sample document for testing. For example,
+... Click **Add** to save the processor.
+.. Optional: Add a set processor to index the ingest timestamp.
+... Click **Add a processor** and select the **Set** processor type.
+... Choose a name for the field (such as `timestamp`) and set its value to
+`{{{_ingest.timestamp}}}`. For more details, refer to
+{ref}/ingest.html#access-ingest-metadata[Access ingest metadata in a processor].
+... Click **Add** to save the processor.
+.. To test the pipeline, click **Add documents**.
+... In the **Documents** tab, provide a sample document for testing. For example,
 to test a trained model that performs named entity recognition (NER):
 +
 [source,js]
@@ -31,11 +41,11 @@ to test a trained model that performs named entity recognition (NER):
 ]
 ----
 // NOTCONSOLE
-.. Click **Run the pipeline** and verify the pipeline worked as expected.
-.. If everything looks correct, close the panel, and then click **Create
+... Click **Run the pipeline** and verify the pipeline worked as expected.
+... If everything looks correct, close the panel, and then click **Create
 pipeline**. The pipeline is now ready for use.
-. Optional: Create a new index with explicit mappings. For example, if you want
-to use the `annotated_text` data type for NER annotations:
+. Optional: Create a new index with explicit mappings. For example, use the
+create index API in the **Dev Tools** > **Console**:
 +
 --
 [source,console]
@@ -52,14 +62,13 @@ PUT ner-test
   }
 }
 ----
-TIP: The `annotated_text` data type is included in an {es} plugin. For more
-information, refer to 
-{plugins}/mapper-annotated-text.html[Mapper annotated text plugin] and 
+TIP: The `annotated_text` data type in this example is included in the
+{plugins}/mapper-annotated-text.html[mapper annotated text plugin]. For more
+installation details, refer to   
 {cloud}/ec-adding-elastic-plugins.html[Add plugins provided with {ess}].
 --
-. Use the new pipeline to index some documents. For example, in
-**Dev Tools** > **Console**, use a bulk indexing request with the `pipeline`
-query parameter:
+. Use the new pipeline to index some documents. For example, use a bulk
+indexing request with the `pipeline` query parameter:
 +
 --
 [source,console]
@@ -76,6 +85,10 @@ POST /_bulk?pipeline=ner
 {"create":{"_index":"ner-test","_id":"5"}}
 {"text_field":"Elasticsearch is built using Lucene, an open source search library."}
 ----
+
+TIP: You can also use NLP pipelines when you are reindexing documents to a new
+destination. Refer to
+{ref}/docs-reindex.html#reindex-with-an-ingest-pipeline[Reindex with an ingest pipeline].
 --
 . Verify the results in **Discover**:
 +
@@ -88,9 +101,9 @@ The
 processor. In this example, two documents were found to contain the `Elastic`
 organization entity.  
 
-NOTE: When you view the index for the first time, you are prompted to
+NOTE: When you view the index for the first time in {kib}, you must
 {kibana-ref}/data-views.html[create a data view].
 --
 
-To learn more about ingest pipelines and all of the other processors, refer to
-{ref}/ingest.html[Ingest pipelines]. 
+To learn more about ingest pipelines and all of the other processors that you
+can add, refer to {ref}/ingest.html[Ingest pipelines]. 

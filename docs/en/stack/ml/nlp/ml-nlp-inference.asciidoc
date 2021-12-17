@@ -1,19 +1,96 @@
 [[ml-nlp-inference]]
-= Add NLP to pipelines
+= Create NLP inference pipelines
 :keywords: {ml-init}, {stack}, {nlp}, inference 
 
-coming::[8.0.0]
-
 After you <<ml-nlp-deploy-models,deploy a trained model in your cluster>>, you
-can use it to perform {nlp} tasks at ingest time.
+can use it to perform {nlp} tasks in ingest pipelines. 
 
-[discrete]
-[[ml-nlp-pipelines]]
-== Inference processors
+. Verify that all of the
+{ref}/ingest.html#ingest-prerequisites[ingest pipeline prerequisites] are met.
+. In {kib}, open the main menu and select **Stack Management** >
+**Ingest Pipelines**.
+. Click **Create pipeline**.
+. Provide a name and description for the pipeline.
+. Add an {ref}/inference-processor.html[inference processor] to your pipeline:
+.. Click **Add a processor** and select the **Inference** processor type.
+.. Set **Model ID** to the name of your trained model, for example
+`elastic__distilbert-base-cased-finetuned-conll03-english`.
+.. Click **Add** to save the processor.
+. To test the pipeline, click **Add documents**.
+.. In the **Documents** tab, provide a sample document for testing. For example,
+to test a trained model that performs named entity recognition (NER):
++
+[source,js]
+----
+[
+  {
+    "_source": {
+    "text_field":"Hello, my name is Josh and I live in Berlin."
+    }
+  }
+]
+----
+// NOTCONSOLE
+.. Click **Run the pipeline** and verify the pipeline worked as expected.
+.. If everything looks correct, close the panel, and then click **Create
+pipeline**. The pipeline is now ready for use.
+. Optional: Create a new index with explicit mappings. For example, if you want
+to use the `annotated_text` data type for NER annotations:
++
+--
+[source,console]
+----
+PUT ner-test
+{
+  "mappings": {
+    "properties": {
+      "ml.inference.predicted_value": {"type": "annotated_text"},
+      "ml.inference.model_id": {"type": "keyword"},
+      "text_field": {"type": "text"},
+      "timestamp": {"type": "date"}
+    }
+  }
+}
+----
+TIP: The `annotated_text` data type is included in an {es} plugin. For more
+information, refer to 
+{ref}/mapper-annotated-text.html[Mapper annotated text plugin] and 
+{cloud}/ec-adding-elastic-plugins.html[Add plugins provided with {ess}].
+--
+. Use the new pipeline to index some documents. For example, in
+**Dev Tools** > **Console**, use a bulk indexing request with the `pipeline`
+query parameter:
++
+--
+[source,console]
+----
+POST /_bulk?pipeline=ner
+{"create":{"_index":"ner-test","_id":"1"}}
+{"text_field":"Hello, my name is Josh and I live in Berlin."}
+{"create":{"_index":"ner-test","_id":"2"}}
+{"text_field":"I work for Elastic which was founded in Amsterdam."}
+{"create":{"_index":"ner-test","_id":"3"}}
+{"text_field":"Elastic has headquarters in Mountain View, California."}
+{"create":{"_index":"ner-test","_id":"4"}}
+{"text_field":"Elastic's founder, Shay Banon, created Elasticsearch to solve a simple need: finding recipes!"}
+{"create":{"_index":"ner-test","_id":"5"}}
+{"text_field":"Elasticsearch is built using Lucene, an open source search library."}
+----
+--
+. Verify the results in **Discover**:
++
+--
+[role="screenshot"]
+image::images/ml-nlp-discover-ner.png[An expanded view of predicted values in the Discover app,align="center"]
 
-You can use trained models to perform {nlp} tasks in your
-{ref}/ingest.html[ingest pipeline]. In particular, you can reference a trained
-model in an {ref}/inference-processor.html[inference processor].
+The
+`ml.inference.predicted_value` field contains the output from the inference
+processor. In this example, two documents were found to contain the `Elastic`
+organization entity.  
 
-//TO-DO: Add example
-//TBD: Add nlp options to inference processor's inference_config reference?
+NOTE: When you view the index for the first time, you are prompted to
+{kibana-ref}/data-views.html[create a data view].
+--
+
+To learn more about ingest pipelines and all of the other processors, refer to
+{ref}/ingest.html[Ingest pipelines]. 

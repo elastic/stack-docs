@@ -1,0 +1,128 @@
+[[ml-nlp-inference]]
+= Add NLP inference to ingest pipelines
+:keywords: {ml-init}, {stack}, {nlp}, inference 
+
+After you <<ml-nlp-deploy-models,deploy a trained model in your cluster>>, you
+can use it to perform {nlp} tasks in ingest pipelines.
+
+. Verify that all of the
+{ref}/ingest.html#ingest-prerequisites[ingest pipeline prerequisites] are met.
+. <<ml-nlp-inference-processor,Add an inference processor to an ingest pipeline>>.
+. <<ml-nlp-inference-ingest-docs,Ingest documents>>.
+. <<ml-nlp-inference-discover,View the results>>.
+
+//TBD Are there additional index privileges required?
+
+[discrete]
+[[ml-nlp-inference-processor]]
+== Add an inference processor to an ingest pipeline
+
+In {kib}, you can create and edit pipelines in **Stack Management** >
+**Ingest Pipelines**.
+
+[role="screenshot"]
+image::images/ml-nlp-pipeline-ner.png[Creating a pipeline in the Stack Management app,align="center"]
+
+. Click **Create pipeline** or edit an existing pipeline.
+. Add an {ref}/inference-processor.html[inference processor] to your pipeline:
+.. Click **Add a processor** and select the **Inference** processor type.
+.. Set **Model ID** to the name of your trained model, for example
+`elastic__distilbert-base-cased-finetuned-conll03-english`.
+.. Click **Add** to save the processor.
+. Optional: Add a {ref}/set-processor.html[set processor] to index the ingest
+timestamp.
+.. Click **Add a processor** and select the **Set** processor type.
+.. Choose a name for the field (such as `timestamp`) and set its value to
+`{{{_ingest.timestamp}}}`. For more details, refer to
+{ref}/ingest.html#access-ingest-metadata[Access ingest metadata in a processor].
+.. Click **Add** to save the processor.
+. To test the pipeline, click **Add documents**.
+.. In the **Documents** tab, provide a sample document for testing. For example,
+to test a trained model that performs named entity recognition (NER):
++
+[source,js]
+----
+[
+  {
+    "_source": {
+    "text_field":"Hello, my name is Josh and I live in Berlin."
+    }
+  }
+]
+----
+// NOTCONSOLE
+.. Click **Run the pipeline** and verify the pipeline worked as expected.
+.. If everything looks correct, close the panel, and click **Create
+pipeline**. The pipeline is now ready for use.
+
+[discrete]
+[[ml-nlp-inference-ingest-docs]]
+== Ingest documents
+
+You can now use your ingest pipeline to perform NLP tasks on your data.
+
+Before you add data, consider which mappings you want to use. For example, you
+can create explicit mappings with the create index API in the
+**Dev Tools** > **Console**:
+
+[source,console]
+----
+PUT ner-test
+{
+  "mappings": {
+    "properties": {
+      "ml.inference.predicted_value": {"type": "annotated_text"},
+      "ml.inference.model_id": {"type": "keyword"},
+      "text_field": {"type": "text"},
+      "timestamp": {"type": "date"}
+    }
+  }
+}
+----
+
+TIP: The `annotated_text` data type in this example is included in the
+{plugins}/mapper-annotated-text.html[mapper annotated text plugin]. For more
+installation details, refer to   
+{cloud}/ec-adding-elastic-plugins.html[Add plugins provided with {ess}].
+
+
+You can then use the new pipeline to index some documents. For example, use a
+bulk indexing request with the `pipeline` query parameter:
+
+[source,console]
+----
+POST /_bulk?pipeline=ner
+{"create":{"_index":"ner-test","_id":"1"}}
+{"text_field":"Hello, my name is Josh and I live in Berlin."}
+{"create":{"_index":"ner-test","_id":"2"}}
+{"text_field":"I work for Elastic which was founded in Amsterdam."}
+{"create":{"_index":"ner-test","_id":"3"}}
+{"text_field":"Elastic has headquarters in Mountain View, California."}
+{"create":{"_index":"ner-test","_id":"4"}}
+{"text_field":"Elastic's founder, Shay Banon, created Elasticsearch to solve a simple need: finding recipes!"}
+{"create":{"_index":"ner-test","_id":"5"}}
+{"text_field":"Elasticsearch is built using Lucene, an open source search library."}
+----
+
+You can also use NLP pipelines when you are reindexing documents to a new
+destination. Refer to
+{ref}/docs-reindex.html#reindex-with-an-ingest-pipeline[Reindex with an ingest pipeline].
+
+[discrete]
+[[ml-nlp-inference-discover]]
+== View the results
+
+You can verify the results of the pipeline in **Discover**:
+
+[role="screenshot"]
+image::images/ml-nlp-discover-ner.png[An expanded view of predicted values in the Discover app,align="center"]
+
+The `ml.inference.predicted_value` field contains the output from the inference
+processor. In this example, two documents were found to contain the `Elastic`
+organization entity.  
+
+NOTE: When you view the index for the first time in {kib}, you must
+{kibana-ref}/data-views.html[create a data view].
+
+To learn more about ingest pipelines and all of the other processors that you
+can add, refer to {ref}/ingest.html[Ingest pipelines]. 

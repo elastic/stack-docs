@@ -27,20 +27,54 @@ image::images/ml-nlp-pipeline-ner.png[Creating a pipeline in the Stack Managemen
 . Add an {ref}/inference-processor.html[inference processor] to your pipeline:
 .. Click **Add a processor** and select the **Inference** processor type.
 .. Set **Model ID** to the name of your trained model, for example
-`elastic__distilbert-base-cased-finetuned-conll03-english`.
+`elastic__distilbert-base-cased-finetuned-conll03-english` or
+`lang_ident_model_1`.
+.. If you use the {lang-ident} model (`lang_ident_model_1`) that is provided in
+your cluster:
+... The input field name is assumed to be `text`. If you want to identify
+languages in a field with a different name, you must map your field name to
+`text` in the **Field map** section. For example:
++
+--
+[source,js]
+----
+{
+  "message": "text"
+}
+----
+// NOTCONSOLE
+--
+... You can also optionally add
+{ref}/inference-processor.html#inference-processor-classification-opt[classification configuration options]
+in the **Inference configuration** section. For example, to include the top five
+language predictions:
++
+--
+[source,js]
+----
+{
+  "classification":{
+    "num_top_classes":5
+  }
+}
+----
+// NOTCONSOLE
+--
 .. Click **Add** to save the processor.
 . Optional: Add a {ref}/set-processor.html[set processor] to index the ingest
 timestamp.
 .. Click **Add a processor** and select the **Set** processor type.
-.. Choose a name for the field (such as `timestamp`) and set its value to
+.. Choose a name for the field (such as `event.ingested`) and set its value to
 `{{{_ingest.timestamp}}}`. For more details, refer to
 {ref}/ingest.html#access-ingest-metadata[Access ingest metadata in a processor].
 .. Click **Add** to save the processor.
 . To test the pipeline, click **Add documents**.
-.. In the **Documents** tab, provide a sample document for testing. For example,
-to test a trained model that performs named entity recognition (NER):
+.. In the **Documents** tab, provide a sample document for testing.
 +
 --
+For example, to test a trained model that performs named entity recognition
+(NER):
+
 [source,js]
 ----
 [
@@ -52,8 +86,28 @@ to test a trained model that performs named entity recognition (NER):
 ]
 ----
 // NOTCONSOLE
+
+To test a trained model that performs {lang-ident}:
+
+[source,js]
+----
+[
+ {
+   "_source":{
+     "message":"Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
+     }
+  }
+]
+----
+// NOTCONSOLE
 --
 .. Click **Run the pipeline** and verify the pipeline worked as expected.
++
+--
+In the {lang-ident} example, the predicted value is the ISO identifier of the
+language with the highest probability. In this case, it should be `hu` for
+Hungarian.
+--
 .. If everything looks correct, close the panel, and click **Create
 pipeline**. The pipeline is now ready for use.
 
@@ -76,24 +130,24 @@ PUT ner-test
       "ml.inference.predicted_value": {"type": "annotated_text"},
       "ml.inference.model_id": {"type": "keyword"},
       "text_field": {"type": "text"},
-      "timestamp": {"type": "date"}
+      "event.ingested": {"type": "date"}
     }
   }
 }
 ----
+// TEST[skip:TBD]
 
-TIP: The `annotated_text` data type in this example is included in the
+TIP: To use the `annotated_text` data type in this example, you must install the
 {plugins}/mapper-annotated-text.html[mapper annotated text plugin]. For more
 installation details, refer to   
 {cloud}/ec-adding-elastic-plugins.html[Add plugins provided with {ess}].
 
-
 You can then use the new pipeline to index some documents. For example, use a
-bulk indexing request with the `pipeline` query parameter:
+bulk indexing request with the `pipeline` query parameter for your NER pipeline:
 
 [source,console]
 ----
-POST /_bulk?pipeline=ner
+POST /_bulk?pipeline=my-ner-pipeline
 {"create":{"_index":"ner-test","_id":"1"}}
 {"text_field":"Hello, my name is Josh and I live in Berlin."}
 {"create":{"_index":"ner-test","_id":"2"}}
@@ -105,26 +159,66 @@ POST /_bulk?pipeline=ner
 {"create":{"_index":"ner-test","_id":"5"}}
 {"text_field":"Elasticsearch is built using Lucene, an open source search library."}
 ----
+// TEST[skip:TBD]
+
+Or use an individual indexing request with the `pipeline` query parameter for
+your {lang-ident} pipeline:
+
+[source,console]
+----
+POST lang-test/_doc?pipeline=my-lang-pipeline
+{
+  "message": "Mon pays ce n'est pas un pays, c'est l'hiver"
+}
+----
+// TEST[skip:TBD]
 
 You can also use NLP pipelines when you are reindexing documents to a new
-destination. Refer to
-{ref}/docs-reindex.html#reindex-with-an-ingest-pipeline[Reindex with an ingest pipeline].
+destination. For example, since the
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[sample web logs data set]
+contain a `message` text field, you can reindex it with your {lang-ident}
+pipeline:
+
+[source,console]
+----
+POST _reindex
+{
+  "source": {
+    "index": "kibana_sample_data_logs"
+  },
+  "dest": {
+    "index": "lang-test",
+    "pipeline": "my-lang-pipeline"
+  }
+}
+----
+// TEST[skip:TBD]
+
+However, those web log messages are unlikely to contain enough words for the
+model to accurately identify the language.
 
 [discrete]
 [[ml-nlp-inference-discover]]
 == View the results
 
-You can verify the results of the pipeline in **Discover**:
+Before you can verify the results of the pipelines, you must
+{kibana-ref}/data-views.html[create data views]. Then you can explore your data
+in **Discover**:
 
 [role="screenshot"]
-image::images/ml-nlp-discover-ner.png[An expanded view of predicted values in the Discover app,align="center"]
+image::images/ml-nlp-discover-ner.png[A document from the NER pipeline in the Discover app,align="center"]
 
 The `ml.inference.predicted_value` field contains the output from the inference
-processor. In this example, two documents were found to contain the `Elastic`
-organization entity.  
+processor. In this NER example, there are two documents that contain the
+`Elastic` organization entity.
 
-NOTE: When you view the index for the first time in {kib}, you must
-{kibana-ref}/data-views.html[create a data view].
+In this {lang-ident} example, the `ml.inference.predicted_value` contains the 	
+ISO identifier of the language with the highest probability and the
+`ml.inference.top_classes` fields contain the top five most probable languages
+and their scores:
+
+[role="screenshot"]
+image::images/ml-nlp-discover-lang.png[A document from the {lang-ident} pipeline in the Discover app,align="center"]
 
 To learn more about ingest pipelines and all of the other processors that you
-can add, refer to {ref}/ingest.html[Ingest pipelines]. 
+can add, refer to {ref}/ingest.html[Ingest pipelines].

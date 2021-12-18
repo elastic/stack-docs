@@ -5,10 +5,8 @@
 {lang-ident-cap} enables you to determine the language of text.
 
 A {lang-ident} model is provided in your cluster, which you can use in an
-{ref}/inference-processor.html[{infer} processor] of an ingest pipeline by 
-using its model ID (`lang_ident_model_1`). The input field name is `text`. If 
-you want to run {lang-ident} on a field with a different name, you must map your 
-field name to `text` in the ingest processor settings.
+{infer} processor of an ingest pipeline by using its model ID
+(`lang_ident_model_1`). For an example, refer to <<ml-nlp-inference>>.
 
 The longer the text passed into the {lang-ident} model, the more accurately the 
 model can identify the language. It is fairly accurate on short samples (for 
@@ -76,115 +74,6 @@ script.
 | hmn     | Hmong              | ny      | Chichewa       |         |   
 |===
 
-[discrete]
-[[ml-lang-ident-example]]
-=== Example of {lang-ident}
-
-In the following example, we feed the {lang-ident} trained model a short 
-Hungarian text that contains diacritics and a couple of English words. The 
-model identifies the text correctly as Hungarian with high probability.
-
-[source,js]
-----------------------------------
-POST _ingest/pipeline/_simulate
-{
-   "pipeline":{
-      "processors":[
-         {
-            "inference":{
-               "model_id":"lang_ident_model_1", <1>
-               "inference_config":{
-                  "classification":{
-                     "num_top_classes":5 <2>
-                  }
-               },
-               "field_map":{
-
-               }
-            }
-         }
-      ]
-   },
-   "docs":[
-      {
-         "_source":{ <3>
-            "text":"Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
-         }
-      }
-   ]
-}
-----------------------------------
-//NOTCONSOLE
-
-<1> ID of the {lang-ident} trained model.
-<2> Specifies the number of languages to report by descending order of 
-probability.
-<3> The source object that contains the text to identify.
-
-
-In the example above, the `num_top_classes` value indicates that only the top 
-five languages (that is to say, the ones with the highest probability) are 
-reported.
-
-The request returns the following response:
-
-[source,js]
-----------------------------------
-{
-  "docs" : [
-    {
-      "doc" : {
-        "_index" : "_index",
-        "_type" : "_doc",
-        "_id" : "_id",
-        "_source" : {
-          "text" : "Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz.",
-          "ml" : {
-            "inference" : {
-              "top_classes" : [ <1>
-                {
-                  "class_name" : "hu",
-                  "class_probability" : 0.9999936063740517,
-                  "class_score" : 0.9999936063740517
-                },
-                {
-                  "class_name" : "lv",
-                  "class_probability" : 2.5020248433413966E-6,
-                  "class_score" : 2.5020248433413966E-6
-                },
-                {
-                  "class_name" : "is",
-                  "class_probability" : 1.0150420723037688E-6,
-                  "class_score" : 1.0150420723037688E-6
-                },
-                {
-                  "class_name" : "ga",
-                  "class_probability" : 6.67935962773335E-7,
-                  "class_score" : 6.67935962773335E-7
-                },
-                {
-                  "class_name" : "tr",
-                  "class_probability" : 5.591166324774555E-7,
-                  "class_score" : 5.591166324774555E-7
-                }
-              ],
-              "predicted_value" : "hu", <2>
-              "model_id" : "lang_ident_model_1"
-            }
-          }
-        },
-        "_ingest" : {
-          "timestamp" : "2020-01-22T14:25:14.644912Z"
-        }
-      }
-    }
-  ]
-}
-----------------------------------
-//NOTCONSOLE
-
-<1> Contains scores for the most probable languages.
-<2> The ISO identifier of the language with the highest probability.
 
 [discrete]
 [[ml-lang-ident-readings]]

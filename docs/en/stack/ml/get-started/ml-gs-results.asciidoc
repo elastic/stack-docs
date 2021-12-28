@@ -48,10 +48,9 @@ time. It is available only if the job has `model_plot_config` enabled. It can
 display only a single time series.
 
 The blue line in the chart represents the actual data values. The shaded blue
-area represents the bounds for the expected values. The area between the upper
-and lower bounds are the most likely values for the model. If a value is outside
-of this area then it can be said to be anomalous. The shaded blue, therefore, is
-the 95% central confidence interval.
+area represents the bounds for the expected values, which is also known as the _confidence interval_. The area between the upper
+and lower bounds are the most likely values for the model, using a 95% confidence level. That is to say, there is a 95% chance of the actual value falling within these bounds. If a value is outside
+of this area then it can be said to be anomalous.
 
 If you slide the time selector from the beginning to the end of the data, you
 can see how the model improves as it processes more data. At the beginning, the

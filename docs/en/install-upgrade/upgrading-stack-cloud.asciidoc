@@ -1,0 +1,92 @@
+[[upgrade-elastic-stack-for-elastic-cloud]]
+=== Upgrading on Elastic Cloud
+
+A single click in the Elastic Cloud console can upgrade a cluster to a newer
+version, add more processing capacity, change plugins, and enable or disable
+high availability, all at the same time. During the upgrade process,
+{es}, Kibana, and all of your deployment components are upgraded simultaneously.
+
+Although upgrading your Elastic Cloud deployments is easy, you still need to
+address breaking changes that affect your application. Minor version upgrades,
+upgrades from 6.8 to {version}, and all other cluster configuration
+changes can be performed with no downtime.
+
+[float]
+=== Prepare for the upgrade
+
+To avoid downtime when a full cluster restart is required:
+
+. Provision an additional cluster with the new {es} version, reindex
+your data, and send index requests to both clusters temporarily.
+
+. Verify that the new cluster performs as expected, fix any problems, and then
+permanently swap in the new cluster.
+
+. Delete the old cluster to stop incurring additional costs. You are billed
+only for the time that the new cluster runs in parallel with your old cluster.
+Usage is billed on an hourly basis.
+
+//To learn more about the upgrade process on Elastic Cloud, see {cloud}/ec-upgrade-deployment.html[Upgrade versions].
+
+NOTE: Elastic Cloud only supports upgrades to released versions. Preview
+releases and master snapshots are not supported.
+
+TIP: You cannot downgrade after upgrading, so plan ahead to make sure that your applications still work after upgrading. For more information on changes that might affect your applications, check <<elastic-stack-breaking-changes>>.
+
+The Upgrade Assistant::
+When you upgrade on Elastic Cloud, the deprecation API runs automatically to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any deprecation issues that would prevent the upgraded deployment from successfully performing, the upgrade fails. To resolve the deprecation issues, use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana. If any indices in your Elasticsearch clusters need to be reindexed, the Upgrade Assistant will guide you through the steps.
+
+Snapshot behavior during upgrades::
+To keep your data safe, a snapshot is taken automatically before any changes are made to your cluster. After a major version upgrade is complete, and the first successful snapshot with the new major version is available, all snapshots taken with the previous version of Elasticsearch are removed.
++
+For example, before upgrading from Elasticsearch version 7.x to version 8.x, a snapshot is taken. After the upgrade to version 8.x is complete, and an 8.x snapshot is available, all snapshots taken with version 7.x are removed.
++ 
+On {ece}, you need to {ece-ref}/ece-manage-repositories.html[configure a snapshot repository] to enable snapshots.
+
+Review breaking changes::
+Major version upgrades can include changes that expose the upgrading process to possible risk. A breaking change is the result of a functional change between major Elasticsearch versions, and requires you to perform additional steps to ensure that you can use the new version as intended.
++
+Review the <<elastic-stack-breaking-changes>> and upgrade your code to work
+with {version}.
+
+Review known issues::
+The following known issues apply to the Elastic Stack 8.x releases:
++
+* There are deprecated APIs that are still available for use. If you see warnings in the {ess} or {ece} logs about the deprecated APIs, you can ignore them.
++
+* {ess} and {ece} do not support the ability to upgrade to or from release candidate builds, such as 8.0.0-rc1.
++
+* For Elasticsearch 7.8 and later the Index Lifecycle Managment (ILM) API is always enabled, even if the cluster is still using the deprecated index curation. If index curation and ILM are both configured to process the same indices the outcome can be unpredictable. As other stack products default to using ILM when it is available in Elasticsearch, we strongly encourage you to {cloud}/ec-migrate-index-management.html[Migrate to index lifecycle management]. ILM also has a superior feature set.
+
+Update the security realm settings::
+During the upgrade process, you are prompted to update the security realm settings when your `user_settings` include a `xpack.security.authc.realms` value. 
++
+There are two settings that prompt you to update:
++
+* If the security realm settings are located in `user_settings_override`, contact support to help you upgrade.
++
+* If the security realm settings are located in `user_settings`, you'll receive a message that allows you to modify these settings. 
++
+To modify the `user_settings`:
++
+. On the *Update security realm settings* window, edit the settings.
++
+. Click *Update settings*.
+
+[float]
+=== Perform the upgrade
+
+Log in to your Elastic Cloud environment:
+
+//include::tab-widgets/code.asciidoc[]
+//include::tab-widgets/cloud-login-widget.asciidoc[]
+include::{docs-root}/shared/cloud/tab-widgets/code.asciidoc[]
+include::{docs-root}/shared/cloud/tab-widgets/cloud-login-widget.asciidoc[]
+
+Follow these steps to upgrade your stack version:
+
+. In the *Deployment version* section, click *Upgrade*.
+. Select a new version.
+. If you perform a major version upgrade and any incompatibilities are detected, the UI provides a link to the Upgrade Assistant in Kibana, which checks for deprecated settings in your cluster and indices and helps you to resolve them. After resolving any issues, return to the deployments page, select your deployment, click *Upgrade*, and select a version to restart the upgrade process. Any incompatibilities should now be resolved.
+. Click Upgrade. The new configuration takes a few minutes to create.
+. If you are upgrading to version 6.6 and earlier, major upgrades require a full cluster restart to complete the upgrade process.

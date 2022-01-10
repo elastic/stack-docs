@@ -184,7 +184,8 @@ pipeline:
 POST _reindex
 {
   "source": {
-    "index": "kibana_sample_data_logs"
+    "index": "kibana_sample_data_logs",
+    "size": 500
   },
   "dest": {
     "index": "lang-test",
@@ -196,6 +197,10 @@ POST _reindex
 
 However, those web log messages are unlikely to contain enough words for the
 model to accurately identify the language.
+
+When using deployed NLP models set the reindex `size` option to a value smaller
+than the deployment's queue size. If reindex `size` is larger than the queue capacity
+requests may be rejected with a too many requests 429 error code.
 
 [discrete]
 [[ml-nlp-inference-discover]]
@@ -222,3 +227,56 @@ image::images/ml-nlp-discover-lang.png[A document from the {lang-ident} pipeline
 
 To learn more about ingest pipelines and all of the other processors that you
 can add, refer to {ref}/ingest.html[Ingest pipelines].
+
+
+[discrete]
+[[ml-nlp-inference-common-problems]]
+== Common problems
+
+. The trained model is not deployed: Start the deployment with the {ref}/start-trained-model-deployment.html[start trained model deployment API].
+. The default input field name is not present in the source document: Use the **Field Map** to map
+the field name to the expected name.
+. Too many requests: If using bulk ingest reduce the number of documents in the bulk request, for reindex
+use the `size` parameter to decrease the number of documents processed in each batch.
+
+
+[discrete]
+[[ml-nlp-inference-handling-failures]]
+== Handling failures
+These common failure scenarios and others can be caputured by defining an `on_failure` clause
+on the inference processor. Set the error message in the document from the special
+`on_failure_message` field and re-route the document to a different _failed_ index for review later.
+
+
+[source,console]
+----
+POST _ingest/pipeline/my-ner-pipeline
+{
+  "inference": {
+    "model_id": "elastic__distilbert-base-cased-finetuned-conll03-english",
+    "field_map": {
+      "review": "text_field"
+    },
+    "on_failure": [
+      {
+        "set": {
+          "description": "Set the error message",
+          "field": "ml.inference_failure",
+          "value": "{{_ingest.on_failure_message}}"
+        }
+      },
+      {
+        "set": {
+          "description": "Index document to 'failed-<index>'",
+          "field": "_index",
+          "value": "failed-{{{ _index }}}"
+        }
+      }
+    ]
+  }
+}
+----
+// TEST[skip:TBD]
+
+
+

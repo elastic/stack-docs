@@ -198,9 +198,9 @@ POST _reindex
 However, those web log messages are unlikely to contain enough words for the
 model to accurately identify the language.
 
-When using deployed NLP models set the reindex `size` option to a value smaller
-than the deployment's queue size. If reindex `size` is larger than the queue capacity
-requests may be rejected with a too many requests 429 error code.
+TIP: When using deployed NLP models, set the reindex `size` option to a value
+smaller than the deployment's queue size. Otherwise, requests might be rejected
+with a "too many requests" 429 error code.
 
 [discrete]
 [[ml-nlp-inference-discover]]

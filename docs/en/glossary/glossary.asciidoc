@@ -323,6 +323,14 @@ role] that typically share the same hardware profile. Data tiers include the
 <<glossary-frozen-tier,frozen tier>>. See {ref}/data-tiers.html[Data tiers].
 //Source: Elasticsearch
 
+[[glossary-data-view]] data view::
+An object that enables you to select the data that you want to use in {kib} 
+and define the properties of the fields. A data view can point to one or more 
+<<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
+<<glossary-alias,aliases>>. For example, a data view can point to your log data from yesterday, 
+or all indices that contain your data.
+//Source: Kibana
+
 [[glossary-delete-phase]] delete phase::
 Last possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In the
 delete phase, an <<glossary-index,index>> is no longer needed and can safely be
@@ -436,6 +444,15 @@ See
 and
 {ml-docs}/ml-dfa-classification.html#dfa-classification-feature-importance[{classification-cap} feature importance].
 //Source: Machine learning
+
+[[glossary-feature-state]] feature state::
+The indices and data streams used to store configurations, history, and other
+data for an Elastic feature, such as {es} security or {kib}. A feature state
+typically includes one or more <<glossary-system-index,system indices or data
+streams>>. It may also include regular indices and data streams used by the
+feature. You can use <<glossary-snapshot,snapshots>> to back up and restore
+feature states. See {ref}/snapshot-restore.html#feature-state[feature states].
+//Source: Elasticsearch
 
 [[glossary-field]] field::
 . Key-value pair in a <<glossary-document,document>>. See
@@ -567,7 +584,7 @@ cells or regions to analyze patterns across multiple dimensions. See
 [[glossary-hidden-index]] hidden data stream or index::
 <<glossary-data-stream,Data stream>> or <<glossary-index,index>> excluded from
 most <<glossary-index-pattern,index patterns>> by default. See
-{ref}/multi-index.html#hidden[Hidden data streams and indices].
+{ref}/api-conventions.html#multi-hidden[Hidden data streams and indices].
 //Source: Elasticsearch
 
 [[glossary-hot-phase]] hot phase::
@@ -620,7 +637,7 @@ each phase. See {ref}/ilm-policy-definition.html[Index lifecycle].
 //Source: Elasticsearch
 
 [[glossary-index-pattern]] index pattern::
-String containing a wildcard (`*`) pattern that can match multiple
+In {es}, a string containing a wildcard (`*`) pattern that can match multiple
 <<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
 <<glossary-alias,aliases>>. See {ref}/multi-index.html[Multi-target syntax].
 //Source: Elasticsearch
@@ -1034,7 +1051,7 @@ differently. See {ref}/runtime.html[Runtime fields].
 === S
 
 [[glossary-saved-object]] saved object::
-A representation of a dashboard, visualization, map, index pattern, or Canvas
+A representation of a dashboard, visualization, map, data view, or Canvas
 workpad that can be stored and reloaded.
 //Source: Kibana
 
@@ -1116,7 +1133,8 @@ restore].
 [[glossary-snapshot-lifecycle-policy]] snapshot lifecycle policy::
 Specifies how frequently to perform automatic backups of a cluster and how long
 to retain the resulting <<glossary-snapshot,snapshots>>. See
-{ref}/snapshot-lifecycle-management.html[Manage the snapshot lifecycle].
+{ref}/snapshots-take-snapshot.html#automate-snapshots-slm[Automate snapshots
+with {slm-init}].
 //Source: Elasticsearch
 
 [[glossary-snapshot-repository]] snapshot repository::

@@ -1,0 +1,157 @@
+[[ml-nlp-deploy-models]]
+= Deploy trained models
+
+:keywords: {ml-init}, {stack}, {nlp}
+:description: You can import trained models into your cluster and configure them \
+for specific NLP tasks.
+
+If you want to perform {nlp} tasks in your cluster, you must deploy an
+appropriate trained model. There is tooling support in
+https://github.com/elastic/eland[Eland] and {kib} to help you prepare and manage
+models.
+
+. <<ml-nlp-select-model,Select a trained model>>.
+. <<ml-nlp-import-model,Import the trained model and vocabulary>>.
+. <<ml-nlp-deploy-model,Deploy the model in your cluster>>.
+. <<ml-nlp-test-inference,Try it out>>.
+
+[discrete]
+[[ml-nlp-select-model]]
+== Select a trained model
+
+Per the <<ml-nlp-overview>>, there are multiple ways that you can use NLP
+features within the {stack}. After you determine which type of NLP task you want
+to perform, you must choose an appropriate trained model.
+
+IMPORTANT: The {stack-ml-features} support transformer models that conform to
+the standard BERT model interface and use the WordPiece tokenization algorithm.
+
+The simplest method is to use a model that has already been fine-tuned for the
+type of analysis that you want to perform. For example, there are models and
+data sets available for specific NLP tasks on
+https://huggingface.co/models[Hugging Face]. These instructions assume you're
+using one of those models and do not describe how to create new models.
+
+If you choose to perform language identification by using
+the `lang_ident_model_1` that is provided in the cluster, no further steps are
+required to import or deploy the model. You can skip to using the model in
+<<ml-nlp-inference,ingestion pipelines>>.
+
+[discrete]
+[[ml-nlp-import-model]]
+== Import the trained model and vocabulary
+
+After you choose a model, you must import it and its tokenizer vocabulary to
+your cluster. When you import the model, it must be chunked and imported one
+chunk at a time for storage in parts due to its size.
+
+NOTE: Trained models must be in a TorchScript representation for use with
+{stack-ml-features}.
+
+Eland encapsulates both the conversion of Hugging Face transformer models to
+their TorchScript representations and the chunking process in a single Python
+method; it is therefore the recommended import method.
+
+. {eland-docs}/installation.html[Install the Eland Python client].
+. Run the `eland_import_hub_model` script. For example:
++
+--
+[source,js]
+--------------------------------------------------
+eland_import_hub_model --url <clusterUrl> \ <1>
+--hub-model-id elastic/distilbert-base-cased-finetuned-conll03-english \ <2>
+--task-type ner <3>
+--------------------------------------------------
+// NOTCONSOLE
+--
+
+<1> Specify the URL to access your cluster. For example, 
+`https://<user>:<password>@<hostname>:<port>`.
+<2> Specify the identifier for the model in the Hugging Face model hub.
+<3> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
+`text_classification`, `text_embedding`, and `zero_shot_classification`.
+
+For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+
+[discrete]
+[[ml-nlp-deploy-model]]
+== Deploy the model in your cluster
+
+After you import the model and vocabulary, you can use {kib} to view and manage
+their deployment across your cluster under **{ml-app}** > *Model Management*.
+Alternatively, you can use the
+{ref}/start-trained-model-deployment.html[start trained model deployment API] or
+specify the `--start` option when you run the `eland_import_hub_model` script.
+
+When you deploy the model, it is allocated to all available {ml} nodes. The
+model is loaded into memory in a native process that encapsulates `libtorch`,
+which is the underlying machine learning library of PyTorch.
+
+//TBD: Are these threading options available in the script and in Kibana?
+You can optionally specify the number of CPU cores it has access to on each node.
+If you choose to optimize for latency (that is to say, inference should return
+as fast as possible), you can increase `inference_threads` to lower latencies.
+If you choose to optimize for throughput (that is, maximize the number of
+parallel inference requests), you can increase `model_threads` to increase
+throughput. In general, the total size of threading settings across all models
+on a node should not exceed the number of physical CPU cores available on the
+node, minus one (for non-inference operations). In {ecloud} environments, the
+core count is virtualized CPUs (vCPUs) and this total size should typically be
+no more than half the available vCPUs, minus one.
+
+You can view the allocation status in {kib} or by using the
+{ref}/get-trained-models-stats.html[get trained model stats API].
+
+[discrete]
+[[ml-nlp-test-inference]]
+== Try it out
+
+When the model is deployed on at least one node in the cluster, you can begin to
+perform inference. _{infer-cap}_ is a {ml} feature that enables you to use your
+trained models to perform NLP tasks (such as text extraction, classification, or
+embeddings) on incoming data.
+
+The simplest method to test your model against new data is to use the 
+{ref}/infer-trained-model-deployment.html[infer trained model deployment API].
+For example, to try a named entity recognition task, provide some sample text:
+
+[source,console]
+--------------------------------------------------
+POST /_ml/trained_models/elastic__distilbert-base-cased-finetuned-conll03-english/deployment/_infer
+{
+    "docs":{
+        "text_field":"Sasha bought 300 shares of Acme Corp in 2022."
+        }
+}
+--------------------------------------------------
+// TEST[skip:TBD]
+
+In this example, the response contains the annotated text output and the
+recognized entities:
+
+[source,console-result]
+----
+{
+  "predicted_value" : "[Sasha](PER&Sasha) bought 300 shares of [Acme Corp](ORG&Acme+Corp) in 2022.",
+  "entities" : [
+    {
+      "entity" : "Sasha",
+      "class_name" : "PER",
+      "class_probability" : 0.9953193611298665,
+      "start_pos" : 0,
+      "end_pos" : 5
+    },
+    {
+      "entity" : "Acme Corp",
+      "class_name" : "ORG",
+      "class_probability" : 0.9996392201598554,
+      "start_pos" : 27,
+      "end_pos" : 36
+    }
+  ]
+}
+----
+// NOTCONSOLE
+
+If you are satisfied with the results, you can add these NLP tasks in your
+<<ml-nlp-inference,ingestion pipelines>>.

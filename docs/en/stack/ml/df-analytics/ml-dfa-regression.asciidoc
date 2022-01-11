@@ -29,7 +29,7 @@ boost (XGboost) which combines decision trees with gradient boosting
 methodologies.
 
 There are three types of {feature-vars} that you can use with these algorithms: 
-numerical, cathegorical, or Boolean. Arrays are not supported.
+numerical, categorical, or Boolean. Arrays are not supported.
 //end::regression-algorithms[]
 
 [discrete]
@@ -45,14 +45,9 @@ your use case requires predicting continuous, numerical values, then
 [[dfa-regression-environment]]
 == 2. Set up the environment
 
-To use {ml-features}, there must be at least one {ml} node in your cluster and 
-all master-eligible nodes must have {ml} enabled. By default, all nodes are {ml} 
-nodes. For more information about these settings, refer to 
-{ref}/modules-node.html#ml-node[{ml} nodes].
-
-The {stack-security-features} require you to ensure your users also have the 
-necessary security privileges. See <<setup>>.
-
+Before you can use the {stack-ml-features}, there are some configuration
+requirements (such as security privileges) that must be addressed. Refer to
+<<setup>>.
 
 [discrete]
 [[dfa-regression-prepare-data]]
@@ -68,7 +63,7 @@ role in model evaluation.
 You might also need to {ref}/transforms.html[{transform}] your data to create a 
 {dataframe} which can be used as the source for {regression}.
 
-To learn more about how to prepeare your data, refer to 
+To learn more about how to prepare your data, refer to 
 <<prepare-transform-data, the relevant section>> of the supervised learning 
 overview.
 
@@ -163,7 +158,7 @@ transition point between MAE and MSE. Consult the
 
 
 [discrete]
-[[ml-dfanalytics-r-sqared]]
+[[ml-dfanalytics-r-squared]]
 === R-squared
 
 R-squared (R^2^) represents the goodness of fit and measures how much of the 

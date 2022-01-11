@@ -1,252 +1,467 @@
-[[get-started-docker]]
-== Running the {stack} on Docker
+[[get-started-stack-docker]]
+== Running the {stack} ("ELK") on Docker
+++++
+<titleabbrev>Running the {stack} on Docker</titleabbrev>
+++++
 
 The Elastic Docker registry contains Docker images for all the products in
 the {stack}: https://www.docker.elastic.co/.
 
-[float]
-[[run-stack-docker]]
-=== Run with Docker Compose
+You can <<run-docker-secure,start the {stack} in Docker>> with security enabled
+and configured by default. This option is great for quickly getting started with
+{es} and {kib} for testing and development.
 
-To get the default distributions of {es} and {kib} up and running in Docker,
-you can use Docker Compose.
+You can also <<get-started-docker-tls,start the {stack} with Docker Compose>> to
+create a secured, multi-node cluster with a connected {kib} instance. This
+option results in a more resilient cluster with greater capacity and reliability.
 
-. Create a `docker-compose.yml` file for the Elastic Stack.
-The following example brings up a three node cluster and Kibana so you can see how things work.
-This all-in-one configuration is a handy way to bring up your first dev cluster before
-you build a distributed deployment with multiple hosts.
-+
-ifeval::["{release-state}"=="unreleased"]
-NOTE: Version {version} of {es} has not been released,
-so the sample compose file is not yet available for this version.
-See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
-endif::[]
-ifeval::["{release-state}"!="unreleased"]
-["source","yaml",subs="attributes"]
---------------------------------------------
-include::docker/docker-compose.yml[]
---------------------------------------------
-endif::[]
-// tag::docker-memory[]
-. Make sure Docker Engine is allotted at least 4GiB of memory.
-In Docker Desktop, you configure resource usage on the Advanced tab in Preference (macOS)
-or Settings (Windows).
-// end::docker-memory[]
+[[run-docker-secure]]
+[discrete]
+=== Start {es} and {kib} in Docker
+Starting in {es} 8.0, security is enabled and configured by default.
 
-. Run `docker-compose` to bring up the three-node {es} cluster and {kib}:
-+
-["source","sh",subs="attributes"]
---------------------------------------------
-docker-compose up
---------------------------------------------
+If you're starting a single-node {es} cluster in a Docker container, security
+will be automatically enabled and configured for you. When you start {es} for
+the first time, the following security configuration occurs automatically:
 
-. Submit a `_cat/nodes` request to see that the nodes are up and running:
-+
-[source,sh]
---------------------------------------------------
-curl -X GET "localhost:9200/_cat/nodes?v&pretty"
---------------------------------------------------
+* {ref}/configuring-stack-security.html#stack-security-certificates[Certificates and keys] are generated
+for the transport and HTTP layers.
+* The Transport Layer Security (TLS) configuration settings are written to
+`elasticsearch.yml`.
+* A password is generated for the `elastic` user.
+* An enrollment token is generated for {kib}.
+* An enrollment token is generated for other {es} nodes.
 
-. Open {kib} to load sample data and interact with the cluster:
-http://localhost:5601.
+You can then {kibana-ref}/docker.html[start {kib}] and enter the enrollment
+token, which is valid for 30 minutes. This token automatically applies the
+security settings from your {es} cluster, authenticates to {es} with the
+`kibana` service account, and writes the security configuration to `kibana.yml`.
 
-When you're done experimenting, you can tear down the containers and
-volumes by running `docker-compose down -v`.
+[discrete]
+==== Prerequisites
 
-[float]
-[[get-started-docker-tls]]
-=== Run in Docker with TLS enabled
+. Install the appropriate https://docs.docker.com/get-docker/[Docker application]
+for your operating system.
 
-If {security-features} are enabled, you must configure Transport Layer Security
-(TLS) encryption for the {es} transport layer. While it is possible to use a
-trial license without setting up TLS, we advise securing your stack from the
-start.
-
-To get an {es} cluster and {kib} up and running in Docker with security enabled,
-you can use Docker Compose:
-
-. Create the following compose and configuration files.
-These files are also available from the
-https://github.com/elastic/stack-docs/blob/master/docs/en/getting-started/docker/[elastic/stack-docs]
-repository on GitHub.
+. Pull the {es} Docker image.
 +
 --
 ifeval::["{release-state}"=="unreleased"]
-NOTE: Version {version} of {es} has not been released,
-so the sample compose and configuration files are not yet available for this version.
-See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
+
+WARNING: Version {version} of {es} has not yet been released, so no
+Docker image is currently available for this version.
+
 endif::[]
 
-* `instances.yml` identifies the instances you need to create certificates for.
-* `.env` sets environment variables to specify the {es} version and
-the location where the {es} certificates will be created.
-* `create-certs.yml` is a Docker Compose file that launches a container to generate the certificates
-for {es} and {kib}.
-* `elastic-docker-tls.yml` is a Docker Compose file that brings up a three-node {es} cluster
-and a {kib} instance with TLS enabled so you can see how things work.
-This all-in-one configuration is a handy way to bring up your first dev cluster before
-you build a distributed deployment with multiple hosts.
+ifeval::["{release-state}"!="unreleased"]
+
+[source,sh,subs="attributes"]
+----
+docker pull docker.elastic.co/elasticsearch/elasticsearch:{version}
+----
+
+endif::[]
+--
+
+. Pull the {kib} Docker image.
++
+--
+ifeval::["{release-state}"=="unreleased"]
+
+WARNING: Version {version} of {kib} has not yet been released, so no
+Docker image is currently available for this version.
+
+endif::[]
 
 ifeval::["{release-state}"!="unreleased"]
-.`instances.yml`:
-["source","yaml"]
+
+[source,sh,subs="attributes"]
 ----
-include::docker/instances.yml[]
+docker pull docker.elastic.co/kibana/kibana:{version}
 ----
 
-.`.env`:
+endif::[]
+--
+
+[[docker-start-enroll]]
+[discrete]
+==== Start a single-node {es} cluster and enroll {kib}
+
+The following command starts a single-node {es} cluster for development or
+testing.
+
+. Create an `elastic` network for your containers.
++
+[source,sh]
+----
+docker network create elastic
+----
+
+. Start {es} in Docker. A password is generated for the `elastic` user and
+output to the terminal, plus enrollment tokens for enrolling {kib} and adding
+additional nodes to your cluster.
++
+--
+ifeval::["{release-state}"=="unreleased"]
+
+WARNING: Version {version} of {es} has not yet been released, so no
+Docker image is currently available for this version.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+[source,sh,subs="attributes"]
+----
+docker run --name es01 --net elastic -p 9200:9200 -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+----
+
+endif::[]
+--
++
+TIP: You might need to scroll back a bit in the terminal to view the password
+and enrollment token.
+
+. Copy the generated password and enrollment token and save them in a secure
+location. These values are shown only when you start {es} for the first time.
+
+. Locate the CA certificate in your container. This command returns the path
+to the `http_ca.crt` certificate, which you'll use in the next step.
++
+[source,sh]
+----
+docker exec -it es01 /bin/bash -c "find /usr/share/elasticsearch -name http_ca.crt"
+----
+
+. Copy the `http_ca.crt` security certificate from your Docker container to
+your local machine. 
++
+[source,sh]
+----
+docker cp es01:/usr/share/elasticsearch/config/tls_auto_config_<timestamp>/http_ca.crt .
+----
+`<timestamp>`:: The timestamp of when the auto-configuration process created
+the security files directory in your Docker container.
+
+. Open a new terminal and verify that you can connect to your {es}
+cluster by making an authenticated call, using the `http_ca.crt` file that you
+copied from your Docker container. Enter the password for the `elastic` user
+when prompted.
++
+--
+[source,sh]
+----
+curl --cacert http_ca.crt -u elastic https://localhost:9200
+----
+// NOTCONSOLE
+
+If the connection is successful, the command returns a response like this:
+////
+The following hidden request is required before the response. Otherwise, you'll
+get an error because there's a response with no request preceding it.
+
+[source,console]
+----
+GET /
+----
+////
+
+["source","js",subs="attributes,callouts"]
+--------------------------------------------
+{
+  "name" : "Cp8oag6",
+  "cluster_name" : "docker-cluster",
+  "cluster_uuid" : "AT69_T_DTp-1qgIJlatQqA",
+  "version" : {
+    "number" : "{elasticsearch_version}",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "f27399d",
+    "build_date" : "2021-11-04T12:35:26.989068569Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.0.0",
+    "minimum_wire_compatibility_version" : "7.16.0",
+    "minimum_index_compatibility_version" : "7.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+--------------------------------------------
+// TESTRESPONSE[s/"name" : "Cp8oag6",/"name" : "$body.name",/]
+// TESTRESPONSE[s/"cluster_name" : "docker-cluster",/"cluster_name" : "$body.cluster_name",/]
+// TESTRESPONSE[s/"cluster_uuid" : "AT69_T_DTp-1qgIJlatQqA",/"cluster_uuid" : "$body.cluster_uuid",/]
+// TESTRESPONSE[s/"build_hash" : "f27399d",/"build_hash" : "$body.version.build_hash",/]
+// TESTRESPONSE[s/"build_date" : "2021-11-04T12:35:26.989068569Z",/"build_date" : $body.version.build_date,/]
+// TESTRESPONSE[s/"build_snapshot" : false,/"build_snapshot" : $body.version.build_snapshot,/]
+// TESTRESPONSE[s/"minimum_wire_compatibility_version" : "1.2.3"/"minimum_wire_compatibility_version" : $body.version.minimum_wire_compatibility_version/]
+// TESTRESPONSE[s/"minimum_index_compatibility_version" : "1.2.3"/"minimum_index_compatibility_version" : $body.version.minimum_index_compatibility_version/]
+// So much s/// but at least we test that the layout is close to matching....
+--
+
+. In a new terminal session, start {kib} and connect it to your {es} container:
++
+--
+ifeval::["{release-state}"=="unreleased"]
+
+WARNING: Version {version} of {kib} has not yet been released, so no
+Docker image is currently available for this version.
+
+endif::[]
+
+ifeval::["{release-state}"!="unreleased"]
+[source,sh,subs="attributes"]
+----
+docker run --name kibana --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:{version}
+----
+
+When you start {kib}, a unique link is output to your terminal.
+
+--
+endif::[]
+
+. To access {kib}, click the generated link in your terminal.
+
+  .. In your browser, paste the enrollment token that you copied when starting
+  {es} and click the button to connect your {kib} instance with {es}.
+
+  .. Log in to {kib} as the `elastic` user with the password that was generated
+  when you started {es}.
+
+[[docker-enroll-nodes]]
+[discrete]
+==== Enroll additional nodes
+
+When you start {es} for the first time, the installation process configures a single-node cluster by default. This process also generates an enrollment token
+and prints it to your terminal. If you want a node to join an existing cluster,
+start the new node with the generated enrollment token.
+
+--
+.Generating enrollment tokens
+****
+The enrollment token is valid for 30 minutes. If you need to generate a 
+new enrollment token, run the 
+{ref}/create-enrollment-token.html[`elasticsearch-create-enrollment-token`] tool
+on your existing node. This tool is available in the {es} `bin` directory of the 
+Docker container.
+
+For example, run the following command on the existing `es01` node to
+generate an enrollment token for new {es} nodes:
+
+[source,sh]
+----
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
+----
+****
+--
+
+. In the terminal where you started your first node, copy the generated
+enrollment token for adding new {es} nodes. 
+
+. On your new node, start {es} and include the generated enrollment token.
++
+[source,sh,subs="attributes"]
+----
+docker run -e ENROLLMENT_TOKEN="<token>" --name es02 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+----
++
+{es} is now configured to join the existing cluster.
+
+If you experience issues where the container where your first node is running
+exits when your second node starts, explicitly set values for the JVM heap size.
+To {ref}/docker.html#docker-set-heap-size[manually configure the heap size], 
+include the `ES_JAVA_OPTS` variable and set values for `-Xms` and `-Xmx` when 
+starting each node. For example, the following command starts node `es02` and 
+sets the minimum and maximum JVM heap size to 1 GB:
+
+[source,sh,subs="attributes"]
+----
+docker run -e ES_JAVA_OPTS="-Xms1g -Xmx1g" -e ENROLLMENT_TOKEN="<token>" --name es02 -p 9201:9200 --net elastic -it docker.elastic.co/elasticsearch/elasticsearch:{version}
+----
+
+[[docker-generate]]
+[discrete]
+==== Generate passwords and enrollment tokens
+If you need to reset the password for the `elastic` user or other
+built-in users, run the {ref}/reset-password.html[`elasticsearch-reset-password`]
+tool. This tool is available in the {es} `bin` directory of the Docker container.
+
+For example, to reset the password for the `elastic` user:
+
+[source,sh]
+----
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+----
+
+If you need to generate new enrollment tokens for {kib} or {es} nodes, run the
+{ref}/create-enrollment-token.html[`elasticsearch-create-enrollment-token`] tool.
+This tool is available in the {es} `bin` directory of the Docker container.
+
+For example, to generate a new enrollment token for {kib}:
+
+[source,sh]
+----
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+----
+
+
+[[docker-remove-containers]]
+[discrete]
+==== Remove Docker containers
+
+To remove the containers and their network, run:
+
+[source,sh]
+----
+docker network rm elastic
+docker rm es01
+docker rm kibana
+----
+
+[discrete]
+[[get-started-docker-tls]]
+=== Start the {stack} with Docker Compose
+
+To get a multi-node {es} cluster and {kib} up and running in Docker with
+security enabled, you can use Docker Compose.
+
+This configuration provides a simple method of starting a secured cluster that
+you can use for development before building a distributed deployment with
+multiple hosts.
+
+[discrete]
+==== Prerequisites
+
+Install the appropriate https://docs.docker.com/get-docker/[Docker application]
+for your operating system.
+
+If you're running on Linux, install https://docs.docker.com/compose/install/[Docker Compose].
+
+[NOTE]
+====
+Make sure that Docker is allotted at least 4GB of memory. In Docker Desktop,
+you configure resource usage on the Advanced tab in Preferences (macOS) or
+Settings (Windows).
+====
+
+[discrete]
+==== Prepare the environment
+
+Create the following configuration files in a new, empty directory. These files
+are also available from the
+https://github.com/elastic/stack-docs/blob/master/docs/en/getting-started/docker/[elastic/stack-docs]
+repository on GitHub.
+
+--
+ifeval::["{release-state}"=="unreleased"]
+NOTE: Version {version} of {es} has not been released,
+so the sample Docker Compose and configuration files are not yet available for
+this version. See the {stack-gs-current}/get-started-docker.html[current version]
+for the latest sample files.
+endif::[]
+--
+
+--
+ifeval::["{release-state}"!="unreleased"]
+
+[discrete]
+[[docker-env-file]]
+===== `.env`
+
+The `.env` file sets environment variables that are used when you run the
+`docker-compose.yml` configuration file. Ensure that you specify a strong
+password for the `elastic` and `kibana_system` users with the
+`ELASTIC_PASSWORD` and `KIBANA_PASSWORD` variables. These variable are
+referenced by the `docker-compose.yml` file.
+
 ["source","txt",subs="attributes"]
 ----
 include::docker/.env[]
 ----
 
-.`create-certs.yml`:
-["source","txt"]
+[discrete]
+[[docker-compose-file]]
+===== `docker-compose.yml`
+
+This `docker-compose.yml` file creates a three-node secure {es} cluster with authentication and network encryption enabled, and a {kib} instance securely connected to it.
+
+.Exposing ports
+****
+This configuration exposes port `9200` on all network interfaces. Because
+of how Docker handles ports, a port that isn't bound to `localhost` leaves your
+{es} cluster publicly accessible, potentially ignoring any firewall settings.
+If you don't want to expose port `9200` to external hosts, set the value for
+`ES_PORT` in the `.env` file to something like `127.0.0.1:9200`. {es} will
+then only be accessible from the host machine itself.
+****
+
+[source,yaml,subs="attributes"]
 ----
-include::docker/create-certs.yml[]
+include::docker/docker-compose.yml[]
 ----
 
-.`elastic-docker-tls.yml`:
-["source","txt"]
-----
-include::docker/elastic-docker-tls.yml[]
-----
-
-<1> Generate and apply a trial license that supports Transport Layer Security.
-<2> Enable Transport Layer Security to encrypt client communications.
-<3> Enable Transport Layer Security to encrypt internode communications.
-<4> Allow the use of self-signed certificates by not requiring hostname verification.
 endif::[]
 --
 
-include::get-started-docker.asciidoc[tag=docker-memory]
+[discrete]
+==== Start your cluster with security enabled and configured
 
-
-. Generate certificates for {es} by bringing up the `create-certs` container:
+. Modify the `.env` file and enter strong password values for both the
+`ELASTIC_PASSWORD` and `KIBANA_PASSWORD` variables.
 +
---
+NOTE: You must use the `ELASTIC_PASSWORD` value for further interactions with
+the cluster. The `KIBANA_PASSWORD` value is only used internally when
+configuring {kib}.
+
+. Create and start the three-node {es} cluster and {kib} instance:
++
 ["source","sh"]
 ----
-docker-compose -f create-certs.yml run --rm create_certs
+docker-compose up -d
 ----
 
---
+. When the deployment has started, open a browser and navigate to http://localhost:5601[http://localhost:5601] to
+access {kib}, where you can load sample data and interact with your cluster.
 
-. Bring up the three-node {es} cluster:
-+
---
-["source","sh"]
+[[docker-compose-remove-containers]]
+[discrete]
+==== Stop and remove the deployment
+
+When you're done experimenting, you can remove the network, containers, and
+volumes:
+
+[source,sh]
 ----
-docker-compose -f elastic-docker-tls.yml up -d
-----
-
-IMPORTANT: At this point, {kib} cannot connect to the {es} cluster.
-You must generate a password for the built-in `kibana_system` user, update the `ELASTICSEARCH_PASSWORD`
-in the compose file, and restart to enable {kib} to communicate with the secured cluster.
-
---
-
-. Run the `elasticsearch-setup-passwords` tool to generate passwords for all built-in users,
-including the `kibana_system` user. If you don't use PowerShell on Windows, remove the trailing `\`characters
-and join the lines before running this command.
-+
---
-["source","sh"]
-----
-docker exec es01 /bin/bash -c "bin/elasticsearch-setup-passwords \
-auto --batch --url https://es01:9200"
+docker-compose down -v
 ----
 
-IMPORTANT: Make a note of the generated passwords.
-You must configure the `kibana_system` user password in the compose file to enable {kib} to connect to {es},
-and you'll need the password for the `elastic` superuser to
-log in to {kib} and submit requests to {es}.
---
-
-. Set `ELASTICSEARCH_PASSWORD` in the `elastic-docker-tls.yml` compose file to the password
-generated for the `kibana_system` user.
-+
---
-ifeval::["{release-state}"=="unreleased"]
-NOTE: Version {version} of {es} has not been released,
-so the sample compose file is not yet available for this version.
-See the {stack-gs-current}/get-started-docker.html[current version] for the latest sample files.
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-["source","yaml",subs=+quotes]
-----
-  kib01:
-    image: docker.elastic.co/kibana/kibana:${VERSION}
-    container_name: kib01
-    depends_on: {"es01": {"condition": "service_healthy"}}
-    ports:
-      - 5601:5601
-    environment:
-      SERVERNAME: localhost
-      ELASTICSEARCH_URL: https://es01:9200
-      ELASTICSEARCH_HOSTS: https://es01:9200
-      ELASTICSEARCH_USERNAME: kibana_system
-      **ELASTICSEARCH_PASSWORD: CHANGEME**
-      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: $CERTS_DIR/ca/ca.crt
-      SERVER_SSL_ENABLED: "true"
-      SERVER_SSL_KEY: $CERTS_DIR/kib01/kib01.key
-      SERVER_SSL_CERTIFICATE: $CERTS_DIR/kib01/kib01.crt
-    volumes:
-      - certs:$CERTS_DIR
-    networks:
-      - elastic
-----
-endif::[]
---
-
-. Use `docker-compose` to restart the cluster and {kib}:
-+
---
-["source","sh"]
-----
-docker-compose stop
-docker-compose -f elastic-docker-tls.yml up -d
-----
---
-
-. Open {kib} to load sample data and interact with the cluster:
-https://localhost:5601.
-+
-NOTE: Because SSL is also enabled for communications between {kib} and client browsers,
-you must access {kib} via the HTTPS protocol.
-
-When you're done experimenting, you can tear down the containers, network, and
-volumes by running `docker-compose -f elastic-docker-tls.yml down -v`.
-
-[float]
+[discrete]
 [[load-settings-file]]
-==== Loading settings from a file
+==== Load settings from a file
 
-Specifying settings for {es} and {{kib}} directly in the compose file is a convenient way to get started,
-but loading settings from a file is preferable once you get past the experimental stage.
+Specifying settings for {es} and {kib} directly in the Docker Compose file is a
+convenient way to get started, but loading settings from a file is preferable
+after you get past the experimental stage.
 
-For example, to use `es01.yml` as the configuration file for the `es01` {es} node,
-you can create a bind mount in the volumes section.
+For example, to use a custom `es01.yml` as the configuration file for the `es01`
+{es} node, you can create a bind mount in the `volumes` section for the `es01`
+service.
 
 ["source","yaml"]
 ----
     volumes:
-      - data01:/usr/share/elasticsearch/data
-      - certs:$CERTS_DIR
       - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ...
 ----
 
-Similarly, to load {kib} settings from a file, you overwrite `/usr/share/kibana/config/kibana.yml`:
+Similarly, to load {kib} settings from a file, you can add the following mount
+in the `volumes` section for the `kibana` service.
 
 ["source","yaml"]
 ----
     volumes:
-      - certs:$CERTS_DIR
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ...
 ----
 
-[float]
+[discrete]
 === Product-specific instructions for Docker
 
 See the product-specific documentation for information about running a specific Elastic product in Docker:

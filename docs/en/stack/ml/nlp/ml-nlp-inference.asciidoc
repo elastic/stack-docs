@@ -68,6 +68,17 @@ timestamp.
 `{{{_ingest.timestamp}}}`. For more details, refer to
 {ref}/ingest.html#access-ingest-metadata[Access ingest metadata in a processor].
 .. Click **Add** to save the processor.
+. Optional: Add failure processors to handle exceptions. For example, in the
+**Failure processors** section:
+.. Add a set processor to capture the
+pipeline error message. Choose a name for the field (such as
+`ml.inference_failure`) and set its value to the
+`{{_ingest.on_failure_message}}` document metadata field.
+.. Add a set processor to reroute
+problematic documents to a different index for troubleshooting purposes. Use
+the `_index` metadata field and set its value to a new name (such as
+`failed-{{{ _index }}}`). For more details, refer
+to {ref}//ingest.html#handling-pipeline-failures[Handling pipeline failures].
 . To test the pipeline, click **Add documents**.
 .. In the **Documents** tab, provide a sample document for testing.
 +
@@ -110,6 +121,42 @@ Hungarian.
 --
 .. If everything looks correct, close the panel, and click **Create
 pipeline**. The pipeline is now ready for use.
+
+////
+.API example
+[%collapsible]
+====
+[source,console]
+----
+POST _ingest/pipeline/my-ner-pipeline
+{
+  "inference": {
+    "model_id": "elastic__distilbert-base-cased-finetuned-conll03-english",
+    "field_map": {
+      "review": "text_field"
+    },
+    "on_failure": [
+      {
+        "set": {
+          "description": "Set the error message",
+          "field": "ml.inference_failure",
+          "value": "{{_ingest.on_failure_message}}"
+        }
+      },
+      {
+        "set": {
+          "description": "Index document to 'failed-<index>'",
+          "field": "_index",
+          "value": "failed-{{{ _index }}}"
+        }
+      }
+    ]
+  }
+}
+----
+// TEST[skip:TBD]
+====
+////
 
 [discrete]
 [[ml-nlp-inference-ingest-docs]]
@@ -238,45 +285,3 @@ can add, refer to {ref}/ingest.html[Ingest pipelines].
 the field name to the expected name.
 . Too many requests: If using bulk ingest reduce the number of documents in the bulk request, for reindex
 use the `size` parameter to decrease the number of documents processed in each batch.
-
-
-[discrete]
-[[ml-nlp-inference-handling-failures]]
-== Handling failures
-These common failure scenarios and others can be caputured by defining an `on_failure` clause
-on the inference processor. Set the error message in the document from the special
-`on_failure_message` field and re-route the document to a different _failed_ index for review later.
-
-
-[source,console]
-----
-POST _ingest/pipeline/my-ner-pipeline
-{
-  "inference": {
-    "model_id": "elastic__distilbert-base-cased-finetuned-conll03-english",
-    "field_map": {
-      "review": "text_field"
-    },
-    "on_failure": [
-      {
-        "set": {
-          "description": "Set the error message",
-          "field": "ml.inference_failure",
-          "value": "{{_ingest.on_failure_message}}"
-        }
-      },
-      {
-        "set": {
-          "description": "Index document to 'failed-<index>'",
-          "field": "_index",
-          "value": "failed-{{{ _index }}}"
-        }
-      }
-    ]
-  }
-}
-----
-// TEST[skip:TBD]
-
-
-

@@ -78,7 +78,7 @@ pipeline error message. Choose a name for the field (such as
 problematic documents to a different index for troubleshooting purposes. Use
 the `_index` metadata field and set its value to a new name (such as
 `failed-{{{ _index }}}`). For more details, refer
-to {ref}//ingest.html#handling-pipeline-failures[Handling pipeline failures].
+to {ref}/ingest.html#handling-pipeline-failures[Handling pipeline failures].
 . To test the pipeline, click **Add documents**.
 .. In the **Documents** tab, provide a sample document for testing.
 +
@@ -280,8 +280,21 @@ can add, refer to {ref}/ingest.html[Ingest pipelines].
 [[ml-nlp-inference-common-problems]]
 == Common problems
 
-. The trained model is not deployed: Start the deployment with the {ref}/start-trained-model-deployment.html[start trained model deployment API].
-. The default input field name is not present in the source document: Use the **Field Map** to map
-the field name to the expected name.
-. Too many requests: If using bulk ingest reduce the number of documents in the bulk request, for reindex
-use the `size` parameter to decrease the number of documents processed in each batch.
+If you encounter problems while using your trained model in an ingest pipeline,
+check the following possible causes:
+
+. The trained model is not deployed in your cluster. You can view its status in
+**{ml-app}** > **Model Management** or use the
+{ref}/get-trained-models-stats.html[get trained models statistics API]. Unless
+you are using the built-in `lang_ident_model_1` model, you must ensure your
+model is successfully deployed. Refer to <<ml-nlp-deploy-model>>.
+. The default input field name expected by your trained model is not present in
+your source document. Use the **Field Map** option in your inference processor
+to set the appropriate field name.
+. There are too many requests. If you are using bulk ingest, reduce the number
+of documents in the bulk request. If you are reindexing, use the `size`
+parameter to decrease the number of documents processed in each batch.
+
+These common failure scenarios and others can be captured by adding failure
+processors to your pipeline. For more examples, refer to
+{ref}/ingest.html#handling-pipeline-failures[Handling pipeline failures].

@@ -34,7 +34,7 @@ releases and master snapshots are not supported.
 TIP: You cannot downgrade after upgrading, so plan ahead to make sure that your applications still work after upgrading. For more information on changes that might affect your applications, check <<elastic-stack-breaking-changes>>.
 
 The Upgrade Assistant::
-When you upgrade on Elastic Cloud, the deprecation API runs automatically to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any deprecation issues that would prevent the upgraded deployment from successfully performing, the upgrade fails. To resolve the deprecation issues, use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana. If any indices in your Elasticsearch clusters need to be reindexed, the Upgrade Assistant will guide you through the steps.
+Prior to upgrading, Elastic Cloud checks the deprecation API to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any deprecation issues that would prevent a successful upgrade, the upgrade is blocked. To resolve the deprecation issues use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in Kibana. If any indices in your Elasticsearch clusters need to be reindexed, the Upgrade Assistant will guide you through the steps.
 
 Snapshot behavior during upgrades::
 To keep your data safe, a snapshot is taken automatically before any changes are made to your cluster. After a major version upgrade is complete, and the first successful snapshot with the new major version is available, all snapshots taken with the previous version of Elasticsearch are removed.
@@ -51,8 +51,6 @@ with {version}.
 
 Review known issues::
 The following known issues apply to the Elastic Stack 8.x releases:
-+
-* There are deprecated APIs that are still available for use. If you see warnings in the {ess} or {ece} logs about the deprecated APIs, you can ignore them.
 +
 * {ess} and {ece} do not support the ability to upgrade to or from release candidate builds, such as 8.0.0-rc1.
 +

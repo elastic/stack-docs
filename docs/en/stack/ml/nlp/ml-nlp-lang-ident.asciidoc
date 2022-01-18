@@ -12,6 +12,10 @@ The longer the text passed into the {lang-ident} model, the more accurately the
 model can identify the language. It is fairly accurate on short samples (for 
 example, 50 character-long streams) in certain languages, but languages that are 
 similar to each other are harder to identify based on a short character stream.
+If there is no valid text from which the identity can be inferred, the model
+returns the special language code `zxx`. If you prefer to use a different
+default value, you can adjust your ingest pipeline to replace `zxx` predictions
+with your preferred value.
 
 {lang-ident-cap} takes into account Unicode boundaries when the feature set is 
 built. If the text has diacritical marks, then the model uses that information 
@@ -28,7 +32,7 @@ Unicode input.
 The table below contains the ISO codes and the English names of the languages 
 that {lang-ident} supports. If a language has a 2-letter `ISO 639-1` code, the 
 table contains that identifier. Otherwise, the 3-letter `ISO 639-2` code is 
-used. The ‘Latn’ subtag indicates that the language is transliterated into Latin 
+used. The `Latn` subtag indicates that the language is transliterated into Latin 
 script.
 
 [cols="<,<,<,<,<,<"]
@@ -74,21 +78,6 @@ script.
 | hmn     | Hmong              | ny      | Chichewa       |         |   
 |===
 
-[discrete]
-[[ml-lang-ident-no-valid-text]]
-=== When no valid text is found
-
-If there is no valid text from which the identity can be inferred, the model will return the special language code `zxx`.
-
-For example, all of the following text values will return `zxx`:
---
- * ""
- * "   "
- * "12356"
- * "@#$%^&*()(*&^%123.  "
---
-
-If a default value other than `zxx` is desired, please adjust your ingest pipeline to replace predictions for `zxx` with whichever default you prefer.
 
 [discrete]
 [[ml-lang-ident-readings]]

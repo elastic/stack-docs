@@ -74,6 +74,21 @@ script.
 | hmn     | Hmong              | ny      | Chichewa       |         |   
 |===
 
+[discrete]
+[[ml-lang-ident-no-valid-text]]
+=== When no valid text is found
+
+If there is no valid text from which the identity can be inferred, the model will return the special language code `zxx`.
+
+For example, all of the following text values will return `zxx`:
+--
+ * ""
+ * "   "
+ * "12356"
+ * "@#$%^&*()(*&^%123.  "
+--
+
+If a default value other than `zxx` is desired, please adjust your ingest pipeline to replace predictions for `zxx` with whichever default you prefer.
 
 [discrete]
 [[ml-lang-ident-readings]]

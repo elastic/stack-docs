@@ -21,7 +21,7 @@ In {kib}, you can create and edit pipelines in **Stack Management** >
 **Ingest Pipelines**.
 
 [role="screenshot"]
-image::images/ml-nlp-pipeline-ner.png[Creating a pipeline in the Stack Management app,align="center"]
+image::images/ml-nlp-pipeline-lang.png[Creating a pipeline in the Stack Management app,align="center"]
 
 . Click **Create pipeline** or edit an existing pipeline.
 . Add an {ref}/inference-processor.html[inference processor] to your pipeline:
@@ -68,6 +68,17 @@ timestamp.
 `{{{_ingest.timestamp}}}`. For more details, refer to
 {ref}/ingest.html#access-ingest-metadata[Access ingest metadata in a processor].
 .. Click **Add** to save the processor.
+. Optional: Add failure processors to handle exceptions. For example, in the
+**Failure processors** section:
+.. Add a set processor to capture the
+pipeline error message. Choose a name for the field (such as
+`ml.inference_failure`) and set its value to the
+`{{_ingest.on_failure_message}}` document metadata field.
+.. Add a set processor to reroute
+problematic documents to a different index for troubleshooting purposes. Use
+the `_index` metadata field and set its value to a new name (such as
+`failed-{{{ _index }}}`). For more details, refer
+to {ref}/ingest.html#handling-pipeline-failures[Handling pipeline failures].
 . To test the pipeline, click **Add documents**.
 .. In the **Documents** tab, provide a sample document for testing.
 +
@@ -110,6 +121,42 @@ Hungarian.
 --
 .. If everything looks correct, close the panel, and click **Create
 pipeline**. The pipeline is now ready for use.
+
+////
+.API example
+[%collapsible]
+====
+[source,console]
+----
+POST _ingest/pipeline/my-ner-pipeline
+{
+  "inference": {
+    "model_id": "elastic__distilbert-base-cased-finetuned-conll03-english",
+    "field_map": {
+      "review": "text_field"
+    },
+    "on_failure": [
+      {
+        "set": {
+          "description": "Set the error message",
+          "field": "ml.inference_failure",
+          "value": "{{_ingest.on_failure_message}}"
+        }
+      },
+      {
+        "set": {
+          "description": "Index document to 'failed-<index>'",
+          "field": "_index",
+          "value": "failed-{{{ _index }}}"
+        }
+      }
+    ]
+  }
+}
+----
+// TEST[skip:TBD]
+====
+////
 
 [discrete]
 [[ml-nlp-inference-ingest-docs]]
@@ -184,7 +231,8 @@ pipeline:
 POST _reindex
 {
   "source": {
-    "index": "kibana_sample_data_logs"
+    "index": "kibana_sample_data_logs",
+    "size": 500
   },
   "dest": {
     "index": "lang-test",
@@ -196,6 +244,10 @@ POST _reindex
 
 However, those web log messages are unlikely to contain enough words for the
 model to accurately identify the language.
+
+TIP: Set the reindex `size` option to a value
+smaller than the `queue_capacity` for the trained model deployment. Otherwise, requests might be rejected
+with a "too many requests" 429 error code.
 
 [discrete]
 [[ml-nlp-inference-discover]]
@@ -222,3 +274,27 @@ image::images/ml-nlp-discover-lang.png[A document from the {lang-ident} pipeline
 
 To learn more about ingest pipelines and all of the other processors that you
 can add, refer to {ref}/ingest.html[Ingest pipelines].
+
+
+[discrete]
+[[ml-nlp-inference-common-problems]]
+== Common problems
+
+If you encounter problems while using your trained model in an ingest pipeline,
+check the following possible causes:
+
+. The trained model is not deployed in your cluster. You can view its status in
+**{ml-app}** > **Model Management** or use the
+{ref}/get-trained-models-stats.html[get trained models statistics API]. Unless
+you are using the built-in `lang_ident_model_1` model, you must ensure your
+model is successfully deployed. Refer to <<ml-nlp-deploy-model>>.
+. The default input field name expected by your trained model is not present in
+your source document. Use the **Field Map** option in your inference processor
+to set the appropriate field name.
+. There are too many requests. If you are using bulk ingest, reduce the number
+of documents in the bulk request. If you are reindexing, use the `size`
+parameter to decrease the number of documents processed in each batch.
+
+These common failure scenarios and others can be captured by adding failure
+processors to your pipeline. For more examples, refer to
+{ref}/ingest.html#handling-pipeline-failures[Handling pipeline failures].

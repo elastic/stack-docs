@@ -1,81 +1,12 @@
 ["appendix",role="exclude",id="ootb-ml-jobs-apm"]
 = APM {anomaly-detect} configurations
 
-These {anomaly-job} wizards appear in {kib} if you have data from APM Agents or
+This {anomaly-job} wizard appears in {kib} if you have data from APM Agents or
 an APM Server stored in {es}. For more details, see the {dfeed} and job
-definitions in the `apm_*` folders in
+definitions in the `apm_transaction` folder in
 https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
 
 // tag::apm-jobs[]
-[discrete]
-[[apm-nodejs-jobs]]
-== NodeJS
-// tag::apm-nodejs-jobs[]
-Detect abnormal traces, anomalous spans, and identify periods of decreased
-throughput. These configurations are only available if data exists that matches 
-the recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_nodejs/manifest.json#L8[mainfest file].
-
-abnormal_span_durations_nodejs::
-
-* For data from {apm-node-agents} (where `agent.name` is `nodejs`).
-* Models the duration of spans.
-* Detects spans that are taking longer than usual to process.
-
-abnormal_trace_durations_nodejs::
-
-* For data from {apm-node-agents} (where `agent.name` is `nodejs`).
-* Models the duration of trace transactions.
-* Detects trace transactions that are processing slower than usual.
-
-decreased_throughput_nodejs::
-
-* For data from {apm-node-agents} (where `agent.name` is `nodejs`).
-* Models the transaction rate of the application.
-* Detects periods during which the application is processing fewer requests 
-than normal.
-
-// end::apm-nodejs-jobs[]
-
-[discrete]
-[[apm-rum-javascript-jobs]]
-== RUM Javascript
-// tag::apm-rum-javascript-jobs[]
-Detect problematic spans and identify user agents that are potentially causing
-issues. These configurations are only available if data exists that matches the 
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_jsbase/manifest.json#L8[manifest file].
-
-abnormal_span_durations_jsbase::
-
-* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
-* Models the duration of spans.
-* Detects spans that are taking longer than usual to process.
-  
-anomalous_error_rate_for_user_agents_jsbase::
-This job can help detect browser compatibility issues.
-+
-* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
-* Models the error rate of user agents.
-* Detects user agents that are encountering errors at an above normal rate.
-
-decreased_throughput_jsbase::
-
-* For data from {apm-rum-agents} or {apm-node-agents} (where `agent.name` is
-`js-base`).
-* Models the transaction rate of the application.
-* Detects periods during which the application is processing fewer requests than
-normal.
-
-high_count_by_user_agent_jsbase::
-This job is useful in identifying bots.
-+
-* For data from {apm-rum-agents} (where `agent.name` is `js-base`).
-* Models the request rate of user agents.
-* Detects user agents that are making requests at a suspiciously high rate.
-
-// end::apm-rum-javascript-jobs[]
-
 [discrete]
 [[apm-transaction-jobs]]
 == Transactions

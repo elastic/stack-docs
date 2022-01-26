@@ -39,458 +39,141 @@ the following jobs: `linux_anomalous_network_activity_ecs`,
 
 // tag::siem-auditbeat-jobs[]
 linux_anomalous_network_activity_ecs::
-
 Identifies OS processes that do not usually use the network but have
 unexpected network activity, which can indicate command-and-control, lateral
 movement, persistence, or data exfiltration activity.
-+
-A process with unusual network activity can denote process exploitation or
-injection, where the process is used to run persistence mechanisms that allow a
-malicious actor remote access or control of the host, data exfiltration, and
-execution of unauthorized network applications.
-
-Job details:::
-
-* Analyzes network activity logs where `agent.type` is `auditbeat`.
-* Models the occurrences of processes that cause network activity.
-* Detects network activity caused by processes that occur rarely compared to 
-  other processes (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `destination.ip`
-* `host.name`
-* `process.name`
-* `user.name`
-* `event.action`
-* `agent.type`
+//A process with unusual network activity can denote process exploitation or injection, where the process is used to run persistence mechanisms that allow a malicious actor remote access or control of the host, data exfiltration, and execution of unauthorized networkapplications.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_network_activity_ecs.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_network_activity_ecs.json[job definitions].
 
 linux_anomalous_network_port_activity_ecs::
-
 Identifies unusual destination port activity that can indicate
 command-and-control, persistence mechanism, or data exfiltration activity.
-+
-Rarely used destination port activity is generally unusual in Linux fleets, and 
-can indicate unauthorized access or threat actor activity.
-
-Job details:::
-
-* Analyzes network activity logs where `agent.type` is `auditbeat`.
-* Models destination port activity.
-* Detects destination port activity that occurs rarely compared to other port 
-  activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-+
-Required {beats} or {agent} integrations:::
-
-* {auditbeat} (Linux)
+//Rarely used destination port activity is generally unusual in Linux fleets, and can indicate unauthorized access or threat actor activity.
+For more details, see the https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_network_port_activity_ecs.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_network_port_activity_ecs.json[job definitions].
 +
 NOTE: This job is available only when you use {auditbeat} to ship data.
 footnote:compatible[Some jobs use fields that are not ECS-compliant. These jobs
 are available only when you use {beats} or the {agent} to ship data.]
 
 linux_anomalous_network_service::
-
 Searches for unusual listening ports that can indicate execution of
 unauthorized services, backdoors, or persistence mechanisms.
-
-Job details:::
-
-* Analyzes network activity logs where `agent.type` is `auditbeat`.
-* Models listening port activity.
-* Detects listening port activity that occurs rarely compared to 
-  other port activities (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat} (Linux)
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_network_service.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch})/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_network_service.json[job definitions].
 +
 NOTE: This job is available only when you use {auditbeat} to ship data.footnote:compatible[]
 
 linux_anomalous_network_url_activity_ecs::
-
 Searches for unusual web URL requests from hosts, which can indicate malware
 delivery and execution.
-+
-Wget and cURL are commonly used by Linux programs to download code and data. 
-Most of the time, their usage is entirely normal. Generally, because they use a 
-list of URLs, they repeatedly download from the same locations. However, Wget 
-and cURL are sometimes used to deliver Linux exploit payloads, and threat 
-actors use these tools to download additional software and code. For these 
-reasons, unusual URLs can indicate unauthorized downloads or threat activity.
-
-Job details:::
-
-* Analyzes network activity logs where `agent.type` is `auditbeat`.
-* Models the occurrences of URL requests.
-* Detects a web URL request that is rare compared to other web URL 
-  requests (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat} (Linux)
-
-Required ECS fields when not using {beats}:::
-
-* `destination.ip`
-* `destination.port`
-* `host.name`
-* `process.name`
-* `process.title`
-* `agent.type`
+//Wget and cURL are commonly used by Linux programs to download code and data.  Most of the time, their usage is entirely normal. Generally, because they use a list of URLs, they repeatedly download from the same locations. However, Wget and cURL are sometimes used to deliver Linux exploit payloads, and threat  actors use these tools to download additional software and code. For these reasons, unusual URLs can indicate unauthorized downloads or threat activity.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_network_url_activity_ecs.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_network_url_activity_ecs.json[job definitions].
 
 linux_anomalous_process_all_hosts_ecs::
-
 Searches for rare processes running on multiple hosts in an entire fleet or
 network.
-+
-This reduces the detection of false positives since automated maintenance
-processes usually only run occasionally on a single machine but are common to
-all or many hosts in a fleet.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat`.
-* Models the occurrences of processes on all hosts.
-* Detects processes that occur rarely compared to other processes on all 
-  hosts (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.name`
-* `user.name`
-* `process.executable`
-* `event.action`
-* `agent.type`
+//This reduces the detection of false positives since automated maintenance processes usually only run occasionally on a single machine but are common to all or many hosts in a fleet.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_process_all_hosts_ecs.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_process_all_hosts_ecs.json[job definitions].
 
 linux_anomalous_user_name_ecs::
-
 Searches for activity from users who are not normally active, which can
 indicate unauthorized changes, activity by unauthorized users, lateral
 movement, and compromised credentials.
-+
-In organizations, new usernames are not often created apart from specific types 
-of system activities, such as creating new accounts for new employees. These 
-user accounts quickly become active and routine.
-+
-Events from rarely used usernames can point to suspicious activity. 
-Additionally, automated Linux fleets tend to see activity from rarely used 
-usernames only when personnel log in to make authorized or unauthorized 
-changes, or threat actors have acquired credentials and log in for malicious 
-purposes. Unusual usernames can also indicate pivoting, where compromised 
-credentials are used to try and move laterally from one host to another.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat`.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.name`
-* `user.name`
-* `event.action`
-* `agent.type`
+// In organizations, new usernames are not often created apart from specific types of system activities, such as creating new accounts for new employees. These user accounts quickly become active and routine. Events from rarely used usernames can point to suspicious activity. Additionally, automated Linux fleets tend to see activity from rarely used usernames only when personnel log in to make authorized or unauthorized  changes, or threat actors have acquired credentials and log in for malicious purposes. Unusual usernames can also indicate pivoting, where compromised credentials are used to try and move laterally from one host to another.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_user_name_ecs.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_user_name_ecs.json[job definitions].
 
 linux_network_configuration_discovery::
-
 Looks for commands related to system network configuration discovery from an
-unusual user context. This can be due to uncommon troubleshooting activity or
-due to a compromised account. A compromised account may be used by a threat
-actor to engage in system network configuration discovery in order to increase
-their understanding of connected networks and hosts. This information may be
-used to shape follow-up behavior such as lateral movement or additional
-discovery.
-
-Job details:::
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `arp`, `echo`, or `ifconfig`, for example.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.args`
-* `process.name`
-* `user.name`
+unusual user context.
+//This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network configuration discovery in order to increase their understanding of connected networks and hosts. This information may be used to shape follow-up behavior such as lateral movement or additional discovery.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_network_configuration_discovery.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_network_configuration_discovery.json[job definitions].
 
 linux_network_connection_discovery::
-
 Looks for commands related to system network connection discovery from an
-unusual user context. This can be due to uncommon troubleshooting activity or
-due to a compromised account. A compromised account may be used by a threat
-actor to engage in system network connection discovery in order to increase
-their understanding of connected services and systems. This information may be
-used to shape follow-up behaviors such as lateral movement or additional
-discovery.
-
-Job details:::
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `netstat`, `ss`, or `route`, for example.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.args`
-* `process.name`
-* `user.name`
+unusual user context.
+//This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network connection discovery in order to increase their understanding of connected services and systems. This information may be used to shape follow-up behaviors such as lateral movement or additional discovery.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_network_connection_discovery.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_network_connection_discovery.json[job definitions].
 
 linux_rare_kernel_module_arguments::
-
 Looks for unusual kernel modules which are often used for stealth.
-
-Job details:::
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `insmod`, `kmod`, or `rmod`, for example.
-* Models occurrences of process activity.
-* Detects processes that are rarely or unusually active compared to other processes 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.title`
-* `process.working_directory`
-* `user.name`
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_rare_kernel_module_arguments.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_rare_kernel_module_arguments.json[job definitions].
 
 linux_rare_metadata_process::
-
-Looks for anomalous access to the metadata service by an unusual process. The
-metadata service may be targeted in order to harvest credentials or user data
-scripts containing secrets.    
-
-Job details:::
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`destination.ip` is the metadata service.
-* Models process activity.
-* Detects processes that are rarely or unusually active compared to other processes 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.name`
-* `user.name`
+Looks for anomalous access to the metadata service by an unusual process.
+//The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_rare_metadata_process.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_rare_metadata_process.json[job definitions].
 
 linux_rare_metadata_user::
-
-Looks for anomalous access to the metadata service by an unusual user. The
-metadata service may be targeted in order to harvest credentials or user data
-scripts containing secrets.   
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`destination.ip` is the metadata service.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `user.name`
+Looks for anomalous access to the metadata service by an unusual user.
+//The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.   
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_rare_metadata_user.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_rare_metadata_user.json[job definitions].
 
 linux_rare_sudo_user::
-
 Looks for sudo activity from an unusual user context.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat`,
-`process.name` is `sudo`, and `event.action` is `executed`.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.args`
-* `process.name`
-* `user.name`
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_rare_sudo_user.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_rare_sudo_user.json[job definitions].
 
 linux_rare_user_compiler::
-
 Looks for compiler activity by a user context which does not normally run
-compilers. This can be ad-hoc software changes or unauthorized software
-deployment. This can also be due to local privilege elevation via locally run
-exploits or malware activity.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `compile`, `make`, or `gcc`, for example.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.title`
-* `process.working_directory`
-* `user.name`
+compilers.
+//This can be ad-hoc software changes or unauthorized software deployment. This can also be due to local privilege elevation via locally run exploits or malware activity.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_rare_user_compiler.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_rare_user_compiler.json[job definitions].
 
 linux_system_information_discovery::
-
 Looks for commands related to system information discovery from an unusual user
-context. This can be due to uncommon troubleshooting activity or due to a
-compromised account. A compromised account may be used to engage in system
-information discovery in order to gather detailed information about system
-configuration and software versions. This may be a precursor to selection of a 
-persistence mechanism or a method of privilege elevation.  
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `cat`, `grep`, or `hostname`, for example.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.args`
-* `process.name`
-* `user.name`
+context.
+//This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used to engage in system information discovery in order to gather detailed information about system configuration and software versions. This may be a precursor to selection of a persistence mechanism or a method of privilege elevation.  
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_system_information_discovery.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_system_information_discovery.json[job definitions].
 
 linux_system_process_discovery::
-
 Looks for commands related to system process discovery from an unusual user
-context. This can be due to uncommon troubleshooting activity or due to a
-compromised account. A compromised account may be used to engage in system
-process discovery in order to increase their understanding of software
-applications running on a target host or network. This may be a precursor to
-selection of a persistence mechanism or a method of privilege elevation.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `ps` or `top`, for example.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.args`
-* `process.name`
-* `user.name`
+context.
+//This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used to engage in system process discovery in order to increase their understanding of software applications running on a target host or network. This may be a precursor to selection of a persistence mechanism or a method of privilege elevation.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_system_process_discovery.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_system_process_discovery.json[job definitions].
 
 linux_system_user_discovery::
-
 Looks for commands related to system user or owner discovery from an unusual
-user context. This can be due to uncommon troubleshooting activity or due to a 
-compromised account. A compromised account may be used to engage in system owner
-or user discovery in order to identify currently active or primary users of a
-system. This may be a precursor to additional discovery, credential dumping or
-privilege elevation activity.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat` and
-`process.name` is commands like `users`, `whoami`, or `who`, for example.
-* Models user activity.
-* Detects users that are rarely or unusually active compared to other users 
-  (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.args`
-* `process.name`
-* `user.name`
+user context.
+//This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used to engage in system owner or user discovery in order to identify currently active or primary users of a system. This may be a precursor to additional discovery, credential dumping or privilege elevation activity.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_system_user_discovery.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_system_user_discovery.json[job definitions].
 
 rare_process_by_host_linux_ecs::
-
 Identifies rare processes that do not usually run on individual hosts, which
 can indicate execution of unauthorized services, malware, or persistence
 mechanisms.
-+
-Processes are considered rare when they only run occasionally as compared with
-other processes running on the host.
-
-Job details:::
-
-* Analyzes host activity logs where `agent.type` is `auditbeat` (Linux).
-* Models occurrences of process activities on the host. 
-* Detects unusually rare processes compared to other processes on the host (using the {ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat}
-
-Required ECS fields when not using {beats}:::
-
-* `host.name`
-* `process.name`
-* `user.name`
-* `event.action`
-* `agent.type`
+//Processes are considered rare when they only run occasionally as compared with other processes running on the host.
+For more details, see the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_rare_process_by_host_linux_ecs.json[datafeed]
+and https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/rare_process_by_host_linux_ecs.json[job definitions].
 
 // end::siem-auditbeat-jobs[]
 
@@ -507,29 +190,17 @@ In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting] for data that matches the query.
 
 // tag::siem-auditbeat-auth-jobs[]
-suspicious_login_activity_ecs::
 
-Identifies an unusually high number of authentication attempts.
+[cols="1,1,1,1"]
+|===
+|Name |Description |Job |Datafeed
 
-Job details:::
+|suspicious_login_activity_ecs
+|Identifies an unusually high number of authentication attempts.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/ml/datafeed_suspicious_login_activity_ecs.json[json]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/ml/suspicious_login_activity_ecs.json[json]
 
-* Analyzes host activity logs where `agent.type` is `auditbeat`.
-* Models occurrences of authentication attempts (`partition_field_name` is 
-  `host.name`).
-* Detects unusually high number of authentication attempts (using the 
-  {ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {auditbeat} (Linux)
-
-Required ECS fields when not using {beats}:::
-
-* `source.ip`
-* `host.name`
-* `user.name`
-* `event.category`
-* `agent.type`
+|===
 
 // end::siem-auditbeat-auth-jobs[]
 
@@ -553,134 +224,30 @@ https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/
 then select it in the job wizard.
 
 // tag::security-authentication-jobs[]
-auth_high_count_logon_events::
-Looks for an unusually large spike in successful authentication events. This can
-be due to password spraying, user enumeration or brute force activity.
 
-Job details:::
+|===
+|Job, Datafeed |Description
 
-* Detects anomalies where the number of events is unusually high and ignores
-cases where the count is zero (using the
-{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_events.json[auth_high_count_logon_events], https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_events.json[datafeed_auth_high_count_logon_events]
+|Looks for an unusually large spike in successful authentication events. This can be due to password spraying, user enumeration or brute force activity.
 
-Required {beats} or {agent} integrations:::
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_events_for_a_source_ip.json[auth_high_count_logon_events_for_a_source_ip], https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_events_for_a_source_ip.json[datafeed_auth_high_count_logon_events_for_a_source_ip]
+|Looks for an unusually large spike in successful authentication events from a particular source IP address. This can be due to password spraying, user enumeration or brute force activity.
 
-* {elastic-endpoint} integration
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_fails.json[auth_high_count_logon_fails], https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_fails.json[datafeed_auth_high_count_logon_fails]
+|Looks for an unusually large spike in authentication failure events. This can be due to password spraying, user enumeration or brute force activity and may be a precursor to account takeover or credentialed access.
 
-Required ECS fields:::
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_hour_for_a_user.json[auth_rare_hour_for_a_user], https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_hour_for_a_user.json[datafeed_auth_rare_hour_for_a_user]
+|Looks for a user logging in at a time of day that is unusual for the user. This can be due to credentialed access via a compromised account when the user and the threat actor are in different time zones. In addition, unauthorized user activity often takes place during non-business hours.
 
-* `event.category`
-* `event.outcome`
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_source_ip_for_a_user.json[auth_rare_source_ip_for_a_user], https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_source_ip_for_a_user.json[datafeed_auth_rare_source_ip_for_a_user]
+|Looks for a user logging in from an IP address that is unusual for the user. This can be due to credentialed access via a compromised account when the user and the threat actor are in different locations. An unusual source IP address for a username could also be due to lateral movement when a compromised account is used to pivot between hosts.
 
-auth_high_count_logon_events_for_a_source_ip::
-Looks for an unusually large spike in successful authentication events from a
-particular source IP address. This can be due to password spraying, user
-enumeration or brute force activity.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_user.json[auth_rare_user], https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_user.json[datafeed_auth_rare_user]
+|Looks for an unusual user name in the authentication logs. An unusual user name is one way of detecting credentialed access by means of a new or dormant user account. A user account that is normally inactive, because the user has left the organization, which becomes active, may be due to credentialed access using a
+compromised account password. Threat actors will sometimes also create new users as a means of persisting in a compromised web application.
 
-Job details:::
- 
-* Detects anomalies where the number of events by source IP is unusually high
-and ignores cases where the count is zero (using the
-{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {elastic-endpoint} integration
-
-Required ECS fields:::
-
-* `event.category`
-* `event.outcome`
-* `source.ip`
-* `user.name`
-* `winlog.event_data.LogonType`
-
-auth_high_count_logon_fails::
-Looks for an unusually large spike in authentication failure events. This can be
-due to password spraying, user enumeration or brute force activity and may be a
-precursor to account takeover or credentialed access.
-
-Job details:::
- 
-* Detects anomalies where the number of events is unusually high and ignores
-cases where the count is zero (using the
-{ml-docs}/ml-count-functions.html#ml-nonzero-count[`high_non_zero_count` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {elastic-endpoint} integration
-
-Required ECS fields:::
-
-* `event.category`
-* `event.outcome`
-
-auth_rare_hour_for_a_user::
-Looks for a user logging in at a time of day that is unusual for the user. This
-can be due to credentialed access via a compromised account when the user and
-the threat actor are in different time zones. In addition, unauthorized user
-activity often takes place during non-business hours.
-
-Job details:::
- 
-* Detects anomalies where events happen at unusual times for a user (using the
-{ml-docs}/ml-time-functions.html#ml-time-of-day[`time_of_day` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {elastic-endpoint} integration
-
-Required ECS fields:::
-
-* `event.category`
-* `event.outcome`
-* `source.ip`
-* `user.name`
-
-
-auth_rare_source_ip_for_a_user::
-Looks for a user logging in from an IP address that is unusual for the user.
-This can be due to credentialed access via a compromised account when the user
-and the threat actor are in different locations. An unusual source IP address
-for a username could also be due to lateral movement when a compromised account
-is used to pivot between hosts.
-
-Job details:::
-* For each user, detects rare `source.ip` values (using the
-{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {elastic-endpoint} integration
-
-Required ECS fields:::
-
-* `event.category`
-* `event.outcome`
-
-auth_rare_user::
-Looks for an unusual user name in the authentication logs. An unusual user name
-is one way of detecting credentialed access by means of a new or dormant user
-account. A user account that is normally inactive, because the user has left the
-organization, which becomes active, may be due to credentialed access using a
-compromised account password. Threat actors will sometimes also create new users
-as a means of persisting in a compromised web application.
-
-Job details:::
- 
-* Detects unusually rare `user.name` values (using the
-{ml-docs}/ml-rare-functions.html#ml-rare[`rare` function]).
-
-Required {beats} or {agent} integrations:::
-
-* {elastic-endpoint} integration
-
-Required ECS fields:::
-
-* `event.category`
-* `event.outcome`
-* `source.ip`
-* `user.name`
+|===
 
 // end::security-authentication-jobs[]
 

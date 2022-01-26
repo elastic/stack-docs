@@ -262,7 +262,7 @@ Alternatively, you can use the
 ====
 [source,console]
 --------------------------------------------------
-POST _data_frame/transforms/_preview
+POST _transform/_preview
 {
   "source": {
     "index": [
@@ -302,7 +302,7 @@ POST _data_frame/transforms/_preview
   }
 }
 
-PUT _data_frame/transforms/logs-by-clientip
+PUT _transform/logs-by-clientip
 {
   "source": {
     "index": [
@@ -335,7 +335,7 @@ PUT _data_frame/transforms/logs-by-clientip
       },
       "request.value_count": {
         "value_count": {
-          "field": "request"
+          "field": "request.keyword"
         }
       }
     }
@@ -370,7 +370,7 @@ use the {ref}/start-data-frame-transform.html[start {transforms}] API.
 ====
 [source,console]
 --------------------------------------------------
-POST _data_frame/transforms/logs-by-clientip/_start
+POST _transform/logs-by-clientip/_start
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 ====

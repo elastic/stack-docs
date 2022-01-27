@@ -12,10 +12,15 @@ https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/
 == Transactions
 // tag::apm-transaction-jobs[]
 
-apm_tx_metrics::
-This multi-metric job detects anomalies in transaction latency, throughput, and
-failure rate from your APM services for metric data. For more details, see the
-https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/ml[{dfeed} and job definitions].
+|===
+|Name |Description |Job |Datafeed
+
+|apm_tx_metrics
+|Detects anomalies in transaction latency, throughput and error percentage for metric data.
+|https://github.com/elastic/kibana/blob/main/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/ml/apm_tx_metrics.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/main/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/ml/datafeed_apm_tx_metrics.json[image:images/link.svg[A link icon]]
+
+|===
 
 // end::apm-transaction-jobs[]
 // end::apm-jobs[]

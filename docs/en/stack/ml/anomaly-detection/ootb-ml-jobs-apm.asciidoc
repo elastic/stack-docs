@@ -1,25 +1,29 @@
 ["appendix",role="exclude",id="ootb-ml-jobs-apm"]
 = APM {anomaly-detect} configurations
 
-This {anomaly-job} wizard appears in {kib} if you have data from APM Agents or
-an APM Server stored in {es}. For more details, see the {dfeed} and job
-definitions in the `apm_transaction` folder in
-https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+This {anomaly-job} appears in the {apm-app} and the {ml-app} app when you have
+data from APM Agents or an APM Server in your cluster. It is available only if
+data exists that matches the query specified in the 
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/manifest.json[manifest file].
+
+For more information about {anomaly-detect} in the {apm-app}, refer to
+{kibana-ref}/machine-learning-integration.html[{ml-cap} integration].
 
 // tag::apm-jobs[]
 [discrete]
 [[apm-transaction-jobs]]
 == Transactions
 // tag::apm-transaction-jobs[]
-Detect anomalies in transactions from your APM services. These configurations 
-are only available if data exists that matches the following term query: 
-`"processor.event": "transaction"`.
 
-high_mean_transaction_duration::
+|===
+|Name |Description |Job |Datafeed
 
-* For transaction data where `processor.event` is `transaction`.
-* Models duration of transactions by transaction type for APM services.
-* Detects anomalies in high mean of transaction duration.
+|apm_tx_metrics
+|Detects anomalies in transaction latency, throughput and error percentage for metric data.
+|https://github.com/elastic/kibana/blob/main/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/ml/apm_tx_metrics.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/main/x-pack/plugins/ml/server/models/data_recognizer/modules/apm_transaction/ml/datafeed_apm_tx_metrics.json[image:images/link.svg[A link icon]]
+
+|===
 
 // end::apm-transaction-jobs[]
 // end::apm-jobs[]

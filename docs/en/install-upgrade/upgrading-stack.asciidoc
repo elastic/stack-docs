@@ -13,6 +13,18 @@ For more information, see <<upgrading-reindex, Reindex to upgrade>>.
 Beats and Logstash 7.n are compatible with {es} {version} 
 to give you flexibility in scheduling the upgrade.
 
+.Remote cluster compatibility
+[NOTE]
+====
+If you use {ccs}, note that {version} can only search remote clusters running 7.17 or later. 
+For more information, see {ref}/modules-cross-cluster-search.html[Searching across clusters].
+
+If you use {ccr}, a cluster that contains follower indices must run the same or newer version as the remote cluster. 
+For more information, see {ref}/xpack-ccr.html[Cross cluster replication] for version compatibility matrix.
+
+You can view your remote clusters from **Stack Management > Remote Clusters**. 
+====
+
 [discrete]
 [[prepare-to-upgrade]]
 === Prepare to upgrade

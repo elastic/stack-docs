@@ -3,7 +3,7 @@
 
 To upgrade from 7.16 or earlier to {version}, **you must first upgrade to {prev-major-last}**, 
 even if you opt to do a full-cluster restart instead of a rolling upgrade. 
-This enables you to use the Upgrade Assistant to <<prepare-to-upgrade, prepare to upgrade>>.
+This enables you to use the **Upgrade Assistant** to <<prepare-to-upgrade, prepare to upgrade>>.
 
 .FIPS Compliance and Java 17
 [IMPORTANT]
@@ -30,7 +30,7 @@ Pre-releases should only be used for testing in a temporary environment.
 
 When performing a <<rolling-upgrade, rolling upgrade>>:
 
-. Upgrade nodes that are _not_ {ref}/modules-node.html#master-node[master-eligible] first. 
+. Upgrade nodes that are **NOT** {ref}/modules-node.html#master-node[master-eligible] first. 
 You can retrieve a list of these nodes with `GET /_nodes/_all,master:false/_none` or by finding all the nodes configured with `node.master: false`.
 
 . Upgrade nodes tier-by-tier, starting with the frozen tier.
@@ -91,7 +91,7 @@ but it puts increased load on the cluster. When you shut down a
 states. 
 
 NOTE: Any {ml} indices created before {prev-major-version} must be reindexed
-before upgrading, which you can initiate from the Upgrade Assistant in {prev-major-last}.
+before upgrading, which you can initiate from the **Upgrade Assistant** in {prev-major-last}.
 
 * Temporarily halt the tasks associated with your {ml} jobs and {dfeeds} and
 prevent new jobs from opening by using the
@@ -107,7 +107,7 @@ state that was automatically saved. This option avoids the overhead of managing
 active jobs during the upgrade and is faster than explicitly stopping {dfeeds}
 and closing jobs.
 
-* {ml-docs}/stopping-ml.html[Stop all {dfeeds} and close all jobs]. This option
+* {ml-docs}/ml-ad-run-jobs.html#ml-ad-close-job[Stop all {dfeeds} and close all jobs]. This option
 saves the model state at the time of closure. When you reopen the jobs after the
 upgrade, they use the exact same model. However, saving the latest model state
 takes longer than using upgrade mode, especially if you have a lot of jobs or
@@ -175,7 +175,7 @@ is stored in the data directory.
 [TIP]
 ================================================
 
-When you extract the zip or tarball packages, the `elasticsearch-n.n.n`
+When you extract the zip or tarball packages, the `elasticsearch-{bare_version}`
 directory contains the {es} `config`, `data`, and `logs` directories.
 
 We recommend moving these directories out of the {es} directory
@@ -186,7 +186,7 @@ see {ref}/important-settings.html[Important {es} configuration].
 
 The Debian and RPM packages place these directories in the
 appropriate place for each operating system. In production, we recommend
-installing using the deb or rpm package.
+using the deb or rpm package.
 
 ================================================
 

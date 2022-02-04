@@ -43,7 +43,7 @@ Review the <<elastic-stack-breaking-changes>> and upgrade your code to work
 with {version}.
 
 Known issues::
-In {es} 7.8 and later {ilm} ({ilm-init}) is always enabled, even if the cluster is still using deprecated index curation methods. 
+In {es} 7.8 and later, {ilm} ({ilm-init}) is always enabled, even if the cluster is still using deprecated index curation methods. 
 If index curation and {ilm-init} are both configured to manage the same indices, the outcome can be unpredictable. 
 Elastic solutions default to using {ilm-init} and we strongly encourage you to 
 {cloud}/ec-migrate-index-management.html[migrate all of your indices to {ilm-init}]. 

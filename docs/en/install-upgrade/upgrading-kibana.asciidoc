@@ -2,7 +2,7 @@
 == Upgrade {kib}
 
 To upgrade from 7.16 or earlier to {version}, **you must first upgrade to {prev-major-last}**.
-This enables you to use the Upgrade Assistant to <<prepare-to-upgrade, prepare to upgrade>>.
+This enables you to use the **Upgrade Assistant** to <<prepare-to-upgrade, prepare to upgrade>>.
 
 [WARNING]
 ====
@@ -27,7 +27,7 @@ and will not overwrite the config files.
   appropriate version using the `kibana-plugin` script. For more information, 
   see {kibana-ref}/kibana-plugins.html[{kib} plugins].
    
-. To install from the `zip` or `tar.gz` archive:
+. To install from a `zip` or `tar.gz` archive:
 
 .. **Extract the archive to a new directory** to be sure that you
   don't overwrite the `config` or `data` directories. 
@@ -37,7 +37,7 @@ and will not overwrite the config files.
 .. Copy the files from the `data` directory from your old installation to your
   new installation.
   +
-  IMPORTANT: If you use {monitor-features}, you must re-use the data directory when you upgrade {kib}. 
+IMPORTANT: If you use {monitor-features}, you must re-use the data directory when you upgrade {kib}. 
   Otherwise, the {kib} instance is assigned a new persistent UUID and becomes a new instance in the monitoring data.
 
 .. Install the appropriate versions of all your plugins for your new
@@ -47,4 +47,4 @@ and will not overwrite the config files.
 . Start {kib}.
 
 IMPORTANT: {kib} has a new logging system in 8.0 and the {kib-ref}/upgrade#logging-configuration-changes[log formats have changed]. 
-For additional information, see {kib-ref}/configuring-logging.html[configuring logging].
+For additional information, see {kibana-ref}/configuring-logging.html[configuring logging].

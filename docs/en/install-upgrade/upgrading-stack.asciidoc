@@ -1,21 +1,67 @@
 [[upgrading-elastic-stack]]
-== Upgrading the Elastic Stack
+== Upgrade to Elastic {version}
 
-When upgrading to a new version of {es}, you need to upgrade
-each of the products in your Elastic Stack. Beats and Logstash 7.n are
-compatible with {es} {version} to give you flexibility in scheduling
-the upgrade.
+To upgrade to {version} from 7.16 or earlier, **you must first upgrade to {prev-major-last}**.
+This enables you to use the **Upgrade Assistant** to identify and resolve issues,
+reindex indices created before 7.0, and then perform a rolling upgrade.
 
-{es} supports rolling upgrades between minor versions, from {es} 5.6 to 6.8,
-from 6.8 to 7.x, and from 7.n to {version}.
+**Upgrading to {prev-major-last} before upgrading to 8.0 or later is required 
+even if you opt to do a full-cluster restart of your {es} cluster.**
+Alternatively, you can create a new {version} deployment and reindex from remote.
+For more information, see <<upgrading-reindex, Reindex to upgrade>>.
 
-IMPORTANT: 6.x and older indices are not compatible with {version}. You must
-remove or reindex them on your 7.x cluster before upgrading to {version}. The internal
-Kibana and {xpack} indices and the default Beats and Logstash mapping templates
-also need to be updated to work with {version}.
+Beats and Logstash 7.n are compatible with {es} {version} 
+to give you flexibility in scheduling the upgrade.
+
+.Remote cluster compatibility
+[NOTE]
+====
+If you use {ccs}, note that {version} can only search remote clusters running 7.17 or later. 
+For more information, see {ref}/modules-cross-cluster-search.html[Searching across clusters].
+
+If you use {ccr}, a cluster that contains follower indices must run the same or newer version as the remote cluster. 
+For more information, see {ref}/xpack-ccr.html[Cross cluster replication] for version compatibility matrix.
+
+You can view your remote clusters from **Stack Management > Remote Clusters**. 
+====
+
+[discrete]
+[[prepare-to-upgrade]]
+=== Prepare to upgrade
+
+. Use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] 
+to prepare for your upgrade from {prev-major-last} to {version}.
+The **Upgrade Assistant** identifies deprecated settings and guides
+you through resolving issues and reindexing indices created before 7.0.
+Make sure you have a current snapshot before making configuration changes
+or reindexing.
++
+**You must resolve all critical issues before proceeding with the upgrade.**
+
+. Review the deprecation logs from the **Upgrade Assistant** to 
+determine if your applications are using features that are not supported 
+or behave differently in 8.0 and later.
+See the <<elastic-stack-breaking-changes,breaking changes>> for more information 
+about changes in {version} that could affect your application.
+
+. Make the recommended changes to ensure that your applications 
+continue to operate as expected after the upgrade.
+
+. If you use any {es} plugins, make sure there is a version of each plugin that is
+compatible with {es} version {version}.
+
+. Test the upgrade in an isolated environment before upgrading your production
+cluster.
+
+. Make sure you have a current snapshot before you start the upgrade.
++
+IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
+If you cannot complete the upgrade process, 
+you will need to restore from the snapshot.
 
 Refer to the upgrade instructions for your environment:
 
-* <<upgrade-elastic-stack-for-elastic-cloud,Upgrading on Elastic Cloud>>
-* <<upgrading-elastic-stack-on-prem,Upgrading on-prem>>
+* <<upgrade-elastic-stack-for-elastic-cloud,Upgrade on Elastic Cloud>>
+* <<upgrading-elastic-stack-on-prem,Upgrade on-prem>>
+
 

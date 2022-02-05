@@ -46,6 +46,14 @@ about changes in {version} that could affect your application.
 
 . Make the recommended changes to ensure that your applications 
 continue to operate as expected after the upgrade.
++
+NOTE: As a temporary solution, you can submit requests to {major-version}
+using the {prev-major-version} syntax with the REST API compatibility mode.
+While this enables you to submit requests that use the old syntax, 
+it does not guarantee the same behavior. 
+REST API compatibility should be a bridge to smooth out the upgrade process,
+not a long term strategy. 
+For more information, see {ref}/rest-api-compatibility.html[REST API compatibility].
 
 . If you use any {es} plugins, make sure there is a version of each plugin that is
 compatible with {es} version {version}.

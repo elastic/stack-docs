@@ -4,43 +4,55 @@
 // tag::auditbeat-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use 
 {auditbeat-ref}/index.html[{auditbeat}] to audit process activity on your 
-systems. For more details, see the {dfeed} and job definitions in the
-`auditbeat_*` folders in
-https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+systems. For more details, see the {dfeed} and job definitions in GitHub.
+
+[discrete]
+[[auditbeat-process-docker-ecs]]
+== Auditbeat docker processes
+
+Detect unusual processes in docker containers from auditd data (ECS).
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_docker_ecs/manifest.json#L8[manifest file].
 
-docker_high_count_process_events_ecs::
+|===
+|Name |Description |Job |Datafeed
 
-* For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
-`docker`.
-* Models process execution rates for each `container.name`.
-* Detects unusual increases in process execution rates in Docker containers.
+|docker_high_count_process_events_ecs
+|Detect unusual increases in process execution rates in docker containers (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_docker_ecs/ml/docker_high_count_process_events_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_docker_ecs/ml/datafeed_docker_high_count_process_events_ecs.json[image:images/link.svg[A link icon]]
 
-docker_rare_process_activity_ecs::
+|docker_rare_process_activity_ecs
+|Detect rare process executions in docker containers (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_docker_ecs/ml/docker_rare_process_activity_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_docker_ecs/ml/datafeed_docker_rare_process_activity_ecs.json[image:images/link.svg[A link icon]]
 
-* For Auditbeat data where `event.module` is `auditd` and `container.runtime` is 
-`docker`.
-* Models occurrences of process execution for each `container.name`.
-* Detects rare process executions in Docker containers.
+|===
 
+[discrete]
+[[auditbeat-process-hosts-ecs]]
+== Auditbeat host processes
 
-These configurations are only available if data exists that matches the 
+Detect unusual processes on hosts from auditd data (ECS).
+
+These configurations are only available if data exists that matches the
 recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/manifest.json#L8[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/manifest.json[manifest file].
 
-hosts_high_count_process_events_ecs::
+|===
+|Name |Description |Job |Datafeed
 
-* For Auditbeat data where `event.module` is `auditd`.
-* Models process execution rates for each `host.name`.
-* Detects unusual increases in process execution rates.
+|hosts_high_count_process_events_ecs
+|Detect unusual increases in process execution rates (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/hosts_high_count_process_events_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/datafeed_hosts_high_count_process_events_ecs.json[image:images/link.svg[A link icon]]
 
-hosts_rare_process_activity_ecs::
+|hosts_rare_process_activity_ecs
+|Detect rare process executions on hosts (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/hosts_rare_process_activity_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/datafeed_hosts_rare_process_activity_ecs.json[image:images/link.svg[A link icon]]
 
-* For Auditbeat data where `event.module` is `auditd`.
-* Models process execution rates for each `host.name`.
-* Detects rare process executions on hosts.
-
+|===
 // end::auditbeat-jobs[]

@@ -1,22 +1,43 @@
 ["appendix",role="exclude",id="ootb-ml-jobs-logs-ui"]
 = Logs {anomaly-detect} configurations
 
-// tag::logs-jobs[]
 These {anomaly-jobs} appear by default in the
-{observability-guide}/monitor-logs.html[{logs-app}] in {kib}. For more details, 
-see the {dfeed} and job definitions in the `logs_ui_*` folders in
-https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules[GitHub].
+{observability-guide}/monitor-logs.html[{logs-app}] in {kib}. For more
+information about their usage, refer to
+{observability-guide}/categorize-logs.html[Categorize log entries] and
+{observability-guide}/inspect-log-anomalies.html[Inspect log anomalies].
 
-log_entry_categories_count::
+// tag::logs-jobs[]
+[discrete]
+[[logs-ui-analysis]]
+== Log analysis
 
-* For log entry categories via the Logs UI.
-* Models the occurrences of log events.
-* Detects anomalies in the count of log entries by category.
+Detect anomalies in log entries via the Logs UI.
 
-log_entry_rate::
+|===
+|Name |Description |Job |Datafeed
 
-* For log entries via the Logs UI.
-* Models ingestion rates. 
-* Detects anomalies in the log entry ingestion rate.
-  
+|log_entry_rate
+|Detects anomalies in the log entry ingestion rate
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/logs_ui_analysis/ml/log_entry_rate.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/logs_ui_analysis/ml/datafeed_log_entry_rate.json[image:images/link.svg[A link icon]]
+
+|===
+
+[discrete]
+[[logs-ui-categories]]
+== Log entry categories
+
+Detect anomalies in count of log entries by category.
+
+|===
+|Name |Description |Job |Datafeed
+
+|log_entry_categories_count
+|Detects anomalies in count of log entries by category
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/logs_ui_categories/ml/log_entry_categories_count.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/logs_ui_categories/ml/datafeed_log_entry_categories_count.json[image:images/link.svg[A link icon]]
+
+|===
+
 // end::logs-jobs[]

@@ -1,36 +1,40 @@
 ["appendix",role="exclude",id="ootb-ml-jobs-metricbeat"]
 = {metricbeat} {anomaly-detect} configurations
 
-// tag::metricbeat-jobs[]
 These {anomaly-job} wizards appear in {kib} if you use the 
 {metricbeat-ref}/metricbeat-module-system.html[{metricbeat} system module] to 
 monitor your servers. For more details, see the
-{dfeed} and job definitions in https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml[GitHub].
+{dfeed} and job definitions in GitHub.
+
+// tag::metricbeat-jobs[]
+[discrete]
+[[metricbeat-system-ecs]]
+== {metricbeat} system
+
+Detect anomalies in {metricbeat} System data (ECS).
 
 These configurations are only available if data exists that matches the 
 recognizer query specified in the
 https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/manifest.json#L8[manifest file].
 
+|===
+|Name |Description |Job |Datafeed
 
-high_mean_cpu_iowait_ecs::
+|high_mean_cpu_iowait_ecs
+|Detect unusual increases in cpu time spent in iowait (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml/high_mean_cpu_iowait_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml/datafeed_high_mean_cpu_iowait_ecs.json[image:images/link.svg[A link icon]]
 
-* For {metricbeat} data where `event.dataset` is `system.cpu` and 
-  `system.filesystem`.
-* Models CPU time spent in iowait for every `host.name`.
-* Detects unusual increases in cpu time spent in iowait.
+|max_disk_utilization_ecs
+|Detect unusual increases in disk utilization (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml/max_disk_utilization_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml/datafeed_max_disk_utilization_ecs.json[image:images/link.svg[A link icon]]
 
-max_disk_utilization_ecs::
+|metricbeat_outages_ecs
+|Detect unusual decreases in metricbeat documents (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml/metricbeat_outages_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/metricbeat_system_ecs/ml/datafeed_metricbeat_outages_ecs.json[image:images/link.svg[A link icon]]
 
-* For {metricbeat} data where `event.dataset` is `system.cpu` and 
-  `system.filesystem`.
-* Models disk utilization for each `host.name`.
-* Detects unusual increases in disk utilization.
-
-metricbeat_outages_ecs::
-
-* For {metricbeat} data where `event.dataset` is `system.cpu` and 
-  `system.filesystem`.
-* Models counts of {metricbeat} documents.
-* Detects unusual decreases in {metricbeat} documents.
+|===
 
 // end::metricbeat-jobs[]

@@ -55,7 +55,7 @@ work with your system:
 
 * <<deb, deb>> for Debian/Ubuntu
 * <<rpm, rpm>> for Redhat/Centos/Fedora
-* <<mac, mac>> or <<brew, brew>> for OS X
+* <<mac, mac>> for OS X
 * <<linux, linux>> for Linux
 * <<win, win>> for Windows
 
@@ -132,25 +132,6 @@ curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{e
 tar -xzvf elasticsearch-{elasticsearch_version}-darwin-x86_64.tar.gz
 cd elasticsearch-{elasticsearch_version}
 ./bin/elasticsearch
-----------------------------------------------------------------------
-
-endif::[]
-
-[[brew]]*brew:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {es} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-["source","sh",subs="attributes,callouts"]
-----------------------------------------------------------------------
-brew tap elastic/tap
-brew install elastic/tap/elasticsearch-full
-elasticsearch
 ----------------------------------------------------------------------
 
 endif::[]
@@ -508,24 +489,6 @@ tar xzvf metricbeat-{version}-darwin-x86_64.tar.gz
 
 endif::[]
 
-*brew:*
-
-ifeval::["{release-state}"=="unreleased"]
-
-Version {version} of {metricbeat} has not yet been released.
-
-endif::[]
-
-ifeval::["{release-state}"!="unreleased"]
-
-["source","sh",subs="attributes"]
-----------------------------------------------------------------------
-brew tap elastic/tap
-brew install elastic/tap/metricbeat-full
-----------------------------------------------------------------------
-
-endif::[]
-
 *linux:*
 
 ifeval::["{release-state}"=="unreleased"]
@@ -617,13 +580,6 @@ sudo metricbeat modules enable system
 ./metricbeat modules enable system
 ----
 +
-*brew:*
-+
-[source,yaml]
-----
-metricbeat modules enable system
-----
-+
 *win:*
 +
 [source,yaml]
@@ -645,13 +601,6 @@ sudo metricbeat setup -e
 [source,yaml]
 ----
 ./metricbeat setup -e
-----
-+
-*brew:*
-+
-[source,yaml]
-----
-metricbeat setup -e
 ----
 +
 *win:*
@@ -679,13 +628,6 @@ sudo service metricbeat start
 [source,yaml]
 ----
 ./metricbeat -e
-----
-+
-*brew:*
-+
-[source,yaml]
-----
-metricbeat -e
 ----
 +
 *win:*

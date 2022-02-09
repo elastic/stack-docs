@@ -1,99 +1,19 @@
 [[upgrading-elastic-stack-on-prem]]
-=== Upgrading on-prem
+=== Upgrade Elastic on-prem
 
-Follow these steps to upgrade your Elastic Stack to version {version}.
-
-[discrete]
-=== Preparing to upgrade
-
-Before upgrading the Elastic Stack:
-
-. Check the {es} {ref}/logging.html#deprecation-logging[deprecation log]
-to see if you're using any deprecated features and update your code accordingly.
-By default, deprecation warnings are logged when the log level is set to `WARN`.
-
-. Review the <<elastic-stack-breaking-changes>> and upgrade your code to work
-with {version}.
-
-. Upgrade to last version of {prev-major-version} and use the
-{kibana-ref}/upgrade-assistant.html[{kib} Upgrade Assistant] to
-{ref}/docs-reindex.html[reindex] any indices that are not compatible with
-{version}.
-
-. Use the Upgrade Assistant to identify any changes you need to make to your
-cluster configuration.
-
-[discrete]
-[[upgrade-order-elastic-stack]]
-=== Upgrade process
-
-When you've made the necessary changes and are ready to upgrade from 6.8 to
-{version}:
-
-. Test the upgrade in a dev environment *before* upgrading your
-production cluster.
-
-. Back up your data. You **cannot roll back** to an earlier version unless
-you have a snapshot of your data. For information about creating snapshots, see
-{ref}/snapshot-restore.html[Snapshot and restore].
+Once you are <<prepare-to-upgrade, prepared to upgrade>>,
+you will need to upgrade each of your Elastic components individually.
 
 . Consider closing {ml} jobs before you start the upgrade process. While {ml}
 jobs can continue to run during a rolling upgrade, it increases the overhead
-on the cluster during the upgrade process. For more information, see
-{ref}/rolling-upgrades.html[Rolling upgrades].
+on the cluster during the upgrade process.
 
 . Upgrade the components of your Elastic Stack in the following order:
 
 .. {es} Hadoop: {hadoop-ref}/install.html[install instructions]
-.. {es}: {ref}/setup-upgrade.html[upgrade instructions]
-.. Kibana: {kibana-ref}/upgrade.html[upgrade instructions]
+.. {es}: <<upgrading-elasticsearch, upgrade instructions>>
+.. Kibana: <<upgrading-kibana, upgrade instructions>>
 .. Java API Client: {java-api-client}/installation.html#maven[dependency configuration]
 .. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
 .. Beats: {beats-ref}/upgrading.html[upgrade instructions]
-.. APM: {apm-guide-ref}/upgrade.html[upgrade instructions]
 .. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
-
-
-[WARNING]
-====
-If using {agent} in 7.12 or lower, your {agent}s will automatically be unenrolled
-from {fleet} and will stop sending data when you upgrade to 7.13.
-You will need to uninstall your previous {agent}s before installing and enrolling
-{agent}s with {fleet-server}. To learn more, see {fleet-guide}/upgrade-elastic-agent.html[Upgrade {agent}].
-====
-
-[NOTE]
-====
-Logstash 6.8 and Beats 6.8 are compatible with all 7.x versions of
-{es}. This provides flexibility in when you schedule the upgrades
-for your Logstash instances and Beats agents, but we recommend upgrading as
-soon as possible to take advantage of performance improvements
-and other enhancements.
-
-The Java High Level REST Client can communicate with any {es} node running
-the same major version and greater or equal minor version.
-When you upgrade to the next major version, the client should be
-updated *after* all of the nodes in the cluster have been updated.
-====
-
-[discrete]
-[[oss-stack-upgrade]]
-=== Upgrading from 6.6 or earlier
-
-To upgrade directly to {es} {version} from versions 6.0-6.6, you must
-{ref}/reindex-upgrade.html[manually reindex] any 5.x indices you need to
-carry forward, and perform a {ref}/restart-upgrade.html[full cluster restart].
-This includes any internal indices created in 5.x, such as the `.kibana` and
-`.security*` indices.
-
-Make sure all 5.x indices have been deleted before upgrading to {version}. {es}
-{version} will fail to start if any 5.x indices are present.
-
-If you are running a version prior to 6.0,
-https://www.elastic.co/guide/en/elastic-stack/6.8/upgrading-elastic-stack.html[upgrade to 6.8]
-and reindex your old indices or bring up a new {version} cluster and
-{ref}/reindex-upgrade-remote.html[reindex from remote].
-
-The recommended path is to upgrade to 6.8 before upgrading to {version}. This
-makes it easier to identify the changes you need to make to upgrade and enables
-you to perform a rolling upgrade with no downtime.

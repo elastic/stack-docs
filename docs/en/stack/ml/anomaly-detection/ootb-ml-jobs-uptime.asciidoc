@@ -1,24 +1,30 @@
 ["appendix",role="exclude",id="ootb-ml-jobs-uptime"]
 = Uptime {anomaly-detect} configurations
 
-// tag::uptime-jobs[]
-
 If you have appropriate {heartbeat} data in {es}, you can enable this
 {anomaly-job} in the 
-{observability-guide}/monitor-uptime.html[{uptime-app}] in {kib}. For more 
-details, see the {dfeed} and job definitions in 
-https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/ml[GitHub].
+{observability-guide}/monitor-uptime.html[{uptime-app}] in {kib}. For more
+usage information, refer to
+{observability-guide}/inspect-uptime-duration-anomalies.html[Inspect uptime duration anomalies].
 
-These configurations are only available if data exists that matches the 
+// tag::uptime-jobs[]
+[discrete]
+[[uptime-heartbeat]]
+== Uptime: {heartbeat}
+
+Detect latency issues in heartbeat monitors.
+
+These configurations are available in {kib} only if data exists that matches the 
 recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/manifest.json#L8[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/manifest.json[manifest file].
 
+|===
+|Name |Description |Job |Datafeed
 
-high_latency_by_geo::
+|high_latency_by_geo
+|Identify periods of increased latency across geographical regions
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/ml/high_latency_by_geo.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/uptime_heartbeat/ml/datafeed_high_latency_by_geo.json[image:images/link.svg[A link icon]]
 
-* Detects unusually high average latency values (using the
-<<ml-metric-mean,`high_mean` function>> on the `monitor.duration.us` field).
-* Models the occurrences across geographical locations (`partition_field_name` 
-  is `observer.geo.name`).
-
+|===
 // end::uptime-jobs[]

@@ -12,71 +12,41 @@ fields and data types from the Elastic Common Schema (ECS).
 [[nginx-access-logs]]
 == Nginx access logs
 
-These {anomaly-jobs} find unusual activity in HTTP access logs.
+Find unusual activity in HTTP access logs.
 
-For more details, see the {dfeed} and job definitions in
-https://github.com/elastic/integrations/blob/{branch}/packages/nginx/kibana/ml_module/nginx-Logs-ml.json[GitHub].
-Note that these jobs are available in {kib} only if data exists that matches the
-{dfeed} query.
+These jobs are available in {kib} only if
+data exists that matches the query specified in the 
+https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json[manifest file].
 
-low_request_rate_nginx::
-Detects low request rates.
+|===
+|Name |Description |Job |Datafeed
 
-Job details:::
+|low_request_rate_nginx
+|Detect low request rates
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L215[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L370[image:images/link.svg[A link icon]]
 
-* Analyzes request rates (using the <<ml-count,`low_count` function>>).
+|source_ip_request_rate_nginx
+|Detect unusual source IPs - high request rates
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L176[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L349[image:images/link.svg[A link icon]]
 
-Required {beats} or {agent} integrations:::
+|source_ip_url_count_nginx
+|Detect unusual source IPs - high distinct count of URLs
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L136[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L328[image:images/link.svg[A link icon]]
 
-* Nginx integration 
+|status_code_rate_nginx
+|Detect unusual status code rates
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L90[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L307[image:images/link.svg[A link icon]]
 
-source_ip_request_rate_nginx::
-Detects unusual source IPs.
+|visitor_rate_nginx
+|Detect unusual visitor rates
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L47[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/main/packages/nginx/kibana/ml_module/nginx-Logs-ml.json#L260[image:images/link.svg[A link icon]]
 
-Job details:::
-
-* Analyzes request rates (using the <<ml-count,`high_count` function>>)
-relative to all the source IPs (`over_field_name` is `source.address`).
-
-Required {beats} or {agent} integrations:::
-
-* Nginx integration 
-
-source_ip_url_count_nginx::
-Detects unusual source IPs.
-
-Job details:::
-
-* Analyzes distinct counts of URLs (using the
-<<ml-distinct-count,`high_distinct_count` function>> on the `url.original`
-field) relative to all the source IPs (`over_field_name` is `source.address`).
-
-Required {beats} or {agent} integrations:::
-
-* Nginx integration 
-
-status_code_rate_nginx::
-Detects unusual status code rates.
-
-Job details:::
-
-* Analyzes request rates (using the <<ml-count,`count` function>>) split by
-status code (`partition_field_name` is `http.response.status_code`).
-
-Required {beats} or {agent} integrations:::
-
-* Nginx integration 
-
-visitor_rate_nginx::
-Detects unusual visitor rates.
-
-Job details:::
-
-* Analyzes request rates using the <<ml-nonzero-count,`non_zero_count` function>>.
-
-Required {beats} or {agent} integrations:::
-
-* Nginx integration  
+|=== 
 
 [discrete]
 [[nginx-access-logs-filebeat]]
@@ -86,71 +56,38 @@ These legacy {anomaly-jobs} find unusual activity in HTTP access logs. For the
 latest versions, install the Nginx integration in {fleet}; see
 <<nginx-access-logs>>.
 
-For more details, see the {dfeed} and job definitions in
-https://github.com/elastic/kibana/tree/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml[GitHub].
-
-These configurations are only available if data exists that matches the 
+These jobs exist in {kib} only if data exists that matches the 
 recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/manifest.json#L8[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/manifest.json[manifest file].
 
+|===
+|Name |Description |Job |Datafeed
 
-low_request_rate_ecs::
-Detects low request rates.
+|low_request_rate_ecs
+|Detect low request rates (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/low_request_rate_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/datafeed_low_request_rate_ecs.json[image:images/link.svg[A link icon]]
 
-Job details:::
+|source_ip_request_rate_ecs
+|Detect unusual source IPs - high request rates (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/source_ip_request_rate_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/datafeed_source_ip_request_rate_ecs.json[image:images/link.svg[A link icon]]
 
-* Analyzes request rates (using the <<ml-count,`low_count` function>>).
-  
-Required {beats} or {agent} integrations:::
+|source_ip_url_count_ecs
+|Detect unusual source IPs - high distinct count of URLs (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/source_ip_url_count_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/datafeed_source_ip_url_count_ecs.json[image:images/link.svg[A link icon]]
 
-* {filebeat}  
+|status_code_rate_ecs
+|Detect unusual status code rates (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/status_code_rate_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/datafeed_status_code_rate_ecs.json[image:images/link.svg[A link icon]]
 
-source_ip_request_rate_ecs::
-Detects unusual source IPs.
+|visitor_rate_ecs
+|Detect unusual visitor rates (ECS)
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/visitor_rate_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/nginx_ecs/ml/datafeed_visitor_rate_ecs.json[image:images/link.svg[A link icon]]
 
-Job details:::
-
-* Analyzes request rates (using the <<ml-count,`high_count` function>>)
-relative to all the source IPs (`over_field_name` is `source.address`).
-
-Required {beats} or {agent} integrations:::
-
-* {filebeat}  
-
-source_ip_url_count_ecs::
-Detects unusual source IPs.
-
-Job details:::
-
-* Analyzes distinct counts of URLs (using the
-<<ml-distinct-count,`high_distinct_count` function>> on the `url.original`
-field) relative to all the source IPs (`over_field_name` is `source.address`).
-  
-Required {beats} or {agent} integrations:::
-
-* {filebeat}  
-
-status_code_rate_ecs::
-Detects unusual status code rates.
-
-Job details:::
-
-* Analyzes request rates (using the <<ml-count,`count` function>>) split by
-status code (`partition_field_name` is `http.response.status_code`).
-
-Required {beats} or {agent} integrations:::
-
-* {filebeat}  
-
-visitor_rate_ecs::
-Detects unusual visitor rates.
-
-Job details:::
-
-* Analyzes request rates using the <<ml-nonzero-count,`non_zero_count` function>>.
-  
-Required {beats} or {agent} integrations:::
-
-* {filebeat}  
+|===
 
 // end::nginx-jobs[]

@@ -34,17 +34,16 @@ BERT model interface and use the WordPiece tokenization algorithm.
 The current list of supported architectures is:
 
 * BERT
-* DPR bi-encoders with a Torch wrapper
-* DistilBERT with a Torch wrapper
+* DPR bi-encoders
+* DistilBERT
 * ELECTRA
 * MobileBERT
 * RetriBERT
 * MPNet
-* SentenceTransformers bi-encoders with the above transformer architectures and
-a Torch wrapper
+* SentenceTransformers bi-encoders with the above transformer architectures
 
-Any trained model that uses one of these supported architectures is deployable
-in {es}.
+Any trained model that has a supported architecture is deployable in {es} by
+using eland.
 ====
 
 The simplest method is to use a model that has already been fine-tuned for the

@@ -44,11 +44,13 @@ the following jobs: `linux_anomalous_network_activity_ecs`,
 
 |linux_anomalous_network_activity_ecs
 |Looks for unusual processes using the network which could indicate command-and-control, lateral movement, persistence, or data exfiltration activity.
+//A process with unusual network activity can denote process exploitation or injection, where the process is used to run persistence mechanisms that allow a malicious actor remote access or control of the host, data exfiltration, and execution of unauthorized network applications.
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_network_activity_ecs.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_network_activity_ecs.json[image:images/link.svg[A link icon]]
 
 |linux_anomalous_network_port_activity_ecs
-|Looks for unusual destination port activity that could indicate command-and-control, persistence mechanism, or data exfiltration activity. 
+|Looks for unusual destination port activity that could indicate command-and-control, persistence mechanism, or data exfiltration activity.
+//Rarely used destination port activity is generally unusual in Linux fleets, and can indicate unauthorized access or threat actor activity.
 NOTE: This job is available only when you use {auditbeat} to ship data.
 footnote:compatible[Some jobs use fields that are not ECS-compliant. These jobs
 are available only when you use {beats} or the {agent} to ship data.]
@@ -62,6 +64,7 @@ are available only when you use {beats} or the {agent} to ship data.]
 
 |linux_anomalous_network_url_activity_ecs
 |Looks for an unusual web URL request from a Linux instance. Curl and wget web request activity is very common but unusual web requests from a Linux server can sometimes be malware delivery or execution.
+//Wget and cURL are commonly used by Linux programs to download code and data. Most of the time, their usage is entirely normal. Generally, because they use a list of URLs, they repeatedly download from the same locations. However, Wget and cURL are sometimes used to deliver Linux exploit payloads, and threat actors use these tools to download additional software and code. For these reasons, unusual URLs can indicate unauthorized downloads or threat activity.
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_anomalous_network_url_activity_ecs.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_anomalous_network_url_activity_ecs.json[image:images/link.svg[A link icon]]
 
@@ -79,13 +82,11 @@ are available only when you use {beats} or the {agent} to ship data.]
 
 |linux_network_configuration_discovery
 |Looks for commands related to system network configuration discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network configuration discovery in order to increase their understanding of connected networks and hosts. This information may be used to shape follow-up behaviors such as lateral movement or additional discovery.
-//Looks for commands related to system network configuration discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network configuration discovery in order to increase their understanding of connected networks and hosts. This information may be used to shape follow-up behavior such as lateral movement or additional discovery.
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_network_configuration_discovery.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_network_configuration_discovery.json[image:images/link.svg[A link icon]]
 
 |linux_network_connection_discovery
 |Looks for commands related to system network connection discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network connection discovery in order to increase their understanding of connected services and systems. This information may be used to shape follow-up behaviors such as lateral movement or additional discovery.
-//Looks for commands related to system network connection discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network connection discovery in order to increase their understanding of connected services and systems. This information may be used to shape follow-up behaviors such as lateral movement or additional discovery.
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_network_connection_discovery.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_network_connection_discovery.json[image:images/link.svg[A link icon]]
 
@@ -96,7 +97,6 @@ are available only when you use {beats} or the {agent} to ship data.]
 
 |linux_rare_metadata_process
 |Looks for anomalous access to the metadata service by an unusual process. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
-//Looks for anomalous access to the metadata service by an unusual process. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/linux_rare_metadata_process.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat/ml/datafeed_linux_rare_metadata_process.json[image:images/link.svg[A link icon]]
 
@@ -160,8 +160,8 @@ In the {security-app}, it looks in the {data-source} specified in the
 
 |suspicious_login_activity_ecs
 |Identifies an unusually high number of authentication attempts.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/ml/datafeed_suspicious_login_activity_ecs.json[json]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/ml/suspicious_login_activity_ecs.json[json]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/ml/datafeed_suspicious_login_activity_ecs.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_auditbeat_auth/ml/suspicious_login_activity_ecs.json[image:images/link.svg[A link icon]]
 
 |===
 
@@ -240,19 +240,6 @@ In the {security-app}, it looks in the {data-source} specified in the
 for data that matches the query.
 
 // tag::security-cloudtrail-jobs[]
-
-////
-|===
-|Name |Description |Job |Datafeed
-
-|apm_tx_metrics
-|x
-|x[image:images/link.svg[A link icon]]
-|x[image:images/link.svg[A link icon]]
-
-|===
-////
-
 |===
 |Name |Description |Job |Datafeed
 
@@ -398,19 +385,6 @@ In the {security-app}, it looks in the {data-source} specified in the
 for data that matches the query.
 
 // tag::siem-packetbeat-jobs[]
-
-////
-|===
-|Name |Description |Job |Datafeed
-
-|apm_tx_metrics
-|x
-|x[image:images/link.svg[A link icon]]
-|x[image:images/link.svg[A link icon]]
-
-|===
-////
-
 |===
 |Name |Description |Job |Datafeed
 
@@ -533,19 +507,6 @@ for data that matches the query.
 IMPORTANT: In 7.11 or later versions, use the <<security-windows-jobs>> jobs instead.footnote:duplicatewindowsjobs[]
 
 // tag::siem-winlogbeat-jobs[]
-
-////
-|===
-|Name |Description |Job |Datafeed
-
-|apm_tx_metrics
-|x
-|x[image:images/link.svg[A link icon]]
-|x[image:images/link.svg[A link icon]]
-
-|===
-////
-
 |===
 |Name |Description |Job |Datafeed
 
@@ -622,26 +583,13 @@ In the {security-app}, it looks in the {data-source} specified in the
 for data that matches the query.
 
 // tag::siem-winlogbeat-auth-jobs[]
-
-////
 |===
 |Name |Description |Job |Datafeed
 
-|apm_tx_metrics
-|x
-|x[image:images/link.svg[A link icon]]
-|x[image:images/link.svg[A link icon]]
-
-|===
-////
-|===
-|Job |Description |Datafeed
-
-|windows_rare_user_type10_remote_login https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/ml/windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
+|windows_rare_user_type10_remote_login
 |Unusual RDP (remote desktop protocol) user logins can indicate account takeover or credentialed access.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/ml/windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_winlogbeat_auth/ml/datafeed_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
-
 |===
-
 // end::siem-winlogbeat-auth-jobs[]
 // end::siem-jobs[]

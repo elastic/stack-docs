@@ -16,7 +16,7 @@ to give you flexibility in scheduling the upgrade.
 .Remote cluster compatibility
 [NOTE]
 ====
-If you use {ccs}, note that {version} can only search remote clusters running 7.17 or later. 
+If you use {ccs}, note that {version} can only search remote clusters running the previous minor version or later. 
 For more information, see {ref}/modules-cross-cluster-search.html[Searching across clusters].
 
 If you use {ccr}, a cluster that contains follower indices must run the same or newer version as the remote cluster. 
@@ -67,6 +67,7 @@ IMPORTANT: You cannot downgrade {es} nodes after upgrading.
 If you cannot complete the upgrade process, 
 you will need to restore from the snapshot.
 
+[[upgrade-order-elastic-stack]]
 Refer to the upgrade instructions for your environment:
 
 * <<upgrade-elastic-stack-for-elastic-cloud,Upgrade on Elastic Cloud>>

@@ -21,36 +21,14 @@ models.
 
 Per the <<ml-nlp-overview>>, there are multiple ways that you can use NLP
 features within the {stack}. After you determine which type of NLP task you want
-to perform, you must choose an appropriate trained model.
-
-[IMPORTANT]
-.Supported model architectures
-====
-[[ml-nlp-architectures]]
-
-The {stack-ml-features} support transformer models that conform to the standard
-BERT model interface and use the WordPiece tokenization algorithm.
-
-The current list of supported architectures is:
-
-* BERT
-* DPR bi-encoders
-* DistilBERT
-* ELECTRA
-* MobileBERT
-* RetriBERT
-* MPNet
-* SentenceTransformers bi-encoders with the above transformer architectures
-
-Any trained model that has a supported architecture is deployable in {es} by
-using eland.
-====
+to perform, you must choose an appropriate trained model. 
 
 The simplest method is to use a model that has already been fine-tuned for the
 type of analysis that you want to perform. For example, there are models and
 data sets available for specific NLP tasks on
 https://huggingface.co/models[Hugging Face]. These instructions assume you're
-using one of those models and do not describe how to create new models.
+using one of those models and do not describe how to create new models. For the
+current list of support model architectures, refer to <<ml-nlp-model-ref>>.
 
 If you choose to perform language identification by using
 the `lang_ident_model_1` that is provided in the cluster, no further steps are

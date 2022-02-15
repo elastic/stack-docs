@@ -14,6 +14,14 @@ Within this repo, the `/docs/en/` directory is structured as follows:
 | __install-upgrade__ | Contains the source files for the [Elastic Installation and Upgrade Guide](https://www.elastic.co/guide/en/elastic-stack/current/index.html).|
 | __stack/ml__ | Contains the source files for the [Machine Learning Guide](https://www.elastic.co/guide/en/machine-learning/current/index.html).|
 
+## Backporting
+
+In general, we backport documentation changes only to [live stack versions](https://github.com/elastic/docs/blob/master/conf.yaml#L74).
+
+To automatically create backport PRs, add the appropriate backport labels (such as `backport-8.1`).
+
+If no backport PRs are required or you want to backport manually, add the `backport-skip` label. We recommend using the [backport tool](https://github.com/sqren/backport) to easily open backport PRs. If you need help, ping __[@mlr-docs](https://github.com/orgs/elastic/teams/mlr-docs)__ and we'd be happy to help.
+
 ## Build
 
 To build the docs:

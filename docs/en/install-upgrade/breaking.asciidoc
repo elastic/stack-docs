@@ -4,21 +4,25 @@
 Before you upgrade, you must review the breaking changes for each product you
 use and make the necessary changes so your code is compatible with {version}.
 
+// tag::breaking-changes-links[]
 ** <<apm-breaking-changes,APM {version} breaking changes>>
 ** <<beats-breaking-changes,Beats {version} breaking changes>>
 ** <<elasticsearch-breaking-changes,{es} {version} breaking changes>>
 ** <<elasticsearch-hadoop-breaking-changes,{es} Hadoop {version} breaking changes>>
 ** <<kibana-breaking-changes,Kibana {version} breaking changes>>
 ** <<logstash-breaking-changes,{ls} {version} breaking changes>>
+// end::breaking-changes-links[]
 
+// tag::breaking-changes-admon[]
 [IMPORTANT]
 ===============================
-* Make sure you check the breaking changes for each point release up to the desired new version.
+* Make sure you check the breaking changes for each minor release up to {version}.
 * If you are using {ml} {dfeeds} that contain discontinued search or query
 domain specific language (DSL), the upgrade will fail. In 5.6.5 and later, the
 Upgrade Assistant provides information about which {dfeeds} need to be updated.
 
 ===============================
+// end::breaking-changes-admon[]
 
 [[apm-breaking-changes]]
 === APM breaking changes

@@ -1,9 +1,6 @@
 [[upgrading-kibana]]
 == Upgrade {kib}
 
-To upgrade from 7.16 or earlier to {version}, **you must first upgrade to {prev-major-last}**.
-This enables you to use the **Upgrade Assistant** to <<prepare-to-upgrade, prepare to upgrade>>.
-
 [WARNING]
 ====
 {kib} automatically runs saved object migrations when required. To roll back to an
@@ -14,7 +11,8 @@ state. Snapshots include this feature state by default.
 For more information, check {kibana-ref}/saved-object-migrations.html[Migrate saved objects].
 ====
 
-To upgrade {kib}:
+Before you start, <<upgrading-elastic-stack,take the upgrade preparation
+steps>>. To upgrade {kib}:
 
 . Shut down all {kib} instances. {kib} does not support rolling upgrades.
 **Upgrading while older {kib} instances are running can cause data loss or upgrade failures.**

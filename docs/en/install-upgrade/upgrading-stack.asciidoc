@@ -1,11 +1,67 @@
 [[upgrading-elastic-stack]]
 == Upgrade to Elastic {version}
 
+Before you upgrade to {version}, it's important to take some preparation steps.
+ifeval::["{version}"!="8.0.0"]
+These steps vary based on your current version:
+
+* <<prepare-to-upgrade-8x,Upgrade from an earlier 8.x version>>
+* <<prepare-to-upgrade,Upgrade from 7.x>>
+endif::[]
+
+IMPORTANT: Upgrading from a release candidate build, such as 8.0.0-rc1 or
+8.0.0-rc2, is not supported. Pre-releases should only be used for testing in a
+temporary environment.
+
+ifeval::["{version}"!="8.0.0"]
+[discrete]
+[[prepare-to-upgrade-8x]]
+=== Prepare to upgrade from an earlier 8.x version
+
+. Review the breaking changes for each product you use and make the necessary
+changes so your code is compatible with {version}:
++
+--
+include::breaking.asciidoc[tag=breaking-changes-links]
+
+include::breaking.asciidoc[tag=breaking-changes-admon]
+--
+
+include::upgrading-stack.asciidoc[tag=generic-upgrade-steps]
+endif::[]
+
+////
+// List of upgrade steps used in both 8.x and 7.x
+// tag::generic-upgrade-steps[]
+. If you use any {es} plugins, make sure there is a version of each plugin that is
+compatible with {es} version {version}.
+
+. Test the upgrade in an isolated environment before upgrading your production
+cluster.
+
+. Make sure you have a current snapshot before you start the upgrade.
++
+IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
+If you cannot complete the upgrade process, 
+you will need to restore from the snapshot.
+
+Refer to the upgrade instructions for your environment:
+
+* <<upgrade-elastic-stack-for-elastic-cloud,Upgrade on Elastic Cloud>>
+* <<upgrading-elastic-stack-on-prem,Upgrade on-prem>>
+// end::generic-upgrade-steps[]
+////
+
+
+[discrete]
+[[prepare-to-upgrade]]
+=== Prepare to upgrade from 7.x
+
 To upgrade to {version} from 7.16 or earlier, **you must first upgrade to {prev-major-last}**.
 This enables you to use the **Upgrade Assistant** to identify and resolve issues,
 reindex indices created before 7.0, and then perform a rolling upgrade.
 
-**Upgrading to {prev-major-last} before upgrading to 8.0 or later is required 
+**Upgrading to {prev-major-last} before upgrading to {version} is required 
 even if you opt to do a full-cluster restart of your {es} cluster.**
 Alternatively, you can create a new {version} deployment and reindex from remote.
 For more information, see <<upgrading-reindex, Reindex to upgrade>>.
@@ -25,10 +81,6 @@ For more information, see {ref}/xpack-ccr.html[Cross cluster replication] for ve
 You can view your remote clusters from **Stack Management > Remote Clusters**. 
 ====
 
-[discrete]
-[[prepare-to-upgrade]]
-=== Prepare to upgrade
-
 . Use the {kibana-ref-all}/{prev-major-last}/upgrade-assistant.html[Upgrade Assistant] 
 to prepare for your upgrade from {prev-major-last} to {version}.
 The **Upgrade Assistant** identifies deprecated settings and guides
@@ -40,9 +92,12 @@ or reindexing.
 
 . Review the deprecation logs from the **Upgrade Assistant** to 
 determine if your applications are using features that are not supported 
-or behave differently in 8.0 and later.
+or behave differently in 8.x.
 See the <<elastic-stack-breaking-changes,breaking changes>> for more information 
 about changes in {version} that could affect your application.
++
+IMPORTANT: Make sure you check the breaking changes for each minor 8.x release
+up to {version}.
 
 . Make the recommended changes to ensure that your applications 
 continue to operate as expected after the upgrade.
@@ -55,21 +110,4 @@ REST API compatibility should be a bridge to smooth out the upgrade process,
 not a long term strategy. 
 For more information, see {ref}/rest-api-compatibility.html[REST API compatibility].
 
-. If you use any {es} plugins, make sure there is a version of each plugin that is
-compatible with {es} version {version}.
-
-. Test the upgrade in an isolated environment before upgrading your production
-cluster.
-
-. Make sure you have a current snapshot before you start the upgrade.
-+
-IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
-If you cannot complete the upgrade process, 
-you will need to restore from the snapshot.
-
-Refer to the upgrade instructions for your environment:
-
-* <<upgrade-elastic-stack-for-elastic-cloud,Upgrade on Elastic Cloud>>
-* <<upgrading-elastic-stack-on-prem,Upgrade on-prem>>
-
-
+include::upgrading-stack.asciidoc[tag=generic-upgrade-steps]

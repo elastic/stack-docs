@@ -8,10 +8,16 @@
 predict classes of data points in a data set.
 
 {classification-cap} is a {ml} process that predicts the class or category of a 
-data point in a data set. Typical examples of {classification} problems are 
-classifying malicious and benign domains to detect DGA activities for security 
-reasons or predicting customer churn based on customer calling data. 
-{classification-cap} is for predicting discrete, categorical values.
+data point in a data set. For a simple example, consider how the shapes in the 
+following graph can be differentiated and classified as "circles" and 
+"triangles":
+
+image::images/classification-vis.png[alt="Classification process",align="center"]
+
+In reality, {classification} problems are more complex, such as classifying 
+malicious and benign domains to detect DGA activities for security reasons or 
+predicting customer churn based on customer calling data. {classification-cap} 
+is for predicting discrete, categorical values.
 
 When you create a {classification} job, you must specify which field contains 
 the classes that you want to predict. This field is known as the _{depvar}_. It
@@ -40,7 +46,7 @@ previous tree.
 [[dfa-classification-problem]]
 == 1. Define the problem
 
-{classification-cap} can be useful in cases where discerte, categorical values 
+{classification-cap} can be useful in cases where discrete, categorical values 
 needs to be predicted. If your use case requires predicting such values, then 
 {classification} might be the suitable choice for you.
 
@@ -48,14 +54,9 @@ needs to be predicted. If your use case requires predicting such values, then
 [[dfa-classification-environment]]
 == 2. Set up the environment
 
-To use {ml-features}, there must be at least one {ml} node in your cluster and 
-all master-eligible nodes must have {ml} enabled. By default, all nodes are {ml} 
-nodes. For more information about these settings, refer to 
-{ref}/modules-node.html#ml-node[{ml} nodes].
-
-The {stack-security-features} require you to ensure your users also have the 
-necessary security privileges. See <<setup>>.
-
+Before you can use the {stack-ml-features}, there are some configuration
+requirements (such as security privileges) that must be addressed. Refer to
+<<setup>>.
 
 [discrete]
 [[dfa-classification-prepare-data]]
@@ -492,7 +493,7 @@ POST _ml/data_frame/analytics/model-flight-delays-classification/_start
 +
 --
 [role="screenshot"]
-image::images/flights-classification-details.png["Statistics for a {dfanalytics-job} in {kib}"]
+image::images/flights-classification-details.jpg["Statistics for a {dfanalytics-job} in {kib}"]
 
 When the job stops, the results are ready to view and evaluate. To learn more
 about the job phases, see <<ml-dfa-phases>>.

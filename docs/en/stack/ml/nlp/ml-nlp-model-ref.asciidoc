@@ -1,0 +1,86 @@
+[[ml-nlp-model-ref]]
+= Third party NLP models
+
+The {stack-ml-features} support transformer models that conform to the standard
+BERT model interface and use the WordPiece tokenization algorithm.
+
+The current list of supported architectures is:
+
+* BERT
+* DPR bi-encoders
+* DistilBERT
+* ELECTRA
+* MobileBERT
+* RetriBERT
+* MPNet
+* SentenceTransformers bi-encoders with the above transformer architectures
+
+In general, any trained model that has a supported architecture is deployable in
+{es} by using eland. However, it is not possible to test every third party
+model. The following lists are therefore provided for informational purposes
+only and may not be current. Elastic makes no warranty or assurance that the
+{ml-features} will continue to interoperate with these third party models in the
+way described, or at all.
+
+These models are listed by NLP task; for more information about those tasks,
+refer to <<ml-nlp-overview>>.
+
+[discrete]
+[[ml-nlp-model-ref-mask]]
+== Third party fill-mask models
+
+* https://huggingface.co/bert-base-uncased
+* https://huggingface.co/microsoft/mpnet-base
+
+[discrete]
+[[ml-nlp-model-ref-ner]]
+== Third party named entity recognition models
+
+* https://huggingface.co/dslim/bert-base-NER
+* https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english
+* https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
+
+[discrete]
+[[ml-nlp-model-ref-text-embedding]]
+== Third party text embedding models
+
+Using `SentenceTransformerWrapper`:
+
+* https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2
+* https://huggingface.co/sentence-transformers/LaBSE
+* https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b 
+* https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3
+* https://huggingface.co/sentence-transformers/nli-bert-base-cls-pooling
+* https://huggingface.co/sentence-transformers/bert-base-nli-cls-token
+* https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base
+* https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base
+* https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2
+
+Using `DPREncoderWrapper`:
+
+* https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base
+* https://huggingface.co/facebook/dpr-question_encoder-single-nq-base
+* https://huggingface.co/facebook/dpr-ctx_encoder-multiset-base
+* https://huggingface.co/facebook/dpr-question_encoder-multiset-base
+* https://huggingface.co/castorini/ance-dpr-context-multi
+* https://huggingface.co/castorini/ance-dpr-question-multi
+* https://huggingface.co/castorini/bpr-nq-ctx-encoder
+* https://huggingface.co/castorini/bpr-nq-question-encoder
+
+[discrete]
+[[ml-nlp-model-ref-text-classification]]
+=== Third party text classification models
+
+* https://huggingface.co/distilbert-base-uncased-finetuned-sst-2-english
+* https://huggingface.co/bhadresh-savani/distilbert-base-uncased-emotion
+* https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english
+* https://huggingface.co/ProsusAI/finbert
+* https://huggingface.co/nateraw/bert-base-uncased-emotion
+
+[discrete]
+[[ml-nlp-model-ref-zero-shot]]
+== Third party zero-shot text classification models
+
+* https://huggingface.co/typeform/distilbert-base-uncased-mnli
+* https://huggingface.co/typeform/mobilebert-uncased-mnli
+* https://huggingface.co/typeform/squeezebert-mnli

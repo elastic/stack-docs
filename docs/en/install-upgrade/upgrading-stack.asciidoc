@@ -1,142 +1,113 @@
 [[upgrading-elastic-stack]]
-== Upgrading the Elastic Stack
+== Upgrade to Elastic {version}
 
-When upgrading to a new version of {es}, you need to upgrade
-each of the products in your Elastic Stack. Beats and Logstash 7.n are
-compatible with {es} {version} to give you flexibility in scheduling
-the upgrade.
+Before you upgrade to {version}, it's important to take some preparation steps.
+ifeval::["{version}"!="8.0.0"]
+These steps vary based on your current version:
 
-{es} supports rolling upgrades between minor versions, from {es} 5.6 to 6.8,
-from 6.8 to 7.x, and from 7.n to {version}.
+* <<prepare-to-upgrade-8x,Upgrade from an earlier 8.x version>>
+* <<prepare-to-upgrade,Upgrade from 7.x>>
+endif::[]
 
-IMPORTANT: 6.x and older indices are not compatible with {version}. You must
-remove or reindex them on your 7.x cluster before upgrading to {version}. The internal
-Kibana and {xpack} indices and the default Beats and Logstash mapping templates
-also need to be updated to work with {version}.
+IMPORTANT: Upgrading from a release candidate build, such as 8.0.0-rc1 or
+8.0.0-rc2, is not supported. Pre-releases should only be used for testing in a
+temporary environment.
+
+ifeval::["{version}"!="8.0.0"]
+[discrete]
+[[prepare-to-upgrade-8x]]
+=== Prepare to upgrade from an earlier 8.x version
+
+. Review the breaking changes for each product you use and make the necessary
+changes so your code is compatible with {version}:
++
+--
+include::breaking.asciidoc[tag=breaking-changes-links]
+
+include::breaking.asciidoc[tag=breaking-changes-admon]
+--
+
+include::upgrading-stack.asciidoc[tag=generic-upgrade-steps]
+endif::[]
+
+////
+// List of upgrade steps used in both 8.x and 7.x
+// tag::generic-upgrade-steps[]
+. If you use any {es} plugins, make sure there is a version of each plugin that is
+compatible with {es} version {version}.
+
+. Test the upgrade in an isolated environment before upgrading your production
+cluster.
+
+. Make sure you have a current snapshot before you start the upgrade.
++
+IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
+If you cannot complete the upgrade process, 
+you will need to restore from the snapshot.
+
+Refer to the upgrade instructions for your environment:
+
+* <<upgrade-elastic-stack-for-elastic-cloud,Upgrade on Elastic Cloud>>
+* <<upgrading-elastic-stack-on-prem,Upgrade on-prem>>
+// end::generic-upgrade-steps[]
+////
+
 
 [discrete]
-=== Preparing to upgrade
+[[prepare-to-upgrade]]
+=== Prepare to upgrade from 7.x
 
-Before upgrading the Elastic Stack to {version}:
+To upgrade to {version} from 7.16 or earlier, **you must first upgrade to {prev-major-last}**.
+This enables you to use the **Upgrade Assistant** to identify and resolve issues,
+reindex indices created before 7.0, and then perform a rolling upgrade.
 
-. Check the {es} {ref}/logging.html#deprecation-logging[deprecation log]
-to see if you're using any deprecated features and update your code accordingly.
-By default, deprecation warnings are logged when the log level is set to `WARN`.
+**Upgrading to {prev-major-last} before upgrading to {version} is required 
+even if you opt to do a full-cluster restart of your {es} cluster.**
+Alternatively, you can create a new {version} deployment and reindex from remote.
+For more information, see <<upgrading-reindex, Reindex to upgrade>>.
 
-. Review the <<elastic-stack-breaking-changes>> and upgrade your code to work
-with {version}.
+Beats and Logstash 7.n are compatible with {es} {version} 
+to give you flexibility in scheduling the upgrade.
 
-. Upgrade to last version of {prev-major-version} and use the
-{kibana-ref}/upgrade-assistant.html[{kib} Upgrade Assistant] to
-{ref}/docs-reindex.html[reindex] any indices that are not compatible with
-{version}.
-
-. Use the Upgrade Assistant to identify any changes you need to make to your
-cluster configuration.
-
-[discrete]
-[[upgrade-order-elastic-stack]]
-=== Upgrade process
-
-When you've made the necessary changes and are ready to upgrade from 6.8 to
-{version}:
-
-. Test the upgrade in a dev environment *before* upgrading your
-production cluster.
-
-. Back up your data. You **cannot roll back** to an earlier version unless
-you have a snapshot of your data. For information about creating snapshots, see
-{ref}/snapshot-restore.html[Snapshot and restore].
-
-. Consider closing {ml} jobs before you start the upgrade process. While {ml}
-jobs can continue to run during a rolling upgrade, it increases the overhead
-on the cluster during the upgrade process. For more information, see
-{ref}/rolling-upgrades.html[Rolling upgrades].
-
-. Upgrade the components of your Elastic Stack in the following order:
-
-.. {es} Hadoop: {hadoop-ref}/install.html[install instructions]
-.. {es}: {ref}/setup-upgrade.html[upgrade instructions]
-.. Kibana: {kibana-ref}/upgrade.html[upgrade instructions]
-.. Java API Client: {java-api-client}/installation.html#maven[dependency configuration]
-.. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
-.. Beats: {beats-ref}/upgrading.html[upgrade instructions]
-.. APM Server: {apm-server-ref}/upgrading.html[upgrade instructions]
-.. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
-
-[WARNING]
-====
-If using {agent} in 7.12 or lower, your {agent}s will automatically be unenrolled
-from {fleet} and will stop sending data when you upgrade to 7.13.
-You will need to uninstall your previous {agent}s before installing and enrolling
-{agent}s with {fleet-server}. To learn more, see {fleet-guide}/upgrade-elastic-agent.html[Upgrade {agent}].
-====
-
+.Remote cluster compatibility
 [NOTE]
 ====
-Logstash 6.8 and Beats 6.8 are compatible with all 7.x versions of
-{es}. This provides flexibility in when you schedule the upgrades
-for your Logstash instances and Beats agents, but we recommend upgrading as
-soon as possible to take advantage of performance improvements
-and other enhancements.
+If you use {ccs}, note that {version} can only search remote clusters running the previous minor version or later. 
+For more information, see {ref}/modules-cross-cluster-search.html[Searching across clusters].
 
-The Java High Level REST Client can communicate with any {es} node running
-the same major version and greater or equal minor version.
-When you upgrade to the next major version, the client should be
-updated *after* all of the nodes in the cluster have been updated.
+If you use {ccr}, a cluster that contains follower indices must run the same or newer version as the remote cluster. 
+For more information, see {ref}/xpack-ccr.html[Cross cluster replication] for version compatibility matrix.
+
+You can view your remote clusters from **Stack Management > Remote Clusters**. 
 ====
 
-[discrete]
-[[oss-stack-upgrade]]
-=== Upgrading from 6.6 or earlier
+. Use the {kibana-ref-all}/{prev-major-last}/upgrade-assistant.html[Upgrade Assistant] 
+to prepare for your upgrade from {prev-major-last} to {version}.
+The **Upgrade Assistant** identifies deprecated settings and guides
+you through resolving issues and reindexing indices created before 7.0.
+Make sure you have a current snapshot before making configuration changes
+or reindexing.
++
+**You must resolve all critical issues before proceeding with the upgrade.**
 
-To upgrade directly to {es} {version} from versions 6.0-6.6, you must
-{ref}/reindex-upgrade.html[manually reindex] any 5.x indices you need to
-carry forward, and perform a {ref}/restart-upgrade.html[full cluster restart].
-This includes any internal indices created in 5.x, such as the `.kibana` and
-`.security*` indices.
+. Review the deprecation logs from the **Upgrade Assistant** to 
+determine if your applications are using features that are not supported 
+or behave differently in 8.x.
+See the <<elastic-stack-breaking-changes,breaking changes>> for more information 
+about changes in {version} that could affect your application.
++
+IMPORTANT: Make sure you check the breaking changes for each minor 8.x release
+up to {version}.
 
-Make sure all 5.x indices have been deleted before upgrading to {version}. {es}
-{version} will fail to start if any 5.x indices are present.
+. Make the recommended changes to ensure that your applications 
+continue to operate as expected after the upgrade.
++
+NOTE: As a temporary solution, you can submit requests to {major-version}
+using the {prev-major-version} syntax with the REST API compatibility mode.
+While this enables you to submit requests that use the old syntax, 
+it does not guarantee the same behavior. 
+REST API compatibility should be a bridge to smooth out the upgrade process,
+not a long term strategy. 
+For more information, see {ref}/rest-api-compatibility.html[REST API compatibility].
 
-If you are running a version prior to 6.0,
-https://www.elastic.co/guide/en/elastic-stack/6.8/upgrading-elastic-stack.html[upgrade to 6.8]
-and reindex your old indices or bring up a new {version} cluster and
-{ref}/reindex-upgrade-remote.html[reindex from remote].
-
-The recommended path is to upgrade to 6.8 before upgrading to {version}. This
-makes it easier to identify the changes you need to make to upgrade and enables
-you to perform a rolling upgrade with no downtime.
-
-[discrete]
-[[upgrade-elastic-stack-for-elastic-cloud]]
-=== Upgrading on Elastic Cloud
-
-A single click in the Elastic Cloud console can upgrade a cluster to a newer
-version, add more processing capacity, change plugins, and enable or disable
-high availability, all at the same time. During the upgrade process,
-{es}, Kibana, {xpack} and the officially included plugins are
-upgraded simultaneously.
-
-Although upgrading your Elastic Cloud clusters is easy, you still need to
-address breaking changes that affect your application. Minor version upgrades,
-upgrades from 6.8 to {version}, and all other cluster configuration
-changes can be performed with no downtime.
-
-To avoid downtime when a full cluster restart is required:
-
-. Provision an additional cluster with the new {es} version, reindex
-your data, and send index requests to both clusters temporarily.
-
-. Verify that the new cluster performs as expected, fix any problems, and then
-permanently swap in the new cluster.
-
-. Delete the old cluster to stop incurring additional costs. You are billed
-only for the time that the new cluster runs in parallel with your old cluster.
-Usage is billed on an hourly basis.
-
-To learn more about the upgrade process on Elastic Cloud, see
-{cloud}/ec-upgrade-deployment.html[Upgrade versions].
-
-NOTE: Elastic Cloud only supports upgrades to released versions. Preview
-releases and master snapshots are not supported.
+include::upgrading-stack.asciidoc[tag=generic-upgrade-steps]

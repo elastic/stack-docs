@@ -1,0 +1,86 @@
+[discrete]
+[[ml-nlp-lang-ident]]
+== {lang-ident-cap}
+
+{lang-ident-cap} enables you to determine the language of text.
+
+A {lang-ident} model is provided in your cluster, which you can use in an
+{infer} processor of an ingest pipeline by using its model ID
+(`lang_ident_model_1`). For an example, refer to <<ml-nlp-inference>>.
+
+The longer the text passed into the {lang-ident} model, the more accurately the 
+model can identify the language. It is fairly accurate on short samples (for 
+example, 50 character-long streams) in certain languages, but languages that are 
+similar to each other are harder to identify based on a short character stream.
+If there is no valid text from which the identity can be inferred, the model
+returns the special language code `zxx`. If you prefer to use a different
+default value, you can adjust your ingest pipeline to replace `zxx` predictions
+with your preferred value.
+
+{lang-ident-cap} takes into account Unicode boundaries when the feature set is 
+built. If the text has diacritical marks, then the model uses that information 
+for identifying the language of the text. In certain cases, the model can 
+detect the source language even if it is not written in the script that the 
+language traditionally uses. These languages are marked in the supported 
+languages table (see below) with the `Latn` subtag. {lang-ident-cap} supports 
+Unicode input.
+
+[discrete]
+[[ml-lang-ident-supported-languages]]
+=== Supported languages
+
+The table below contains the ISO codes and the English names of the languages 
+that {lang-ident} supports. If a language has a 2-letter `ISO 639-1` code, the 
+table contains that identifier. Otherwise, the 3-letter `ISO 639-2` code is 
+used. The `Latn` subtag indicates that the language is transliterated into Latin 
+script.
+
+[cols="<,<,<,<,<,<"]
+|===
+| Code    | Language           | Code    | Language       | Code    | Language
+
+| af      | Afrikaans          | hr      | Croatian       | pa      | Punjabi        
+| am      | Amharic            | ht      | Haitian        | pl      | Polish        
+| ar      | Arabic             | hu      | Hungarian      | ps      | Pashto        
+| az      | Azerbaijani        | hy      | Armenian       | pt      | Portuguese
+| be      | Belarusian         | id      | Indonesian     | ro      | Romanian
+| bg      | Bulgarian          | ig      | Igbo           | ru      | Russian
+| bg-Latn | Bulgarian          | is      | Icelandic      | ru-Latn | Russian
+| bn      | Bengali            | it      | Italian        | sd      | Sindhi
+| bs      | Bosnian            | iw      | Hebrew         | si      | Sinhala
+| ca      | Catalan            | ja      | Japanese       | sk      | Slovak
+| ceb     | Cebuano            | ja-Latn | Japanese       | sl      | Slovenian
+| co      | Corsican           | jv      | Javanese       | sm      | Samoan
+| cs      | Czech              | ka      | Georgian       | sn      | Shona
+| cy      | Welsh              | kk      | Kazakh         | so      | Somali
+| da      | Danish             | km      | Central Khmer  | sq      | Albanian
+| de      | German             | kn      | Kannada        | sr      | Serbian
+| el      | Greek, modern      | ko      | Korean         | st      | Southern Sotho
+| el-Latn | Greek, modern      | ku      | Kurdish        | su      | Sundanese
+| en      | English            | ky      | Kirghiz        | sv      | Swedish
+| eo      | Esperanto          | la      | Latin          | sw      | Swahili
+| es      | Spanish, Castilian | lb      | Luxembourgish  | ta      | Tamil
+| et      | Estonian           | lo      | Lao            | te      | Telugu
+| eu      | Basque             | lt      | Lithuanian     | tg      | Tajik
+| fa      | Persian            | lv      | Latvian        | th      | Thai
+| fi      | Finnish            | mg      | Malagasy       | tr      | Turkish
+| fil     | Filipino           | mi      | Maori          | uk      | Ukrainian
+| fr      | French             | mk      | Macedonian     | ur      | Urdu
+| fy      | Western Frisian    | ml      | Malayalam      | uz      | Uzbek
+| ga      | Irish              | mn      | Mongolian      | vi      | Vietnamese
+| gd      | Gaelic             | mr      | Marathi        | xh      | Xhosa
+| gl      | Galician           | ms      | Malay          | yi      | Yiddish
+| gu      | Gujarati           | mt      | Maltese        | yo      | Yoruba
+| ha      | Hausa              | my      | Burmese        | zh      | Chinese
+| haw     | Hawaiian           | ne      | Nepali         | zh-Latn | Chinese
+| hi      | Hindi              | nl      | Dutch, Flemish | zu      | Zulu
+| hi-Latn | Hindi              | no      | Norwegian      |         |   
+| hmn     | Hmong              | ny      | Chichewa       |         |   
+|===
+
+
+[discrete]
+[[ml-lang-ident-readings]]
+=== Further reading
+
+* https://www.elastic.co/blog/multilingual-search-using-language-identification-in-elasticsearch[Multilingual search using language identification in {es}]

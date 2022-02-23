@@ -49,7 +49,7 @@ _Density based methods_ are used for mitigating this problem.
 
 The four algorithms don't always agree on which points are outliers. By default, 
 {oldetection} jobs use all these methods, then normalize and combine their 
-results and give every datapoint in the index an {olscore}. The {olscore} ranges 
+results and give every data point in the index an {olscore}. The {olscore} ranges 
 from 0 to 1, where the higher number represents the chance that the data point 
 is an outlier compared to the other data points in the index.
 
@@ -74,7 +74,7 @@ unusual user behavior on a network. As {oldetection} operates on the assumption
 that the outliers make up a small proportion of the overall data population, you 
 can use this feature in such cases. {oldetection-cap} is a batch analysis that 
 works best on an entity-centric index. If your use case is based on time series 
-data, you might want to use <<ml-ad-finding-anomalies, {anomaly-detect}>> 
+data, you might want to use <<ml-ad-overview,{anomaly-detect}>> 
 instead.
 
 The {ml-features} provide unsupervised {oldetection}, which means there is no 
@@ -85,13 +85,9 @@ need to provide a training data set.
 [[dfa-outlier-detection-environment]]
 == 2. Set up the environment
 
-If you want to use {ml-features}, there must be at least one {ml} node in your 
-cluster and all master-eligible nodes must have {ml} enabled. By default, all 
-nodes are {ml} nodes. For more information about these settings, see 
-{ref}/modules-node.html#ml-node[{ml} nodes].
-
-If {stack-security-features} are enabled, you must also ensure your users have
-the necessary privileges. See <<setup>>.
+Before you can use the {stack-ml-features}, there are some configuration
+requirements (such as security privileges) that must be addressed. Refer to
+<<setup>>.
 
 
 [discrete]
@@ -129,7 +125,7 @@ has four phases:
 
 * `reindexing`: documents are copied from the source index to the destination 
   index.
-* `loading_data`: the job fatches the necessary data from the destination index.
+* `loading_data`: the job fetches the necessary data from the destination index.
 * `computing_outliers`: the job identifies outliers in the data.
 * `writing_results`: the job matches the results with the data rows in the 
   destination index, merges them, and indexes them back to the destination 
@@ -247,7 +243,7 @@ IP.
 In particular, create a {transform} that calculates the number of occasions when 
 a specific client IP communicated with the network (`@timestamp.value_count`), 
 the sum of the bytes that are exchanged between the network and the client's 
-machine (`bytes.sum`), the maximum excanged bytes during a single occasion 
+machine (`bytes.sum`), the maximum exchanged bytes during a single occasion 
 (`bytes.max`), and the total number of requests (`request.value_count`) 
 initiated by a specific client IP.
 
@@ -266,7 +262,7 @@ Alternatively, you can use the
 ====
 [source,console]
 --------------------------------------------------
-POST _data_frame/transforms/_preview
+POST _transform/_preview
 {
   "source": {
     "index": [
@@ -306,7 +302,7 @@ POST _data_frame/transforms/_preview
   }
 }
 
-PUT _data_frame/transforms/logs-by-clientip
+PUT _transform/logs-by-clientip
 {
   "source": {
     "index": [
@@ -339,7 +335,7 @@ PUT _data_frame/transforms/logs-by-clientip
       },
       "request.value_count": {
         "value_count": {
-          "field": "request"
+          "field": "request.keyword"
         }
       }
     }
@@ -374,7 +370,7 @@ use the {ref}/start-data-frame-transform.html[start {transforms}] API.
 ====
 [source,console]
 --------------------------------------------------
-POST _data_frame/transforms/logs-by-clientip/_start
+POST _transform/logs-by-clientip/_start
 --------------------------------------------------
 // TEST[skip:setup kibana sample data]
 ====
@@ -478,7 +474,7 @@ In addition to an overall outlier score, each document is annotated with feature
 influence values for each field. These values add up to 1 and indicate which
 fields are the most important in deciding whether an entity is an outlier or
 inlier. For example, the dark shading on the `bytes.sum` field for the client IP 
-`111.237.144.54` indicates that the sum of the excanged bytes was the most
+`111.237.144.54` indicates that the sum of the exchanged bytes was the most
 influential feature in determining that that client IP is an outlier.
 
 If you want to see the exact feature influence values, you can retrieve them

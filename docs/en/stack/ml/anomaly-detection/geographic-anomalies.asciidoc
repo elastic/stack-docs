@@ -56,8 +56,8 @@ the <<ml-lat-long,`lat_long` function>> to analyze your own data or the sample
 data sets.
 
 To create an {anomaly-job} that uses the `lat_long` function, in {kib} you must
-click **Create job** on the **{ml-cap} > {anomaly-detect-cap}** page and select
-the advanced job wizard. Alternatively, use the
+click **Create job** on the **{ml-cap} > {anomaly-detect-cap} > Jobs** page and
+select the advanced job wizard. Alternatively, use the
 {ref}/ml-put-job.html[create {anomaly-jobs} API].
 
 For example, create a job that analyzes the sample eCommerce orders data set to
@@ -112,7 +112,7 @@ POST _ml/anomaly_detectors/ecommerce-geo/_open <3>
 
 POST _ml/datafeeds/datafeed-ecommerce-geo/_start <4>
 {
-  "end": "2021-06-19T23:00:00Z"
+  "end": "2022-03-22T23:00:00Z"
 }
 --------------------------------------------------
 <1> Create the {anomaly-job}.
@@ -179,7 +179,7 @@ POST _ml/anomaly_detectors/weblogs-geo/_open <3>
 
 POST _ml/datafeeds/datafeed-weblogs-geo/_start <4>
 {
-  "end": "2021-07-15T22:00:00Z"
+  "end": "2022-04-15T22:00:00Z"
 }
 --------------------------------------------------
 <1> Create the {anomaly-job}.
@@ -200,10 +200,10 @@ After the {anomaly-jobs} have processed some data, you can view the results in
 TIP: If you used APIs to create the jobs and {dfeeds}, you cannot see them
 in {kib} until you follow the prompts to synchronize the necessary saved objects.
 
-When you select a period that contains an anomaly in the swim lane results, you
-can see a map of the typical and actual coordinates. For example, the `jackson`
-user ID typically shops in Los Angeles so their purchase in New York is
-anomalous in the eCommerce sample data:
+When you select a period that contains an anomaly in the **Anomaly Explorer**
+swim lane results, you can see a map of the typical and actual coordinates. For
+example, in the eCommerce sample data there is a user with anomalous shopping
+behavior:
 
 [role="screenshot"]
 image::images/ecommerce-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous event in the eCommerce data in Anomaly Explorer]
@@ -225,6 +225,22 @@ influencers to detect the type of behavior you're seeking.
 For more information about {anomaly-detect} concepts, see <<ml-concepts>>.
 For the full list of functions that you can use in {anomaly-jobs}, see
 <<ml-functions>>. For more {anomaly-detect} examples, see <<anomaly-examples>>.
+
+
+[discrete]
+[[geographic-anomalies-map-layer]]
+== Add anomaly layers to your maps
+
+To integrate the results from your {anomaly-job} in **Maps**, click
+**Add layer**, then select **ML Anomalies**. You must then select or create an
+{anomaly-job} that uses the `lat_long`function. 
+
+For example, you can extend the map example from
+{kibana-ref}/maps-getting-started.html[Build a map to compare metrics by country or region]
+to include an anomalies layer that uses your web logs job:
+
+[role="screenshot"]
+image::images/weblogs-anomaly-map.jpg[A screenshot of an anomaly within the Maps app]
 
 [discrete]
 [[geographic-anomalies-next]]

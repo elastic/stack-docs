@@ -7,10 +7,12 @@ BERT model interface and use the WordPiece tokenization algorithm.
 The current list of supported architectures is:
 
 * BERT
+* BART
 * DPR bi-encoders
 * DistilBERT
 * ELECTRA
 * MobileBERT
+* RoBERTa
 * RetriBERT
 * MPNet
 * SentenceTransformers bi-encoders with the above transformer architectures
@@ -30,6 +32,8 @@ refer to <<ml-nlp-overview>>.
 == Third party fill-mask models
 
 * https://huggingface.co/bert-base-uncased
+* https://huggingface.co/distilroberta-base
+* https://huggingface.co/roberta-large
 * https://huggingface.co/microsoft/mpnet-base
 
 [discrete]
@@ -39,6 +43,8 @@ refer to <<ml-nlp-overview>>.
 * https://huggingface.co/dslim/bert-base-NER
 * https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english
 * https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
+* https://huggingface.co/philschmid/distilroberta-base-ner-conll2003
+
 
 [discrete]
 [[ml-nlp-model-ref-text-embedding]]
@@ -47,6 +53,7 @@ refer to <<ml-nlp-overview>>.
 Using `SentenceTransformerWrapper`:
 
 * https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2
+* https://huggingface.co/sentence-transformers/all-mpnet-base-v2
 * https://huggingface.co/sentence-transformers/LaBSE
 * https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b 
 * https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3
@@ -55,6 +62,7 @@ Using `SentenceTransformerWrapper`:
 * https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base
 * https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base
 * https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2
+* https://huggingface.co/sentence-transformers/all-distilroberta-v1
 
 Using `DPREncoderWrapper`:
 
@@ -76,6 +84,7 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english
 * https://huggingface.co/ProsusAI/finbert
 * https://huggingface.co/nateraw/bert-base-uncased-emotion
+* https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment
 
 [discrete]
 [[ml-nlp-model-ref-zero-shot]]
@@ -84,3 +93,7 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/typeform/distilbert-base-uncased-mnli
 * https://huggingface.co/typeform/mobilebert-uncased-mnli
 * https://huggingface.co/typeform/squeezebert-mnli
+* https://huggingface.co/facebook/bart-large-mnli
+* https://huggingface.co/valhalla/distilbart-mnli-12-6
+* https://huggingface.co/cross-encoder/nli-distilroberta-base
+* https://huggingface.co/cross-encoder/nli-roberta-base

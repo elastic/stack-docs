@@ -208,8 +208,7 @@ prompted:
 
 [source,shell]
 ----
-curl --cacert $ES_PATH_CONF/tls_auto_config_<timestamp>/http_ca.crt \
--u elastic https://localhost:9200
+curl --cacert $ES_PATH_CONF/certs/http_ca.crt -u elastic https://localhost:9200 
 ----
 // NOTCONSOLE
 

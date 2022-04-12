@@ -81,6 +81,10 @@ Alternatively, you can use the
 {ref}/start-trained-model-deployment.html[start trained model deployment API] or
 specify the `--start` option when you run the `eland_import_hub_model` script.
 
+NOTE: Since eland uses APIs to deploy the models, you cannot see them in
+**{ml-app}** until you follow the prompts to synchronize the necessary saved
+objects.
+
 When you deploy the model, it is allocated to all available {ml} nodes. The
 model is loaded into memory in a native process that encapsulates `libtorch`,
 which is the underlying machine learning library of PyTorch.

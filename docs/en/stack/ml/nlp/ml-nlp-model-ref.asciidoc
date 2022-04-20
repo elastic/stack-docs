@@ -36,7 +36,8 @@ refer to <<ml-nlp-overview>>.
 * https://huggingface.co/roberta-large
 * https://huggingface.co/microsoft/mpnet-base
 
-== Fill mask expected model output
+[discrete]
+=== Fill mask expected model output
 
 Fill mask is a specific kind of token classification. Usually the base training task of many transformer models.
 
@@ -72,22 +73,19 @@ Should output:
 * https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
 * https://huggingface.co/philschmid/distilroberta-base-ner-conll2003
 
-== Named entity recognition expected model output
+[discrete]
+=== Named entity recognition expected model output
 
 Named entity recognition is a specific token classification task. Each token in the sequence is scored related to 
 a specific set of classification labels. For the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
  only the following classification labels are supported: "o", "b_misc", "i_misc", "b_per", "i_per", "b_org", "i_org", "b_loc", "i_loc".
 
-Each entity label indicates:
-+
---
-`"o"` indicates that the current token is outside any entity.
+The `"o"` entity label indicates that the current token is outside any entity.
 `"b"` indicates the beginning of an entity.
-`"misc"` is a miscellaneous entity
-`"loc"` is a location
-`"per"` is a person
-`"org"` is an organization
---
+`"misc"` is a miscellaneous entity.
+`"loc"` is a location.
+`"per"` is a person.
+`"org"` is an organization.
 
 The response format of the model must be <number of sequences inferred> by <number of tokens in sequence> by <classification score for each entity for that token>.
 
@@ -135,6 +133,7 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/castorini/bpr-nq-ctx-encoder
 * https://huggingface.co/castorini/bpr-nq-question-encoder
 
+[discrete]
 === Text embedding expected model output
 
 Text embedding allows for semantic embedding of text for dense information retrieval. 
@@ -155,6 +154,7 @@ each inferred sequence.
 * https://huggingface.co/nateraw/bert-base-uncased-emotion
 * https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment
 
+[discrete]
 === Text classification expected model output
 
 With text classification, the entire sequence is classified. An example of this is sentiment analysis.
@@ -186,6 +186,7 @@ Example for a binary classification model of happy, sad:
 * https://huggingface.co/cross-encoder/nli-distilroberta-base
 * https://huggingface.co/cross-encoder/nli-roberta-base
 
+[discrete]
 === Zero-shot text classification expected model output
 
 Zero-shot text classification allows text to be classified for arbitrary labels not necessarily part of the original
@@ -194,7 +195,7 @@ combinations according to `[entailment, neutral, contradiction]`
 
 The required output of the model is <number of sequences> <number of labels> <classification for label>.
 
-Classifying a single sequence against 4 labels would look like the following
+Classifying a single sequence against 4 labels would look like the following:
 
 [source]
 ----

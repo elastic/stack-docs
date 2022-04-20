@@ -36,6 +36,33 @@ refer to <<ml-nlp-overview>>.
 * https://huggingface.co/roberta-large
 * https://huggingface.co/microsoft/mpnet-base
 
+== Fill mask expected model output
+
+Fill mask is a specific kind of token classification. Usually the base training task of many transformer models.
+
+For the Elastic stack's fill mask NLP task to understand the model output, it must have a specific format. 
+
+It needs to be <number of sequences inferred> by <number of tokens in sequence> by <token score for all tokens in vocabulary>.
+
+Here is an example with a single sequence `"The capital of [MASK] is Paris"` and with vocabulary
+`["The", "capital", "of", "is", "Paris", "France", "[MASK]"]`.
+
+Should output:
+
+[source]
+----
+ [
+   [
+     [ 0, 0, 0, 0, 0, 0, 0 ], // The
+     [ 0, 0, 0, 0, 0, 0, 0 ], // capital
+     [ 0, 0, 0, 0, 0, 0, 0 ], // of
+     [ 0.01, 0.01, 0.3, 0.01, 0.2, 1.2, 0.1 ], // [MASK]
+     [ 0, 0, 0, 0, 0, 0, 0 ], // is
+     [ 0, 0, 0, 0, 0, 0, 0 ] // Paris
+   ] 
+]
+----
+
 [discrete]
 [[ml-nlp-model-ref-ner]]
 == Third party named entity recognition models
@@ -45,6 +72,39 @@ refer to <<ml-nlp-overview>>.
 * https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
 * https://huggingface.co/philschmid/distilroberta-base-ner-conll2003
 
+== Named entity recognition expected model output
+
+Named entity recognition is a specific token classification task. Each token in the sequence is scored related to 
+a specific set of classification labels. For the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
+ only the following classification labels are supported: "o", "b_misc", "i_misc", "b_per", "i_per", "b_org", "i_org", "b_loc", "i_loc".
+
+Each entity label indicates:
++
+--
+`"o"` indicates that the current token is outside any entity.
+`"b"` indicates the beginning of an entity.
+`"misc"` is a miscellaneous entity
+`"loc"` is a location
+`"per"` is a person
+`"org"` is an organization
+--
+
+The response format of the model must be <number of sequences inferred> by <number of tokens in sequence> by <classification score for each entity for that token>.
+
+An example of this is where the order of the entity classification labels is: .
+
+[source]
+----
+ [
+   [
+//    "o", "b_misc", "i_misc", "b_per", "i_per", "b_org", "i_org", "b_loc", "i_loc"
+     [ 0,  0,         0,       0.4,     0.5,     0,       0.1,     0,       0 ], // Waldo 
+     [ 1,  0,         0,       0,       0,       0,       0,       0,       0 ], // is
+     [ 1,  0,         0,       0,       0,       0,       0,       0,       0 ], // in
+     [ 0,  0,         0,       0,       0,       0,       0,       0,       1.0 ] // Paris
+   ] 
+]
+----
 
 [discrete]
 [[ml-nlp-model-ref-text-embedding]]
@@ -75,6 +135,15 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/castorini/bpr-nq-ctx-encoder
 * https://huggingface.co/castorini/bpr-nq-question-encoder
 
+=== Text embedding expected model output
+
+Text embedding allows for semantic embedding of text for dense information retrieval. 
+
+The required format here is that the model outputs the specific embedding directly without any additional pooling. 
+
+Eland does this wrapping for the aforementioned models. But if supplying your own, the model must output the embedding for
+each inferred sequence.
+
 [discrete]
 [[ml-nlp-model-ref-text-classification]]
 === Third party text classification models
@@ -85,6 +154,25 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/ProsusAI/finbert
 * https://huggingface.co/nateraw/bert-base-uncased-emotion
 * https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment
+
+=== Text classification expected model output
+
+With text classification, the entire sequence is classified. An example of this is sentiment analysis.
+
+The output of the model must be <number of sequences> <classification score of each sequence>.
+
+Example for a binary classification model of happy, sad:
+[source]
+----
+ [
+   [
+//     happy, sad
+     [ 0,     1], // first sequence 
+     [ 1,     0] // second sequence
+   ] 
+]
+----
+
 
 [discrete]
 [[ml-nlp-model-ref-zero-shot]]
@@ -97,3 +185,26 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/valhalla/distilbart-mnli-12-6
 * https://huggingface.co/cross-encoder/nli-distilroberta-base
 * https://huggingface.co/cross-encoder/nli-roberta-base
+
+=== Zero-shot text classification expected model output
+
+Zero-shot text classification allows text to be classified for arbitrary labels not necessarily part of the original
+training. Each sequence is combined with the label given some hypothesis template. The model then scores each of these
+combinations according to `[entailment, neutral, contradiction]`
+
+The required output of the model is <number of sequences> <number of labels> <classification for label>.
+
+Classifying a single sequence against 4 labels would look like the following
+
+[source]
+----
+ [
+   [
+//     entailment, neutral, contradiction
+     [ 0.5,        0.1,     0.4], // first label 
+     [ 0,          0,       1], // second label 
+     [ 1,          0,       0], // third label 
+     [ 0.7,        0.2,     0.1] // fourth label
+   ] 
+]
+----

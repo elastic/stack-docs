@@ -39,7 +39,7 @@ refer to <<ml-nlp-overview>>.
 [discrete]
 === Fill mask expected model output
 
-Fill mask is a specific kind of token classification. Usually the base training task of many transformer models.
+Fill mask is a specific kind of token classification; it is the base training task of many transformer models.
 
 For the Elastic stack's fill mask NLP task to understand the model output, it must have a specific format. 
 
@@ -89,7 +89,7 @@ The `"o"` entity label indicates that the current token is outside any entity.
 
 The response format of the model must be <number of sequences inferred> by <number of tokens in sequence> by <classification score for each entity for that token>.
 
-An example of this is where the order of the entity classification labels is: .
+Here is an example with a single sequence `"Waldo is in Paris"`:
 
 [source]
 ----
@@ -138,7 +138,7 @@ Using `DPREncoderWrapper`:
 
 Text embedding allows for semantic embedding of text for dense information retrieval. 
 
-The required format here is that the model outputs the specific embedding directly without any additional pooling. 
+The output of the model must be the specific embedding directly without any additional pooling. 
 
 Eland does this wrapping for the aforementioned models. But if supplying your own, the model must output the embedding for
 each inferred sequence.
@@ -157,11 +157,11 @@ each inferred sequence.
 [discrete]
 === Text classification expected model output
 
-With text classification, the entire sequence is classified. An example of this is sentiment analysis.
+With text classification (for example, in tasks like sentiment analysis), the entire sequence is classified.
 
 The output of the model must be <number of sequences> <classification score of each sequence>.
 
-Example for a binary classification model of happy, sad:
+Here is an example with two sequences for a binary classification model of "happy" and "sad":
 [source]
 ----
  [
@@ -195,7 +195,7 @@ combinations according to `[entailment, neutral, contradiction]`
 
 The required output of the model is <number of sequences> <number of labels> <classification for label>.
 
-Classifying a single sequence against 4 labels would look like the following:
+Here is an example with a single sequence classified against 4 labels:
 
 [source]
 ----

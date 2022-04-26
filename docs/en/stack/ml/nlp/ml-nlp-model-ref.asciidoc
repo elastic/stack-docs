@@ -63,7 +63,7 @@ Should output:
 ]
 ----
 
-The predicted value here for `[MASK]` is obviously `"France"` with a score of 1.2.
+The predicted value here for `[MASK]` is `"France"` with a score of 1.2.
 
 [discrete]
 [[ml-nlp-model-ref-ner]]
@@ -89,7 +89,7 @@ The `"O"` entity label indicates that the current token is outside any entity.
 `"PER"` is a person.
 `"ORG"` is an organization.
 
-The response format must be a float tensor with `shape(<number of sequences>, <number of tokens>, <num classification labels>)`.
+The response format must be a float tensor with `shape(<number of sequences>, <number of tokens>, <number of classification labels>)`.
 
 Here is an example with a single sequence `"Waldo is in Paris"`:
 
@@ -159,7 +159,7 @@ each inferred sequence.
 === Text classification expected model output
 
 With text classification (for example, in tasks like sentiment analysis), the entire sequence is classified. The output of
-the model must be a float tensor with `shape(<number of sequences>, <num classification labels>)`.
+the model must be a float tensor with `shape(<number of sequences>, <number of classification labels>)`.
 
 Here is an example with two sequences for a binary classification model of "happy" and "sad":
 [source]
@@ -192,7 +192,7 @@ Here is an example with two sequences for a binary classification model of "happ
 Zero-shot text classification allows text to be classified for arbitrary labels not necessarily part of the original
 training. Each sequence is combined with the label given some hypothesis template. The model then scores each of these
 combinations according to `[entailment, neutral, contradiction]`. The output of the model must be a float tensor 
-with `shape(<number of sequences>, <number of labels>, <3>)`.
+with `shape(<number of sequences>, <number of labels>, 3)`.
 
 Here is an example with a single sequence classified against 4 labels:
 

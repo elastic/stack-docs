@@ -36,11 +36,13 @@ refer to <<ml-nlp-overview>>.
 * https://huggingface.co/roberta-large
 * https://huggingface.co/microsoft/mpnet-base
 
-== Fill mask expected model output
+[discrete]
+=== Fill mask expected model output
 
-Fill mask is a specific kind of token classification. Usually the base training task of many transformer models. 
-For the Elastic stack's fill mask NLP task to understand the model output, it must have a specific format. It needs to 
-be a float tensor with `shape(<number of sequences>, <number of tokens>, <vocab size>)`.
+Fill mask is a specific kind of token classification; it is the base training task of many transformer models.
+
+For the Elastic stack's fill mask NLP task to understand the model output, it must have a specific format. It needs to
+be a float tensor with `shape(<number of sequences>, <number of tokens>, <vocab size>)`. 
 
 Here is an example with a single sequence `"The capital of [MASK] is Paris"` and with vocabulary
 `["The", "capital", "of", "is", "Paris", "France", "[MASK]"]`.
@@ -72,27 +74,24 @@ The predicted value here for `[MASK]` is obviously `"France"` with a score of 1.
 * https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
 * https://huggingface.co/philschmid/distilroberta-base-ner-conll2003
 
-== Named entity recognition expected model output
+[discrete]
+=== Named entity recognition expected model output
 
 Named entity recognition is a specific token classification task. Each token in the sequence is scored related to 
 a specific set of classification labels. For the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
  only the following classification labels are supported: "O", "B_MISC", "I_MISC", "B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC".
 
-Each entity label indicates:
-+
---
-`"O"` Indicates that the current token is outside any entity.
-`"B"` Indicates the beginning of an entity.
-`"I"` Indicates that the token is inside an entity.
-`"MISC"` is a miscellaneous entity
-`"LOC"` is a location
-`"PER"` is a person
-`"ORG"` is an organization
---
+The `"O"` entity label indicates that the current token is outside any entity.
+`"I"` indicates that the token is inside an entity.
+`"B"` indicates the beginning of an entity.
+`"MISC"` is a miscellaneous entity.
+`"LOC"` is a location.
+`"PER"` is a person.
+`"ORG"` is an organization.
 
 The response format must be a float tensor with `shape(<number of sequences>, <number of tokens>, <num classification labels>)`.
 
-An example of this is where the order of the entity classification labels is: .
+Here is an example with a single sequence `"Waldo is in Paris"`:
 
 [source]
 ----
@@ -136,10 +135,11 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/castorini/bpr-nq-ctx-encoder
 * https://huggingface.co/castorini/bpr-nq-question-encoder
 
+[discrete]
 === Text embedding expected model output
 
-Text embedding allows for semantic embedding of text for dense information retrieval. The required format here is that 
-the model outputs the specific embedding directly without any additional pooling. 
+Text embedding allows for semantic embedding of text for dense information retrieval. 
+The output of the model must be the specific embedding directly without any additional pooling. 
 
 Eland does this wrapping for the aforementioned models. But if supplying your own, the model must output the embedding for
 each inferred sequence.
@@ -155,12 +155,13 @@ each inferred sequence.
 * https://huggingface.co/nateraw/bert-base-uncased-emotion
 * https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment
 
+[discrete]
 === Text classification expected model output
 
-With text classification, the entire sequence is classified. An example of this is sentiment analysis. The output of 
+With text classification (for example, in tasks like sentiment analysis), the entire sequence is classified. The output of
 the model must be a float tensor with `shape(<number of sequences>, <num classification labels>)`.
 
-Example for a binary classification model of happy, sad:
+Here is an example with two sequences for a binary classification model of "happy" and "sad":
 [source]
 ----
  [
@@ -185,6 +186,7 @@ Example for a binary classification model of happy, sad:
 * https://huggingface.co/cross-encoder/nli-distilroberta-base
 * https://huggingface.co/cross-encoder/nli-roberta-base
 
+[discrete]
 === Zero-shot text classification expected model output
 
 Zero-shot text classification allows text to be classified for arbitrary labels not necessarily part of the original
@@ -192,7 +194,7 @@ training. Each sequence is combined with the label given some hypothesis templat
 combinations according to `[entailment, neutral, contradiction]`. The output of the model must be a float tensor 
 with `shape(<number of sequences>, <number of labels>, <3>)`.
 
-Classifying a single sequence against 4 labels would look like the following
+Here is an example with a single sequence classified against 4 labels:
 
 [source]
 ----

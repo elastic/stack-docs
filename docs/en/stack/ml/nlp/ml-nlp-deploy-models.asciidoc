@@ -90,7 +90,6 @@ When you deploy the model, it is allocated to all available {ml} nodes. The
 model is loaded into memory in a native process that encapsulates `libtorch`,
 which is the underlying machine learning library of PyTorch.
 
-//TBD: Are these threading options available in the script and in Kibana?
 You can optionally specify the number of CPU cores it has access to on each node.
 If you choose to optimize for latency (that is to say, inference should return
 as fast as possible), you can increase `inference_threads` to lower latencies.
@@ -114,9 +113,19 @@ perform inference. _{infer-cap}_ is a {ml} feature that enables you to use your
 trained models to perform NLP tasks (such as text extraction, classification, or
 embeddings) on incoming data.
 
-The simplest method to test your model against new data is to use the 
+The simplest method to test your model against new data is to use the
+*Test model* action in {kib}:
+
+[role="screenshot"]
+image::images/ml-nlp-test-ner.png[A document from the {lang-ident} pipeline in the Discover app,align="center"]
+
+NOTE: This functionality is currently available only for the
+`lang_ident_model_1` model and for supported
+<<ml-nlp-model-ref-ner,third party named entity recognition models>>.
+
+For all other trained models, you can use the
 {ref}/infer-trained-model-deployment.html[infer trained model deployment API].
-For example, to try a named entity recognition task, provide some sample text:
+For example:
 
 [source,console]
 --------------------------------------------------

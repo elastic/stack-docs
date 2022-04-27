@@ -117,15 +117,15 @@ The simplest method to test your model against new data is to use the
 *Test model* action in {kib}:
 
 [role="screenshot"]
-image::images/ml-nlp-test-ner.png[A document from the {lang-ident} pipeline in the Discover app,align="center"]
+image::images/ml-nlp-test-lang-ident.png[Testing a French phrase against the language identification trained model in the *{ml}* app]
 
-NOTE: This functionality is currently available only for the
+NOTE: This {kib} functionality is currently available only for the
 `lang_ident_model_1` model and for supported
 <<ml-nlp-model-ref-ner,third party named entity recognition models>>.
 
-For all other trained models, you can use the
+Alternatively, you can use the
 {ref}/infer-trained-model-deployment.html[infer trained model deployment API].
-For example:
+For example, to try a named entity recognition task, provide some sample text:
 
 [source,console]
 --------------------------------------------------

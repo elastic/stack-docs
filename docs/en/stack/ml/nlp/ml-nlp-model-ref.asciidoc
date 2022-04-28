@@ -45,7 +45,6 @@ refer to <<ml-nlp-overview>>.
 * https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
 * https://huggingface.co/philschmid/distilroberta-base-ner-conll2003
 
-
 [discrete]
 [[ml-nlp-model-ref-text-embedding]]
 == Third party text embedding models
@@ -97,3 +96,121 @@ Using `DPREncoderWrapper`:
 * https://huggingface.co/valhalla/distilbart-mnli-12-6
 * https://huggingface.co/cross-encoder/nli-distilroberta-base
 * https://huggingface.co/cross-encoder/nli-roberta-base
+
+[discrete]
+== Expected model output
+
+Models used for each NLP task type must output tensors of a specific format to be used in the Elasticsearch NLP pipelines.
+
+Here are the expected outputs for each task type.
+
+[discrete]
+=== Fill mask expected model output
+
+Fill mask is a specific kind of token classification; it is the base training task of many transformer models.
+
+For the Elastic stack's fill mask NLP task to understand the model output, it must have a specific format. It needs to
+be a float tensor with `shape(<number of sequences>, <number of tokens>, <vocab size>)`.
+
+Here is an example with a single sequence `"The capital of [MASK] is Paris"` and with vocabulary
+`["The", "capital", "of", "is", "Paris", "France", "[MASK]"]`.
+
+Should output:
+
+[source]
+----
+ [
+   [
+     [ 0, 0, 0, 0, 0, 0, 0 ], // The
+     [ 0, 0, 0, 0, 0, 0, 0 ], // capital
+     [ 0, 0, 0, 0, 0, 0, 0 ], // of
+     [ 0.01, 0.01, 0.3, 0.01, 0.2, 1.2, 0.1 ], // [MASK]
+     [ 0, 0, 0, 0, 0, 0, 0 ], // is
+     [ 0, 0, 0, 0, 0, 0, 0 ] // Paris
+   ] 
+]
+----
+
+The predicted value here for `[MASK]` is `"France"` with a score of 1.2.
+
+[discrete]
+=== Named entity recognition expected model output
+
+Named entity recognition is a specific token classification task. Each token in the sequence is scored related to
+a specific set of classification labels. For the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
+only the following classification labels are supported: "O", "B_MISC", "I_MISC", "B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC".
+
+The `"O"` entity label indicates that the current token is outside any entity.
+`"I"` indicates that the token is inside an entity.
+`"B"` indicates the beginning of an entity.
+`"MISC"` is a miscellaneous entity.
+`"LOC"` is a location.
+`"PER"` is a person.
+`"ORG"` is an organization.
+
+The response format must be a float tensor with `shape(<number of sequences>, <number of tokens>, <number of classification labels>)`.
+
+Here is an example with a single sequence `"Waldo is in Paris"`:
+
+[source]
+----
+ [
+   [
+//    "O", "B_MISC", "I_MISC", "B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC"
+     [ 0,  0,         0,       0.4,     0.5,     0,       0.1,     0,       0 ], // Waldo 
+     [ 1,  0,         0,       0,       0,       0,       0,       0,       0 ], // is
+     [ 1,  0,         0,       0,       0,       0,       0,       0,       0 ], // in
+     [ 0,  0,         0,       0,       0,       0,       0,       0,       1.0 ] // Paris
+   ] 
+]
+----
+
+[discrete]
+=== Text embedding expected model output
+
+Text embedding allows for semantic embedding of text for dense information retrieval.
+The output of the model must be the specific embedding directly without any additional pooling.
+
+Eland does this wrapping for the aforementioned models. But if supplying your own, the model must output the embedding for
+each inferred sequence.
+
+[discrete]
+=== Text classification expected model output
+
+With text classification (for example, in tasks like sentiment analysis), the entire sequence is classified. The output of
+the model must be a float tensor with `shape(<number of sequences>, <number of classification labels>)`.
+
+Here is an example with two sequences for a binary classification model of "happy" and "sad":
+[source]
+----
+ [
+   [
+//     happy, sad
+     [ 0,     1], // first sequence 
+     [ 1,     0] // second sequence
+   ] 
+]
+----
+
+[discrete]
+=== Zero-shot text classification expected model output
+
+Zero-shot text classification allows text to be classified for arbitrary labels not necessarily part of the original
+training. Each sequence is combined with the label given some hypothesis template. The model then scores each of these
+combinations according to `[entailment, neutral, contradiction]`. The output of the model must be a float tensor
+with `shape(<number of sequences>, <number of labels>, 3)`.
+
+Here is an example with a single sequence classified against 4 labels:
+
+[source]
+----
+ [
+   [
+//     entailment, neutral, contradiction
+     [ 0.5,        0.1,     0.4], // first label 
+     [ 0,          0,       1], // second label 
+     [ 1,          0,       0], // third label 
+     [ 0.7,        0.2,     0.1] // fourth label
+   ] 
+]
+----

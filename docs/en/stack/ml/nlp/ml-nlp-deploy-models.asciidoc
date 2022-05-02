@@ -124,12 +124,13 @@ NOTE: This {kib} functionality is currently available only for the
 <<ml-nlp-model-ref-ner,third party named entity recognition models>>.
 
 Alternatively, you can use the
-{ref}/infer-trained-model-deployment.html[infer trained model deployment API].
+{ref}/infer-trained-model.html[infer trained model API].
 For example, to try a named entity recognition task, provide some sample text:
 
+//TBD: Test new API request and response
 [source,console]
 --------------------------------------------------
-POST /_ml/trained_models/elastic__distilbert-base-cased-finetuned-conll03-english/deployment/_infer
+POST /_ml/trained_models/elastic__distilbert-base-cased-finetuned-conll03-english/_infer
 {
     "docs":{
         "text_field":"Sasha bought 300 shares of Acme Corp in 2022."

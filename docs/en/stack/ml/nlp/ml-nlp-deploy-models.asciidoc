@@ -81,11 +81,15 @@ Alternatively, you can use the
 {ref}/start-trained-model-deployment.html[start trained model deployment API] or
 specify the `--start` option when you run the `eland_import_hub_model` script.
 
+NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
+{kib} until the saved objects are synchronized. You can follow the prompts in
+{kib}, wait for automatic synchronization, or use the
+{kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
+
 When you deploy the model, it is allocated to all available {ml} nodes. The
 model is loaded into memory in a native process that encapsulates `libtorch`,
 which is the underlying machine learning library of PyTorch.
 
-//TBD: Are these threading options available in the script and in Kibana?
 You can optionally specify the number of CPU cores it has access to on each node.
 If you choose to optimize for latency (that is to say, inference should return
 as fast as possible), you can increase `inference_threads` to lower latencies.
@@ -109,7 +113,17 @@ perform inference. _{infer-cap}_ is a {ml} feature that enables you to use your
 trained models to perform NLP tasks (such as text extraction, classification, or
 embeddings) on incoming data.
 
-The simplest method to test your model against new data is to use the 
+The simplest method to test your model against new data is to use the
+*Test model* action in {kib}:
+
+[role="screenshot"]
+image::images/ml-nlp-test-lang-ident.png[Testing a French phrase against the language identification trained model in the *{ml}* app]
+
+NOTE: This {kib} functionality is currently available only for the
+`lang_ident_model_1` model and for supported
+<<ml-nlp-model-ref-ner,third party named entity recognition models>>.
+
+Alternatively, you can use the
 {ref}/infer-trained-model-deployment.html[infer trained model deployment API].
 For example, to try a named entity recognition task, provide some sample text:
 

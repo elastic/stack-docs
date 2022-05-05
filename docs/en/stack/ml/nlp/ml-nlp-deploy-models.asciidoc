@@ -50,7 +50,16 @@ Eland encapsulates both the conversion of Hugging Face transformer models to
 their TorchScript representations and the chunking process in a single Python
 method; it is therefore the recommended import method.
 
-. {eland-docs}/installation.html[Install the Eland Python client].
+. Install the {eland-docs}/installation.html[Eland Python client] with PyTorch extra dependencies.
++
+--
+[source,shell]
+--------------------------------------------------
+python -m pip install 'eland[pytorch]'
+--------------------------------------------------
+// NOTCONSOLE
+--
+
 . Run the `eland_import_hub_model` script. For example:
 +
 --

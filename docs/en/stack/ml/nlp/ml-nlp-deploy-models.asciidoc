@@ -141,9 +141,7 @@ For example, to try a named entity recognition task, provide some sample text:
 --------------------------------------------------
 POST /_ml/trained_models/elastic__distilbert-base-cased-finetuned-conll03-english/_infer
 {
-    "docs":{
-        "text_field":"Sasha bought 300 shares of Acme Corp in 2022."
-        }
+  "docs":[{"text_field":"Sasha bought 300 shares of Acme Corp in 2022."}]
 }
 --------------------------------------------------
 // TEST[skip:TBD]
@@ -154,19 +152,19 @@ recognized entities:
 [source,console-result]
 ----
 {
-  "predicted_value" : "[Sasha](PER&Sasha) bought 300 shares of [Acme Corp](ORG&Acme+Corp) in 2022.",
+  "predicted_value" : "[Sasha](ORG&Sasha) bought 300 shares of [Acme Corp](ORG&Acme+Corp) in 2022.",
   "entities" : [
     {
-      "entity" : "Sasha",
-      "class_name" : "PER",
-      "class_probability" : 0.9953193611298665,
+      "entity" : "sasha",
+      "class_name" : "ORG",
+      "class_probability" : 0.7618975251681134,
       "start_pos" : 0,
       "end_pos" : 5
     },
     {
-      "entity" : "Acme Corp",
+      "entity" : "acme corp",
       "class_name" : "ORG",
-      "class_probability" : 0.9996392201598554,
+      "class_probability" : 0.9986672643811757,
       "start_pos" : 27,
       "end_pos" : 36
     }

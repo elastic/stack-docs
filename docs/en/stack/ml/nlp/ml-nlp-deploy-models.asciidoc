@@ -50,7 +50,8 @@ Eland encapsulates both the conversion of Hugging Face transformer models to
 their TorchScript representations and the chunking process in a single Python
 method; it is therefore the recommended import method.
 
-. Install the {eland-docs}/installation.html[Eland Python client] with PyTorch extra dependencies.
+. Install the {eland-docs}/installation.html[Eland Python client] with PyTorch 
+extra dependencies.
 +
 --
 [source,shell]
@@ -63,22 +64,39 @@ python -m pip install 'eland[pytorch]'
 . Run the `eland_import_hub_model` script. For example:
 +
 --
-[source,js]
+[source]
 --------------------------------------------------
-eland_import_hub_model --url <clusterUrl> \ <1>
+eland_import_hub_model <<authentication>> \ <1>
 --hub-model-id elastic/distilbert-base-cased-finetuned-conll03-english \ <2>
---task-type ner <3>
+--task-type ner \ <3>
 --------------------------------------------------
 // NOTCONSOLE
 --
-
-<1> Specify the URL to access your cluster. For example, 
-`https://<user>:<password>@<hostname>:<port>`.
+<1> Use an authentication method to access your cluster. Refer to 
+<<authentication>> to learn more. 
 <2> Specify the identifier for the model in the Hugging Face model hub.
 <3> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
 `text_classification`, `text_embedding`, and `zero_shot_classification`.
 
 For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+
+[discrete]
+[[authentication]]
+=== Authentication methods
+
+There are four authentication methods availabe when using the import script:
+* Cloud ID authentication for Elastic Cloud users:
+  `eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>`
+* username/password authentication:
+  `eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password>`
+* API key authentication:
+  `eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key>`
+* HTTP authenthication (credentials are provided as the part of the cluster 
+  URL):
+  `eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>`.
+
+Credentials can also be specified as environment variables with 
+`ES_USERNAME/ES_PASSWORD` or `ES_API_KEY`. 
 
 [discrete]
 [[ml-nlp-deploy-model]]

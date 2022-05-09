@@ -64,9 +64,9 @@ python -m pip install 'eland[pytorch]'
 . Run the `eland_import_hub_model` script. For example:
 +
 --
-[source]
+[source, shell]
 --------------------------------------------------
-eland_import_hub_model <<authentication>> \ <1>
+eland_import_hub_model <authentication> \ <1>
 --hub-model-id elastic/distilbert-base-cased-finetuned-conll03-english \ <2>
 --task-type ner \ <3>
 --------------------------------------------------
@@ -85,6 +85,7 @@ For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 === Authentication methods
 
 There are four authentication methods availabe when using the import script:
+
 * Cloud ID authentication for Elastic Cloud users:
   `eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>`
 * username/password authentication:
@@ -95,8 +96,6 @@ There are four authentication methods availabe when using the import script:
   URL):
   `eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>`.
 
-Credentials can also be specified as environment variables with 
-`ES_USERNAME/ES_PASSWORD` or `ES_API_KEY`. 
 
 [discrete]
 [[ml-nlp-deploy-model]]

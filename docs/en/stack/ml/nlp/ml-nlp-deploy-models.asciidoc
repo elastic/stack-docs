@@ -84,20 +84,28 @@ For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 [[authentication]]
 === Authentication methods
 
-There are four authentication methods availabe when using the import script:
+The following authentication options are available when using the import script:
 
-* Elastic Cloud users can use Cloud ID as an alternative to `--url`:
-  
-[source, shell]
---------------------------------------------------
-eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>
---------------------------------------------------
-
-* username/password authentication:
+* username/password authentication (specified with the `-u` and `-p` options):
   
 [source, shell]
 --------------------------------------------------
 eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password>
+--------------------------------------------------
+
+* username/password authentication (embedded in the URL parameter):
+
+[source, shell]
+--------------------------------------------------
+eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>
+--------------------------------------------------
+
+* Elastic Cloud users can use Cloud ID instead of the URL parameter (`--es-url` 
+  and `--cloud-id` are mutually exclusive):
+  
+[source, shell]
+--------------------------------------------------
+eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>
 --------------------------------------------------
 
 * API key authentication:
@@ -105,14 +113,6 @@ eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <passwor
 [source, shell]
 --------------------------------------------------
 eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key>
---------------------------------------------------
-
-* HTTP authentication (credentials are provided as the part of the cluster 
-  URL):
-  
-[source, shell]
---------------------------------------------------
-eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>
 --------------------------------------------------
 
 

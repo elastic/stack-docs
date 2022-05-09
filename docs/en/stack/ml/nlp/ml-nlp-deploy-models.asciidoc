@@ -87,14 +87,26 @@ For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 There are four authentication methods availabe when using the import script:
 
 * Cloud ID authentication for Elastic Cloud users:
-  `eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>`
+  
+  ```
+  eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>
+  ```
 * username/password authentication:
-  `eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password>`
+  
+  ```
+  eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password>
+  ```
 * API key authentication:
-  `eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key>`
+  
+  ```
+  eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key>
+  ```
 * HTTP authenthication (credentials are provided as the part of the cluster 
   URL):
-  `eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>`.
+  
+  ```
+  eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>
+  ```
 
 
 [discrete]

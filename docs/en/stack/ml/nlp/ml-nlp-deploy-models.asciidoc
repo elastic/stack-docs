@@ -135,16 +135,12 @@ When you deploy the model, it is allocated to all available {ml} nodes. The
 model is loaded into memory in a native process that encapsulates `libtorch`,
 which is the underlying machine learning library of PyTorch.
 
-You can optionally specify the number of CPU cores it has access to on each node.
-If you choose to optimize for latency (that is to say, inference should return
-as fast as possible), you can increase `inference_threads` to lower latencies.
-If you choose to optimize for throughput (that is, maximize the number of
-parallel inference requests), you can increase `model_threads` to increase
-throughput. In general, the total size of threading settings across all models
-on a node should not exceed the number of physical CPU cores available on the
-node, minus one (for non-inference operations). In {ecloud} environments, the
-core count is virtualized CPUs (vCPUs) and this total size should typically be
-no more than half the available vCPUs, minus one.
+TIP: In production environments, you should consider overriding the default
+values for deployment options that affect the performance of the model. For
+example, you can set the number of model allocations on each node and the number
+of threads used by each allocation during inference. For more information about
+these options, refer to the
+{ref}/start-trained-model-deployment.html[start trained model deployment API].
 
 You can view the allocation status in {kib} or by using the
 {ref}/get-trained-models-stats.html[get trained model stats API].

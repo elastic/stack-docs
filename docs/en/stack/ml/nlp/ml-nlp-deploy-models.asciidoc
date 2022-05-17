@@ -164,16 +164,14 @@ NOTE: This {kib} functionality is currently available only for the
 <<ml-nlp-model-ref-ner,third party named entity recognition models>>.
 
 Alternatively, you can use the
-{ref}/infer-trained-model-deployment.html[infer trained model deployment API].
+{ref}/infer-trained-model.html[infer trained model API].
 For example, to try a named entity recognition task, provide some sample text:
 
 [source,console]
 --------------------------------------------------
-POST /_ml/trained_models/elastic__distilbert-base-cased-finetuned-conll03-english/deployment/_infer
+POST /_ml/trained_models/elastic__distilbert-base-cased-finetuned-conll03-english/_infer
 {
-    "docs":{
-        "text_field":"Sasha bought 300 shares of Acme Corp in 2022."
-        }
+  "docs":[{"text_field": "Sasha bought 300 shares of Acme Corp in 2022."}]
 }
 --------------------------------------------------
 // TEST[skip:TBD]
@@ -184,21 +182,25 @@ recognized entities:
 [source,console-result]
 ----
 {
-  "predicted_value" : "[Sasha](PER&Sasha) bought 300 shares of [Acme Corp](ORG&Acme+Corp) in 2022.",
-  "entities" : [
+  "inference_results" : [
     {
-      "entity" : "Sasha",
-      "class_name" : "PER",
-      "class_probability" : 0.9953193611298665,
-      "start_pos" : 0,
-      "end_pos" : 5
-    },
-    {
-      "entity" : "Acme Corp",
-      "class_name" : "ORG",
-      "class_probability" : 0.9996392201598554,
-      "start_pos" : 27,
-      "end_pos" : 36
+      "predicted_value" : "[Sasha](PER&Sasha) bought 300 shares of [Acme Corp](ORG&Acme+Corp) in 2022.",
+      "entities" : [
+        {
+          "entity" : "Sasha",
+          "class_name" : "PER",
+          "class_probability" : 0.9953193407987492,
+          "start_pos" : 0,
+          "end_pos" : 5
+        },
+        {
+          "entity" : "Acme Corp",
+          "class_name" : "ORG",
+          "class_probability" : 0.9996392198381716,
+          "start_pos" : 27,
+          "end_pos" : 36
+        }
+      ]
     }
   ]
 }

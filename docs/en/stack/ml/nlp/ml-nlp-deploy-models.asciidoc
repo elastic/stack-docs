@@ -66,16 +66,19 @@ python -m pip install 'eland[pytorch]'
 --
 [source, shell]
 --------------------------------------------------
-eland_import_hub_model <authentication> \ <1>
---hub-model-id elastic/distilbert-base-cased-finetuned-conll03-english \ <2>
---task-type ner \ <3>
+eland_import_hub_model 
+--cloud-id <cloud-id> \ <1>
+-u <username> -p <password> \ <2>
+--hub-model-id elastic/distilbert-base-cased-finetuned-conll03-english \ <3>
+--task-type ner \ <4>
 --------------------------------------------------
 // NOTCONSOLE
 --
-<1> Use an authentication method to access your cluster. Refer to 
-<<authentication>> to learn more. 
-<2> Specify the identifier for the model in the Hugging Face model hub.
-<3> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
+<1> Specify the Elastic Cloud identifier. Alternatively, use `--url`.
+<2> Provide authentication details to access your cluster. Refer to 
+<<authentication>> to learn more.
+<3> Specify the identifier for the model in the Hugging Face model hub.
+<4> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
 `text_classification`, `text_embedding`, and `zero_shot_classification`.
 
 For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
@@ -87,34 +90,30 @@ For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 The following authentication options are available when using the import script:
 
 * username/password authentication (specified with the `-u` and `-p` options):
-  
++
+--  
 [source, shell]
 --------------------------------------------------
-eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password>
+eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password> ...
 --------------------------------------------------
+--
 
 * username/password authentication (embedded in the URL):
-
++
+--
 [source, shell]
 --------------------------------------------------
-eland_import_hub_model --url https://<user>:<password>@<hostname>:<port>
+eland_import_hub_model --url https://<user>:<password>@<hostname>:<port> ...
 --------------------------------------------------
-
-* Elastic Cloud users can use Cloud ID instead of the URL (`--url` 
-  and `--cloud-id` are mutually exclusive):
-  
-[source, shell]
---------------------------------------------------
-eland_import_hub_model --cloud-id <cloud-id> -u <username> -p <password>
---------------------------------------------------
-
+--
 * API key authentication:
-  
++
+--
 [source, shell]
 --------------------------------------------------
-eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key>
+eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key> ...
 --------------------------------------------------
-
+--
 
 [discrete]
 [[ml-nlp-deploy-model]]

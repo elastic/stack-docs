@@ -33,8 +33,8 @@ more information, see
 
 To get the best results from {ml} analytics, you must understand your data. You
 can use the **{data-viz}** in the **{ml-app}** app for this purpose. Search for
-specific fields or field types, such as geo-point fields in the sample data sets.
-You can see how many documents contain those fields within a specific time
+specific fields or field types, such as geo-point fields in the sample data 
+sets. You can see how many documents contain those fields within a specific time
 period and sample size. You can also see the number of distinct values, a list
 of example values, and preview them on a map. For example:
 
@@ -49,7 +49,8 @@ There are a few limitations to consider before you create this type of job:
 
 . You cannot create forecasts for {anomaly-jobs} that contain geographic
 functions.
-. You cannot add <<ml-rules,custom rules with conditions>> to detectors that use geographic functions.
+. You cannot add <<ml-rules,custom rules with conditions>> to detectors that use 
+geographic functions.
 
 If those limitations are acceptable, try creating an {anomaly-job} that uses
 the <<ml-lat-long,`lat_long` function>> to analyze your own data or the sample
@@ -217,6 +218,12 @@ image::images/weblogs-anomaly-explorer-geopoint.jpg[A screenshot of an anomalous
 
 You can use the top influencer values to further filter your results and
 identify possible contributing factors or patterns of behavior.
+
+You can also view the anomaly in **Maps** by clicking **View in Maps** 
+in the action menu in the anomaly table.
+
+[role="screenshot"]
+image::images/view-in-maps.jpg[A screenshot of the anomaly table with the Action menu opened and the "View in Maps" option selected]
 
 When you try this type of {anomaly-job} with your own data, it might take
 some experimentation to find the best combination of buckets, detectors, and

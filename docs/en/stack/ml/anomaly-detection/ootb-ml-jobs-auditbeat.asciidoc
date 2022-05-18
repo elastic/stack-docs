@@ -31,28 +31,4 @@ https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/
 
 |===
 
-[discrete]
-[[auditbeat-process-hosts-ecs]]
-== Auditbeat host processes
-
-Detect unusual processes on hosts from auditd data (ECS).
-
-These configurations are only available if data exists that matches the
-recognizer query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/manifest.json[manifest file].
-
-|===
-|Name |Description |Job |Datafeed
-
-|hosts_high_count_process_events_ecs
-|Detect unusual increases in process execution rates (ECS)
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/hosts_high_count_process_events_ecs.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/datafeed_hosts_high_count_process_events_ecs.json[image:images/link.svg[A link icon]]
-
-|hosts_rare_process_activity_ecs
-|Detect rare process executions on hosts (ECS)
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/hosts_rare_process_activity_ecs.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/auditbeat_process_hosts_ecs/ml/datafeed_hosts_rare_process_activity_ecs.json[image:images/link.svg[A link icon]]
-
-|===
 // end::auditbeat-jobs[]

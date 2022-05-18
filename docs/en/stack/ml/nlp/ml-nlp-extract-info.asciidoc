@@ -1,13 +1,14 @@
 [[ml-nlp-extract-info]]
 = Extract information
 
-:keywords: {ml-init}, {stack}, {nlp}, named entity recognition, fill mask
+:keywords: {ml-init}, {stack}, {nlp}, named entity recognition, fill mask, question answering
 :description: NLP tasks that extract information from unstructured text. 
 
 These NLP tasks enable you to extract information from your unstructured text:
 
 * <<ml-nlp-ner>>
 * <<ml-nlp-mask>>
+* <<ml-nlp-question-answering>>
 
 
 [discrete]
@@ -97,6 +98,42 @@ The task returns the following result:
 ...
 {
   "result": "Paris"
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+
+[discrete]
+[[ml-nlp-question-answering]]
+== Question answering
+
+The question answering (or extractive question answering) task makes it possible 
+to get answers to certain questions by extracting information from the provided 
+text.
+
+The model tokenizes the string of – usually long – unstructured text, then it 
+attempts to pull the answer from the text to the provided question. The logic is 
+shown by the following examples:
+
+[source,js]
+----------------------------------
+...
+{
+    "text_field": "<a long string of text to extract answer from>",
+    "question": "<a question to answer>"
+}
+...
+----------------------------------
+// NOTCONSOLE
+
+The answer is similar to the object below:
+
+[source,js]
+----------------------------------
+...
+{
+  "predicted_value": "<string subsection of the provided text that is the answer>"
 }
 ...
 ----------------------------------

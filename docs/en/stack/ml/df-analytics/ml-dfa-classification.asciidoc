@@ -891,28 +891,22 @@ results.
 If you want to see the exact number of occurrences, select a quadrant in the
 matrix. You can also use the *Training* and *Testing* filter options to refine
 the contents of the matrix. Thus you can see how well the model performs on
-previously unseen data. In this example, there are 2952 documents in the testing
-data that have the `true` class. 794 of them are
-predicted as `false`; this is called a _false negative_. 2158 are predicted
-correctly as `true`; this is called a _true positive_. The confusion matrix 
-shows us that 27% of the actual `true` values were correctly predicted and 73% 
-were incorrectly predicted in the test data.
+previously unseen data. You can check how many documents are `true` in the 
+testing data, how many of them are identified correctly (_true positives_) and 
+how many of them are identified incorrectly as `false` (_false negatives_).
 
 Likewise if you select other quadrants in the matrix, it shows the number of
-documents that have the `false` class as their actual value in the testing data. 
-In this example, the model labeled 7262 documents out of 8802 correctly as
-`false`; this is called a _true negative_. 1540 documents are predicted
-incorrectly as `true`; this is called a _false positive_. Thus 83% of the actual
-`false` values were correctly predicted and 17% were incorrectly predicted in
-the test data. When you perform {classanalysis} on your own data, it might take 
-multiple iterations before you are satisfied with the results and ready to 
-deploy the model.
+documents that have the `false` class as their actual value in the testing data. The matrix shows the number of documents that are correctly identified as 
+`false` (_true negatives_) and the number of documents that are incorrectly 
+predicted as `true` (_false positives_). When you perform {classanalysis} on 
+your own data, it might take multiple iterations before you are satisfied with 
+the results and ready to deploy the model.
 
 {kib} also provides the _receiver operating characteristic (ROC) curve_ as part 
 of the model evaluation. The plot compares the true positive rate (y-axis) to 
 the false positive rate (x-axis) for each class; in this example, `true` and 
-`false`. From this plot, the area under the curve (AUC) value is computed. It is 
-a number between 0 and 1. The higher the AUC, the better the model is at 
+`false`. From this plot, the area under the curve (AUC) value is computed. It 
+is a number between 0 and 1. The higher the AUC, the better the model is at 
 predicting the classes correctly.
 
 [role="screenshot"]

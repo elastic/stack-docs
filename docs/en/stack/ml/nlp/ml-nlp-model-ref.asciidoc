@@ -34,26 +34,25 @@ refer to <<ml-nlp-overview>>.
 
 * https://huggingface.co/bert-base-uncased[BERT base model]
 * https://huggingface.co/distilroberta-base[DistilRoBERTa base model]
+* https://huggingface.co/microsoft/mpnet-base[MPNet base model]
 * https://huggingface.co/roberta-large[RoBERTa large model]
-* https://huggingface.co/microsoft/mpnet-base[mpnet base model]
-
 
 [discrete]
 [[ml-nlp-model-ref-ner]]
 == Third party named entity recognition models
 
-* https://huggingface.co/dslim/bert-base-NER[bert base NER]
-* https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english[DistilBERT base uncased finetuned conll03 English]
+* https://huggingface.co/dslim/bert-base-NER[BERT base NER]
 * https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english[DistilBERT base cased finetuned conll03 English]
 * https://huggingface.co/philschmid/distilroberta-base-ner-conll2003[DistilRoBERTa base NER conll2003]
+* https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english[DistilBERT base uncased finetuned conll03 English]
 
 
 [discrete]
 [[ml-nlp-model-ref-question-answering]]
 == Third party question answering models
 
-* https://huggingface.co/distilbert-base-cased-distilled-squad[DistilBERT base cased distilled SQuAD]
 * https://huggingface.co/bert-large-uncased-whole-word-masking-finetuned-squad[BERT large model (uncased) whole word masking finetuned on SQuAD]
+* https://huggingface.co/distilbert-base-cased-distilled-squad[DistilBERT base cased distilled SQuAD]
 * https://huggingface.co/deepset/electra-base-squad2[Electra base squad2]
 * https://huggingface.co/deepset/tinyroberta-squad2[TinyRoBERTa squad2]
 
@@ -64,39 +63,39 @@ refer to <<ml-nlp-overview>>.
 
 Using `SentenceTransformerWrapper`:
 
-* https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2[all MiniLM L12 v2]
-* https://huggingface.co/sentence-transformers/all-mpnet-base-v2[all mpnet base v2]
+* https://huggingface.co/sentence-transformers/all-distilroberta-v1[All DistilRoBERTa v1]
+* https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2[All MiniLM L12 v2]
+* https://huggingface.co/sentence-transformers/all-mpnet-base-v2[All MPNet base v2]
+* https://huggingface.co/sentence-transformers/bert-base-nli-cls-token[BERT base nli cls token]
+* https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base[Facebook dpr-ctx_encoder multiset base]
+* https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base[Facebook dpr-question_encoder single nq base]
 * https://huggingface.co/sentence-transformers/LaBSE[LaBSE]
 * https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b[msmarco DistilBERT base tas b]
 * https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3[msmarco MiniLM L12 v3]
 * https://huggingface.co/sentence-transformers/nli-bert-base-cls-pooling[nli BERT base cls pooling]
-* https://huggingface.co/sentence-transformers/bert-base-nli-cls-token[BERT base nli cls token]
-* https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base[Facebook dpr-ctx_encoder multiset base]
-* https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base[Facebook dpr-question_encoder single nq base]
 * https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2[paraphrase mpnet base v2]
-* https://huggingface.co/sentence-transformers/all-distilroberta-v1[all DistilRoBERTa v1]
 
 Using `DPREncoderWrapper`:
 
-* https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base[dpr-ctx_encoder single nq base]
-* https://huggingface.co/facebook/dpr-question_encoder-single-nq-base[dpr-question_encoder single nq base]
-* https://huggingface.co/facebook/dpr-ctx_encoder-multiset-base[dpr-ctx_encoder multiset base]
-* https://huggingface.co/facebook/dpr-question_encoder-multiset-base[dpr-question_encoder multiset base]
 * https://huggingface.co/castorini/ance-dpr-context-multi[ance dpr-context multi]
 * https://huggingface.co/castorini/ance-dpr-question-multi[ance dpr-question multi]
 * https://huggingface.co/castorini/bpr-nq-ctx-encoder[bpr nq-ctx-encoder]
 * https://huggingface.co/castorini/bpr-nq-question-encoder[bpr nq-question-encoder]
+* https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base[dpr-ctx_encoder single nq base]
+* https://huggingface.co/facebook/dpr-ctx_encoder-multiset-base[dpr-ctx_encoder multiset base]
+* https://huggingface.co/facebook/dpr-question_encoder-single-nq-base[dpr-question_encoder single nq base]
+* https://huggingface.co/facebook/dpr-question_encoder-multiset-base[dpr-question_encoder multiset base]
 
 
 [discrete]
 [[ml-nlp-model-ref-text-classification]]
 === Third party text classification models
 
-* https://huggingface.co/distilbert-base-uncased-finetuned-sst-2-english[DistilBERT base uncased finetuned SST-2]
-* https://huggingface.co/bhadresh-savani/distilbert-base-uncased-emotion[DistilBERT base uncased emotion]
-* https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english[DehateBERT mono english]
-* https://huggingface.co/ProsusAI/finbert[FinBERT]
 * https://huggingface.co/nateraw/bert-base-uncased-emotion[BERT base uncased emotion]
+* https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english[DehateBERT mono english]
+* https://huggingface.co/bhadresh-savani/distilbert-base-uncased-emotion[DistilBERT base uncased emotion]
+* https://huggingface.co/distilbert-base-uncased-finetuned-sst-2-english[DistilBERT base uncased finetuned SST-2]
+* https://huggingface.co/ProsusAI/finbert[FinBERT]
 * https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment[Twitter roBERTa base for Sentiment Analysis]
 
 
@@ -104,13 +103,13 @@ Using `DPREncoderWrapper`:
 [[ml-nlp-model-ref-zero-shot]]
 == Third party zero-shot text classification models
 
-* https://huggingface.co/typeform/distilbert-base-uncased-mnli[DistilBERT base model (uncased)]
-* https://huggingface.co/typeform/mobilebert-uncased-mnli[MobileBERT: a Compact Task-Agnostic BERT for Resource-Limited Devices]
-* https://huggingface.co/typeform/squeezebert-mnli[SqueezeBERT]
 * https://huggingface.co/facebook/bart-large-mnli[BART large mnli]
+* https://huggingface.co/typeform/distilbert-base-uncased-mnli[DistilBERT base model (uncased)]
 * https://huggingface.co/valhalla/distilbart-mnli-12-6[DistilBart MNLI]
+* https://huggingface.co/typeform/mobilebert-uncased-mnli[MobileBERT: a Compact Task-Agnostic BERT for Resource-Limited Devices]
 * https://huggingface.co/cross-encoder/nli-distilroberta-base[NLI DistilRoBERTa base]
 * https://huggingface.co/cross-encoder/nli-roberta-base[NLI RoBERTa base]
+* https://huggingface.co/typeform/squeezebert-mnli[SqueezeBERT]
 
 
 [discrete]

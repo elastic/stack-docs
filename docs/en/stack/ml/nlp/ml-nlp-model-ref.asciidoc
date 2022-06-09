@@ -27,32 +27,33 @@ way described, or at all.
 These models are listed by NLP task; for more information about those tasks,
 refer to <<ml-nlp-overview>>.
 
+
 [discrete]
 [[ml-nlp-model-ref-mask]]
 == Third party fill-mask models
 
-* https://huggingface.co/bert-base-uncased
-* https://huggingface.co/distilroberta-base
-* https://huggingface.co/roberta-large
-* https://huggingface.co/microsoft/mpnet-base
+* https://huggingface.co/bert-base-uncased[BERT base model]
+* https://huggingface.co/distilroberta-base[DistilRoBERTa base model]
+* https://huggingface.co/microsoft/mpnet-base[MPNet base model]
+* https://huggingface.co/roberta-large[RoBERTa large model]
 
 [discrete]
 [[ml-nlp-model-ref-ner]]
 == Third party named entity recognition models
 
-* https://huggingface.co/dslim/bert-base-NER
-* https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english
-* https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english
-* https://huggingface.co/philschmid/distilroberta-base-ner-conll2003
+* https://huggingface.co/dslim/bert-base-NER[BERT base NER]
+* https://huggingface.co/elastic/distilbert-base-cased-finetuned-conll03-english[DistilBERT base cased finetuned conll03 English]
+* https://huggingface.co/philschmid/distilroberta-base-ner-conll2003[DistilRoBERTa base NER conll2003]
+* https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english[DistilBERT base uncased finetuned conll03 English]
 
 [discrete]
 [[ml-nlp-model-ref-question-answering]]
 == Third party question answering models
 
-* https://huggingface.co/distilbert-base-cased-distilled-squad
-* https://huggingface.co/bert-large-uncased-whole-word-masking-finetuned-squad
-* https://huggingface.co/deepset/electra-base-squad2
-* https://huggingface.co/deepset/tinyroberta-squad2
+* https://huggingface.co/bert-large-uncased-whole-word-masking-finetuned-squad[BERT large model (uncased) whole word masking finetuned on SQuAD]
+* https://huggingface.co/distilbert-base-cased-distilled-squad[DistilBERT base cased distilled SQuAD]
+* https://huggingface.co/deepset/electra-base-squad2[Electra base squad2]
+* https://huggingface.co/deepset/tinyroberta-squad2[TinyRoBERTa squad2]
 
 
 [discrete]
@@ -61,69 +62,77 @@ refer to <<ml-nlp-overview>>.
 
 Using `SentenceTransformerWrapper`:
 
-* https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2
-* https://huggingface.co/sentence-transformers/all-mpnet-base-v2
-* https://huggingface.co/sentence-transformers/LaBSE
-* https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b 
-* https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3
-* https://huggingface.co/sentence-transformers/nli-bert-base-cls-pooling
-* https://huggingface.co/sentence-transformers/bert-base-nli-cls-token
-* https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base
-* https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base
-* https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2
-* https://huggingface.co/sentence-transformers/all-distilroberta-v1
+* https://huggingface.co/sentence-transformers/all-distilroberta-v1[All DistilRoBERTa v1]
+* https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2[All MiniLM L12 v2]
+* https://huggingface.co/sentence-transformers/all-mpnet-base-v2[All MPNet base v2]
+* https://huggingface.co/sentence-transformers/bert-base-nli-cls-token[BERT base nli cls token]
+* https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base[Facebook dpr-ctx_encoder multiset base]
+* https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base[Facebook dpr-question_encoder single nq base]
+* https://huggingface.co/sentence-transformers/LaBSE[LaBSE]
+* https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b[msmarco DistilBERT base tas b]
+* https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3[msmarco MiniLM L12 v3]
+* https://huggingface.co/sentence-transformers/nli-bert-base-cls-pooling[nli BERT base cls pooling]
+* https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2[paraphrase mpnet base v2]
 
 Using `DPREncoderWrapper`:
 
-* https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base
-* https://huggingface.co/facebook/dpr-question_encoder-single-nq-base
-* https://huggingface.co/facebook/dpr-ctx_encoder-multiset-base
-* https://huggingface.co/facebook/dpr-question_encoder-multiset-base
-* https://huggingface.co/castorini/ance-dpr-context-multi
-* https://huggingface.co/castorini/ance-dpr-question-multi
-* https://huggingface.co/castorini/bpr-nq-ctx-encoder
-* https://huggingface.co/castorini/bpr-nq-question-encoder
+* https://huggingface.co/castorini/ance-dpr-context-multi[ance dpr-context multi]
+* https://huggingface.co/castorini/ance-dpr-question-multi[ance dpr-question multi]
+* https://huggingface.co/castorini/bpr-nq-ctx-encoder[bpr nq-ctx-encoder]
+* https://huggingface.co/castorini/bpr-nq-question-encoder[bpr nq-question-encoder]
+* https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base[dpr-ctx_encoder single nq base]
+* https://huggingface.co/facebook/dpr-ctx_encoder-multiset-base[dpr-ctx_encoder multiset base]
+* https://huggingface.co/facebook/dpr-question_encoder-single-nq-base[dpr-question_encoder single nq base]
+* https://huggingface.co/facebook/dpr-question_encoder-multiset-base[dpr-question_encoder multiset base]
+
 
 [discrete]
 [[ml-nlp-model-ref-text-classification]]
 === Third party text classification models
 
-* https://huggingface.co/distilbert-base-uncased-finetuned-sst-2-english
-* https://huggingface.co/bhadresh-savani/distilbert-base-uncased-emotion
-* https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english
-* https://huggingface.co/ProsusAI/finbert
-* https://huggingface.co/nateraw/bert-base-uncased-emotion
-* https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment
+* https://huggingface.co/nateraw/bert-base-uncased-emotion[BERT base uncased emotion]
+* https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english[DehateBERT mono english]
+* https://huggingface.co/bhadresh-savani/distilbert-base-uncased-emotion[DistilBERT base uncased emotion]
+* https://huggingface.co/distilbert-base-uncased-finetuned-sst-2-english[DistilBERT base uncased finetuned SST-2]
+* https://huggingface.co/ProsusAI/finbert[FinBERT]
+* https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment[Twitter roBERTa base for Sentiment Analysis]
+
 
 [discrete]
 [[ml-nlp-model-ref-zero-shot]]
 == Third party zero-shot text classification models
 
-* https://huggingface.co/typeform/distilbert-base-uncased-mnli
-* https://huggingface.co/typeform/mobilebert-uncased-mnli
-* https://huggingface.co/typeform/squeezebert-mnli
-* https://huggingface.co/facebook/bart-large-mnli
-* https://huggingface.co/valhalla/distilbart-mnli-12-6
-* https://huggingface.co/cross-encoder/nli-distilroberta-base
-* https://huggingface.co/cross-encoder/nli-roberta-base
+* https://huggingface.co/facebook/bart-large-mnli[BART large mnli]
+* https://huggingface.co/typeform/distilbert-base-uncased-mnli[DistilBERT base model (uncased)]
+* https://huggingface.co/valhalla/distilbart-mnli-12-6[DistilBart MNLI]
+* https://huggingface.co/typeform/mobilebert-uncased-mnli[MobileBERT: a Compact Task-Agnostic BERT for Resource-Limited Devices]
+* https://huggingface.co/cross-encoder/nli-distilroberta-base[NLI DistilRoBERTa base]
+* https://huggingface.co/cross-encoder/nli-roberta-base[NLI RoBERTa base]
+* https://huggingface.co/typeform/squeezebert-mnli[SqueezeBERT]
+
 
 [discrete]
 == Expected model output
 
-Models used for each NLP task type must output tensors of a specific format to be used in the Elasticsearch NLP pipelines.
+Models used for each NLP task type must output tensors of a specific format to 
+be used in the Elasticsearch NLP pipelines.
 
 Here are the expected outputs for each task type.
+
 
 [discrete]
 === Fill mask expected model output
 
-Fill mask is a specific kind of token classification; it is the base training task of many transformer models.
+Fill mask is a specific kind of token classification; it is the base training 
+task of many transformer models.
 
-For the Elastic stack's fill mask NLP task to understand the model output, it must have a specific format. It needs to
-be a float tensor with `shape(<number of sequences>, <number of tokens>, <vocab size>)`.
+For the Elastic stack's fill mask NLP task to understand the model output, it 
+must have a specific format. It needs to
+be a float tensor with 
+`shape(<number of sequences>, <number of tokens>, <vocab size>)`.
 
-Here is an example with a single sequence `"The capital of [MASK] is Paris"` and with vocabulary
-`["The", "capital", "of", "is", "Paris", "France", "[MASK]"]`.
+Here is an example with a single sequence `"The capital of [MASK] is Paris"` and 
+with vocabulary `["The", "capital", "of", "is", "Paris", "France", "[MASK]"]`.
 
 Should output:
 
@@ -146,9 +155,11 @@ The predicted value here for `[MASK]` is `"France"` with a score of 1.2.
 [discrete]
 === Named entity recognition expected model output
 
-Named entity recognition is a specific token classification task. Each token in the sequence is scored related to
-a specific set of classification labels. For the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
-only the following classification labels are supported: "O", "B_MISC", "I_MISC", "B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC".
+Named entity recognition is a specific token classification task. Each token in 
+the sequence is scored related to a specific set of classification labels. For 
+the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
+only the following classification labels are supported: "O", "B_MISC", "I_MISC", 
+"B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC".
 
 The `"O"` entity label indicates that the current token is outside any entity.
 `"I"` indicates that the token is inside an entity.
@@ -158,7 +169,8 @@ The `"O"` entity label indicates that the current token is outside any entity.
 `"PER"` is a person.
 `"ORG"` is an organization.
 
-The response format must be a float tensor with `shape(<number of sequences>, <number of tokens>, <number of classification labels>)`.
+The response format must be a float tensor with 
+`shape(<number of sequences>, <number of tokens>, <number of classification labels>)`.
 
 Here is an example with a single sequence `"Waldo is in Paris"`:
 
@@ -175,22 +187,30 @@ Here is an example with a single sequence `"Waldo is in Paris"`:
 ]
 ----
 
+
 [discrete]
 === Text embedding expected model output
 
-Text embedding allows for semantic embedding of text for dense information retrieval.
-The output of the model must be the specific embedding directly without any additional pooling.
+Text embedding allows for semantic embedding of text for dense information 
+retrieval.
 
-Eland does this wrapping for the aforementioned models. But if supplying your own, the model must output the embedding for
-each inferred sequence.
+The output of the model must be the specific embedding directly without any 
+additional pooling.
+
+Eland does this wrapping for the aforementioned models. But if supplying your 
+own, the model must output the embedding for each inferred sequence.
+
 
 [discrete]
 === Text classification expected model output
 
-With text classification (for example, in tasks like sentiment analysis), the entire sequence is classified. The output of
-the model must be a float tensor with `shape(<number of sequences>, <number of classification labels>)`.
+With text classification (for example, in tasks like sentiment analysis), the 
+entire sequence is classified. The output of the model must be a float tensor 
+with `shape(<number of sequences>, <number of classification labels>)`.
 
-Here is an example with two sequences for a binary classification model of "happy" and "sad":
+Here is an example with two sequences for a binary classification model of 
+"happy" and "sad":
+
 [source]
 ----
  [
@@ -202,13 +222,16 @@ Here is an example with two sequences for a binary classification model of "happ
 ]
 ----
 
+
 [discrete]
 === Zero-shot text classification expected model output
 
-Zero-shot text classification allows text to be classified for arbitrary labels not necessarily part of the original
-training. Each sequence is combined with the label given some hypothesis template. The model then scores each of these
-combinations according to `[entailment, neutral, contradiction]`. The output of the model must be a float tensor
-with `shape(<number of sequences>, <number of labels>, 3)`.
+Zero-shot text classification allows text to be classified for arbitrary labels 
+not necessarily part of the original training. Each sequence is combined with 
+the label given some hypothesis template. The model then scores each of these
+combinations according to `[entailment, neutral, contradiction]`. The output of 
+the model must be a float tensor with 
+`shape(<number of sequences>, <number of labels>, 3)`.
 
 Here is an example with a single sequence classified against 4 labels:
 

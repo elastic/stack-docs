@@ -2,3 +2,51 @@
 [[ml-reverting-model-snapshot]]
 = Reverting to a model snapshot
 
+{ml-docs}/ml-ad-run-jobs.html#ml-ad-model-snapshots[Snapshots of the {ml} model] 
+for each {anomaly-job} are saved frequently to an internal {es} index to ensure 
+resilience. It ensures that you can reset the model to a previous state in case 
+of a system failure or if the model changed significantly due to a one-off 
+event.
+
+[[prerequ]]
+== Prerequisites
+
+Reverting a model snapshot requires the `manage_ml` cluster privilege. This 
+privilege is included in the `machine_learning_admin` built-in role.
+
+[[how-to-revert]]
+== How to revert to a previous snapshot
+
+. In {kib}, navigate to **{ml-app} > Anomaly Detection > Jobs**.
+. Locate the {anomaly-job} whose model you want to revert in the job table.
+. Open the job details and navigate to the **Model Snapshots** tab.
++
+--
+[role="screenshot"]
+image::images/anomaly-job-model-snapshots.jpg[A screenshot of a job with the Model Snapshots tab opened]
+--
+. Select the snapshot you want to revert from the list and click the **Revert** 
+  icon under **Actions**.
+. Optional: Select if you want to replay the analysis after the revert has been 
+  applied. You can decide whether you want the job running in real time. You can 
+  also define the time range you don't want the job to analyze, this way you can 
+  skip the time of the event you don't want to impact the model behavior. 
++
+--
+[role="screenshot"]
+image::images/revert-model-snapshot.jpg[A screenshot of a revert model snapshot flyout]
+--
+. Click **Apply**.
+
+Alternatively, you can use the 
+{ref}/ml-revert-snapshot.html[Revert model snapshots] API. In this case, you 
+need to manually close the corresponding job before reverting to the saved 
+snapshot.
+
+[NOTE]
+===============================
+* In case of reverting to a snapshot, all {anomaly-detect} results are deleted 
+  for the corresponding job after the point when the snapshot was saved.
+* Reverting to a snapshot does not change the `data_counts` values of the 
+  {anomaly-job}, these values are not reverted to the earlier state.
+===============================

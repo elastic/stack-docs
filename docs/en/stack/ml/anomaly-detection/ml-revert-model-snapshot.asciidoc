@@ -4,18 +4,9 @@
 
 {ml-docs}/ml-ad-run-jobs.html#ml-ad-model-snapshots[Snapshots of the {ml} model] 
 for each {anomaly-job} are saved frequently to an internal {es} index to ensure 
-resilience. It ensures that you can reset the model to a previous state in case 
+resilience. It makes it possible to reset the model to a previous state in case 
 of a system failure or if the model changed significantly due to a one-off 
 event.
-
-[[prerequ]]
-== Prerequisites
-
-Reverting a model snapshot requires the `manage_ml` cluster privilege. This 
-privilege is included in the `machine_learning_admin` built-in role.
-
-[[how-to-revert]]
-== How to revert to a previous snapshot
 
 . In {kib}, navigate to **{ml-app} > Anomaly Detection > Jobs**.
 . Locate the {anomaly-job} whose model you want to revert in the job table.

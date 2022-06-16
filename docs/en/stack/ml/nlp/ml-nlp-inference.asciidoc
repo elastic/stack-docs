@@ -1,13 +1,13 @@
 [[ml-nlp-inference]]
-= Add NLP inference to ingest pipelines
-:keywords: {ml-init}, {stack}, {nlp}, inference 
+= Add NLP {infer} to ingest pipelines
+:keywords: {ml-init}, {stack}, {nlp}, {infer} 
 
 After you <<ml-nlp-deploy-models,deploy a trained model in your cluster>>, you
 can use it to perform {nlp} tasks in ingest pipelines.
 
 . Verify that all of the
 {ref}/ingest.html#ingest-prerequisites[ingest pipeline prerequisites] are met.
-. <<ml-nlp-inference-processor,Add an inference processor to an ingest pipeline>>.
+. <<ml-nlp-inference-processor,Add an {infer} processor to an ingest pipeline>>.
 . <<ml-nlp-inference-ingest-docs,Ingest documents>>.
 . <<ml-nlp-inference-discover,View the results>>.
 
@@ -15,17 +15,17 @@ can use it to perform {nlp} tasks in ingest pipelines.
 
 [discrete]
 [[ml-nlp-inference-processor]]
-== Add an inference processor to an ingest pipeline
+== Add an {infer} processor to an ingest pipeline
 
-In {kib}, you can create and edit pipelines in **Stack Management** >
+In {kib}, you can create and edit pipelines in **{stack-manage-app}** >
 **Ingest Pipelines**.
 
 [role="screenshot"]
 image::images/ml-nlp-pipeline-lang.png[Creating a pipeline in the Stack Management app,align="center"]
 
 . Click **Create pipeline** or edit an existing pipeline.
-. Add an {ref}/inference-processor.html[inference processor] to your pipeline:
-.. Click **Add a processor** and select the **Inference** processor type.
+. Add an {ref}/inference-processor.html[{infer} processor] to your pipeline:
+.. Click **Add a processor** and select the **{infer-cap}** processor type.
 .. Set **Model ID** to the name of your trained model, for example
 `elastic__distilbert-base-cased-finetuned-conll03-english` or
 `lang_ident_model_1`.
@@ -46,8 +46,8 @@ languages in a field with a different name, you must map your field name to
 --
 ... You can also optionally add
 {ref}/inference-processor.html#inference-processor-classification-opt[classification configuration options]
-in the **Inference configuration** section. For example, to include the top five
-language predictions:
+in the **{infer-cap} configuration** section. For example, to include the top 
+five language predictions:
 +
 --
 [source,js]
@@ -166,7 +166,7 @@ You can now use your ingest pipeline to perform NLP tasks on your data.
 
 Before you add data, consider which mappings you want to use. For example, you
 can create explicit mappings with the create index API in the
-**Dev Tools** > **Console**:
+**{dev-tools-app}** > **Console**:
 
 [source,console]
 ----
@@ -254,13 +254,13 @@ with a "too many requests" 429 error code.
 == View the results
 
 Before you can verify the results of the pipelines, you must
-{kibana-ref}/data-views.html[create data views]. Then you can explore your data
-in **Discover**:
+{kibana-ref}/data-views.html[create {data-sources}]. Then you can explore your 
+data in **Discover**:
 
 [role="screenshot"]
 image::images/ml-nlp-discover-ner.png[A document from the NER pipeline in the Discover app,align="center"]
 
-The `ml.inference.predicted_value` field contains the output from the inference
+The `ml.inference.predicted_value` field contains the output from the {infer}
 processor. In this NER example, there are two documents that contain the
 `Elastic` organization entity.
 
@@ -289,8 +289,8 @@ check the following possible causes:
 you are using the built-in `lang_ident_model_1` model, you must ensure your
 model is successfully deployed. Refer to <<ml-nlp-deploy-model>>.
 . The default input field name expected by your trained model is not present in
-your source document. Use the **Field Map** option in your inference processor
-to set the appropriate field name.
+your source document. Use the **Field Map** option in your {infer} processor to 
+set the appropriate field name.
 . There are too many requests. If you are using bulk ingest, reduce the number
 of documents in the bulk request. If you are reindexing, use the `size`
 parameter to decrease the number of documents processed in each batch.

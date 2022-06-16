@@ -7,8 +7,8 @@ zero-shot text classification
 :description: NLP tasks that classify input text or determine \
 the language of text. 
 
-These NLP tasks enable you to identify the language of text and classify or label 
-unstructured input text:
+These NLP tasks enable you to identify the language of text and classify or 
+label unstructured input text:
 
 * <<ml-nlp-lang-ident>>
 * <<ml-nlp-text-classification>>
@@ -66,7 +66,7 @@ and determine whether the following text is a news topic related to "SPORTS",
 
 The zero-shot classification task offers the ability to classify text without 
 training a model on a specific set of classes. Instead, you provide the classes 
-when you deploy the model or at inference time. It uses a model trained on a 
+when you deploy the model or at {infer} time. It uses a model trained on a 
 large data set that has gained a general language understanding and asks the 
 model how well the labels you provided fit with your text.
 
@@ -77,7 +77,7 @@ For example, you might want to perform multi-class classification and determine
 whether a news topic is related to "SPORTS", "BUSINESS", "LOCAL", or 
 "ENTERTAINMENT". However, in this case the model is not trained specifically for 
 news classification; instead, the possible labels are provided together with the 
-input text at inference time:
+input text at {infer} time:
 
 [source,js]
 ----------------------------------
@@ -104,7 +104,7 @@ The task returns the following result:
 // NOTCONSOLE
 
 
-You can use the same model to perform inference with different classes, such as:
+You can use the same model to perform {infer} with different classes, such as:
 
 [source,js]
 ----------------------------------
@@ -130,6 +130,6 @@ The task returns the following result:
 ----------------------------------
 // NOTCONSOLE
 
-Since you can adjust the labels while you perform inference, this type of task 
-is exceptionally flexible. If you are consistently using the same labels, 
-however, it might be better to use a fine-tuned text classification model.
+Since you can adjust the labels while you perform {infer}, this type of task is 
+exceptionally flexible. If you are consistently using the same labels, however, 
+it might be better to use a fine-tuned text classification model.

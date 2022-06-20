@@ -16,18 +16,25 @@ event.
 [role="screenshot"]
 image::images/anomaly-job-model-snapshots.jpg[A screenshot of a job with the Model Snapshots tab opened]
 --
-. Select a snapshot from the list and click the **Revert** 
-  icon under **Actions**.
-. Optional: Select if you want to replay the analysis after the revert has been 
-  applied. You can decide whether you want the job running in real time. You can 
-  also define the time range you don't want the job to analyze, this way you can 
-  skip the time of the event you don't want to impact the model behavior. 
+. Select a snapshot from the list and click the **Revert** icon under 
+  **Actions**.
+. Optional: Select if you want to replay the analysis based on the data in your 
+  index after the revert has been applied. You can decide whether you want the 
+  job running in real time. You can also define the time range you don't want 
+  the job to analyze, this way you can skip the time of the event you don't want 
+  to impact the model behavior. If you don't select this option, there will be 
+  no {anomaly-detect} results after the snapshot was taken.
 +
 --
 [role="screenshot"]
 image::images/revert-model-snapshot.jpg[A screenshot of a revert model snapshot flyout]
 --
 . Click **Apply**.
+
+TIP: You can use <<ml-ad-rules,custom rules>> to avoid a model being updated in 
+  case of a known event you want to exclude from the analysis. Using custom 
+  rules might help you to avoid situations where you need to revert to a 
+  snapshot.
 
 Alternatively, you can use the 
 {ref}/ml-revert-snapshot.html[Revert model snapshots] API. In this case, you 
@@ -37,7 +44,8 @@ snapshot.
 [NOTE]
 ===============================
 * In case of reverting to a snapshot, all {anomaly-detect} results are deleted 
-  for the corresponding job after the point when the snapshot was saved.
+  for the corresponding job after the point when the snapshot was saved. If you 
+  replay the analysis, results will be re-generated based on your configuration.
 * Reverting to a snapshot does not change the `data_counts` values of the 
   {anomaly-job}, these values are not reverted to the earlier state.
 ===============================

@@ -19,11 +19,16 @@ image::images/anomaly-job-model-snapshots.jpg[A screenshot of a job with the Mod
 . Select a snapshot from the list and click the **Revert** icon under 
   **Actions**.
 . Optional: Select if you want to replay the analysis based on the data in your 
-  index after the revert has been applied. You can decide whether you want the 
-  job running in real time. You can also define the time range you don't want 
-  the job to analyze, this way you can skip the time of the event you don't want 
-  to impact the model behavior. If you don't select this option, there will be 
-  no {anomaly-detect} results after the snapshot was taken.
+  index after the revert has been applied. If you don’t select this option, 
+  there will be no {anomaly-detect} results after the snapshot was taken and the 
+  job results end at the point in time of the snapshot.If you select this 
+  option, you can then optionally select one or both of the next two options:
+
+  * You can select whether you want the job to continue running in real time 
+  after the replay, or to just replay existing data after the snapshot.
+  * You can select a time range you want to avoid during the replay by declaring 
+  a Calendar event. This way, you can skip any problematic time frame that you 
+  want the {anomaly-job} to avoid.
 +
 --
 [role="screenshot"]

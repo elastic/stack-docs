@@ -21,13 +21,13 @@ image::images/anomaly-job-model-snapshots.jpg[A screenshot of a job with the Mod
 . Optional: Select if you want to replay the analysis based on the data in your 
   index after the revert has been applied. If you don’t select this option, 
   there will be no {anomaly-detect} results after the snapshot was taken and the 
-  job results end at the point in time of the snapshot.If you select this 
+  job results end at the point in time of the snapshot. If you select this 
   option, you can then optionally select one or both of the next two options:
 
   * You can select whether you want the job to continue running in real time 
   after the replay, or to just replay existing data after the snapshot.
   * You can select a time range you want to avoid during the replay by declaring 
-  a Calendar event. This way, you can skip any problematic time frame that you 
+  a calendar event. This way, you can skip any problematic time frame that you 
   want the {anomaly-job} to avoid.
 
 +
@@ -43,13 +43,13 @@ TIP: You can use <<ml-ad-rules,custom rules>> to avoid a model being updated in
   snapshot.
 
 Alternatively, you can use the 
-{ref}/ml-revert-snapshot.html[Revert model snapshots] API. In this case, you 
+{ref}/ml-revert-snapshot.html[revert model snapshots] API. In this case, you 
 need to manually close the corresponding job before reverting to the saved 
 snapshot.
 
 [NOTE]
 ===============================
-* In case of reverting to a snapshot, all {anomaly-detect} results are deleted 
+* By default, when you revert to a snapshot, all {anomaly-detect} results are deleted 
   for the corresponding job after the point when the snapshot was saved. If you 
   replay the analysis, results will be re-generated based on your configuration.
 * Reverting to a snapshot does not change the `data_counts` values of the 

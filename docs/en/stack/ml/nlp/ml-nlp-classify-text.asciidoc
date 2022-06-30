@@ -36,9 +36,8 @@ text is "POSITIVE" or "NEGATIVE":
 
 [source,js]
 ----------------------------------
-...
 {
-    "input_text": "This was the best movie I’ve seen in the last decade!"
+    docs: [{"text_field": "This was the best movie I’ve seen in the last decade!"}]
 }
 ...
 ----------------------------------
@@ -51,9 +50,8 @@ and determine whether the following text is a news topic related to "SPORTS",
 
 [source,js]
 ----------------------------------
-...
 {
-    "input_text": "The Blue Jays played their final game in Toronto last night and came out with a win over the Yankees, highlighting just how far the team has come this season."
+    docs: [{"text_field": "The Blue Jays played their final game in Toronto last night and came out with a win over the Yankees, highlighting just how far the team has come this season."}]
 }
 ...
 ----------------------------------
@@ -81,12 +79,14 @@ input text at {infer} time:
 
 [source,js]
 ----------------------------------
-...
 {
-    "input_text": "The S&P 500 gained a meager 12 points in the day’s trading. Trade volumes remain consistent with those of the past week while investors await word from the Fed about possible rate increases.",
-    "labels": ["SPORTS", "BUSINESS", "LOCAL", "ENTERTAINMENT"]
+    docs: [{"text_field": "The S&P 500 gained a meager 12 points in the day’s trading. Trade volumes remain consistent with those of the past week while investors await word from the Fed about possible rate increases."}],
+    "inference_config": {
+        "zero_shot_classification": {
+            "labels": ["SPORTS", "BUSINESS", "LOCAL", "ENTERTAINMENT"]
+        }
+    }
 }
-...
 ----------------------------------
 // NOTCONSOLE
 
@@ -97,7 +97,8 @@ The task returns the following result:
 ----------------------------------
 ...
 {
-    "result": "BUSINESS"
+    "predicted_value": "BUSINESS"
+    ...
 }
 ...
 ----------------------------------
@@ -108,12 +109,14 @@ You can use the same model to perform {infer} with different classes, such as:
 
 [source,js]
 ----------------------------------
-...
 {
-    "input_text": "Hello support team. I’m writing to inquire about the possibility of sending my broadband router in for repairs. The internet is really slow and the router keeps rebooting! It’s a big problem because I’m in the middle of binge-watching The Mandalorian!",
-    "labels": ["urgent", "internet", "phone", "cable", "mobile", "tv"]
+    docs: [{"text_field": "Hello support team. I’m writing to inquire about the possibility of sending my broadband router in for repairs. The internet is really slow and the router keeps rebooting! It’s a big problem because I’m in the middle of binge-watching The Mandalorian!"}]
+    "inference_config": {
+        "zero_shot_classification": {
+            "labels": ["urgent", "internet", "phone", "cable", "mobile", "tv"]
+        }
+    }
 }
-...
 ----------------------------------
 // NOTCONSOLE
 
@@ -124,7 +127,8 @@ The task returns the following result:
 ----------------------------------
 ...
 {
-    "result": ["urgent", "internet", "tv"]
+    "predicted_value": ["urgent", "internet", "tv"]
+    ...
 }
 ...
 ----------------------------------

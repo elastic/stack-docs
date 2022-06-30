@@ -29,9 +29,8 @@ The following is an example of producing a text embedding:
 
 [source,js]
 ----------------------------------
-...
 {
-    "input": "The quick brown fox jumps over the lazy dog."
+    docs: [{"text_field": "The quick brown fox jumps over the lazy dog."}]
 }
 ...
 ----------------------------------
@@ -44,7 +43,8 @@ The task returns the following result:
 ----------------------------------
 ...
 {
-    "results": [0.293478, -0.23845, ..., 1.34589e2, 0.119376]
+    "predicted_value": [0.293478, -0.23845, ..., 1.34589e2, 0.119376]
+    ...
 }
 ...
 ----------------------------------

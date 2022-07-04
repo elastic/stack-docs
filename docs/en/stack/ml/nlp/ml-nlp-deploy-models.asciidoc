@@ -134,10 +134,26 @@ When you deploy the model, it is allocated to all available {ml} nodes. The
 model is loaded into memory in a native process that encapsulates `libtorch`,
 which is the underlying machine learning library of PyTorch.
 
-TIP: You can set additional deployment options that affect the performance of
-the model. For example, specify the number of allocations and the threads per
-allocation to optimize the throughput and speed of inference requests in your
-production environment. For more information about these options, refer to the
+You can set additional deployment options – the number of allocations and the 
+threads per allocation – that affect the performance of the model.
+
+The number of allocations represents the amount of model allocations of each 
+{ml} node where your model is deployed. Every allocations on a node share the 
+same copy of the model in memory but use a separate set of threads to evaluate 
+the model. Increasing the number of allocations generally increases the 
+throughput.
+
+The threads per allocation setting represents the number of threads used on each 
+model allocation during {infer}. Increatsing the number of threads generally 
+increases the speed of {infer} requests. 
+
+NOTE: If either the number of allocations or the threads per allocation value are 
+greater than the number of hardware threads, the value is automatically changed 
+to a number that is less than the number of hardware threads. If the sum of 
+these settings are greater than the number of hardware threads, the threads per 
+allocation value is reduced automatically.
+
+Refer to the
 {ref}/start-trained-model-deployment.html[start trained model deployment API].
 
 You can view the allocation status in {kib} or by using the

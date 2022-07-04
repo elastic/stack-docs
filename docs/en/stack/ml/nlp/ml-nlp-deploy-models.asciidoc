@@ -130,22 +130,20 @@ NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 {kib}, wait for automatic synchronization, or use the
 {kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
 
-When you deploy the model, it is allocated to all available {ml} nodes. The
-model is loaded into memory in a native process that encapsulates `libtorch`,
-which is the underlying machine learning library of PyTorch.
+When you deploy the model, its allocations are distributed across available {ml} 
+nodes. Model allocations are independent units of work for NLP tasks. Throughput 
+can be scaled by adding more allocations to the deployment, it increases the 
+number of {infer} requests that can be performed in parallel. All allocations 
+assigned to a node share the same copy of the model in memory. The model is 
+loaded into memory in a native process that encapsulates `libtorch`, which is 
+the underlying {ml} library of PyTorch.
 
 You can set additional deployment options - the number of allocations and the 
 threads per allocation - that affect the performance of the model.
 
-Model allocations are independent units of work for NLP tasks. Throughput can be 
-scaled by adding more allocations to the deployment, it increases the number of 
-{infer} requests that can be performed in parallel. Allocations are distributed 
-to different {ml} nodes where possible. In some situations, however, multiple 
-allocations may be assigned to the same node. Allocations on the same node share 
-a copy of the model in memory but use a separate set of threads to evaluate the 
-model. The number of allocations setting represents the amount of model 
-allocations across all the {ml} nodes. Increasing the number of allocations 
-generally increases the throughput.
+The number of allocations setting represents the amount of model allocations 
+across all the {ml} nodes. Increasing the number of allocations generally 
+increases the throughput.
 
 NOTE: Model allocations are distributed in such a way that the total number of 
 used threads does not exceed the allocated processors of a node.

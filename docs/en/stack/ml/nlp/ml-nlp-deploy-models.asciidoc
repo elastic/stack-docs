@@ -138,8 +138,8 @@ assigned to a node share the same copy of the model in memory. The model is
 loaded into memory in a native process that encapsulates `libtorch`, which is 
 the underlying {ml} library of PyTorch.
 
-You can set additional deployment options - the number of allocations and the 
-threads per allocation - that affect the performance of the model.
+You can set the number of allocations and the number of threads an allocation 
+uses for your deployment that affect model performance.
 
 The number of allocations setting represents the amount of model allocations 
 across all the {ml} nodes. Increasing the number of allocations generally 

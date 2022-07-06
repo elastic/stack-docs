@@ -141,11 +141,10 @@ the underlying {ml} library of PyTorch.
 You can set the number of allocations and the number of threads an allocation 
 uses for your deployment to affect model performance.
 
-The number of allocations setting affects the amount of model allocations 
-across all the {ml} nodes. Increasing the number of allocations generally 
-increases the throughput. Model allocations are distributed in such a way that 
-the total number of used threads does not exceed the allocated processors of a 
-node.
+The number of allocations setting affects the amount of model allocations across 
+all the {ml} nodes. Increasing the number of allocations generally increases the 
+throughput. Model allocations are distributed in such a way that the total 
+number of used threads does not exceed the allocated processors of a node.
 
 The threads per allocation setting affects the number of threads used by each 
 model allocation during {infer}. Increasing the number of threads generally 

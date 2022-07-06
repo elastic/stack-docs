@@ -143,18 +143,14 @@ uses for your deployment to affect model performance.
 
 The number of allocations setting affects the amount of model allocations 
 across all the {ml} nodes. Increasing the number of allocations generally 
-increases the throughput.
-
-NOTE: Model allocations are distributed in such a way that the total number of 
-used threads does not exceed the allocated processors of a node.
+increases the throughput. Model allocations are distributed in such a way that 
+the total number of used threads does not exceed the allocated processors of a 
+node.
 
 The threads per allocation setting affects the number of threads used by each 
 model allocation during {infer}. Increasing the number of threads generally 
 increases the speed of {infer} requests. The value of this setting must not 
 exceed the number of available allocated processors per node.
-
-Refer to the
-{ref}/start-trained-model-deployment.html[start trained model deployment API].
 
 You can view the allocation status in {kib} or by using the
 {ref}/get-trained-models-stats.html[get trained model stats API].

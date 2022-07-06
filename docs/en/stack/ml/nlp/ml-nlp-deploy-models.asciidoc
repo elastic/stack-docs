@@ -132,23 +132,23 @@ NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 
 When you deploy the model, its allocations are distributed across available {ml} 
 nodes. Model allocations are independent units of work for NLP tasks. Throughput 
-can be scaled by adding more allocations to the deployment, it increases the 
+can be scaled by adding more allocations to the deployment; it increases the 
 number of {infer} requests that can be performed in parallel. All allocations 
 assigned to a node share the same copy of the model in memory. The model is 
 loaded into memory in a native process that encapsulates `libtorch`, which is 
 the underlying {ml} library of PyTorch.
 
 You can set the number of allocations and the number of threads an allocation 
-uses for your deployment that affect model performance.
+uses for your deployment to affect model performance.
 
-The number of allocations setting represents the amount of model allocations 
+The number of allocations setting affects the amount of model allocations 
 across all the {ml} nodes. Increasing the number of allocations generally 
 increases the throughput.
 
 NOTE: Model allocations are distributed in such a way that the total number of 
 used threads does not exceed the allocated processors of a node.
 
-The threads per allocation setting represents the number of threads used by each 
+The threads per allocation setting affects the number of threads used by each 
 model allocation during {infer}. Increasing the number of threads generally 
 increases the speed of {infer} requests. The value of this setting must not 
 exceed the number of available allocated processors per node.

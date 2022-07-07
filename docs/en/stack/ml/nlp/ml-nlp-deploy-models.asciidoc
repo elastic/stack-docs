@@ -130,15 +130,26 @@ NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 {kib}, wait for automatic synchronization, or use the
 {kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
 
-When you deploy the model, it is allocated to all available {ml} nodes. The
-model is loaded into memory in a native process that encapsulates `libtorch`,
-which is the underlying machine learning library of PyTorch.
+When you deploy the model, its allocations are distributed across available {ml} 
+nodes. Model allocations are independent units of work for NLP tasks. Throughput 
+can be scaled by adding more allocations to the deployment; it increases the 
+number of {infer} requests that can be performed in parallel. All allocations 
+assigned to a node share the same copy of the model in memory. The model is 
+loaded into memory in a native process that encapsulates `libtorch`, which is 
+the underlying {ml} library of PyTorch.
 
-TIP: You can set additional deployment options that affect the performance of
-the model. For example, specify the number of allocations and the threads per
-allocation to optimize the throughput and speed of inference requests in your
-production environment. For more information about these options, refer to the
-{ref}/start-trained-model-deployment.html[start trained model deployment API].
+You can set the number of allocations and the number of threads an allocation 
+uses for your deployment to affect model performance.
+
+The number of allocations setting affects the amount of model allocations across 
+all the {ml} nodes. Increasing the number of allocations generally increases the 
+throughput. Model allocations are distributed in such a way that the total 
+number of used threads does not exceed the allocated processors of a node.
+
+The threads per allocation setting affects the number of threads used by each 
+model allocation during {infer}. Increasing the number of threads generally 
+increases the speed of {infer} requests. The value of this setting must not 
+exceed the number of available allocated processors per node.
 
 You can view the allocation status in {kib} or by using the
 {ref}/get-trained-models-stats.html[get trained model stats API].

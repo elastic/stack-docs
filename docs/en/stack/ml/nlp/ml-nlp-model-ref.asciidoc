@@ -75,9 +75,8 @@ The embeddings produced by these models should be indexed in Elasticsearch using
 with an appropriate {ref}/dense-vector.html#dense-vector-params[similarity function]
 chosen for the model. 
 
-To find similar embeddings in Elasticsearch use the efficient Approximate k-nearest neighbor (kNN)
+To find similar embeddings in {es} use the efficient {ref}/knn-search.html#approximate-knn[Approximate k-nearest neighbor (kNN)]
 search API with a text embedding as the query vector. 
-https://www.elastic.co/guide/en/elasticsearch/reference/master/knn-search.html#approximate-knn
 
 Approximate KNN search uses the similarty function defined in 
 the dense vector field mapping is used to calulate the relevence.

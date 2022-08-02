@@ -309,10 +309,10 @@ A file, database, or service that provides the underlying data for a map, Canvas
 element, or visualization.
 //Source: Kibana
 
-[[glossary-data-stream]] data stream::
-Named resource used to manage time series data. A data stream stores data across
-multiple backing <<glossary-index,indices>>. See {ref}/data-streams.html[Data
-streams].
+[[glossary-data-stream]] data stream:: 
+A named resource used to manage <<glossary-time-series-data,time series data>>.
+A data stream stores data across multiple backing <<glossary-index,indices>>.
+See {ref}/data-streams.html[Data streams].
 //Source: Elasticsearch
 
 [[glossary-data-tier]] data tier::
@@ -1234,9 +1234,21 @@ See {kibana-ref}/dashboard.html[Timelion].
 //Source: Kibana
 
 [[glossary-time-series-data]] time series data::
-Timestamped data such as logs, metrics, and events that is indexed on an ongoing
-basis.
-//Source: Kibana
+A series of data points, such as logs, metrics and events, that is indexed in
+time order. Time series data can be indexed in a 
+<<glossary-data-stream,data stream>>, where it can be accessed as a single named
+resource with the data stored across multiple backing indices. A
+<<glossary-time-series-data-stream,time series data stream>> is optimized for
+indexing metrics data.
+//Source: Elasticsearch
+
+[[glossary-time-series-data-stream]] time series data stream::
+A type of <<glossary-data-stream,data stream>> optimized for indexing metrics
+<<glossary-time-series-data,time series data>>. A TSDS allows for reduced storage
+size and for a sequence of metrics data points to be considered efficiently as a
+whole. See 
+link:https://www.elastic.co/guide/en/elasticsearch/reference/master/tsds.html[Time series data stream].
+//Source: Elasticsearch
 
 [[glossary-token]] token::
 A chunk of unstructured <<glossary-text,text>> that's been optimized for search.

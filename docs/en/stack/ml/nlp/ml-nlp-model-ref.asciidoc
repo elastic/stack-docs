@@ -65,19 +65,45 @@ refer to <<ml-nlp-overview>>.
 [[ml-nlp-model-ref-text-embedding]]
 == Third party text embedding models
 
+Text Embedding models are designed to work with specific scoring functions
+for calculating the similarity between the embeddings they produce. 
+Examples of typical scoring functions are: `cosine`, `dot product` and 
+`euclidean distance` (also known as `l2_norm`).
+
+The embeddings produced by these models should be indexed in {es} using the
+{ref}/dense-vector.html[dense vector field type]
+with an appropriate {ref}/dense-vector.html#dense-vector-params[similarity function]
+chosen for the model. 
+
+To find similar embeddings in {es} use the efficient 
+{ref}/knn-search.html#approximate-knn[Approximate k-nearest neighbor (kNN)]
+search API with a text embedding as the query vector. Approximate 
+kNN search uses the similarity function defined in 
+the dense vector field mapping is used to calculate the relevance.
+For the best results the function must be one of 
+the suitable similarity functions for the model.
+
+
 Using `SentenceTransformerWrapper`:
 
 * https://huggingface.co/sentence-transformers/all-distilroberta-v1[All DistilRoBERTa v1]
+Suitable similarity functions:	`dot_product`, `cosine`, `l2_norm`
 * https://huggingface.co/sentence-transformers/all-MiniLM-L12-v2[All MiniLM L12 v2]
+Suitable similarity functions:	`dot_product`, `cosine`, `l2_norm`
 * https://huggingface.co/sentence-transformers/all-mpnet-base-v2[All MPNet base v2]
-* https://huggingface.co/sentence-transformers/bert-base-nli-cls-token[BERT base nli cls token]
+Suitable similarity functions:	`dot_product`, `cosine`, `l2_norm`
 * https://huggingface.co/sentence-transformers/facebook-dpr-ctx_encoder-multiset-base[Facebook dpr-ctx_encoder multiset base]
+Suitable similarity functions:	`dot_product`
 * https://huggingface.co/sentence-transformers/facebook-dpr-question_encoder-single-nq-base[Facebook dpr-question_encoder single nq base]
+Suitable similarity functions:	`dot_product`
 * https://huggingface.co/sentence-transformers/LaBSE[LaBSE]
+Suitable similarity functions:	`cosine`
 * https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b[msmarco DistilBERT base tas b]
-* https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3[msmarco MiniLM L12 v3]
-* https://huggingface.co/sentence-transformers/nli-bert-base-cls-pooling[nli BERT base cls pooling]
-* https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2[paraphrase mpnet base v2]
+Suitable similarity functions:	`dot_product`
+* https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5[msmarco MiniLM L12 v5]
+Suitable similarity functions:	`dot_product`, `cosine`, `l2_norm`
+* https://huggingface.co/sentence-transformers/paraphrase-multilingual-mpnet-base-v2[paraphrase mpnet base v2]
+Suitable similarity functions:	`cosine`
 
 Using `DPREncoderWrapper`:
 

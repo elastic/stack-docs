@@ -70,6 +70,11 @@ For read-only access:
 * [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
   only)
 
+IMPORTANT: The `machine_learning_admin` and `machine_learning_user` built-in
+roles give access to the results of _all_ {anomaly-jobs}, irrespective of
+whether the user has access to the source indices. You must carefully consider
+who is given these roles, as {anomaly-job} results may propagate field values
+from the source indices to the results that contain sensitive information.
 
 [discrete]
 [[kib-security]]
@@ -124,6 +129,13 @@ Within a {kib} space, for read-only access to the {ml-features}, you must have:
 * [ ] `read` index privilege on your source indices
 * [ ] {data-sources} and `read` index privileges on destination indices (for 
   {dfanalytics-jobs} only)
+
+IMPORTANT: A user who has full or read-only access to {ml-features} within
+a given {kib} space can view the results of _all_ {anomaly-jobs} that are
+visible in that space, even if they do not have access to the source indices
+of those jobs. You must carefully consider who is given access to
+{ml-features}, as {anomaly-job} results may propagate field values from the
+source indices to the results that contain sensitive information.
 
 NOTE: {data-sources-cap} can be automatically created when creating a 
 {dfanalytics-job}.

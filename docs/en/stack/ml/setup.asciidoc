@@ -74,7 +74,7 @@ IMPORTANT: The `machine_learning_admin` and `machine_learning_user` built-in
 roles give access to the results of _all_ {anomaly-jobs}, irrespective of
 whether the user has access to the source indices. You must carefully consider
 who is given these roles, as {anomaly-job} results may propagate field values
-from the source indices to the results that contain sensitive information.
+that contain sensitive information from the source indices to the results.
 
 [discrete]
 [[kib-security]]
@@ -134,8 +134,8 @@ IMPORTANT: A user who has full or read-only access to {ml-features} within
 a given {kib} space can view the results of _all_ {anomaly-jobs} that are
 visible in that space, even if they do not have access to the source indices
 of those jobs. You must carefully consider who is given access to
-{ml-features}, as {anomaly-job} results may propagate field values from the
-source indices to the results that contain sensitive information.
+{ml-features}, as {anomaly-job} results may propagate field values that contain sensitive information from the
+source indices to the results.
 
 NOTE: {data-sources-cap} can be automatically created when creating a 
 {dfanalytics-job}.

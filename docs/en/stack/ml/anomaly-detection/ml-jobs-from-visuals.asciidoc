@@ -9,7 +9,7 @@ You can create {anomaly-jobs} from the compatible Lens charts on **Dashboard**.
 
 [discrete]
 [[prereqs]]
-== Prerequisites
+== Prerequisites and limitations
 
 * Only chart-like visualizations are compatible. Supported chart types are 
 `area`, `area_percentage_stacked`, `area_stacked`, `bar`, `bar_horizontal`, 
@@ -21,7 +21,11 @@ You can create {anomaly-jobs} from the compatible Lens charts on **Dashboard**.
 * The chart must contain a date field on one axis and it must be the same as the 
 default date field for the {data-source}.
 
-* Charts containing time shifts are not supported.
+* Charts with a layer that contains a 
+{kibana-ref}/create-a-dashboard-of-panels-with-ecommerce-data.html#compare-time-ranges[time shift] 
+are not supported.
+
+* Charts containing a layer that is filtered by a field are not supported.
 
 
 [discrete]

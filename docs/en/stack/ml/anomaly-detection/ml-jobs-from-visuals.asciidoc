@@ -21,11 +21,13 @@ You can create {anomaly-jobs} from the compatible Lens charts on **Dashboard**.
 * The chart must contain a date field on one axis and it must be the same as the 
 default date field for the {data-source}.
 
-* Charts with a layer that contains a 
-{kibana-ref}/create-a-dashboard-of-panels-with-ecommerce-data.html#compare-time-ranges[time shift] 
-are not supported.
+* In case of a multi-layered chart, only the compatible layers can be used to 
+create an {anomaly-job}.
 
-* Charts containing a layer that is filtered by a field are not supported.
+* Chart layers which contain a field that uses a
+{kibana-ref}/create-a-dashboard-of-panels-with-ecommerce-data.html#compare-time-ranges[time shift] 
+or a field that has a `filter by` setting applied cannot be used to create an 
+{anomaly-job}.
 
 
 [discrete]
@@ -37,7 +39,6 @@ NOTE: You need to have a compatible visualization on **Dashboard** to create an
 **Analytics > Dashboard** and select the `[Flight] Global Flight Dashboard` 
 which is based on the {kib} sample flight data set. Select the `Flight count` 
 visualization from the dashboard.
-
 
 . Go to **Analytics > Dashboard** and select a dashboard with a compatible 
 visualization.
@@ -60,8 +61,8 @@ field, the multi metric job wizard is used for creating the job. For a single
 metric chart, the single metric wizard is used.
 
 If the configured time range of the chart is relative, it is converted to 
-absolute start and end times in the job configuration. If the conversion of these times 
-fails, the whole time range from the index is used.
+absolute start and end times in the job configuration. If the conversion of 
+these times fails, the whole time range from the index is used.
 
 
 [discrete]

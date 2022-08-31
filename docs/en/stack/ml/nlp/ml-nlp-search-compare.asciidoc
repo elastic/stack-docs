@@ -57,3 +57,41 @@ The task returns the following result:
 [[ml-nlp-text-similarity]]
 == Text similarity
 
+The text similarity task estimates how similar two pieces of text to each other 
+and expresses the similarity in a numeric value. This is commonly referred to
+as cross-encoding. This task is useful for ranking document text when comparing 
+it to another provided text input.
+
+You can provide multiple strings of text to compare to another text input 
+sequence. Each string is compared to the given text sequence at inference time 
+and a prediction of similarity is calculated for every string of text.
+
+[source,js]
+----------------------------------
+{
+  "docs":[{ "text_field": "Berlin has a population of 3,520,031 registered inhabitants in an area of 891.82 square kilometers."}, {"text_field": "New York City is famous for the Metropolitan Museum of Art."}],
+  "inference_config": {
+    "text_similarity": {
+      "text": "How many people live in Berlin?"
+    }
+  }
+}
+----------------------------------
+// NOTCONSOLE
+
+In the example above, every string in the `docs` array is compared individually 
+to the text provided in the `text_similarity`.`text` field and a predicted 
+similarity is calculated for both as the API response shows:
+
+[source,js]
+----------------------------------
+...
+{
+    "predicted_value": 7.235751628875732
+},
+{
+    "predicted_value": -11.562295913696289
+}
+...
+----------------------------------
+// NOTCONSOLE

@@ -1,0 +1,271 @@
+[[ml-nlp-ner-example]]
+= How to deploy named entity recognition (NER)
+
+++++
+<titleabbrev>Named entity recognition</titleabbrev>
+++++
+:keywords: {ml-init}, {stack}, {nlp}
+
+This page demonstrates how to deploy a 
+<<ml-nlp-ner,named entity recognition (NER)>> model in {es}, test the model, and 
+add it to an {infer} ingest pipeline. The model that is used in the example is 
+publically available on https://huggingface.co/[HuggingFace].
+
+
+[discrete]
+[[ex-ner-requirements]]
+== Requirements
+
+include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-requirements]
+
+
+[discrete]
+[[ex-ner-deploy]]
+== Deploying a NER model
+
+include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-eland-clone-docker-build]
+
+Select a NER model from the 
+{ml-docs}/ml-nlp-model-ref.html#ml-nlp-model-ref-ner[third-party model reference list].
+This example uses an 
+https://huggingface.co/elastic/distilbert-base-uncased-finetuned-conll03-english[uncased NER model].
+
+Install the model by running the `eland_import_model_hub` command in the Docker 
+image:
+
+[source,shell]
+--------------------------------------------------
+docker run -it --rm elastic/eland \
+    eland_import_hub_model \
+      --cloud-id $CLOUD_ID \
+      -u <username> -p <password> \
+      --hub-model-id elastic/distilbert-base-uncased-finetuned-conll03-english \
+      --task-type ner \
+      --start
+
+--------------------------------------------------
+// NOTCONSOLE
+
+You need to provide an administrator username and its password and replace the 
+`$CLOUD_ID` with the ID of your Cloud deployment. This Cloud ID can be copied 
+from the deployments page on your Cloud website.
+
+include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-start]
+
+include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-sync]
+
+
+[discrete]
+[[ex-ner-test]]
+== Testing the NER model
+
+Deployed models can be evaluated using the 
+{ref}/infer-trained-model-deployment.html[_infer API]. The input is the string 
+you want to analyze. In the following request, `text_field` is the field name 
+where the model expects to find the input, as defined in the model 
+configuration. By default, if the model was uploaded via Eland, the input field 
+is `text_field`.
+
+[source,js]
+--------------------------------------------------
+POST _ml/trained_models/elastic__distilbert-base-uncased-finetuned-conll03-english/_infer
+{
+  "docs": [
+    {
+      "text_field": "Elastic is headquartered in Mountain View, California."
+    }
+  ]
+}
+--------------------------------------------------
+
+The model finds three entities: an organization "Elastic", and two locations 
+"Mountain View" and "California" as the response shows:
+
+[source,js]
+--------------------------------------------------
+{
+  "inference_results": [
+    {
+      "predicted_value": "[Elastic](ORG&Elastic) is headquartered in [Mountain View](LOC&Mountain+View), [California](LOC&California).",
+      "entities": [
+        {
+          "entity": "elastic",
+          "class_name": "ORG",
+          "class_probability": 0.9958921231805256,
+          "start_pos": 0,
+          "end_pos": 7
+        },
+        {
+          "entity": "mountain view",
+          "class_name": "LOC",
+          "class_probability": 0.9844731508992688,
+          "start_pos": 28,
+          "end_pos": 41
+        },
+        {
+          "entity": "california",
+          "class_name": "LOC",
+          "class_probability": 0.9972361009811214,
+          "start_pos": 43,
+          "end_pos": 53
+        }
+      ]
+    }
+  ]
+}
+--------------------------------------------------
+// NOTCONSOLE
+
+
+[discrete]
+[[ex-ner-ingest]]
+== Adding the NER model to an {infer} ingest pipeline
+
+You can perform bulk {infer} on documents as they are ingested via an ingest 
+pipeline by using the {ref}/inference-processor.html[{infer} processor]. The 
+novel _Les Misérables_ by Victor Hugo is used as an example for {infer} in 
+the following. 
+https://github.com/grabowskit/nlp-data/blob/main/les-miserables-nd.json[Download] 
+the novel text split by paragraph as a JSON file, then upload it by using the 
+{kibana-ref}/connect-to-elasticsearch.html#upload-data-kibana[Data Visualizer]. 
+Give the new index the name `les-miserables` when uploading the file.
+
+Now create an ingest pipeline either via the 
+{ref}/ml-nlp-inference.html#ml-nlp-inference-processor[Stack management UI] or 
+by using the API:
+
+[source,js]
+--------------------------------------------------
+PUT _ingest/pipeline/ner
+{
+  "description": "NER pipeline",
+  "processors": [
+    {
+      "inference": {
+        "model_id": "elastic__distilbert-base-uncased-finetuned-conll03-english",
+        "target_field": "ml.ner",
+        "field_map": {
+          "paragraph": "text_field"
+        }
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "if": "return ctx['ml']['ner'].containsKey('entities')",
+        "source": "Map tags = new HashMap(); for (item in ctx['ml']['ner']['entities']) { if (!tags.containsKey(item.class_name)) tags[item.class_name] = new HashSet(); tags[item.class_name].add(item.entity);} ctx['tags'] = tags;"
+      }
+    }
+  ],
+  "on_failure": [
+    {
+      "set": {
+        "description": "Index document to 'failed-<index>'",
+        "field": "_index",
+        "value": "failed-{{{ _index }}}"
+      }
+    },
+    {
+      "set": {
+        "description": "Set error message",
+        "field": "ingest.failure",
+        "value": "{{_ingest.on_failure_message}}"
+      }
+    }
+  ]
+}
+--------------------------------------------------
+
+The `field_map` obejct of the `inference` processor maps the `paragraph` object 
+(the field to analyze in the source documents) to `text_field` (the name of the 
+field the model is configured to use). The `target_field` is the name of the 
+field to write the inference results to.
+
+The `script` processor pulls out the entities and groups them by type. The end 
+result is lists of people, locations, and organizations detected in the input 
+text. This painless script enables you to build visualizations from the fields 
+that are created.
+
+The purpose of the `on_failure` clause is to record errors. It sets the `_index` 
+meta field to a new value, and the document is now stored there. It also sets a 
+new field `ingest.failure` and the error message is written to this field. 
+{infer-cap} can fail for a number of easily fixable reasons. Perhaps the model 
+has not been deployed, or the input field is missing in some of the source 
+documents. By redirecting the failed documents to another index and setting the 
+error message, those failed inferences are not lost and can be reviewed later. 
+When the errors are fixed, reindex from the failed index to recover the 
+unsuccessful requests.
+
+Ingest the text of the novel - the index `les-miserables` - through the pipeline 
+you created:
+
+[source,js]
+--------------------------------------------------
+POST _reindex
+{
+  "source": {
+    "index": "les-miserables",
+  },
+  "dest": {
+    "index": "les-miserables-infer",
+    "pipeline": "ner"
+  }
+}
+--------------------------------------------------
+
+Take a random paragraph from the source document as an example:
+
+[source,js]
+--------------------------------------------------
+{
+    "paragraph": "Father Gillenormand did not do it intentionally, but inattention to proper names was an aristocratic habit of his.",
+    "line": 12700
+}
+--------------------------------------------------
+/NOTCONSOLE
+
+After the text is ingested through the NER pipeline, find the resulting document 
+stored in {es}:
+
+[source,js]
+--------------------------------------------------
+GET /les-miserables-infer/_search
+{
+  "query": {
+    "term": {
+      "line": 12700
+    }
+  }
+}
+--------------------------------------------------
+
+The request returns the document marked up with one identified person:
+
+[source,js]
+--------------------------------------------------
+(...)
+"paragraph": "Father Gillenormand did not do it intentionally, but inattention to proper names was an aristocratic habit of his.",
+  "@timestamp": "2020-01-01T17:38:25.000+01:00",
+  "line": 12700,
+  "ml": {
+    "ner": {
+      "predicted_value": "Father [Gillenormand](PER&Gillenormand) did not do it intentionally, but inattention to proper names was an aristocratic habit of his.",
+      "entities": [
+        {
+          "entity": "gillenormand",
+          "class_name": "PER",
+          "class_probability": 0.9452480789333386,
+          "start_pos": 7,
+          "end_pos": 19
+        }
+      ],
+      "model_id": "elastic__distilbert-base-uncased-finetuned-conll03-english"
+    }
+  },
+  "tags": {
+    "PER": [
+      "gillenormand"
+    ]
+(...)
+--------------------------------------------------
+

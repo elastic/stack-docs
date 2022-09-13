@@ -125,7 +125,7 @@ You can perform bulk {infer} on documents as they are ingested via an ingest
 pipeline by using the {ref}/inference-processor.html[{infer} processor]. The 
 novel _Les Misérables_ by Victor Hugo is used as an example for {infer} in 
 the following. 
-https://github.com/grabowskit/nlp-data/blob/main/les-miserables-nd.json[Download] 
+https://github.com/elastic/stack-docs/blob/main/docs/en/stack/ml/nlp/data/les-miserables-nd.json[Download] 
 the novel text split by paragraph as a JSON file, then upload it by using the 
 {kibana-ref}/connect-to-elasticsearch.html#upload-data-kibana[Data Visualizer]. 
 Give the new index the name `les-miserables` when uploading the file.
@@ -266,6 +266,32 @@ The request returns the document marked up with one identified person:
     "PER": [
       "gillenormand"
     ]
+  }
 (...)
 --------------------------------------------------
+// NOTCONSOLE
 
+[discrete]
+[[ex-ner-visual]]
+== Visualizing results
+
+You can create a tag cloud to visualize your data processed by the {infer} 
+pipeline. A tag cloud is a visualization that scales words by the frequency at 
+which they occur. It is a handy tool for viewing the entities found in the data.
+
+In {kib}, open **Stack management** > **{data-sources-cap}**, and create a new 
+{data-source} from the `les-miserables-infer` index pattern. 
+
+Open **Dashboard** and create a new dashboard. Select the 
+*Aggregation based-type > Tag cloud* visualization. Choose the new {data-source} 
+as the source.
+
+Add a new *Bucket* with a term aggregation, select the `tags.PER.keyword` field, 
+and increase the size to 20. 
+
+Optionally, adjust the time selector to cover the data points in the 
+{data-source} if you selected a time field when creating it.
+
+Update and save the visualization.
+
+image::images/ml-nlp-tag-cloud.png[alt="Tag cloud created from Les Misérables",align="center"]

@@ -16,14 +16,14 @@ publically available on https://huggingface.co/[HuggingFace].
 [[ex-ner-requirements]]
 == Requirements
 
-include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-requirements]
+include::ml-nlp-shared.asciidoc[tag=nlp-requirements]
 
 
 [discrete]
 [[ex-ner-deploy]]
 == Deploying a NER model
 
-include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-eland-clone-docker-build]
+include::ml-nlp-shared.asciidoc[tag=nlp-eland-clone-docker-build]
 
 Select a NER model from the 
 {ml-docs}/ml-nlp-model-ref.html#ml-nlp-model-ref-ner[third-party model reference list].
@@ -50,9 +50,9 @@ You need to provide an administrator username and its password and replace the
 `$CLOUD_ID` with the ID of your Cloud deployment. This Cloud ID can be copied 
 from the deployments page on your Cloud website.
 
-include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-start]
+include::ml-nlp-shared.asciidoc[tag=nlp-start]
 
-include::https://github.com/elastic/stack-docs/docs/en/stack/ml/shared-content.asciidoc[tag=nlp-sync]
+include::ml-nlp-shared.asciidoc[tag=nlp-sync]
 
 
 [discrete]
@@ -294,4 +294,5 @@ Optionally, adjust the time selector to cover the data points in the
 
 Update and save the visualization.
 
+[role="screenshot"]
 image::images/ml-nlp-tag-cloud.png[alt="Tag cloud created from Les Misérables",align="center"]

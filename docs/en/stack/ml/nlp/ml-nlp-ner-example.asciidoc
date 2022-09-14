@@ -6,7 +6,7 @@
 ++++
 :keywords: {ml-init}, {stack}, {nlp}
 
-This page demonstrates how to deploy a 
+You can use these instructions to deploy a 
 <<ml-nlp-ner,named entity recognition (NER)>> model in {es}, test the model, and 
 add it to an {infer} ingest pipeline. The model that is used in the example is 
 publically available on https://huggingface.co/[HuggingFace].
@@ -21,7 +21,7 @@ include::ml-nlp-shared.asciidoc[tag=nlp-requirements]
 
 [discrete]
 [[ex-ner-deploy]]
-== Deploying a NER model
+== Deploy a NER model
 
 include::ml-nlp-shared.asciidoc[tag=nlp-eland-clone-docker-build]
 
@@ -123,13 +123,13 @@ The model finds three entities: an organization "Elastic", and two locations
 You can perform bulk {infer} on documents as they are ingested via an ingest 
 pipeline by using the {ref}/inference-processor.html[{infer} processor]. The 
 novel _Les Misérables_ by Victor Hugo is used as an example for {infer} in 
-the following. 
+the following example. 
 https://github.com/elastic/stack-docs/blob/main/docs/en/stack/ml/nlp/data/les-miserables-nd.json[Download] 
 the novel text split by paragraph as a JSON file, then upload it by using the 
 {kibana-ref}/connect-to-elasticsearch.html#upload-data-kibana[Data Visualizer]. 
 Give the new index the name `les-miserables` when uploading the file.
 
-Now create an ingest pipeline either via the 
+Now create an ingest pipeline either in the 
 {ml-docs}/ml-nlp-inference.html#ml-nlp-inference-processor[Stack management UI] 
 or by using the API:
 
@@ -175,7 +175,7 @@ PUT _ingest/pipeline/ner
 }
 --------------------------------------------------
 
-The `field_map` obejct of the `inference` processor maps the `paragraph` object 
+The `field_map` object of the `inference` processor maps the `paragraph` object 
 (the field to analyze in the source documents) to `text_field` (the name of the 
 field the model is configured to use). The `target_field` is the name of the 
 field to write the inference results to.

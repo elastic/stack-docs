@@ -58,12 +58,15 @@ include::ml-nlp-shared.asciidoc[tag=nlp-sync]
 [[ex-ner-test]]
 == Test the NER model
 
-Deployed models can be evaluated using the 
-{ref}/infer-trained-model-deployment.html[_infer API]. The input is the string 
-you want to analyze. In the following request, `text_field` is the field name 
-where the model expects to find the input, as defined in the model 
-configuration. By default, if the model was uploaded via Eland, the input field 
-is `text_field`.
+Deployed models can be evaluated in {kib} under **{ml-app}** > 
+**Trained Models** by selecting the **Test model** action for the respective 
+model. You can also evaluate your models by using the 
+{ref}/infer-trained-model-deployment.html[_infer API]. In both cases, the input 
+is the string you want to analyze.
+
+In the following request, `text_field` is the field name where the model expects 
+to find the input, as defined in the model configuration. By default, if the 
+model was uploaded via Eland, the input field is `text_field`.
 
 [source,js]
 --------------------------------------------------

@@ -86,8 +86,7 @@ POST _ml/trained_models/elastic__distilbert-base-uncased-finetuned-conll03-engli
 }
 --------------------------------------------------
 
-The model finds three entities: an organization "Elastic", and two locations 
-"Mountain View" and "California" as the response shows:
+The API returns a response similar to the following:
 
 [source,js]
 --------------------------------------------------
@@ -124,6 +123,10 @@ The model finds three entities: an organization "Elastic", and two locations
 --------------------------------------------------
 // NOTCONSOLE
 ====
+
+Using the example text "Elastic is headquartered in Mountain View, California.", 
+the model finds three entities: an organization "Elastic", and two locations 
+"Mountain View" and "California".
 
 
 [discrete]

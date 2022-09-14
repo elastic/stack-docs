@@ -16,8 +16,8 @@ end::nlp-eland-clone-docker-build[]
 tag::nlp-requirements[]
 To follow along the process on this page, you must have:
 
-* an {es} cluster that is set up properly to use the {ml-features}. Refer to 
-<<setup>>.
+* an {es} Cloud cluster that is set up properly to use the {ml-features}. Refer 
+to <<setup>>.
 
 * The {subscriptions}[appropriate subscription] level or the free trial period 
 activated.
@@ -37,5 +37,7 @@ tag::nlp-sync[]
 Go to the **{ml-app} > Trained Models** page and synchronize your trained 
 models. A warning message is displayed at the top of the page that says 
 _"ML job and trained model synchronization required"_. Follow the link to 
-_"Synchronize your jobs and trained models."_ Then click **Synchronize**.
+_"Synchronize your jobs and trained models."_ Then click **Synchronize**. You 
+can also wait for the automatic synchronization that occures in every hour, or 
+use the {kibana-ref}/ml-sync.html[sync {ml} objects API].
 end::nlp-sync[]

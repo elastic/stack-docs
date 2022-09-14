@@ -60,13 +60,19 @@ include::ml-nlp-shared.asciidoc[tag=nlp-sync]
 
 Deployed models can be evaluated in {kib} under **{ml-app}** > 
 **Trained Models** by selecting the **Test model** action for the respective 
-model. You can also evaluate your models by using the 
-{ref}/infer-trained-model-deployment.html[_infer API]. In both cases, the input 
-is the string you want to analyze.
+model. 
 
-In the following request, `text_field` is the field name where the model expects 
-to find the input, as defined in the model configuration. By default, if the 
-model was uploaded via Eland, the input field is `text_field`.
+[role="screenshot"]
+image::images/ml-nlp-ner-test.png[Test trained model UI]
+
+.**Test the model by using API**
+[%collapsible]
+====
+You can also evaluate your models by using the 
+{ref}/infer-trained-model-deployment.html[_infer API]. In the following request, 
+`text_field` is the field name where the model expects to find the input, as 
+defined in the model configuration. By default, if the model was uploaded via 
+Eland, the input field is `text_field`.
 
 [source,js]
 --------------------------------------------------
@@ -117,14 +123,15 @@ The model finds three entities: an organization "Elastic", and two locations
 }
 --------------------------------------------------
 // NOTCONSOLE
+====
 
 
 [discrete]
 [[ex-ner-ingest]]
 == Add the NER model to an {infer} ingest pipeline
 
-You can perform bulk {infer} on documents as they are ingested via an ingest 
-pipeline by using the {ref}/inference-processor.html[{infer} processor]. The 
+You can perform bulk {infer} on documents as they are ingested by using an 
+{ref}/inference-processor.html[{infer} processor] in your ingest pipeline. The 
 novel _Les Misérables_ by Victor Hugo is used as an example for {infer} in 
 the following example. 
 https://github.com/elastic/stack-docs/blob/main/docs/en/stack/ml/nlp/data/les-miserables-nd.json[Download] 

@@ -1,0 +1,42 @@
+tag::nlp-eland-clone-docker-build[]
+You can use the {eland-docs}[Eland client] to install the {nlp} model. Eland 
+commands can be run in Docker. First, you need to clone the Eland repository 
+then create a Docker image of Eland:
+
+[source,shell]
+--------------------------------------------------
+git clone git@github.com:elastic/eland.git
+cd eland
+docker build -t elastic/eland .
+--------------------------------------------------
+
+After the script finishes, your Eland Docker client is ready to use.
+end::nlp-eland-clone-docker-build[]
+
+tag::nlp-requirements[]
+To follow along the process on this page, you must have:
+
+* an {es} Cloud cluster that is set up properly to use the {ml-features}. Refer 
+to <<setup>>.
+
+* The {subscriptions}[appropriate subscription] level or the free trial period 
+activated.
+
+* https://docs.docker.com/get-docker/[Docker] installed.
+end::nlp-requirements[]
+
+tag::nlp-start[]
+Since the `--start` option is used at the end of the Eland import command, {es} 
+deploys the model ready to use. If you have multiple models and want to select 
+which model to deploy, you can use the **{ml-app} > Model Management** user 
+interface in {kib} to manage the starting and stopping of models.
+end::nlp-start[]
+
+tag::nlp-sync[]
+Go to the **{ml-app} > Trained Models** page and synchronize your trained 
+models. A warning message is displayed at the top of the page that says 
+_"ML job and trained model synchronization required"_. Follow the link to 
+_"Synchronize your jobs and trained models."_ Then click **Synchronize**. You 
+can also wait for the automatic synchronization that occurs in every hour, or 
+use the {kibana-ref}/ml-sync.html[sync {ml} objects API].
+end::nlp-sync[]

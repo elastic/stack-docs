@@ -1,0 +1,35 @@
+[[ml-nlp-text-emb-vector-search-example]]
+= How to deploy a text embedding model and use it with vector search
+
+++++
+<titleabbrev>Text embedding and vector search</titleabbrev>
+++++
+:keywords: {ml-init}, {stack}, {nlp}
+
+
+
+[discrete]
+[[ex-te-vs-requirements]]
+== Requirements
+
+include::ml-nlp-shared.asciidoc[tag=nlp-requirements]
+
+
+[discrete]
+[[ex-te-vs-deploy]]
+== Deploy a text embedding model
+
+include::ml-nlp-shared.asciidoc[tag=nlp-eland-clone-docker-build]
+
+
+[source,shell]
+--------------------------------------------------
+docker run -it --rm elastic/eland \
+    eland_import_hub_model \
+      --cloud-id $CLOUD_ID \
+      -u <username> -p <password> \
+      --hub-model-id sentence-transformers/msmarco-MiniLM-L-12-v3 \
+      --task-type text_embedding \
+      --start
+--------------------------------------------------
+

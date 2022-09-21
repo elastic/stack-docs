@@ -125,7 +125,7 @@ is a subset of the MS MACRO Passage Ranking data set used in the testing stage
 of the 2019 TREC Deep Learning Track. It contains 200 queries and for each query 
 a list of relevant text passages extracted by a simple IR system. From that 
 dataset, all unique passages with their IDs have been extracted and put into a 
-https://github.com/elastic/stack-docs/blob/main/docs/en/stack/ml/nlp/data/msmarco-passagetest2019-unique.tsv[tsv file], 
+https://github.com/elastic/stack-docs/blob/8.5/docs/en/stack/ml/nlp/data/msmarco-passagetest2019-unique.tsv[tsv file], 
 totaling 182469 passages. In the following, this file is used as the example 
 data set.
 
@@ -273,7 +273,7 @@ You can use the dense vector in the `collection-with-embeddings` index by doing
 
 [source,js]
 --------------------------------------------------
-GET collection-with-embeddings/_knn_search
+GET collection-with-embeddings/_search
 {
   "knn": {
     "field": "text_embedding.predicted_value",

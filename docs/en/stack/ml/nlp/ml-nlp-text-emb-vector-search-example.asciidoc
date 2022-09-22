@@ -119,8 +119,8 @@ The result is the predicted dense vector transformed from the example text.
 [[ex-text-emb-data]]
 == Load data
 
-The data set 
-https://msmarco.blob.core.windows.net/msmarcoranking/msmarco-passagetest2019-top1000.tsv.gz[msmarco-passagetest2019-top1000.tsv] 
+The data set msmarco-passagetest2019-top1000.tsv (you can find it 
+https://msmarco.blob.core.windows.net/msmarcoranking/msmarco-passagetest2019-top1000.tsv.gz[here]) 
 is a subset of the MS MACRO Passage Ranking data set used in the testing stage 
 of the 2019 TREC Deep Learning Track. It contains 200 queries and for each query 
 a list of relevant text passages extracted by a simple IR system. From that 
@@ -216,8 +216,9 @@ PUT collection-with-embeddings
 }
 --------------------------------------------------
 
-Reindex the data from the `collection` index to the `collection-with-embeddings` 
-index by pushing documents through the {infer} pipeline.
+Create the text embeddings by reindexing the data to the 
+`collection-with-embeddings` index through the {infer} pipeline. The {infer} 
+ingest processor inserts the embedding vector into each document.
 
 [source,js]
 --------------------------------------------------

@@ -52,7 +52,7 @@ docker run -it --rm elastic/eland \
       --start
 --------------------------------------------------
 
-You need to provide an administrator username and its password and replace the 
+You need to provide an administrator username and password and replace the 
 `$CLOUD_ID` with the ID of your Cloud deployment. This Cloud ID can be copied 
 from the deployments page on your Cloud website.
 
@@ -192,9 +192,9 @@ index failures into a different index.
 
 Before ingesting the data through the pipeline, create the mappings of the 
 destination index, in particular for the field `text_embedding.predicted_value` 
-where the ingest processor stores the embeddings. The used modelproduces 
-embeddings as 384 dimensional vectors, hence you can use the indexed 
-`dense_vector` field type with 384 dims:
+where the ingest processor stores the embeddings. The msmarco-MiniLM-L-12-v3 model produces 
+embeddings with 384 dimensions, the `dense_vector` field must be configured 
+with the same number of dimensions as specified by the `dims` option.
 
 [source,js]
 --------------------------------------------------

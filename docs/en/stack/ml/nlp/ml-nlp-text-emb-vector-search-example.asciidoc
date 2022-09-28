@@ -119,11 +119,13 @@ The result is the predicted dense vector transformed from the example text.
 [[ex-text-emb-data]]
 == Load data
 
-The data set msmarco-passagetest2019-top1000.tsv (you can find it 
-https://msmarco.blob.core.windows.net/msmarcoranking/msmarco-passagetest2019-top1000.tsv.gz[here]) 
-is a subset of the MS MACRO Passage Ranking data set used in the testing stage 
-of the 2019 TREC Deep Learning Track. It contains 200 queries and for each query 
-a list of relevant text passages extracted by a simple IR system. From that 
+In this step, you load the data that you later use in an ingest pipeline to get 
+the embeddings.
+
+The data set `msmarco-passagetest2019-top1000` is a subset of the MS MACRO 
+Passage Ranking data set used in the testing stage of the 2019 TREC Deep 
+Learning Track. It contains 200 queries and for each query a list of relevant 
+text passages extracted by a simple information retrieval (IR) system. From that 
 data set, all unique passages with their IDs have been extracted and put into a 
 https://github.com/elastic/stack-docs/blob/8.5/docs/en/stack/ml/nlp/data/msmarco-passagetest2019-unique.tsv[tsv file], 
 totaling 182469 passages. In the following, this file is used as the example 
@@ -295,8 +297,9 @@ GET collection-with-embeddings/_search
 }
 --------------------------------------------------
 
-As a result, you receive the top 10 closest to the query documents from the 
-`collection-with-embedings` index sorted by their proximity to the query:
+As a result, you receive the top 10 documents that are closest in meaning to the 
+query from the `collection-with-embedings` index sorted by their proximity to 
+the query:
 
 [source,js]
 --------------------------------------------------

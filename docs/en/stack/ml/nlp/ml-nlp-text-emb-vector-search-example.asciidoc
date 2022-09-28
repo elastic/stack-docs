@@ -13,10 +13,10 @@ representations of text and perform vector similarity search on the generated
 vectors. The model that is used in the example is publicly available on 
 https://huggingface.co/[HuggingFace].
 
-The example uses a public dataset from the 
+The example uses a public data set from the 
 https://microsoft.github.io/msmarco/#ranking[MS MARCO Passage Ranking Task]. It 
 consists of real questions from the Microsoft Bing search engine and human 
-generated answers for them. The example works with a sample of this dataset, 
+generated answers for them. The example works with a sample of this data set, 
 uses a model to produce text embeddings, and then runs vector search on it.
 
 [discrete]
@@ -124,7 +124,7 @@ https://msmarco.blob.core.windows.net/msmarcoranking/msmarco-passagetest2019-top
 is a subset of the MS MACRO Passage Ranking data set used in the testing stage 
 of the 2019 TREC Deep Learning Track. It contains 200 queries and for each query 
 a list of relevant text passages extracted by a simple IR system. From that 
-dataset, all unique passages with their IDs have been extracted and put into a 
+data set, all unique passages with their IDs have been extracted and put into a 
 https://github.com/elastic/stack-docs/blob/8.5/docs/en/stack/ml/nlp/data/msmarco-passagetest2019-unique.tsv[tsv file], 
 totaling 182469 passages. In the following, this file is used as the example 
 data set.
@@ -148,7 +148,7 @@ passage. For this, create a text embedding ingest pipeline and then reindex the
 initial data with this pipeline.
 
 Now create an ingest pipeline either in the 
-{ml-docs}/ml-nlp-inference.html#ml-nlp-inference-processor[Stack management UI] 
+{ml-docs}/ml-nlp-inference.html#ml-nlp-inference-processor[{stack-manage-app} UI] 
 or by using the API:
 
 [source,js]
@@ -193,7 +193,7 @@ index failures into a different index.
 Before ingesting the data through the pipeline, create the mappings of the 
 destination index, in particular for the field `text_embedding.predicted_value` 
 where the ingest processor stores the embeddings. The msmarco-MiniLM-L-12-v3 model produces 
-embeddings with 384 dimensions, the `dense_vector` field must be configured 
+embeddings with 384 dimensions; the `dense_vector` field must be configured 
 with the same number of dimensions as specified by the `dims` option.
 
 [source,js]
@@ -269,7 +269,7 @@ POST /_ml/trained_models/sentence-transformers__msmarco-minilm-l-12-v3/_infer
 }
 --------------------------------------------------
 
-You can use the dense vector in the `collection-with-embeddings` index by doing 
+You can use the resulting dense vector in the `query_vector` of a 
 {ref}/knn-search.html[kNN search]:
 
 [source,js]

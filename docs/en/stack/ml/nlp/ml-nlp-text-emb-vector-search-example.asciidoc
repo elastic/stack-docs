@@ -1,0 +1,342 @@
+[[ml-nlp-text-emb-vector-search-example]]
+= How to deploy a text embedding model and use it with vector search
+
+++++
+<titleabbrev>Text embedding and vector search</titleabbrev>
+++++
+:keywords: {ml-init}, {stack}, {nlp}
+
+You can use these instructions to deploy a 
+<<ml-nlp-text-embedding,text embedding>> model in {es}, test the model, and 
+add it to an {infer} ingest pipeline. It enables you to generate vector 
+representations of text and perform vector similarity search on the generated 
+vectors. The model that is used in the example is publicly available on 
+https://huggingface.co/[HuggingFace].
+
+The example uses a public data set from the 
+https://microsoft.github.io/msmarco/#ranking[MS MARCO Passage Ranking Task]. It 
+consists of real questions from the Microsoft Bing search engine and human 
+generated answers for them. The example works with a sample of this data set, 
+uses a model to produce text embeddings, and then runs vector search on it.
+
+[discrete]
+[[ex-te-vs-requirements]]
+== Requirements
+
+include::ml-nlp-shared.asciidoc[tag=nlp-requirements]
+
+
+[discrete]
+[[ex-te-vs-deploy]]
+== Deploy a text embedding model
+
+include::ml-nlp-shared.asciidoc[tag=nlp-eland-clone-docker-build]
+
+Select a text embedding model from the 
+{ml-docs}/ml-nlp-model-ref.html#ml-nlp-model-ref-ner[third-party model reference list]. 
+This example uses the 
+https://huggingface.co/sentence-transformers/msmarco-MiniLM-L-12-v3[msmarco-MiniLM-L-12-v3]
+sentence-transformer model.
+
+Install the model by running the `eland_import_model_hub` command in the Docker 
+image:
+
+[source,shell]
+--------------------------------------------------
+docker run -it --rm elastic/eland \
+    eland_import_hub_model \
+      --cloud-id $CLOUD_ID \
+      -u <username> -p <password> \
+      --hub-model-id sentence-transformers/msmarco-MiniLM-L-12-v3 \
+      --task-type text_embedding \
+      --start
+--------------------------------------------------
+
+You need to provide an administrator username and password and replace the 
+`$CLOUD_ID` with the ID of your Cloud deployment. This Cloud ID can be copied 
+from the deployments page on your Cloud website.
+
+include::ml-nlp-shared.asciidoc[tag=nlp-start]
+
+include::ml-nlp-shared.asciidoc[tag=nlp-sync]
+
+[discrete]
+[[ex-text-emb-test]]
+== Test the text embedding model
+
+Deployed models can be evaluated in {kib} under **{ml-app}** > 
+**Trained Models** by selecting the **Test model** action for the respective 
+model.
+
+[role="screenshot"]
+image::images/ml-nlp-text-emb-test.png[Test trained model UI]
+
+.**Test the model by using the _infer API**
+[%collapsible]
+====
+You can also evaluate your models by using the 
+{ref}/infer-trained-model-deployment.html[_infer API]. In the following request, 
+`text_field` is the field name where the model expects to find the input, as 
+defined in the model configuration. By default, if the model was uploaded via 
+Eland, the input field is `text_field`.
+
+[source,js]
+--------------------------------------------------
+POST /_ml/trained_models/sentence-transformers__msmarco-minilm-l-12-v3/_infer
+{
+  "docs": {
+    "text_field": "How is the weather in Jamaica?"
+  }
+}
+--------------------------------------------------
+
+The API returns a response similar to the following:
+
+[source,js]
+--------------------------------------------------
+{
+  "inference_results": [
+    {
+      "predicted_value": [
+        0.39521875977516174,
+        -0.3263707458972931,
+        0.26809820532798767,
+        0.30127981305122375,
+        0.502890408039093,
+        ...
+      ]
+    }
+  ]
+}
+--------------------------------------------------
+// NOTCONSOLE
+====
+
+The result is the predicted dense vector transformed from the example text.
+
+
+[discrete]
+[[ex-text-emb-data]]
+== Load data
+
+In this step, you load the data that you later use in an ingest pipeline to get 
+the embeddings.
+
+The data set `msmarco-passagetest2019-top1000` is a subset of the MS MACRO 
+Passage Ranking data set used in the testing stage of the 2019 TREC Deep 
+Learning Track. It contains 200 queries and for each query a list of relevant 
+text passages extracted by a simple information retrieval (IR) system. From that 
+data set, all unique passages with their IDs have been extracted and put into a 
+https://github.com/elastic/stack-docs/blob/8.5/docs/en/stack/ml/nlp/data/msmarco-passagetest2019-unique.tsv[tsv file], 
+totaling 182469 passages. In the following, this file is used as the example 
+data set.
+
+Upload the file by using the 
+{kibana-ref}/connect-to-elasticsearch.html#upload-data-kibana[Data Visualizer]. 
+Name the first column `id` and the second one `text`. The index name is 
+`collection`. After the upload is done, you can see an index named `collection` 
+with 182469 documents.
+
+[role="screenshot"]
+image::images/ml-nlp-text-emb-data.png[Importing the data]
+
+[discrete]
+[[ex-text-emb-ingest]]
+== Add the text embedding model to an {infer} ingest pipeline
+
+Process the initial data with an 
+{ref}/inference-processor.html[{infer} processor]. It adds an embedding for each 
+passage. For this, create a text embedding ingest pipeline and then reindex the 
+initial data with this pipeline.
+
+Now create an ingest pipeline either in the 
+{ml-docs}/ml-nlp-inference.html#ml-nlp-inference-processor[{stack-manage-app} UI] 
+or by using the API:
+
+[source,js]
+--------------------------------------------------
+PUT _ingest/pipeline/text-embeddings
+{
+  "description": "Text embedding pipeline",
+  "processors": [
+    {
+      "inference": {
+        "model_id": "sentence-transformers__msmarco-minilm-l-12-v3",
+        "target_field": "text_embedding",
+        "field_map": {
+          "text": "text_field"
+        }
+      }
+    }
+  ],
+  "on_failure": [
+    {
+      "set": {
+        "description": "Index document to 'failed-<index>'",
+        "field": "_index",
+        "value": "failed-{{{_index}}}"
+      }
+    },
+    {
+      "set": {
+        "description": "Set error message",
+        "field": "ingest.failure",
+        "value": "{{_ingest.on_failure_message}}"
+      }
+    }
+  ]
+}
+--------------------------------------------------
+
+The passages are in a field named `text`. The `field_map` maps the text to the 
+field `text_field` that the model expects. The `on_failure` handler is set to 
+index failures into a different index.
+
+Before ingesting the data through the pipeline, create the mappings of the 
+destination index, in particular for the field `text_embedding.predicted_value` 
+where the ingest processor stores the embeddings. The msmarco-MiniLM-L-12-v3 model produces 
+embeddings with 384 dimensions; the `dense_vector` field must be configured 
+with the same number of dimensions as specified by the `dims` option.
+
+[source,js]
+--------------------------------------------------
+PUT collection-with-embeddings
+{
+  "mappings": {
+    "properties": {
+      "text_embedding.predicted_value": {
+        "type": "dense_vector",
+        "dims": 384,
+        "index": true,
+        "similarity": "cosine"
+      },
+      "text": {
+        "type": "text"
+      }
+    }
+  }
+}
+--------------------------------------------------
+
+Create the text embeddings by reindexing the data to the 
+`collection-with-embeddings` index through the {infer} pipeline. The {infer} 
+ingest processor inserts the embedding vector into each document.
+
+[source,js]
+--------------------------------------------------
+POST _reindex?wait_for_completion=false
+{
+  "source": {
+    "index": "collection"
+  },
+  "dest": {
+    "index": "collection-with-embeddings",
+    "pipeline": "text-embeddings"
+  }
+}
+--------------------------------------------------
+
+The API call returns a task ID that can be used to monitor the progress:
+
+[source,js]
+--------------------------------------------------
+GET _tasks/<task_id>
+--------------------------------------------------
+
+You can also open the model stat UI to follow the progress.
+
+[role="screenshot"]
+image::images/ml-nlp-text-emb-reindex.png[Model status UI]
+
+After the reindexing is finished, the documents in the new index contain the 
+{infer} results – the vector embeddings. 
+
+
+[discrete]
+[[ex-text-emb-vect-search]]
+== Vector similarity search
+
+To perform vector similarity search, you need to obtain the text embedding of a 
+text. This example uses the "How is the weather in Jamaica?" query as the input 
+text. The {ref}/infer-trained-model-deployment.html[_infer API] gives you the 
+embedding of this query as a dense vector:
+
+[source,js]
+--------------------------------------------------
+POST /_ml/trained_models/sentence-transformers__msmarco-minilm-l-12-v3/_infer
+{
+  "docs": {
+    "text_field": "How is the weather in Jamaica?"
+  }
+}
+--------------------------------------------------
+
+You can use the resulting dense vector in the `query_vector` of a 
+{ref}/knn-search.html[kNN search]:
+
+[source,js]
+--------------------------------------------------
+GET collection-with-embeddings/_search
+{
+  "knn": {
+    "field": "text_embedding.predicted_value",
+    "query_vector": [
+     0.39521875977516174,
+        -0.3263707458972931,
+        0.26809820532798767,
+        0.30127981305122375,
+     (...)
+    ],
+    "k": 10,
+    "num_candidates": 100
+  },
+  "_source": [
+    "id",
+    "text"
+  ]
+}
+--------------------------------------------------
+
+As a result, you receive the top 10 documents that are closest in meaning to the 
+query from the `collection-with-embedings` index sorted by their proximity to 
+the query:
+
+[source,js]
+--------------------------------------------------
+"hits" : [
+      {
+        "_index" : "collection-with-embeddings",
+        "_id" : "47TPtn8BjSkJO8zzKq_o",
+        "_score" : 0.94591534,
+        "_source" : {
+          "id" : 434125,
+          "text" : "The climate in Jamaica is tropical and humid with warm to hot temperatures all year round. The average temperature in Jamaica is between 80 and 90 degrees Fahrenheit. Jamaican nights are considerably cooler than the days, and the mountain areas are cooler than the lower land throughout the year. Continue Reading."
+        }
+      },
+      {
+        "_index" : "collection-with-embeddings",
+        "_id" : "3LTPtn8BjSkJO8zzKJO1",
+        "_score" : 0.94536424,
+        "_source" : {
+          "id" : 4498474,
+          "text" : "The climate in Jamaica is tropical and humid with warm to hot temperatures all year round. The average temperature in Jamaica is between 80 and 90 degrees Fahrenheit. Jamaican nights are considerably cooler than the days, and the mountain areas are cooler than the lower land throughout the year"
+        }
+      },
+      {
+        "_index" : "collection-with-embeddings",
+        "_id" : "KrXPtn8BjSkJO8zzPbDW",
+        "_score" :  0.9432083,
+        "_source" : {
+          "id" : 190804,
+          "text" : "Quick Answer. The climate in Jamaica is tropical and humid with warm to hot temperatures all year round. The average temperature in Jamaica is between 80 and 90 degrees Fahrenheit. Jamaican nights are considerably cooler than the days, and the mountain areas are cooler than the lower land throughout the year. Continue Reading"
+        }
+      },
+      (...)
+]
+--------------------------------------------------
+
+If you want to do a quick verification of the results, follow the steps of the 
+_Quick verification_ section of 
+https://www.elastic.co/blog/how-to-deploy-nlp-text-embeddings-and-vector-search#[this blog post].
+
+

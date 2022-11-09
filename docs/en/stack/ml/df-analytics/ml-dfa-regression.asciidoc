@@ -384,9 +384,11 @@ PUT _ml/data_frame/analytics/model-flight-delays-regression
     "regression": {
       "dependent_variable": "FlightDelayMin",
       "training_percent": 90,
-      "num_top_feature_importance_values": 5
+      "num_top_feature_importance_values": 5,
+      "randomize_seed": 1000
     }
   },
+  "model_memory_limit": "50mb",
   "analyzed_fields": {
     "includes": [],
     "excludes": [

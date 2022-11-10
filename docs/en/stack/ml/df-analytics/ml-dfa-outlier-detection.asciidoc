@@ -519,16 +519,19 @@ The search results include the following {oldetection} scores:
 ====
 
 {kib} also provides a scatterplot matrix in the results. Outliers with a score 
-that exceeds the threshold are highlighted in each chart:
+that exceeds the threshold are highlighted in each chart. The outlier score 
+threshold can be set by using the slider under the matrix:
 
 [role="screenshot"]
 image::images/outliers-scatterplot.jpg["View scatterplot in {oldetection} results"]
 
-In addition to the sample size and random scoring options, there is a
-*Dynamic size* option. If you enable this option, the size of each point is 
-affected by its {olscore}; that is to say, the largest points have the
-highest {olscores}. The goal of these charts and options is to help you 
-visualize and explore the outliers within your data.
+You can highlight an area in one of the charts and the corresponding area is 
+also highlighted in the rest of the chart. This function makes it easier to 
+focus on specific values and areas in the results. In addition to the sample 
+size and random scoring options, there is a *Dynamic size* option. If you enable 
+this option, the size of each point is affected by its {olscore}; that is to 
+say, the largest points have the highest {olscores}. The goal of these charts 
+and options is to help you visualize and explore the outliers within your data.
 
 --
 

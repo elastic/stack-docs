@@ -391,8 +391,10 @@ erroneous data or describe the `dependent_variable`.
 --
 The wizard includes a scatterplot matrix, which enables you to explore the 
 relationships between the numeric fields. The color of each point is affected by
-the value of the dependent variable for that document, as shown in the legend.
-You can use this matrix to help you decide which fields to include or exclude.
+the value of the {depvar} for that document, as shown in the legend. You can 
+highlight an area in one of the charts and the corresponding area is also 
+highlighted in the rest of the charts. You can use this matrix to help you 
+decide which fields to include or exclude.
 
 [role="screenshot"]
 image::images/flights-classification-scatterplot.png["A scatterplot matrix for three fields in {kib}"]
@@ -722,8 +724,8 @@ GET _ml/trained_models/model-flight-delays-classification*?include=total_feature
 --------------------------------------------------
 // TEST[skip:TBD]
 
-The snippet below shows an example of the total {feat-imp} and the corresponding baseline
-in the trained model metadata:
+The snippet below shows an example of the total {feat-imp} and the corresponding 
+baseline in the trained model metadata:
 
 [source,console-result]
 --------------------------------------------------

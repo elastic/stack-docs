@@ -1,0 +1,144 @@
+
+[discrete]
+[[s-glos]]
+=== S
+
+[[glossary-saved-object]] saved object::
+A representation of a dashboard, visualization, map, data view, or Canvas
+workpad that can be stored and reloaded.
+//Source: Kibana
+
+[[glossary-saved-search]] saved search::
+The query text, filters, and time filter that make up a search, saved for later
+retrieval and reuse.
+//Source: Kibana
+
+[[glossary-scripted-field]] scripted field::
+A field that computes data on the fly from the data in {es} indices. Scripted
+field data is shown in Discover and used in visualizations.
+//Source: Kibana
+
+[[glossary-search-session]] search session::
+A group of one or more queries that are executed asynchronously. The results of
+the session are stored for a period of time, so you can recall the query. Search
+sessions are user specific.
+//Source: Kibana
+
+[[glossary-search-template]] search template::
+A stored search you can run with different variables. See
+{ref}/search-template.html[Search templates].
+//Source: Elasticsearch
+
+[[glossary-searchable-snapshot]] searchable snapshot::
+<<glossary-snapshot,Snapshot>> of an <<glossary-index,index>> mounted as a
+<<glossary-searchable-snapshot-index,searchable snapshot index>>. You can search
+this index like a regular index. See {ref}/searchable-snapshots.html[searchable
+snapshots].
+//Source: Elasticsearch
+
+[[glossary-searchable-snapshot-index]] searchable snapshot index::
+<<glossary-index,Index>> whose data is stored in a
+<<glossary-snapshot,snapshot>>. Searchable snapshot indices do not need
+<<glossary-replica-shard,replica shards>> for resilience, since their data is
+reliably stored outside the cluster. See
+{ref}/searchable-snapshots.html[searchable snapshots].
+//Source: Elasticsearch
+
+[[glossary-segment]] segment::
+Data file in a <<glossary-shard,shard>>'s Lucene instance. {es} manages Lucene
+segments automatically.
+//Source: Elasticsearch
+
+[[glossary-services-forwarder]] services forwarder::
+Routes data internally in an {ece} installation.
+//Source: Cloud
+
+[[glossary-shard]] shard::
+Lucene instance containing some or all data for an <<glossary-index,index>>.
+{es} automatically creates and manages these Lucene instances. There are two
+types of shards: <<glossary-primary-shard,primary>> and
+<<glossary-replica-shard,replica>>. See {ref}/scalability.html[Clusters, nodes,
+and shards].
+//Source: Elasticsearch
+
+[[glossary-shareable]] shareable::
+A Canvas workpad that can be embedded on any webpage. Shareables enable you to
+display Canvas visualizations on internal wiki pages or public websites.
+//Source: Kibana
+
+[[glossary-shipper]] shipper::
+An instance of {ls} that send events to another instance of {ls}, or
+some other application.
+//Source: Logstash
+
+[[glossary-shrink]] shrink::
+Reduces the number of <<glossary-primary-shard,primary shards>> in an index. See
+the {ref}/indices-shrink-index.html[shrink index API].
+//Source: Elasticsearch
+
+[[glossary-snapshot]] snapshot::
+Backup taken of a running <<glossary-cluster,cluster>>. You can take snapshots
+of the entire cluster or only specific <<glossary-data-stream,data streams>> and
+<<glossary-index,indices>>. See {ref}/snapshot-restore.html[Snapshot and
+restore].
+//Source: Elasticsearch
+
+[[glossary-snapshot-lifecycle-policy]] snapshot lifecycle policy::
+Specifies how frequently to perform automatic backups of a cluster and how long
+to retain the resulting <<glossary-snapshot,snapshots>>. See
+{ref}/snapshots-take-snapshot.html#automate-snapshots-slm[Automate snapshots
+with {slm-init}].
+//Source: Elasticsearch
+
+[[glossary-snapshot-repository]] snapshot repository::
+Location where <<glossary-snapshot,snapshots>> are stored. A snapshot repository
+can be a shared filesystem or a remote repository, such as Azure or Google Cloud
+Storage. See {ref}/snapshot-restore.html[Snapshot and restore].
+//Source: Elasticsearch
+
+[[glossary-source_field]] source field::
+Original JSON object provided during <<glossary-index,indexing>>. See the
+{ref}/mapping-source-field.html[`_source` field].
+//Source: Elasticsearch
+
+[[glossary-space]] space::
+A place for organizing <<glossary-dashboard,dashboards>>,
+<<glossary-visualization,visualizations>>, and other
+<<glossary-saved-object,saved objects>> by category. For example, you might have
+different spaces for each team, use case, or individual. See
+{kibana-ref}/xpack-spaces.html[Spaces].
+//Source: Kibana
+
+[[glossary-span]] span::
+Information about the execution of a specific code path.
+{apm-guide-ref}/data-model-spans.html[Spans] measure from the start to the end of an activity
+and can have a parent/child relationship with other spans.
+//Source: Observability
+
+[[glossary-split]] split::
+Adds more <<glossary-primary-shard,primary shards>> to an
+<<glossary-index,index>>. See the {ref}/indices-split-index.html[split index
+API].
+//Source: Elasticsearch
+
+[[glossary-stack-alerts]] stack alerts::
+The general purpose alert types {kib} provides out of the box. Index threshold
+and geo alerts are currently the two stack alert types.
+//Source: Kibana
+
+[[glossary-standalone]] standalone::
+This mode allows manual configuration and management of {agent}s locally
+on the systems where they are installed.
+See {fleet-guide}/install-standalone-elastic-agent.html[Install standalone {agent}s].
+//Source: Observability
+
+[[glossary-stunnel]] stunnel::
+Securely tunnels all traffic in an {ece} installation.
+//Source: Cloud
+
+[[glossary-system-index]] system index::
+<<glossary-index,Index>> containing configurations and other data used
+internally by the {stack}. System index names start with a dot (`.`), such as
+`.security`. Do not directly access or change system indices.
+//Source: Elasticsearch
+

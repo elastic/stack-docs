@@ -1,0 +1,103 @@
+
+
+[discrete]
+[[c-glos]]
+=== C
+
+
+[[glossary-client-forwarder]] client forwarder::
+Used for secure internal communications between various components of {ece} and
+ZooKeeper.
+//Source: Cloud
+
+[[glossary-cloud-ui]] Cloud UI::
+Provides web-based access to manage your {ece} installation, supported by the
+<<glossary-admin-console,administration console>>.
+//Source: Cloud
+
+[[glossary-cluster]] cluster::
+. A group of one or more connected {es} <<glossary-node,nodes>>. See
+{ref}/scalability.html[Clusters, nodes, and shards].
+//Source: Elasticsearch
+. A layer type and display option in the *Maps* application. Clusters display a
+cluster symbol across a grid on the map, one symbol per grid cluster. The
+cluster location is the weighted centroid for all documents in the grid cell.
+//Source: Kibana
+
+[[glossary-codec-plugin]] codec plugin::
+A {ls} <<glossary-plugin,plugin>> that changes the data representation
+of an <<glossary-event,event>>. Codecs are essentially stream filters that
+can operate as part of an input or output. Codecs enable you to separate the
+transport of messages from the serialization process. Popular codecs include
+json, msgpack, and plain (text).
+//Source: Logstash
+
+
+[[glossary-cold-tier]] cold tier::
+<<glossary-data-tier,Data tier>> that contains <<glossary-node,nodes>> that hold
+time series data that is accessed occasionally and not normally updated. See
+{ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
+
+[[glossary-component-template]] component template::
+Building block for creating <<glossary-index-template,index templates>>. A
+component template can specify <<glossary-mapping,mappings>>,
+{ref}/index-modules.html[index settings], and <<glossary-alias,aliases>>. See
+{ref}/index-templates.html[index templates].
+//Source: Elasticsearch
+
+
+[[glossary-conditional]] conditional::
+A control flow that executes certain actions based on whether a statement
+(also called a condition) is true or false. {ls} supports `if`,
+`else if`, and `else` statements. You can use conditional statements to
+apply filters and send events to a specific output based on conditions that
+you specify.
+//Source: Logstash
+
+
+[[glossary-console]] Console::
+A tool for interacting with the {es} REST API. You can send requests to {es},
+view responses, view API documentation, and get your request history. See
+{kibana-ref}/console-kibana.html[Console].
+//Source: Kibana
+
+[[glossary-constructor]] constructor::
+Directs <<glossary-allocator,allocators>> to manage containers of {es} and {kib}
+nodes and maximizes the utilization of allocators. Monitors plan change requests
+from the Cloud UI and determines how to transform the existing cluster. In a
+highly available installation, places cluster nodes within different
+availability zones to ensure that the cluster can survive the failure of an
+entire availability zone.
+//Source: Cloud
+
+[[glossary-container]] container::
+Includes an instance of {ece} software and its dependencies. Used to provision
+similar environments, to assign a guaranteed share of host resources to nodes,
+and to simplify operational effort in {ece}.
+//Source: Cloud
+
+[[glossary-content-tier]] content tier::
+<<glossary-data-tier,Data tier>> that contains <<glossary-node,nodes>> that
+handle the <<glossary-index,indexing>> and <<glossary-query,query>> load for
+content, such as a product catalog. See {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
+
+[[glossary-coordinator]] coordinator::
+Consists of a logical grouping of some {ece} services and acts as a distributed
+coordination system and resource scheduler.
+//Source: Cloud
+
+[[glossary-ccr]] {ccr} (CCR)::
+Replicates <<glossary-data-stream,data streams>> and <<glossary-index,indices>>
+from <<glossary-remote-cluster,remote clusters>> in a
+<<glossary-local-cluster,local cluster>>. See {ref}/xpack-ccr.html[{ccr-cap}].
+//Source: Elasticsearch
+
+[[glossary-ccs]] {ccs} (CCS)::
+Searches <<glossary-data-stream,data streams>> and <<glossary-index,indices>> on
+<<glossary-remote-cluster,remote clusters>> from a
+<<glossary-local-cluster,local cluster>>. See
+{ref}/modules-cross-cluster-search.html[Search across clusters].
+//Source: Elasticsearch
+

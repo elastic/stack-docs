@@ -1,0 +1,96 @@
+
+[discrete]
+[[d-glos]]
+=== D
+
+[[glossary-dashboard]] dashboard::
+A collection of <<glossary-visualization,visualizations>>,
+<<glossary-saved-search,saved searches>>, and <<glossary-map,maps>> that provide
+insights into your data from multiple perspectives.
+//Source: Kibana
+
+[[glossary-ml-datafeed]] datafeed::
+{anomaly-jobs-cap} can analyze either a one-off batch of data or continuously in
+real time. {dfeeds-cap} retrieve data from {es} for analysis.
+//Source: Machine learning
+
+[[glossary-dataset]] dataset::
+A collection of data that has the same structure.
+The name of a dataset typically signifies its source.
+See {fleet-guide}/data-streams.html[data stream naming scheme].
+//Source: Observability
+
+[[glossary-dataframe-job]] {dfanalytics-job}::
+{dfanalytics-jobs-cap} contain the configuration information and metadata
+necessary to perform {ml} analytics tasks on a source index and store the
+outcome in a destination index. See
+{ml-docs}/ml-dfa-overview.html[{dfanalytics-cap} overview] and the
+{ref}/put-dfanalytics.html[create {dfanalytics-job} API].
+//Source: Machine learning
+
+[[glossary-data-source]] data source::
+A file, database, or service that provides the underlying data for a map, Canvas
+element, or visualization.
+//Source: Kibana
+
+[[glossary-data-stream]] data stream:: 
+A named resource used to manage <<glossary-time-series-data,time series data>>.
+A data stream stores data across multiple backing <<glossary-index,indices>>.
+See {ref}/data-streams.html[Data streams].
+//Source: Elasticsearch
+
+[[glossary-data-tier]] data tier::
+Collection of <<glossary-node,nodes>> with the same {ref}/modules-node.html[data
+role] that typically share the same hardware profile. Data tiers include the
+<<glossary-content-tier, content tier>>, <<glossary-hot-tier, hot tier>>,
+<<glossary-warm-tier, warm tier>>, <<glossary-cold-tier, cold tier>>, and
+<<glossary-frozen-tier,frozen tier>>. See {ref}/data-tiers.html[Data tiers].
+//Source: Elasticsearch
+
+[[glossary-data-view]] data view::
+An object that enables you to select the data that you want to use in {kib} 
+and define the properties of the fields. A data view can point to one or more 
+<<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
+<<glossary-alias,aliases>>. For example, a data view can point to your log data from yesterday, 
+or all indices that contain your data.
+//Source: Kibana
+
+[[glossary-delete-phase]] delete phase::
+Last possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In the
+delete phase, an <<glossary-index,index>> is no longer needed and can safely be
+deleted. See {ref}/ilm-index-lifecycle.html[Index lifecycle].
+//Source: Elasticsearch
+
+[[glossary-ml-detector]] detector::
+As part of the configuration information that is associated with {anomaly-jobs},
+detectors define the type of analysis that needs to be done. They also specify
+which fields to analyze. You can have more than one detector in a job, which is
+more efficient than running multiple jobs against the same data.
+//Source: Machine learning
+
+[[glossary-director]] director::
+Manages the <<glossary-zookeeper,ZooKeeper>> datastore. This role is often
+shared with the <<glossary-coordinator,coordinator>>, though in production
+deployments it can be separated.
+//Source: Cloud
+
+[[glossary-discover]] Discover::
+Enables you to search and filter your data to zoom in on the information
+that you are interested in.
+//Source: Kibana
+
+[[glossary-distributed-tracing]] distributed tracing::
+The end-to-end collection of performance data throughout your microservices architecture.
+//Source: Observability
+
+[[glossary-drilldown]] drilldown::
+A navigation path that retains context (time range and filters) from the source
+to the destination, so you can view the data from a new perspective. A dashboard
+that shows the overall status of multiple data centers might have a drilldown to
+a dashboard for a single data center. See {kibana-ref}/dashboard.html[Drilldowns].
+//Source: Kibana
+
+[[glossary-document]] document::
+JSON object containing data stored in {es}. See
+{ref}/documents-indices.html[Documents and indices].
+//Source: Elasticsearch

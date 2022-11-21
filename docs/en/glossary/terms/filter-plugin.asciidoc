@@ -1,0 +1,9 @@
+
+[[glossary-filter-plugin]] filter plugin::
+A {ls} <<glossary-plugin,plugin>> that performs intermediary processing on
+an <<glossary-event,event>>. Typically, filters act upon event data after it
+has been ingested via inputs, by mutating, enriching, and/or modifying the
+data according to configuration rules. Filters are often applied conditionally
+depending on the characteristics of the event. Popular filter plugins include
+grok, mutate, drop, clone, and geoip. Filter stages are optional.
+//Source: Logstash

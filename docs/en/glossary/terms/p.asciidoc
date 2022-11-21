@@ -1,0 +1,64 @@
+
+[discrete]
+[[p-glos]]
+=== P
+
+[[glossary-painless-lab]] Painless Lab::
+An interactive code editor that lets you test and debug Painless scripts in
+real-time. See {kibana-ref}/painlesslab.html[Painless Lab].
+//Source: Kibana
+
+[[glossary-panel]] panel::
+A <<glossary-dashboard,dashboard>> component that contains a query element or
+visualization, such as a chart, table, or list.
+//Source: Kibana
+
+[[glossary-pipeline]] pipeline::
+A term used to describe the flow of <<glossary-event,events>> through the
+{ls} workflow. A pipeline typically consists of a series of input, filter,
+and output stages. <<glossary-input-plugin,Input>> stages get data from a source
+and generate events, <<glossary-filter-plugin,filter>> stages, which are
+optional, modify the event data, and <<glossary-output-plugin,output>> stages
+write the data to a destination. Inputs and outputs support
+<<glossary-codec-plugin,codecs>> that enable you to encode or decode the data as
+it enters or exits the pipeline without having to use a separate filter.
+//Source: Logstash
+
+[[glossary-plan]] plan::
+Specifies the configuration and topology of an {es} or {kib} cluster, such as
+capacity, availability, and {es} version, for example. When changing a plan, the
+<<glossary-constructor,constructor>> determines how to transform the existing
+cluster into the pending plan.
+//Source: Cloud
+
+[[glossary-plugin]] plugin::
+A self-contained software package that implements one of the stages in the
+{ls} event processing <<glossary-pipeline,pipeline>>. The list of available
+plugins includes <<glossary-input-plugin,input plugins>>,
+<<glossary-output-plugin,output plugins>>,
+<<glossary-codec-plugin,codec plugins>>, and
+<<glossary-filter-plugin,filter plugins>>. The plugins are implemented as Ruby
+<<glossary-gem,gems>> and hosted on https://rubygems.org[RubyGems.org]. You
+define the stages of an event processing <<glossary-pipeline,pipeline>>
+by configuring plugins.
+//Source: Logstash
+
+[[glossary-plugin-manager]] plugin manager::
+Accessed via the `bin/logstash-plugin` script, the plugin manager enables
+you to manage the lifecycle of <<glossary-plugin,plugins>> in your {ls}
+deployment. You can install, remove, and upgrade plugins by using the
+plugin manager Command Line Interface (CLI).
+//Source: Logstash
+
+[[glossary-primary-shard]] primary shard::
+Lucene instance containing some or all data for an <<glossary-index,index>>.
+When you index a <<glossary-document,document>>, {es} adds the document to
+primary shards before <<glossary-replica-shard,replica shards>>. See
+{ref}/scalability.html[Clusters, nodes, and shards].
+//Source: Elasticsearch
+
+[[glossary-proxy]] proxy::
+A highly available, TLS-enabled proxy layer that routes user requests, mapping
+cluster IDs that are passed in request URLs for the container to the cluster
+nodes handling the user requests.
+//Source: Cloud

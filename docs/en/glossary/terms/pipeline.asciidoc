@@ -1,0 +1,11 @@
+
+[[glossary-pipeline]] pipeline::
+A term used to describe the flow of <<glossary-event,events>> through the
+{ls} workflow. A pipeline typically consists of a series of input, filter,
+and output stages. <<glossary-input-plugin,Input>> stages get data from a source
+and generate events, <<glossary-filter-plugin,filter>> stages, which are
+optional, modify the event data, and <<glossary-output-plugin,output>> stages
+write the data to a destination. Inputs and outputs support
+<<glossary-codec-plugin,codecs>> that enable you to encode or decode the data as
+it enters or exits the pipeline without having to use a separate filter.
+//Source: Logstash

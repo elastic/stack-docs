@@ -16,7 +16,7 @@ These NLP tasks enable you to extract information from your unstructured text:
 == Named entity recognition
 
 The named entity recognition (NER) task can identify and categorize certain 
-entities – typically proper nouns – in your unstructured text. Named entities 
+entities - typically proper nouns - in your unstructured text. Named entities 
 usually refer to objects in the real world such as persons, locations, 
 organizations, and other miscellaneous entities that are consistently referenced 
 by a proper name.
@@ -33,9 +33,8 @@ also phrases, consisting of multiple words.
 
 [source,js]
 ----------------------------------
-...
 {
-    "text_field": "Elastic is headquartered in Mountain View, California."
+    "docs": [{"text_field": "Elastic is headquartered in Mountain View, California."}]
 }
 ...
 ----------------------------------
@@ -46,20 +45,23 @@ The task returns the following result:
 
 [source,js]
 ----------------------------------
-...
 {
-  "results": [
-    {
-      "entity": "Elastic",
-      "class": "organization"
-    },
-    {
-      "entity": "Mountain View",
-      "class": "location"
-    },
-    {
-      "entity": "California",
-      "class": "location"
+  "inference_results": [{
+    ...
+      entities: [
+        {
+          "entity": "Elastic",
+          "class": "organization"
+        },
+        {
+          "entity": "Mountain View",
+          "class": "location"
+        },
+        {
+          "entity": "California",
+          "class": "location"
+        }
+      ]
     }
   ]
 }
@@ -83,9 +85,8 @@ tell the model which word to predict.
 
 [source,js]
 ----------------------------------
-...
 {
-    "input": "The capital city of France is [MASK]."
+    docs: [{"text_field": "The capital city of France is [MASK]."}]
 }
 ...
 ----------------------------------
@@ -97,7 +98,8 @@ The task returns the following result:
 ----------------------------------
 ...
 {
-  "result": "Paris"
+  "predicted_value": "Paris"
+  ...
 }
 ...
 ----------------------------------
@@ -118,7 +120,6 @@ shown by the following examples:
 
 [source,js]
 ----------------------------------
-...
 {
     "docs": [{"text_field": "The Amazon rainforest (Portuguese: Floresta Amazônica or Amazônia; Spanish: Selva Amazónica, Amazonía or usually Amazonia; French: Forêt amazonienne; Dutch: Amazoneregenwoud), also known in English as Amazonia or the Amazon Jungle, is a moist broadleaf forest that covers most of the Amazon basin of South America. This basin encompasses 7,000,000 square kilometres (2,700,000 sq mi), of which 5,500,000 square kilometres (2,100,000 sq mi) are covered by the rainforest. This region includes territory belonging to nine nations. The majority of the forest is contained within Brazil, with 60% of the rainforest, followed by Peru with 13%, Colombia with 10%, and with minor amounts in Venezuela, Ecuador, Bolivia, Guyana, Suriname and French Guiana. States or departments in four nations contain "Amazonas" in their names. The Amazon represents over half of the planet's remaining rainforests, and comprises the largest and most biodiverse tract of tropical rainforest in the world, with an estimated 390 billion individual trees divided into 16,000 species."}],
     "inference_config": {"question_answering": {"question": "Which name is also used to describe the Amazon rainforest in English?"}}

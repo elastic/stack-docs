@@ -13,10 +13,10 @@ algorithms and to generate trained models for predictions on new data.
 {dfanalytics-cap} enable you to perform different analyses of your data and 
 annotate it with the results. By doing this, it provides additional insights 
 into the data. <<ml-dfa-finding-outliers,{oldetection-cap}>> identifies unusual 
-data points in the data set. <<dfa-regression,{regression-cap}>> makes 
+data points in the data set. <<ml-dfa-regression,{regression-cap}>> makes 
 predictions on your data after it determines certain relationships among your 
-data points. <<dfa-classification,{classification-cap}>> predicts the class or 
-category of a given data point in a data set. {infer-cap} enables you to use 
+data points. <<ml-dfa-classification,{classification-cap}>> predicts the class 
+or category of a given data point in a data set. {infer-cap} enables you to use 
 trained {ml} models against incoming data in a continuous fashion.
 
 The process leaves the source index intact, it creates a new index that contains 
@@ -98,14 +98,14 @@ more about how to ingest data into {es}, refer to the
 {ref}/ingest.html[Ingest node documentation].
 
 {regression-cap} and {classification} are supervised {ml} techniques, therefore 
-you must supply a labelled data set for training. This is often called the 
+you must supply a labeled data set for training. This is often called the 
 "ground truth". The training process uses this information to identify 
 relationships among the various characteristics of the data and the predicted 
 value. It also plays a critical role in model evaluation.
 
 An important requirement is a data set that is large enough to train a model. 
 For example, if you would like to train a {classification} model that decides 
-whether an email is a spam or not, you need a labelled data set that contains 
+whether an email is a spam or not, you need a labeled data set that contains 
 enough data points from each possible category to train the model. What counts 
 as "enough" depends on various factors like the complexity of the problem or 
 the {ml} solution you have chosen. There is no exact number that fits every 
@@ -175,10 +175,10 @@ the model is used to infer against the data and make predictions on it.
 
 * Read more about how to {ref}/transforms.html[transform you data] into an 
   entity-centric index.
-* Consult the documentation to learn more about <<dfa-regression,regression>> 
-  and <<dfa-classification,classification>>.
+* Consult the documentation to learn more about <<ml-dfa-regression,regression>> 
+  and <<ml-dfa-classification,classification>>.
 * Learn how to evaluate <<ml-dfanalytics-regression-evaluation,regression>> and 
 <<ml-dfanalytics-classification-evaluation,classification>> models.
 * Find out how to deploy your model by using {infer} for 
 <<ml-inference-class,{classification}>> and <<ml-inference-reg,{regression}>>.
-* * https://www.elastic.co/blog/train-evaluate-monitor-infer-end-to-end-machine-learning-in-elastic[Train, evaluate, monitor, infer: End-to-end machine learning in Elastic]
+* https://www.elastic.co/blog/train-evaluate-monitor-infer-end-to-end-machine-learning-in-elastic[Train, evaluate, monitor, infer: End-to-end machine learning in Elastic].

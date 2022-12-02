@@ -119,7 +119,7 @@ Used to send {filebeat} and {metricbeat} information to the logging cluster.
 [[glossary-ml-bucket]] bucket::
 . A set of documents in {kib} that have certain characteristics in common. For
 example, matching documents might be bucketed by color, distance, or date range.
-//Soure: Kibana
+//Source: Kibana
 . The {ml-features} also use the concept of a bucket to divide the time series
 into batches for processing. The _bucket span_ is part of the configuration
 information for {anomaly-jobs}. It defines the time interval that is used to
@@ -128,7 +128,7 @@ it depends on your data characteristics. When you set the bucket span, take into
 account the granularity at which you want to analyze, the frequency of the input
 data, the typical duration of the anomalies, and the frequency at which alerting
 is required.
-//Soure: Machine learning
+//Source: Machine learning
 
 [[glossary-bucket-aggregation]] bucket aggregation::
 An aggregation that creates buckets of documents. Each bucket is associated with
@@ -309,10 +309,10 @@ A file, database, or service that provides the underlying data for a map, Canvas
 element, or visualization.
 //Source: Kibana
 
-[[glossary-data-stream]] data stream::
-Named resource used to manage time series data. A data stream stores data across
-multiple backing <<glossary-index,indices>>. See {ref}/data-streams.html[Data
-streams].
+[[glossary-data-stream]] data stream:: 
+A named resource used to manage <<glossary-time-series-data,time series data>>.
+A data stream stores data across multiple backing <<glossary-index,indices>>.
+See {ref}/data-streams.html[Data streams].
 //Source: Elasticsearch
 
 [[glossary-data-tier]] data tier::
@@ -322,6 +322,14 @@ role] that typically share the same hardware profile. Data tiers include the
 <<glossary-warm-tier, warm tier>>, <<glossary-cold-tier, cold tier>>, and
 <<glossary-frozen-tier,frozen tier>>. See {ref}/data-tiers.html[Data tiers].
 //Source: Elasticsearch
+
+[[glossary-data-view]] data view::
+An object that enables you to select the data that you want to use in {kib} 
+and define the properties of the fields. A data view can point to one or more 
+<<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
+<<glossary-alias,aliases>>. For example, a data view can point to your log data from yesterday, 
+or all indices that contain your data.
+//Source: Kibana
 
 [[glossary-delete-phase]] delete phase::
 Last possible phase in the <<glossary-index-lifecycle,index lifecycle>>. In the
@@ -374,8 +382,10 @@ weight indicates the strength of the relationship.  See
 //Source: Kibana
 
 [[glossary-elastic-agent]] {agent}::
-A single, unified agent that you can deploy to hosts or containers to collect data and protect endpoints.
-See {fleet-guide}/fleet-overview.html[{agent} overview].
+A single, unified way to add monitoring for logs, metrics, and other types of
+data to a host. It can also protect hosts from security threats, query data from
+operating systems, forward data from remote services or hardware, and more. See
+{fleet-guide}/fleet-overview.html[{agent} overview].
 //Source: Observability
 
 [[glossary-ecs]] Elastic Common Schema (ECS)::
@@ -429,13 +439,22 @@ point contribute to its outlier behavior. See
 
 [[glossary-feature-importance]] feature importance::
 In supervised {ml} methods such as {regression} and {classification}, feature
-importance indicates the degree to which a specific feature affects a 
+importance indicates the degree to which a specific feature affects a
 prediction.
-See 
+See
 {ml-docs}/ml-dfa-regression.html#dfa-regression-feature-importance[{regression-cap} feature importance]
 and
 {ml-docs}/ml-dfa-classification.html#dfa-classification-feature-importance[{classification-cap} feature importance].
 //Source: Machine learning
+
+[[glossary-feature-state]] feature state::
+The indices and data streams used to store configurations, history, and other
+data for an Elastic feature, such as {es} security or {kib}. A feature state
+typically includes one or more <<glossary-system-index,system indices or data
+streams>>. It may also include regular indices and data streams used by the
+feature. You can use <<glossary-snapshot,snapshots>> to back up and restore
+feature states. See {ref}/snapshot-restore.html#feature-state[feature states].
+//Source: Elasticsearch
 
 [[glossary-field]] field::
 . Key-value pair in a <<glossary-document,document>>. See
@@ -567,7 +586,7 @@ cells or regions to analyze patterns across multiple dimensions. See
 [[glossary-hidden-index]] hidden data stream or index::
 <<glossary-data-stream,Data stream>> or <<glossary-index,index>> excluded from
 most <<glossary-index-pattern,index patterns>> by default. See
-{ref}/multi-index.html#hidden[Hidden data streams and indices].
+{ref}/api-conventions.html#multi-hidden[Hidden data streams and indices].
 //Source: Elasticsearch
 
 [[glossary-hot-phase]] hot phase::
@@ -620,7 +639,7 @@ each phase. See {ref}/ilm-policy-definition.html[Index lifecycle].
 //Source: Elasticsearch
 
 [[glossary-index-pattern]] index pattern::
-String containing a wildcard (`*`) pattern that can match multiple
+In {es}, a string containing a wildcard (`*`) pattern that can match multiple
 <<glossary-data-stream,data streams>>, <<glossary-index,indices>>, or
 <<glossary-alias,aliases>>. See {ref}/multi-index.html[Multi-target syntax].
 //Source: Elasticsearch
@@ -641,8 +660,8 @@ order to index <<glossary-event,event>> data.
 
 [[glossary-inference]] inference::
 A {ml} feature that enables you to use supervised learning processes – like
-{regression} and {classification} – in a continuous fashion by using
-<<glossary-trained-model,trained models>> against incoming data.
+{classification}, {regression}, or <<glossary-nlp,{nlp}>> – in a continuous
+fashion by using <<glossary-trained-model,trained models>> against incoming data.
 //Source: Machine learning
 
 [[glossary-inference-aggregation]] inference aggregation::
@@ -826,6 +845,12 @@ See the {ref}/multi-fields.html[`fields` mapping parameter].
 A user-configurable arbitrary data grouping, such as an environment (`dev`, `prod`, or `qa`),
 a team, or a strategic business unit.
 //Source: Observability
+
+[[glossary-nlp]] natural language processing (NLP)::
+A {ml} feature that enables you to perform operations such as language
+identification, named entity recognition (NER), text classification, or text
+embedding. See {ml-docs}/ml-nlp-overview.html[NLP overview].
+//Source: Machine Learning
 
 [[glossary-node]] node::
 A single {es} server. One or more nodes can form a <<glossary-cluster,cluster>>.
@@ -1034,7 +1059,7 @@ differently. See {ref}/runtime.html[Runtime fields].
 === S
 
 [[glossary-saved-object]] saved object::
-A representation of a dashboard, visualization, map, index pattern, or Canvas
+A representation of a dashboard, visualization, map, data view, or Canvas
 workpad that can be stored and reloaded.
 //Source: Kibana
 
@@ -1116,7 +1141,8 @@ restore].
 [[glossary-snapshot-lifecycle-policy]] snapshot lifecycle policy::
 Specifies how frequently to perform automatic backups of a cluster and how long
 to retain the resulting <<glossary-snapshot,snapshots>>. See
-{ref}/snapshot-lifecycle-management.html[Manage the snapshot lifecycle].
+{ref}/snapshots-take-snapshot.html#automate-snapshots-slm[Automate snapshots
+with {slm-init}].
 //Source: Elasticsearch
 
 [[glossary-snapshot-repository]] snapshot repository::
@@ -1140,7 +1166,7 @@ different spaces for each team, use case, or individual. See
 
 [[glossary-span]] span::
 Information about the execution of a specific code path.
-{apm-overview-ref-v}/transaction-spans.html[Spans] measure from the start to the end of an activity
+{apm-guide-ref}/data-model-spans.html[Spans] measure from the start to the end of an activity
 and can have a parent/child relationship with other spans.
 //Source: Observability
 
@@ -1158,7 +1184,7 @@ and geo alerts are currently the two stack alert types.
 [[glossary-standalone]] standalone::
 This mode allows manual configuration and management of {agent}s locally
 on the systems where they are installed.
-See {fleet-guide}/run-elastic-agent-standalone.html[Run {agent} standalone].
+See {fleet-guide}/install-standalone-elastic-agent.html[Install standalone {agent}s].
 //Source: Observability
 
 [[glossary-stunnel]] stunnel::
@@ -1208,9 +1234,20 @@ See {kibana-ref}/dashboard.html[Timelion].
 //Source: Kibana
 
 [[glossary-time-series-data]] time series data::
-Timestamped data such as logs, metrics, and events that is indexed on an ongoing
-basis.
-//Source: Kibana
+A series of data points, such as logs, metrics and events, that is indexed in
+time order. Time series data can be indexed in a 
+<<glossary-data-stream,data stream>>, where it can be accessed as a single named
+resource with the data stored across multiple backing indices. A
+<<glossary-time-series-data-stream,time series data stream>> is optimized for
+indexing metrics data.
+//Source: Elasticsearch
+
+[[glossary-time-series-data-stream]] time series data stream::
+A type of <<glossary-data-stream,data stream>> optimized for indexing metrics
+<<glossary-time-series-data,time series data>>. A TSDS allows for reduced storage
+size and for a sequence of metrics data points to be considered efficiently as a
+whole. See {ref}/tsds.html[Time series data stream].
+//Source: Elasticsearch
 
 [[glossary-token]] token::
 A chunk of unstructured <<glossary-text,text>> that's been optimized for search.
@@ -1235,15 +1272,14 @@ locations into a line, often representing a path or route.
 //Source: Kibana
 
 [[glossary-trained-model]] trained model::
-A {ml} model that is trained and tested against a labelled data set and can be
+A {ml} model that is trained and tested against a labeled data set and can be
 referenced in an ingest pipeline or in a pipeline aggregation to perform
-{classification} or {reganalysis} on new data. See
-{ml-docs}/ml-trained-models.html[Trained models].
+{classification} or {reganalysis} or <<glossary-nlp,{nlp}>> on new data.
 //Source: Machine learning
 
 [[glossary-transaction]] transaction::
 A special kind of <<glossary-span,span>> that has additional attributes associated with it.
-{apm-overview-ref-v}/transactions.html[Transactions] describe an event captured by an
+{apm-guide-ref}/data-model-transactions.html[Transactions] describe an event captured by an
 Elastic <<glossary-apm-agent,APM agent>> instrumenting a service.
 //Source: Observability
 
@@ -1260,7 +1296,7 @@ aggregations to display complex data. See {kibana-ref}/dashboard.html[TSVB].
 A tool that helps you prepare for an upgrade to the next major version of {es}.
 The assistant identifies the deprecated settings in your cluster and indices and
 guides you through resolving issues, including reindexing. See
-{kibana-ref}/upgrade-assistant.html[Upgrade Assistant].
+{kibana-ref-all}/{prev-major-last}/upgrade-assistant.html[Upgrade Assistant].
 //Source: Kibana
 
 [[glossary-uptime]] Uptime::

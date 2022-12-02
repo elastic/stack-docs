@@ -1,5 +1,3 @@
-[role="xpack"]
-[testenv="platinum"]
 [[mapping-anomalies]]
 = Mapping anomalies by location
 
@@ -28,7 +26,7 @@ If you have fields that contain valid vector layers, you can use the
 area is colored based on its document count. For example:
 
 [role="screenshot"]
-image::images/weblogs-data-visualizer-choropleth.jpg[A screenshot of a field that contains vector layer values in {data-viz}]
+image::images/weblogs-data-visualizer-choropleth.png[A screenshot of a field that contains vector layer values in {data-viz}]
 
 [discrete]
 [[mapping-anomalies-jobs]]
@@ -43,7 +41,7 @@ sample web logs data set to detect anomalous behavior in the sum of the data
 transferred (`bytes` values) for each destination country (`geo.dest` values):
 
 [role="screenshot"]
-image::images/weblogs-multimetric-wizard-vector.jpg[A screenshot of creating an {anomaly-job} using the web logs data in {kib}]
+image::images/weblogs-multimetric-wizard-vector.png[A screenshot of creating an {anomaly-job} using the web logs data in {kib}]
 
 .API example
 [%collapsible]
@@ -70,12 +68,10 @@ PUT _ml/anomaly_detectors/weblogs-vectors <1>
   },
   "data_description" : {
     "time_field": "timestamp"
-  }
-}
-
-PUT _ml/datafeeds/datafeed-weblogs-vectors <2>
-{
-    "job_id": "weblogs-vectors",
+  },
+  "datafeed_config": { <2>
+    "datafeed_id": "datafeed-weblogs-vectors",
+    "indices": ["kibana_sample_data_logs"],
     "query": {
       "bool": {
         "must": [
@@ -84,10 +80,8 @@ PUT _ml/datafeeds/datafeed-weblogs-vectors <2>
           }
         ]
       }
-    },
-    "indices": [
-      "kibana_sample_data_logs"
-    ]
+    }
+  }
 }
 
 POST _ml/anomaly_detectors/weblogs-vectors/_open <3>
@@ -116,7 +110,7 @@ TIP: If you used APIs to create the jobs and {dfeeds}, you cannot see them
 in {kib} until you follow the prompts to synchronize the necessary saved objects.
 
 [role="screenshot"]
-image::images/weblogs-anomaly-explorer-vectors.jpg[A screenshot of the anomaly count by location in Anomaly Explorer]
+image::images/weblogs-anomaly-explorer-vectors.png[A screenshot of the anomaly count by location in Anomaly Explorer]
 
 The **Anomaly Explorer** contains a map, which is affected by your swim lane
 selections. It colors each location to reflect the number of anomalies in that

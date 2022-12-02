@@ -1,5 +1,6 @@
 [role="xpack"]
-[[ml-gs-results]]
+[discrete]
+[[sample-data-results]]
 = View {anomaly-detect} results
 
 After the {dfeeds} are started and the {anomaly-jobs} have processed some data,
@@ -49,8 +50,10 @@ display only a single time series.
 
 The blue line in the chart represents the actual data values. The shaded blue
 area represents the bounds for the expected values. The area between the upper
-and lower bounds are the most likely values for the model. If a value is outside
-of this area then it can be said to be anomalous.
+and lower bounds are the most likely values for the model, using a 95%
+confidence level. That is to say, there is a 95% chance of the actual value
+falling within these bounds. If a value is outside of this area then it will usually
+be identified as anomalous.
 
 If you slide the time selector from the beginning to the end of the data, you
 can see how the model improves as it processes more data. At the beginning, the
@@ -82,10 +85,18 @@ of the viewer. For example:
 [role="screenshot"]
 image::images/ml-gs-job1-anomalies.jpg["Single Metric Viewer Anomalies for low_request_rate job"]
 
+In the *Actions* column, there are additional options, such as *Raw data* which
+generates a query for the relevant documents in *Discover*. You can optionally
+add more links in the actions menu with <<ml-configuring-url,custom URLs>>.
+
 By default, the table contains all anomalies that have a severity of "warning"
 or higher in the selected section of the timeline. If you are only interested in
 critical anomalies, for example, you can change the severity threshold for this
 table.
+
+The **Anomaly explanation** section gives you further insights about each 
+anomaly, such as its type and impact, to make it easier to interpret the job 
+results.
 
 You can optionally annotate your job results by drag-selecting a period of time
 in the **Single Metric Viewer** and adding a description. Annotations are notes

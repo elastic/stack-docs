@@ -1,0 +1,308 @@
+[[ml-nlp-inference]]
+= Add NLP {infer} to ingest pipelines
+:keywords: {ml-init}, {stack}, {nlp}, {infer} 
+
+After you <<ml-nlp-deploy-models,deploy a trained model in your cluster>>, you
+can use it to perform {nlp} tasks in ingest pipelines.
+
+. Verify that all of the
+{ref}/ingest.html#ingest-prerequisites[ingest pipeline prerequisites] are met.
+. <<ml-nlp-inference-processor,Add an {infer} processor to an ingest pipeline>>.
+. <<ml-nlp-inference-ingest-docs,Ingest documents>>.
+. <<ml-nlp-inference-discover,View the results>>.
+
+//TBD Are there additional index privileges required?
+
+[discrete]
+[[ml-nlp-inference-processor]]
+== Add an {infer} processor to an ingest pipeline
+
+In {kib}, you can create and edit pipelines in **{stack-manage-app}** >
+**Ingest Pipelines**.
+
+[role="screenshot"]
+image::images/ml-nlp-pipeline-lang.png[Creating a pipeline in the Stack Management app,align="center"]
+
+. Click **Create pipeline** or edit an existing pipeline.
+. Add an {ref}/inference-processor.html[{infer} processor] to your pipeline:
+.. Click **Add a processor** and select the **{infer-cap}** processor type.
+.. Set **Model ID** to the name of your trained model, for example
+`elastic__distilbert-base-cased-finetuned-conll03-english` or
+`lang_ident_model_1`.
+.. If you use the {lang-ident} model (`lang_ident_model_1`) that is provided in
+your cluster:
+... The input field name is assumed to be `text`. If you want to identify
+languages in a field with a different name, you must map your field name to
+`text` in the **Field map** section. For example:
++
+--
+[source,js]
+----
+{
+  "message": "text"
+}
+----
+// NOTCONSOLE
+--
+... You can also optionally add
+{ref}/inference-processor.html#inference-processor-classification-opt[classification configuration options]
+in the **{infer-cap} configuration** section. For example, to include the top 
+five language predictions:
++
+--
+[source,js]
+----
+{
+  "classification":{
+    "num_top_classes":5
+  }
+}
+----
+// NOTCONSOLE
+--
+.. Click **Add** to save the processor.
+. Optional: Add a {ref}/set-processor.html[set processor] to index the ingest
+timestamp.
+.. Click **Add a processor** and select the **Set** processor type.
+.. Choose a name for the field (such as `event.ingested`) and set its value to
+`{{{_ingest.timestamp}}}`. For more details, refer to
+{ref}/ingest.html#access-ingest-metadata[Access ingest metadata in a processor].
+.. Click **Add** to save the processor.
+. Optional: Add failure processors to handle exceptions. For example, in the
+**Failure processors** section:
+.. Add a set processor to capture the
+pipeline error message. Choose a name for the field (such as
+`ml.inference_failure`) and set its value to the
+`{{_ingest.on_failure_message}}` document metadata field.
+.. Add a set processor to reroute
+problematic documents to a different index for troubleshooting purposes. Use
+the `_index` metadata field and set its value to a new name (such as
+`failed-{{{ _index }}}`). For more details, refer
+to {ref}/ingest.html#handling-pipeline-failures[Handling pipeline failures].
+. To test the pipeline, click **Add documents**.
+.. In the **Documents** tab, provide a sample document for testing.
++
+--
+For example, to test a trained model that performs named entity recognition
+(NER):
+
+[source,js]
+----
+[
+  {
+    "_source": {
+    "text_field":"Hello, my name is Josh and I live in Berlin."
+    }
+  }
+]
+----
+// NOTCONSOLE
+
+To test a trained model that performs {lang-ident}:
+
+[source,js]
+----
+[
+ {
+   "_source":{
+     "message":"Sziasztok! Ez egy rövid magyar szöveg. Nézzük, vajon sikerül-e azonosítania a language identification funkciónak? Annak ellenére is sikerülni fog, hogy a szöveg két angol szót is tartalmaz."
+     }
+  }
+]
+----
+// NOTCONSOLE
+--
+.. Click **Run the pipeline** and verify the pipeline worked as expected.
++
+--
+In the {lang-ident} example, the predicted value is the ISO identifier of the
+language with the highest probability. In this case, it should be `hu` for
+Hungarian.
+--
+.. If everything looks correct, close the panel, and click **Create
+pipeline**. The pipeline is now ready for use.
+
+////
+.API example
+[%collapsible]
+====
+[source,console]
+----
+POST _ingest/pipeline/my-ner-pipeline
+{
+  "inference": {
+    "model_id": "elastic__distilbert-base-cased-finetuned-conll03-english",
+    "field_map": {
+      "review": "text_field"
+    },
+    "on_failure": [
+      {
+        "set": {
+          "description": "Set the error message",
+          "field": "ml.inference_failure",
+          "value": "{{_ingest.on_failure_message}}"
+        }
+      },
+      {
+        "set": {
+          "description": "Index document to 'failed-<index>'",
+          "field": "_index",
+          "value": "failed-{{{ _index }}}"
+        }
+      }
+    ]
+  }
+}
+----
+// TEST[skip:TBD]
+====
+////
+
+[discrete]
+[[ml-nlp-inference-ingest-docs]]
+== Ingest documents
+
+You can now use your ingest pipeline to perform NLP tasks on your data.
+
+Before you add data, consider which mappings you want to use. For example, you
+can create explicit mappings with the create index API in the
+**{dev-tools-app}** > **Console**:
+
+[source,console]
+----
+PUT ner-test
+{
+  "mappings": {
+    "properties": {
+      "ml.inference.predicted_value": {"type": "annotated_text"},
+      "ml.inference.model_id": {"type": "keyword"},
+      "text_field": {"type": "text"},
+      "event.ingested": {"type": "date"}
+    }
+  }
+}
+----
+// TEST[skip:TBD]
+
+TIP: To use the `annotated_text` data type in this example, you must install the
+{plugins}/mapper-annotated-text.html[mapper annotated text plugin]. For more
+installation details, refer to   
+{cloud}/ec-adding-elastic-plugins.html[Add plugins provided with {ess}].
+
+You can then use the new pipeline to index some documents. For example, use a
+bulk indexing request with the `pipeline` query parameter for your NER pipeline:
+
+[source,console]
+----
+POST /_bulk?pipeline=my-ner-pipeline
+{"create":{"_index":"ner-test","_id":"1"}}
+{"text_field":"Hello, my name is Josh and I live in Berlin."}
+{"create":{"_index":"ner-test","_id":"2"}}
+{"text_field":"I work for Elastic which was founded in Amsterdam."}
+{"create":{"_index":"ner-test","_id":"3"}}
+{"text_field":"Elastic has headquarters in Mountain View, California."}
+{"create":{"_index":"ner-test","_id":"4"}}
+{"text_field":"Elastic's founder, Shay Banon, created Elasticsearch to solve a simple need: finding recipes!"}
+{"create":{"_index":"ner-test","_id":"5"}}
+{"text_field":"Elasticsearch is built using Lucene, an open source search library."}
+----
+// TEST[skip:TBD]
+
+Or use an individual indexing request with the `pipeline` query parameter for
+your {lang-ident} pipeline:
+
+[source,console]
+----
+POST lang-test/_doc?pipeline=my-lang-pipeline
+{
+  "message": "Mon pays ce n'est pas un pays, c'est l'hiver"
+}
+----
+// TEST[skip:TBD]
+
+You can also use NLP pipelines when you are reindexing documents to a new
+destination. For example, since the
+{kibana-ref}/get-started.html#gs-get-data-into-kibana[sample web logs data set]
+contain a `message` text field, you can reindex it with your {lang-ident}
+pipeline:
+
+[source,console]
+----
+POST _reindex
+{
+  "source": {
+    "index": "kibana_sample_data_logs",
+    "size": 500
+  },
+  "dest": {
+    "index": "lang-test",
+    "pipeline": "my-lang-pipeline"
+  }
+}
+----
+// TEST[skip:TBD]
+
+However, those web log messages are unlikely to contain enough words for the
+model to accurately identify the language.
+
+TIP: Set the reindex `size` option to a value
+smaller than the `queue_capacity` for the trained model deployment. Otherwise, requests might be rejected
+with a "too many requests" 429 error code.
+
+[discrete]
+[[ml-nlp-inference-discover]]
+== View the results
+
+Before you can verify the results of the pipelines, you must
+{kibana-ref}/data-views.html[create {data-sources}]. Then you can explore your 
+data in **Discover**:
+
+[role="screenshot"]
+image::images/ml-nlp-discover-ner.png[A document from the NER pipeline in the Discover app,align="center"]
+
+The `ml.inference.predicted_value` field contains the output from the {infer}
+processor. In this NER example, there are two documents that contain the
+`Elastic` organization entity.
+
+In this {lang-ident} example, the `ml.inference.predicted_value` contains the 	
+ISO identifier of the language with the highest probability and the
+`ml.inference.top_classes` fields contain the top five most probable languages
+and their scores:
+
+[role="screenshot"]
+image::images/ml-nlp-discover-lang.png[A document from the {lang-ident} pipeline in the Discover app,align="center"]
+
+To learn more about ingest pipelines and all of the other processors that you
+can add, refer to {ref}/ingest.html[Ingest pipelines].
+
+
+[discrete]
+[[ml-nlp-inference-common-problems]]
+== Common problems
+
+If you encounter problems while using your trained model in an ingest pipeline,
+check the following possible causes:
+
+. The trained model is not deployed in your cluster. You can view its status in
+**{ml-app}** > **Model Management** or use the
+{ref}/get-trained-models-stats.html[get trained models statistics API]. Unless
+you are using the built-in `lang_ident_model_1` model, you must ensure your
+model is successfully deployed. Refer to <<ml-nlp-deploy-model>>.
+. The default input field name expected by your trained model is not present in
+your source document. Use the **Field Map** option in your {infer} processor to 
+set the appropriate field name.
+. There are too many requests. If you are using bulk ingest, reduce the number
+of documents in the bulk request. If you are reindexing, use the `size`
+parameter to decrease the number of documents processed in each batch.
+
+These common failure scenarios and others can be captured by adding failure
+processors to your pipeline. For more examples, refer to
+{ref}/ingest.html#handling-pipeline-failures[Handling pipeline failures].
+
+[discrete]
+[[nlp-example-reading]]
+== Further reading
+
+* https://www.elastic.co/blog/how-to-deploy-nlp-text-embeddings-and-vector-search[How to deploy NLP: Text Embeddings and Vector Search]
+* https://www.elastic.co/blog/how-to-deploy-nlp-named-entity-recognition-ner-example[How to deploy NLP: Named entity recognition (NER) example]
+* https://www.elastic.co/blog/how-to-deploy-nlp-sentiment-analysis-example[How to deploy NLP: Sentiment Analysis Example]

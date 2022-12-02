@@ -1,10 +1,11 @@
 [[elastic-stack]]
-= Installation and Upgrade Guide
+= Elastic Installation and Upgrade Guide
 
-:apm-repo-dir:       {apm-server-root}/docs/guide
+:apm-repo-dir:       {apm-server-root}/docs
 :beats-repo-dir:     {beats-root}/libbeat/docs
 :es-repo-dir:        {elasticsearch-root}/docs/reference
 :hadoop-repo-dir:    {elasticsearch-hadoop-root}/docs/src/reference/asciidoc
+:security-repo-dir:  {security-docs-root}/docs
 :kib-repo-dir:       {kibana-root}/docs
 :ls-repo-dir:        {logstash-root}/docs
 :obs-repo-dir:       {observability-docs-root}/docs/en/observability
@@ -18,7 +19,21 @@ include::installing-stack.asciidoc[]
 
 include::upgrading-stack.asciidoc[]
 
-include::highlights.asciidoc[]
+include::upgrading-stack-cloud.asciidoc[]
+
+include::upgrading-stack-on-prem.asciidoc[]
+
+include::upgrading-elasticsearch.asciidoc[]
+
+include::upgrading-kibana.asciidoc[]
+
+// include::upgrading-logstash.asciidoc[]
+
+// include::upgrading-beats.asciidoc[]
+
+// include::upgrading-APM.asciidoc[]
+
+// include::upgrading-agent.asciidoc[]
 
 include::breaking.asciidoc[]
 

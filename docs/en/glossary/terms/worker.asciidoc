@@ -1,0 +1,7 @@
+
+[[glossary-worker]] worker::
+The filter thread model used by {ls}, where each worker receives an
+<<glossary-event,event>> and applies all filters, in order, before emitting
+the event to the output queue. This allows scalability across CPUs because
+many filters are CPU intensive.
+//Source: Logstash

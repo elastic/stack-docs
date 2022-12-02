@@ -1,9 +1,7 @@
 [role="xpack"]
-[[ml-gs-jobs]]
+[discrete]
+[[sample-data-jobs]]
 = Create sample {anomaly-jobs} in {kib}
-++++
-<titleabbrev>Create {anomaly-jobs}</titleabbrev>
-++++
 
 The {kib} sample data sets include some pre-configured {anomaly-jobs} for you to
 play with. You can use either of the following methods to add the jobs:
@@ -11,14 +9,10 @@ play with. You can use either of the following methods to add the jobs:
 * After you load the sample web logs data set on the {kib} home page, click
 *View data* > *ML jobs*.
 * In the Machine Learning app, when you select the `kibana_sample_data_logs`
-index pattern in the *Data Visualizer* or the *Anomaly Detection* job wizards,
+{data-sources} in the *Data Visualizer* or the *Anomaly Detection* job wizards,
 it recommends that you create a job using its known configuration. Select the
 *Kibana sample data web logs* configuration.
-
-[role="screenshot"]
-image::images/ml-gs-create-web-jobs-1.jpg["Create jobs for the sample web logs"]
-
-Accept the default values and click *Create Jobs*.
+* Accept the default values and click *Create Jobs*.
 
 The wizard creates three jobs and three {dfeeds}.
 
@@ -38,7 +32,7 @@ value that is seen within a bucket. Others perform some aggregation over the
 length of the bucket. For example, `mean` calculates the mean of all the data
 points seen within the bucket.
 
-For more information, see <<ml-datafeeds>>, <<ml-buckets>>, and <<ml-functions>>.
+For more information, see <<ml-ad-datafeeds>>, <<ml-buckets>>, and <<ml-functions>>.
 ****
 
 If you want to see all of the configuration details for your jobs and {dfeeds},

@@ -1,6 +1,7 @@
-{anomaly-jobs-cap} can analyze data that is stored in {es} or data that is
-sent from some other source via an API. _{dfeeds-cap}_ retrieve data from {es}
-for analysis, which is the simpler and more common scenario.
+If you create {anomaly-jobs} in {kib}, you _must_ use {dfeeds} to retrieve data
+from {es} for analysis. When you create an {anomaly-job}, you select a
+{data-source} and {kib} configures the {dfeed} for you under the covers.
+//For a description of all the {dfeed} properties, see the {ref}/ml-put-datafeed.html[create {dfeeds} API].
 
 You can associate only one {dfeed} with each {anomaly-job}. The {dfeed} contains
 a query that runs at a defined interval (`frequency`). By default, this interval
@@ -11,23 +12,6 @@ runs at each interval. See <<ml-delayed-data-detection>>.
 {dfeeds-cap} can also aggregate data before sending it to the {anomaly-job}.
 There are some limitations, however, and aggregations should generally be used
 only for low cardinality data. See <<ml-configuring-aggregation>>.
-
-If you create {anomaly-jobs} in {kib}, you _must_ use {dfeeds}. When you create
-an {anomaly-job}, you select an index pattern and {kib} configures the {dfeed}
-for you under the covers. For a description of all the {dfeed} properties, see
-the {ref}/ml-put-datafeed.html[create {dfeeds} API].
-
-To start retrieving data from {es}, you must start the {dfeed}. When you start
-it, you can optionally specify start and end times. If you do not specify an
-end time, the {dfeed} runs continuously. {dfeeds-cap} with an end time close 
-their corresponding jobs when they are stopped. For this reason, when historical 
-data is analysed, there is no need to stop the datafeed and/or close the job as 
-they are stopped and closed automatically when the end time is reached. However, 
-when a {dfeed} without an end time is stopped, it does not close the 
-corresponding job automatically. You can start and stop {dfeeds} in {kib} or use 
-the {ref}/ml-start-datafeed.html[start {dfeeds}] and 
-{ref}/ml-stop-datafeed.html[stop {dfeeds}] APIs. A {dfeed} can be started and 
-stopped multiple times throughout its lifecycle.
 
 [IMPORTANT]
 --

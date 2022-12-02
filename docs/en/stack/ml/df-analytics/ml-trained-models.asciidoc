@@ -1,10 +1,10 @@
 [role="xpack"]
 [[ml-trained-models]]
 = Trained models
-
+:keywords: {ml-init}, {stack}, {dfanalytics}
 
 When you use a {dfanalytics-job} to perform {classification} or {reganalysis},
-it creates a {ml} model that is trained and tested against a labelled data set.
+it creates a {ml} model that is trained and tested against a labeled data set.
 When you are satisfied with your trained model, you can use it to make
 predictions against new data. For example, you can use it in the processor of
 an ingest pipeline or in a pipeline aggregation within a search query. For more
@@ -14,15 +14,15 @@ information about this process, see <<ml-supervised-workflow>> and
 
 You can also supply trained models that are not created by {dfanalytics-job} but
 adhere to the appropriate
-https://github.com/elastic/ml-json-schemas[JSON schema]. If you want to use
-these trained models in the {stack}, you must store them in {es} documents by
-using the {ref}/put-trained-models.html[create trained models API].
+https://github.com/elastic/ml-json-schemas[JSON schema]. Likewise, you can use
+third-party models to perform natural language processing (NLP) tasks. If you
+want to use these trained models in the {stack}, you must store them in {es}
+documents by using the {ref}/put-trained-models.html[create trained models API].
+For more information about NLP models, refer to <<ml-nlp-deploy-models>>.
 
-In {kib}, you can view and manage your trained models within *{ml-app}* > *Data
-Frame Analytics*:
-
-[role="screenshot"]
-image::images/trained-model-management.png["List of trained models in the {ml-app} app in {kib}"]
+In {kib}, you can view and manage your trained models in
+*{stack-manage-app}* > *Alerts and Insights* > *{ml-app}* and
+*{ml-app}* > *Model Management*.
 
 Alternatively, you can use APIs like
 {ref}/get-trained-models.html[get trained models] and
@@ -135,6 +135,9 @@ https://ec.haxx.se/usingcurl/usingcurl-timeouts[timeout configurations] for
 `curl` (for example, `curl --max-time 600`) or your client of choice.
 --
 
+If you also want to copy the {dfanalytics-job} to the new cluster, you can 
+export and import jobs in the *{stack-manage-app}* app in {kib}. Refer to
+<<move-jobs>>.
 
 [discrete]
 [[import-external-model-to-es]]

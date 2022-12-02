@@ -1,0 +1,34 @@
+[[ml-nlp-overview]]
+= Overview
+
+{nlp-cap} (NLP) refers to the way in which we can use software to understand
+natural language in spoken word or written text.
+
+Classically, NLP was performed using linguistic rules, dictionaries, regular
+expressions, and {ml} for specific tasks such as automatic categorization or
+summarization of text. In recent years, however, deep learning techniques have
+taken over much of the NLP landscape. Deep learning capitalizes on the
+availability of large scale data sets, cheap computation, and techniques for
+learning at scale with less human involvement. Pre-trained language models that
+use a transformer architecture have been particularly successful. For example,
+BERT is a pre-trained language model that was released by Google in 2018. Since
+that time, it has become the inspiration for most of today’s modern NLP
+techniques. The {stack} {ml} features are structured around BERT and
+transformer models. These features support BERT’s tokenization scheme (called
+WordPiece) and transformer models that conform to the standard BERT model
+interface. For the current list of supported architectures, refer to
+<<ml-nlp-model-ref>>.
+
+To incorporate transformer models and make predictions, {es} uses libtorch,
+which is an underlying native library for PyTorch. Trained models must be in a
+TorchScript representation for use with {stack} {ml} features.
+
+As in the cases of <<ml-dfa-classification,classification>> and
+<<ml-dfa-regression,{regression}>>, after you deploy a model to your cluster, you
+can use it to make predictions (also known as _{infer}_) against incoming 
+data. You can perform the following NLP operations:
+
+* <<ml-nlp-extract-info>>
+* <<ml-nlp-classify-text>> 
+
+* <<ml-nlp-search-compare>>

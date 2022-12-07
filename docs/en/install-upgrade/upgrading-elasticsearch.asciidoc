@@ -109,6 +109,8 @@ jobs with large model states.
 . [[upgrade-node]] *Shut down a single node*.
 +
 --
+To stop running a single node depends on what is currently used to run the nodes. For example, if using `systemd` or SysV see the commands below.
+
 * If you are running {es} with `systemd`:
 +
 [source,sh]
@@ -121,13 +123,6 @@ sudo systemctl stop elasticsearch.service
 [source,sh]
 --------------------------------------------------
 sudo -i service elasticsearch stop
---------------------------------------------------
-
-* If you are running {es} as a daemon:
-+
-[source,sh]
---------------------------------------------------
-kill $(cat pid)
 --------------------------------------------------
 --
 

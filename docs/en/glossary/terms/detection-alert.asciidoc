@@ -1,0 +1,13 @@
+
+[[glossary-detection-alert]] detection alert::
+{elastic-sec} produced alerts. Detection alerts are never received from external
+systems. When a rule's conditions are met, {elastic-sec} writes a detection alert to an {es} alerts index.
+////
+[NOTE]
+==============
+Detection alert indices are created for each {kib} space. The naming convention
+is: `.alerts-security.alerts-<space name>`. For the default space, the alerts index is
+named `.alerts-security.alerts-default`.
+==============
+////
+//Source: Elastic Security

@@ -16,15 +16,13 @@ are calculated, and how renormalization works.
 [[score-impact-factors]]
 == Anomaly score impact factors
 
-Three factors can affect the initial anomaly score of a record: 
+{anomaly-jobs-cap} split the time series data into time buckets. The data within 
+a bucket is aggregated using functions. Anomaly detection is happening on the 
+bucket values. Three factors can affect the initial anomaly score of a record: 
 
 * single bucket impact,
 * multi-bucket impact,
 * anomaly characteristics impact.
-
-{anomaly-jobs-cap} split the time series data into time buckets. The data within 
-a bucket is aggregated using functions. Anomaly detection is happening on the 
-bucket values.
 
 
 [discrete]
@@ -43,11 +41,11 @@ anomaly score of a short spike or dip.
 === Multi-bucket impact
 
 The probabilities of the values in the current bucket and the preceding 11 
-buckets consist of the multi-bucket impact. The accumulated differences between 
-the actual and typical values result in the multi-bucket impact on the initial 
-anomaly score of the current bucket. High multi-bucket impact indicates unusual 
-behavior in the interval preceding the current bucket, even if the value of this  
-bucket may be within the 95% confidence interval.
+buckets contribute to the multi-bucket impact. The accumulated differences 
+between the actual and typical values result in the multi-bucket impact on the 
+initial anomaly score of the current bucket. High multi-bucket impact indicates 
+unusual behavior in the interval preceding the current bucket, even if the value 
+of this bucket may be within the 95% confidence interval.
 
 Different signs mark the anomalies with high multi-bucket impact to highlight 
 the distinction. A cross sign "+" represents these anomalies in {kib}, instead 
@@ -61,7 +59,7 @@ of a circle.
 The impact of the anomaly characteristics considers the different features of 
 the anomaly, such as its length and size. The total duration of the anomaly is 
 considered, and not a fixed interval as in the case of the multi-bucket impact 
-calculation. The length might be only one bucket or thirty, but even more. 
+calculation. The length might be only one bucket or thirty (or more) buckets. 
 Comparing the length and size of the anomaly to the historical averages makes it 
 possible to adapt to your domain and the patterns in data. The default behavior 
 of the algorithm is to score longer anomalies higher than short-lived spikes. In 
@@ -95,14 +93,14 @@ image::images/renormalization-score-reduction.jpg["Example of a record score red
 [[other-factors]]
 == Other factors for score reduction
 
-Two more factors may lead to a reduction of the initial score: high variance 
-interval and incomplete bucket. 
+Two more factors may lead to a reduction of the initial score: a high variance 
+interval and an incomplete bucket. 
 
 {anomaly-detect-cap} is less reliable if the current bucket is part of a 
-seasonal pattern with high variability in data. For example, you may have server 
-maintenance jobs running every night at midnight. These jobs can lead to high 
-variability in the latency of request processing. The job is also more reliable 
-if the current bucket has received a similar number of observations as 
+seasonal pattern with high variability in its data. For example, you may have 
+server maintenance jobs running every night at midnight. These jobs can lead to 
+high variability in the latency of request processing. The job is also more 
+reliable if the current bucket has received a similar number of observations as 
 historically expected.
 
 Real-world anomalies often show the impacts of several factors. The 

@@ -15,6 +15,7 @@ capabilities. The currently available job types are:
 
 * single metric jobs,
 * multi-metric jobs,
+* advanced jobs,
 * population jobs,
 * categorization jobs,
 * rare jobs.
@@ -58,6 +59,20 @@ anomaly in one host does not affect the baseline of another host.
 Multi-metric jobs are recommended for complex use cases where you want to detect 
 anomalous behavior in multiple aspects of your data and/or analyze the data in 
 the context of distinct values of a field.
+
+
+[discrete]
+[[advanced-jobs]]
+## Advanced jobs
+
+Advanced jobs give you all the flexibility that's possible in the 
+{ref}/ml-put-job.html[create {anomaly-jobs} API]. At the extreme, you can switch 
+to directly edit the JSON that will be sent to this endpoint. All the other 
+types of jobs described in this page _can_ be created as advanced jobs, but the 
+more specialized wizards make it easier to create jobs for common situations. 
+You can create an advanced job if you are familiar with all the functionality 
+that {ml} {anomaly-detect} provides and want to do something that the more 
+specialized wizards do not allow you to do.
 
 
 [discrete]
@@ -114,16 +129,3 @@ interactions and defines a rare URI path that is visited by very few client IPs
 in the population (this is the reason why it's rare). The client IPs that have 
 many interactions with this URI path are anomalous compared to the rest of the 
 population that rarely interact with the URI path.
-
-[discrete]
- [[advanced-jobs]]
- ## Advanced jobs
-Advanced jobs give you all the flexibility that's possible in the
-create anomaly detection jobs API. At the extreme, you can
-switch to directly edit the JSON that will be sent to this endpoint.
-All the other types of jobs described in this page _can_ be created
-as advanced jobs, but the more specialized wizards make it easier
-to create jobs for common situations. You can create an advanced
-job if you are familiar with all the functionality that {ml} anomaly
-detection provides and want to do something that the more specialized
-wizards do not allow you to do.

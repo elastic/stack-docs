@@ -103,7 +103,7 @@ the `rare` function.
 ## Rare jobs
 
 Rare {anomaly-jobs} detect rare occurrences in time series data. Rare jobs use 
-the `rare` or `frequ_rare` functions and detect such events in populations as 
+the `rare` or `freq_rare` functions and detect such events in populations as 
 well. A _rare_ job finds events in simple time series data that occur rarely 
 compared to what the model observed over time. A _rare in a population_ job 
 finds members of a population that have rare values over time compared to the 
@@ -115,3 +115,15 @@ in the population (this is the reason why it's rare). The client IPs that have
 many interactions with this URI path are anomalous compared to the rest of the 
 population that rarely interact with the URI path.
 
+[discrete]
+ [[advanced-jobs]]
+ ## Advanced jobs
+Advanced jobs give you all the flexibility that's possible in the
+create anomaly detection jobs API. At the extreme, you can
+switch to directly edit the JSON that will be sent to this endpoint.
+All the other types of jobs described in this page _can_ be created
+as advanced jobs, but the more specialized wizards make it easier
+to create jobs for common situations. You can create an advanced
+job if you are familiar with all the functionality that {ml} anomaly
+detection provides and want to do something that the more specialized
+wizards do not allow you to do.

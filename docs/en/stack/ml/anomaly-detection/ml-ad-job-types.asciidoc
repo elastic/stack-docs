@@ -10,8 +10,8 @@
 
 {anomaly-jobs-cap} have many possible configuration options which enable you to 
 fine-tune the jobs and cover your use case as much as possible. This page 
-provides a quick overview of the different types of {anomaly-jobs} and their 
-capabilities. The currently available job types are:
+provides a quick overview of different types of {anomaly-jobs} and their 
+capabilities. The job types available in {kib} are:
 
 * single metric jobs,
 * multi-metric jobs,
@@ -26,8 +26,8 @@ capabilities. The currently available job types are:
 ## Single metric jobs
 
 Every {anomaly-job} has at least one detector. A detector defines the type of 
-analysis that occurs (for example, `max`, `average`, or `high`, it's also called 
-a function) and the field in your data that is analyzed. Single metric jobs have 
+analysis that occurs (for example, using `max`, `average`, or `high` functions)
+and the field in your data that is analyzed. Single metric jobs have 
 exactly one detector. These jobs are best for detecting anomalies in one aspect 
 of your time series data. For example, you can monitor the request rate in your 
 log data with the `low_count` function to find unusually low request rates that 
@@ -57,7 +57,7 @@ reported in the context of each host independently. In this case, an observed
 anomaly in one host does not affect the baseline of another host.
 
 Multi-metric jobs are recommended for complex use cases where you want to detect 
-anomalous behavior in multiple aspects of your data and/or analyze the data in 
+anomalous behavior in multiple aspects of your data or analyze the data in 
 the context of distinct values of a field.
 
 
@@ -102,7 +102,7 @@ specialized wizards do not allow you to do.
 ## Categorization jobs
 
 Categorization jobs cluster similar text values together, classify them into 
-categories and detect anomalies within the categories. Categorization works best 
+categories, and detect anomalies within the categories. Categorization works best 
 on machine-written text like log messages that typically contains repeated 
 strings of text; it does not work well on human-generated text because of its 
 high variability.
@@ -123,9 +123,9 @@ well. A _rare_ job finds events in simple time series data that occur rarely
 compared to what the model observed over time. A _rare in a population_ job 
 finds members of a population that have rare values over time compared to the 
 other members of the population. The _frequently rare in a population_ job 
-detects such rare events that frequently occur for a member of a population 
-compared to other members. As an example, a job models URI paths and client IP 
-interactions and defines a rare URI path that is visited by very few client IPs 
+detects rare events that frequently occur for a member of a population 
+compared to other members. As an example of this last type of rare job, you can create one that models URI paths and client IP 
+interactions and detects a rare URI path that is visited by very few client IPs 
 in the population (this is the reason why it's rare). The client IPs that have 
 many interactions with this URI path are anomalous compared to the rest of the 
 population that rarely interact with the URI path.

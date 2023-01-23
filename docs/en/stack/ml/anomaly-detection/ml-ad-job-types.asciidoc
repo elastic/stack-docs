@@ -23,7 +23,7 @@ capabilities. The job types available in {kib} are:
 
 [discrete]
 [[singe-metric-jobs]]
-## Single metric jobs
+== Single metric jobs
 
 Every {anomaly-job} has at least one detector. A detector defines the type of 
 analysis that occurs (for example, using `max`, `average`, or `high` functions)
@@ -37,7 +37,7 @@ the available functions.
 
 [discrete]
 [[multi-metric-jobs]]
-## Multi-metric jobs
+== Multi-metric jobs
 
 Multi-metric jobs can have more than one detector configured and optionally 
 split the analysis by a field. Conceptually, multi-metric jobs can be considered 
@@ -63,7 +63,7 @@ the context of distinct values of a field.
 
 [discrete]
 [[population-jobs]]
-## Population jobs
+== Population jobs
 
 In the case of the population jobs, the analyzed data is split by the distinct 
 values of a field. This field defines what is called a population. The splits 
@@ -85,7 +85,7 @@ collective model to detect outliers.
 
 [discrete]
 [[advanced-jobs]]
-## Advanced jobs
+== Advanced jobs
 
 Advanced jobs give you all the flexibility that's possible in the 
 {ref}/ml-put-job.html[create {anomaly-jobs} API]. At the extreme, you can switch 
@@ -99,7 +99,7 @@ specialized wizards do not allow you to do.
 
 [discrete]
 [[categorization-jobs]]
-## Categorization jobs
+== Categorization jobs
 
 Categorization jobs cluster similar text values together, classify them into 
 categories, and detect anomalies within the categories. Categorization works best 
@@ -115,7 +115,7 @@ the `rare` function.
 
 [discrete]
 [[rare-jobs]]
-## Rare jobs
+== Rare jobs
 
 Rare {anomaly-jobs} detect rare occurrences in time series data. Rare jobs use 
 the `rare` or `freq_rare` functions and detect such events in populations as 

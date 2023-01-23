@@ -102,8 +102,8 @@ specialized wizards do not allow you to do.
 == Categorization jobs
 
 Categorization jobs cluster similar text values together, classify them into 
-categories, and detect anomalies within the categories. Categorization works best 
-on machine-written text like log messages that typically contains repeated 
+categories, and detect anomalies within the categories. Categorization works 
+best on machine-written text like log messages that typically contains repeated 
 strings of text; it does not work well on human-generated text because of its 
 high variability.
 
@@ -124,8 +124,9 @@ compared to what the model observed over time. A _rare in a population_ job
 finds members of a population that have rare values over time compared to the 
 other members of the population. The _frequently rare in a population_ job 
 detects rare events that frequently occur for a member of a population 
-compared to other members. As an example of this last type of rare job, you can create one that models URI paths and client IP 
-interactions and detects a rare URI path that is visited by very few client IPs 
-in the population (this is the reason why it's rare). The client IPs that have 
-many interactions with this URI path are anomalous compared to the rest of the 
-population that rarely interact with the URI path.
+compared to other members. As an example of this last type of rare job, you can 
+create one that models URI paths and client IP interactions and detects a rare 
+URI path that is visited by very few client IPs in the population (this is the 
+reason why it's rare). The client IPs that have many interactions with this URI 
+path are anomalous compared to the rest of the population that rarely interact 
+with the URI path.

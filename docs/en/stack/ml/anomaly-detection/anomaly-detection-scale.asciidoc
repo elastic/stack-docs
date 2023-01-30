@@ -113,8 +113,7 @@ detectors.
 If you have high cardinality `by` or `partition` fields, ensure you have 
 sufficient memory resources available for the job. Alternatively, consider if 
 the job can be split into smaller jobs by using a {dfeed} query. For very high 
-cardinality, using a <<ml-configuring-populations,population analysis>> may be 
-more appropriate.
+cardinality, using a population analysis may be more appropriate.
 
 To change partitioning fields, influencers and/or detectors, you need to clone 
 or create a new job.
@@ -293,8 +292,6 @@ series. It builds a profile of what a "typical" entity does over a specified
 time period and then identifies when one is behaving abnormally compared to the 
 population. Use population analysis for analyzing high cardinality fields if you 
 expect that the entities of the population generally behave in the same way.
-
-For more information, refer to <<ml-configuring-populations>>.
 
 
 [discrete]

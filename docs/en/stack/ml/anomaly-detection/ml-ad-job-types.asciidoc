@@ -18,7 +18,8 @@ capabilities. The job types available in {kib} are:
 * population jobs,
 * advanced jobs,
 * categorization jobs,
-* rare jobs.
+* rare jobs,
+* geo jobs.
 
 
 [discrete]
@@ -130,3 +131,14 @@ URI path that is visited by very few client IPs in the population (this is the
 reason why it's rare). The client IPs that have many interactions with this URI 
 path are anomalous compared to the rest of the population that rarely interact 
 with the URI path.
+
+
+[discrete]
+[[geo-jobs]]
+== Geo jobs
+
+Geo {anomaly-jobs} detect unusual occurrences in the geographic locations of 
+your data. Your data set must contain geopoint data to be able to use the 
+`lat_long` function in the detector to detect anomalous geo data. Geo jobs can 
+identify, for example, transactions that are initiated from a location that is 
+unusual compared to the location of the rest of the transactions.

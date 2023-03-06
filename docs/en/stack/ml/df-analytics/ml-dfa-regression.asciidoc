@@ -22,14 +22,13 @@ the field you want to predict.
 == {regression-cap} algorithms
 
 //tag::regression-algorithms[]
-{regression-cap} uses an ensemble learning technique called extreme gradient 
-boost (XGboost) which combines decision trees with gradient boosting 
+{regression-cap} uses an ensemble learning technique that is similar to extreme 
+gradient boosting (XGboost) which combines decision trees with gradient boosting 
 methodologies. XGboost trains a sequence of decision trees and every decision 
-tree learns from the mistakes of the previous one. Every tree is an iteration of 
-the last one, hence it improves the decision made by the previous tree. The 
-regression algorithm is optimized for a 
-<<dfa-regression-lossfunction,loss function>> called mean-squared error loss by 
-default.
+tree learns from the mistakes of the forest so far. In each iteration, the trees 
+added to the forest improve the decision quality of the combined decision 
+forest. The regression algorithm optimizes for a 
+<<dfa-regression-lossfunction,loss function>> called mean-squared error loss.
 
 There are three types of {feature-vars} that you can use with these algorithms: 
 numerical, categorical, or Boolean. Arrays are not supported.

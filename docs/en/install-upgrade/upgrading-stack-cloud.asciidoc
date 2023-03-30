@@ -28,11 +28,9 @@ Prior to upgrading, Elastic Cloud checks the deprecation API to retrieve informa
 
 Snapshots::
 To keep your data safe during the upgrade process, a snapshot is taken automatically 
-before any changes are made to your cluster. 
+before any changes are made to your cluster. After a major version upgrade is complete and a snapshot of the upgraded cluster is available, all snapshots taken with the previous major version of {es} are stored in the snapshot repository. 
 +
-After a major version upgrade is complete and a snapshot of the upgraded cluster is available, 
-all snapshots taken with the previous major version of {es} are removed. 
-For example, after you upgrade to 8.0, all snapshots taken with version 7.x are removed.
+From version 8.3, snapshots are generally available as simple archives. Use the {ref}/archive-indices.html[archive functionality] to search snapshots as old as version 5.0 without the need of an old {es} cluster. This ensures that data you store in {es} doesn't have an end of life and is still accessible when you upgrade, without requiring a reindex process.
 + 
 On {ece}, you need to {ece-ref}/ece-manage-repositories.html[configure a snapshot repository] to enable snapshots.
 

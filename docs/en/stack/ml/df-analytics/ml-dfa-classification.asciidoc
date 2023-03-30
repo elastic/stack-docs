@@ -31,15 +31,6 @@ exclude fields. For more information about field selection, refer to the
 == {classification-cap} algorithms
 
 //tag::classification-algorithms[]
-<<<<<<< HEAD
-{classanalysis-cap} uses an ensemble algorithm that is a type of boosting called 
-boosted tree regression model which combines multiple weak models into a 
-composite one. It uses decision trees to learn to predict the probability that a 
-data point belongs to a certain class. A sequence of decision trees are trained 
-and every decision tree learns from the mistakes of the previous one. Every tree 
-is an iteration of the last one, hence it improves the decision made by the 
-previous tree.
-=======
 {classanalysis-cap} uses an ensemble algorithm that is similar to extreme 
 gradient boosting (XGBoost) which combines multiple weak models into a composite 
 one. It uses decision trees to learn to predict the probability that a data 
@@ -48,7 +39,6 @@ trees and every decision tree learns from the mistakes of the forest so far.
 In each iteration, the trees added to the forest improve the decision quality of 
 the combined decision forest. The classification algorithm optimizes for a loss 
 function called cross-entropy loss.
->>>>>>> 5c302e69 ([DOCS] Fixes XGBoost typo. (#2358))
 //end::classification-algorithms[]
 
 [discrete]

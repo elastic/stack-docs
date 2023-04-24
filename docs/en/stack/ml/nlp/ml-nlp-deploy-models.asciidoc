@@ -157,11 +157,50 @@ change the number of allocations, you can use the
 {ref}/update-trained-model-deployment.html[update trained model stats API] after
 the allocation status is `started`.
 
+
 [discrete]
 [[ml-nlp-deploy-model-air-gaped]]
-== Deploy an NLP model in an air-gaped environment
+=== Deploy an Elastic NLP model in an air-gapped environment
 
-[TO DO]
+If you want to deploy a downloadable NLP model provided and trained by Elastic 
+in a restricted or closed network, you have two options:
+
+* create your own HTTP/HTTPS endpoint with the model artifacts on it,
+* put the model artifacts into a directory inside the config directory on all 
+{ref}/modules-node.html#master-node[master-eligible nodes].
+
+For example, for <<ml-nlp-elser,ELSER>>, you need the following files in your 
+system:
+
+```
+https://ml-models.elastic.co/elser_model_1.metadata.json
+https://ml-models.elastic.co/elser_model_1.pt
+https://ml-models.elastic.co/elser_model_1.vocab.json
+```
+
+
+[discrete]
+==== Using an HTTP server
+
+You can use an Nginx Docker image to use a model. [TBD]
+
+
+[discrete]
+==== Using file-based access
+
+For a file-based access, follow these steps:
+
+1. Download the model artifact files from https://ml-models.elastic.co/.
+2. Put the files into a `models` subdirectory inside the `config` directory of 
+your Elasticsearch deployment.
+3. Point your Elasticsearch deployment to the model directory by adding the 
+following line to the `config/elasticsearch.yml` file:
+  ```
+  xpack.ml.model_repository: file://${path.home}/config/models/
+  ```
+4. Repeat step 2 and step 3 on all master-eligible nodes.
+5. {ref}restart-cluster.html#restart-cluster-rolling[Restart] the 
+master-eligible nodes one by one.
 
 
 [discrete]

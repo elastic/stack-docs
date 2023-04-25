@@ -8,15 +8,95 @@
 :description: ELSER is a learned sparse ranking model trained by Elastic.
 
 Elastic Learned Sparse Encoder - or ELSER - is a large language model (LLM) 
-trained by Elastic. It's a retrieval model that transforms the input text into 
+trained by Elastic. As a retrieval model, ELSER transforms the input text into 
 high dimensional sparse vector representations, which can be used to calculate 
 similarity. Sparse vectors can then be compared and used for various NLP tasks, 
-such as semantic search.
+such as {ref}/semantic-search-elser.html[semantic search].
 
-ELSER is a model that can provide good results in out-of-domain data without the 
-need of fine-tuning. 
+ELSER is a model that can provide fairly good results in out-of-domain data 
+without the need of fine-tuning.
+// TO DO: Refer to this blog post, to learn more about ELSER.
 
+
+[discrete]
+[[elser-req]]
+== Requirements
+
+To use ELSER, you must have the {subscriptions}[appropriate subscription] level 
+to use {ml} features or the free trial period activated.
+
+
+[discrete]
 [[download-elser]]
-== Downloading ELSER
+== Download ELSER
 
-[TO DO]
+INFO: If you want to use ELSER in a restricted or closed network, follow the 
+instructions <<ml-nlp-deploy-model-air-gapped,here>>.
+
+You can download ELSER either from the Trained Models page in {kib} or by using 
+the Dev Console.
+
+[discrete]
+[[trained-model]]
+=== Using the Trained Models page
+
+1. In {kib}, navigate to **{ml-app}** > **Trained Models**. ELSER can be found 
+in the list of Trained Models.
+
+// TO DO - further steps + screenshot
+
+[discrete]
+[[dev-console]]
+=== Using the Dev Console
+
+1. In {kib}, navigate to the **Dev Console**.
+2. Create the ELSER model configuration by running the following API call:
+
+[source,js]
+----------------------------------
+PUT _ml/trained_models/.elser_model_1
+{
+  "input": {
+	"field_names": ["text_field"]
+  }
+}
+----------------------------------
+
+The API call automatically initiates the model download if the model is not 
+downloaded yet.
+
+////
+[discrete]
+[[monitoring-progress]]
+=== Monitoring the download progess
+////
+
+
+[discrete]
+[[deploy-elser]]
+== Deploy ELSER
+
+After you downloaded ELSER, you can use {kib} to view and manage its deployment 
+across your cluster under **{ml-app}** > **Trained Models**.
+
+You can deploy the model by using the 
+{ref}/start-trained-model-deployment.html[start trained model deployment API] 
+with a delpoyment ID:
+
+[source,js]
+----------------------------------
+POST _ml/trained_models/.elser_model_1/deployment/_start?deployment_id=for_search
+----------------------------------
+
+You can deploy the model multiple times with different deployment IDs.
+
+After the deployment is complete, ELSER is ready to use either in an ingest 
+pipeline or in a `text_expansion` query to perform semantic search.
+
+
+[discrete]
+[[further-readings]]
+== Further readings
+
+* {ref}/semantic-search-elser.html[Perform semantic search with ELSER]
+// TO DO * [Blog post about ELSER]

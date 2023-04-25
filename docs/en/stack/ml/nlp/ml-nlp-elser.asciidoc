@@ -55,7 +55,7 @@ in the list of Trained Models.
 1. In {kib}, navigate to the **Dev Console**.
 2. Create the ELSER model configuration by running the following API call:
 
-[source,js]
+[source,console]
 ----------------------------------
 PUT _ml/trained_models/.elser_model_1
 {
@@ -86,7 +86,7 @@ You can deploy the model by using the
 {ref}/start-trained-model-deployment.html[start trained model deployment API] 
 with a delpoyment ID:
 
-[source,js]
+[source,console]
 ----------------------------------
 POST _ml/trained_models/.elser_model_1/deployment/_start?deployment_id=for_search
 ----------------------------------

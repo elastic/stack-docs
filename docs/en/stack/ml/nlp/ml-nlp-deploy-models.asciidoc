@@ -188,14 +188,15 @@ supports passwordless HTTP servers.
 You can use any HTTP service to deploy a model. This example uses the official 
 Nginx Docker image to set a new HTTP download service up.
 
-1. Download the model artifact files from https://ml-models.elastic.co/.
-2. Put the files into a subdirectory of your choice.
-3. Run the following commands:
-
+. Download the model artifact files from https://ml-models.elastic.co/.
+. Put the files into a subdirectory of your choice.
+. Run the following commands:
++
+--
 [source, shell]
 --------------------------------------------------
-  export ELASTIC_ML_MODELS="/path/to/models"
-  docker run --rm -d -p 8080:80 --name ml-models -v ${ELASTIC_ML_MODELS}:/usr/share/nginx/html nginx
+export ELASTIC_ML_MODELS="/path/to/models"
+docker run --rm -d -p 8080:80 --name ml-models -v ${ELASTIC_ML_MODELS}:/usr/share/nginx/html nginx
 --------------------------------------------------
 
 Don't forget to change `/path/to/models` to the path of the subdirectory where 
@@ -205,10 +206,11 @@ These commands start a local Docker image with an Nginx server with the
 subdirectory containing the model files. As the Docker image has to be 
 downloaded and built, the first start might take a longer period of time. 
 Subsequent runs start quicker.
-
-4. Verify that Nginx runs properly by visiting the following URL in your 
+--
+. Verify that Nginx runs properly by visiting the following URL in your 
 browser:
-  
++
+--
 ```
 http://{IP_ADDRESS}:8080/elser_model_1.metadata.json
 ```
@@ -217,16 +219,17 @@ This example uses the ELSER model artefacts. If you want to work with another
 model provided by Elastic, modify the URL accordingly.
 
 If Nginx runs properly, you see the content of the metdata file of the model.
-
-5. Point your Elasticsearch deployment to the model artifacts on the HTTP server
+--
+. Point your Elasticsearch deployment to the model artifacts on the HTTP server
 by adding the following line to the `config/elasticsearch.yml` file: 
-
++
+--
 ```
 xpack.ml.model_repository: http://{IP_ADDRESS}:8080
 ```
-
-6. Repeat step 5 on all master-eligible nodes.
-7. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
+--
+. Repeat step 5 on all master-eligible nodes.
+. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one. 
 
 The HTTP server is only required for downloading the model. After the download 
@@ -244,18 +247,19 @@ docker stop ml-models
 
 For a file-based access, follow these steps:
 
-1. Download the model artifact files from https://ml-models.elastic.co/.
-2. Put the files into a `models` subdirectory inside the `config` directory of 
+. Download the model artifact files from https://ml-models.elastic.co/.
+. Put the files into a `models` subdirectory inside the `config` directory of 
 your Elasticsearch deployment.
-3. Point your Elasticsearch deployment to the model directory by adding the 
+. Point your Elasticsearch deployment to the model directory by adding the 
 following line to the `config/elasticsearch.yml` file:
-
++
+--
 ```
-xpack.ml.model_repository: file://${path.home}/config/models/
+xpack.ml.model_repository: file://${path.home}/config/models/`
 ```
-
-4. Repeat step 2 and step 3 on all master-eligible nodes.
-5. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
+--
+. Repeat step 2 and step 3 on all master-eligible nodes.
+. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one.
 
 

@@ -215,9 +215,6 @@ browser:
 http://{IP_ADDRESS}:8080/elser_model_1.metadata.json
 ```
 
-This example uses the ELSER model artefacts. If you want to work with another 
-model provided by Elastic, modify the URL accordingly.
-
 If Nginx runs properly, you see the content of the metdata file of the model.
 --
 . Point your Elasticsearch deployment to the model artifacts on the HTTP server
@@ -225,8 +222,12 @@ by adding the following line to the `config/elasticsearch.yml` file:
 +
 --
 ```
-xpack.ml.model_repository: http://{IP_ADDRESS}:8080
+xpack.ml.model_repository: http://{IP_ADDRESS_OR_HOSTNAME}:8080
 ```
+
+If you use your own HTTP or HTTPS server, change the address accordingly. It is 
+important to specificy the protocol ("http://" or "https://"). Ensure that all 
+master-eligible nodes can reach the server you specify.
 --
 . Repeat step 5 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 

@@ -23,7 +23,7 @@ without the need of fine-tuning.
 == Requirements
 
 To use ELSER, you must have the {subscriptions}[appropriate subscription] level 
-to use {ml} features or the free trial period activated.
+or the trial period activated.
 
 
 [discrete]
@@ -45,8 +45,15 @@ the Dev Console.
 
 1. In {kib}, navigate to **{ml-app}** > **Trained Models**. ELSER can be found 
 in the list of Trained Models.
+2. Click the Download model button under **Actions**. You can check the download 
+status on the **Notifications** page.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-elser-download.png[alt="Downloading ELSER",align="center"]
+--
 
-// TO DO - further steps + screenshot
+Your ELSER deployment is ready to be used in 
 
 [discrete]
 [[dev-console]]
@@ -82,7 +89,17 @@ downloaded yet.
 After you downloaded ELSER, you can use {kib} to view and manage its deployment 
 across your cluster under **{ml-app}** > **Trained Models**.
 
-You can deploy the model by using the 
+1. Start the deployment by clicking the Start deployment button.
+2. Provide a deployment ID, select priority, and set the number of allocations 
+and threads per allocation values.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-elser-deployment.png[alt="Deploying ELSER",align="center"]
+--
+3. Click Start.
+
+Alternatively, you can deploy the model by using the 
 {ref}/start-trained-model-deployment.html[start trained model deployment API] 
 with a delpoyment ID:
 

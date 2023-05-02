@@ -9,11 +9,11 @@
 
 experimental[]
 
-Elastic Learned Sparse Encoder - or ELSER - is a text expansion model that uses 
-sparse vector representation and trained by Elastic . As a retrieval model, 
-ELSER performs text-expansion for more relevant search results with expanding a 
-search query to include terms that are not present in the query itself, but 
-semantically highly relevant.
+Elastic Learned Sparse Encoder - or ELSER - is a representational model trained 
+by Elastic that creates a sparse vector representation of a text. As a retrieval 
+model, ELSER performs text-expansion for more relevant search results with 
+expanding a passage to a sparse representation of tokens that are carefully 
+chosen to improve a semantically relevant retrieval.
 
 You can use ELSER for various NLP tasks, such as 
 {ref}/semantic-search-elser.html[semantic search]. ELSER is an out-of-domain 
@@ -35,8 +35,8 @@ or the trial period activated.
 [[download-elser]]
 == Download ELSER
 
-You can download ELSER either from the Trained Models page in {kib} or by using 
-the Dev Console.
+You can download ELSER either from the **{ml-app}** > **Trained Models** page or 
+by using the Dev Console.
 
 [discrete]
 [[trained-model]]
@@ -79,7 +79,12 @@ downloaded yet.
 == Deploy ELSER
 
 After you downloaded ELSER, you can use {kib} to view and manage its deployment 
-across your cluster under **{ml-app}** > **Trained Models**.
+across your cluster under **{ml-app}** > **Trained Models** or **{ents}** > 
+**Indices**.
+
+[discrete]
+[[deploy-trained-models]]
+=== Using the Trained Models page or the API
 
 1. Start the deployment by clicking the Start deployment button.
 2. Provide a deployment ID, select priority, and set the number of allocations 
@@ -104,6 +109,22 @@ You can deploy the model multiple times with different deployment IDs.
 
 After the deployment is complete, ELSER is ready to use either in an ingest 
 pipeline or in a `text_expansion` query to perform semantic search.
+
+
+[discrete]
+[[enterprise-search]]
+=== Using the Indices page in {ents}
+
+You can also deploy ELSER to an {infer} pipeline directly from the {ents} app.
+
+1. In {kib}, navigate to **{ents}** > **Indices**.
+2. Select the index from the list that has an {infer} pipeline in which you want 
+to use ELSER.
+3. Navigate to the **Pipelines** tab.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the "Start single-threaded" 
+button to start the model with basic configuration or select the 
+"Fine-tune performance" option to navigate to the **Trained Models** page where 
+you can configure the model deployment.
 
 
 [discrete]

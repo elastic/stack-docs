@@ -132,15 +132,14 @@ you can configure the model deployment.
 [[air-gapped-install]]
 == Deploy ELSER in an air-gapped environment
 
-If you want to deploy a downloadable NLP model provided and trained by Elastic 
-in a restricted or closed network, you have two options:
+If you want to deploy ELSER in a restricted or closed network, you have two 
+options:
 
 * create your own HTTP/HTTPS endpoint with the model artifacts on it,
 * put the model artifacts into a directory inside the config directory on all 
 {ref}/modules-node.html#master-node[master-eligible nodes].
 
-For example, for <<ml-nlp-elser,ELSER>>, you need the following files in your 
-system:
+You need the following files in your system:
 
 ```
 https://ml-models.elastic.co/elser_model_1.metadata.json
@@ -155,7 +154,7 @@ https://ml-models.elastic.co/elser_model_1.vocab.json
 INFO: If you use an existing HTTP server, note that the model downloader only 
 supports passwordless HTTP servers.
 
-You can use any HTTP service to deploy a model. This example uses the official 
+You can use any HTTP service to deploy ELSER. This example uses the official 
 Nginx Docker image to set a new HTTP download service up.
 
 . Download the model artifact files from https://ml-models.elastic.co/.
@@ -232,7 +231,6 @@ xpack.ml.model_repository: file://${path.home}/config/models/`
 . Repeat step 2 and step 3 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one.
-
 
 
 [discrete]

@@ -7,14 +7,19 @@
 :keywords: {ml-init}, {stack}, {nlp}, ELSER
 :description: ELSER is a learned sparse ranking model trained by Elastic.
 
-Elastic Learned Sparse Encoder - or ELSER - is a large language model (LLM) 
-trained by Elastic. As a retrieval model, ELSER transforms the input text into 
-high dimensional sparse vector representations, which can be used to calculate 
-similarity. Sparse vectors can then be compared and used for various NLP tasks, 
-such as {ref}/semantic-search-elser.html[semantic search].
+experimental[]
 
-ELSER is a model that can provide fairly good results in out-of-domain data 
-without the need of fine-tuning.
+Elastic Learned Sparse Encoder - or ELSER - is a text expansion model that uses 
+sparse vector representation and trained by Elastic . As a retrieval model, 
+ELSER performs text-expansion for more relevant search results with expanding a 
+search query to include terms that are not present in the query itself, but 
+semantically highly relevant.
+
+You can use ELSER for various NLP tasks, such as 
+{ref}/semantic-search-elser.html[semantic search]. ELSER is an out-of-domain 
+model which doesn't need to be fine-tuned on your data - it provides relevant 
+search results out of the box.
+
 // TO DO: Refer to this blog post, to learn more about ELSER.
 
 
@@ -29,12 +34,6 @@ or the trial period activated.
 [discrete]
 [[download-elser]]
 == Download ELSER
-
-////
-TO DO: Add back this section when the URL is working.
-INFO: If you want to use ELSER in a restricted or closed network, follow the 
-instructions <<ml-nlp-deploy-model-air-gapped,here>>.
-////
 
 You can download ELSER either from the Trained Models page in {kib} or by using 
 the Dev Console.
@@ -74,12 +73,6 @@ PUT _ml/trained_models/.elser_model_1
 
 The API call automatically initiates the model download if the model is not 
 downloaded yet.
-
-////
-[discrete]
-[[monitoring-progress]]
-=== Monitoring the download progess
-////
 
 
 [discrete]

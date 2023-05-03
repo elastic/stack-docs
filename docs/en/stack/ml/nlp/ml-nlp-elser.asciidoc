@@ -9,19 +9,138 @@
 
 experimental[]
 
+
+Elastic Learned Sparse EncodeR - or ELSER - is a representational model trained 
+by Elastic that creates a sparse vector representation of a text. As a retrieval 
+model, ELSER performs text-expansion for more relevant search results with 
+expanding a passage to a sparse representation of tokens that are carefully 
+chosen to improve a semantically relevant retrieval.
+
+You can use ELSER for various NLP tasks, such as 
+{ref}/semantic-search-elser.html[semantic search]. ELSER is an out-of-domain 
+model which means it doesn't need to be fine-tuned on your data - it provides 
+relevant search results out of the box.
+
+// TO DO: Refer to this blog post, to learn more about ELSER.
+
+
+[discrete]
+[[elser-req]]
+== Requirements
+
+To use ELSER, you must have the {subscriptions}[appropriate subscription] level 
+for semantic search or the trial period activated.
+
+
+[discrete]
+[[download-elser]]
+== Download ELSER
+
+You can download ELSER either from **{ml-app}** > **Trained Models**, from 
+**{ents}** > **Indices**, or by using the Dev Console.
+
+[discrete]
+[[trained-model]]
+=== Using the Trained Models page
+
+1. In {kib}, navigate to **{ml-app}** > **Trained Models**. ELSER can be found 
+in the list of Trained Models.
+2. Click the Download model button under **Actions**. You can check the download 
+status on the **Notifications** page.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-elser-download.png[alt="Downloading ELSER",align="center"]
+--
+
+
+[discrete]
+[[enterprise-search]]
+=== Using the Indices page in {ents}
+
+You can also download and deploy ELSER to an {infer} pipeline directly from the 
+{ents} app.
+
+1. In {kib}, navigate to **{ents}** > **Indices**.
+2. Select the index from the list that has an {infer} pipeline in which you want 
+to use ELSER.
+3. Navigate to the **Pipelines** tab.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the "Start single-threaded" 
+button to download and start the model with basic configuration or select the 
+"Fine-tune performance" option to navigate to the **Trained Models** page where 
+you can configure the model deployment.
+
+
+[discrete]
+[[dev-console]]
+=== Using the Dev Console
+
+1. In {kib}, navigate to the **Dev Console**.
+2. Create the ELSER model configuration by running the following API call:
+
+[source,console]
+----------------------------------
+PUT _ml/trained_models/.elser_model_1
+{
+  "input": {
+	"field_names": ["text_field"]
+  }
+}
+----------------------------------
+
+The API call automatically initiates the model download if the model is not 
+downloaded yet.
+
+
+[discrete]
+[[deploy-elser]]
+== Deploy ELSER
+
+After you downloaded ELSER, you can use {kib} to view and manage its deployment 
+across your cluster under **{ml-app}** > **Trained Models** or **{ents}** > 
+**Indices** (covered in the previous section).
+
+[discrete]
+[[deploy-trained-models]]
+=== Using the Trained Models page or the API
+
+1. Start the deployment by clicking the Start deployment button.
+2. Provide a deployment ID, select priority, and set the number of allocations 
+and threads per allocation values.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-deploy-elser.png[alt="Deploying ELSER",align="center"]
+--
+3. Click Start.
+
+Alternatively, you can deploy the model by using the 
+{ref}/start-trained-model-deployment.html[start trained model deployment API] 
+with a delpoyment ID:
+
+[source,console]
+----------------------------------
+POST _ml/trained_models/.elser_model_1/deployment/_start?deployment_id=for_search
+----------------------------------
+
+You can deploy the model multiple times with different deployment IDs.
+
+After the deployment is complete, ELSER is ready to use either in an ingest 
+pipeline or in a `text_expansion` query to perform semantic search.
+
+
 [discrete]
 [[air-gapped-install]]
 == Deploy ELSER in an air-gapped environment
 
-If you want to deploy a downloadable NLP model provided and trained by Elastic 
-in a restricted or closed network, you have two options:
+If you want to deploy ELSER in a restricted or closed network, you have two 
+options:
 
 * create your own HTTP/HTTPS endpoint with the model artifacts on it,
 * put the model artifacts into a directory inside the config directory on all 
 {ref}/modules-node.html#master-node[master-eligible nodes].
 
-For example, for <<ml-nlp-elser,ELSER>>, you need the following files in your 
-system:
+You need the following files in your system:
 
 ```
 https://ml-models.elastic.co/elser_model_1.metadata.json
@@ -31,12 +150,12 @@ https://ml-models.elastic.co/elser_model_1.vocab.json
 
 
 [discrete]
-==== Using an HTTP server
+=== Using an HTTP server
 
 INFO: If you use an existing HTTP server, note that the model downloader only 
 supports passwordless HTTP servers.
 
-You can use any HTTP service to deploy a model. This example uses the official 
+You can use any HTTP service to deploy ELSER. This example uses the official 
 Nginx Docker image to set a new HTTP download service up.
 
 . Download the model artifact files from https://ml-models.elastic.co/.
@@ -95,7 +214,7 @@ docker stop ml-models
 
 
 [discrete]
-==== Using file-based access
+=== Using file-based access
 
 For a file-based access, follow these steps:
 
@@ -113,3 +232,11 @@ xpack.ml.model_repository: file://${path.home}/config/models/`
 . Repeat step 2 and step 3 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one.
+
+
+[discrete]
+[[further-readings]]
+== Further reading
+
+* {ref}/semantic-search-elser.html[Perform semantic search with ELSER]
+// TO DO * [Blog post about ELSER]

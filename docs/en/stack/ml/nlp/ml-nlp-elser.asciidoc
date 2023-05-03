@@ -7,4 +7,240 @@
 :keywords: {ml-init}, {stack}, {nlp}, ELSER
 :description: ELSER is a learned sparse ranking model trained by Elastic.
 
+<<<<<<< HEAD
 [TBD]
+=======
+experimental[]
+
+
+Elastic Learned Sparse EncodeR - or ELSER - is a representational model trained 
+by Elastic that creates a sparse vector representation of a text. As a retrieval 
+model, ELSER performs text-expansion for more relevant search results with 
+expanding a passage to a sparse representation of tokens that are carefully 
+chosen to improve a semantically relevant retrieval.
+
+You can use ELSER for various NLP tasks, such as 
+{ref}/semantic-search-elser.html[semantic search]. ELSER is an out-of-domain 
+model which means it doesn't need to be fine-tuned on your data - it provides 
+relevant search results out of the box.
+
+// TO DO: Refer to this blog post, to learn more about ELSER.
+
+
+[discrete]
+[[elser-req]]
+== Requirements
+
+To use ELSER, you must have the {subscriptions}[appropriate subscription] level 
+for semantic search or the trial period activated.
+
+
+[discrete]
+[[download-elser]]
+== Download ELSER
+
+You can download ELSER either from **{ml-app}** > **Trained Models**, from 
+**{ents}** > **Indices**, or by using the Dev Console.
+
+[discrete]
+[[trained-model]]
+=== Using the Trained Models page
+
+1. In {kib}, navigate to **{ml-app}** > **Trained Models**. ELSER can be found 
+in the list of Trained Models.
+2. Click the Download model button under **Actions**. You can check the download 
+status on the **Notifications** page.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-elser-download.png[alt="Downloading ELSER",align="center"]
+--
+
+
+[discrete]
+[[enterprise-search]]
+=== Using the Indices page in {ents}
+
+You can also download and deploy ELSER to an {infer} pipeline directly from the 
+{ents} app.
+
+1. In {kib}, navigate to **{ents}** > **Indices**.
+2. Select the index from the list that has an {infer} pipeline in which you want 
+to use ELSER.
+3. Navigate to the **Pipelines** tab.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the "Start single-threaded" 
+button to download and start the model with basic configuration or select the 
+"Fine-tune performance" option to navigate to the **Trained Models** page where 
+you can configure the model deployment.
+
+
+[discrete]
+[[dev-console]]
+=== Using the Dev Console
+
+1. In {kib}, navigate to the **Dev Console**.
+2. Create the ELSER model configuration by running the following API call:
+
+[source,console]
+----------------------------------
+PUT _ml/trained_models/.elser_model_1
+{
+  "input": {
+	"field_names": ["text_field"]
+  }
+}
+----------------------------------
+
+The API call automatically initiates the model download if the model is not 
+downloaded yet.
+
+
+[discrete]
+[[deploy-elser]]
+== Deploy ELSER
+
+After you downloaded ELSER, you can use {kib} to view and manage its deployment 
+across your cluster under **{ml-app}** > **Trained Models** or **{ents}** > 
+**Indices** (covered in the previous section).
+
+[discrete]
+[[deploy-trained-models]]
+=== Using the Trained Models page or the API
+
+1. Start the deployment by clicking the Start deployment button.
+2. Provide a deployment ID, select priority, and set the number of allocations 
+and threads per allocation values.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-deploy-elser.png[alt="Deploying ELSER",align="center"]
+--
+3. Click Start.
+
+Alternatively, you can deploy the model by using the 
+{ref}/start-trained-model-deployment.html[start trained model deployment API] 
+with a delpoyment ID:
+
+[source,console]
+----------------------------------
+POST _ml/trained_models/.elser_model_1/deployment/_start?deployment_id=for_search
+----------------------------------
+
+You can deploy the model multiple times with different deployment IDs.
+
+After the deployment is complete, ELSER is ready to use either in an ingest 
+pipeline or in a `text_expansion` query to perform semantic search.
+
+
+[discrete]
+[[air-gapped-install]]
+== Deploy ELSER in an air-gapped environment
+
+If you want to deploy ELSER in a restricted or closed network, you have two 
+options:
+
+* create your own HTTP/HTTPS endpoint with the model artifacts on it,
+* put the model artifacts into a directory inside the config directory on all 
+{ref}/modules-node.html#master-node[master-eligible nodes].
+
+You need the following files in your system:
+
+```
+https://ml-models.elastic.co/elser_model_1.metadata.json
+https://ml-models.elastic.co/elser_model_1.pt
+https://ml-models.elastic.co/elser_model_1.vocab.json
+```
+
+
+[discrete]
+=== Using an HTTP server
+
+INFO: If you use an existing HTTP server, note that the model downloader only 
+supports passwordless HTTP servers.
+
+You can use any HTTP service to deploy ELSER. This example uses the official 
+Nginx Docker image to set a new HTTP download service up.
+
+. Download the model artifact files from https://ml-models.elastic.co/.
+. Put the files into a subdirectory of your choice.
+. Run the following commands:
++
+--
+[source, shell]
+--------------------------------------------------
+export ELASTIC_ML_MODELS="/path/to/models"
+docker run --rm -d -p 8080:80 --name ml-models -v ${ELASTIC_ML_MODELS}:/usr/share/nginx/html nginx
+--------------------------------------------------
+
+Don't forget to change `/path/to/models` to the path of the subdirectory where 
+the model artifact files are located.
+
+These commands start a local Docker image with an Nginx server with the 
+subdirectory containing the model files. As the Docker image has to be 
+downloaded and built, the first start might take a longer period of time. 
+Subsequent runs start quicker.
+--
+. Verify that Nginx runs properly by visiting the following URL in your 
+browser:
++
+--
+```
+http://{IP_ADDRESS_OR_HOSTNAME}:8080/elser_model_1.metadata.json
+```
+
+If Nginx runs properly, you see the content of the metdata file of the model.
+--
+. Point your Elasticsearch deployment to the model artifacts on the HTTP server
+by adding the following line to the `config/elasticsearch.yml` file: 
++
+--
+```
+xpack.ml.model_repository: http://{IP_ADDRESS_OR_HOSTNAME}:8080
+```
+
+If you use your own HTTP or HTTPS server, change the address accordingly. It is 
+important to specificy the protocol ("http://" or "https://"). Ensure that all 
+master-eligible nodes can reach the server you specify.
+--
+. Repeat step 5 on all master-eligible nodes.
+. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
+master-eligible nodes one by one. 
+
+The HTTP server is only required for downloading the model. After the download 
+has finished, you can stop and delete the service. You can stop the Docker image 
+used in this example by running the following command:
+
+[source, shell]
+--------------------------------------------------
+docker stop ml-models
+--------------------------------------------------
+
+
+[discrete]
+=== Using file-based access
+
+For a file-based access, follow these steps:
+
+. Download the model artifact files from https://ml-models.elastic.co/.
+. Put the files into a `models` subdirectory inside the `config` directory of 
+your Elasticsearch deployment.
+. Point your Elasticsearch deployment to the model directory by adding the 
+following line to the `config/elasticsearch.yml` file:
++
+--
+```
+xpack.ml.model_repository: file://${path.home}/config/models/`
+```
+--
+. Repeat step 2 and step 3 on all master-eligible nodes.
+. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
+master-eligible nodes one by one.
+
+
+[discrete]
+[[further-readings]]
+== Further reading
+
+* {ref}/semantic-search-elser.html[Perform semantic search with ELSER]
+// TO DO * [Blog post about ELSER]
+>>>>>>> 2d66bf33 (Drafts download and deployment docs for ELSER (#2371))

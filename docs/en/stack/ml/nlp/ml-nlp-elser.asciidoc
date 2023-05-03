@@ -18,8 +18,8 @@ chosen to improve a semantically relevant retrieval.
 
 You can use ELSER for various NLP tasks, such as 
 {ref}/semantic-search-elser.html[semantic search]. ELSER is an out-of-domain 
-model which doesn't need to be fine-tuned on your data - it provides relevant 
-search results out of the box.
+model which means it doesn't need to be fine-tuned on your data - it provides 
+relevant search results out of the box.
 
 // TO DO: Refer to this blog post, to learn more about ELSER.
 
@@ -55,6 +55,23 @@ image::images/ml-nlp-elser-download.png[alt="Downloading ELSER",align="center"]
 
 
 [discrete]
+[[enterprise-search]]
+=== Using the Indices page in {ents}
+
+You can also download and deploy ELSER to an {infer} pipeline directly from the 
+{ents} app.
+
+1. In {kib}, navigate to **{ents}** > **Indices**.
+2. Select the index from the list that has an {infer} pipeline in which you want 
+to use ELSER.
+3. Navigate to the **Pipelines** tab.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the "Start single-threaded" 
+button to download and start the model with basic configuration or select the 
+"Fine-tune performance" option to navigate to the **Trained Models** page where 
+you can configure the model deployment.
+
+
+[discrete]
 [[dev-console]]
 === Using the Dev Console
 
@@ -81,7 +98,7 @@ downloaded yet.
 
 After you downloaded ELSER, you can use {kib} to view and manage its deployment 
 across your cluster under **{ml-app}** > **Trained Models** or **{ents}** > 
-**Indices**.
+**Indices** (covered in the previous section).
 
 [discrete]
 [[deploy-trained-models]]
@@ -110,22 +127,6 @@ You can deploy the model multiple times with different deployment IDs.
 
 After the deployment is complete, ELSER is ready to use either in an ingest 
 pipeline or in a `text_expansion` query to perform semantic search.
-
-
-[discrete]
-[[enterprise-search]]
-=== Using the Indices page in {ents}
-
-You can also deploy ELSER to an {infer} pipeline directly from the {ents} app.
-
-1. In {kib}, navigate to **{ents}** > **Indices**.
-2. Select the index from the list that has an {infer} pipeline in which you want 
-to use ELSER.
-3. Navigate to the **Pipelines** tab.
-4. Under **{ml-app} {infer-cap} Pipelines**, click the "Start single-threaded" 
-button to start the model with basic configuration or select the 
-"Fine-tune performance" option to navigate to the **Trained Models** page where 
-you can configure the model deployment.
 
 
 [discrete]

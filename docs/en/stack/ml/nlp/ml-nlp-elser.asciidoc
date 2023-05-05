@@ -33,25 +33,35 @@ for semantic search or the trial period activated.
 
 
 [discrete]
-[[download-elser]]
-== Download ELSER
+[[download-deploy-elser]]
+== Download and deploy ELSER
 
-You can download ELSER either from **{ml-app}** > **Trained Models**, from 
-**{ents}** > **Indices**, or by using the Dev Console.
+You can download and deploy ELSER either from **{ml-app}** > **Trained Models**, 
+from **{ents}** > **Indices**, or by using the Dev Console.
 
 [discrete]
 [[trained-model]]
 === Using the Trained Models page
 
 1. In {kib}, navigate to **{ml-app}** > **Trained Models**. ELSER can be found 
-in the list of Trained Models.
-2. Click the Download model button under **Actions**. You can check the download 
-status on the **Notifications** page.
+in the list of trained models.
+2. Click the **Download model** button under **Actions**. You can check the 
+download status on the **Notifications** page.
 +
 --
 [role="screenshot"]
 image::images/ml-nlp-elser-download.png[alt="Downloading ELSER",align="center"]
 --
+3. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+4. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-deploy-elser.png[alt="Deploying ELSER",align="center"]
+--
+5. Click Start.
 
 
 [discrete]
@@ -65,10 +75,12 @@ You can also download and deploy ELSER to an {infer} pipeline directly from the
 2. Select the index from the list that has an {infer} pipeline in which you want 
 to use ELSER.
 3. Navigate to the **Pipelines** tab.
-4. Under **{ml-app} {infer-cap} Pipelines**, click the "Start single-threaded" 
-button to download and start the model with basic configuration or select the 
-"Fine-tune performance" option to navigate to the **Trained Models** page where 
-you can configure the model deployment.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the **Deploy** button to 
+begin downloading the ELSER model. This may take a few minutes depending on your 
+network. Once it's downloaded, click the **Start single-threaded** button to 
+start the model with basic configuration or select the **Fine-tune performance** 
+option to navigate to the **Trained Models** page where you can configure the 
+model deployment.
 
 
 [discrete]
@@ -77,7 +89,8 @@ you can configure the model deployment.
 
 1. In {kib}, navigate to the **Dev Console**.
 2. Create the ELSER model configuration by running the following API call:
-
++
+--
 [source,console]
 ----------------------------------
 PUT _ml/trained_models/.elser_model_1
@@ -90,40 +103,19 @@ PUT _ml/trained_models/.elser_model_1
 
 The API call automatically initiates the model download if the model is not 
 downloaded yet.
-
-
-[discrete]
-[[deploy-elser]]
-== Deploy ELSER
-
-After you downloaded ELSER, you can use {kib} to view and manage its deployment 
-across your cluster under **{ml-app}** > **Trained Models** or **{ents}** > 
-**Indices** (covered in the previous section).
-
-[discrete]
-[[deploy-trained-models]]
-=== Using the Trained Models page or the API
-
-1. Start the deployment by clicking the Start deployment button.
-2. Provide a deployment ID, select priority, and set the number of allocations 
-and threads per allocation values.
-+
 --
-[role="screenshot"]
-image::images/ml-nlp-deploy-elser.png[alt="Deploying ELSER",align="center"]
---
-3. Click Start.
-
-Alternatively, you can deploy the model by using the 
+3. Deploy the model by using the 
 {ref}/start-trained-model-deployment.html[start trained model deployment API] 
 with a delpoyment ID:
-
++
+--
 [source,console]
 ----------------------------------
 POST _ml/trained_models/.elser_model_1/deployment/_start?deployment_id=for_search
 ----------------------------------
 
 You can deploy the model multiple times with different deployment IDs.
+--
 
 After the deployment is complete, ELSER is ready to use either in an ingest 
 pipeline or in a `text_expansion` query to perform semantic search.

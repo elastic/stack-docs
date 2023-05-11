@@ -1,0 +1,17 @@
+[[ml-nlp-limitations]]
+= Limitations
+
+:keywords: {ml-init}, {stack}, {nlp}, limitations,
+:description: List of limitations of the Elastic NLP features
+
+The following limitations and known problems apply to the {version} release of 
+the Elastic {nlp} trained models feature.
+
+[discrete]
+[[ml-nlp-elser-v1-limit-512]]
+== ELSER v1 semantic search is limited to 512 tokens per document
+
+When you use ELSER v1 for semantic search, only the first 512 extracted tokens 
+of the ingested docs are considered during the search. If you have long 
+documents in your data set, split them to smaller pieces before ingest for 
+optimal search performance.

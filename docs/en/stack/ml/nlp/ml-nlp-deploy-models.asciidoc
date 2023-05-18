@@ -5,6 +5,7 @@
 :description: You can import trained models into your cluster and configure them \
 for specific NLP tasks.
 
+
 If you want to perform {nlp} tasks in your cluster, you must deploy an
 appropriate trained model. There is tooling support in
 https://github.com/elastic/eland[Eland] and {kib} to help you prepare and manage
@@ -183,13 +184,14 @@ again. When multiple ingest pipelines reference the same deployment, the queue
 can fill up, resulting in rejected requests. Consider using dedicated 
 deployments to prevent this situation.
 
-{infer-cap} requests originating from search, such as the `text_expansion` 
-query, receive a higher priority compared to non-search requests. The {infer} 
-ingest processor generates normal priority requests. If both a search query and 
-an ingest processor use the same deployment, the search requests with higher 
-priority skip ahead in the queue for processing before the lower priority ingest 
-requests. This prioritization accelerates search responses while potentially 
-slowing down ingest where response time is less critical.
+{infer-cap} requests originating from search, such as the 
+{ref}/query-dsl-text-expansion-query.html[`text_expansion` query], have a higher 
+priority compared to non-search requests. The {infer} ingest processor generates 
+normal priority requests. If both a search query and an ingest processor use the 
+same deployment, the search requests with higher priority skip ahead in the 
+queue for processing before the lower priority ingest requests. This 
+prioritization accelerates search responses while potentially slowing down 
+ingest where response time is less critical.
 
 
 [[ml-nlp-test-inference]]
@@ -253,3 +255,6 @@ recognized entities:
 
 If you are satisfied with the results, you can add these NLP tasks in your
 <<ml-nlp-inference,ingestion pipelines>>.
+
+:!keywords:
+:!description:

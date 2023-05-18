@@ -15,7 +15,7 @@ models.
 . <<ml-nlp-deploy-model,Deploy the model in your cluster>>.
 . <<ml-nlp-test-inference,Try it out>>.
 
-[discrete]
+
 [[ml-nlp-select-model]]
 == Select a trained model
 
@@ -35,7 +35,7 @@ provided in the cluster, no further steps are required to import or deploy the
 model. You can skip to using the model in 
 <<ml-nlp-inference,ingestion pipelines>>.
 
-[discrete]
+
 [[ml-nlp-import-model]]
 == Import the trained model and vocabulary
 
@@ -83,7 +83,7 @@ eland_import_hub_model
 
 For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 
-[discrete]
+
 [[authentication]]
 === Authentication methods
 
@@ -115,15 +115,29 @@ eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key> ..
 --------------------------------------------------
 --
 
-[discrete]
+
 [[ml-nlp-deploy-model]]
 == Deploy the model in your cluster
 
 After you import the model and vocabulary, you can use {kib} to view and manage
 their deployment across your cluster under **{ml-app}** > *Model Management*.
 Alternatively, you can use the
-{ref}/start-trained-model-deployment.html[start trained model deployment API] or
-specify the `--start` option when you run the `eland_import_hub_model` script.
+{ref}/start-trained-model-deployment.html[start trained model deployment API].
+
+You can deploy a model multiple times by assigning a unique deployment ID to 
+each deployment. It enables you to have dedicated deployments for different 
+purposes, such as search and ingest. By doing so, you ensure that the search 
+speed remains unaffected by ingest volume, and vice versa. Having separate 
+deployments for search and ingest mitigates performance issues resulting from 
+interactions between the two, which can be hard to diagnose.
+
+[role="screenshot"]
+image::images/ml-nlp-deployment-id.png["Model deployment on the Trained Models UI."]
+
+It is recommended to fine-tune each deployment based on its specific purpose. To 
+improve ingest performance, increase throughput by adding more allocations to 
+the deployment. For improved search speed, increase the number of threads per 
+allocation.
 
 NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 {kib} until the saved objects are synchronized. You can follow the prompts in
@@ -131,20 +145,18 @@ NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 {kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
 
 When you deploy the model, its allocations are distributed across available {ml} 
-nodes. Model allocations are independent units of work for NLP tasks. Throughput 
-can be scaled by adding more allocations to the deployment; it increases the 
-number of {infer} requests that can be performed in parallel. All allocations 
-assigned to a node share the same copy of the model in memory. The model is 
-loaded into memory in a native process that encapsulates `libtorch`, which is 
-the underlying {ml} library of PyTorch.
+nodes. Model allocations are independent units of work for NLP tasks. To 
+influence model performance, you can configure the number of allocations and the 
+number of threads used by each allocation of your deployment.
 
-You can set the number of allocations and the number of threads an allocation 
-uses for your deployment to affect model performance.
-
-The number of allocations setting affects the amount of model allocations across 
-all the {ml} nodes. Increasing the number of allocations generally increases the 
-throughput. Model allocations are distributed in such a way that the total 
-number of used threads does not exceed the allocated processors of a node.
+Throughput can be scaled by adding more allocations to the deployment; it 
+increases the number of {infer} requests that can be performed in parallel. All 
+allocations assigned to a node share the same copy of the model in memory. The 
+model is loaded into memory in a native process that encapsulates `libtorch`, 
+which is the underlying {ml} library of PyTorch. The number of allocations 
+setting affects the amount of model allocations across all the {ml} nodes. Model 
+allocations are distributed in such a way that the total number of used threads 
+does not exceed the allocated processors of a node.
 
 The threads per allocation setting affects the number of threads used by each 
 model allocation during {infer}. Increasing the number of threads generally 
@@ -158,7 +170,6 @@ change the number of allocations, you can use the
 the allocation status is `started`.
 
 
-[discrete]
 [[ml-nlp-test-inference]]
 == Try it out
 

@@ -5,6 +5,7 @@
 :description: You can import trained models into your cluster and configure them \
 for specific NLP tasks.
 
+
 If you want to perform {nlp} tasks in your cluster, you must deploy an
 appropriate trained model. There is tooling support in
 https://github.com/elastic/eland[Eland] and {kib} to help you prepare and manage
@@ -15,7 +16,7 @@ models.
 . <<ml-nlp-deploy-model,Deploy the model in your cluster>>.
 . <<ml-nlp-test-inference,Try it out>>.
 
-[discrete]
+
 [[ml-nlp-select-model]]
 == Select a trained model
 
@@ -35,7 +36,7 @@ provided in the cluster, no further steps are required to import or deploy the
 model. You can skip to using the model in 
 <<ml-nlp-inference,ingestion pipelines>>.
 
-[discrete]
+
 [[ml-nlp-import-model]]
 == Import the trained model and vocabulary
 
@@ -76,15 +77,15 @@ eland_import_hub_model
 --
 <1> Specify the Elastic Cloud identifier. Alternatively, use `--url`.
 <2> Provide authentication details to access your cluster. Refer to 
-<<authentication>> to learn more.
+<<ml-nlp-authentication>> to learn more.
 <3> Specify the identifier for the model in the Hugging Face model hub.
 <4> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
 `text_classification`, `text_embedding`, and `zero_shot_classification`.
 
 For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 
-[discrete]
-[[authentication]]
+
+[[ml-nlp-authentication]]
 === Authentication methods
 
 The following authentication options are available when using the import script:
@@ -115,15 +116,29 @@ eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key> ..
 --------------------------------------------------
 --
 
-[discrete]
+
 [[ml-nlp-deploy-model]]
 == Deploy the model in your cluster
 
 After you import the model and vocabulary, you can use {kib} to view and manage
 their deployment across your cluster under **{ml-app}** > *Model Management*.
 Alternatively, you can use the
-{ref}/start-trained-model-deployment.html[start trained model deployment API] or
-specify the `--start` option when you run the `eland_import_hub_model` script.
+{ref}/start-trained-model-deployment.html[start trained model deployment API].
+
+You can deploy a model multiple times by assigning a unique deployment ID when 
+starting the deployment. It enables you to have dedicated deployments for 
+different purposes, such as search and ingest. By doing so, you ensure that the 
+search speed remains unaffected by ingest workloads, and vice versa. Having 
+separate deployments for search and ingest mitigates performance issues 
+resulting from interactions between the two, which can be hard to diagnose.
+
+[role="screenshot"]
+image::images/ml-nlp-deployment-id.png["Model deployment on the Trained Models UI."]
+
+It is recommended to fine-tune each deployment based on its specific purpose. To 
+improve ingest performance, increase throughput by adding more allocations to 
+the deployment. For improved search speed, increase the number of threads per 
+allocation.
 
 NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 {kib} until the saved objects are synchronized. You can follow the prompts in
@@ -131,20 +146,18 @@ NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 {kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
 
 When you deploy the model, its allocations are distributed across available {ml} 
-nodes. Model allocations are independent units of work for NLP tasks. Throughput 
-can be scaled by adding more allocations to the deployment; it increases the 
-number of {infer} requests that can be performed in parallel. All allocations 
-assigned to a node share the same copy of the model in memory. The model is 
-loaded into memory in a native process that encapsulates `libtorch`, which is 
-the underlying {ml} library of PyTorch.
+nodes. Model allocations are independent units of work for NLP tasks. To 
+influence model performance, you can configure the number of allocations and the 
+number of threads used by each allocation of your deployment.
 
-You can set the number of allocations and the number of threads an allocation 
-uses for your deployment to affect model performance.
-
-The number of allocations setting affects the amount of model allocations across 
-all the {ml} nodes. Increasing the number of allocations generally increases the 
-throughput. Model allocations are distributed in such a way that the total 
-number of used threads does not exceed the allocated processors of a node.
+Throughput can be scaled by adding more allocations to the deployment; it 
+increases the number of {infer} requests that can be performed in parallel. All 
+allocations assigned to a node share the same copy of the model in memory. The 
+model is loaded into memory in a native process that encapsulates `libtorch`, 
+which is the underlying {ml} library of PyTorch. The number of allocations 
+setting affects the amount of model allocations across all the {ml} nodes. Model 
+allocations are distributed in such a way that the total number of used threads 
+does not exceed the allocated processors of a node.
 
 The threads per allocation setting affects the number of threads used by each 
 model allocation during {infer}. Increasing the number of threads generally 
@@ -157,8 +170,30 @@ change the number of allocations, you can use the
 {ref}/update-trained-model-deployment.html[update trained model stats API] after
 the allocation status is `started`.
 
-
 [discrete]
+[[infer-request-queues]]
+=== {infer-cap} request queues
+
+Each allocation of a model deployment has a dedicated queue to buffer {infer} 
+requests. The size of this queue is determined by the `queue_capacity` parameter
+in the 
+{ref}/start-trained-model-deployment.html[start trained model deployment API]. 
+When the queue reaches its maximum capacity, new requests are declined until 
+some of the queued requests are processed, creating available capacity once 
+again. When multiple ingest pipelines reference the same deployment, the queue 
+can fill up, resulting in rejected requests. Consider using dedicated 
+deployments to prevent this situation.
+
+{infer-cap} requests originating from search, such as the 
+{ref}/query-dsl-text-expansion-query.html[`text_expansion` query], have a higher 
+priority compared to non-search requests. The {infer} ingest processor generates 
+normal priority requests. If both a search query and an ingest processor use the 
+same deployment, the search requests with higher priority skip ahead in the 
+queue for processing before the lower priority ingest requests. This 
+prioritization accelerates search responses while potentially slowing down 
+ingest where response time is less critical.
+
+
 [[ml-nlp-test-inference]]
 == Try it out
 
@@ -220,3 +255,6 @@ recognized entities:
 
 If you are satisfied with the results, you can add these NLP tasks in your
 <<ml-nlp-inference,ingestion pipelines>>.
+
+:!keywords:
+:!description:

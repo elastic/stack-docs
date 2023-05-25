@@ -49,7 +49,12 @@ NOTE: Trained models must be in a TorchScript representation for use with
 
 Eland encapsulates both the conversion of Hugging Face transformer models to
 their TorchScript representations and the chunking process in a single Python
-method; it is therefore the recommended import method.
+method; it is therefore the recommended import method. You can either install 
+the Python Eland client on your machine or use a Docker image to built Eland.
+
+[discrete]
+[[ml-nlp-import-script]]
+=== Import with the Eland client installed
 
 . Install the {eland-docs}/installation.html[Eland Python client] with PyTorch 
 extra dependencies.
@@ -83,6 +88,40 @@ eland_import_hub_model
 `text_classification`, `text_embedding`, and `zero_shot_classification`.
 
 For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+
+[discrete]
+[[ml-nlp-import-docker]]
+=== Import with Docker
+
+IMPORTANT: To use the Docker container, you need to clone the Eland repository: 
+https://github.com/elastic/eland
+
+If you want to use Eland without installing it, build the Docker container to 
+run the available scripts:
+
+```bash
+$ docker build -t elastic/eland .
+```
+
+You can now use the container interactively:
+
+```bash
+$ docker run -it --rm --network host elastic/eland
+```
+
+Running installed scripts is also possible without an interactive shell:
+
+```bash
+docker run -it --rm elastic/eland \
+    eland_import_hub_model \
+      --url $ELASTICSEARCH_URL \
+      --hub-model-id elastic/distilbert-base-uncased-finetuned-conll03-english \
+      --start
+```
+
+Replace the `$ELASTICSEARCH_URL` with the URL for your {es} cluster. For 
+authentication purposes, include an administrator username and password in the 
+URL in the following format: `https://username:password@host:port`.
 
 
 [[ml-nlp-authentication]]

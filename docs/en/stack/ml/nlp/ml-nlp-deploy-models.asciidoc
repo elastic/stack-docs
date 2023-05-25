@@ -50,7 +50,7 @@ NOTE: Trained models must be in a TorchScript representation for use with
 Eland encapsulates both the conversion of Hugging Face transformer models to
 their TorchScript representations and the chunking process in a single Python
 method; it is therefore the recommended import method. You can either install 
-the Python Eland client on your machine or use a Docker image to built Eland.
+the Python Eland client on your machine or use a Docker image to build Eland.
 
 [discrete]
 [[ml-nlp-import-script]]
@@ -96,8 +96,7 @@ For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 IMPORTANT: To use the Docker container, you need to clone the Eland repository: 
 https://github.com/elastic/eland
 
-If you want to use Eland without installing it, build the Docker container to 
-run the available scripts:
+If you want to use Eland without installing it, clone the Eland repository and from the root directory run the following to build the Docker container:
 
 ```bash
 $ docker build -t elastic/eland .
@@ -109,7 +108,7 @@ You can now use the container interactively:
 $ docker run -it --rm --network host elastic/eland
 ```
 
-Running installed scripts is also possible without an interactive shell:
+The `eland_import_hub_model` script can be run directly in the docker command:
 
 ```bash
 docker run -it --rm elastic/eland \

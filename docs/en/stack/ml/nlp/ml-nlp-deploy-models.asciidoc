@@ -40,6 +40,10 @@ model. You can skip to using the model in
 [[ml-nlp-import-model]]
 == Import the trained model and vocabulary
 
+IMPORTANT: If you want to install a trained model in a restricted or closed 
+network, refer to 
+https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch-air-gapped[these instructions].
+
 After you choose a model, you must import it and its tokenizer vocabulary to
 your cluster. When you import the model, it must be chunked and imported one
 chunk at a time for storage in parts due to its size.
@@ -47,9 +51,17 @@ chunk at a time for storage in parts due to its size.
 NOTE: Trained models must be in a TorchScript representation for use with
 {stack-ml-features}.
 
-Eland encapsulates both the conversion of Hugging Face transformer models to
-their TorchScript representations and the chunking process in a single Python
-method; it is therefore the recommended import method.
+https://github.com/elastic/eland[Eland] is an {es} Python client that provides a 
+simple script to perform the conversion of Hugging Face transformer models to 
+their TorchScript representations, the chunking process, and upload to {es}; it 
+is therefore the recommended import method. You can either install the Python 
+Eland client on your machine or use a Docker image to build Eland and run the 
+model import script.
+
+
+[discrete]
+[[ml-nlp-import-script]]
+=== Import with the Eland client installed
 
 . Install the {eland-docs}/installation.html[Eland Python client] with PyTorch 
 extra dependencies.
@@ -62,7 +74,9 @@ python -m pip install 'eland[pytorch]'
 // NOTCONSOLE
 --
 
-. Run the `eland_import_hub_model` script. For example:
+. Run the `eland_import_hub_model` script to download the model from Hugging 
+Face, convert it to TorchScript format, and upload to the {es} cluster. For 
+example:
 +
 --
 [source, shell]
@@ -82,7 +96,41 @@ eland_import_hub_model
 <4> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
 `text_classification`, `text_embedding`, and `zero_shot_classification`.
 
-For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+For more details, refer to 
+https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch.
+
+[discrete]
+[[ml-nlp-import-docker]]
+=== Import with Docker
+
+IMPORTANT: To use the Docker container, you need to clone the Eland repository: 
+https://github.com/elastic/eland
+
+If you want to use Eland without installing it, clone the Eland repository and 
+from the root directory run the following to build the Docker image:
+
+```bash
+$ docker build -t elastic/eland .
+```
+
+You can now use the container interactively:
+
+```bash
+$ docker run -it --rm --network host elastic/eland
+```
+
+The `eland_import_hub_model` script can be run directly in the docker command:
+
+```bash
+docker run -it --rm elastic/eland \
+    eland_import_hub_model \
+      --url $ELASTICSEARCH_URL \
+      --hub-model-id elastic/distilbert-base-uncased-finetuned-conll03-english \
+      --start
+```
+
+Replace the `$ELASTICSEARCH_URL` with the URL for your {es} cluster. Refer to 
+<<ml-nlp-authentication>> to learn more.
 
 
 [[ml-nlp-authentication]]
@@ -93,7 +141,7 @@ The following authentication options are available when using the import script:
 * username/password authentication (specified with the `-u` and `-p` options):
 +
 --  
-[source, shell]
+[source, bash]
 --------------------------------------------------
 eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <password> ...
 --------------------------------------------------
@@ -102,7 +150,7 @@ eland_import_hub_model --url https://<hostname>:<port> -u <username> -p <passwor
 * username/password authentication (embedded in the URL):
 +
 --
-[source, shell]
+[source, bash]
 --------------------------------------------------
 eland_import_hub_model --url https://<user>:<password>@<hostname>:<port> ...
 --------------------------------------------------
@@ -110,7 +158,7 @@ eland_import_hub_model --url https://<user>:<password>@<hostname>:<port> ...
 * API key authentication:
 +
 --
-[source, shell]
+[source, bash]
 --------------------------------------------------
 eland_import_hub_model --url https://<hostname>:<port> --es-api-key <api-key> ...
 --------------------------------------------------

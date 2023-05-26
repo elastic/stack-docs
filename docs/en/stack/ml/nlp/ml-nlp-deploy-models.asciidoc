@@ -40,6 +40,10 @@ model. You can skip to using the model in
 [[ml-nlp-import-model]]
 == Import the trained model and vocabulary
 
+IMPORTANT: If you want to install a trained model in a restricted or closed 
+network, refer to 
+https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch-air-gapped[these instructions].
+
 After you choose a model, you must import it and its tokenizer vocabulary to
 your cluster. When you import the model, it must be chunked and imported one
 chunk at a time for storage in parts due to its size.
@@ -47,10 +51,13 @@ chunk at a time for storage in parts due to its size.
 NOTE: Trained models must be in a TorchScript representation for use with
 {stack-ml-features}.
 
-Eland encapsulates both the conversion of Hugging Face transformer models to
-their TorchScript representations and the chunking process in a single Python
-method; it is therefore the recommended import method. You can either install 
-the Python Eland client on your machine or use a Docker image to build Eland.
+https://github.com/elastic/eland[Eland] is an {es} Python client that provides a 
+simple script to perform the conversion of Hugging Face transformer models to 
+their TorchScript representations, the chunking process, and upload to {es}; it 
+is therefore the recommended import method. You can either install the Python 
+Eland client on your machine or use a Docker image to build Eland and run the 
+model import script.
+
 
 [discrete]
 [[ml-nlp-import-script]]
@@ -67,7 +74,9 @@ python -m pip install 'eland[pytorch]'
 // NOTCONSOLE
 --
 
-. Run the `eland_import_hub_model` script. For example:
+. Run the `eland_import_hub_model` script to download the model from Hugging 
+Face, convert it to TorchScript format, and upload to the {es} cluster. For 
+example:
 +
 --
 [source, shell]
@@ -87,7 +96,8 @@ eland_import_hub_model
 <4> Specify the type of NLP task. Supported values are `fill_mask`, `ner`,
 `text_classification`, `text_embedding`, and `zero_shot_classification`.
 
-For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
+For more details, refer to 
+https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch.
 
 [discrete]
 [[ml-nlp-import-docker]]
@@ -96,7 +106,8 @@ For more details, refer to https://github.com/elastic/eland#nlp-with-pytorch.
 IMPORTANT: To use the Docker container, you need to clone the Eland repository: 
 https://github.com/elastic/eland
 
-If you want to use Eland without installing it, clone the Eland repository and from the root directory run the following to build the Docker image:
+If you want to use Eland without installing it, clone the Eland repository and 
+from the root directory run the following to build the Docker image:
 
 ```bash
 $ docker build -t elastic/eland .

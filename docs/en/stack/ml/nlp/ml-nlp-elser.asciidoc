@@ -26,6 +26,45 @@ to learn more about ELSER.
 
 
 [discrete]
+[[elser-hw-benchamrks]]
+== Hardware benchmarks
+
+Two data sets were utilized to evaluate the performance of ELSER in different 
+hardware configurations: `msmarco-long-light` and `arguana`.
+
+|==============================================================================================================
+| **Data set**             ^| **Data set size**   ^| **Average count of tokens / query** ^| **Average count of tokens / document**
+| `msmarco-long-light`     ^| 37367 documents     ^| 9                                   ^| 1640                              
+| `arguana`                ^| 8674 documents      ^| 238                                 ^| 202                               
+|==============================================================================================================
+
+The `msmarco-long-light` data set contains long documents with an average of 
+over 512 tokens, which provides insights into the performance implications 
+of indexing and {infer} time for long documents. This is a subset of the 
+`msmarco-long` data set, which is part of 
+https://github.com/beir-cellar/beir[BEIR], and a widely used information 
+retrieval data set to evaulate retrieval techniques on long documents.
+
+The `arguana` data set is also a BEIR data set. It consists of long queries with 
+an average of 200 tokens per query. It can represent an upper limit for query 
+slowness.
+
+The table below present benchmarking results for ELSER using various hardware 
+configurations.
+
+|==================================================================================================================================================================================
+|                                                         3+^| `msmarco-long-light`                                     3+^| `arguana`                                             | 
+|                                                         ^.^| inference     ^.^| indexing         ^.^| query latency   ^.^| inference      ^.^| indexing      ^.^| query latency  |  
+| **ML node 4GB - 2 vCPUs (1 allocation * 1 thread)**     ^.^| 581   ms/call ^.^| 1.7   doc/sec    ^.^| 713   ms/query  ^.^| 1200   ms/call ^.^| 0.8   doc/sec ^.^| 169   ms/query |  
+| **ML node 16GB - 8 vCPUs (7 allocation * 1 thread)**    ^.^| 568   ms/call ^.^| 12    doc/sec    ^.^| 689   ms/query  ^.^| 1280   ms/call ^.^| 5.4   doc/sec ^.^| 159   ms/query |  
+| **ML node 16GB - 8 vCPUs (1 allocation * 8 thread)**    ^.^| 102   ms/call ^.^| 9.7   doc/sec    ^.^| 164   ms/query  ^.^| 220    ms/call ^.^| 4.5   doc/sec ^.^| 40    ms/query | 
+| **ML node 32 GB - 16 vCPUs (15 allocation * 1 thread)** ^.^| 565   ms/call ^.^| 25.2  doc/sec    ^.^| 608   ms/query  ^.^| 1260   ms/call ^.^| 11.4  doc/sec ^.^| 138   ms/query | 
+|==================================================================================================================================================================================
+
+
+
+
+[discrete]
 [[elser-req]]
 == Requirements
 

@@ -20,9 +20,9 @@ meaning and user intent, rather than exact keyword matches.
 ELSER is an out-of-domain model which means it does not require fine-tuning on 
 your own data, making it adaptable for various use cases out of the box.
 
-ELSER expands the indexed and searched terms into larger collections of terms 
-that are learned to co-occur frequently within a diverse set of training data. 
-The terms that the text is expanded into by the model _are not_ synonyms for the 
+ELSER expands the indexed and searched passages into collections of terms that 
+are learned to co-occur frequently within a diverse set of training data. The 
+terms that the text is expanded into by the model _are not_ synonyms for the 
 search terms; they are learned associations. These expanded terms are weighted 
 as some of them are more significant than others. Then the {es} 
 {ref}/rank-feature.html[rank-feature field type] is used to store the terms and 

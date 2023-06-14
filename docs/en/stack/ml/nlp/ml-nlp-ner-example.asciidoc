@@ -216,7 +216,8 @@ you created:
 POST _reindex
 {
   "source": {
-    "index": "les-miserables"
+    "index": "les-miserables",
+    "size": 50 <1>
   },
   "dest": {
     "index": "les-miserables-infer",
@@ -224,6 +225,9 @@ POST _reindex
   }
 }
 --------------------------------------------------
+<1> The default batch size for reindexing is 1000. Reducing `size` to a smaller 
+number makes the update of the reindexing process quicker which enables you to 
+follow the progress closely and detect errors early.
 
 Take a random paragraph from the source document as an example:
 

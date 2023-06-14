@@ -232,7 +232,7 @@ POST _reindex
 {
   "source": {
     "index": "kibana_sample_data_logs",
-    "size": 500
+    "size": 50
   },
   "dest": {
     "index": "lang-test",
@@ -245,9 +245,9 @@ POST _reindex
 However, those web log messages are unlikely to contain enough words for the
 model to accurately identify the language.
 
-TIP: Set the reindex `size` option to a value
-smaller than the `queue_capacity` for the trained model deployment. Otherwise, requests might be rejected
-with a "too many requests" 429 error code.
+TIP: Set the reindex `size` option to a value smaller than the `queue_capacity` 
+for the trained model deployment. Otherwise, requests might be rejected with a 
+"too many requests" 429 error code.
 
 [discrete]
 [[ml-nlp-inference-discover]]

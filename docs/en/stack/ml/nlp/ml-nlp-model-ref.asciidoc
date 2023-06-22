@@ -9,6 +9,12 @@
 :frontmatter-tags-content-type: [reference] 
 :frontmatter-tags-user-goals: [analyze]
 
+NOTE: The minimum dedicated ML node size for deploying and using {nlp} models is 
+4 GB in Elasticsearch Service with 
+{cloud}/ec-autoscaling.html[deployment autoscaling] turned on. Autoscaling 
+allows your deployment to automatically adjust its available resources when 
+required. Better performance can be achieved by using bigger ML nodes.
+
 The {stack-ml-features} support transformer models that conform to the standard
 BERT model interface and use the WordPiece tokenization algorithm.
 

@@ -37,10 +37,13 @@ To use ELSER, you must have the {subscriptions}[appropriate subscription] level
 for semantic search or the trial period activated.
 
 NOTE: The minimum dedicated ML node size for deploying and using the ELSER model 
-is 4 GB in Elasticsearch Service with 
-{cloud}/ec-autoscaling.html[deployment autoscaling] turned on. Autoscaling 
-allows your deployment to automatically adjust its available resources when 
-required. Better performance can be achieved by using bigger ML nodes.
+is 4 GB in Elasticsearch Service if 
+{cloud}/ec-autoscaling.html[deployment autoscaling] is turned off. Turning on 
+autoscaling is recommended because it allows your deployment to dinamically 
+adjust resources based on demand. Better performance can be achieved by using 
+more allocations or more threads per allocation, which requires bigger ML nodes. 
+Autoscaling provide bigger nodes when required. If autoscaling is turned off, 
+you must provide suitably sized nodes yourself.
 
 
 [discrete]

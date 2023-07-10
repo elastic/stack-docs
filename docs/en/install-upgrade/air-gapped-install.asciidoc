@@ -479,18 +479,53 @@ There are three ways to configure {agent} integrations:
 [[air-gapped-agent-integration-configure-kibana]]
 ==== D.2.1. Using the {kib} UI
 
-tbd
+*Best option for:* Manual configuration and users who prefer using a UI over scripting.
+
+*Example:* {observability-guide}/logs-metrics-get-started.html[Get started with logs and metrics]
+
+Agent policies and integration settings can be managed using the {kib} UI. For example, the following shows the configuration of logging for the System integration in an agent policy:
+
+[role="screenshot"]
+image::images/air-gapped-configure-logging.png[Configuration of a logging integration in an agent policy]
 
 [discrete]
 [[air-gapped-agent-integration-configure-yml]]
 ==== D.2.2. Using the `kibana.yml` config file
 
-tbd
+*Good option for:* Declarative configuration and users who need reproducible and automated deployments.
+
+*Example:* {kibana-ref}/fleet-settings-kb.html[Fleet settings in {kib}]
+
+NOTE: This documentation is still under development; there may be gaps around building custom agent policies.
+
+It is possible to have kibana create agent policies on your behalf by adding appropriate config items in `kibana.yml` settings file, these include:
+
+`xpack.fleet.packages`::
+Takes a list of all integration package names and versions that {kib} should download from the {package-registry} (EPR). This is done because agents themselves do not directly fetch packages from the EPR.
+
+`xpack.fleet.agentPolicies`::
+Takes a list of {agent} policies in the format expected by the {fleet-guide}/fleet-api-docs.html[{kib} {fleet} HTTP API]. Refer to the setting in {kibana-ref}/fleet-settings-kb.html#_preconfiguration_settings_for_advanced_use_cases[Preconfiguration settings] for the format. See also <<air-gapped-agent-integration-configure-fleet-api>>.
+
+`xpack.fleet.registryUrl`::
+Takes a URL of the {package-registry} that can be reached by the {kib} server. Enable this setting only when deploying in an air-gapped environment.
+
+Other settings:: 
+You can add other, more discretionary settings for {fleet}, {agents}, & policies. Refer to {kibana-ref}/fleet-settings-kb.html[Fleet settings in {kib}].
 
 [discrete]
 [[air-gapped-agent-integration-configure-fleet-api]]
 ==== D.2.3. Using the {kib} {fleet} API
 
-tbd
+*Best option for*: Declarative configuration and users who need reproducible and automated deployments in even the trickiest of environments.
 
+*Example:* Read the following.
 
+It is possible to use custom scripts that call the {kib} {fleet} API to create or update policies without restarting {kib}, and also allowing for custom error handling and update logic.
+
+At this time, you can refer to the the {fleet-guide}/fleet-api-docs.html[{kib} {fleet} HTTP API] documentation, however additional resources from public code repositories should be consulted to capture the full set of configuration options available for a given integration. Specifically, many integrations have configuration options such as `inputs` and `data_streams` that are unique.
+
+In particular, the `*.yml.hbs` templates should be consulted to determine which `vars` are available for configuring a particular integration using the {kib} {fleet} API.
+
+* For most Integrations, refer to the README and `*.yml.hbs` files in the appropriate directory in the link:https://github.com/elastic/integrations/tree/main/packages[elastic/integrations repository].
+
+* For the APM integration, refer to the README and `*.yml.hbs` files in the link:https://github.com/elastic/apm-server/tree/main/apmpackage/apm/agent[elastic/apm-server repository].

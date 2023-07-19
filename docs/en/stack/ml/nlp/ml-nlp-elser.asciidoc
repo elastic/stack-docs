@@ -96,10 +96,9 @@ configurations.
 === Qualitative benchmarks
 
 The metric that is used to evaluate ELSER's ranking ability is the Normalized 
-Discounted Cumulative Gain (NDCG), which is the most complete metric as it can 
-handle multiple relevant documents and fine-grained document ratings. The metric 
-is applied to a fixed-sized list of retrieved documents which, in this case, is 
-the top 10 documents (NDCG@10).
+Discounted Cumulative Gain (NDCG) which can handle multiple relevant documents 
+and fine-grained document ratings. The metric is applied to a fixed-sized list 
+of retrieved documents which, in this case, is the top 10 documents (NDCG@10).
 
 The table below shows the performance of ELSER compared to {es} BM25 with an 
 English analyzer broken down by the 12 data sets used for the evaluation. ELSER 

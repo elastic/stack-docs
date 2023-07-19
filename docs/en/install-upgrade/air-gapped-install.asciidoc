@@ -49,7 +49,12 @@ Refer to the section for each Elastic component for air-gapped installation conf
 [[air-gapped-elasticsearch]]
 ==== 1.1. {es}
 
-Air-gapped install of {es} is fairly straightforward, as this component does not have any default dependencies on other services. Detailed install and configuration instructions are available in the {ref}/install-elasticsearch.html[{es} install documentation].
+Air-gapped install of {es} may require additional steps in order to access some of the features. General install and configuration guides are available in the {ref}/install-elasticsearch.html[{es} install documentation].
+
+Specifically:
+
+* To be able to use the GeoIP processor, refer to {ref}/geoip-processor.html#manually-update-geoip-databases[the GeoIP processor documentation] for instructions on downloading and deploying the required databases.
+* Refer to <<air-gapped-machine-learning,{ml-cap}>> for instructions on deploying the Elastic Learned Sparse EncodeR (ELSER) natural language processing (NLP) model and other trained {ml} models.
 
 [discrete]
 [[air-gapped-kibana]]
@@ -144,6 +149,15 @@ NOTE: When setting up own web server, such as NGINX, to function as the {artifac
 ==== 1.12. Elastic Endpoint Artifact Repository
 
 Air-gapped setup of this component is, essentially, identical to the setup of the <<air-gapped-elastic-artifact-registry,{artifact-registry}>> except that different artifacts are served. To learn more, refer to {security-guide}/offline-endpoint.html[Configure offline endpoints and air-gapped environments] in the Elastic Security guide.
+
+[discrete]
+[[air-gapped-machine-learning]]
+==== 1.13 {ml-cap}
+
+Some {ml} features, like natural language processing (NLP), require you to deploy trained models. To learn about deploying {ml} models in an air-gapped environment, refer to:
+
+* {ml-docs}/ml-nlp-elser.html#air-gapped-install[Deploy ELSER in an air-gapped environment].
+* {eland-docs}/machine-learning.html#ml-nlp-pytorch-air-gapped[Install trained models in an air-gapped environment with Eland].
 
 [discrete]
 [[air-gapped-kubernetes-and-openshift]]

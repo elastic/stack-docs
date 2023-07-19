@@ -45,10 +45,18 @@ more allocations or more threads per allocation, which requires bigger ML nodes.
 Autoscaling provides bigger nodes when required. If autoscaling is turned off, 
 you must provide suitably sized nodes yourself.
 
+[discrete]
+[[elser-benchamrks]]
+== Benchmarks
+
+The following sections provide information about how ELSER performs on different 
+hardwares and compares the model performance to {es} BM25 and other strong 
+baselines such as Splade or OpenAI.
+
 
 [discrete]
 [[elser-hw-benchamrks]]
-== Hardware benchmarks
+=== Hardware benchmarks
 
 Two data sets were utilized to evaluate the performance of ELSER in different 
 hardware configurations: `msmarco-long-light` and `arguana`.
@@ -84,6 +92,35 @@ configurations.
 
 
 [discrete]
+[[elser-qualitative-benchmarks]]
+=== Qualitative benchmarks
+
+The metric that is used to evaluate ELSER's ranking ability is the Normalized 
+Discounted Cumulative Gain (NDCG) which can handle multiple relevant documents 
+and fine-grained document ratings. The metric is applied to a fixed-sized list 
+of retrieved documents which, in this case, is the top 10 documents (NDCG@10).
+
+The table below shows the performance of ELSER compared to {es} BM25 with an 
+English analyzer broken down by the 12 data sets used for the evaluation. ELSER 
+has 10 wins, 1 draw, 1 loss and an average improvement in NDCG@10 of 17%.
+
+image::images/ml-nlp-elser-ndcg10-beir.png[alt="ELSER benchmarks",align="center"]
+_NDCG@10 for BEIR data sets for BM25 and ELSER  - higher values are better)_
+
+The following table compares the average performance of ELSER to some other 
+strong baselines. The OpenAI results are separated out because they use a 
+different subset of the BEIR suite.
+
+image::images/ml-nlp-elser-average-ndcg.png[alt="ELSER average performance compared to other baselines",align="center"]
+_Average NDCG@10 for BEIR data sets vs. various high quality baselines (higher_ 
+_is better). OpenAI chose a different subset, ELSER results on this set_ 
+_reported separately._
+
+To read more about the evaluation details, refer to 
+https://www.elastic.co/blog/may-2023-launch-information-retrieval-elasticsearch-ai-model[this blog post].
+
+
+[discrete]
 [[download-deploy-elser]]
 == Download and deploy ELSER
 
@@ -110,7 +147,7 @@ allocations and threads per allocation values.
 +
 --
 [role="screenshot"]
-image::images/ml-nlp-deploy-elser.png[alt="Deploying ELSER",align="center"]
+image::images/ml-nlp-deployment-id-elser.png[alt="Deploying ELSER",align="center"]
 --
 5. Click Start.
 

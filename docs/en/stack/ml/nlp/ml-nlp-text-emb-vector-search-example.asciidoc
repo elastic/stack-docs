@@ -122,7 +122,7 @@ The result is the predicted dense vector transformed from the example text.
 In this step, you load the data that you later use in an ingest pipeline to get 
 the embeddings.
 
-The data set `msmarco-passagetest2019-top1000` is a subset of the MS MACRO 
+The data set `msmarco-passagetest2019-top1000` is a subset of the MS MARCO 
 Passage Ranking data set used in the testing stage of the 2019 TREC Deep 
 Learning Track. It contains 200 queries and for each query a list of relevant 
 text passages extracted by a simple information retrieval (IR) system. From that 
@@ -194,9 +194,13 @@ index failures into a different index.
 
 Before ingesting the data through the pipeline, create the mappings of the 
 destination index, in particular for the field `text_embedding.predicted_value` 
-where the ingest processor stores the embeddings. The msmarco-MiniLM-L-12-v3 model produces 
-embeddings with 384 dimensions; the `dense_vector` field must be configured 
-with the same number of dimensions as specified by the `dims` option.
+where the ingest processor stores the embeddings. The `dense_vector` field must 
+be configured with the same number of dimensions (`dims`) as the text embedding 
+produced by the model. That value can be found in the `embedding_size` option in 
+the model configuration either under the Trained Models page in {kib} or in the 
+response body of the {ref}/get-trained-models.html[Get trained models API] call. 
+The msmarco-MiniLM-L-12-v3 model has embedding_size of 384, so `dims` is set to 
+384.
 
 [source,js]
 --------------------------------------------------
@@ -261,7 +265,7 @@ After the reindexing is finished, the documents in the new index contain the
 == Semantic search
 
 After the dataset has been enriched with vector embeddings, you can query the
-data using {ref}/knn-search.html#semantic-search[semantic search]. Pass a
+data using {ref}/knn-search.html[semantic search]. Pass a
 `query_vector_builder` to the k-nearest neighbor (kNN) vector search API, and
 provide the query text and the model you have used to create vector embeddings.
 This example searches for "How is the weather in Jamaica?":

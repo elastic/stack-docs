@@ -384,4 +384,89 @@ they are listed for each job.
 
 |===
 // end::security-windows-jobs[]
+
+[discrete]
+[[security-integrations-jobs]]
+== Security: Elastic Integrations
+
+Anomaly detection jobs for Windows host-based threat hunting and detection.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json[manifest file].
+In the {security-app}, it looks in the {data-source} specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
+
+If there are additional requirements such as installing the Windows System
+Monitor (Sysmon) or auditing process creation in the Windows security event log,
+they are listed for each job.
+
+// tag::security-integrations-jobs[]
+
+|===
+|Name |Description |Job |Datafeed
+
+|dga_high_sum_probability
+|Detect domain generation algorithm (DGA) activity in your network data.
+|https://github.com/elastic/integrations/blob/{branch}/packages/dga/kibana/ml_module/dga-ml.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/{branch}/packages/dga/kibana/ml_module/dga-ml.json[image:images/link.svg[A link icon]]
+
+|problem_child_rare_process_by_host
+|Looks for a process that has been classified as malicious on a host that does not commonly manifest malicious process activity (experimental).
+|https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L29[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_network_activity.json[image:images/link.svg[A link icon]]
+
+|problem_child_high_sum_by_host
+|Looks for a set of one or more malicious child processes on a single host (experimental).
+|https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L64[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_path_activity.json[image:images/link.svg[A link icon]]
+
+|problem_child_rare_process_by_user
+|Looks for a process that has been classified as malicious where the user context is unusual and does not commonly manifest malicious process activity (experimental).
+|https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L106[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
+
+|problem_child_rare_process_by_parent
+|Looks for rare malicious child processes spawned by a parent process (experimental).
+|https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L141[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_process_creation.json[image:images/link.svg[A link icon]]
+
+|problem_child_high_sum_by_user
+|Looks for a set of one or more malicious processes, started by the same user (experimental).
+|https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L177[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_script.json[image:images/link.svg[A link icon]]
+
+|problem_child_high_sum_by_parent
+|Looks for a set of one or more malicious child processes spawned by the same parent process (experimental).
+|https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L219[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_service.json[image:images/link.svg[A link icon]]
+
+|v3_windows_anomalous_user_name
+|Rare and unusual users that are not normally active may indicate unauthorized changes or activity by an unauthorized user which may be credentialed access or lateral movement.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
+
+|v3_windows_rare_metadata_process
+|Looks for anomalous access to the metadata service by an unusual process. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
+
+|v3_windows_rare_metadata_user
+|Looks for anomalous access to the metadata service by an unusual user. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
+
+|v3_windows_rare_user_runas_event
+|Unusual user context switches can be due to privilege escalation.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
+
+|v3_windows_rare_user_type10_remote_login
+|Unusual RDP (remote desktop protocol) user logins can indicate account takeover or credentialed access.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
+
+|===
+// end::security-windows-jobs[]
 // end::siem-jobs[]

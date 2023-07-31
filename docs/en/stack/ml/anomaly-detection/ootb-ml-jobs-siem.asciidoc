@@ -404,6 +404,12 @@ they are listed for each job.
 
 // tag::security-integrations-jobs[]
 
+*Domain Generation Algorithm (DGA) Detection (Integration)*
+
+ML solution package to detect domain generation algorithm (DGA) activity in your network data. Requires a Platinum subscription.
+
+To download, see the https://docs.elastic.co/integrations/dga[documentation].
+
 |===
 |Name |Description |Job |Datafeed
 
@@ -411,6 +417,17 @@ they are listed for each job.
 |Detect domain generation algorithm (DGA) activity in your network data.
 |https://github.com/elastic/integrations/blob/{branch}/packages/dga/kibana/ml_module/dga-ml.json[image:images/link.svg[A link icon]]
 |https://github.com/elastic/integrations/blob/{branch}/packages/dga/kibana/ml_module/dga-ml.json[image:images/link.svg[A link icon]]
+
+|===
+
+*Living off the Land Attack (LotL) Detection (Integration)*
+
+ML solution package to detect Living off the Land (LotL) attacks in your environment. Requires a Platinum subscription. (Also known as ProblemChild).
+
+To download, see the https://docs.elastic.co/integrations/problemchild[documentation].
+
+|===
+|Name |Description |Job |Datafeed
 
 |problem_child_rare_process_by_host
 |Looks for a process that has been classified as malicious on a host that does not commonly manifest malicious process activity (experimental).
@@ -442,7 +459,18 @@ they are listed for each job.
 |https://github.com/elastic/integrations/blob/{branch}/packages/problemchild/kibana/ml_module/problemchild-ml.json#L219[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_service.json[image:images/link.svg[A link icon]]
 
+|===
+
 // ded
+
+*Data Exfiltration Detection (DED) (Integration)*
+
+ML package to detect data exfiltration in your network and file data.
+
+To download, see the https://docs.elastic.co/integrations/ded[documentation].
+
+|===
+|Name |Description |Job |Datafeed
 
 |high-sent-bytes-destination-geo-country_iso_code
 |Detects data exfiltration to an unusual geo-location (by country iso code).
@@ -479,7 +507,18 @@ they are listed for each job.
 |https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L268[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
+|===
+
 // lmd
+
+*Data Exfiltration Detection (DED) (Integration)*
+
+ML package to detect lateral movement based on file transfer activity and Windows RDP events.
+
+To download, see the https://docs.elastic.co/integrations/lmd[documentation].
+
+|===
+|Name |Description |Job |Datafeed
 
 |high-count-remote-file-transfer
 |Detects unusually high file transfers to a remote host in the network.

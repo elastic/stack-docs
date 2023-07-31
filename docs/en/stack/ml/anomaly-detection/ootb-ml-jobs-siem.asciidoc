@@ -482,58 +482,58 @@ they are listed for each job.
 // lmd
 
 |high-count-remote-file-transfer
-|Detects data exfiltration to an unusual geo-location (by country iso code).
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L44[image:images/link.svg[A link icon]]
+|Detects unusually high file transfers to a remote host in the network.
+|https://github.com/elastic/integrations/blob/{branch}/packages/lmd/kibana/ml_module/lmd-ml.json#L24[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
 
 |high-file-size-remote-file-transfer
-|Detects data exfiltration to an unusual geo-location (by IP address).
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L83[image:images/link.svg[A link icon]]
+|Detects unusually high size of files shared with a remote host in the network.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L58[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
 
 |rare-file-extension-remote-transfer
 |Detects data exfiltration to an unusual destination port.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L119[image:images/link.svg[A link icon]]
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L92[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
 
-|rare-file-extension-remote-transfer
-|Detects data exfiltration to an unusual geo-location (by region name).
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L156[image:images/link.svg[A link icon]]
+|rare-file-path-remote-transfer
+|Detects unusual folders and directories on which a file is transferred.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L126[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
 
 |high-mean-rdp-session-duration
-|Detects data exfiltration activity by identifying high bytes written to an external device.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L194[image:images/link.svg[A link icon]]
+|Detects unusually high mean of RDP session duration.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L160[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |high-var-rdp-session-duration
-|Detects data exfiltration activity by identifying a file write started by a rare process to an external device.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L231[image:images/link.svg[A link icon]]
+|Detects unusually high variance in RDP session duration.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L202[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |high-sum-rdp-number-of-processes
-|Detects data exfiltration activity by identifying high bytes written to an external device via Airdrop.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L268[image:images/link.svg[A link icon]]
+|Detects unusually high number of processes started in a single RDP session.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L244[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |unusual-time-weekday-rdp-session-start
-|Detects data exfiltration activity by identifying high bytes written to an external device via Airdrop.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L268[image:images/link.svg[A link icon]]
+|Detects an RDP session started at an usual time or weekday.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L286[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |high-rdp-distinct-count-source-ip-for-destination
-|Detects data exfiltration activity by identifying high bytes written to an external device via Airdrop.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L268[image:images/link.svg[A link icon]]
+|Detects a high count of source IPs making an RDP connection with a single destination IP.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L326[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |high-rdp-distinct-count-destination-ip-for-source
-|Detects data exfiltration activity by identifying high bytes written to an external device via Airdrop.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L268[image:images/link.svg[A link icon]]
+|Detects a high count of destination IPs establishing an RDP connection with a single source IP.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L360[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |high-mean-rdp-process-args
-|Detects data exfiltration activity by identifying high bytes written to an external device via Airdrop.
-|https://github.com/elastic/integrations/blob/{branch}/packages/ded/kibana/ml_module/ded-ml.json#L268[image:images/link.svg[A link icon]]
+|Detects unusually high number of process arguments in an RDP session.
+|https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json#L394[image:images/link.svg[A link icon]]
 |https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |===

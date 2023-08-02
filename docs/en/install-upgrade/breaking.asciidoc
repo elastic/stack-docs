@@ -5,12 +5,14 @@ Before you upgrade, you must review the breaking changes for each product you
 use and make the necessary changes so your code is compatible with {version}.
 
 // tag::breaking-changes-links[]
-** <<apm-breaking-changes,APM {version} breaking changes>>
-** <<beats-breaking-changes,Beats {version} breaking changes>>
-** <<elasticsearch-breaking-changes,{es} {version} breaking changes>>
-** <<security-breaking-changes,{elastic-sec} {version} breaking changes>>
-** <<kibana-breaking-changes,Kibana {version} breaking changes>>
-** <<logstash-breaking-changes,{ls} {version} breaking changes>>
+** {apm-guide-ref}/apm-breaking.html[APM breaking changes]
+** {beats-ref}/breaking-changes.html[{beats} breaking changes]
+** {ref}/breaking-changes.html[{es} migration guide]
+** {security-guide}/release-notes.html[{elastic-sec} release notes]
+** {enterprise-search-ref}/release-notes-{version}.html[{ents} release notes]
+** {fleet-guide}/release-notes.html[{fleet} and {agent} release notes]
+** {kibana-ref}/release-notes.html[{kib} release notes]
+** {logstash-ref}/breaking-changes.html[{ls} breaking changes]
 // end::breaking-changes-links[]
 
 // tag::breaking-changes-admon[]
@@ -24,74 +26,3 @@ Upgrade Assistant provides information about which {dfeeds} need to be updated.
 ===============================
 // end::breaking-changes-admon[]
 
-[[apm-breaking-changes]]
-=== APM breaking changes
-++++
-<titleabbrev>APM</titleabbrev>
-++++
-
-This list summarizes the most important breaking changes in APM.
-For the complete list, go to {apm-guide-ref}/apm-breaking.html[APM breaking changes].
-
-include::{apm-repo-dir}/apm-breaking.asciidoc[tag=notable-v8-breaking-changes]
-
-[[beats-breaking-changes]]
-=== Beats breaking changes
-++++
-<titleabbrev>Beats</titleabbrev>
-++++
-
-This list summarizes the most important breaking changes in Beats.
-For the complete list, go to {beats-ref}/breaking-changes.html[Beats breaking changes].
-
-include::{beats-repo-dir}/release-notes/breaking/breaking-8.0.asciidoc[tag=notable-breaking-changes]
-
-
-[[elasticsearch-breaking-changes]]
-=== {es} breaking changes
-[subs="attributes"]
-++++
-<titleabbrev>{es}</titleabbrev>
-++++
-
-This list summarizes the most important breaking changes in {es} {version}. For
-the complete list, go to {ref}/breaking-changes.html[{es} breaking changes].
-
-// include::{es-repo-dir}/migration/migrate_8_2.asciidoc[tag=notable-breaking-changes]
-
-[[security-breaking-changes]]
-=== {elastic-sec} breaking changes
-[subs="attributes"]
-++++
-<titleabbrev>{elastic-sec}</titleabbrev>
-++++
-
-This list summarizes the most important breaking changes in {elastic-sec} {version}. For
-the complete list, go to {security-guide-all}/8.9/release-notes-header-8.9.0.html#breaking-changes-8.9.0[{elastic-sec} breaking changes].
-
-include::{security-repo-dir}/release-notes/8.9.asciidoc[tag=breaking-changes] 
-
-[[kibana-breaking-changes]]
-=== {kib} breaking changes
-[subs="attributes"]
-++++
-<titleabbrev>{kib}</titleabbrev>
-++++
-
-This list summarizes the most important breaking changes in {kib} {version}. For
-the complete list, go to {kibana-ref}/release-notes-8.0.0.html#breaking-changes-8.0.0[{kib} breaking changes].
-
-include::{kib-repo-dir}/CHANGELOG.asciidoc[tag=notable-breaking-changes]
-
-[[logstash-breaking-changes]]
-=== {ls} breaking changes
-[subs="attributes"]
-++++
-<titleabbrev>{ls}</titleabbrev>
-++++
-
-This list summarizes the most important breaking changes in {ls} {version}. For
-the complete list, go to
-{logstash-ref}/breaking-changes.html[Logstash breaking changes].
-
-include::{ls-repo-dir}/static/breaking-changes-80.asciidoc[tag=notable-breaking-changes]

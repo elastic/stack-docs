@@ -389,18 +389,14 @@ they are listed for each job.
 [[security-integrations-jobs]]
 == Security: Elastic Integrations
 
-Anomaly detection jobs for Windows host-based threat hunting and detection.
+https://docs.elastic.co/integrations[Elastic Integrations] are a streamlined way to add Elastic assets to your environment, such as data ingestion, transforms, and in this case, machine learning capabilities for Security.
 
-In the {ml-app} app, these configurations are available only when data exists
-that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json[manifest file].
-In the {security-app}, it looks in the {data-source} specified in the
-{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
-for data that matches the query.
+The following Integrations are for the Security UEBA (user and entity behavioral analytics), which can help detect and alert when there is related suspicious activity in your environment.
 
-If there are additional requirements such as installing the Windows System
-Monitor (Sysmon) or auditing process creation in the Windows security event log,
-they are listed for each job.
+* https://docs.elastic.co/integrations/ded[Data Exfiltration Detection]
+* https://docs.elastic.co/integrations/dga[Domain Generation Algorithm Detection]
+* https://docs.elastic.co/integrations/lmd[Lateral Movement Detection]
+* https://docs.elastic.co/integrations/problemchild[Living off the Land Attack Detection]
 
 // tag::security-integrations-jobs[]
 

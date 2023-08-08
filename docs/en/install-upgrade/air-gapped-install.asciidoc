@@ -27,6 +27,9 @@ Some components of the {stack} require additional configuration and local depend
 ** <<air-gapped-k8s-os-elastic-endpoint-artifact-repository>>
 ** <<air-gapped-k8s-os-ironbank-secure-images>>
 
+// Elastic Cloud Enterprise
+* <<air-gapped-ece>>
+
 // Appendices
 * <<air-gapped-elastic-package-registry-example>>
 * <<air-gapped-elastic-artifact-registry-example>>
@@ -205,6 +208,12 @@ Just like the {artifact-registry}. A custom container needs to be created follow
 ==== 2.5. Ironbank Secure Images for Elastic
 
 Besides the public link:https://www.docker.elastic.co[Elastic container repository], most {stack} container images are also available in Platform One's link:https://ironbank.dso.mil/repomap?vendorFilters=Elastic&page=1&sort=1[Iron Bank].
+
+[discrete]
+[[air-gapped-ece]]
+==== 3.0 {ece}
+
+To install {ece} in an air-gapped environment you'll need to host your own <<air-gapped-elastic-package-registry>>. Refer to the {ece-ref}/ece-install-offline.html[ECE offline install instructions] for details.
 
 [discrete]
 [[air-gapped-elastic-package-registry-example]]

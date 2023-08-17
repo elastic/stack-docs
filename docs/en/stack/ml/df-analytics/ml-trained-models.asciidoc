@@ -12,14 +12,6 @@ information about this process, see <<ml-supervised-workflow>> and
 <<ml-inference-class,{infer} for {classification}>> and 
 <<ml-inference-reg,{regression}>>.
 
-You can also supply trained models that are not created by {dfanalytics-job} but
-adhere to the appropriate
-https://github.com/elastic/ml-json-schemas[JSON schema]. Likewise, you can use
-third-party models to perform natural language processing (NLP) tasks. If you
-want to use these trained models in the {stack}, you must store them in {es}
-documents by using the {ref}/put-trained-models.html[create trained models API].
-For more information about NLP models, refer to <<ml-nlp-deploy-models>>.
-
 In {kib}, you can view and manage your trained models in
 *{stack-manage-app}* > *Alerts and Insights* > *{ml-app}* and
 *{ml-app}* > *Model Management*.
@@ -27,6 +19,20 @@ In {kib}, you can view and manage your trained models in
 Alternatively, you can use APIs like
 {ref}/get-trained-models.html[get trained models] and
 {ref}/delete-trained-models.html[delete trained models].
+
+[discrete]
+[[deploy-dfa-trained-models]]
+== Deploying trained models
+
+include::ml-dfa-shared.asciidoc[tag=dfa-deploy-model]
+
+You can also supply trained models that are not created by {dfanalytics-job} but
+adhere to the appropriate
+https://github.com/elastic/ml-json-schemas[JSON schema]. Likewise, you can use
+third-party models to perform natural language processing (NLP) tasks. If you
+want to use these trained models in the {stack}, you must store them in {es}
+documents by using the {ref}/put-trained-models.html[create trained models API].
+For more information about NLP models, refer to <<ml-nlp-deploy-models>>.
 
 
 [discrete]

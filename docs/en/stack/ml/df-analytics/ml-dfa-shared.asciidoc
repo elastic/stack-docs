@@ -1,3 +1,40 @@
+tag::dfa-deploy-model[]
+. To deploy {dfanalytics} model in a pipeline, navigate to  **Machine Learning** > 
+**Model Management** > **Trained models** in {kib}.
+
+. Find the model you want to deploy in the list and click **Deploy model** in 
+the **Actions** menu.
++
+--
+[role="screenshot"]
+image::images/ml-dfa-trained-models-ui.png["The trained models UI in {kib}"]
+--
+
+. Create an {infer} pipeline to be able to use the model against new data 
+through the pipeline. Add a name and a description or use the default values.
++
+--
+[role="screenshot"]
+image::images/ml-dfa-inference-pipeline.png["Creating an inference pipeline"]
+--
+
+. Configure the pipeline processors or use the default settings.
++
+--
+[role="screenshot"]
+image::images/ml-dfa-inference-processor.png["Configuring an inference processor"]
+--
+. Configure to handle ingest failures or use the default settings. 
+
+. (Optional) Test your pipeline by running a simulation of the pipeline to 
+  confirm it produces the anticipated results.
+
+. Review the settings and click **Create pipeline**.
+
+The model is deployed and ready to use through the {infer} pipeline.
+end::dfa-deploy-model[]
+
+
 tag::dfa-evaluation-intro[]
 Using the {dfanalytics} features to gain insights from a data set is an 
 iterative process. After you defined the problem you want to solve, and chose 
@@ -18,10 +55,8 @@ the ground truth. The {evaluatedf-api} evaluates the performance of the
 end::dfa-evaluation-intro[]
 
 tag::dfa-inference[]
-{infer-cap} is a {ml} feature that enables you to use supervised {ml} processes 
-– like {regression} or {classification} – not only as a batch analysis but in a 
-continuous fashion. This means that {infer} makes it possible to use 
-<<ml-trained-models,trained {ml} models>> against incoming data.
+{infer-cap} enables you to use <<ml-trained-models,trained {ml} models>> against 
+incoming data in a continuous fashion.
 
 For instance, suppose you have an online service and you would like to predict 
 whether a customer is likely to churn. You have an index with historical data – 
@@ -43,7 +78,7 @@ are indexed into the destination index.
 
 Check the {ref}/inference-processor.html[{infer} processor] and 
 {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
-learn more about the feature.
+learn more.
 end::dfa-inference-processor[]
 
 tag::dfa-inference-aggregation[]
@@ -58,7 +93,7 @@ to set up a processor in the ingest pipeline.
 Check the 
 {ref}/search-aggregations-pipeline-inference-bucket-aggregation.html[{infer} bucket aggregation] 
 and {ref}/ml-df-analytics-apis.html[the {ml} {dfanalytics} API documentation] to 
-learn more about the feature.
+learn more.
 
 NOTE: If you use trained model aliases to reference your trained model in an 
 {infer} processor or {infer} aggregation, you can replace your trained model 

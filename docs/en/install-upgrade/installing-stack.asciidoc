@@ -9,8 +9,44 @@ Kibana {version}, and Logstash {version}.
 If you're upgrading an existing installation, see <<upgrading-elastic-stack, Upgrading the Elastic Stack>> for information about how to ensure compatibility with {version}.
 
 [discrete]
+[[network-requirements]]
+=== Network requirements
+
+// https://support.elastic.dev/knowledge/view/CfT70cu9
+
+The following ports need to be open for components of the Elastic Stack.
+
+[cols="1,1,1"]
+|===
+|Default ports |Access type| Component
+
+|5601
+|HTTP
+|{kib}
+
+|8200
+|HTTP
+|APM Server
+
+|9200-9300
+|HTTP
+|{es} REST API
+
+|9300-9400
+|TCP
+|Transport interfact used for communication between nodes in a cluster.
+
+|9600-9700
+|HTTP
+|{ls}
+
+|===
+
+For more information on supported network configurations, see {ingest-guide}[{es} Ingest Architectures].
+
+[discrete]
 [[install-order-elastic-stack]]
-=== Installation Order
+=== Installation order
 
 Install the Elastic Stack products you want to use in the following order:
 

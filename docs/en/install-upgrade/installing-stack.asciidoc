@@ -12,33 +12,33 @@ If you're upgrading an existing installation, see <<upgrading-elastic-stack, Upg
 [[network-requirements]]
 === Network requirements
 
-// https://support.elastic.dev/knowledge/view/CfT70cu9
+To install the Elastic Stack on-premises, the following ports need to be open for each component.
 
-The following ports need to be open for components of the Elastic Stack.
-
-[cols="1,1,1"]
+[cols="1,1"]
 |===
-|Default port |Access type| Component
+|Default port | Component
+
+| 5044
+| {agent} → {ls}\n
+  {beats} → {ls}
 
 |5601
-|HTTP
-|{kib}
+|{kib}\n
+ {agent} → {fleet}\n
+ {fleet-server} → {fleet}
 
 |8200
-|HTTP
-|APM Server
+|{agent} → {fleet-server}\n
+  APM Server
 
 |9200-9300
-|HTTP
 |{es} REST API
 
 |9300-9400
-|TCP
 |{es} node transport and communication 
 
 |9600-9700
-|HTTP
-|{ls}
+|{ls} REST API
 
 |===
 

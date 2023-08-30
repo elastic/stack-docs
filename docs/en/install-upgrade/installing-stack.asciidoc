@@ -9,8 +9,52 @@ Kibana {version}, and Logstash {version}.
 If you're upgrading an existing installation, see <<upgrading-elastic-stack, Upgrading the Elastic Stack>> for information about how to ensure compatibility with {version}.
 
 [discrete]
+[[network-requirements]]
+=== Network requirements
+
+To install the Elastic Stack on-premises, the following ports need to be open
+for each component.
+
+[cols="1,1"]
+|===
+|Default port | Component
+
+|3002
+|{ents}
+
+|5044
+|{agent} → {ls} +
+{beats} → {ls}
+
+|5601
+|{kib} +
+{agent} → {fleet} +
+{fleet-server} → {fleet}
+
+|8220
+|{agent} → {fleet-server} +
+APM Server
+
+|9200-9300
+|{es} REST API
+
+|9300-9400
+|{es} node transport and communication 
+
+|9600-9700
+|{ls} REST API
+
+|===
+
+Each Elastic integration has its own ports and dependencies. Verify these ports
+and dependencies before installation. Refer to
+{integrations-docs}[{integrations}].
+
+For more information on supported network configurations, refer to {ingest-guide}[{es} Ingest Architectures].
+
+[discrete]
 [[install-order-elastic-stack]]
-=== Installation Order
+=== Installation order
 
 Install the Elastic Stack products you want to use in the following order:
 

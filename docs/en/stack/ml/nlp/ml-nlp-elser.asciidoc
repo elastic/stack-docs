@@ -335,10 +335,22 @@ https://www.elastic.co/blog/may-2023-launch-information-retrieval-elasticsearch-
 
 
 [discrete]
-[[elser-hw-benchamrks]]
+[[elser-hw-benchmarks]]
 === Hardware benchmarks
 
-Two data sets were utilized to evaluate the performance of ELSER in different 
+IMPORTANT: While the goal is to create a model that is as performant as 
+possible, retrieval accuracy always take precedence over speed, this is one of 
+the design principles of ELSER. Consult with the tables below to learn more 
+about the expected model performance. The values refer to operations performed 
+on two data sets and different hardware configurations. Your data set has an 
+impact on the model performance. Run tests on your own data to have a more 
+realistic view on the model performance for your use case.
+
+
+[discrete]
+==== ELSER v1
+
+Two data sets were utilized to evaluate the performance of ELSER v1 in different 
 hardware configurations: `msmarco-long-light` and `arguana`.
 
 |==============================================================================================================

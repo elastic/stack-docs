@@ -25,8 +25,9 @@ are learned to co-occur frequently within a diverse set of training data. The
 terms that the text is expanded into by the model _are not_ synonyms for the 
 search terms; they are learned associations. These expanded terms are weighted 
 as some of them are more significant than others. Then the {es} 
-{ref}/rank-features.html[sparse vector (or rank features) field type] is used to 
-store the terms and weights at index time, and to search against later.
+{ref}/sparse-vector.html[sparse vector] 
+(or {ref}/rank-features.html[rank features]) field type is used to store the 
+terms and weights at index time, and to search against later.
 
 
 [discrete]
@@ -113,7 +114,7 @@ image::images/ml-nlp-deployment-id-elser-v2.png[alt="Deploying ELSER",align="cen
 
 
 [discrete]
-[[enterprise-search]]
+[[elasticsearch]]
 === Using the Indices page in {ents}
 
 You can also download and deploy ELSER to an {infer} pipeline directly from the
@@ -125,10 +126,51 @@ to use ELSER.
 3. Navigate to the **Pipelines** tab.
 4. Under **{ml-app} {infer-cap} Pipelines**, click the **Deploy** button to 
 begin downloading the ELSER model. This may take a few minutes depending on your 
-network. Once it's downloaded, click the **Start single-threaded** button to 
+network. 
++
+--
+[role="screenshot"]
+image::images/ml-nlp-deploy-elser-v2-es.png[alt="Deploying ELSER in Elasticsearch",align="center"]
+--
+5. Once the model is downloaded, click the **Start single-threaded** button to 
 start the model with basic configuration or select the **Fine-tune performance** 
 option to navigate to the **Trained Models** page where you can configure the 
 model deployment.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-start-elser-v2-es.png[alt="Start ELSER in Elasticsearch",align="center"]
+--
+
+When your ELSER model is deployed and started, it is ready to be used in a 
+pipeline.
+
+
+[discrete]
+[[elasticsearch-ingest-pipeline]]
+==== Adding ELSER to an ingest pipeline
+
+To add ELSER to an ingest pipeline, you need to copy the default ingest 
+pipeline and then customize it according to your needs.
+
+1. Click **Copy and customize** under the **Unlock your custom pipelines** block 
+at the top of the page. If you don't do it, the **Add inference pipeline** 
+button will be disabled.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-pipeline-copy-customize.png[alt="Start ELSER in Elasticsearch",align="center"]
+--
+2. Under **{ml-app} {infer-cap} Pipelines**, click **Add inference pipeline**.
+3. Give a name to the pipeline, select ELSER from the list of trained ML models, 
+and click **Continue**.
+4. Select the source text field, define the target field, and click **Add** then 
+**Continue**.
+5. Review the index mappings updates. Click **Back** if you want to change the 
+mappings. Click **Continue** if you are satisfied with the updated index 
+mappings.
+6. You can optionally test your pipeline. Click **Continue**.
+7. **Create pipeline**.
 
 
 [discrete]
@@ -294,6 +336,23 @@ clicking **Reload examples**.
 [role="screenshot"]
 image::images/ml-nlp-elser-v2-test.png[alt="Testing ELSER",align="center"]
 
+
+[discrete]
+[[performance]]
+== Performance considerations
+
+* ELSER works best on small-to-medium sized fields that contain natural 
+language. For connector or web crawler use cases, this aligns best with fields 
+like _title_, _description_, _summary_, or _abstract_. As ELSER encodes the 
+first 512 tokens of a field, it may not be as good a match for `body_content` on 
+web crawler documents, or body fields resulting from extracting text from office 
+documents with connectors.
+* Larger documents take longer at ingestion time, and {infer} time per 
+document also increases the more fields in a document that need to be processed.
+* The more fields your pipeline has to perform inference on, the longer it takes 
+per document to ingest.
+
+To learn more about ELSER performance, refer to the <<elser-benchmarks>>.
 
 [discrete]
 [[further-readings]]

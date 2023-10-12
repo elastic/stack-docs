@@ -83,7 +83,7 @@ how to reindex your data through the pipeline.
 == Download and deploy ELSER
 
 You can download and deploy ELSER either from **{ml-app}** > **Trained Models**, 
-from **{ents}** > **Indices**, or by using the Dev Console.
+from **Search** > **Indices**, or by using the Dev Console.
 
 [discrete]
 [[trained-model]]
@@ -115,12 +115,12 @@ image::images/ml-nlp-deployment-id-elser-v2.png[alt="Deploying ELSER",align="cen
 
 [discrete]
 [[elasticsearch]]
-=== Using the Indices page in {ents}
+=== Using the search indices UI
 
-You can also download and deploy ELSER to an {infer} pipeline directly from the
-{ents} app.
+Alternatively, you can download and deploy ELSER to an {infer} pipeline using 
+the search indices UI.
 
-1. In {kib}, navigate to **{ents}** > **Indices**.
+1. In {kib}, navigate to **Search** > **Indices**.
 2. Select the index from the list that has an {infer} pipeline in which you want 
 to use ELSER.
 3. Navigate to the **Pipelines** tab.
@@ -154,8 +154,7 @@ To add ELSER to an ingest pipeline, you need to copy the default ingest
 pipeline and then customize it according to your needs.
 
 1. Click **Copy and customize** under the **Unlock your custom pipelines** block 
-at the top of the page. If you don't do it, the **Add inference pipeline** 
-button will be disabled.
+at the top of the page. This enables the **Add inference pipeline** button.
 +
 --
 [role="screenshot"]

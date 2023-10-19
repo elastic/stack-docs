@@ -22,16 +22,20 @@ running the older version.
 Before you start, <<upgrading-elastic-stack,take the upgrade preparation
 steps>>. When performing a <<rolling-upgrades, rolling upgrade>>:
 
-. Upgrade nodes that are **NOT** {ref}/modules-node.html#master-node[master-eligible] first. 
-You can retrieve a list of these nodes with `GET /_nodes/_all,master:false/_none` or by finding all the nodes configured with `node.master: false`.
+. Upgrade the data nodes first, tier-by-tier, starting with the frozen tier,
+then the cold tier, then the warm tier, then the hot tier, and finally any other
+data nodes which are not in a tier. Complete the upgrade for all nodes in each
+data tier before moving to the next. This ensures {ilm-init} can continue to
+move data through the tiers during the upgrade. You can get the list of nodes in
+a specific tier with a `GET /_nodes` request, for example:
+`GET /_nodes/data_frozen:true/_none`.
 
-. Upgrade nodes tier-by-tier, starting with the frozen tier.
-Complete the upgrade for all nodes in each data tier before moving to the next. 
-Upgrade the frozen tier, then the cold tier, then the warm tier, and upgrade the hot tier last. This ensures {ilm-init} can continue to move data through the tiers during the upgrade. You can get the list of nodes in a specific tier with a `GET /_nodes` request, 
-for example:  `GET /_nodes/data_frozen:true/_none`.
+. Upgrade all remaining nodes that are neither master-eligible nor data nodes.
+This includes dedicated ML nodes, dedicated ingest nodes, and dedicated
+coordinating nodes.
 
-. Upgrade the master-eligible nodes last. You can retrieve a list
-of these nodes with `GET /_nodes/master:true`.
+. Upgrade the master-eligible nodes last. You can retrieve a list of these nodes
+with `GET /_nodes/master:true/_none`.
 
 This order ensures that all nodes can join the cluster during the upgrade.
 Upgraded nodes can join a cluster with an older master, but older nodes cannot

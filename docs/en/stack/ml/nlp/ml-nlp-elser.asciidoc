@@ -385,6 +385,35 @@ The following sections provide information about how ELSER performs on different
 hardwares and compares the model performance to {es} BM25 and other strong 
 baselines such as Splade or OpenAI.
 
+[discrete]
+[[version-overview]]
+=== Version overview
+
+The ELSER model has two main versions: ELSER V2 and ELSER V1.
+ELSER V2 has a **platform specific** version that is designed to run on Linux 
+with an x86-64 CPU architecture and a **platform agnostic or portable** version 
+that can be run on any platform.
+
+
+==== ELSER V2
+
+The biggest change in ELSER V2 is the introduction of the first platform 
+specific ELSER model - that is, a model that can only run on Linux with an 
+x86-64 CPU architecture. The platform specific model is designed to work best on 
+newer Intel CPUs, but it works on AMD CPUs as well. It is recommended to use the 
+new platform specific Linux-x86-64 model for all new users of ELSER as it is 
+significantly faster than the platform agnostic (portable) model which can be 
+run on any platform. ELSER V2 produces significantly higher quality embeddings 
+than ELSER V1. Regardless of which ELSER V2 model you use (platform specific or 
+platform agnostic (portable)), the particular embeddings produced are the same.
+
+
+==== ELSER V1
+
+The initial version of the ELSER model was introduced in 8.9. However, ELSER V1 
+in {current} is more performant than the initial version due to the {es} 
+platform improvements.
+
 
 [discrete]
 [[elser-qualitative-benchmarks]]
@@ -395,26 +424,26 @@ Discounted Cumulative Gain (NDCG) which can handle multiple relevant documents
 and fine-grained document ratings. The metric is applied to a fixed-sized list 
 of retrieved documents which, in this case, is the top 10 documents (NDCG@10).
 
-The table below shows the performance of ELSER v2 compared to ELSER v1. ELSER v2 
+The table below shows the performance of ELSER V2 compared to ELSER V1. ELSER V2 
 has 10 wins, 1 draw, 1 loss and an average improvement in NDCG@10 of 2.5%.
 
-image::images/ml-nlp-elser-v1-v2.png[alt="ELSER v2 benchmarks compared to ELSER v1",align="center"]
-_NDCG@10 for BEIR data sets for ELSER v2 and ELSER v1  - higher values are better)_
+image::images/ml-nlp-elser-v1-v2.png[alt="ELSER V2 benchmarks compared to ELSER V1",align="center"]
+_NDCG@10 for BEIR data sets for ELSER V2 and ELSER V1  - higher values are better)_
 
-The next table shows the performance of ELSER v1 compared to {es} BM25 with an 
+The next table shows the performance of ELSER V1 compared to {es} BM25 with an 
 English analyzer broken down by the 12 data sets used for the evaluation. ELSER 
-v1 has 10 wins, 1 draw, 1 loss and an average improvement in NDCG@10 of 17%.
+V1 has 10 wins, 1 draw, 1 loss and an average improvement in NDCG@10 of 17%.
 
-image::images/ml-nlp-elser-ndcg10-beir.png[alt="ELSER v1 benchmarks",align="center"]
-_NDCG@10 for BEIR data sets for BM25 and ELSER v1  - higher values are better)_
+image::images/ml-nlp-elser-ndcg10-beir.png[alt="ELSER V1 benchmarks",align="center"]
+_NDCG@10 for BEIR data sets for BM25 and ELSER V1  - higher values are better)_
 
-The following table compares the average performance of ELSER v1 to some other 
+The following table compares the average performance of ELSER V1 to some other 
 strong baselines. The OpenAI results are separated out because they use a 
 different subset of the BEIR suite.
 
-image::images/ml-nlp-elser-average-ndcg.png[alt="ELSER v1 average performance compared to other baselines",align="center"]
+image::images/ml-nlp-elser-average-ndcg.png[alt="ELSER V1 average performance compared to other baselines",align="center"]
 _Average NDCG@10 for BEIR data sets vs. various high quality baselines (higher_ 
-_is better). OpenAI chose a different subset, ELSER v1 results on this set_ 
+_is better). OpenAI chose a different subset, ELSER V1 results on this set_ 
 _reported separately._
 
 To read more about the evaluation details, refer to 
@@ -433,9 +462,48 @@ on two data sets and different hardware configurations. Your data set has an
 impact on the model performance. Run tests on your own data to have a more 
 realistic view on the model performance for your use case.
 
+[discrete]
+==== Summary
+
+Overall the platform specific V2 model ingested at a max rate of 25.90 docs/s, 
+compared with the ELSER V1 max rate of 13.65 docs/s from the ELSER V1 benchamrk, 
+resulting in a 90% increase in throughput.
+
+Furthermore, a significant performance improvement is found in ELSER V1 on 8.11, 
+when compared to 8.9, with maximum throughputs of 16.13 and 13.65 docs/s 
+respectively.
+
+The performance of virtual cores (that is, when the number of allocations is 
+greater than half of the vCPUs) has increased. Previously, the increase in 
+performance between 8 and 16 allocations was around 7%. It has increased to 17% 
+(ELSER V1 on 8.11) and 19.5% (for ELSER V2 platform specific).
+
+image::images/ml-nlp-elser-bm-summary.png[alt="Summary of ELSER V1 and V2 benchmark reports",align="center"]
+
+
 
 [discrete]
-==== ELSER v1
+==== ELSER V2
+
+**The platform specific** results are similar to the results of the ELSER V1 
+benchmarking report you find below. You can see nearly linear growth up until 8 
+allocations, after which performance improvements become smaller. In this case, 
+the performance at 8 allocations was 21.67, while the performance of 16 
+allocations was 25.90, indicating a 19.5% performance increase due to virtual 
+cores. This is significantly higher than the 7% increase due to virtual cores in 
+the previous report.
+
+image::images/ml-nlp-elser-v2-ps-bm-results.png[alt="ELSER V2 platform specific benchmarks",align="center"]
+
+**The platform agnostic** model performance of 8 and 16 allocations are 
+respectively 14.05 and 15.78, indicating a performance improvement due to 
+virtual cores of 12.3%.
+
+image::images/ml-nlp-elser-v2-pa-bm-results.png[alt="ELSER V2 platform agnostic benchmarks",align="center"]
+
+
+[discrete]
+==== ELSER V1
 
 Two data sets were utilized to evaluate the performance of ELSER v1 in different 
 hardware configurations: `msmarco-long-light` and `arguana`.

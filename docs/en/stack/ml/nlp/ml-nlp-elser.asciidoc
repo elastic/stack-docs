@@ -465,18 +465,17 @@ realistic view on the model performance for your use case.
 [discrete]
 ==== Summary
 
-Overall the platform specific V2 model ingested at a max rate of 25.90 docs/s, 
-compared with the ELSER V1 max rate of 13.65 docs/s from the ELSER V1 benchamrk, 
+Overall the platform specific V2 model ingested at a max rate of 26 docs/s, 
+compared with the ELSER V1 max rate of 14 docs/s from the ELSER V1 benchamrk, 
 resulting in a 90% increase in throughput.
 
 Furthermore, a significant performance improvement is found in ELSER V1 on 8.11, 
-when compared to 8.9, with maximum throughputs of 16.13 and 13.65 docs/s 
-respectively.
+when compared to 8.9, with maximum throughputs of 16 and 14 docs/s respectively.
 
 The performance of virtual cores (that is, when the number of allocations is 
 greater than half of the vCPUs) has increased. Previously, the increase in 
 performance between 8 and 16 allocations was around 7%. It has increased to 17% 
-(ELSER V1 on 8.11) and 19.5% (for ELSER V2 platform specific).
+(ELSER V1 on 8.11) and 20% (for ELSER V2 platform specific).
 
 image::images/ml-nlp-elser-bm-summary.png[alt="Summary of ELSER V1 and V2 benchmark reports",align="center"]
 
@@ -488,16 +487,16 @@ image::images/ml-nlp-elser-bm-summary.png[alt="Summary of ELSER V1 and V2 benchm
 **The platform specific** results are similar to the results of the ELSER V1 
 benchmarking report you find below. You can see nearly linear growth up until 8 
 allocations, after which performance improvements become smaller. In this case, 
-the performance at 8 allocations was 21.67, while the performance of 16 
-allocations was 25.90, indicating a 19.5% performance increase due to virtual 
+the performance at 8 allocations was 22, while the performance of 16 
+allocations was 26, indicating a 20% performance increase due to virtual 
 cores. This is significantly higher than the 7% increase due to virtual cores in 
 the previous report.
 
 image::images/ml-nlp-elser-v2-ps-bm-results.png[alt="ELSER V2 platform specific benchmarks",align="center"]
 
 **The platform agnostic** model performance of 8 and 16 allocations are 
-respectively 14.05 and 15.78, indicating a performance improvement due to 
-virtual cores of 12.3%.
+respectively 14 and 16, indicating a performance improvement due to virtual 
+cores of 12%.
 
 image::images/ml-nlp-elser-v2-pa-bm-results.png[alt="ELSER V2 platform agnostic benchmarks",align="center"]
 

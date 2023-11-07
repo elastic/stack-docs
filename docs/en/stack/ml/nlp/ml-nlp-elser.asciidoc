@@ -78,6 +78,9 @@ one version which is optimized for Intel® silicon. The **Model Management** >
 **Trained Models** page shows you which version of ELSER v2 is recommended to 
 deploy based on your cluster's hardware.
 
+If you want to learn more about the ELSER V2 improvements, refer to 
+https://www.elastic.co/search-labs/introducing-elser-v2-part-1[this blog post].
+
 
 [discrete]
 [[upgrade-elser-v2]]
@@ -89,11 +92,10 @@ use v2 for search. This {ref}/semantic-search-elser.html[tutorial] shows you how
 to create an ingest pipeline with an {infer} processor that uses ELSER v2, and 
 how to reindex your data through the pipeline.
 
-Additionally, the `elasticearch-labs` GitHub repository contains an interactive https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/model-upgrades/upgrading-index-to-use-elser.ipynb[Python notebook] that walks through upgrading an index to ELSER v2.
+Additionally, the `elasticearch-labs` GitHub repository contains an interactive 
+https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/model-upgrades/upgrading-index-to-use-elser.ipynb[Python notebook] 
+that walks through upgrading an index to ELSER V2.
 
-// TO DO
-// If you want to learn more about the ELSER v2 improvements, refer to this blog 
-// post.
 
 [discrete]
 [[download-deploy-elser]]
@@ -456,6 +458,10 @@ performed on a 16vCPU machine, with all documents containing exactly 256 tokens.
 
 IMPORTANT: The length of the documents in your particular dataset will have a 
 significant impact on your throughput numbers.
+
+Refer to 
+https://www.elastic.co/search-labs/introducing-elser-v2-part-1[this blog post] 
+to learn more about ELSER V2 improved performance.
 
 image::images/ml-nlp-elser-bm-summary.png[alt="Summary of ELSER V1 and V2 benchmark reports",align="center"]
 

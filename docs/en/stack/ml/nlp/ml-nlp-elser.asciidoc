@@ -73,10 +73,10 @@ extension of the training data set, which includes high-quality question and
 answer pairs and the improved FLOPS regularizer which reduces the cost of 
 computing the similarity between a query and a document.
 
-ELSER v2 has two versions: one portable version which runs on any hardware and 
-one version which is optimized for Intel® silicon. The **Model Management** > 
-**Trained Models** page shows you which version of ELSER v2 is recommended to 
-deploy based on your cluster's hardware.
+ELSER v2 has two versions: one cross-platform version which runs on any hardware 
+and one version which is optimized for Intel® silicon. The 
+**Model Management** > **Trained Models** page shows you which version of ELSER 
+v2 is recommended to deploy based on your cluster's hardware.
 
 If you want to learn more about the ELSER V2 improvements, refer to 
 https://www.elastic.co/search-labs/introducing-elser-v2-part-1[this blog post].
@@ -103,6 +103,7 @@ that walks through upgrading an index to ELSER V2.
 
 You can download and deploy ELSER either from **{ml-app}** > **Trained Models**, 
 from **Search** > **Indices**, or by using the Dev Console.
+
 
 [discrete]
 [[trained-model]]
@@ -375,6 +376,7 @@ per document to ingest.
 
 To learn more about ELSER performance, refer to the <<elser-benchmarks>>.
 
+
 [discrete]
 [[further-readings]]
 == Further reading
@@ -382,36 +384,36 @@ To learn more about ELSER performance, refer to the <<elser-benchmarks>>.
 * {ref}/semantic-search-elser.html[Perform semantic search with ELSER]
 * https://www.elastic.co/blog/may-2023-launch-information-retrieval-elasticsearch-ai-model[Improving information retrieval in the Elastic Stack: Introducing Elastic Learned Sparse Encoder, our new retrieval model]
 
+
 [[elser-benchmarks]]
 == Benchmark information
 
 The following sections provide information about how ELSER performs on different 
 hardwares and compares the model performance to {es} BM25 and other strong 
-baselines such as Splade or OpenAI.
+baselines.
 
 
 [discrete]
 [[version-overview]]
 === Version overview
 
-ELSER V2 has a **platform specific** version that is designed to run only on 
-Linux with an x86-64 CPU architecture and a **platform agnostic or portable** 
-version that can be run on any platform.
+ELSER V2 has a **optimized** version that is designed to run only on Linux with 
+an x86-64 CPU architecture and a **cross-platform** version that can be run on 
+any platform.
 
 
 [discrete]
 ==== ELSER V2
 
 Besides the performance improvements, the biggest change in ELSER V2 is the 
-introduction of the first platform specific ELSER model - that is, a model that 
-can run only on Linux with an x86-64 CPU architecture. The platform specific 
+introduction of the first platform specific ELSER model - that is, a model 
+optimized to run only on Linux with an x86-64 CPU architecture. The optimized 
 model is designed to work best on newer Intel CPUs, but it works on AMD CPUs as 
-well. It is recommended to use the new platform specific Linux-x86-64 model for 
-all new users of ELSER as it is significantly faster than the platform agnostic 
-(portable) model which can be run on any platform. ELSER V2 produces 
-significantly higher quality embeddings than ELSER V1. Regardless of which ELSER 
-V2 model you use (platform specific or platform agnostic (portable)), the 
-particular embeddings produced are the same.
+well. It is recommended to use the new optimized Linux-x86-64 model for all new 
+users of ELSER as it is significantly faster than the cross-platform model which 
+can be run on any platform. ELSER V2 produces significantly higher quality 
+embeddings than ELSER V1. Regardless of which ELSER V2 model you use (optimized 
+or cross-platform), the particular embeddings produced are the same.
 
 
 [discrete]
@@ -446,15 +448,15 @@ realistic view on the model performance for your use case.
 [discrete]
 ==== ELSER V2
 
-Overall the platform specific V2 model ingested at a max rate of 26 docs/s, 
-compared with the ELSER V1 max rate of 14 docs/s from the ELSER V1 benchamrk, 
-resulting in a 90% increase in throughput.
+Overall the optimized V2 model ingested at a max rate of 26 docs/s, compared 
+with the ELSER V1 max rate of 14 docs/s from the ELSER V1 benchamrk, resulting 
+in a 90% increase in throughput.
 
 The performance of virtual cores (that is, when the number of allocations is 
 greater than half of the vCPUs) has increased. Previously, the increase in 
 performance between 8 and 16 allocations was around 7%. It has increased to 17% 
-(ELSER V1 on 8.11) and 20% (for ELSER V2 platform specific). These tests were 
-performed on a 16vCPU machine, with all documents containing exactly 256 tokens.
+(ELSER V1 on 8.11) and 20% (for ELSER V2 optimized). These tests were performed 
+on a 16vCPU machine, with all documents containing exactly 256 tokens.
 
 IMPORTANT: The length of the documents in your particular dataset will have a 
 significant impact on your throughput numbers.
@@ -465,7 +467,7 @@ to learn more about ELSER V2 improved performance.
 
 image::images/ml-nlp-elser-bm-summary.png[alt="Summary of ELSER V1 and V2 benchmark reports",align="center"]
 
-**The platform specific** results show a nearly linear growth up until 8 
+**The optimized model** results show a nearly linear growth up until 8 
 allocations, after which performance improvements become smaller. In this case, 
 the performance at 8 allocations was 22 docs/s, while the performance of 16 
 allocations was 26 docs/s, indicating a 20% performance increase due to virtual 
@@ -473,7 +475,7 @@ cores.
 
 image::images/ml-nlp-elser-v2-ps-bm-results.png[alt="ELSER V2 platform specific benchmarks",align="center"]
 
-**The platform agnostic** model performance of 8 and 16 allocations are 
+**The cross-platform** model performance of 8 and 16 allocations are 
 respectively 14 docs/s and 16 docs/s, indicating a performance improvement due 
 to virtual cores of 12%.
 

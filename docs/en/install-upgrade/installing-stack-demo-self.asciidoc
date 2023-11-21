@@ -5,14 +5,16 @@
 [[installing-stack-demo-self]]
 === Tutorial: Installing a self-managed {stack}
 
-This tutorial demonstrates how to install and configure the {stack} in a self-managed environment. The example sets up a three node {es} cluster, with {kib}, {fleet-server}, and {agent}, each on separate hosts.
+This tutorial demonstrates how to install and configure the {stack} in a secure, self-managed environment. Following these steps, you'll set up a three node {es} cluster, with {kib}, {fleet-server}, and {agent}, each on separate hosts. The {agent} will be configured with the System integration, enabling it to gather local system logs and metrics and deliver them into the {es} cluster. Finally, you'll view the system data in {kib}.
 
 These examples use hosts running Red Hat Enterprise Linux 8. The steps for other operating systems are similar, and can be found in the documentation linked from each section.
 
-It should take about an hour to complete all of these steps.
+It should take an hour or so to complete these steps.
 
-. <<install-stack-self-elasticsearch-primary>>
+. <<install-stack-self-elasticsearch-first>>
 . <<install-stack-self-elasticsearch-config>>
+. <<install-stack-self-elasticsearch-second>>
+. <<install-stack-self-elasticsearch-third>>
 
 [discrete]
 [[install-stack-self-prereq]]
@@ -24,10 +26,10 @@ To get started, you'll need the following:
 * On each host, a super user account with `sudo` privileges.
 
 [discrete]
-[[install-stack-self-elasticsearch-primary]]
-== Step 1: Set up the initial {es} node
+[[install-stack-self-elasticsearch-first]]
+== Step 1: Set up the first {es} node
 
-To begin, we'll use RPM to install {es} on the first host. This first {es} instance will serve as the master node.
+To begin, we'll use RPM to install {es} on the first host. This initial {es} instance will serve as the master node.
 
 . Create a working directory for the installation package:
 +
@@ -123,7 +125,7 @@ If all is well, the command returns a response like this:
 
 [discrete]
 [[install-stack-self-elasticsearch-config]]
-== Step 2: Configure the initial {es} node for connectivity
+== Step 2: Configure the first {es} node for connectivity
 
 Before moving ahead to configure {es} instances, we'll need to update the {es} configuration on this first node so that other hosts are able to connect to it. This is done by updating the settings in the `elasticsearch.yml` file. For details about all available settings refer to {ref}/settings.html[Configuring {es}].
 
@@ -151,7 +153,7 @@ In a terminal, run `ifconfig` and copy the value for the host inet IP address.
 
 . Reopen the configuration file for editing.
 
-. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied.
+. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
 +
 [source,shell]
 ----
@@ -178,19 +180,173 @@ TIP: You can find details about the `network.host` and `transport.host` settings
 sudo systemctl restart elasticsearch
 ----
 
-. Finally, check the status of your {es} instanace. Log into the {es} node through a separate terminal instance and tail the {es} instance log file:
+. Finally, check the status of your {es} instance:
++
+[source,shell]
+----
+sudo systemctl status elasticsearch
+----
++
+The output should confirm that {es} started successfully.
++
+In case you'd like more detailed information, you can log into the {es} node through a separate terminal instance and tail the {es} instance log file:
 +
 [source,shell]
 ----
 sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
 ----
 
-. In the log file, look for an entry like `current.health="GREEN"` to confirm that {es} is running as expected. In the event of any issues, the log will contain helpful diagnostic information. You can refer to the {es} {ref}/troubleshooting.html[Troubleshooting] documentation for other tips.
+. In the log file, look for an entry like `current.health="GREEN"` to confirm that {es} is running as expected. In the event of any issues, the log will contain helpful diagnostic information. You can also refer to the {es} {ref}/troubleshooting.html[Troubleshooting] documentation for many other problem solving tips.
 
 [discrete]
-[[install-stack-self-elasticsearch-secondary]]
+[[install-stack-self-elasticsearch-second]]
 == Step 3: Set up a second {es} node
 
-next
+To set up a second {es} node, the initial steps are the same as those you followed for <<install-stack-self-elasticsearch-first>>.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Download the {es} RPM and checksum file:
++
+["source","sh",subs="attributes"]
+----
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm.sha512
+----
+
+. Check the SHA of the downloaded RPM:
++
+["source","sh",subs="attributes"]
+----
+shasum -a 512 -c elasticsearch-{version}-x86_64.rpm.sha512
+----
+
+. Run the {es} install command:
++
+["source","sh",subs="attributes"]
+----
+sudo rpm --install elasticsearch-{version}-x86_64.rpm
+----
++
+Unlike the setup for the first {es} node, in this case you don't need to copy the output of the install command, since these settings will be updated in a later step.
+
+. Enable {es} to run as a service:
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+----
+
+. To enable this second {es} node to connect to the first, you need to configure an enrollment token. You can find details about these steps in {ref}/rpm.html#_reconfigure_a_node_to_join_an_existing_cluster_2[Reconfigure a node to join an existing cluster] and also in {ref}/add-elasticsearch-nodes.html#_enroll_nodes_in_an_existing_cluster_5[Enroll nodes in an existing cluster].
++
+Return to your terminal shell into the first {es} node.
+
+. Generate a node enrollment token:
++
+[source,shell]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
+----
+
+. Copy the generated enrollment token from the command output.
+
+. In the terminal shell for your second {es} node, pass the enrollment token as a parameter to the `elasticsearch-reconfigure-node` tool:
++
+[source,shell]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token <enrollment-token>
+----
++
+In the command, replace `<enrollment-token` with the `elastic` generated token that you copied.
+
+. Answer the `Do you want to continue` prompt with `yes` (`y`). The new {es} node will be reconfigured.
+
+. Open the second {es} instance configuration file in a text editor:
++
+["source","sh"]
+----
+sudo vim /etc/elasticsearch/elasticsearch.yml
+----
++
+Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool, certain settings have been updated. For example, the `transport.host: 0.0.0.0` setting is already uncommented.
+
+. In the configuration file, uncomment the line `#cluster.name: my-application` and set it to match the name you specified for the first {es} node:
++
+[source,shell]
+----
+cluster.name: elasticsearch-demo
+----
+
+. Save your changes and close the editor.
+
+. As with the first {es} node, we'll need to set up {es} to run on a routable, external IP address.
++
+In a terminal, run `ifconfig` and copy the value for the host inet IP address.
+
+. Reopen the configuration file for editing.
+
+. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
++
+[source,shell]
+----
+network.host: 10.128.0.84
+----
+
+. Save your changes and close the editor.
+
+. Start {es} on the second node:
++
+[source,shell]
+----
+sudo systemctl start elasticsearch.service
+----
+
+. OPTIONALLY, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and tail the {es} log file:
++
+[source,shell]
+----
+sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
+----
+
+. Notice in the log file some helpful diagnostics, such as:
++
+* `Security is enabled.`
+* `Profiling is enabled`
+* `using discovery type [multi-node]``
+* `intialized`
+* `starting ...`
++
+After a minute or so, the log should show a message like:
++
+[source,shell]
+----
+[<hostname2>] master node changed {previous [], current [<hostname1>...]}
+----
++
+Here, `hostname1` is your first {es} instance node, and `hostname2` is your second {es} instance node.
++
+The message indicates that the second {es} node has successfully contacted the initial {es} node and joined the cluster.
+
+[discrete]
+[[install-stack-self-elasticsearch-third]]
+== Step 4: Set up a third {es} node
+
+To set up your third {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>.
+
+
+
 
 

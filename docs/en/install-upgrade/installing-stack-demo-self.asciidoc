@@ -1,0 +1,196 @@
+// for testing:
+:version: 8.11.1
+
+
+[[installing-stack-demo-self]]
+=== Tutorial: Installing a self-managed {stack}
+
+This tutorial demonstrates how to install and configure the {stack} in a self-managed environment. The example sets up a three node {es} cluster, with {kib}, {fleet-server}, and {agent}, each on separate hosts.
+
+These examples use hosts running Red Hat Enterprise Linux 8. The steps for other operating systems are similar, and can be found in the documentation linked from each section.
+
+It should take about an hour to complete all of these steps.
+
+. <<install-stack-self-elasticsearch-primary>>
+. <<install-stack-self-elasticsearch-config>>
+
+[discrete]
+[[install-stack-self-prereq]]
+== Prerequisites
+
+To get started, you'll need the following:
+
+* A set of virtual or physical hosts on which to install each stack component. 
+* On each host, a super user account with `sudo` privileges.
+
+[discrete]
+[[install-stack-self-elasticsearch-primary]]
+== Step 1: Set up the initial {es} node
+
+To begin, we'll use RPM to install {es} on the first host. This first {es} instance will serve as the master node.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Download the {es} RPM and checksum file from the Elastic website. You can find details about these steps in the section {ref}/rpm.html#install-rpm[Download and install the RPM manually].
++
+["source","sh",subs="attributes"]
+----
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm.sha512
+----
+
+. Confirm the validity of the downloaded package by checking the SHA of the downloaded RPM against the published checksum:
++
+["source","sh",subs="attributes"]
+----
+shasum -a 512 -c elasticsearch-{version}-x86_64.rpm.sha512
+----
++	
+The command should return: `elasticsearch-{version}-x86_64.rpm: OK`.
+
+. Run the {es} install command:
++
+["source","sh",subs="attributes"]
+----
+sudo rpm --install elasticsearch-{version}-x86_64.rpm
+----
++
+The {es} install process enables certain security features by default, including the following:
+
+* Authentication and authorization are enabled, including a built-in `elastic` superuser account.
+* Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
+
+. Copy the terminal output from the install command to a local file. In particular, you'll need the password for the built-in `elastic` superuser account. The output also contains the commands to enable {es} to run as a service, which we'll use in the next step.
+
+. Run the following two commands to enable {es} to run as a service using `systemd`. This enables {es} to start automatically when the host system reboots. You can find details about this and the following steps in {ref}/starting-elasticsearch.html#start-es-deb-systemd[Running {es} with `systemd`].
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+----
+
+. Start the {es} service:
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl start elasticsearch.service
+----
+
+. Make sure that {es} is running properly.
++
+["source","sh",subs="attributes"]
+----
+sudo curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200
+----
++
+In the command, replace `$ELASTIC_PASSWORD` with the `elastic` superuser password that you copied from the install command output.
++
+If all is well, the command returns a response like this:
++
+["source","js",subs="attributes,callouts"]
+----
+{
+  "name" : "Cp9oae6",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "AT69_C_DTp-1qgIJlatQqA",
+  "version" : {
+    "number" : "{version_qualified}",
+    "build_type" : "{build_type}",
+    "build_hash" : "f27399d",
+    "build_flavor" : "default",
+    "build_date" : "2016-03-30T09:51:41.449Z",
+    "build_snapshot" : false,
+    "lucene_version" : "{lucene_version}",
+    "minimum_wire_compatibility_version" : "1.2.3",
+    "minimum_index_compatibility_version" : "1.2.3"
+  },
+  "tagline" : "You Know, for Search"
+}
+----
+
+[discrete]
+[[install-stack-self-elasticsearch-config]]
+== Step 2: Configure the initial {es} node for connectivity
+
+Before moving ahead to configure {es} instances, we'll need to update the {es} configuration on this first node so that other hosts are able to connect to it. This is done by updating the settings in the `elasticsearch.yml` file. For details about all available settings refer to {ref}/settings.html[Configuring {es}].
+
+. Open the {es} configuration file in a text editor, such as `vim`:
++
+["source","sh",subs="attributes"]
+----
+sudo vim /etc/elasticsearch/elasticsearch.yml
+----
+
+. In a multi-node {es} cluster, all of the {es} instances need to have the same name.
++
+In the configuration file, uncomment the line `#cluster.name: my-application` and give the {es} instance any name that you'd like:
++
+[source,shell]
+----
+cluster.name: elasticsearch-demo
+----
+
+. Save your changes and close the editor.
+
+. By default, {es} runs on `localhost`. In order for {es} instances on other nodes to be able to join the cluster, we'll need to set up {es} to run on a routable, external IP address.
++
+In a terminal, run `ifconfig` and copy the value for the host inet IP address.
+
+. Reopen the configuration file for editing.
+
+. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied.
++
+[source,shell]
+----
+network.host: 10.128.0.84
+----
+
+. Next, {es} needs to be enabled to listen for connections from other, external hosts.
++
+Uncomment the line `#transport.host: 0.0.0.0`. The `0.0.0.0` setting enables {es} to listen for connections on all available network interfaces. Note that in a production environment you might want to restrict this by setting this value to match the value set for `network.host`.
++
+[source,shell]
+----
+transport.host: 0.0.0.0
+----
++
+TIP: You can find details about the `network.host` and `transport.host` settings in the {es} {ref}/modules-network.html[Networking] documentation.
+
+. Save your changes and close the editor.
+
+. Restart {es}:
++
+[source,shell]
+----
+sudo systemctl restart elasticsearch
+----
+
+. Finally, check the status of your {es} instanace. Log into the {es} node through a separate terminal instance and tail the {es} instance log file:
++
+[source,shell]
+----
+sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
+----
+
+. In the log file, look for an entry like `current.health="GREEN"` to confirm that {es} is running as expected. In the event of any issues, the log will contain helpful diagnostic information. You can refer to the {es} {ref}/troubleshooting.html[Troubleshooting] documentation for other tips.
+
+[discrete]
+[[install-stack-self-elasticsearch-secondary]]
+== Step 3: Set up a second {es} node
+
+next
+
+

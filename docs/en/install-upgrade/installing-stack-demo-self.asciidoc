@@ -15,6 +15,7 @@ It should take an hour or so to complete these steps.
 . <<install-stack-self-elasticsearch-config>>
 . <<install-stack-self-elasticsearch-second>>
 . <<install-stack-self-elasticsearch-third>>
+. <<install-stack-self-fleet-server>>
 
 [discrete]
 [[install-stack-self-prereq]]
@@ -30,6 +31,8 @@ To get started, you'll need the following:
 == Step 1: Set up the first {es} node
 
 To begin, we'll use RPM to install {es} on the first host. This initial {es} instance will serve as the master node.
+
+. Log in to the host where you'd like to set up your first {es} node.
 
 . Create a working directory for the installation package:
 +
@@ -90,6 +93,8 @@ sudo systemctl enable elasticsearch.service
 ----
 sudo systemctl start elasticsearch.service
 ----
++
+If you need to, you can stop the service by running `sudo systemctl stop elasticsearch.service`.
 
 . Make sure that {es} is running properly.
 +
@@ -202,7 +207,9 @@ sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
 [[install-stack-self-elasticsearch-second]]
 == Step 3: Set up a second {es} node
 
-To set up a second {es} node, the initial steps are the same as those you followed for <<install-stack-self-elasticsearch-first>>.
+To set up a second {es} node, the initial steps are similar to those that you followed for <<install-stack-self-elasticsearch-first>>.
+
+. Log in to the host where you'd like to set up your second {es} node.
 
 . Create a working directory for the installation package:
 +
@@ -252,6 +259,8 @@ sudo systemctl enable elasticsearch.service
 
 . To enable this second {es} node to connect to the first, you need to configure an enrollment token. You can find details about these steps in {ref}/rpm.html#_reconfigure_a_node_to_join_an_existing_cluster_2[Reconfigure a node to join an existing cluster] and also in {ref}/add-elasticsearch-nodes.html#_enroll_nodes_in_an_existing_cluster_5[Enroll nodes in an existing cluster].
 +
+IMPORTANT: Be sure to run all of these configuration steps before starting the {es} service.
++
 Return to your terminal shell into the first {es} node.
 
 . Generate a node enrollment token:
@@ -273,6 +282,14 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-to
 In the command, replace `<enrollment-token` with the `elastic` generated token that you copied.
 
 . Answer the `Do you want to continue` prompt with `yes` (`y`). The new {es} node will be reconfigured.
++
+[TIP] 
+==== 
+Note the following tips about enrollment tokens:
+
+. An enrollment token has a lifespan of 30 minutes. In case the `elasticsearch-reconfigure-node` command returns an `Invalid enrollment token` error, try generating a new token.
+. Be sure not to confuse an {ref}/starting-elasticsearch.html#_enroll_nodes_in_an_existing_cluster_3[{es} enrollment token] (for enrolling {es} nodes in an existing cluster) with a {kibana-ref}/start-stop.html#_run_kibana_from_the_command_line[{kib} enrollment token] (to enroll your {kib} instance with {es}, as described in the next section). These two tokens are not interchangeable.
+====
 
 . Open the second {es} instance configuration file in a text editor:
 +
@@ -281,7 +298,10 @@ In the command, replace `<enrollment-token` with the `elastic` generated token t
 sudo vim /etc/elasticsearch/elasticsearch.yml
 ----
 +
-Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool, certain settings have been updated. For example, the `transport.host: 0.0.0.0` setting is already uncommented.
+Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool, certain settings have been updated. For example:
++
+* The `transport.host: 0.0.0.0` setting is already uncommented.
+* The `discovery_seed.hosts` setting has the value that you added for `network_host` on the first {es} node. As you add each new {es} node to the cluster, the `discovery_seed.hosts` setting will contain an array of the IP addresses and port numbers to connect to each {es} node that was previously added to the cluster.
 
 . In the configuration file, uncomment the line `#cluster.name: my-application` and set it to match the name you specified for the first {es} node:
 +
@@ -314,20 +334,20 @@ network.host: 10.128.0.84
 sudo systemctl start elasticsearch.service
 ----
 
-. OPTIONALLY, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and tail the {es} log file:
+. **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and tail the {es} log file:
 +
 [source,shell]
 ----
 sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
 ----
-
-. Notice in the log file some helpful diagnostics, such as:
 +
-* `Security is enabled.`
+Notice in the log file some helpful diagnostics, such as:
++
+* `Security is enabled`
 * `Profiling is enabled`
-* `using discovery type [multi-node]``
+* `using discovery type [multi-node]`
 * `intialized`
-* `starting ...`
+* `starting...`
 +
 After a minute or so, the log should show a message like:
 +
@@ -340,13 +360,179 @@ Here, `hostname1` is your first {es} instance node, and `hostname2` is your seco
 +
 The message indicates that the second {es} node has successfully contacted the initial {es} node and joined the cluster.
 
+. As a final check, run the following `curl` request on the new node to confirm that {es} is still running properly and viewable at the new node's `localhost` IP address.
++
+["source","sh",subs="attributes"]
+----
+sudo curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200
+----
++
+["source","js",subs="attributes,callouts"]
+----
+{
+  "name" : "Cp9oae6",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "AT69_C_DTp-1qgIJlatQqA",
+  "version" : {
+    "number" : "{version_qualified}",
+    "build_type" : "{build_type}",
+    "build_hash" : "f27399d",
+    "build_flavor" : "default",
+    "build_date" : "2016-03-30T09:51:41.449Z",
+    "build_snapshot" : false,
+    "lucene_version" : "{lucene_version}",
+    "minimum_wire_compatibility_version" : "1.2.3",
+    "minimum_index_compatibility_version" : "1.2.3"
+  },
+  "tagline" : "You Know, for Search"
+}
+----
+
 [discrete]
 [[install-stack-self-elasticsearch-third]]
 == Step 4: Set up a third {es} node
 
-To set up your third {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>.
+To set up your third {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>. The process is identical for each additional {es} node that you would like to add to the cluster. As a recommended best practice, create a new enrollment token for each new node that you add.
 
+[discrete]
+[[install-stack-self-kibana]]
+== Step 5: Install {kib}
 
+As with {es}, we'll use RPM to install {kib} on another host. You can find details about all of the following steps in the section {kibana-ref}/rpm.html#install-rpm[Install {kib} with RPM].
 
+. Log in to the host where you'd like to install {kib} and create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
 
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Download the {kib} RPM and checksum file from the Elastic website.
++
+["source","sh",subs="attributes"]
+----
+wget https://artifacts.elastic.co/downloads/kibana/kibana-{version}-x86_64.rpm
+wget https://artifacts.elastic.co/downloads/kibana/kibana-{version}-x86_64.rpm.sha512
+----
+
+. Confirm the validity of the downloaded package by checking the SHA of the downloaded RPM against the published checksum:
++
+["source","sh",subs="attributes"]
+----
+shasum -a 512 -c kibana-{version}-x86_64.rpm.sha512
+----
++	
+The command should return: `kibana-{version}-x86_64.rpm: OK`.
+
+. Run the {es} install command:
++
+["source","sh",subs="attributes"]
+----
+sudo rpm --install elasticsearch-{version}-x86_64.rpm
+----
+
+. As with each addition {es} node that you added, to enable this {kib} to connect to the first {es} node, you need to configure an enrollment token.
++
+Return to your terminal shell into the first {es} node.
+
+. Run the `elasticsearch-create-enrollment-token` command with the `-s kibana` option to generate a {kibana} enrollment token:
++
+[source,shell]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+----
+
+. Copy the generated enrollment token from the command output.
+
+. Run the following two commands to enable {kib} to run as a service using `systemd`, enabling {kib} to start automatically when the host system reboots.
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl daemon-reload
+sudo systemctl enable kibana.service
+----
+
+. Before starting the {kib} service there's one configuration change to make, to set {kib} to run on the {es} host IP address. This is done by updating the settings in the `kibana.yml` file. For details about all available settings refer to {kibana-ref}/settings.html[Configure {kib}].
+
+. In a terminal, run `ifconfig` and copy the value for the host inet IP address.
+
+. Open the {kib} configuration file in a text editor, such as `vim`:
++
+["source","sh",subs="attributes"]
+----
+sudo vim /etc/kibana/kibana.yml
+----
+
+. Uncomment the line `#server.host: localhost` and replace the default address with the value that you copied. For example:
++
+[source,shell]
+----
+server.host: 10.128.0.84
+----
+
+. Save your changes and close the editor.
+
+. Start the {kib} service:
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl start kibana.service
+----
++
+If you need to, you can stop the service by running `sudo systemctl stop kibana.service`.
+
+. Run the `status` command to get details about the {kib} service.
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl status kibana
+----
+
+. In the `status` command output a URL is shown with a host address to access {kib} and a six digit verification code. For example:
++
+["source","sh",subs="attributes"]
+----
+Kibana has not been configured.
+Go to http://10.128.8.28:5601/?code=<code> to get started.
+----
+
+. Open a web browser to the address above. It can take a minute or two for {kib} to start up, so refresh the page if you don't see a prompt right away. In the event of any problems, you can instead open your browser to the external IP address of the {kibana} host machine, for example: `http://<kibana-external-host-address>:5601`.
+
+. When {kib} starts, you're prompted to provide an enrollment token. Paste in the {kib} enrollment token that you generated earlier.
+
+. Click **Configure Elastic**.
+
+. If you're prompted to provide a verification code, copy and paste in the six digit code that was returned by the `status` command. Then, wait for the setup to complete.
+
+// Note to reviewers: Kibana says to run `/bin/kibana-verification-code` to retrieve the code, but I'm not sure if that command works when Kibana is running as a service. So, I documented to get the code from the status command output instead.
+
+. When you see the **Welcome to Elastic** page, provide the superuser `elastic` username and the password that you copied in Step 1 from the install command when you set up your first {es} node.
+
+. Click **Log in**.
+
+. On the **Start by adding integrations** prompt, select **Explore on my own**.
+
+{kib} is now fully set up and communicating with your {es} cluster!
+
+[discrete]
+[[install-stack-self-fleet-server]]
+== Step 5: Install {fleet-server}
+
+something...
+
+. Log in to the host where you'd like to set up your second {es} node.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
 

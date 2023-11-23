@@ -16,6 +16,7 @@ It should take an hour or so to complete these steps.
 . <<install-stack-self-elasticsearch-second>>
 . <<install-stack-self-elasticsearch-third>>
 . <<install-stack-self-fleet-server>>
+. <<install-stack-self-elastic-agent>>
 
 [discrete]
 [[install-stack-self-prereq]]
@@ -48,7 +49,7 @@ mkdir elastic-install-files
 cd elastic-install-files
 ----
 
-. Download the {es} RPM and checksum file from the Elastic website. You can find details about these steps in the section {ref}/rpm.html#install-rpm[Download and install the RPM manually].
+. Download the {es} RPM and checksum file from the {artifact-registry}. You can find details about these steps in the section {ref}/rpm.html#install-rpm[Download and install the RPM manually].
 +
 ["source","sh",subs="attributes"]
 ----
@@ -525,9 +526,9 @@ Go to http://10.128.8.28:5601/?code=<code> to get started.
 [[install-stack-self-fleet-server]]
 == Step 5: Install {fleet-server}
 
-something...
+Now that {kib} is up and running, we'll install {fleet-server}, which will manage the {agent} that we'll set up in a later step. If you need more detail about these steps, refer to {fleet-guide}/add-fleet-server-on-prem.html[Deploy on-premises and self-managed] in the {fleet} and {agent} Guide.
 
-. Log in to the host where you'd like to set up your second {es} node.
+. Log in to the host where you'd like to set up {fleet-server}.
 
 . Create a working directory for the installation package:
 +
@@ -536,3 +537,48 @@ something...
 mkdir elastic-install-files
 ----
 
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Back to your web browser, open the {kib} menu and go to **Management -> Fleet**. {fleet} opens with a message that you need to add a {fleet-server}.
+
+. Click **Add Fleet Server**. The **Add a Fleet Server** flyout opens.
+
+. In the flyout, select the **Quick Start** tab.
+
+. Give your {fleet-server} instance a name.
+
+. Specify the host URL where {agents} will reach {fleet-server}, for example: `https://10.128.0.203`. To find this URL, open a terminal on your {fleet-server} node, run `ifconfig` and copy the value for the host inet IP address. You don't need to privide a port number.
+
+. Click **Generate Fleet Server policy**. A policy is created that contains all of the configuration settings for the {fleet-server} instance.
+
+. On the **Install Fleet Server to a centralized host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}.
+
+. Copy the generated commands and then run them one-by-one in the terminal on your {fleet-server} host. Make sure to run all of the commands as `sudo`, even if not specified in the UI.
++
+These commands will, respectively:
+
+.. Download the {fleet-server} package from the {artifact-registry}.
+.. Unpack the package archive.
+.. Change into the directory containing the install binaries.
+.. Install {fleet-server}.
++
+If you'd like to learn about the install command options, refer to {fleet-guide}/elastic-agent-cmd-options.html#elastic-agent-install-command[`elastic-agent install`] in the {agent} command reference.
+
+. At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete.
+
+. In the {kib} **Add a Fleet Server** flyout, wait for confirmation that {fleet-server} has connected.
+
+. Close the flyout.
+
+{fleet-server} is now fully set up!
+
+[discrete]
+[[install-stack-self-elastic-agent]]
+== Step 6: Install {agent}
+
+tbd

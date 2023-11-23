@@ -43,6 +43,22 @@ typical and actual values, and probability. The **Anomaly explanation** section
 helps you to interpret a given anomaly by providing further insights about its 
 type, impact, and score.
 
+If you have <<creating-anomaly-alert-rules>> applied to an {anomaly-job} and an 
+alert has occured for the rule, you can view how the alert correlates with the 
+{anomaly-detect} results in the **Anomaly Explorer** by using the 
+**Anomaly timeline** swimlane and the **Alerts** panel. The **Alerts** panel 
+contains a line chart with the alerts count over time. The cursor on the line 
+chart is in sync with the anomaly swimlane making it easier to review anomalous 
+buckets with the spike produced by the alerts. The panel also contains 
+aggregated information for each alert rule associated with the job selection 
+such as the total number of active, recovered, and untracked alerts for the 
+selected job and time range. An alert context menu is displayed when an anomaly 
+swimlane cell is selected with alerts in the chosen time range. The context menu 
+contains the alert counters for the selected time buckets.
+
+[role="screenshot"]
+image::images/anomaly-explorer-alerts.png["Alerts table in the Anomaly Explorer"]
+
 If you have more than one {anomaly-job}, you can also obtain _overall bucket_
 results, which combine and correlate anomalies from multiple jobs into an
 overall score. When you view the results for job groups in {kib}, it provides

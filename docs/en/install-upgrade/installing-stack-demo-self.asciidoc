@@ -17,6 +17,8 @@ It should take an hour or so to complete these steps.
 . <<install-stack-self-elasticsearch-third>>
 . <<install-stack-self-fleet-server>>
 . <<install-stack-self-elastic-agent>>
+. <<install-stack-self-view-data>>
+. <<install-stack-self-security-certificates>>
 
 [discrete]
 [[install-stack-self-prereq]]
@@ -581,4 +583,75 @@ If you'd like to learn about the install command options, refer to {fleet-guide}
 [[install-stack-self-elastic-agent]]
 == Step 6: Install {agent}
 
-tbd
+Next, we'll install {agent} on another host and use the System integration to monitor system logs and metrics.
+
+. Log in to the host where you'd like to set up {agent}.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Open {kib} and go to **Management -> Fleet**.
+
+. On the **Agents** tab, select **Add agent**. The **Add agent** flyout opens.
+
+. In the flyout, create a new agent policy and give it a name, for example `System01 Monitoring`.
+
+. Leave **Collect system logs and metrics** enabled. This will add the link:https://docs.elastic.co/integrations/system[System integration] to the {agent} policy.
+
+. Leave **Enroll in Fleet** selected.
+
+. On the **Install Elastic Agent on your host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
+
+. Copy the generated commands and then run them one-by-one in the terminal on your {agent} host. Make sure to run all of the commands as `sudo`, even if not specified in the UI.
++
+These commands will, respectively:
+
+.. Download the {agent} package from the {artifact-registry}.
+.. Unpack the package archive.
+.. Change into the directory containing the install binaries.
+.. Install {agent}.
+
+. At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete.
+
+. In the {kib} **Add agent** flyout, wait for confirmation that {agent} has connected.
+
+. Close the flyout.
+
+Your new {agent} is now installed an enrolled with {fleet-server}.
+
+[discrete]
+[[install-stack-self-view-data]]
+== Step 7: View your system data
+
+Now that all of the components have been installed, it's time to confirm that data is flowing as expected.
+
+View your system logs:
+
+. Open the {kib} menu and go to **Management -> Integrations -> Installed integrations**.
+. Select the **System** card and open the **Assets** tab. This is a quick way to access all of the dashboards, saved searches, and visualizations that come with each integration.
+. Select `[Logs System] Syslog dashboard`. The {kib} Dashboard opens with visualizations of Syslog events, hostnames and processes, and more.
+
+View your system metrics:
+
+. Return to **Management -> Integrations -> Installed integrations**.
+. Select the **System** card and open the **Assets** tab.
+. Select `[Metrics System] Host overview`. The {kib} Dashboard opens with visualizations of host metrics including CPU usage, memory usage, running processes, and others.
++
+image::images/install-stack-metrics-dashboard.png["The System metrics host overview showing CPU usage, memory usage, and other visualizations"]
+
+[discrete]
+[[install-stack-self-security-certificates]]
+== Step 8: Configure security certificates
+
+Helpful reference: https://www.elastic.co/guide/en/elasticsearch/reference/8.9/update-node-certs.html

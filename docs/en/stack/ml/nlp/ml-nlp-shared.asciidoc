@@ -1,16 +1,13 @@
 tag::nlp-eland-clone-docker-build[]
-You can use the {eland-docs}[Eland client] to install the {nlp} model. Eland 
-commands can be run in Docker. First, you need to clone the Eland repository 
-then create a Docker image of Eland:
+You can use the {eland-docs}[Eland client] to install the {nlp} model. Use the prebuilt  
+Docker image to run the Eland install model commands. Pull the latest image with:
 
 [source,shell]
 --------------------------------------------------
-git clone git@github.com:elastic/eland.git
-cd eland
-docker build -t elastic/eland .
+docker pull docker.elastic.co/eland/eland
 --------------------------------------------------
 
-After the script finishes, your Eland Docker client is ready to use.
+After the pull completes, your Eland Docker client is ready to use.
 end::nlp-eland-clone-docker-build[]
 
 tag::nlp-requirements[]

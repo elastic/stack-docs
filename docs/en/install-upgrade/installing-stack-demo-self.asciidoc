@@ -137,6 +137,8 @@ If all is well, the command returns a response like this:
 
 Before moving ahead to configure {es} instances, we'll need to update the {es} configuration on this first node so that other hosts are able to connect to it. This is done by updating the settings in the `elasticsearch.yml` file. For details about all available settings refer to {ref}/settings.html[Configuring {es}].
 
+. In a terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
+
 . Open the {es} configuration file in a text editor, such as `vim`:
 +
 ["source","sh",subs="attributes"]
@@ -153,22 +155,16 @@ In the configuration file, uncomment the line `#cluster.name: my-application` an
 cluster.name: elasticsearch-demo
 ----
 
-. Save your changes and close the editor.
-
 . By default, {es} runs on `localhost`. In order for {es} instances on other nodes to be able to join the cluster, we'll need to set up {es} to run on a routable, external IP address.
 +
-In a terminal, run `ifconfig` and copy the value for the host inet IP address.
-
-. Reopen the configuration file for editing.
-
-. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
+Uncomment the line `#network.host: 192.168.0.1` and replace the default address with the value that you copied from the `ifconfig` command output. For example:
 +
 [source,shell]
 ----
 network.host: 10.128.0.84
 ----
 
-. Next, {es} needs to be enabled to listen for connections from other, external hosts.
+. {es} needs to be enabled to listen for connections from other, external hosts.
 +
 Uncomment the line `#transport.host: 0.0.0.0`. The `0.0.0.0` setting enables {es} to listen for connections on all available network interfaces. Note that in a production environment you might want to restrict this by setting this value to match the value set for `network.host`.
 +
@@ -195,9 +191,9 @@ sudo systemctl restart elasticsearch
 sudo systemctl status elasticsearch
 ----
 +
-The output should confirm that {es} started successfully.
+The output should confirm that {es} started successfully. Type `q` to exit from the `status` command results.
 +
-In case you'd like more detailed information, you can log into the {es} node through a separate terminal instance and tail the {es} instance log file:
+In case you'd like more detailed information, you can log into the {es} node through a separate terminal instance and `tail` the {es} instance log file:
 +
 [source,shell]
 ----
@@ -274,6 +270,14 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
 ----
 
 . Copy the generated enrollment token from the command output.
++
+[TIP] 
+==== 
+Note the following tips about enrollment tokens:
+
+. An enrollment token has a lifespan of 30 minutes. In case the `elasticsearch-reconfigure-node` command returns an `Invalid enrollment token` error, try generating a new token.
+. Be sure not to confuse an {ref}/starting-elasticsearch.html#_enroll_nodes_in_an_existing_cluster_3[{es} enrollment token] (for enrolling {es} nodes in an existing cluster) with a {kibana-ref}/start-stop.html#_run_kibana_from_the_command_line[{kib} enrollment token] (to enroll your {kib} instance with {es}, as described in the next section). These two tokens are not interchangeable.
+====
 
 . In the terminal shell for your second {es} node, pass the enrollment token as a parameter to the `elasticsearch-reconfigure-node` tool:
 +
@@ -285,14 +289,8 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-to
 In the command, replace `<enrollment-token` with the `elastic` generated token that you copied.
 
 . Answer the `Do you want to continue` prompt with `yes` (`y`). The new {es} node will be reconfigured.
-+
-[TIP] 
-==== 
-Note the following tips about enrollment tokens:
 
-. An enrollment token has a lifespan of 30 minutes. In case the `elasticsearch-reconfigure-node` command returns an `Invalid enrollment token` error, try generating a new token.
-. Be sure not to confuse an {ref}/starting-elasticsearch.html#_enroll_nodes_in_an_existing_cluster_3[{es} enrollment token] (for enrolling {es} nodes in an existing cluster) with a {kibana-ref}/start-stop.html#_run_kibana_from_the_command_line[{kib} enrollment token] (to enroll your {kib} instance with {es}, as described in the next section). These two tokens are not interchangeable.
-====
+. In a terminal, run `ifconfig` and copy the value for the host inet IP address. You'll need this value later.
 
 . Open the second {es} instance configuration file in a text editor:
 +
@@ -313,19 +311,11 @@ Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool
 cluster.name: elasticsearch-demo
 ----
 
-. Save your changes and close the editor.
-
-. As with the first {es} node, we'll need to set up {es} to run on a routable, external IP address.
-+
-In a terminal, run `ifconfig` and copy the value for the host inet IP address.
-
-. Reopen the configuration file for editing.
-
-. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
+. As with the first {es} node, we'll need to set up {es} to run on a routable, external IP address. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
 +
 [source,shell]
 ----
-network.host: 10.128.0.84
+network.host: 10.128.0.132
 ----
 
 . Save your changes and close the editor.
@@ -337,7 +327,7 @@ network.host: 10.128.0.84
 sudo systemctl start elasticsearch.service
 ----
 
-. **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and tail the {es} log file:
+. **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and `tail` the {es} log file:
 +
 [source,shell]
 ----
@@ -363,7 +353,7 @@ Here, `hostname1` is your first {es} instance node, and `hostname2` is your seco
 +
 The message indicates that the second {es} node has successfully contacted the initial {es} node and joined the cluster.
 
-. As a final check, run the following `curl` request on the new node to confirm that {es} is still running properly and viewable at the new node's `localhost` IP address.
+. As a final check, run the following `curl` request on the new node to confirm that {es} is still running properly and viewable at the new node's `localhost` IP address. Note that you need to replace `$ELASTIC_PASSWORD` with the same `elastic` superuser password that you used on the first {es} node.
 +
 ["source","sh",subs="attributes"]
 ----

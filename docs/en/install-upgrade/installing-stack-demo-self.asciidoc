@@ -11,14 +11,15 @@ These examples use hosts running Red Hat Enterprise Linux 8. The steps for other
 
 It should take an hour or so to complete these steps.
 
-. <<install-stack-self-elasticsearch-first>>
-. <<install-stack-self-elasticsearch-config>>
-. <<install-stack-self-elasticsearch-second>>
-. <<install-stack-self-elasticsearch-third>>
-. <<install-stack-self-fleet-server>>
-. <<install-stack-self-elastic-agent>>
-. <<install-stack-self-view-data>>
-. <<install-stack-self-security-certificates>>
+* <<install-stack-self-elasticsearch-first>>
+* <<install-stack-self-elasticsearch-config>>
+* <<install-stack-self-elasticsearch-second>>
+* <<install-stack-self-elasticsearch-third>>
+* <<install-stack-self-kibana>>
+* <<install-stack-self-fleet-server>>
+* <<install-stack-self-elastic-agent>>
+* <<install-stack-self-view-data>>
+* <<install-stack-self-security-certificates>>
 
 [discrete]
 [[install-stack-self-prereq]]
@@ -424,14 +425,14 @@ shasum -a 512 -c kibana-{version}-x86_64.rpm.sha512
 +	
 The command should return: `kibana-{version}-x86_64.rpm: OK`.
 
-. Run the {es} install command:
+. Run the {kib} install command:
 +
 ["source","sh",subs="attributes"]
 ----
-sudo rpm --install elasticsearch-{version}-x86_64.rpm
+sudo rpm --install kibana-{version}-x86_64.rpm
 ----
 
-. As with each addition {es} node that you added, to enable this {kib} to connect to the first {es} node, you need to configure an enrollment token.
+. As with each additional {es} node that you added, to enable this {kib} instance to connect to the first {es} node, you need to configure an enrollment token.
 +
 Return to your terminal shell into the first {es} node.
 
@@ -463,7 +464,7 @@ sudo systemctl enable kibana.service
 sudo vim /etc/kibana/kibana.yml
 ----
 
-. Uncomment the line `#server.host: localhost` and replace the default address with the value that you copied. For example:
+. Uncomment the line `#server.host: localhost` and replace the default address with the inet value that you copied from the ìfconfig` command. For example:
 +
 [source,shell]
 ----
@@ -493,10 +494,12 @@ sudo systemctl status kibana
 ["source","sh",subs="attributes"]
 ----
 Kibana has not been configured.
-Go to http://10.128.8.28:5601/?code=<code> to get started.
+Go to http://10.128.0.28:5601/?code=<code> to get started.
 ----
++
+Make a note of the verification code.
 
-. Open a web browser to the address above. It can take a minute or two for {kib} to start up, so refresh the page if you don't see a prompt right away. In the event of any problems, you can instead open your browser to the external IP address of the {kibana} host machine, for example: `http://<kibana-external-host-address>:5601`.
+. Open a web browser to the external IP address of the {kib} host machine, for example: `http://<kibana-external-host-address>:5601`. It can take a minute or two for {kib} to start up, so refresh the page if you don't see a prompt right away.
 
 . When {kib} starts, you're prompted to provide an enrollment token. Paste in the {kib} enrollment token that you generated earlier.
 
@@ -506,7 +509,7 @@ Go to http://10.128.8.28:5601/?code=<code> to get started.
 
 // Note to reviewers: Kibana says to run `/bin/kibana-verification-code` to retrieve the code, but I'm not sure if that command works when Kibana is running as a service. So, I documented to get the code from the status command output instead.
 
-. When you see the **Welcome to Elastic** page, provide the superuser `elastic` username and the password that you copied in Step 1 from the install command when you set up your first {es} node.
+. When you see the **Welcome to Elastic** page, provide the `elastic` as the username and provide the password that you copied in Step 1, from the `install` command output when you set up your first {es} node.
 
 . Click **Log in**.
 
@@ -536,6 +539,8 @@ mkdir elastic-install-files
 cd elastic-install-files
 ----
 
+. In the terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
+
 . Back to your web browser, open the {kib} menu and go to **Management -> Fleet**. {fleet} opens with a message that you need to add a {fleet-server}.
 
 . Click **Add Fleet Server**. The **Add a Fleet Server** flyout opens.
@@ -544,13 +549,13 @@ cd elastic-install-files
 
 . Give your {fleet-server} instance a name.
 
-. Specify the host URL where {agents} will reach {fleet-server}, for example: `https://10.128.0.203`. To find this URL, open a terminal on your {fleet-server} node, run `ifconfig` and copy the value for the host inet IP address. You don't need to privide a port number.
+. Specify the host URL where {agents} will reach {fleet-server}, for example: `https://10.128.0.203`. This is the inet value that you copied from the `ifconfig` output. You don't need to privide a port number.
 
 . Click **Generate Fleet Server policy**. A policy is created that contains all of the configuration settings for the {fleet-server} instance.
 
-. On the **Install Fleet Server to a centralized host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}.
+. On the **Install Fleet Server to a centralized host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server}.
 
-. Copy the generated commands and then run them one-by-one in the terminal on your {fleet-server} host. Make sure to run all of the commands as `sudo`, even if not specified in the UI.
+. Copy the generated commands and then run them one-by-one in the terminal on your {fleet-server} host.
 +
 These commands will, respectively:
 
@@ -565,7 +570,7 @@ If you'd like to learn about the install command options, refer to {fleet-guide}
 
 . In the {kib} **Add a Fleet Server** flyout, wait for confirmation that {fleet-server} has connected.
 
-. Close the flyout.
+. For now, ignore the *Continue enrolling Elastic Agent* option and close the flyout.
 
 {fleet-server} is now fully set up!
 
@@ -593,17 +598,21 @@ cd elastic-install-files
 
 . Open {kib} and go to **Management -> Fleet**.
 
-. On the **Agents** tab, select **Add agent**. The **Add agent** flyout opens.
+. On the **Agents** tab, you should see your new {fleet-server} policy with a healthy status.
 
-. In the flyout, create a new agent policy and give it a name, for example `System01 Monitoring`.
+. Select **Add agent**. The **Add agent** flyout opens.
+
+. In the flyout, select a policy name, for example `Demo Agent Policy`.
 
 . Leave **Collect system logs and metrics** enabled. This will add the link:https://docs.elastic.co/integrations/system[System integration] to the {agent} policy.
 
-. Leave **Enroll in Fleet** selected.
+. Click **Create policy**.
 
-. On the **Install Elastic Agent on your host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
+. For the **Enroll in Fleet?** step, leave **Enroll in Fleet** selected.
 
-. Copy the generated commands and then run them one-by-one in the terminal on your {agent} host. Make sure to run all of the commands as `sudo`, even if not specified in the UI.
+. On the **Install Elastic Agent on your host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
+
+. Copy the generated commands and then run them one-by-one in the terminal on your {agent} host.
 +
 These commands will, respectively:
 
@@ -642,6 +651,6 @@ image::images/install-stack-metrics-dashboard.png["The System metrics host overv
 
 [discrete]
 [[install-stack-self-security-certificates]]
-== Step 8: Configure security certificates
+== Step 9: Configure security certificates
 
 Helpful reference: https://www.elastic.co/guide/en/elasticsearch/reference/8.9/update-node-certs.html

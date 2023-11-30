@@ -1,0 +1,54 @@
+[[ml-nlp-e5]]
+= E5 – EmbEddings from bidirEctional Encoder rEpresentations
+++++
+<titleabbrev>E5</titleabbrev>
+++++
+
+:frontmatter-description: E5 is a multilingual dense vector model.
+:frontmatter-tags-products: [ml] 
+:frontmatter-tags-content-type: [how-to] 
+:frontmatter-tags-user-goals: [analyze]
+
+EmbEddings from bidirEctional Encoder rEpresentations - or E5 -  is a {nlp} 
+model that enables you to perform multi-lingual semantic search by using dense 
+vector representations. This model performs best for non-English language 
+documents and queries. If you want to perform semantic search on English 
+language documents, use the <<ml-nlp-elser>> model.
+
+Semantic search provides you search results based on contextual meaning and user 
+intent, rather than exact keyword matches.
+
+// TO DO: Add link to "Semantic search" above that leads to the E5 tutorial. 
+
+E5 has two versions: one cross-platform version which runs on any hardware 
+and one version which is optimized for Intel® silicon. The 
+**Model Management** > **Trained Models** page shows you which version of E5 is 
+recommended to deploy based on your cluster's hardware.
+
+
+[discrete]
+[[e5-req]]
+== Requirements
+
+To use E5, you must have the {subscriptions}[appropriate subscription] level 
+for semantic search or the trial period activated.
+
+
+[discrete]
+[[download-deploy-e5]]
+== Download and deploy E5
+
+1. In {kib}, navigate to **{ml-app}** > **Trained Models**. E5 can be found in 
+the list of trained models. There are two versions available: one portable 
+version which runs on any hardware and one version which is optimized for Intel® 
+silicon. You can see which model is recommended to use based on your hardware 
+configuration.
+2. Click the **Download model** button under **Actions**. You can check the 
+download status on the **Notifications** page.
+// TO DO: Add screenshot.
+3. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+4. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
+// TO DO: Add screenshot.
+5. Click Start.

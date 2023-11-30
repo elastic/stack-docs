@@ -41,6 +41,15 @@ for semantic search or the trial period activated.
 [[download-deploy-e5]]
 == Download and deploy E5
 
+You can download and deploy the E5 model either from 
+**{ml-app}** > **Trained Models**, from **Search** > **Indices**, or by using 
+the Dev Console.
+
+
+[discrete]
+[[trained-model]]
+=== Using the Trained Models page
+
 1. In {kib}, navigate to **{ml-app}** > **Trained Models**. E5 can be found in 
 the list of trained models. There are two versions available: one portable 
 version which runs on any hardware and one version which is optimized for Intel® 
@@ -55,3 +64,60 @@ download status on the **Notifications** page.
 allocations and threads per allocation values.
 // TO DO: Add screenshot.
 5. Click Start.
+
+
+[discrete]
+[[elasticsearch]]
+=== Using the search indices UI
+
+Alternatively, you can download and deploy the E5 model to an {infer} pipeline 
+using the search indices UI.
+
+1. In {kib}, navigate to **Search** > **Indices**.
+2. Select the index from the list that has an {infer} pipeline in which you want 
+to use E5.
+3. Navigate to the **Pipelines** tab.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the **Deploy** button to 
+begin downloading the E5 model. This may take a few minutes depending on your 
+network. 
+// TO DO: Add screenshot.
+5. Once the model is downloaded, click the **Start single-threaded** button to 
+start the model with basic configuration or select the **Fine-tune performance** 
+option to navigate to the **Trained Models** page where you can configure the 
+model deployment.
+// TO DO: Add screenshot.
+
+When your E5 model is deployed and started, it is ready to be used in a 
+pipeline.
+
+
+[discrete]
+[[dev-console]]
+=== Using the Dev Console
+
+1. In {kib}, navigate to the **Dev Console**.
+2. Create the E5 model configuration by running the following API call:
++
+--
+[source,console]
+----------------------------------
+PUT _ml/trained_models/.multilingual-e5-small
+{
+  "input": {
+	"field_names": ["text_field"]
+  }
+}
+----------------------------------
+
+The API call automatically initiates the model download if the model is not 
+downloaded yet.
+--
+3. Deploy the model by using the 
+{ref}/start-trained-model-deployment.html[start trained model deployment API] 
+with a delpoyment ID:
++
+--
+[source,console]
+----------------------------------
+POST _ml/trained_models/.multilingual-e5-small/deployment/_start?deployment_id=for_search
+----------------------------------

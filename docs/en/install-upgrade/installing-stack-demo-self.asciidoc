@@ -468,7 +468,7 @@ sudo vim /etc/kibana/kibana.yml
 +
 [source,shell]
 ----
-server.host: 10.128.0.84
+server.host: 10.128.0.28
 ----
 
 . Save your changes and close the editor.
@@ -598,11 +598,18 @@ cd elastic-install-files
 
 . Open {kib} and go to **Management -> Fleet**.
 
-. On the **Agents** tab, you should see your new {fleet-server} policy with a healthy status.
+. On the **Agents** tab, you should see your new {fleet-server} policy running with a healthy status.
 
-. Select **Add agent**. The **Add agent** flyout opens.
+. Open the **Settings** tab.
 
-. In the flyout, select a policy name, for example `Demo Agent Policy`.
+. Notice that a {Fleet-server} host URL is configured. Before adding an {agent}, the host setting needs to be updated. By default, the host URL port is set to `443` which is used in an {ecloud} environment. When {fleet-server} is installed on-premises, the port needs to be updated to `8220`. Refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premise {fleet-server} install documentation for a list of port assignments.
++
+.. Under *Actions*, click the edit icon and update the {fleet-server} host URL to use port 8220. For example: `https://10.128.0.203:8220`.
+.. Select **Save and apply settings**. It takes a minute or so for the configuration change to complete.
+
+. Reopen the **Agents** tab and select **Add agent**. The **Add agent** flyout opens.
+
+. In the flyout, choose a policy name, for example `Demo Agent Policy`.
 
 . Leave **Collect system logs and metrics** enabled. This will add the link:https://docs.elastic.co/integrations/system[System integration] to the {agent} policy.
 
@@ -612,9 +619,20 @@ cd elastic-install-files
 
 . On the **Install Elastic Agent on your host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
 
-. Copy the generated commands and then run them one-by-one in the terminal on your {agent} host.
+. Copy the generated commands. 
+
+. In the `sudo ./elastic-agent install` command, make two changes:
+.. For the `--url` parameter, change the port number from the default `443` to `8220` (used for on-premise {fleet-server}).
+.. Append an `--insecure` flag at the end. We'll configure secure communications in a later step.
 +
-These commands will, respectively:
+The result should be similar to the following example:
++
+["source","shell"]
+----
+sudo ./elastic-agent install --url=https://10.128.0.203:8220 --enrollment-token=VWCobFhKd0JuUnppVYQxX0VKV5E6UmU3BGk0ck9RM2HzbWEmcS4Bc1YUUM==
+----
+
+. Run the commands one-by-one in the terminal on your {agent} host. The commands will, respectively:
 
 .. Download the {agent} package from the {artifact-registry}.
 .. Unpack the package archive.
@@ -635,17 +653,17 @@ Your new {agent} is now installed an enrolled with {fleet-server}.
 
 Now that all of the components have been installed, it's time to confirm that data is flowing as expected.
 
-View your system logs:
+View your system log data:
 
-. Open the {kib} menu and go to **Management -> Integrations -> Installed integrations**.
-. Select the **System** card and open the **Assets** tab. This is a quick way to access all of the dashboards, saved searches, and visualizations that come with each integration.
-. Select `[Logs System] Syslog dashboard`. The {kib} Dashboard opens with visualizations of Syslog events, hostnames and processes, and more.
+. Open the {kib} menu and go to **Analytics -> Dashboard**.
+. In the query field, search for `Logs System`.
+. Select the `[Logs System] Syslog dashboard` link. The {kib} Dashboard opens with visualizations of Syslog events, hostnames and processes, and more.
 
-View your system metrics:
+View your system metrics data:
 
-. Return to **Management -> Integrations -> Installed integrations**.
-. Select the **System** card and open the **Assets** tab.
-. Select `[Metrics System] Host overview`. The {kib} Dashboard opens with visualizations of host metrics including CPU usage, memory usage, running processes, and others.
+. Open the {kib} menu and return to **Analytics -> Dashboard**.
+. In the query field, search for `Metrics System`.
+. Select the `[Metrics System] Host overview` link. The {kib} Dashboard opens with visualizations of host metrics including CPU usage, memory usage, running processes, and others.
 +
 image::images/install-stack-metrics-dashboard.png["The System metrics host overview showing CPU usage, memory usage, and other visualizations"]
 

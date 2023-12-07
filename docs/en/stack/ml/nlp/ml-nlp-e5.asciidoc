@@ -1,0 +1,159 @@
+[[ml-nlp-e5]]
+= E5 – EmbEddings from bidirEctional Encoder rEpresentations
+++++
+<titleabbrev>E5</titleabbrev>
+++++
+
+:frontmatter-description: E5 is a multilingual dense vector model.
+:frontmatter-tags-products: [ml] 
+:frontmatter-tags-content-type: [how-to] 
+:frontmatter-tags-user-goals: [analyze]
+
+EmbEddings from bidirEctional Encoder rEpresentations - or E5 -  is a {nlp} 
+model that enables you to perform multi-lingual semantic search by using dense 
+vector representations. This model is recommended for non-English language 
+documents and queries. If you want to perform semantic search on English 
+language documents, use the <<ml-nlp-elser>> model.
+
+{ref}/semantic-search.html[Semantic search] provides you search results based on 
+contextual meaning and user intent, rather than exact keyword matches.
+
+E5 has two versions: one cross-platform version which runs on any hardware 
+and one version which is optimized for Intel® silicon. The 
+**Model Management** > **Trained Models** page shows you which version of E5 is 
+recommended to deploy based on your cluster's hardware.
+
+The supported model version of E5 is `multilingual-e5-small`, refer to 
+<<ml-nlp-e5-limit, this page>> for more information.
+
+Refer to the model cards of the 
+https://huggingface.co/elastic/multilingual-e5-small[multilingual-e5-small] and 
+the 
+https://huggingface.co/elastic/multilingual-e5-small-optimized[multilingual-e5-small-optimized]
+models on HuggingFace for further information including licensing.
+
+
+[discrete]
+[[e5-req]]
+== Requirements
+
+To use E5, you must have the {subscriptions}[appropriate subscription] level 
+for semantic search or the trial period activated.
+
+
+[discrete]
+[[download-deploy-e5]]
+== Download and deploy E5
+
+You can download and deploy the E5 model either from 
+**{ml-app}** > **Trained Models**, from **Search** > **Indices**, or by using 
+the Dev Console.
+
+
+[discrete]
+[[trained-model-e5]]
+=== Using the Trained Models page
+
+1. In {kib}, navigate to **{ml-app}** > **Trained Models**. E5 can be found in 
+the list of trained models. There are two versions available: one portable 
+version which runs on any hardware and one version which is optimized for Intel® 
+silicon. You can see which model is recommended to use based on your hardware 
+configuration.
+2. Click the **Add trained model** button. Select the E5 model version you want 
+to use in the opening modal window. The model that is recommended for you based 
+on your hardware configuration is highlighted. Click **Download**. You can check 
+the download status on the **Notifications** page.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-e5-download.png[alt="Downloading E5",align="center"]
+--
++
+--
+Alternatively, click the **Download model** button under **Actions** in the 
+trained model list.
+--
+3. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+4. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-deployment-id-e5.png[alt="Deploying ELSER",align="center"]
+--
+5. Click Start.
+
+
+[discrete]
+[[elasticsearch-e5]]
+=== Using the search indices UI
+
+Alternatively, you can download and deploy the E5 model to an {infer} pipeline 
+using the search indices UI.
+
+1. In {kib}, navigate to **Search** > **Indices**.
+2. Select the index from the list that has an {infer} pipeline in which you want 
+to use E5.
+3. Navigate to the **Pipelines** tab.
+4. Under **{ml-app} {infer-cap} Pipelines**, click the **Deploy** button in the 
+**Improve your results with E5** section to begin downloading the E5 model. This 
+may take a few minutes depending on your network. 
++
+--
+[role="screenshot"]
+image::images/ml-nlp-deploy-e5-es.png[alt="Deploying E5 in Elasticsearch",align="center"]
+--
+5. Once the model is downloaded, click the **Start single-threaded** button to 
+start the model with basic configuration or select the **Fine-tune performance** 
+option to navigate to the **Trained Models** page where you can configure the 
+model deployment.
++
+--
+[role="screenshot"]
+image::images/ml-nlp-start-e5-es.png[alt="Start E5 in Elasticsearch",align="center"]
+--
+
+When your E5 model is deployed and started, it is ready to be used in a 
+pipeline.
+
+
+[discrete]
+[[dev-console-e5]]
+=== Using the Dev Console
+
+1. In {kib}, navigate to the **Dev Console**.
+2. Create the E5 model configuration by running the following API call:
++
+--
+[source,console]
+----------------------------------
+PUT _ml/trained_models/.multilingual-e5-small
+{
+  "input": {
+	"field_names": ["text_field"]
+  }
+}
+----------------------------------
+
+The API call automatically initiates the model download if the model is not 
+downloaded yet.
+--
+3. Deploy the model by using the 
+{ref}/start-trained-model-deployment.html[start trained model deployment API] 
+with a delpoyment ID:
++
+--
+[source,console]
+----------------------------------
+POST _ml/trained_models/.multilingual-e5-small/deployment/_start?deployment_id=for_search
+----------------------------------
+--
+
+[discrete]
+[[air-gapped-install-e5]]
+== Deploy the E5 model in an air-gapped environment
+
+If you want to deploy the E5 model in a restricted or closed network, follow the 
+instructions 
+https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch-air-gapped[in the Eland client documentation].

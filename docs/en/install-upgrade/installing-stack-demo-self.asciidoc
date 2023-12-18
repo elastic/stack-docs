@@ -7,28 +7,38 @@
 
 This tutorial demonstrates how to install and configure the {stack} in a secure, self-managed environment. Following these steps, you'll set up a three node {es} cluster, with {kib}, {fleet-server}, and {agent}, each on separate hosts. The {agent} will be configured with the System integration, enabling it to gather local system logs and metrics and deliver them into the {es} cluster. Finally, you'll view the system data in {kib}.
 
-These examples use hosts running Red Hat Enterprise Linux 8. The steps for other operating systems are similar, and can be found in the documentation linked from each section.
+It should take between one and two hours to complete these steps.
 
-It should take an hour or so to complete these steps.
 
+* <<install-stack-self-prereqs>>
+* <<install-stack-self-assumptions>>
 * <<install-stack-self-elasticsearch-first>>
 * <<install-stack-self-elasticsearch-config>>
+* <<install-stack-self-elasticsearch-start>>
 * <<install-stack-self-elasticsearch-second>>
 * <<install-stack-self-elasticsearch-third>>
 * <<install-stack-self-kibana>>
 * <<install-stack-self-fleet-server>>
 * <<install-stack-self-elastic-agent>>
 * <<install-stack-self-view-data>>
-* <<install-stack-self-security-certificates>>
+* <<install-stack-self-certificates>>
 
 [discrete]
-[[install-stack-self-prereq]]
+[[install-stack-self-prereqs]]
 == Prerequisites
 
 To get started, you'll need the following:
 
 * A set of virtual or physical hosts on which to install each stack component. 
 * On each host, a super user account with `sudo` privileges.
+
+[discrete]
+[[install-stack-self-assumptions]]
+== Assumptions
+
+The examples in this guide use RPM packages to install the {stack} components on hosts running Red Hat Enterprise Linux 8. The steps for other install methods and operating systems are similar, and can be found in the documentation linked from each section.
+
+Special considerations such as firewalls and proxy servers are not covered here.
 
 [discrete]
 [[install-stack-self-elasticsearch-first]]
@@ -91,7 +101,57 @@ sudo systemctl daemon-reload
 sudo systemctl enable elasticsearch.service
 ----
 
-. Start the {es} service:
+[discrete]
+[[install-stack-self-elasticsearch-config]]
+== Step 2: Configure the first {es} node for connectivity
+
+Before moving ahead to configure {es} instances, we'll need to update the {es} configuration on this first node so that other hosts are able to connect to it. This is done by updating the settings in the `elasticsearch.yml` file. For details about all available settings refer to {ref}/settings.html[Configuring {es}].
+
+. In a terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
+
+. Open the {es} configuration file in a text editor, such as `vim`:
++
+["source","sh",subs="attributes"]
+----
+sudo vim /etc/elasticsearch/elasticsearch.yml
+----
+
+. In a multi-node {es} cluster, all of the {es} instances need to have the same name.
++
+In the configuration file, uncomment the line `#cluster.name: my-application` and give the {es} instance any name that you'd like:
++
+[source,"shell"]
+----
+cluster.name: elasticsearch-demo
+----
+
+. By default, {es} runs on `localhost`. In order for {es} instances on other nodes to be able to join the cluster, we'll need to set up {es} to run on a routable, external IP address.
++
+Uncomment the line `#network.host: 192.168.0.1` and replace the default address with the value that you copied from the `ifconfig` command output. For example:
++
+[source,"shell"]
+----
+network.host: 10.128.0.84
+----
+
+. {es} needs to be enabled to listen for connections from other, external hosts.
++
+Uncomment the line `#transport.host: 0.0.0.0`. The `0.0.0.0` setting enables {es} to listen for connections on all available network interfaces. Note that in a production environment you might want to restrict this by setting this value to match the value set for `network.host`.
++
+[source,"shell"]
+----
+transport.host: 0.0.0.0
+----
++
+TIP: You can find details about the `network.host` and `transport.host` settings in the {es} {ref}/modules-network.html[Networking] documentation.
+
+. Save your changes and close the editor.
+
+[discrete]
+[[install-stack-self-elasticsearch-start]]
+== Step 3: Start {es}
+
+. Now, it's time to start the {es} service:
 +
 ["source","sh",subs="attributes"]
 ----
@@ -132,80 +192,18 @@ If all is well, the command returns a response like this:
 }
 ----
 
-[discrete]
-[[install-stack-self-elasticsearch-config]]
-== Step 2: Configure the first {es} node for connectivity
-
-Before moving ahead to configure {es} instances, we'll need to update the {es} configuration on this first node so that other hosts are able to connect to it. This is done by updating the settings in the `elasticsearch.yml` file. For details about all available settings refer to {ref}/settings.html[Configuring {es}].
-
-. In a terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
-
-. Open the {es} configuration file in a text editor, such as `vim`:
-+
-["source","sh",subs="attributes"]
-----
-sudo vim /etc/elasticsearch/elasticsearch.yml
-----
-
-. In a multi-node {es} cluster, all of the {es} instances need to have the same name.
-+
-In the configuration file, uncomment the line `#cluster.name: my-application` and give the {es} instance any name that you'd like:
-+
-[source,shell]
-----
-cluster.name: elasticsearch-demo
-----
-
-. By default, {es} runs on `localhost`. In order for {es} instances on other nodes to be able to join the cluster, we'll need to set up {es} to run on a routable, external IP address.
-+
-Uncomment the line `#network.host: 192.168.0.1` and replace the default address with the value that you copied from the `ifconfig` command output. For example:
-+
-[source,shell]
-----
-network.host: 10.128.0.84
-----
-
-. {es} needs to be enabled to listen for connections from other, external hosts.
-+
-Uncomment the line `#transport.host: 0.0.0.0`. The `0.0.0.0` setting enables {es} to listen for connections on all available network interfaces. Note that in a production environment you might want to restrict this by setting this value to match the value set for `network.host`.
-+
-[source,shell]
-----
-transport.host: 0.0.0.0
-----
-+
-TIP: You can find details about the `network.host` and `transport.host` settings in the {es} {ref}/modules-network.html[Networking] documentation.
-
-. Save your changes and close the editor.
-
-. Restart {es}:
-+
-[source,shell]
-----
-sudo systemctl restart elasticsearch
-----
-
 . Finally, check the status of your {es} instance:
 +
-[source,shell]
+[source,"shell"]
 ----
 sudo systemctl status elasticsearch
 ----
 +
-The output should confirm that {es} started successfully. Type `q` to exit from the `status` command results.
-+
-In case you'd like more detailed information, you can log into the {es} node through a separate terminal instance and `tail` the {es} instance log file:
-+
-[source,shell]
-----
-sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
-----
-
-. In the log file, look for an entry like `current.health="GREEN"` to confirm that {es} is running as expected. In the event of any issues, the log will contain helpful diagnostic information. You can also refer to the {es} {ref}/troubleshooting.html[Troubleshooting] documentation for many other problem solving tips.
+As with the previous `curl` command, the output should confirm that {es} started successfully. Type `q` to exit from the `status` command results.
 
 [discrete]
 [[install-stack-self-elasticsearch-second]]
-== Step 3: Set up a second {es} node
+== Step 4: Set up a second {es} node
 
 To set up a second {es} node, the initial steps are similar to those that you followed for <<install-stack-self-elasticsearch-first>>.
 
@@ -265,7 +263,7 @@ Return to your terminal shell into the first {es} node.
 
 . Generate a node enrollment token:
 +
-[source,shell]
+[source,"shell"]
 ----
 sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
 ----
@@ -282,7 +280,7 @@ Note the following tips about enrollment tokens:
 
 . In the terminal shell for your second {es} node, pass the enrollment token as a parameter to the `elasticsearch-reconfigure-node` tool:
 +
-[source,shell]
+[source,"shell"]
 ----
 sudo /usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token <enrollment-token>
 ----
@@ -307,14 +305,14 @@ Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool
 
 . In the configuration file, uncomment the line `#cluster.name: my-application` and set it to match the name you specified for the first {es} node:
 +
-[source,shell]
+[source,"shell"]
 ----
 cluster.name: elasticsearch-demo
 ----
 
 . As with the first {es} node, we'll need to set up {es} to run on a routable, external IP address. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
 +
-[source,shell]
+[source,"shell"]
 ----
 network.host: 10.128.0.132
 ----
@@ -323,14 +321,14 @@ network.host: 10.128.0.132
 
 . Start {es} on the second node:
 +
-[source,shell]
+[source,"shell"]
 ----
 sudo systemctl start elasticsearch.service
 ----
 
 . **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and `tail` the {es} log file:
 +
-[source,shell]
+[source,"shell"]
 ----
 sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
 ----
@@ -345,7 +343,7 @@ Notice in the log file some helpful diagnostics, such as:
 +
 After a minute or so, the log should show a message like:
 +
-[source,shell]
+[source,"shell"]
 ----
 [<hostname2>] master node changed {previous [], current [<hostname1>...]}
 ----
@@ -384,13 +382,13 @@ sudo curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASS
 
 [discrete]
 [[install-stack-self-elasticsearch-third]]
-== Step 4: Set up a third {es} node
+== Step 5: Set up a third {es} node
 
 To set up your third {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>. The process is identical for each additional {es} node that you would like to add to the cluster. As a recommended best practice, create a new enrollment token for each new node that you add.
 
 [discrete]
 [[install-stack-self-kibana]]
-== Step 5: Install {kib}
+== Step 6: Install {kib}
 
 As with {es}, we'll use RPM to install {kib} on another host. You can find details about all of the following steps in the section {kibana-ref}/rpm.html#install-rpm[Install {kib} with RPM].
 
@@ -438,7 +436,7 @@ Return to your terminal shell into the first {es} node.
 
 . Run the `elasticsearch-create-enrollment-token` command with the `-s kibana` option to generate a {kibana} enrollment token:
 +
-[source,shell]
+[source,"shell"]
 ----
 sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
 ----
@@ -466,7 +464,7 @@ sudo vim /etc/kibana/kibana.yml
 
 . Uncomment the line `#server.host: localhost` and replace the default address with the inet value that you copied from the ìfconfig` command. For example:
 +
-[source,shell]
+[source,"shell"]
 ----
 server.host: 10.128.0.28
 ----
@@ -499,7 +497,7 @@ Go to http://10.128.0.28:5601/?code=<code> to get started.
 +
 Make a note of the verification code.
 
-. Open a web browser to the external IP address of the {kib} host machine, for example: `http://<kibana-external-host-address>:5601`. It can take a minute or two for {kib} to start up, so refresh the page if you don't see a prompt right away.
+. Open a web browser to the external IP address of the {kib} host machine, for example: `http://<kibana-host-address>:5601`. It can take a minute or two for {kib} to start up, so refresh the page if you don't see a prompt right away.
 
 . When {kib} starts, you're prompted to provide an enrollment token. Paste in the {kib} enrollment token that you generated earlier.
 
@@ -519,7 +517,9 @@ Make a note of the verification code.
 
 [discrete]
 [[install-stack-self-fleet-server]]
-== Step 6: Install {fleet-server}
+== Step 7: Install {fleet-server}
+
+IMPORTANT: For simplicity, in this guide we're setting up all of the {stack} components first before, optionally, configuring security certificates. However, in a production environment it's recommended to update your security settings as described in <<install-stack-self-certificates>> before installing {fleet-server} and {agent}. After any new security certificates are configured any {agent}s would need to be reinstalled.
 
 Now that {kib} is up and running, we'll install {fleet-server}, which will manage the {agent} that we'll set up in a later step. If you need more detail about these steps, refer to {fleet-guide}/add-fleet-server-on-prem.html[Deploy on-premises and self-managed] in the {fleet} and {agent} Guide.
 
@@ -529,7 +529,7 @@ Now that {kib} is up and running, we'll install {fleet-server}, which will manag
 +
 ["source","shell"]
 ----
-mkdir elastic-install-files
+mkdir elastic-install-files  
 ----
 
 . Change into the new directory:
@@ -576,7 +576,7 @@ If you'd like to learn about the install command options, refer to {fleet-guide}
 
 [discrete]
 [[install-stack-self-elastic-agent]]
-== Step 7: Install {agent}
+== Step 8: Install {agent}
 
 Next, we'll install {agent} on another host and use the System integration to monitor system logs and metrics.
 
@@ -649,7 +649,7 @@ Your new {agent} is now installed an enrolled with {fleet-server}.
 
 [discrete]
 [[install-stack-self-view-data]]
-== Step 8: View your system data
+== Step 9: View your system data
 
 Now that all of the components have been installed, it's time to confirm that data is flowing as expected.
 
@@ -668,7 +668,551 @@ View your system metrics data:
 image::images/install-stack-metrics-dashboard.png["The System metrics host overview showing CPU usage, memory usage, and other visualizations"]
 
 [discrete]
-[[install-stack-self-security-certificates]]
-== Step 9: Configure security certificates
+[[install-stack-self-certificates]]
+== Step 10: [Optional] Configure security certificates
 
-Helpful reference: https://www.elastic.co/guide/en/elasticsearch/reference/8.9/update-node-certs.html
+This step is recommended for production environments.
+
+Beginning with Elastic 8.0, security is enabled in the {stack} by default, meaning that traffic between {es} nodes and between {kib} and {es} is SSL-encrypted.
+While this is suitable for testing non-production viability of the Elastic platform, most production networks have requirements for the use of trusted CA-signed certificates.
+These steps demonstrate how to update the out-of-the-box self-signed certificates with your own trusted CA-signed certificates.
+
+For traffic to be encrypted between {es} cluster nodes and between {kib} and {es}, SSL certificates must be created for the transport ({es} inter-node communication) and HTTP (for the {es} REST API) layers. This general process is as follows:
+
+. Generate a new self-signed CA certificate or use one provided by your organization (for demonstration purposes we'll do the former).
+. Generate or configure a new certificate for the transport layer.
+. Generate or configure a new certificate(s) for the HTTP layer.
+. Configure additional {es} nodes.
+. Generate a certificate for {kib} to access {es}.
+. Configure {fleet} to use the new certificates.
+
+[discrete]
+[[install-stack-self-certificates-ca]]
+=== Generate a new self-signed CA certificate
+
+In a production environment you would typically use the CA certificate from your own organization, along with the certificate files generated for the hosts where the {stack} is being installed. For demonstration purposes, we'll use the Elastic certificate utility to configure a self-signed CA certificate.
+
+. On the first node in your {es} cluster, generate a CA certificate using the provided certificate utility, `elasticsearch-certutil`. Note that the location of the utility depends on the installation method you used to install {es}. Refer to {ref}/certutil.html[elasticsearch-certutil] for the command details and to {ref}/update-node-certs-different.html[Update security certificates with a different CA] for details about the procedure as a whole.
++
+Run the following command. When prompted, specify a unique name for the output file, such as `elastic-stack-ca-new.zip`: 
++
+["source","shell"]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil ca -pem
+----
+
+. Move the output file to the `/etc/elasticsearch/certs` directory. This directory is created automatically when you install {es}.
++
+["source","shell"]
+----
+sudo mv /usr/share/elasticsearch/elastic-stack-ca-new.zip
+----
+
+. Change to the certificates directory and unzip the file:
++
+["source","shell"]
+----
+sudo cd /etc/elasticsearch/certs
+sudo unzip elastic-stack-ca-new.zip
+----
+
+. View the files that were unpacked into a new `ca` directory:
++
+["source","shell"]
+----
+sudo ls ca/
+----
++
+* `ca.crt` - The generated certificate (or you can substitute this with your own certificate, signed by your organizations's certificate authority)
+* `ca.key` - The certificate authority's private key
++
+NOTE: These steps to generate new self-signed CA certificates need to be done only on the first {es} node. The other {es} nodes will use the same `ca.crt` and `ca.key` files.
+
+. From the `/ca` directory, import the newly created CA certificate into the {es} truststore. This step ensures that your cluster trusts the new CA certificate.
++
+NOTE: On a new installation a new keystore and truststore will be created automatically. If you're running these steps on an existing {es} installation and you know the password to the keystore and the truststore, follow the instructions in {ref}/update-node-certs-different.html[Update security certificates with a different CA].
++
+Run the following command, replacing `<password>` with a unique password for the truststore, and store the password securely:
++
+["source","shell"]
+----
+sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -noprompt -keystore elastic-stack-ca.p12 -storepass <password> -alias new-ca -file ca.crt
+----
+
+. Ensure that the new key was added to the keystore. Enter your password when prompted.
++
+["source","shell"]
+----
+keytool -keystore elastic-stack-ca.p12 -list
+----
++
+The result should show the details for your newly added key.
++
+["source","shell"]
+----
+Keystore type: jks
+Keystore provider: SUN
+Your keystore contains 1 entry
+new-ca, Jul 12, 2023, trustedCertEntry, 
+Certificate fingerprint (SHA-256): F0:86:6B:57:FC...
+----
+
+[discrete]
+[[install-stack-self-certificates-transport]]
+=== Generate a new certificate for the transport layer
+
+This guide assumes the use of self-signed certificates, but the process to import CA-signed certificates is the same. If you're using a CA provided by your organization, you will need to generate Certificate Signing Requests (CSRs) and then use the signed certificates in this step. Once the certificates are generated, whether self-signed or CA-signed, the steps is the same.
+
+. From the {es} installation directory, using the newly-created CA certificate and private key, create a new certificate for your elasticsearch node:
++
+["source","shell"]
+----
+sudo usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key
+----
++
+When prompted, choose an output file name (you can use the default `elastic-certificates.p12`) and a password for the certificate.
+
+. Move the generated file to the `/etc/elasticsearch/certs` directory:
++
+["source","shell"]
+----
+sudo mv usr/share/elasticsearch/elastic-certificates.p12 .
+----
+
++
+[IMPORTANT]
+==== 
+If you're running these steps on a production cluster:
+
+* In a cluster with multiple {es} nodes, before proceeding you first need to perform a {ref}/restart-cluster.html#restart-cluster-rolling[Rolling restart] beginning with the node where you're updating the keystore. Stop at the `Perform any needed changes` step, and then proceed to the next step in this guide.
+* In a single node cluster, stop {es} before proceeding.
+
+If this is the initial installation of this cluster, proceed to the next step.
+====
+
++
+. Because we've created a new truststore and keystore, we need to update the `/etc/elasticsearch/elasticsearch.yml` settings file with the new truststore and keystore filenames.
++
+Open the {es} configuration file in a text editor and adjust the following values to reflect the newly created keystore and truststore files:
++
+["source","shell"]
+----
+xpack.security.transport.ssl:
+   ...
+   keystore.path: /etc/elasticsearch/certs/elastic-certificates.p12
+   truststore.path: /etc/elasticsearch/certs/elastic-stack-ca.p12
+----
+
+[discrete]
+[[install-stack-self-certificates-es-keystore01]]
+==== Update the {es} keystore
+
+{es} uses a separate keystore to hold the passwords of the keystores and truststores holding the CA and node certificates created in the previous steps. Access to this keystore is through the use of a utility called `elasticsearch-keystore`.
+
+. From the {es} installation directory, list the contents of the existing keystore:
++
+["source","shell"]
+----
+/usr/share/elasticsearch/bin/elasticsearch-keystore list
+----
++
+The results should be like the following:
++
+["source","yaml"]
+----
+keystore.seed
+xpack.security.http.ssl.keystore.secure_password
+xpack.security.transport.ssl.keystore.secure_password
+xpack.security.transport.ssl.truststore.secure_password
+----
++
+Notice that there are entries for the `transport truststore` that holds the CA certificate, the `transport keystore` that holds the CA-signed certificates, and the `http keystore`. These entries were created at installation and need to be replaced with the passwords to the newly-created truststore and keystores.
+
+. Remove the existing keystore values for the default transport keystore and truststore:
++
+["source","shell"]
+----
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
+
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
+----
+
+. Update the `elasticsearch-keystore` with the passwords for the new keystore and truststore created in the previous steps. This ensures that {es} can read the new stores:
++
+["source","shell"]
+----
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+----
+
+[discrete]
+[[install-stack-self-certificates-http]]
+=== Generate new certificate(s) for the HTTP layer
+
+Now that communication between {es} nodes (the transport layer) has been secured with SSL certificates, the same must be done for the communications that use the REST API, including {kib}, clients, and any other components on the HTTP layer.
+
+. Similar to the process for the transport layer, on the first node in your {es} cluster use the certificate utility to generate a CA certificate for HTTP:
++
+["source","shell"]
+----
+sudo / usr/share/elasticsearch/bin/elasticsearch-certutil http
+----
++
+Respond to the command prompts as follows:
+
+* When asked if you want to generate a CSR, enter `n`.
+* When asked if you want to use an existing CA, enter `y`.
+* Provide the absolute path to your newly created CA certificate: `/etc/elasticsearch/certs/ca/ca.crt`.
+* Provide the absolute path to your newly created CA key: `/etc/elasticsearch/certs/ca/ca.key`.
+* Enter an expiration value for your certificate. You can enter the validity period in years, months, or days. For example, enter `1y` for one year.
+* When asked if you want to generate one certificate per node, enter `y`. You'll be guided through the creation of certificates for each node. Each certificate will have its own private key, and will be issued for a specific hostname or IP address.
+.. On separate lines, enter the hostname for your first {es} node, for example `mynode-es1`, and the IP address that clients can use to connect to your node. This is the value you captured previously in Step 2, for example `10.128.0.84`:
++
+["source","shell"]
+----
+mynode-es1
+10.128.0.84
+----
+.. When prompted, confirm that the settings are correct.
+.. Add the network IP address for the first {es} node (the same address you specified in the previous step):
++
+["source","shell"]
+----
+10.128.0.84
+----
+.. When prompted, confirm that the settings are correct.
+.. When prompted, generate additional certificates and repeat the previous steps to add hostname and IP settings for each node in your {es} cluster.
+.. Provide a password for the generated `http.p12` keystore file.
+.. The generated files will be included in a zip archive. At the prompt, provide a path and filename for where the archive should be created
++
+For this example we'll use: `/etc/elasticsearch/certs/elasticsearch-ssl-http.zip`.
++
+["source","shell"]
+----
+What filename should be used for the output zip file? [/usr/share/elasticsearch/elasticsearch-ssl-http.zip] /etc/elasticsearch/certs/elasticsearch-ssl-http.zip
+----
+
+. Earlier, when we generated the certificate for the transport layer, the default filename was `elastic-certificates.p12`. Now, when generating a certificate for the HTTP layer, the default filename is `http.p12`. This matches the name of the existing HTTP layer certificate file from when the initial {es} cluster was first installed. Just to avoid any possible name collisions, rename the existing http.p12 file to distinguish it from the newly-created keystore:
++
+["source","shell"]
+----
+mv http.p12 http-old.p12
+----
+
+. Unzip the generated `elasticsearch-ssl-http.zip` archive.
++
+["source","shell"]
+----
+unzip elasticsearch-ssl-http.zip
+----
+
+. When the archive is unpacked, the certificate files are located in separate directories for each {es} node and for the {kib} node. You can run a recursive `ls` command to view the file structure:
++
+["source","shell"]
+----
+ls -lR elasticsearch kibana
+----
++
+["source","shell"]
+----
+elasticsearch:
+total 0
+drwxr-xr-x. 2 root root 56 Dec 12 19:13 mynode-es1
+drwxr-xr-x. 2 root root 72 Dec 12 19:04 mynode-es2
+drwxr-xr-x. 2 root root 72 Dec 12 19:04 mynode-es3
+
+elasticsearch/mynode-es1:
+total 8
+-rw-r--r--. 1 root root 1365 Dec 12 19:04 README.txt
+-rw-r--r--. 1 root root  845 Dec 12 19:04 sample-elasticsearch.yml
+
+elasticsearch/mynode-es2:
+total 12
+-rw-r--r--. 1 root root 3652 Dec 12 19:04 http.p12
+-rw-r--r--. 1 root root 1365 Dec 12 19:04 README.txt
+-rw-r--r--. 1 root root  845 Dec 12 19:04 sample-elasticsearch.yml
+
+elasticsearch/mynode-es3:
+total 12
+-rw-r--r--. 1 root root 3652 Dec 12 19:04 http.p12
+-rw-r--r--. 1 root root 1365 Dec 12 19:04 README.txt
+-rw-r--r--. 1 root root  845 Dec 12 19:04 sample-elasticsearch.yml
+
+kibana:
+total 12
+-rw-r--r--. 1 root root 1200 Dec 12 19:04 elasticsearch-ca.pem
+-rw-r--r--. 1 root root 1306 Dec 12 19:04 README.txt
+-rw-r--r--. 1 root root 1052 Dec 12 19:04 sample-kibana.yml
+----
+
+. In the directory where you unzipped the archive, replace your existing keystore with the new keystore. The location of your certificate directory may be different than what is shown here, depending on the installation method you chose.
++
+["source","shell"]
+----
+mv elasticsearch/<es1-hostname>/http.p12 /etc/elasticsearch/certs/
+----
++
+Replace `<es1-hostname>` with the hostname of your initial {es} node.
+
+. Since this is a new keystore, the {es} configuration file needs to be updated with the path to its location. Open `/etc/elasticsearch/elasticsearch.yml` and update the HTTP SSL settings:
++
+["source","yaml"]
+----
+xpack.security.http.ssl:
+  enabled: true
+  #keystore.path: certs/http.p12
+  keystore.path: /etc/elasticsearch/certs/http.p12
+----
+
+. Since we also generated a new keystore password, the {es} keystore needs to be updated as well. From the {es} installation directory, first remove the existing HTTP keystore entry:
++
+["source","shell"]
+----
+./bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
+----
+
+. From the {es} installation directory, add the updated HTTP keystore password, using the password you generated for this keystore:
++
+["source","shell"]
+----
+./bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+----
+
+. Before restarting {es}, you need to update the permissions and ownership of all of the certificate files.
++
+From the `etc/elasticsearch/certs/` directory, change the files to be owned by the `root.elasticsearch` group:
++
+["source","shell"]
+----
+chown root.elasticsearch *
+----
++
+Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
++
+["source","shell"]
+----
+chmod 750 /etc/elasticsearch/certs
+chmod 750 /etc/elasticsearch/ca
+----
+
+. Stop and restart {es}. 
++
+["source","shell"]
+----
+sudo systemctl stop elasticsearch.service
+sudo systemctl start elasticsearch.service
+----
+
+. Run the status command to confirm that {es} is running.
++
+["source","shell"]
+----
+sudo systemctl status elasticsearch.service
+----
++
+In the event of any problems, you can also monitor the {es} logs for any issues by tailing the {es} log file:
++
+[source,"shell"]
+----
+sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
+---- 
++
+A line in the log file similar to below indicates that SSL was properly configured:
++
+["source","shell"]
+----
+[2023-07-12T13:11:29,154][INFO ][o.e.x.s.Security         ] [es-ssl-test] Security is enabled
+----
+
+[discrete]
+[[install-stack-self-certificates-second-node]]
+=== Configure additional {es} nodes
+
+Now that the security is configured for the first {es} node, some steps need to be repeated on each additional {es} node.
+
+. To avoid filename collisions, on each additional {es} rename the existing `http.p12` file:
++
+["source","shell"]
+----
+mv http.p12 http-old.p12
+----
+
+. Copy the CA and truststore files that you generated on the first {es} node so that they can be reused on all other nodes:
+
+* Copy the `/ca` directory (that contains `ca.crt` and `ca.key`) from `/etc/elasticsearch/certs/` on the first {es} node to the same path on all other {es} nodes.
+
+* Copy `elastic-stack-ca.p12` from `/etc/elasticsearch/certs/` to the /etc/elasticsearch/certs/ directory on all other {es} nodes.
+
+* Copy the `http.p12` file from each node directory in `/etc/elasticsearch/certs/elasticsearch/` (that is, `elasticsearch/mynode-es1`, `elasticsearch/mynode-es2` and `elasticsearch/mynode-es3`) to the `/etc/elasticsearch/certs/` directory on each corresponding cluster node.
+
+. On each {es} node, repeat the steps to generate a new certificate for the transport layer:
+
+.. From the `/etc/elasticsearch/certs` directory, create a new certificate for the {es} node:
++
+["source","shell"]
+----
+sudo usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key
+----
++
+When prompted, choose an output file name or use the default, and specify a password for the certificate.
+
+.. Update the `/etc/elasticsearch/elasticsearch.yml` settings file with the new truststore and keystore filenames:
++
+["source","shell"]
+----
+xpack.security.transport.ssl:
+   ...
+   keystore.path: /etc/elasticsearch/certs/elastic-certificates.p12
+   truststore.path: /etc/elasticsearch/certs/elastic-stack-ca.p12
+----
+
+.. List the content of the {es} keystore:
++
+["source","shell"]
+----
+/usr/share/elasticsearch/bin/elasticsearch-keystore list
+----
++
+The results should be like the following:
++
+["source","yaml"]
+----
+keystore.seed
+xpack.security.http.ssl.keystore.secure_password
+xpack.security.transport.ssl.keystore.secure_password
+xpack.security.transport.ssl.truststore.secure_password
+----
+
+.. Remove the existing keystore values for the default transport keystore and truststore:
++
+["source","shell"]
+----
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
+
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
+----
+
+.. Update the `elasticsearch-keystore` with the passwords for the new keystore and truststore:
++
+["source","shell"]
+----
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+----
+
+. For the HTTP layer, the certificates have been generated already on the first {es} node. Each additional {es} node just needs to be configured to use the new certificates.
+
+.. Update the `/etc/elasticsearch/elasticsearch.yml` settings file with the new truststore and keystore filenames:
++
+["source","shell"]
+----
+xpack.security.http.ssl:
+  enabled: true
+  #keystore.path: certs/http.p12
+  keystore.path: /etc/elasticsearch/certs/http.p12
+----
+
+.. Remove the existing HTTP keystore entry:
++
+["source","shell"]
+----
+./bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
+----
+
+.. Add the updated HTTP keystore password:
++
+["source","shell"]
+----
+./bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+----
+
+.. Change the certificate files to be owned by the `root.elasticsearch` group:
++
+["source","shell"]
+----
+chown root.elasticsearch *
+----
+
+..Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
++
+["source","shell"]
+----
+chmod 750 /etc/elasticsearch/certs
+chmod 750 /etc/elasticsearch/ca
+----
+
+. Stop and restart {es}. 
++
+["source","shell"]
+----
+sudo systemctl stop elasticsearch.service
+sudo systemctl start elasticsearch.service
+----
+
+. Run the status command to confirm that {es} is running.
++
+["source","shell"]
+----
+sudo systemctl status elasticsearch.service
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[discrete]
+[[install-stack-self-certificates-kib-es]]
+=== Generate a certificate for {kib} to access {es}
+tbd
+

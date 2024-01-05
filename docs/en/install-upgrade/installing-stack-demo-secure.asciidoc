@@ -27,7 +27,14 @@ It should take between one and two hours to complete these steps.
 
 In a production environment you would typically use the CA certificate from your own organization, along with the certificate files generated for the hosts where the {stack} is being installed. For demonstration purposes, we'll use the Elastic certificate utility to configure a self-signed CA certificate.
 
-. On the first node in your {es} cluster, generate a CA certificate using the provided certificate utility, `elasticsearch-certutil`. Note that the location of the utility depends on the installation method you used to install {es}. Refer to {ref}/certutil.html[elasticsearch-certutil] for the command details and to {ref}/update-node-certs-different.html[Update security certificates with a different CA] for details about the procedure as a whole.
+. On the first node in your {es} cluster, stop the {es} service:
++
+["source","shell"]
+----
+sudo systemctl stop elasticsearch.service
+----
+
+. Still on the first node, generate a CA certificate using the provided certificate utility, `elasticsearch-certutil`. Note that the location of the utility depends on the installation method you used to install {es}. Refer to {ref}/certutil.html[elasticsearch-certutil] for the command details and to {ref}/update-node-certs-different.html[Update security certificates with a different CA] for details about the procedure as a whole.
 +
 Run the following command. When prompted, specify a unique name for the output file, such as `elastic-stack-ca-new.zip`: 
 +
@@ -121,7 +128,7 @@ sudo mv usr/share/elasticsearch/elastic-certificates.p12 /etc/elasticsearch/cert
 If you're running these steps on a production cluster that already contains data:
 
 * In a cluster with multiple {es} nodes, before proceeding you first need to perform a {ref}/restart-cluster.html#restart-cluster-rolling[Rolling restart] beginning with the node where you're updating the keystore. Stop at the `Perform any needed changes` step, and then proceed to the next step in this guide.
-* In a single node cluster, stop {es} before proceeding.
+* In a single node cluster, always stop {es} before proceeding.
 
 If this is the initial installation of this cluster, you can safely proceed to the next step.
 ====
@@ -321,7 +328,7 @@ xpack.security.http.ssl:
 +
 ["source","shell"]
 ----
-chown root.elasticsearch *
+chown root:elasticsearch *
 ----
 
 .. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
@@ -332,11 +339,10 @@ chmod 750 /etc/elasticsearch/certs
 chmod 750 /etc/elasticsearch/ca
 ----
 
-. Stop and restart {es}:
+. Restart the {es} service:
 +
 ["source","shell"]
 ----
-sudo systemctl stop elasticsearch.service
 sudo systemctl start elasticsearch.service
 ----
 
@@ -383,6 +389,13 @@ mv http.p12 http-old.p12
 * Copy the `http.p12` file from each node directory in `/etc/elasticsearch/certs/elasticsearch/` (that is, `elasticsearch/mynode-es1`, `elasticsearch/mynode-es2` and `elasticsearch/mynode-es3`) to the `/etc/elasticsearch/certs/` directory on each corresponding cluster node.
 
 . On each {es} node, repeat the steps to generate a new certificate for the transport layer:
+
+.. Stop the {es} service:
++
+["source","shell"]
+----
+sudo systemctl stop elasticsearch.service
+----
 
 .. From the `/etc/elasticsearch/certs` directory, create a new certificate for the {es} node:
 +
@@ -468,7 +481,7 @@ xpack.security.http.ssl:
 +
 ["source","shell"]
 ----
-chown root.elasticsearch *
+chown root:elasticsearch *
 ----
 
 .. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
@@ -479,11 +492,10 @@ chmod 750 /etc/elasticsearch/certs
 chmod 750 /etc/elasticsearch/ca
 ----
 
-. Stop and restart {es}. 
+. Restart the {es} service. 
 +
 ["source","shell"]
 ----
-sudo systemctl stop elasticsearch.service
 sudo systemctl start elasticsearch.service
 ----
 

@@ -21,6 +21,8 @@ It should take between one and two hours to complete these steps.
 * <<install-stack-self-view-data>>
 * <<install-stack-self-next-steps>>
 
+IMPORTANT: If you're using these steps to configure a production cluster that uses trusted CA-signed certificates for secure communications, after completing Step 6 to install {kib} we recommend jumping directly to <<install-stack-demo-secure>>. The second tutorial includes steps to configure {fleet} and {agent} with SSL certificates enabled.
+
 [discrete]
 [[install-stack-self-prereqs]]
 == Prerequisites
@@ -118,7 +120,7 @@ sudo vim /etc/elasticsearch/elasticsearch.yml
 +
 In the configuration file, uncomment the line `#cluster.name: my-application` and give the {es} instance any name that you'd like:
 +
-[source,"shell"]
+[source,"yaml"]
 ----
 cluster.name: elasticsearch-demo
 ----
@@ -127,7 +129,7 @@ cluster.name: elasticsearch-demo
 +
 Uncomment the line `#network.host: 192.168.0.1` and replace the default address with the value that you copied from the `ifconfig` command output. For example:
 +
-[source,"shell"]
+[source,"yaml"]
 ----
 network.host: 10.128.0.84
 ----
@@ -136,7 +138,7 @@ network.host: 10.128.0.84
 +
 Uncomment the line `#transport.host: 0.0.0.0`. The `0.0.0.0` setting enables {es} to listen for connections on all available network interfaces. Note that in a production environment you might want to restrict this by setting this value to match the value set for `network.host`.
 +
-[source,"shell"]
+[source,"yaml"]
 ----
 transport.host: 0.0.0.0
 ----
@@ -303,14 +305,14 @@ Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool
 
 . In the configuration file, uncomment the line `#cluster.name: my-application` and set it to match the name you specified for the first {es} node:
 +
-[source,"shell"]
+[source,"yaml"]
 ----
 cluster.name: elasticsearch-demo
 ----
 
 . As with the first {es} node, we'll need to set up {es} to run on a routable, external IP address. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
 +
-[source,"shell"]
+[source,"yaml"]
 ----
 network.host: 10.128.0.132
 ----
@@ -462,7 +464,7 @@ sudo vim /etc/kibana/kibana.yml
 
 . Uncomment the line `#server.host: localhost` and replace the default address with the inet value that you copied from the ìfconfig` command. For example:
 +
-[source,"shell"]
+[source,"yaml"]
 ----
 server.host: 10.128.0.28
 ----
@@ -513,11 +515,18 @@ Make a note of the verification code.
 
 {kib} is now fully set up and communicating with your {es} cluster!
 
+
+[IMPORTANT] 
+.Configuring security settings
+==== 
+For simplicity, in this tutorial we're setting up all of the {stack} components without configuring security certificates. You can proceed to configure {fleet}, {agent}, and then confirm that your system data appears in {kib}.
+
+However, in a production environment, before going further to install {fleet-server} and {agent} it's recommended to update your security settings to use trusted CA-signed certificates as described in <<install-stack-demo-secure>>. After new security certificates are configured any {agent}s would need to be reinstalled. If you're currently setting up a production environment, we recommend that you jump directly to Tutorial 2, which includes steps to set up {fleet} and {agent} with security configured.
+====
+
 [discrete]
 [[install-stack-self-fleet-server]]
 == Step 7: Install {fleet-server}
-
-IMPORTANT: For simplicity, in this guide we're setting up all of the {stack} components first, before configuring security certificates. However, in a production environment it's recommended to update your security settings as described in <<install-stack-demo-secure>> before installing {fleet-server} and {agent}. After any new security certificates are configured any {agent}s would need to be reinstalled. If you're currently setting up a production environment, you may want to jump directly to Tutorial 2, which includes steps to set up {fleet} and {agent} with security configured.
 
 Now that {kib} is up and running, we'll install {fleet-server}, which will manage the {agent} that we'll set up in a later step. If you need more detail about these steps, refer to {fleet-guide}/add-fleet-server-on-prem.html[Deploy on-premises and self-managed] in the {fleet} and {agent} Guide.
 

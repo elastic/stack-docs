@@ -4,7 +4,7 @@
 [[install-stack-demo-secure]]
 === Tutorial 2: Securing a self-managed {stack}
 
-This tutorial is a follow-on to  <<installing-stack-demo-self>>. These steps guide you through the process of configuring secure communications throughout your on-premise {stack} install.
+This tutorial is a follow-on to <<installing-stack-demo-self>>. These steps guide you through the process of configuring secure communications throughout your on-premise {stack} install.
 
 Beginning with Elastic 8.0, security is enabled in the {stack} by default, meaning that traffic between {es} nodes and between {kib} and {es} is SSL-encrypted.
 While this is suitable for testing non-production viability of the Elastic platform, most production networks have requirements for the use of trusted CA-signed certificates.
@@ -12,7 +12,7 @@ These steps demonstrate how to update the out-of-the-box self-signed certificate
 
 For traffic to be encrypted between {es} cluster nodes and between {kib} and {es}, SSL certificates must be created for the transport ({es} inter-node communication) and HTTP (for the {es} REST API) layers. This general process is as follows:
 
-* <<install-stack-demo-secure-ca>> 
+* <<install-stack-demo-secure-ca>>
 * <<install-stack-demo-secure-transport>>
 * <<install-stack-demo-secure-http>>
 * <<install-stack-demo-secure-second-node>>
@@ -312,23 +312,30 @@ xpack.security.http.ssl:
 +
 ["source","shell"]
 ----
-./bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
 ----
 
 . From the {es} installation directory, add the updated HTTP keystore password, using the password you generated for this keystore:
 +
 ["source","shell"]
 ----
-./bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
 ----
 
 . Before restarting {es}, you need to update the permissions and ownership of all of the certificate files.
 
-.. From the `etc/elasticsearch/certs/` directory, change the files to be owned by the `root.elasticsearch` group:
+.. From the `etc/elasticsearch/certs/` directory, change the files to be owned by the `root:elasticsearch` group:
 +
 ["source","shell"]
 ----
 chown root:elasticsearch *
+----
+
+.. Set the files in `/etc/elasticsearch/certs` to have read and write permissions by the owner (`root`) and read permission by the `elastic` user:
++
+["source","shell"]
+----
+chmod 640 *
 ----
 
 .. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
@@ -336,7 +343,7 @@ chown root:elasticsearch *
 ["source","shell"]
 ----
 chmod 750 /etc/elasticsearch/certs
-chmod 750 /etc/elasticsearch/ca
+chmod 750 /etc/elasticsearch/certs/ca
 ----
 
 . Restart the {es} service:
@@ -373,7 +380,7 @@ A line in the log file like the following indicates that SSL has been properly c
 
 Now that the security is configured for the first {es} node, some steps need to be repeated on each additional {es} node.
 
-. To avoid filename collisions, on each additional {es} node rename the existing `http.p12` file:
+. To avoid filename collisions, on each additional {es} node rename the existing `http.p12` file in the `/etc/elasticsearch/certs/` directory:
 +
 ["source","shell"]
 ----
@@ -467,21 +474,28 @@ xpack.security.http.ssl:
 +
 ["source","shell"]
 ----
-./bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
 ----
 
 .. Add the updated HTTP keystore password:
 +
 ["source","shell"]
 ----
-./bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
 ----
 
-.. Change the certificate files to be owned by the `root.elasticsearch` group:
+.. Change the certificate files to be owned by the `root:elasticsearch` group:
 +
 ["source","shell"]
 ----
 chown root:elasticsearch *
+----
+
+.. Set the files in `/etc/elasticsearch/certs` to have read and write permissions by the owner (`root`) and read permission by the `elastic` user:
++
+["source","shell"]
+----
+chmod 640 *
 ----
 
 .. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
@@ -489,7 +503,7 @@ chown root:elasticsearch *
 ["source","shell"]
 ----
 chmod 750 /etc/elasticsearch/certs
-chmod 750 /etc/elasticsearch/ca
+chmod 750 /etc/elasticsearch/certs/ca
 ----
 
 . Restart the {es} service. 
@@ -505,17 +519,69 @@ sudo systemctl start elasticsearch.service
 ----
 sudo systemctl status elasticsearch.service
 ----
-
-
-
-
+ 
 [discrete]
 [[install-stack-demo-secure-kib-es]]
 == Step 5: Generate a certificate for {kib} to access {es}
-tbd
 
+Now that the transport and HTTP layers are configured with encryption using the new certificates, we'll set up certificates for encryption between {kib} and {es}.
+
+. In Step 3, when you generated a new certificate for the HTTP layer, the process created an archive `elasticsearch-ssl-http.zip`. From the `kibana` directory in the expanded archive, copy the `elasticsearch-ca.pem` private key file to the {kib} host machine.
+
+. On the {kib} host machine, copy `elasticsearch-ca.pem` to the {kib} configuration directory (depending on the installation method that you used, the location of the configuration directory may be different from what's shown):
++
+["source","shell"]
+----
+mv elasticsearch-ca.pem /etc/kibana
+----
+
+. Stop the {kib} service:
++
+["source","shell"]
+----
+sudo systemctl stop kibana.service
+----
+
+. Update the `kibana.yml` settings file to reflect the location of the `elasticsearch-ca.pem`:
++
+["source","sh",subs="attributes"]
+----
+elasticsearch.ssl.certificateAuthorities: [/etc/kibana/elasticsearch-ca.pem]
+----
+
+. Restart the {kib} service:
++
+["source","shell"]
+----
+sudo systemctl start kibana.service
+----
+
+. Confirm that {kib} is running:
++
+["source","shell"]
+----
+sudo systemctl status kibana.service
+----
++
+If everything is configured correctly, connection to {es} will be established and {kib} will start normally.
+
+. You can also view the {kib} log file to gather more detail:
++
+["source","shell"]
+----
+tail -f /var/log/kibana/kibana.log
+----
++
+In the log file you should find a `Kibana is now available` message.
+
+. Open a web browser to the external IP address of the Kibana host machine: `http://<kibana-host-address>:5601``. 
+
+. Log in using the `elastic` user and password that you configured in Step 1 of <<installing-stack-demo-self>>.
+
+Congratulations! You've successfully updated the SSL certificates between {es} and {kib}.
 
 [discrete]
 [[install-stack-demo-secure-fleet]]
-== Step 6: Configure {fleet} to use the new certificates
-tbd
+== Step 6: Install {fleet} with SSL certificates configured
+
+

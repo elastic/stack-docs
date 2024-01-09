@@ -4,13 +4,11 @@
 [[install-stack-demo-secure]]
 === Tutorial 2: Securing a self-managed {stack}
 
-This tutorial is a follow-on to <<installing-stack-demo-self>>. These steps guide you through the process of configuring secure communications throughout your on-premise {stack} install.
+Beginning with Elastic 8.0, security is enabled in the {stack} by default, meaning that traffic between {es} nodes and between {kib} and {es} is SSL-encrypted. While this is suitable for testing non-production viability of the Elastic platform, most production networks have requirements for the use of trusted CA-signed certificates. These steps demonstrate how to update the out-of-the-box self-signed certificates with your own trusted CA-signed certificates.
 
-Beginning with Elastic 8.0, security is enabled in the {stack} by default, meaning that traffic between {es} nodes and between {kib} and {es} is SSL-encrypted.
-While this is suitable for testing non-production viability of the Elastic platform, most production networks have requirements for the use of trusted CA-signed certificates.
-These steps demonstrate how to update the out-of-the-box self-signed certificates with your own trusted CA-signed certificates.
+This tutorial is a follow-on to <<installing-stack-demo-self>>. In the first tutorial, you would have configured a multi-node {es} cluster and then set up {kib}. In a production-ready environment, it's recommended, after completing the {kib} setup, to proceed with configuring your SSL certificates. These steps guide you through that process, and then describe how to configure {fleet-server} and {agent}. Finally, you'll use {kib} to view the system data gathered from the host on which {agent} is running.
 
-For traffic to be encrypted between {es} cluster nodes and between {kib} and {es}, SSL certificates must be created for the transport ({es} inter-node communication) and HTTP (for the {es} REST API) layers. This general process is as follows:
+For traffic to be encrypted between {es} cluster nodes and between {kib} and {es}, SSL certificates must be created for the transport ({es} inter-node communication) and HTTP (for the {es} REST API) layers. Similarly, when setting up {fleet-server} you'll generate and configure a new certificate bundle, and then {elastic-agent} uses the generated certificates to communicate with both {fleet-server} and {es}. The process to set things up is as follows:
 
 * <<install-stack-demo-secure-ca>>
 * <<install-stack-demo-secure-transport>>
@@ -852,6 +850,8 @@ View your system metrics data:
 
 . Open the {kib} menu and return to **Analytics -> Dashboard**.
 . In the query field, search for `Metrics System`.
-. Select the `[Metrics System] Host overview` link. The {kib} Dashboard opens with visualizations of host metrics including CPU usage, memory usage, running processes, and others.
+. Select the `[Metrics System] Host overview` link. The {kib} Dashboard opens with visualizations of host metrics including CPU usage, memory usage, running processes, and more.
 +
 image::images/install-stack-metrics-dashboard.png["The System metrics host overview showing CPU usage, memory usage, and other visualizations"]
+
+Congratulations! You've successfully configured security for {es}, {kib}, {fleet}, and {agent} using your own trusted CA-signed certificates.

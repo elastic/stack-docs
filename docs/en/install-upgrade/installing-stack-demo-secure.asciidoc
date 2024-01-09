@@ -544,7 +544,7 @@ mv elasticsearch-ca.pem /etc/kibana
 sudo systemctl stop kibana.service
 ----
 
-. Update the `kibana.yml` settings file to reflect the location of the `elasticsearch-ca.pem`:
+. Update the `/etc/kibana/kibana.yml` settings file to reflect the location of the `elasticsearch-ca.pem`:
 +
 ["source","sh",subs="attributes"]
 ----
@@ -608,7 +608,7 @@ sudo mkdir /etc/fleet
 ** `/etc/fleet/fleet-server.crt`
 ** `/etc/fleet/fleet-server.key``
 
-. From the first {es} node, copy the `ca.crt` file into the `/etc/fleet/` directory on the {fleet-server} host. Just to help identify the file we'll also rename it to `es-ca.crt`:
+. From the first {es} node, copy the `ca.crt` file, and paste it into the `/etc/fleet/` directory on the {fleet-server} host. Just to help identify the file we'll also rename it to `es-ca.crt`:
 ** `/etc/fleet/es-ca.crt`
 
 . Update the permissions on the certificate files to ensure that they're readable. From inside the `/etc/fleet` directory, run:
@@ -648,14 +648,15 @@ cd elastic-install-files
 . On the **Add your Fleet Server host** step:
 
 .. Specify a name for your {fleet-server} host, for example `Fleet Server`.
-.. Specify the host URL and where {agents} will reach {fleet-server}, including the default port `8220`. For example, `https://10.128.0.203:8220`. The URL is the inet value that you copied from the `ifconfig` output.
+.. Specify the host URL and where {agents} will reach {fleet-server}, including the default port `8220`. For example, `https://10.128.0.203:8220`. The URL is the inet value that you copied from the `ifconfig` output. For details about default port assignments, refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premise {fleet-server} install documentation.
+
 .. Click **Add host**.
 
 . On the **Generate a service token** step, generate the token and save the output. The token will also be propagated automatically to the command to install {fleet-server}.
 
 . On the **Install Fleet Server to a centralized host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server}.
 
-. Run the first three commands one-by-one in the terminal on y our {fleet-server} host.
+. Run the first three commands one-by-one in the terminal on your {fleet-server} host.
 +
 These commands will, respectively:
 
@@ -677,9 +678,9 @@ These commands will, respectively:
 grep -v ^- /etc/elasticsearch/certs/ca/ca.crt | base64 -d | sha256sum
 ----
 +
-Replace the `fleet-server-es-ca-trusted-fingerprint` setting with the returned value.
+Save the fingerprint value. You'll need it in a later step.
 +
-Your updated command should be similar to the following:
+Replace the `fleet-server-es-ca-trusted-fingerprint` setting with the returned value. Your updated command should be similar to the following:
 +
 ["source","shell"]
 ----
@@ -702,7 +703,7 @@ When prompted, confirm that {agent} should run as a service. If everything goes 
 +
 ["source","shell"]
 ----
-Elastic Agent has been successfully installed.
+{agent} has been successfully installed.
 ----
 +
 NOTE: Wondering why the command refers to {agent} rather than {fleet-server}? {fleet-server} is actually a subprocess that runs inside {agent} with a special {fleet-server} policy. Refer to {fleet-guide}/fleet-server.html[What is {fleet-server}] to learn more.
@@ -710,23 +711,60 @@ NOTE: Wondering why the command refers to {agent} rather than {fleet-server}? {f
 . Return to the {kib} **Add a Fleet Server** flyout and wait for confirmation that {fleet-server} has connected.
 
 . Once the connection is confirmed, ignore the *Continue enrolling Elastic Agent* option and close the flyout.
-
++
 {fleet-server} is now fully set up!
 
+. Before proceeding to install {agent}, there's one last step to update the `kibana.yml` settings file with the {es} CA fingerprint:
 
-
-
-// ##########################
-// The following agent steps are copied from tutorial 1 and need to be updated to include the security config.
-// ##########################
+.. On your {kib} host, stop the {kib} service:
++
+["source","shell"]
+----
+sudo systemctl stop kibana.service
+----
+.. Open `/etc/kibana/kibana.yml` for editing.
+.. Find the `xpack.fleet.outputs` setting.
+.. Update `ca_trusted_fingerprint` to the value you captured earlier by running the `grep` command on the {es} `ca.crt` file. The entry in `kibana.yml` should be like the following:
++
+["source","yaml"]
+----
+xpack.fleet.outputs: [{id: fleet-default-output, name: default, is_default: true, is_default_monitoring: true, type: elasticsearch, hosts: [`https://10.128.0.84:9200`], ca_trusted_fingerprint: 92b51cf91e7fa311f8c84849224d448ca44824eb}]
+----
+.. Save your changes.
+.. Restart {kib}:
++
+["source","shell"]
+----
+sudo systemctl start kibana.service
+----
++
+{kib} is now configured with the correct fingerprint for {agent} to access {es}. You're now ready to set up {agent}!
 
 [discrete]
 [[install-stack-demo-secure-agent]]
 == Step 7: Install {agent}
 
-Next, we'll install {agent} on another host and use the System integration to monitor system logs and metrics.
+Next, we'll install {agent} on another host and use the System integration to monitor system logs and metrics. You can find additional details about these steps in {fleet-guide}/secure-connections.html[Configure SSL/TLS for self-managed Fleet Servers].
 
 . Log in to the host where you'd like to set up {agent}.
+
+. Create a directory for the {es} certificate file:
++
+["source","shell"]
+----
+sudo mkdir /etc/fleet
+----
+. From the first {es} node, copy the `ca.crt` file, and paste it into the `/etc/agent/` directory on the {fleet-server} host. Just to help identify the file we'll also rename it to `es-ca.crt`:
+** `/etc/fleet/es-ca.crt`
+
+////
+. Update the permissions on the certificate file to ensure that it's readable. From inside the `/etc/agent` directory, run:
++
+["source","shell"]
+----
+sudo chmod 640 es-ca.crt
+----
+////
 
 . Create a working directory for the installation package:
 +
@@ -746,16 +784,9 @@ cd elastic-install-files
 
 . On the **Agents** tab, you should see your new {fleet-server} policy running with a healthy status.
 
-. Open the **Settings** tab.
+. Click **Add agent**. The **Add agent** flyout opens.
 
-. Notice that a {Fleet-server} host URL is configured. Before adding an {agent}, the host setting needs to be updated. By default, the host URL port is set to `443` which is used in an {ecloud} environment. When {fleet-server} is installed on-premises, the port needs to be updated to `8220`. Refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premise {fleet-server} install documentation for a list of port assignments.
-+
-.. Under *Actions*, click the edit icon and update the {fleet-server} host URL to use port 8220. For example: `https://10.128.0.203:8220`.
-.. Select **Save and apply settings**. It takes a minute or so for the configuration change to complete.
-
-. Reopen the **Agents** tab and select **Add agent**. The **Add agent** flyout opens.
-
-. In the flyout, choose a policy name, for example `Demo Agent Policy`.
+. In the flyout, choose an agent policy name, for example `Demo Agent Policy`.
 
 . Leave **Collect system logs and metrics** enabled. This will add the link:https://docs.elastic.co/integrations/system[System integration] to the {agent} policy.
 
@@ -765,31 +796,43 @@ cd elastic-install-files
 
 . On the **Install Elastic Agent on your host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
 
-. Copy the generated commands. 
-
-. In the `sudo ./elastic-agent install` command, make two changes:
-.. For the `--url` parameter, change the port number from the default `443` to `8220` (used for on-premise {fleet-server}).
-.. Append an `--insecure` flag at the end. We'll configure secure communications in a later step.
+. Run the first three commands one-by-one in the terminal on your {agent} host.
 +
-The result should be similar to the following example:
+These commands will, respectively:
+
+.. Download the {agent} package from the {artifact-registry}. 
+.. Unpack the package archive.
+.. Change into the directory containing the install binaries.
+
+. Before running the provided `elastic-agent install` command, you'll need to make a few changes:
+
+.. For the `--url` parameter, confirm that the port number is `8220` (this is the default port for on-premise {fleet-server}).
++
+.. Add a `--certificate-authorities` parameter with the full path of your CA certificate file. For example, `--certificate-authorities=/etc/agent/es-ca.crt`.
++
+The result should be similar to the following:
 +
 ["source","shell"]
 ----
-sudo ./elastic-agent install --url=https://10.128.0.203:8220 --enrollment-token=VWCobFhKd0JuUnppVYQxX0VKV5E6UmU3BGk0ck9RM2HzbWEmcS4Bc1YUUM==
+sudo ./elastic-agent install \
+--url=https://10.128.0.203:8220 \ --enrollment-token=VWCobFhKd0JuUnppVYQxX0VKV5E6UmU3BGk0ck9RM2HzbWEmcS4Bc1YUUM==
+--certificate-authorities=/etc/agent/es-ca.crt
 ----
 
-. Run the commands one-by-one in the terminal on your {agent} host. The commands will, respectively:
-
-.. Download the {agent} package from the {artifact-registry}.
-.. Unpack the package archive.
-.. Change into the directory containing the install binaries.
-.. Install {agent}.
-
-. At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete.
+. Run the `elastic-agent install` command.
++
+At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete. If everything goes well, the install will complete successfully:
++
+["source","shell"]
+----
+{agent} has been successfully installed.
+----
 
 . In the {kib} **Add agent** flyout, wait for confirmation that {agent} has connected.
 
-. Close the flyout.
+. Wait for the **Confirm incoming data** step to complete. This may take a couple of minutes.
+
+. Once data is confirmed to be flowing, close the flyout.
 
 Your new {agent} is now installed an enrolled with {fleet-server}.
 
@@ -797,7 +840,7 @@ Your new {agent} is now installed an enrolled with {fleet-server}.
 [[install-stack-demo-secure-view-data]]
 == Step 8: View your system data
 
-Now that all of the components have been installed, it's time to confirm that data is flowing as expected.
+Now that all of the components have been installed, it's time to view your system data.
 
 View your system log data:
 

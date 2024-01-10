@@ -1,15 +1,18 @@
 // for testing:
-:version: 8.11.1
+:version: 8.11.
 
 [[install-stack-demo-secure]]
 === Tutorial 2: Securing a self-managed {stack}
 
-Beginning with Elastic 8.0, security is enabled in the {stack} by default, meaning that traffic between {es} nodes and between {kib} and {es} is SSL-encrypted. While this is suitable for testing non-production viability of the Elastic platform, most production networks have requirements for the use of trusted CA-signed certificates. These steps demonstrate how to update the out-of-the-box self-signed certificates with your own trusted CA-signed certificates.
+This tutorial is a follow-on to <<installing-stack-demo-self>>. The first tutorial describes how to configure a multi-node {es} cluster and then set up {kib}, followed by {fleet-server} and {agent}. In a production environment, it's recommended after completing the {kib} setup to proceed directly to this tutorial to configure your SSL certificates. These steps guide you through that process, and then describe how to configure {fleet-server} and {agent} with the certificates in place.
 
-This tutorial is a follow-on to <<installing-stack-demo-self>>. In the first tutorial, you would have configured a multi-node {es} cluster and then set up {kib}. In a production-ready environment, it's recommended, after completing the {kib} setup, to proceed with configuring your SSL certificates. These steps guide you through that process, and then describe how to configure {fleet-server} and {agent}. Finally, you'll use {kib} to view the system data gathered from the host on which {agent} is running.
+**Securing the {stack}**
+
+Beginning with Elastic 8.0, security is enabled in the {stack} by default, meaning that traffic between {es} nodes and between {kib} and {es} is SSL-encrypted. While this is suitable for testing non-production viability of the Elastic platform, most production networks have requirements for the use of trusted CA-signed certificates. These steps demonstrate how to update the out-of-the-box self-signed certificates with your own trusted CA-signed certificates.
 
 For traffic to be encrypted between {es} cluster nodes and between {kib} and {es}, SSL certificates must be created for the transport ({es} inter-node communication) and HTTP (for the {es} REST API) layers. Similarly, when setting up {fleet-server} you'll generate and configure a new certificate bundle, and then {elastic-agent} uses the generated certificates to communicate with both {fleet-server} and {es}. The process to set things up is as follows:
 
+* <<install-stack-demo-secure-prereqs>>
 * <<install-stack-demo-secure-ca>>
 * <<install-stack-demo-secure-transport>>
 * <<install-stack-demo-secure-http>>
@@ -20,6 +23,16 @@ For traffic to be encrypted between {es} cluster nodes and between {kib} and {es
 * <<install-stack-demo-secure-view-data>>
 
 It should take between one and two hours to complete these steps.
+
+[discrete]
+[[install-stack-demo-secure-prereqs]]
+== Prerequisites and assumptions
+
+Before starting, you'll need to have set up an on-premises {es} cluster with {kib}, following the steps in <<installing-stack-demo-self>>.
+
+The examples in this guide use RPM packages to install the {stack} components on hosts running Red Hat Enterprise Linux 8. The steps for other install methods and operating systems are similar, and can be found in the documentation linked from each section.
+
+Special considerations such as firewalls and proxy servers are not covered here.
 
 [discrete]
 [[install-stack-demo-secure-ca]]
@@ -34,7 +47,7 @@ In a production environment you would typically use the CA certificate from your
 sudo systemctl stop elasticsearch.service
 ----
 
-. Still on the first node, generate a CA certificate using the provided certificate utility, `elasticsearch-certutil`. Note that the location of the utility depends on the installation method you used to install {es}. Refer to {ref}/certutil.html[elasticsearch-certutil] for the command details and to {ref}/update-node-certs-different.html[Update security certificates with a different CA] for details about the procedure as a whole.
+. Generate a CA certificate using the provided certificate utility, `elasticsearch-certutil`. Note that the location of the utility depends on the installation method you used to install {es}. Refer to {ref}/certutil.html[elasticsearch-certutil] for the command details and to {ref}/update-node-certs-different.html[Update security certificates with a different CA] for details about the procedure as a whole.
 +
 Run the following command. When prompted, specify a unique name for the output file, such as `elastic-stack-ca-new.zip`: 
 +
@@ -69,7 +82,7 @@ sudo ls ca/
 `ca.key`:: The certificate authority's private key
 
 +
-NOTE: These steps to generate new self-signed CA certificates need to be done only on the first {es} node. The other {es} nodes will use the same `ca.crt` and `ca.key` files.
+These steps to generate new self-signed CA certificates need to be done only on the first {es} node. The other {es} nodes will use the same `ca.crt` and `ca.key` files.
 
 . From the `/ca` directory, import the newly created CA certificate into the {es} truststore. This step ensures that your cluster trusts the new CA certificate.
 +
@@ -129,8 +142,6 @@ If you're running these steps on a production cluster that already contains data
 
 * In a cluster with multiple {es} nodes, before proceeding you first need to perform a {ref}/restart-cluster.html#restart-cluster-rolling[Rolling restart] beginning with the node where you're updating the keystore. Stop at the `Perform any needed changes` step, and then proceed to the next step in this guide.
 * In a single node cluster, always stop {es} before proceeding.
-
-If this is the initial installation of this cluster, you can safely proceed to the next step.
 ====
 
 +
@@ -169,7 +180,13 @@ xpack.security.transport.ssl.keystore.secure_password
 xpack.security.transport.ssl.truststore.secure_password
 ----
 +
-Notice that there are entries for the `transport.ssl.truststore` that holds the CA certificate, the `transport.ssl.keystore` that holds the CA-signed certificates, and the `http.ssl.keystore` for the HTTP layer. These entries were created at installation and need to be replaced with the passwords to the newly-created truststore and keystores.
+Notice that there are entries for:
++
+* The `transport.ssl.truststore` that holds the CA certificate
+* The `transport.ssl.keystore` that holds the CA-signed certificates
+* The `http.ssl.keystore` for the HTTP layer
++
+These entries were created at installation and need to be replaced with the passwords to the newly-created truststore and keystores.
 
 . Remove the existing keystore values for the default transport keystore and truststore:
 +
@@ -209,8 +226,13 @@ Respond to the command prompts as follows:
 * Provide the absolute path to your newly created CA certificate: `/etc/elasticsearch/certs/ca/ca.crt`.
 * Provide the absolute path to your newly created CA key: `/etc/elasticsearch/certs/ca/ca.key`.
 * Enter an expiration value for your certificate. You can enter the validity period in years, months, or days. For example, enter `1y` for one year.
-* When asked if you want to generate one certificate per node, enter `y`. You'll be guided through the creation of certificates for each node. Each certificate will have its own private key, and will be issued for a specific hostname or IP address.
-.. On separate lines, enter the hostname for your first {es} node, for example `mynode-es1`, and the IP address that clients can use to connect to your node. Note that this is the same value that's described in Step 2 of <<installing-stack-demo-self>>, for example `10.128.0.84`:
+* When asked if you want to generate one certificate per node, enter `y`.
++
+You'll be guided through the creation of certificates for each node. Each certificate will have its own private key, and will be issued for a specific hostname or IP address.
+
+.. On separate lines, enter the hostname for your first {es} node, for example `mynode-es1`, and the IP address that clients can use to connect to your node.
++
+Note that this is the same value that's described in Step 2 of <<installing-stack-demo-self>>, for example `10.128.0.84`:
 +
 ["source","shell"]
 ----
@@ -229,7 +251,7 @@ mynode-es1
 .. Provide a password for the generated `http.p12` keystore file.
 .. The generated files will be included in a zip archive. At the prompt, provide a path and filename for where the archive should be created.
 +
-For this example we'll use: `/etc/elasticsearch/certs/elasticsearch-ssl-http.zip`:
+For this example we use: `/etc/elasticsearch/certs/elasticsearch-ssl-http.zip`:
 +
 ["source","shell"]
 ----
@@ -252,7 +274,9 @@ mv http.p12 http-old.p12
 unzip elasticsearch-ssl-http.zip
 ----
 
-. When the archive is unpacked, the certificate files are located in separate directories for each {es} node and for the {kib} node. You can run a recursive `ls` command to view the file structure:
+. When the archive is unpacked, the certificate files are located in separate directories for each {es} node and for the {kib} node.
++
+You can run a recursive `ls` command to view the file structure:
 +
 ["source","shell"]
 ----
@@ -291,7 +315,9 @@ total 12
 -rw-r--r--. 1 root root 1052 Dec 12 19:04 sample-kibana.yml
 ----
 
-. In the directory where you unzipped the archive, replace your existing keystore with the new keystore. The location of your certificate directory may be different than what is shown here, depending on the installation method you chose. Run the `mv` command, replacing `<es1-hostname>` with the hostname of your initial {es} node:
+. In the directory where you unzipped the archive, replace your existing keystore with the new keystore. The location of your certificate directory may be different than what is shown here, depending on the installation method you chose.
++
+Run the `mv` command, replacing `<es1-hostname>` with the hostname of your initial {es} node:
 +
 ["source","shell"]
 ----
@@ -338,7 +364,7 @@ chown root:elasticsearch *
 chmod 640 *
 ----
 
-.. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
+.. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/certs/ca` directories to be executable by the owner:
 +
 ["source","shell"]
 ----
@@ -391,7 +417,7 @@ mv http.p12 http-old.p12
 
 * Copy the `/ca` directory (that contains `ca.crt` and `ca.key`) from `/etc/elasticsearch/certs/` on the first {es} node to the same path on all other {es} nodes.
 
-* Copy the `elastic-stack-ca.p12` file from `/etc/elasticsearch/certs/` to the /etc/elasticsearch/certs/ directory on all other {es} nodes.
+* Copy the `elastic-stack-ca.p12` file from `/etc/elasticsearch/certs/` to the `/etc/elasticsearch/certs/` directory on all other {es} nodes.
 
 * Copy the `http.p12` file from each node directory in `/etc/elasticsearch/certs/elasticsearch/` (that is, `elasticsearch/mynode-es1`, `elasticsearch/mynode-es2` and `elasticsearch/mynode-es3`) to the `/etc/elasticsearch/certs/` directory on each corresponding cluster node.
 
@@ -498,7 +524,7 @@ chown root:elasticsearch *
 chmod 640 *
 ----
 
-.. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/ca` directories to be executable by the owner:
+.. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/certs/ca` directories to be executable by the owner:
 +
 ["source","shell"]
 ----
@@ -526,7 +552,9 @@ sudo systemctl status elasticsearch.service
 
 Now that the transport and HTTP layers are configured with encryption using the new certificates, we'll set up certificates for encryption between {kib} and {es}. For additional details about any of these steps, refer to {kibana-ref}/elasticsearch-mutual-tls.html[Mutual TLS authentication between {kib} and {es}].
 
-. In Step 3, when you generated a new certificate for the HTTP layer, the process created an archive `elasticsearch-ssl-http.zip`. From the `kibana` directory in the expanded archive, copy the `elasticsearch-ca.pem` private key file to the {kib} host machine.
+. In Step 3, when you generated a new certificate for the HTTP layer, the process created an archive `elasticsearch-ssl-http.zip`.
++
+From the `kibana` directory in the expanded archive, copy the `elasticsearch-ca.pem` private key file to the {kib} host machine.
 
 . On the {kib} host machine, copy `elasticsearch-ca.pem` to the {kib} configuration directory (depending on the installation method that you used, the location of the configuration directory may be different from what's shown):
 +
@@ -584,7 +612,9 @@ Congratulations! You've successfully updated the SSL certificates between {es} a
 [[install-stack-demo-secure-fleet]]
 == Step 6: Install {fleet} with SSL certificates configured
 
-Now that {kib} is up and running, we'll install {fleet-server}, which will manage the {agent} that we'll set up in a later step. If you need more detail about these steps, refer to {fleet-guide}/add-fleet-server-on-prem.html[Deploy on-premises and self-managed] in the {fleet} and {agent} Guide. You can find detailed steps to generate and configure certificates in {fleet-guide}/secure-connections.html[Configure SSL/TLS for self-managed Fleet Servers].
+Now that {kib} is up and running, you can proceed to install {fleet-server}, which will manage the {agent} that we'll set up in a later step.
+
+If you'd like to learn more about these steps, refer to {fleet-guide}/add-fleet-server-on-prem.html[Deploy on-premises and self-managed] in the {fleet} and {agent} Guide. You can find detailed steps to generate and configure certificates in {fleet-guide}/secure-connections.html[Configure SSL/TLS for self-managed Fleet Servers].
 
 . Log in to the first {es} node and use the certificate utility to generate a certificate bundle for {fleet-server}. In the command, replace `<DNS name>` and `IP address` with the name and IP address of your {fleet-server} host:
 +
@@ -602,7 +632,7 @@ When prompted, specify a unique name for the output file, such as `fleet-cert-bu
 sudo mkdir /etc/fleet
 ----
 
-. Copy the generated archive over to your {fleet-server} host and unpack it into `/etc/fleet/`. to find the {fleet-server} certificate and the private key:
+. Copy the generated archive over to your {fleet-server} host and unpack it into `/etc/fleet/`:
 ** `/etc/fleet/fleet-server.crt`
 ** `/etc/fleet/fleet-server.key``
 
@@ -631,28 +661,36 @@ mkdir elastic-install-files
 cd elastic-install-files
 ----
 
-. In the terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
+. In the terminal, run the `ifconfig` command and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
 
-. Back to your web browser, open the {kib} menu and go to **Management -> Fleet**. {fleet} opens with a message that you need to add a {fleet-server}.
+. Back in your web browser, open the {kib} menu and go to **Management -> Fleet**. {fleet} opens with a message that you need to add a {fleet-server}.
 
 . Click **Add Fleet Server**. The **Add a Fleet Server** flyout opens.
 
 . In the flyout, select the **Advanced** tab.
 
-. On the **Create a policy for Fleet Server** step, keep the default {fleet-server} policy name and all advanced options at their defaults. Leave the option to collect system logs and metrics selected. Click *Create policy*. The policy takes a minute or so to create.
+. On the **Create a policy for Fleet Server** step, keep the default {fleet-server} policy name and all advanced options at their defaults.
++
+Leave the option to collect system logs and metrics selected. Click *Create policy*. The policy takes a minute or so to create.
 
 . On the **Choose a deployment mode for security** step, select the **Production** option. This enables you to provide your own certificates.
 
 . On the **Add your Fleet Server host** step:
 
 .. Specify a name for your {fleet-server} host, for example `Fleet Server`.
-.. Specify the host URL and where {agents} will reach {fleet-server}, including the default port `8220`. For example, `https://10.128.0.203:8220`. The URL is the inet value that you copied from the `ifconfig` output. For details about default port assignments, refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premise {fleet-server} install documentation.
+.. Specify the host URL and where {agents} will reach {fleet-server}, including the default port `8220`. For example, `https://10.128.0.203:8220`.
++
+The URL is the inet value that you copied from the `ifconfig` output.
++
+For details about default port assignments, refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premises {fleet-server} install documentation.
 
 .. Click **Add host**.
 
 . On the **Generate a service token** step, generate the token and save the output. The token will also be propagated automatically to the command to install {fleet-server}.
 
-. On the **Install Fleet Server to a centralized host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server}.
+. On the **Install Fleet Server to a centralized host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
++
+Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server}.
 
 . Run the first three commands one-by-one in the terminal on your {fleet-server} host.
 +
@@ -701,18 +739,18 @@ When prompted, confirm that {agent} should run as a service. If everything goes 
 +
 ["source","shell"]
 ----
-{agent} has been successfully installed.
+Elastic Agent has been successfully installed.
 ----
 +
-NOTE: Wondering why the command refers to {agent} rather than {fleet-server}? {fleet-server} is actually a subprocess that runs inside {agent} with a special {fleet-server} policy. Refer to {fleet-guide}/fleet-server.html[What is {fleet-server}] to learn more.
+TIP: Wondering why the command refers to {agent} rather than {fleet-server}? {fleet-server} is actually a subprocess that runs inside {agent} with a special {fleet-server} policy. Refer to {fleet-guide}/fleet-server.html[What is {fleet-server}] to learn more.
 
 . Return to the {kib} **Add a Fleet Server** flyout and wait for confirmation that {fleet-server} has connected.
 
 . Once the connection is confirmed, ignore the *Continue enrolling Elastic Agent* option and close the flyout.
-+
+
 {fleet-server} is now fully set up!
 
-. Before proceeding to install {agent}, there's one last step to update the `kibana.yml` settings file with the {es} CA fingerprint:
+Before proceeding to install {agent}, there are a few steps needed to update the `kibana.yml` settings file with the {es} CA fingerprint:
 
 .. On your {kib} host, stop the {kib} service:
 +
@@ -722,7 +760,9 @@ sudo systemctl stop kibana.service
 ----
 .. Open `/etc/kibana/kibana.yml` for editing.
 .. Find the `xpack.fleet.outputs` setting.
-.. Update `ca_trusted_fingerprint` to the value you captured earlier by running the `grep` command on the {es} `ca.crt` file. The entry in `kibana.yml` should be like the following:
+.. Update `ca_trusted_fingerprint` to the value you captured earlier, when you ran the `grep` command on the {es} `ca.crt` file.
++
+The updated entry in `kibana.yml` should be like the following:
 +
 ["source","yaml"]
 ----
@@ -755,15 +795,6 @@ sudo mkdir /etc/fleet
 . From the first {es} node, copy the `ca.crt` file, and paste it into the `/etc/agent/` directory on the {fleet-server} host. Just to help identify the file we'll also rename it to `es-ca.crt`:
 ** `/etc/fleet/es-ca.crt`
 
-////
-. Update the permissions on the certificate file to ensure that it's readable. From inside the `/etc/agent` directory, run:
-+
-["source","shell"]
-----
-sudo chmod 640 es-ca.crt
-----
-////
-
 . Create a working directory for the installation package:
 +
 ["source","shell"]
@@ -792,7 +823,9 @@ cd elastic-install-files
 
 . For the **Enroll in Fleet?** step, leave **Enroll in Fleet** selected.
 
-. On the **Install Elastic Agent on your host** step, for this example we'll select the **Linux Tar** tab, but you can select the tab appropriate to the host operating system where you're setting up {fleet-server}. As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
+. On the **Install Elastic Agent on your host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
++
+As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
 
 . Run the first three commands one-by-one in the terminal on your {agent} host.
 +
@@ -804,11 +837,11 @@ These commands will, respectively:
 
 . Before running the provided `elastic-agent install` command, you'll need to make a few changes:
 
-.. For the `--url` parameter, confirm that the port number is `8220` (this is the default port for on-premise {fleet-server}).
+.. For the `--url` parameter, confirm that the port number is `8220` (this is the default port for on-premises {fleet-server}).
 +
 .. Add a `--certificate-authorities` parameter with the full path of your CA certificate file. For example, `--certificate-authorities=/etc/agent/es-ca.crt`.
 +
-The result should be similar to the following:
+The result should be like the following:
 +
 ["source","shell"]
 ----
@@ -819,11 +852,13 @@ sudo ./elastic-agent install \
 
 . Run the `elastic-agent install` command.
 +
-At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete. If everything goes well, the install will complete successfully:
+At the prompt, enter `Y` to install {agent} and run it as a service. wait for the installation to complete.
++
+If everything goes well, the install will complete successfully:
 +
 ["source","shell"]
 ----
-{agent} has been successfully installed.
+Elastic Agent has been successfully installed.
 ----
 
 . In the {kib} **Add agent** flyout, wait for confirmation that {agent} has connected.

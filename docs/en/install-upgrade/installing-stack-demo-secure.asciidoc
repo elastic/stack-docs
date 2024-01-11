@@ -793,7 +793,7 @@ Next, we'll install {agent} on another host and use the System integration to mo
 +
 ["source","shell"]
 ----
-sudo mkdir /etc/fleet
+sudo mkdir /etc/agent
 ----
 . From the first {es} node, copy the `ca.crt` file, and paste it into the `/etc/agent/` directory on the {fleet-server} host. Just to help identify the file we'll also rename it to `es-ca.crt`:
 ** `/etc/fleet/es-ca.crt`
@@ -802,14 +802,14 @@ sudo mkdir /etc/fleet
 +
 ["source","shell"]
 ----
-mkdir elastic-install-files
+mkdir agent-install-files
 ----
 
 . Change into the new directory:
 +
 ["source","shell"]
 ----
-cd elastic-install-files
+cd agent-install-files
 ----
 
 . Open {kib} and go to **Management -> Fleet**.
@@ -849,7 +849,8 @@ The result should be like the following:
 ["source","shell"]
 ----
 sudo ./elastic-agent install \
---url=https://10.128.0.203:8220 \ --enrollment-token=VWCobFhKd0JuUnppVYQxX0VKV5E6UmU3BGk0ck9RM2HzbWEmcS4Bc1YUUM==
+--url=https://10.128.0.203:8220 \
+--enrollment-token=VWCobFhKd0JuUnppVYQxX0VKV5E6UmU3BGk0ck9RM2HzbWEmcS4Bc1YUUM== \
 --certificate-authorities=/etc/agent/es-ca.crt
 ----
 

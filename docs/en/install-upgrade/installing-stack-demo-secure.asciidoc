@@ -49,7 +49,7 @@ sudo systemctl stop elasticsearch.service
 
 . Generate a CA certificate using the provided certificate utility, `elasticsearch-certutil`. Note that the location of the utility depends on the installation method you used to install {es}. Refer to {ref}/certutil.html[elasticsearch-certutil] for the command details and to {ref}/update-node-certs-different.html[Update security certificates with a different CA] for details about the procedure as a whole.
 +
-Run the following command. When prompted, specify a unique name for the output file, such as `elastic-stack-ca-new.zip`: 
+Run the following command. When prompted, specify a unique name for the output file, such as `elastic-stack-ca.zip`: 
 +
 ["source","shell"]
 ----
@@ -60,22 +60,21 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-certutil ca -pem
 +
 ["source","shell"]
 ----
-sudo mv /usr/share/elasticsearch/elastic-stack-ca-new.zip /etc/elasticsearch/certs/
+sudo mv /usr/share/elasticsearch/elastic-stack-ca.zip /etc/elasticsearch/certs/
 ----
 
-. Change to the certificates directory and unzip the file:
+. Unzip the file:
 +
 ["source","shell"]
 ----
-sudo cd /etc/elasticsearch/certs
-sudo unzip elastic-stack-ca-new.zip
+sudo unzip -d /etc/elasticsearch/certs /etc/elasticsearch/certs/elastic-stack-ca.zip
 ----
 
 . View the files that were unpacked into a new `ca` directory:
 +
 ["source","shell"]
 ----
-sudo ls ca/
+sudo ls /etc/elasticsearch/certs/ca/
 ----
 +
 `ca.crt`:: The generated certificate (or you can substitute this with your own certificate, signed by your organizations's certificate authority)
@@ -84,7 +83,7 @@ sudo ls ca/
 +
 These steps to generate new self-signed CA certificates need to be done only on the first {es} node. The other {es} nodes will use the same `ca.crt` and `ca.key` files.
 
-. From the `/ca` directory, import the newly created CA certificate into the {es} truststore. This step ensures that your cluster trusts the new CA certificate.
+. From the `/etc/elasticsearch/certs/ca/` directory, import the newly created CA certificate into the {es} truststore. This step ensures that your cluster trusts the new CA certificate.
 +
 NOTE: On a new installation a new keystore and truststore are created automatically. If you're running these steps on an existing {es} installation and you know the password to the keystore and the truststore, follow the instructions in {ref}/update-node-certs-different.html[Update security certificates with a different CA] to import the CA certificate.
 +
@@ -92,7 +91,7 @@ Run the `keytool` command as shown, replacing `<password>` with a unique passwor
 +
 ["source","shell"]
 ----
-sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -noprompt -keystore elastic-stack-ca.p12 -storepass <password> -alias new-ca -file ca.crt
+sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -noprompt -keystore elastic-stack-ca.p12 -storepass <password> -alias new-ca -file /etc/elasticsearch/certs/ca/ca.crt
 ----
 
 . Ensure that the new key was added to the keystore:
@@ -101,6 +100,8 @@ sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -nopromp
 ----
 keytool -keystore elastic-stack-ca.p12 -list
 ----
++
+NOTE: The keytool utility is provided as part of the {es} installation and is located at: `/usr/share/elasticsearch/jdk/bin/keytool`.
 +
 Enter your password when prompted. The result should show the details for your newly added key:
 +
@@ -123,7 +124,7 @@ This guide assumes the use of self-signed certificates, but the process to impor
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key
 ----
 +
 When prompted, choose an output file name (you can use the default `elastic-certificates.p12`) and a password for the certificate.
@@ -132,7 +133,7 @@ When prompted, choose an output file name (you can use the default `elastic-cert
 +
 ["source","shell"]
 ----
-sudo mv usr/share/elasticsearch/elastic-certificates.p12 /etc/elasticsearch/certs/
+sudo mv /usr/share/elasticsearch/elastic-certificates.p12 /etc/elasticsearch/certs/
 ----
 
 +
@@ -167,7 +168,7 @@ xpack.security.transport.ssl:
 +
 ["source","shell"]
 ----
-/usr/share/elasticsearch/bin/elasticsearch-keystore list
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore list
 ----
 +
 The results should be like the following:
@@ -192,18 +193,18 @@ These entries were created at installation and need to be replaced with the pass
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
 
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
 ----
 
 . Update the `elasticsearch-keystore` with the passwords for the new keystore and truststore created in the previous steps. This ensures that {es} can read the new stores:
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
 
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
 ----
 
 [discrete]
@@ -216,7 +217,7 @@ Now that communication between {es} nodes (the transport layer) has been secured
 +
 ["source","shell"]
 ----
-sudo / usr/share/elasticsearch/bin/elasticsearch-certutil http
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil http
 ----
 +
 Respond to the command prompts as follows:

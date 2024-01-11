@@ -1,5 +1,5 @@
-// for testing:
-:version: 8.11.1
+// for testing on currently available builds:
+// :version: 8.11.1
 
 [[installing-stack-demo-self]]
 === Tutorial 1: Installing a self-managed {stack}
@@ -266,6 +266,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable elasticsearch.service
 ----
 
+IMPORTANT: Don't start the {es} service yet! Additional configuration is needed.
+
 . To enable this second {es} node to connect to the first, you need to configure an enrollment token.
 +
 [IMPORTANT]
@@ -396,9 +398,9 @@ sudo curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASS
 
 [discrete]
 [[install-stack-self-elasticsearch-third]]
-== Step 5: Set up a third {es} node
+== Step 5: Set up additional {es} nodes
 
-To set up your third {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>. The process is identical for each additional {es} node that you would like to add to the cluster. As a recommended best practice, create a new enrollment token for each new node that you add.
+To set up your next {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>. The process is identical for each additional {es} node that you would like to add to the cluster. As a recommended best practice, create a new enrollment token for each new node that you add.
 
 [discrete]
 [[install-stack-self-kibana]]

@@ -558,14 +558,14 @@ Now that {kib} is up and running, you can install {fleet-server}, which will man
 +
 ["source","shell"]
 ----
-mkdir elastic-install-files  
+mkdir fleet-install-files  
 ----
 
 . Change into the new directory:
 +
 ["source","shell"]
 ----
-cd elastic-install-files
+cd fleet-install-files
 ----
 
 . In the terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
@@ -578,7 +578,7 @@ cd elastic-install-files
 
 . Specify a name for your {fleet-server} host, for example `Fleet Server`.
 
-. Specify the host URL where {agents} will reach {fleet-server}, for example: `https://10.128.0.203:8220`. This is the inet value that you copied from the `ifconfig` output.
+. Specify the host URL where {agents} will reach {fleet-server}, for example: `http://10.128.0.203:8220`. This is the inet value that you copied from the `ifconfig` output.
 +
 Be sure to include the port number. Port `8220` is the default used by {fleet-server} in an on-premises environment. Refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premises {fleet-server} install documentation for a list of port assignments.
 
@@ -619,14 +619,14 @@ Next, you'll install {agent} on another host and use the System integration to m
 +
 ["source","shell"]
 ----
-mkdir elastic-install-files
+mkdir agent-install-files
 ----
 
 . Change into the new directory:
 +
 ["source","shell"]
 ----
-cd elastic-install-files
+cd agent-install-files
 ----
 
 . Open {kib} and go to **Management -> Fleet**.

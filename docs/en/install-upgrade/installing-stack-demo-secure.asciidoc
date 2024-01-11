@@ -224,6 +224,9 @@ Respond to the command prompts as follows:
 
 * When asked if you want to generate a CSR, enter `n`.
 * When asked if you want to use an existing CA, enter `y`.
++
+NOTE: If you're using your organization's CA certificate, specify that certificate and key in the following two steps.
++
 * Provide the absolute path to your newly created CA certificate: `/etc/elasticsearch/certs/ca/ca.crt`.
 * Provide the absolute path to your newly created CA key: `/etc/elasticsearch/certs/ca/ca.key`.
 * Enter an expiration value for your certificate. You can enter the validity period in years, months, or days. For example, enter `1y` for one year.
@@ -238,7 +241,6 @@ Note that this is the same value that's described in Step 2 of <<installing-stac
 ["source","shell"]
 ----
 mynode-es1
-10.128.0.84
 ----
 .. When prompted, confirm that the settings are correct.
 .. Add the network IP address for the first {es} node (the same address you specified in the previous step):
@@ -265,14 +267,14 @@ Just to avoid any possible name collisions, rename the existing `http.p12` file 
 +
 ["source","shell"]
 ----
-mv http.p12 http-old.p12
+sudo mv /etc/elasticsearch/certs/http.p12 /etc/elasticsearch/certs/http-old.p12
 ----
 
 . Unzip the generated `elasticsearch-ssl-http.zip` archive:
 +
 ["source","shell"]
 ----
-unzip elasticsearch-ssl-http.zip
+sudo unzip -d /usr/share/elasticsearch/ /usr/share/elasticsearch/elasticsearch-ssl-http.zip
 ----
 
 . When the archive is unpacked, the certificate files are located in separate directories for each {es} node and for the {kib} node.
@@ -281,7 +283,7 @@ You can run a recursive `ls` command to view the file structure:
 +
 ["source","shell"]
 ----
-ls -lR elasticsearch kibana
+ls -lR /usr/share/elasticsearch/{elasticsearch,kibana}
 ----
 +
 ["source","shell"]
@@ -316,13 +318,13 @@ total 12
 -rw-r--r--. 1 root root 1052 Dec 12 19:04 sample-kibana.yml
 ----
 
-. In the directory where you unzipped the archive, replace your existing keystore with the new keystore. The location of your certificate directory may be different than what is shown here, depending on the installation method you chose.
+. Replace your existing keystore with the new keystore. The location of your certificate directory may be different than what is shown here, depending on the installation method you chose.
 +
 Run the `mv` command, replacing `<es1-hostname>` with the hostname of your initial {es} node:
 +
 ["source","shell"]
 ----
-mv elasticsearch/<es1-hostname>/http.p12 /etc/elasticsearch/certs/
+sudo mv /usr/share/elasticsearch/elasticsearch/<es1-hostname>/http.p12 /etc/elasticsearch/certs/
 ----
 
 . Because this is a new keystore, the {es} configuration file needs to be updated with the path to its location. Open `/etc/elasticsearch/elasticsearch.yml` and update the HTTP SSL settings with the new path:

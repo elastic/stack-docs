@@ -341,23 +341,23 @@ xpack.security.http.ssl:
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
 ----
 
-. From the {es} installation directory, add the updated HTTP keystore password, using the password you generated for this keystore:
+. Add the updated HTTP keystore password, using the password you generated for this keystore:
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
 ----
 
-. Before restarting {es}, you need to update the permissions and ownership of all of the certificate files.
+. Because we've added files to the {es} configuration directory during this tutorial, we need to ensure that the permissions and ownership are correct before restarting {es}.
 
-.. From the `etc/elasticsearch/certs/` directory, change the files to be owned by the `root:elasticsearch` group:
+.. Change the files to be owned by `root:elasticsearch`:
 +
 ["source","shell"]
 ----
-chown root:elasticsearch *
+sudo chown -R root:elasticsearch /etc/elasticsearch/certs/
 ----
 
 .. Set the files in `/etc/elasticsearch/certs` to have read and write permissions by the owner (`root`) and read permission by the `elastic` user:

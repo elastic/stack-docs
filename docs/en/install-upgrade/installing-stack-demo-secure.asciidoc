@@ -91,7 +91,7 @@ Run the `keytool` command as shown, replacing `<password>` with a unique passwor
 +
 ["source","shell"]
 ----
-sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -noprompt -keystore elastic-stack-ca.p12 -storepass <password> -alias new-ca -file /etc/elasticsearch/certs/ca/ca.crt
+sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -noprompt -keystore /etc/elasticsearch/certs/elastic-stack-ca.p12 -storepass <password> -alias new-ca -file /etc/elasticsearch/certs/ca/ca.crt
 ----
 
 . Ensure that the new key was added to the keystore:
@@ -422,7 +422,7 @@ mv http.p12 http-old.p12
 
 * Copy the `elastic-stack-ca.p12` file from `/etc/elasticsearch/certs/` to the `/etc/elasticsearch/certs/` directory on all other {es} nodes.
 
-* Copy the `http.p12` file from each node directory in `/etc/elasticsearch/certs/elasticsearch/` (that is, `elasticsearch/mynode-es1`, `elasticsearch/mynode-es2` and `elasticsearch/mynode-es3`) to the `/etc/elasticsearch/certs/` directory on each corresponding cluster node.
+* Copy the `http.p12` file from each node directory in `/usr/share/elasticsearch/elasticsearch` (that is, `elasticsearch/mynode-es1`, `elasticsearch/mynode-es2` and `elasticsearch/mynode-es3`) to the `/etc/elasticsearch/certs/` directory on each corresponding cluster node.
 
 . On each {es} node, repeat the steps to generate a new certificate for the transport layer:
 
@@ -437,10 +437,10 @@ sudo systemctl stop elasticsearch.service
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key
 ----
 +
-When prompted, choose an output file name or use the default, and specify a password for the certificate.
+When prompted, choose an output file name and specify a password for the certificate. For this example, we'll use `/etc/elasticsearch/certs/elastic-certificates.p12`.
 
 .. Update the `/etc/elasticsearch/elasticsearch.yml` settings file with the new truststore and keystore filename and path:
 +
@@ -473,18 +473,18 @@ xpack.security.transport.ssl.truststore.secure_password
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
 
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
 ----
 
 .. Update the `elasticsearch-keystore` with the passwords for the new keystore and truststore:
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
 
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
 ----
 
 . For the HTTP layer, the certificates have been generated already on the first {es} node. Each additional {es} node just needs to be configured to use the new certificates.
@@ -503,21 +503,21 @@ xpack.security.http.ssl:
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
 ----
 
 .. Add the updated HTTP keystore password:
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
 ----
 
 .. Change the certificate files to be owned by the `root:elasticsearch` group:
 +
 ["source","shell"]
 ----
-chown root:elasticsearch *
+sudo chown -R root:elasticsearch /etc/elasticsearch/certs/
 ----
 
 .. Set the files in `/etc/elasticsearch/certs` to have read and write permissions by the owner (`root`) and read permission by the `elastic` user:

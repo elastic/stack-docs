@@ -605,7 +605,7 @@ tail -f /var/log/kibana/kibana.log
 +
 In the log file you should find a `Kibana is now available` message.
 
-. Open a web browser to the external IP address of the Kibana host machine: `http://<kibana-host-address>:5601``. 
+. Open a web browser to the external IP address of the Kibana host machine: `https://<kibana-host-address>:5601``. Note the URL should use `https` and not `http`.
 
 . Log in using the `elastic` user and password that you configured in Step 1 of <<installing-stack-demo-self>>.
 
@@ -654,14 +654,14 @@ sudo chmod 640 *.key
 +
 ["source","shell"]
 ----
-mkdir elastic-install-files  
+mkdir fleet-install-files  
 ----
 
 . Change into the new directory:
 +
 ["source","shell"]
 ----
-cd elastic-install-files
+cd fleet-install-files
 ----
 
 . In the terminal, run the `ifconfig` command and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.

@@ -37,7 +37,13 @@ To get started, you'll need the following:
 * A set of virtual or physical hosts on which to install each stack component. 
 * On each host, a super user account with `sudo` privileges.
 
-The examples in this guide use RPM packages to install the {stack} components on hosts running Red Hat Enterprise Linux 8. The steps for other install methods and operating systems are similar, and can be found in the documentation linked from each section.
+The examples in this guide use RPM packages to install the {stack} components on hosts running Red Hat Enterprise Linux 8. The steps for other install methods and operating systems are similar, and can be found in the documentation linked from each section. The packages that you'll install are:
+
+* elasticsearch-{version}-x86_64.rpm
+* kibana-{version}-x86_64.rpm
+* elastic-agent-{version}-linux-x86_64.tar.gz
+
+NOTE: For {agent} and {fleet-server} (both of which use the elastic-agent-{version}-linux-x86_64.tar.gz package) we recommend using TAR/ZIP packages over RPM/DEB system packages, since only the former support upgrading using {fleet}.
 
 Special considerations such as firewalls and proxy servers are not covered here.
 
@@ -586,7 +592,7 @@ Be sure to include the port number. Port `8220` is the default used by {fleet-se
 
 . On the **Install Fleet Server to a centralized host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
 +
-Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server}.
+Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server} using {fleet}.
 
 . Copy the generated commands and then run them one-by-one in the terminal on your {fleet-server} host.
 +
@@ -647,7 +653,7 @@ cd agent-install-files
 
 . On the **Install Elastic Agent on your host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
 +
-As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
+As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent} using {fleet}.
 
 . Copy the generated commands. 
 

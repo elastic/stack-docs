@@ -101,7 +101,7 @@ sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -nopromp
 keytool -keystore elastic-stack-ca.p12 -list
 ----
 +
-NOTE: The keytool utility is provided as part of the {es} installation and is located at: `/usr/share/elasticsearch/jdk/bin/keytool`.
+NOTE: The keytool utility is provided as part of the {es} installation and is located at: `/usr/share/elasticsearch/jdk/bin/keytool` on RPM installations.
 +
 Enter your password when prompted. The result should show the details for your newly added key:
 +
@@ -362,15 +362,18 @@ sudo chown -R root:elasticsearch /etc/elasticsearch/certs/
 +
 ["source","shell"]
 ----
-chmod 640 *
+sudo chmod 640 /etc/elasticsearch/certs/elastic-certificates.p12
+sudo chmod 640 /etc/elasticsearch/certs/elastic-stack-ca.p12
+sudo chmod 640 /etc/elasticsearch/certs/http_ca.crt
+sudo chmod 640 /etc/elasticsearch/certs/http.p12
 ----
 
 .. Change the `/etc/elasticsearch/certs` and `/etc/elasticsearch/certs/ca` directories to be executable by the owner:
 +
 ["source","shell"]
 ----
-chmod 750 /etc/elasticsearch/certs
-chmod 750 /etc/elasticsearch/certs/ca
+sudo chmod 750 /etc/elasticsearch/certs
+sudo chmod 750 /etc/elasticsearch/certs/ca
 ----
 
 . Restart the {es} service:
@@ -691,7 +694,7 @@ For details about default port assignments, refer to {fleet-guide}/add-fleet-ser
 
 . On the **Install Fleet Server to a centralized host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
 +
-Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server}.
+Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server} using {fleet}.
 
 . Run the first three commands one-by-one in the terminal on your {fleet-server} host.
 +
@@ -826,7 +829,7 @@ cd agent-install-files
 
 . On the **Install Elastic Agent on your host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
 +
-As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent}.
+As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent} using {fleet}.
 
 . Run the first three commands one-by-one in the terminal on your {agent} host.
 +

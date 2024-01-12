@@ -1,5 +1,5 @@
-// for testing on currently available builds:
-:version: 8.11.
+//For testing on currently available builds:
+//:version: 8.11.
 
 [[install-stack-demo-secure]]
 === Tutorial 2: Securing a self-managed {stack}
@@ -234,16 +234,14 @@ NOTE: If you're using your organization's CA certificate, specify that certifica
 +
 You'll be guided through the creation of certificates for each node. Each certificate will have its own private key, and will be issued for a specific hostname or IP address.
 
-.. On separate lines, enter the hostname for your first {es} node, for example `mynode-es1`, and the IP address that clients can use to connect to your node.
-+
-Note that this is the same value that's described in Step 2 of <<installing-stack-demo-self>>, for example `10.128.0.84`:
+.. Enter the hostname for your first {es} node, for example `mynode-es1`.
 +
 ["source","shell"]
 ----
 mynode-es1
 ----
 .. When prompted, confirm that the settings are correct.
-.. Add the network IP address for the first {es} node (the same address you specified in the previous step):
+.. Add the network IP address that clients can use to connect to the first {es} node. This is the same value that's described in Step 2 of <<installing-stack-demo-self>>, for example `10.128.0.84`:
 +
 ["source","shell"]
 ----
@@ -623,7 +621,7 @@ If you'd like to learn more about these steps, refer to {fleet-guide}/add-fleet-
 +
 ["source","shell"]
 ----
-sudo usr/share/elasticsearch/bin/elasticsearch-certutil cert --name fleet-server --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key  --dns <DNS name> --ip <IP address> --pem
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert --name fleet-server --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key  --dns <DNS name> --ip <IP address> --pem
 ----
 +
 When prompted, specify a unique name for the output file, such as `fleet-cert-bundle.zip`.

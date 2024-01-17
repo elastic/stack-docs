@@ -275,7 +275,7 @@ Unlike the setup for the first {es} node, in this case you don't need to copy th
 sudo systemctl daemon-reload
 sudo systemctl enable elasticsearch.service
 ----
-
++
 IMPORTANT: Don't start the {es} service yet! There are a few more configuration steps to do before restarting.
 
 . To enable this second {es} node to connect to the first, you need to configure an enrollment token.
@@ -460,7 +460,7 @@ sudo rpm --install kibana-{version}-x86_64.rpm
 +
 Return to your terminal shell into the first {es} node.
 
-. Run the `elasticsearch-create-enrollment-token` command with the `-s kibana` option to generate a {kibana} enrollment token:
+. Run the `elasticsearch-create-enrollment-token` command with the `-s kibana` option to generate a {kib} enrollment token:
 +
 [source,"shell"]
 ----
@@ -469,7 +469,7 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kiban
 
 . Copy the generated enrollment token from the command output.
 
-. Run the following two commands to enable {kib} to run as a service using `systemd`, enabling {kib} to start automatically when the host system reboots.
+. Back on the {kib} host, run the following two commands to enable {kib} to run as a service using `systemd`, enabling {kib} to start automatically when the host system reboots.
 +
 ["source","sh",subs="attributes"]
 ----

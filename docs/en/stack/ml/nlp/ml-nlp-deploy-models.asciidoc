@@ -85,7 +85,7 @@ eland_import_hub_model
 --cloud-id <cloud-id> \ <1>
 -u <username> -p <password> \ <2>
 --hub-model-id elastic/distilbert-base-cased-finetuned-conll03-english \ <3>
---task-type ner \ <4>
+--task-type ner  <4>
 --------------------------------------------------
 // NOTCONSOLE
 --
@@ -107,16 +107,10 @@ IMPORTANT: To use the Docker container, you need to clone the Eland repository:
 https://github.com/elastic/eland
 
 If you want to use Eland without installing it, clone the Eland repository and 
-from the root directory run the following to build the Docker image:
+from the root directory run the following command:
 
 ```bash
-$ docker build -t elastic/eland .
-```
-
-You can now use the container interactively:
-
-```bash
-$ docker run -it --rm --network host elastic/eland
+$ docker run -it --rm --network host docker.elastic.co/eland/eland
 ```
 
 The `eland_import_hub_model` script can be run directly in the docker command:

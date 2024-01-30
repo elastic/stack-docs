@@ -397,9 +397,11 @@ image::images/ml-nlp-elser-v2-test.png[alt="Testing ELSER",align="center"]
 * ELSER works best on small-to-medium sized fields that contain natural 
 language. For connector or web crawler use cases, this aligns best with fields 
 like _title_, _description_, _summary_, or _abstract_. As ELSER encodes the 
-first 512 tokens of a field, it may not be as good a match for `body_content` on 
-web crawler documents, or body fields resulting from extracting text from office 
-documents with connectors.
+first 512 tokens of a field, it may not provide as relevant of results for large
+fields. For example, `body_content` on web crawler documents, or body fields 
+resulting from extracting text from office documents with connectors. For larger
+fields like these, consider "chunking" the content into multiple values, where
+each chunk can be under 512 tokens.
 * Larger documents take longer at ingestion time, and {infer} time per 
 document also increases the more fields in a document that need to be processed.
 * The more fields your pipeline has to perform inference on, the longer it takes 

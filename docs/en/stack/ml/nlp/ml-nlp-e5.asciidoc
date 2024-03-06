@@ -155,8 +155,72 @@ POST _ml/trained_models/.multilingual-e5-small/deployment/_start?deployment_id=f
 [[air-gapped-install-e5]]
 == Deploy the E5 model in an air-gapped environment
 
-You can install the E5 model in a restricted or closed network by pointing the 
-`eland_import_hub_model` script to the model's local files.
+If you want to install E5 in an air-gapped environment, you have the following 
+options:
+* put the model artifacts into a directory inside the config directory on all 
+master-eligible nodes (for `multilingual-e5-small` and
+`multilingual-e5-small-optimized`)
+* install the model by using HuggingFace (for `multilingual-e5-small` model 
+only).
+
+
+[discrete]
+[[e5-model-artifacts]]
+=== Model artifact files
+
+For the `multilingual-e5-small` model, you need the following files in your
+system:
+```
+https://ml-models.elastic.co/multilingual-e5-small.metadata.json
+https://ml-models.elastic.co/multilingual-e5-small.pt
+https://ml-models.elastic.co/multilingual-e5-small.vocab.json
+```
+
+For the optimized version, you need the following files in your system:
+```
+https://ml-models.elastic.co/multilingual-e5-small-optimized.metadata.json
+https://ml-models.elastic.co/multilingual-e5-small-optimized.pt
+https://ml-models.elastic.co/multilingual-e5-small-optimized.vocab.json
+```
+
+
+[discrete]
+=== Using file-based access
+
+For a file-based access, follow these steps:
+
+. Download the <<e5-model-artifacts,model artifact files>>. 
+. Put the files into a `models` subdirectory inside the `config` directory of 
+your {es} deployment.
+. Point your {es} deployment to the model directory by adding the following line
+to the `config/elasticsearch.yml` file:
++
+--
+```
+xpack.ml.model_repository: file://${path.home}/config/models/`
+```
+--
+. Repeat step 2 and step 3 on all master-eligible nodes.
+. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
+master-eligible nodes one by one.
+. Navigate to the **Trained Models** page in {kib}, E5 can be found in the 
+list of trained models.
+. Click the **Add trained model** button, select the E5 model version you 
+downloaded in step 1 and want to deploy and click **Download**. The selected 
+model will be downloaded from the model directory where you put in step 2.
+. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
+. Click **Start**.
+
+
+[discrete]
+=== Using the HuggingFace repository
+
+You can install the `multilingual-e5-small` model in a restricted or closed
+network by pointing the `eland_import_hub_model` script to the model's local
+files.
 
 For an offline install, the model first needs to be cloned locally, Git and 
 https://git-lfs.com/[Git Large File Storage] are required to be installed in 

@@ -154,9 +154,90 @@ POST _ml/trained_models/.multilingual-e5-small/deployment/_start?deployment_id=f
 [[air-gapped-install-e5]]
 == Deploy the E5 model in an air-gapped environment
 
-If you want to deploy the E5 model in a restricted or closed network, follow the 
-instructions 
-https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch-air-gapped[in the Eland client documentation].
+You can install the E5 model in a restricted or closed network by pointing the 
+`eland_import_hub_model` script to the model's local files.
+
+For an offline install, the model first needs to be cloned locally, Git and 
+https://git-lfs.com/[Git Large File Storage] are required to be installed in 
+your system.
+
+1. Clone the E5 model from Hugging Face by using the model URL. 
++
+--
+Use this command for `multilingual-e5-small`:
+[source,bash]
+----
+git clone https://huggingface.co/elastic/multilingual-e5-small
+----
+
+Use this command for `multilingual-e5-small-optimized`:
+[source,bash]
+----
+git clone https://huggingface.co/elastic/multilingual-e5-small-optimized
+----
+Both commands result in a local copy of the respective model in the directory 
+named after the model: `multilingual-e5-small` or 
+`multilingual-e5-small-optimized`.
+--
+
+2. Use the `eland_import_hub_model` script with the `--hub-model-id` set to the 
+directory of the cloned model to install it:
++
+--
+For `multilingual-e5-small`:
+[source,bash]
+----
+eland_import_hub_model \
+      --url 'XXXX' \
+      --hub-model-id /PATH/TO/MODEL \
+      --task-type text_embedding \
+      --es-username elastic --es-password XXX \
+      --es-model-id multilingual-e5-small
+----
+
+For `multilingual-e5-small-optimized`:
+[source,bash]
+----
+eland_import_hub_model \
+      --url 'XXXX' \
+      --hub-model-id /PATH/TO/MODEL \
+      --task-type text_embedding \
+      --es-username elastic --es-password XXX \
+      --es-model-id multilingual-e5-small-optimized
+----
+
+If you use the Docker image to run `eland_import_hub_model` you must bind mount 
+the model directory, so the container can read the files.
+For `multilingual-e5-small` run the following:
+[source,bash]
+----
+docker run --mount type=bind,source=/PATH/TO/MODELS,destination=/models,readonly -it --rm docker.elastic.co/eland/eland \
+    eland_import_hub_model \
+      --url 'XXXX' \
+      --hub-model-id /models/multilingual-e5-small \
+      --task-type text_embedding \
+      --es-username elastic --es-password XXX \
+      --es-model-id multilingual-e5-small
+----
+
+For `multilingual-e5-small-optimized` run the following:
+[source,bash]
+----
+docker run --mount type=bind,source=/PATH/TO/MODELS,destination=/models,readonly -it --rm docker.elastic.co/eland/eland \
+    eland_import_hub_model \
+      --url 'XXXX' \
+      --hub-model-id /models/multilingual-e5-small-optimized \
+      --task-type text_embedding \
+      --es-username elastic --es-password XXX \
+      --es-model-id multilingual-e5-small-optimized
+----
+
+Once it's uploaded to {es}, the model will have the ID specified by 
+`--es-model-id`. If it is not set, the model ID is derived from 
+`--hub-model-id`; spaces and path delimiters are converted to double 
+underscores `__`.
+--
+
 
 
 [discrete]

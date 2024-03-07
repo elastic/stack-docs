@@ -61,6 +61,14 @@ You can change this default behavior by setting the `size` parameter.
 If you send pre-aggregated data to a job for analysis, you must ensure that the 
 `size` is configured correctly. Otherwise, some data might not be analyzed.
 
+[discrete]
+=== Scripted metric aggregations are not supported
+
+Using 
+{ref}/search-aggregations-metrics-scripted-metric-aggregation.html[scripted metric aggregations]
+in {dfeeds} is not supported. Refer to the <<ml-configuring-aggregation>> page
+to learn more about aggregations in {dfeeds}.
+
 
 [discrete]
 === Fields named "by", "count", or "over" cannot be used to split data

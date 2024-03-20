@@ -266,8 +266,11 @@ displayed:
 
 * for anomalies that were due to categorization (if model plot is not 
 enabled),
-* if the datafeed uses scripted fields and model plot is not enabled (except
+* if the {dfeed} uses scripted fields and model plot is not enabled (except
 for scripts that define metric fields),
+* if the {dfeed} uses
+{ref}/search-aggregations-bucket-composite-aggregation.html[composite aggregations]
+that have composite sources other than `terms` and `date_histogram`,
 * if your <<aggs-dfeeds,{dfeed} uses aggregations with nested `terms` aggs>> and 
 model plot is not enabled,
 * `freq_rare` functions,
@@ -285,23 +288,23 @@ single dot. If there are only two data points, they are joined by a line.
 The following table shows which detector functions are supported in the Single
 Metric Viewer.
 
-.Detector function support in the Single Metric Viewer
+.Detector function support in the Anomaly Explorer and the Single Metric Viewer
 [options="header"]
 |===================================================================================================================================================================================================
 | Detector functions                                                                                                                           | Function description                    | Supported
 | count, high_count, low_count, non_zero_count, low_non_zero_count                                                                             | <<ml-count-functions, Count functions>> | yes   
 | count, high_count, low_count, non_zero_count, low_non_zero_count with summary_count_field_name that is not doc_count (model plot not enabled)| <<ml-count-functions, Count functions>> | yes
 | non_zero_count with summary_count_field that is not doc_count using cardinality aggregation in datafeed config (model plot not enabled)      | <<ml-count-functions, Count functions>> | yes
-| distinc_count, high_distinct_count, low_distinct_count                                                                                       | <<ml-count-functions, Count functions>> | yes         
+| distinct_count, high_distinct_count, low_distinct_count                                                                                      | <<ml-count-functions, Count functions>> | yes         
 | mean, high_mean, low_mean                                                                                                                    | <<ml-metric-mean>>                      | yes         
 | min                                                                                                                                          | <<ml-metric-min>>                       | yes         
 | max                                                                                                                                          | <<ml-metric-max>>                       | yes         
 | metric                                                                                                                                       | <<ml-metric-metric>>                    | yes         
 | median, high_median, low_median                                                                                                              | <<ml-metric-median>>                    | yes         
 | sum, high_sum ,low_sum, non_null_sum, high_non_null_sum, low_non_null_sum                                                                    | <<ml-sum-functions, Sum functions>>     | yes         
-| varp, high_varp, low_varp                                                                                                                    | <<ml-metric-varp>>                      | no         
-| lat_long                                                                                                                                     | <<ml-lat-long>>                         | no         
-| info_content, high_info_content, low_info_content                                                                                            | <<ml-info-content>>                     | no         
+| varp, high_varp, low_varp                                                                                                                    | <<ml-metric-varp>>                      | yes (only if model plot is enabled)         
+| lat_long                                                                                                                                     | <<ml-lat-long>>                         | no (but map is displayed in the Anomaly Explorer)         
+| info_content, high_info_content, low_info_content                                                                                            | <<ml-info-content>>                     | yes (only if model plot is enabled)         
 | rare                                                                                                                                         | <<ml-rare>>                             | yes         
 | freq_rare                                                                                                                                    | <<ml-freq-rare>>                        | no        
 | time_of_day, time_of_week                                                                                                                    | <<ml-time-functions, Time functions>>   | no         

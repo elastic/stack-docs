@@ -4,6 +4,35 @@
 {nlp-cap} (NLP) refers to the way in which we can use software to understand
 natural language in spoken word or written text.
 
+[discrete]
+[[nlp-elastic-stack]]
+== NLP in the {stack}
+
+Elastic offers a wide range of possibilities to leverage natural language
+processing.
+
+You can **integrate NLP models from different providers** such as Cohere,
+HuggingFace, or OpenAI and use them as a service through the 
+{ref}/inference-apis.html[{infer} API]. You can also use <<ml-nlp-elser,ELSER>>
+(the retrieval model trained by Elastic) and <<ml-nlp-e5,E5>> in the same way.
+This {ref}/semantic-search-inference.html[tutorial] walks you through the
+process of using the various services with the {infer} API.
+
+You can **upload and manage NLP models** using the Eland client and the
+<<ml-nlp-deploy-models,{stack}>>. Find the 
+<<ml-nlp-model-ref,list of recommended and compatible models here>>. Refer to 
+<<ml-nlp-examples>> to learn more about how to use {ml} models deployed in your 
+cluster.
+
+You can **store embeddings in your {es} vector database** if you generate 
+{ref}/dense-vector.html[dense vector] or {ref}/sparse-vector.html[sparse vector]
+model embeddings outside of {es}.
+
+
+[discrete]
+[[what-is-nlp]]
+== What is NLP?
+
 Classically, NLP was performed using linguistic rules, dictionaries, regular
 expressions, and {ml} for specific tasks such as automatic categorization or
 summarization of text. In recent years, however, deep learning techniques have
@@ -24,8 +53,8 @@ which is an underlying native library for PyTorch. Trained models must be in a
 TorchScript representation for use with {stack} {ml} features.
 
 As in the cases of <<ml-dfa-classification,classification>> and
-<<ml-dfa-regression,{regression}>>, after you deploy a model to your cluster, you
-can use it to make predictions (also known as _{infer}_) against incoming 
+<<ml-dfa-regression,{regression}>>, after you deploy a model to your cluster,
+you can use it to make predictions (also known as _{infer}_) against incoming 
 data. You can perform the following NLP operations:
 
 * <<ml-nlp-extract-info>>

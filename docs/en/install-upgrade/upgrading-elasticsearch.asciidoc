@@ -1,18 +1,6 @@
 [[upgrading-elasticsearch]]
 == Upgrade {es}
 
-.FIPS Compliance and Java 17
-[IMPORTANT]
---
-{es} {version} requires Java 17 or later.  
-There is not yet a FIPS-certified security module for Java 17 
-that you can use when running {es} {version} in FIPS 140-2 mode.
-If you run in FIPS 140-2 mode, you will either need to request
-an exception from your security organization to upgrade to {es} {version}, 
-or remain on {es} 7.x until Java 17 is certified. 
-Alternatively, consider using {ess} in the FedRAMP-certified GovCloud region.
---
-
 An {es} cluster can be upgraded one node at
 a time so upgrading does not interrupt service. Running multiple versions of
 {es} in the same cluster beyond the duration of an upgrade is

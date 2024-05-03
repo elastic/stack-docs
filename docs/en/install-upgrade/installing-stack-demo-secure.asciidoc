@@ -552,9 +552,9 @@ sudo systemctl status elasticsearch.service
  
 [discrete]
 [[install-stack-demo-secure-kib-es]]
-== Step 5: Generate a certificate for {kib} to access {es}
+== Step 5: Generate server-side and client-side certificates for {kib}
 
-Now that the transport and HTTP layers are configured with encryption using the new certificates, we'll set up certificates for encryption between {kib} and {es}. For additional details about any of these steps, refer to {kibana-ref}/elasticsearch-mutual-tls.html[Mutual TLS authentication between {kib} and {es}].
+Now that the transport and HTTP layers are configured with encryption using the new certificates, there are two more tasks that must be accomplished for end-to-end connectivity to {es}: set up certificates for encryption between {kib} and {es}, and between the client browser and {kib}. For additional details about any of these steps, refer to {kibana-ref}/elasticsearch-mutual-tls.html[Mutual TLS authentication between {kib} and {es}] and {kibana-ref}/security-basic-setup-https.html#encrypt-kibana-browser[Encrypt traffic between your browser and {kib}].
 
 . In Step 3, when you generated a new certificate for the HTTP layer, the process created an archive `elasticsearch-ssl-http.zip`.
 +
@@ -581,6 +581,72 @@ sudo systemctl stop kibana.service
 elasticsearch.ssl.certificateAuthorities: [/etc/kibana/elasticsearch-ca.pem]
 ----
 
+. Log in to the first Elasticsearch node and use the certificate utility to generate a certificate bundle for the Kibana server. This certificate will be used to encrypt the traffic between Kibana and the client's browser. In the command, replace <DNS name> and IP address with the name and IP address of your Kibana server host:
++
+["source","shell"]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert --name kibana-server --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key  --dns <DNS name> --ip <IP address> --pem
+----
++
+When prompted, specify a unique name for the output file, such as kibana-cert-bundle.zip.
+
+. Copy the generated archive over to your Kibana host and unpack it:
++
+["source","shell"]
+----
+sudo unzip kibana-cert-bundle.zip
+----
++
+The unpacked archive will create a directory, kibana-server,  containing the new kibana key and certificate:
++
+["source","shell"]
+----
+ls -l kibana-server/
+total 8
+-rw-r--r--. 1 root root 1208 May  3 16:08 kibana-server.crt
+-rw-r--r--. 1 root root 1675 May  3 16:08 kibana-server.key
+----
+
+. Copy the certificate and key into `/etc/kibana`:
++
+["source","shell"]
+----
+sudo cp kibana-server.crt /etc/kibana/
+sudo cp kibana-server.key /etc/kibana/
+----
+
+. Update the permissions on the certificate files to ensure that they’re readable. From inside the `/etc/kibana` directory, run:
++
+["source","shell"]
+----
+sudo chmod 640 *.crt
+sudo chmod 640 *.key
+----
+
+. Open `/etc/kibana/kibana.yml` and make the following changes:
++
+["source","sh",subs="attributes"]
+----
+server.ssl.certificate: /etc/kibana/kibana-server.crt
+server.ssl.key: /etc/kibana/kibana-server.key
+server.ssl.enabled: true
+----
++ Keep the file open for the next step.
+
+. Additionally, to ensure that Kibana sessions are not invalidated, set up an encryption key by assigning any string 32-characters or longer to the xpack.security.encryptionKey setting (this string will be configured in kibana.yml and does not need to be remembered). To generate a random string, you can use the following bash commands:
++
+["source","shell"]
+----
+cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1
+----
++ Using your own string or the output of the above command sequence, add the encryption key setting to `/etc/kibana/kibana.yml`:
++
+["source","sh",subs="attributes"]
+----
+xpack.security.encryptionKey: previously_create_string
+----
++ Save and close the file.
+
 . Restart the {kib} service:
 +
 ["source","shell"]
@@ -606,7 +672,7 @@ tail -f /var/log/kibana/kibana.log
 +
 In the log file you should find a `Kibana is now available` message.
 
-. Open a web browser to the external IP address of the Kibana host machine: `https://<kibana-host-address>:5601``. Note that the URL should use `https` and not `http`.
+. You should now have an end-to-end ecnrypted elasticseach and Kibana deployment that provides encryption between the cluster nodes and Kibana, and HTTPS access to Kibana. Open a web browser to the external IP address of the Kibana host machine: `https://<kibana-host-address>:5601``. Note that the URL should use `https` and not `http`.
 
 . Log in using the `elastic` user and password that you configured in Step 1 of <<installing-stack-demo-self>>.
 

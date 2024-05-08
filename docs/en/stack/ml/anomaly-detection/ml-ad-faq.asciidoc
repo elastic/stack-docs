@@ -1,0 +1,128 @@
+[role="xpack"]
+[[ml-ad-faq]]
+= {anomaly-detect-cap} frequently asked questions
+[subs="attributes"]
+++++
+<titleabbrev>FAQ</titleabbrev>
+++++
+
+This page contains the most frequently asked customer questions about the
+{anomaly-detect} feature. It works as a quick reference as most of the
+information here can be found in the respective parts of the documentation.
+
+
+[discrete]
+[[faq-methods]]
+== What {ml} methods are used for {anomaly-detect}?
+
+A bespoke ensemble of various models and statistical techniques are used in
+{anomaly-detect}.
+
+=== Paper
+
+https://www.ijmlc.org/papers/398-LC018.pdf[Veasey, Thomas & Dodson, Stephen. (2014). Anomaly Detection in Application Performance Monitoring Data. International Journal of Machine Learning and Computing. 4. 120-126. 10.7763/IJMLC.2014.V4.398.]
+
+=== Talks
+
+https://www.elastic.co/elasticon/conf/2018/sf/the-math-behind-elastic-machine-learning[The Math Behind Elastic Machine Learning]
+https://www.elastic.co/elasticon/conf/2017/sf/machine-learning-and-statistical-methods-for-time-series-analysis[Machine Learning and Statistical Methods for Time Series Analysis]
+
+
+[discrete]
+[[faq-features]]
+== What are the input features used by the model?
+
+An ensemble of parametric probabilistic models are used and the input is 
+specified by the user, for example, using 
+https://www.elastic.co/guide/en/machine-learning/current/ml-functions.html[diverse statistical functions]
+like count or mean over the data of interest.
+
+
+[discrete]
+[[faq-data]]
+== Does the data used by the model only include customers' data?
+
+Yes. Only the data specified in the {anomaly-job} configuration are used for
+detection.
+
+
+[discrete]
+[[faq-output-score]]
+== What does the model output score represent? How is it generated and calibrated?
+
+The ensemble model generates a probability value, which is then mapped to an
+anomaly severity score between 0 and 100. The lower the probability of observed
+data, the higher the severity score. Refer to this
+<<ml-ad-explain,advanced concept doc>> for details. Calibration (also called as
+normalization) happens on two levels:
+
+. Within the same metric/partition, the scores are re-normalized “back in time”
+within the window specified by the `renormalization_window_days` parameter.
+This is the reason, for example, that both `record_score` and
+`initial_record_score` exist.
+. Over multiple partitions, scores are renormalized as described in
+https://www.elastic.co/blog/changes-to-elastic-machine-learning-anomaly-scoring-in-6-5[this blog post].
+
+
+[discrete]
+[[faq-model-update]]
+== Is the model static or updated periodically?
+
+It's an online model and updated continuously. Old parts of the model are pruned
+out based on the parameter `model_prune_window` (usually 30 days).
+
+
+== Is the performance of the model monitored?
+
+There is a set of benchmarks to monitor the performance of the {anomaly-detect}
+algorithms and to ensure no regression occurs as the methods are continuously
+developed and refined. They are called "data scenarios" and consist of 3 things:
+
+* a dataset (stored as an {es} snapshot),
+* a {ml} config ({anomaly-detect}, {dfanalysis}, {transform}, or {infer}),
+* an arbitrary set of static assertions (bucket counts, anomaly scores, accuracy
+value, and so on).
+
+The definition of these scenarios can be found 
+https://github.com/elastic/machine-learning-qa/tree/main/ml-api/resources/test_data/scenario[here].
+Some scenarios run in seconds, some can take hours. They are split into 3
+suites:
+* buildly - runs every ~3h
+* nightly - runs 1/day
+* monster - runs 1/week (takes a couple of days to finish).
+
+Performance metrics are collected from each and every scenario run and they are
+persisted in an Elastic Cloud cluster. This information is then used to track
+the performance over time, across the different builds, mainly to detect any
+regressions in the performance (both result quality and compute time).
+
+On the customer side, the situation is different. There is no conventional way
+to monitor the model performance as it's unsupervised. Usually,
+operationalization of the model output include one or several of the following
+steps:
+* Creating alerts for influencers, buckets, or records based on a certain
+anomaly score.
+* Use the forecasting feature to predict the development of the metric of
+interest in the future.
+* Use one or a combination of multiple {anomaly-jobs} to identify the
+significant anomaly influencers.
+
+
+== How to measure the accuracy of the unsupervised {ml} model?
+
+As model predictions, 95% confidence intervals, and actual values in
+documents in an index (if you enabled model plot) are available, you can use
+standard measures to assess prediction accuracy, interval calibration and so on.
+Aggregations can be used to compute these statistics. This might be useful if 
+you would like to monitor data drifts; however, there are ways to automatically
+adapt to changing data characteristics.
+
+The purpose of {anomaly-detect} is to achieve the best ranking of periods where
+an anomaly happened. A useful way to evaluate this is to keep track of real
+incidents and see how well they correlate with the predictions of
+{anomaly-detect}. In practice, it is usually unambiguous qualitatively whether
+{anomaly-detect} is working well.
+
+
+
+

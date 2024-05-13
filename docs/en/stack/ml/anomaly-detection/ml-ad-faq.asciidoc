@@ -123,6 +123,31 @@ incidents and see how well they correlate with the predictions of
 {anomaly-detect}. In practice, it is usually unambiguous qualitatively whether
 {anomaly-detect} is working well.
 
+== How to know there is no ML Model Drift in unsupervised ML?
+
+The time series modeling works in a continuous learning fashion. Since time
+series can change steadily as well as discontinuously, to get sufficient results
+it might be necessary to further manage the adaptation to changing data
+characteristics. The trade-off between fitting anomalous periods (over-fitting)
+and not learning new normal behavior must also be managed. The following are the
+main approaches that Elastic uses to achieve this:
+
+* Learning the optimal decay rate based on measuring the bias in the forecast
+and error distribution moments (both the trend and the residual models have an
+online formulation that helps in this task).
+* Allowing continuous small drifts in periodic patterns. It's achieved by
+continuously minimizing the mean prediction error over the last iteration with
+respect to a small bounded time shift.
+* If the predictions are significantly in error over a long period of time, it
+is tested if the time series has undergone a sudden change. Hypothesis testing
+is utilized to check for different types of changes, such as scaling of values,
+shifts in values, and large time shifts in periodic patterns such as daylight
+saving time.
+* Running continuous hypothesis tests on time windows of various lengths to test
+for significant evidence of new or changed periodic patterns, and update the
+model if the null hypothesis of unchanged features is rejected.
+* Accumulating error statistics on calendar days and continually test if
+predictive calendar features must be added to or removed from the model.
 
 
 

@@ -150,4 +150,32 @@ model if the null hypothesis of unchanged features is rejected.
 predictive calendar features must be added to or removed from the model.
 
 
+== What is the minimum amount of data for an {anomaly-job}?
+
+Elastic {ml} needs a minimum amount of data to be able to build an effective
+model for {anomaly-detect}.
+
+* For sampled metrics such as `mean`, `min`, `max`,
+and `median`, the minimum data amount is either eight non-empty bucket spans or
+two hours, whichever is greater.
+* For all other non-zero/null metrics and count-based quantities, it's four
+non-empty bucket spans or two hours, whichever is greater.
+* For the `count` and `sum` functions, empty buckets matter and therefore it is
+the same as sampled metrics - eight buckets or two hours.
+* For the `rare` function, it's typically around 20 bucket spans. It can be faster
+for population models, but it depends on the number of people that interact per
+bucket.
+
+Rules of thumb:
+* more than three weeks for periodic data or a few hundred buckets for
+non-periodic data
+* at least as much data as you want to forecast
+
+
+== Are there any checks or processes to ensure data integrity?
+
+The Elastic {ml} algorithms are programmed to work with missing and noisy data 
+and use denoising and data reputation techniques based on the learned
+statistical properties.
+
 

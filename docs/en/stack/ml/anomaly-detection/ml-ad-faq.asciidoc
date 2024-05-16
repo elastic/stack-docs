@@ -91,6 +91,7 @@ The definition of these scenarios can be found
 https://github.com/elastic/machine-learning-qa/tree/main/ml-api/resources/test_data/scenario[here].
 Some scenarios run in seconds, some can take hours. They are split into 3
 suites:
+
 * buildly - runs every ~3h
 * nightly - runs 1/day
 * monster - runs 1/week (takes a couple of days to finish).
@@ -104,6 +105,7 @@ On the customer side, the situation is different. There is no conventional way
 to monitor the model performance as it's unsupervised. Usually,
 operationalization of the model output include one or several of the following
 steps:
+
 * Creating alerts for influencers, buckets, or records based on a certain
 anomaly score.
 * Use the forecasting feature to predict the development of the metric of
@@ -178,6 +180,7 @@ for population models, but it depends on the number of people that interact per
 bucket.
 
 Rules of thumb:
+
 * more than three weeks for periodic data or a few hundred buckets for
 non-periodic data
 * at least as much data as you want to forecast

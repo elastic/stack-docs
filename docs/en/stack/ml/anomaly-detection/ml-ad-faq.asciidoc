@@ -18,10 +18,12 @@ information here can be found in the respective parts of the documentation.
 A bespoke ensemble of various models and statistical techniques are used in
 {anomaly-detect}.
 
+[discrete]
 === Paper
 
 https://www.ijmlc.org/papers/398-LC018.pdf[Veasey, Thomas & Dodson, Stephen. (2014). Anomaly Detection in Application Performance Monitoring Data. International Journal of Machine Learning and Computing. 4. 120-126. 10.7763/IJMLC.2014.V4.398.]
 
+[discrete]
 === Talks
 
 https://www.elastic.co/elasticon/conf/2018/sf/the-math-behind-elastic-machine-learning[The Math Behind Elastic Machine Learning]
@@ -72,6 +74,8 @@ It's an online model and updated continuously. Old parts of the model are pruned
 out based on the parameter `model_prune_window` (usually 30 days).
 
 
+[discrete]
+[[faq-model-performance]]
 == Is the performance of the model monitored?
 
 There is a set of benchmarks to monitor the performance of the {anomaly-detect}
@@ -108,6 +112,8 @@ interest in the future.
 significant anomaly influencers.
 
 
+[discrete]
+[[faq-model-accuracy]]
 == How to measure the accuracy of the unsupervised {ml} model?
 
 As model predictions, 95% confidence intervals, and actual values in
@@ -123,7 +129,10 @@ incidents and see how well they correlate with the predictions of
 {anomaly-detect}. In practice, it is usually unambiguous qualitatively whether
 {anomaly-detect} is working well.
 
-== How to know there is no ML Model Drift in unsupervised ML?
+
+[discrete]
+[[faq-model-drift]]
+== How to know there is no model drift in unsupervised {ml}?
 
 The time series modeling works in a continuous learning fashion. Since time
 series can change steadily as well as discontinuously, to get sufficient results
@@ -150,6 +159,8 @@ model if the null hypothesis of unchanged features is rejected.
 predictive calendar features must be added to or removed from the model.
 
 
+[discrete]
+[[faq-minimum-data]]
 == What is the minimum amount of data for an {anomaly-job}?
 
 Elastic {ml} needs a minimum amount of data to be able to build an effective
@@ -172,6 +183,8 @@ non-periodic data
 * at least as much data as you want to forecast
 
 
+[discrete]
+[[faq-data-integrity]]
 == Are there any checks or processes to ensure data integrity?
 
 The Elastic {ml} algorithms are programmed to work with missing and noisy data 

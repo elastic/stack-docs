@@ -23,9 +23,6 @@ and one version which is optimized for Intel® silicon. The
 **Model Management** > **Trained Models** page shows you which version of E5 is 
 recommended to deploy based on your cluster's hardware.
 
-The supported model version of E5 is `multilingual-e5-small`, refer to 
-<<ml-nlp-e5-limit, this page>> for more information.
-
 Refer to the model cards of the 
 https://huggingface.co/elastic/multilingual-e5-small[multilingual-e5-small] and 
 the 
@@ -159,7 +156,7 @@ If you want to install E5 in an air-gapped environment, you have the following
 options:
 * put the model artifacts into a directory inside the config directory on all 
 master-eligible nodes (for `multilingual-e5-small` and
-`multilingual-e5-small-optimized`)
+`multilingual-e5-small-linux-x86-64`)
 * install the model by using HuggingFace (for `multilingual-e5-small` model 
 only).
 
@@ -178,9 +175,9 @@ https://ml-models.elastic.co/multilingual-e5-small.vocab.json
 
 For the optimized version, you need the following files in your system:
 ```
-https://ml-models.elastic.co/multilingual-e5-small-optimized.metadata.json
-https://ml-models.elastic.co/multilingual-e5-small-optimized.pt
-https://ml-models.elastic.co/multilingual-e5-small-optimized.vocab.json
+https://ml-models.elastic.co/multilingual-e5-small_linux-x86_64.metadata.json
+https://ml-models.elastic.co/multilingual-e5-small_linux-x86_64.pt
+https://ml-models.elastic.co/multilingual-e5-small_linux-x86_64.vocab.json
 ```
 
 
@@ -274,8 +271,8 @@ underscores `__`.
 [[terms-of-use-e5]]
 == Disclaimer
 
-Customers may add third party trained models for management in Elastic. These 
-models are not owned by Elastic. Customers must contract separately with the 
-third party model owner for the use of the model, and such use will be governed 
-by the applicable terms and conditions. You understand and agree that Elastic 
-has no control over, or liability for, the third party models.
+Customers may add third party trained models for management in Elastic. These
+models are not owned by Elastic. While Elastic will support the integration with
+these models in the performance according to the documentation, you understand
+and agree that Elastic has no control over, or liability for, the third party
+models or the underlying training data they may utilize. 

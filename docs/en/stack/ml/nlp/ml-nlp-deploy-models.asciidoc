@@ -112,7 +112,7 @@ $ docker run -it --rm --network host docker.elastic.co/eland/eland
 The `eland_import_hub_model` script can be run directly in the docker command:
 
 ```bash
-docker run -it --rm elastic/eland \
+docker run -it --rm docker.elastic.co/eland/eland \
     eland_import_hub_model \
       --url $ELASTICSEARCH_URL \
       --hub-model-id elastic/distilbert-base-uncased-finetuned-conll03-english \

@@ -1,6 +1,6 @@
 [role="xpack"]
 [[ml-ad-troubleshooting]]
-= Troubleshooting {ml} {anomaly-detect}
+= Troubleshooting {ml} {anomaly-detect} and frequently asked questions
 ++++
 <titleabbrev>Troubleshooting and FAQ</titleabbrev>
 ++++
@@ -11,7 +11,7 @@ answers for frequently asked questions.
 
 [discrete]
 [[ml-ad-restart-failed-jobs]]
-== Restart failed {anomaly-jobs}
+== How to restart failed {anomaly-jobs}
 
 include::ml-restart-failed-jobs.asciidoc[]
 
@@ -19,27 +19,22 @@ include::ml-restart-failed-jobs.asciidoc[]
 [[faq-methods]]
 == What {ml} methods are used for {anomaly-detect}?
 
-A bespoke ensemble of various models and statistical techniques are used in
-{anomaly-detect}.
+For detailed information, refer to the paper https://www.ijmlc.org/papers/398-LC018.pdf[Anomaly Detection in Application Performance Monitoring Data] by Thomas Veasey and Stephen Dodson, as well as our webinars on https://www.elastic.co/elasticon/conf/2018/sf/the-math-behind-elastic-machine-learning[The Math behind Elastic Machine Learning] and 
+https://www.elastic.co/elasticon/conf/2017/sf/machine-learning-and-statistical-methods-for-time-series-analysis[Machine Learning and Statistical Methods for Time Series Analysis].
 
-[discrete]
-=== Paper
+Further papers cited in the C++ code:
 
-https://www.ijmlc.org/papers/398-LC018.pdf[Veasey, Thomas & Dodson, Stephen. (2014). Anomaly Detection in Application Performance Monitoring Data. International Journal of Machine Learning and Computing. 4. 120-126. 10.7763/IJMLC.2014.V4.398.]
-
-[discrete]
-=== Talks
-
-https://www.elastic.co/elasticon/conf/2018/sf/the-math-behind-elastic-machine-learning[The Math Behind Elastic Machine Learning]
-https://www.elastic.co/elasticon/conf/2017/sf/machine-learning-and-statistical-methods-for-time-series-analysis[Machine Learning and Statistical Methods for Time Series Analysis]
+* http://arxiv.org/pdf/1109.2378.pdf[Modern hierarchical, agglomerative clustering algorithms]
+* https://www.cs.umd.edu/~mount/Projects/KMeans/pami02.pdf[An Efficient k-Means Clustering Algorithm: Analysis and Implementation]
+* http://www.stat.columbia.edu/~madigan/PAPERS/techno.pdf[Large-Scale Bayesian Logistic Regression for Text Categorization]
+* https://www.cs.cmu.edu/~dpelleg/download/xmeans.pdf[X-means: Extending K-means with Efficient Estimation of the Number of Clusters]
 
 
 [discrete]
 [[faq-features]]
 == What are the input features used by the model?
 
-An ensemble of parametric probabilistic models are used and the input is 
-specified by the user, for example, using 
+All input features are specified by the user, for example, using 
 https://www.elastic.co/guide/en/machine-learning/current/ml-functions.html[diverse statistical functions]
 like count or mean over the data of interest.
 
@@ -91,15 +86,6 @@ developed and refined. They are called "data scenarios" and consist of 3 things:
 * an arbitrary set of static assertions (bucket counts, anomaly scores, accuracy
 value, and so on).
 
-The definition of these scenarios can be found 
-https://github.com/elastic/machine-learning-qa/tree/main/ml-api/resources/test_data/scenario[here].
-Some scenarios run in seconds, some can take hours. They are split into 3
-suites:
-
-* buildly - runs every ~3h
-* nightly - runs 1/day
-* monster - runs 1/week (takes a couple of days to finish).
-
 Performance metrics are collected from each and every scenario run and they are
 persisted in an Elastic Cloud cluster. This information is then used to track
 the performance over time, across the different builds, mainly to detect any
@@ -122,47 +108,45 @@ significant anomaly influencers.
 [[faq-model-accuracy]]
 == How to measure the accuracy of the unsupervised {ml} model?
 
-As model predictions, 95% confidence intervals, and actual values in
-documents in an index (if you enabled model plot) are available, you can use
-standard measures to assess prediction accuracy, interval calibration and so on.
-Aggregations can be used to compute these statistics. This might be useful if 
-you would like to monitor data drifts; however, there are ways to automatically
-adapt to changing data characteristics.
+For each record in a given time series, anomaly detection models provide an
+anomaly severity score, 95% confidence intervals, and an actual value. This data
+is stored in an index and can be retrieved using the Get Records API. With this
+information, you can use standard measures to assess prediction accuracy,
+interval calibration, and so on. Elasticsearch aggregations can be used to
+compute these statistics.
 
 The purpose of {anomaly-detect} is to achieve the best ranking of periods where
-an anomaly happened. A useful way to evaluate this is to keep track of real
-incidents and see how well they correlate with the predictions of
-{anomaly-detect}. In practice, it is usually unambiguous qualitatively whether
-{anomaly-detect} is working well.
+an anomaly happened. A practical way to evaluate this is to keep track of real
+incidents and see how well they correlate with the predictions of 
+{anomaly-detect}.
 
 
 [discrete]
 [[faq-model-drift]]
-== How to know there is no model drift in unsupervised {ml}?
+== Can the {anomaly-detect} model experience model drift?
 
-The time series modeling works in a continuous learning fashion. Since time
-series can change steadily as well as discontinuously, to get sufficient results
-it might be necessary to further manage the adaptation to changing data
-characteristics. The trade-off between fitting anomalous periods (over-fitting)
-and not learning new normal behavior must also be managed. The following are the
-main approaches that Elastic uses to achieve this:
-
+Elasticsearch's {anomaly-detect} model continuously learns and adapts to changes
+in the time series. These changes can take the form of slow drifts as well as
+sudden jumps. Therefore, we take great care to manage the adaptation to changing
+data characteristics. There is always a fine trade-off between fitting anomalous
+periods (over-fitting) and not learning new normal behavior. The following are
+the main approaches Elastic uses to manage this trade-off:
+	
 * Learning the optimal decay rate based on measuring the bias in the forecast
-and error distribution moments (both the trend and the residual models have an
-online formulation that helps in this task).
-* Allowing continuous small drifts in periodic patterns. It's achieved by
+and the moments of the error distribution and error distribution moments.
+* Allowing continuous small drifts in periodic patterns. This is achieved by
 continuously minimizing the mean prediction error over the last iteration with
 respect to a small bounded time shift.
-* If the predictions are significantly in error over a long period of time, it
-is tested if the time series has undergone a sudden change. Hypothesis testing
-is utilized to check for different types of changes, such as scaling of values,
-shifts in values, and large time shifts in periodic patterns such as daylight
-saving time.
+* If the predictions are significantly wrong over a long period of time, the
+algorithm tests whether the time series has undergone a sudden change.
+Hypothesis Testing is used to test for different types of changes, such as
+scaling of values, shifting of values, and large time shifts in periodic
+patterns such as daylight saving time.
 * Running continuous hypothesis tests on time windows of various lengths to test
 for significant evidence of new or changed periodic patterns, and update the
-model if the null hypothesis of unchanged features is rejected.
-* Accumulating error statistics on calendar days and continually test if
-predictive calendar features must be added to or removed from the model.
+model if the null hypothesis of unchanged features is rejected. 
+* Accumulating error statistics on calendar days and continuously test whether
+predictive calendar features need to be added or removed from the model.
 
 
 [discrete]

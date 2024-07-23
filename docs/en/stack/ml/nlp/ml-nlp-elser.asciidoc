@@ -108,13 +108,17 @@ that walks through upgrading an index to ELSER V2.
 You can download and deploy ELSER either from **{ml-app}** > **Trained Models**, 
 from **Search** > **Indices**, or by using the Dev Console.
 
-IMPORTANT: You can deploy the model multiple times by assigning a unique
-deployment ID when starting the deployment. It enables you to have dedicated
-deployments for different purposes, such as search and ingest. By doing so, you
-ensure that the search speed remains unaffected by ingest workloads, and vice
-versa. Having separate deployments for search and ingest mitigates performance
-issues resulting from interactions between the two, which can be hard to
-diagnose.
+[NOTE]
+====
+* For most cases, the preferred version is the **Intel and Linux optimized**
+model, it is recommended to download and deploy that version.
+* You can deploy the model multiple times by assigning a unique deployment ID
+when starting the deployment. It enables you to have dedicated deployments for
+different purposes, such as search and ingest. By doing so, you ensure that the
+search speed remains unaffected by ingest workloads, and vice versa. Having
+separate deployments for search and ingest mitigates performance issues
+resulting from interactions between the two, which can be hard to diagnose.
+====
 
 
 [discrete]

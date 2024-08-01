@@ -188,7 +188,8 @@ nodes. Model allocations are independent units of work for NLP tasks. To
 influence model performance, you can configure the number of allocations and the 
 number of threads used by each allocation of your deployment. Alternatively, you
 can enable <<nlp-model-adaptive-allocations>> to automatically create and remove
-model allocations based on the current workload of the model.
+model allocations based on the current workload of the model (you still need to 
+manually set the number of threads).
 
 IMPORTANT: If your deployed trained model has only one allocation, it's likely 
 that you will experience downtime in the service your trained model performs. 

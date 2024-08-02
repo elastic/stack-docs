@@ -121,16 +121,13 @@ PUT _inference/sparse_embedding/my-elser-model
 {
   "service": "elser",
   "service_settings": {
-    "adaptive_allocations": {
-      "enabled": true,
-      "min_number_of_allocations": 2,
-      "max_number_of_allocations": 5
-    }
+    "num_allocations": 1,
+    "num_threads": 1
   }
 }
 ----------------------------------
 --
-The API request automatically initiates the model download and then deploy the model with adaptive allocations enabled.
+The API request automatically initiates the model download and then deploy the model.
 
 Refer to the {ref}/infer-service-elser.html[ELSER {infer} service documentation] to learn more about the available settings.
 

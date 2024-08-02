@@ -186,10 +186,7 @@ NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
 When you deploy the model, its allocations are distributed across available {ml} 
 nodes. Model allocations are independent units of work for NLP tasks. To 
 influence model performance, you can configure the number of allocations and the 
-number of threads used by each allocation of your deployment. Alternatively, you
-can enable <<nlp-model-adaptive-allocations>> to automatically create and remove
-model allocations based on the current workload of the model (you still need to 
-manually set the number of threads).
+number of threads used by each allocation of your deployment.
 
 IMPORTANT: If your deployed trained model has only one allocation, it's likely 
 that you will experience downtime in the service your trained model performs. 
@@ -214,16 +211,7 @@ You can view the allocation status in {kib} or by using the
 {ref}/get-trained-models-stats.html[get trained model stats API]. If you want to
 change the number of allocations, you can use the
 {ref}/update-trained-model-deployment.html[update trained model stats API] after
-the allocation status is `started`. You can also enable
-<<nlp-model-adaptive-allocations>> to automatically create and remove model
-allocations based on the current workload of the model.
-
-[discrete]
-[[nlp-model-adaptive-allocations]]
-=== Adaptive allocations
-
-include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-allocations]
-
+the allocation status is `started`.
 
 [discrete]
 [[infer-request-queues]]

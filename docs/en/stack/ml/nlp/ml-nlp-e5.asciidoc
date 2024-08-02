@@ -21,7 +21,11 @@ contextual meaning and user intent, rather than exact keyword matches.
 E5 has two versions: one cross-platform version which runs on any hardware 
 and one version which is optimized for Intel® silicon. The 
 **Model Management** > **Trained Models** page shows you which version of E5 is 
-recommended to deploy based on your cluster's hardware.
+recommended to deploy based on your cluster's hardware. However, the
+recommended way to use E5 is through the 
+{ref}/infer-service-elasticsearch.html[{infer} API] as a service which makes it
+easier to download and deploy the model and you don't need to select from
+different versions. 
 
 Refer to the model cards of the 
 https://huggingface.co/elastic/multilingual-e5-small[multilingual-e5-small] and 
@@ -42,17 +46,48 @@ for semantic search or the trial period activated.
 [[download-deploy-e5]]
 == Download and deploy E5
 
-You can download and deploy the E5 model either from 
-**{ml-app}** > **Trained Models**, from **Search** > **Indices**, or by using 
-the Dev Console.
+The easiest and recommended way to download and deploy E5 is to use the {ref}/inference-apis.html[{infer} API].
 
-NOTE: For most cases, the preferred version is the **Intel and Linux optimized**
-model, it is recommended to download and deploy that version.
+1. In {kib}, navigate to the **Dev Console**.
+2. Create an {infer} endpoint with the `elasticsearch` service by running the following API request:
++
+--
+[source,console]
+----------------------------------
+PUT _inference/text_embedding/my-e5-model
+{
+  "service": "elasticsearch",
+  "service_settings": {
+    "num_allocations": 1,
+    "num_threads": 1,
+    "model_id": ".multilingual-e5-small"
+  }
+}
+----------------------------------
+--
+The API request automatically initiates the model download and then deploy the model.
+
+Refer to the {ref}/infer-service-elasticsearch.html[`elasticsearch` {infer} service documentation] to learn more about the available settings.
+
+After you created the E5 {infer} endpoint, it's ready to be used for semantic search.
+The easiest way to perform semantic search in the {stack} is to {ref}/semantic-search-semantic-text.html[follow the `semantic_text` workflow].
 
 
 [discrete]
+[[alternative-download-deploy-e5]]
+=== Alternative methods to download and deploy E5
+
+You can also download and deploy the E5 model either from **{ml-app}** > **Trained Models**, from **Search** > **Indices**, or by using the trained models API in Dev Console.
+
+NOTE: For most cases, the preferred version is the **Intel and Linux optimized** model, it is recommended to download and deploy that version.
+
+
+.Using the Trained Models page
+[%collapsible%closed]
+=====
+[discrete]
 [[trained-model-e5]]
-=== Using the Trained Models page
+==== Using the Trained Models page
 
 1. In {kib}, navigate to **{ml-app}** > **Trained Models**. E5 can be found in 
 the list of trained models. There are two versions available: one portable 
@@ -80,14 +115,18 @@ allocations and threads per allocation values.
 +
 --
 [role="screenshot"]
-image::images/ml-nlp-deployment-id-e5.png[alt="Deploying ELSER",align="center"]
+image::images/ml-nlp-deployment-id-e5.png[alt="Deploying E5",align="center"]
 --
 5. Click Start.
+=====
 
 
+.Using the search indices UI
+[%collapsible%closed]
+=====
 [discrete]
 [[elasticsearch-e5]]
-=== Using the search indices UI
+==== Using the search indices UI
 
 Alternatively, you can download and deploy the E5 model to an {infer} pipeline 
 using the search indices UI.
@@ -116,11 +155,15 @@ image::images/ml-nlp-start-e5-es.png[alt="Start E5 in Elasticsearch",align="cent
 
 When your E5 model is deployed and started, it is ready to be used in a 
 pipeline.
+=====
 
 
+.Using the traned models API in Dev Console
+[%collapsible%closed]
+=====
 [discrete]
 [[dev-console-e5]]
-=== Using the Dev Console
+==== Using the traned models API in Dev Console
 
 1. In {kib}, navigate to the **Dev Console**.
 2. Create the E5 model configuration by running the following API call:
@@ -149,6 +192,7 @@ with a delpoyment ID:
 POST _ml/trained_models/.multilingual-e5-small/deployment/_start?deployment_id=for_search
 ----------------------------------
 --
+=====
 
 
 [discrete]

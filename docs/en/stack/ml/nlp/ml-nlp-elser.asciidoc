@@ -80,7 +80,11 @@ computing the similarity between a query and a document.
 ELSER v2 has two versions: one cross-platform version which runs on any hardware 
 and one version which is optimized for Intel® silicon. The 
 **Model Management** > **Trained Models** page shows you which version of ELSER 
-v2 is recommended to deploy based on your cluster's hardware.
+v2 is recommended to deploy based on your cluster's hardware. However, the
+recommended way to use ELSER is through the 
+{ref}/infer-service-elser.html[{infer} API] as a service which makes it easier
+to download and deploy the model and you don't need to select from different 
+versions. 
 
 If you want to learn more about the ELSER V2 improvements, refer to 
 https://www.elastic.co/search-labs/introducing-elser-v2-part-1[this blog post].
@@ -105,8 +109,37 @@ that walks through upgrading an index to ELSER V2.
 [[download-deploy-elser]]
 == Download and deploy ELSER
 
-You can download and deploy ELSER either from **{ml-app}** > **Trained Models**, 
-from **Search** > **Indices**, or by using the Dev Console.
+The easiest and recommended way to download and deploy ELSER is to use the {ref}/inference-apis.html[{infer} API].
+
+1. In {kib}, navigate to the **Dev Console**.
+2. Create an {infer} endpoint with the ELSER service by running the following API request:
++
+--
+[source,console]
+----------------------------------
+PUT _inference/sparse_embedding/my-elser-model
+{
+  "service": "elser",
+  "service_settings": {
+    "num_allocations": 1,
+    "num_threads": 1
+  }
+}
+----------------------------------
+--
+The API request automatically initiates the model download and then deploy the model.
+
+Refer to the {ref}/infer-service-elser.html[ELSER {infer} service documentation] to learn more about the available settings.
+
+After you created the ELSER {infer} endpoint, it's ready to be used for semantic search.
+The easiest way to perform semantic search in the {stack} is to {ref}/semantic-search-semantic-text.html[follow the `semantic_text` workflow].
+
+
+[discrete]
+[[alternative-download-deploy]]
+=== Alternative methods to download and deploy ELSER
+
+You can also download and deploy ELSER either from **{ml-app}** > **Trained Models**, from **Search** > **Indices**, or by using the trained models API in Dev Console.
 
 [NOTE]
 ====
@@ -120,10 +153,12 @@ separate deployments for search and ingest mitigates performance issues
 resulting from interactions between the two, which can be hard to diagnose.
 ====
 
-
+.Using the Trained Models page
+[%collapsible%closed]
+=====
 [discrete]
 [[trained-model]]
-=== Using the Trained Models page
+==== Using the Trained Models page
 
 1. In {kib}, navigate to **{ml-app}** > **Trained Models**. ELSER can be found 
 in the list of trained models. There are two versions available: one portable 
@@ -154,11 +189,14 @@ allocations and threads per allocation values.
 image::images/ml-nlp-deployment-id-elser-v2.png[alt="Deploying ELSER",align="center"]
 --
 5. Click **Start**.
+=====
 
-
+.Using the search indices UI
+[%collapsible%closed]
+=====
 [discrete]
 [[elasticsearch]]
-=== Using the search indices UI
+==== Using the search indices UI
 
 Alternatively, you can download and deploy ELSER to an {infer} pipeline using 
 the search indices UI.
@@ -184,43 +222,14 @@ model deployment.
 [role="screenshot"]
 image::images/ml-nlp-start-elser-v2-es.png[alt="Start ELSER in Elasticsearch",align="center"]
 --
+=====
 
-When your ELSER model is deployed and started, it is ready to be used in a 
-pipeline.
-
-
-[discrete]
-[[elasticsearch-ingest-pipeline]]
-==== Adding ELSER to an ingest pipeline
-
-To add ELSER to an ingest pipeline, you need to copy the default ingest 
-pipeline and then customize it according to your needs.
-
-1. Click **Copy and customize** under the **Unlock your custom pipelines** block 
-at the top of the page. This enables the **Add inference pipeline** button.
-+
---
-[role="screenshot"]
-image::images/ml-nlp-pipeline-copy-customize.png[alt="Start ELSER in Elasticsearch",align="center"]
---
-2. Under **{ml-app} {infer-cap} Pipelines**, click **Add inference pipeline**.
-3. Give a name to the pipeline, select ELSER from the list of trained ML models, 
-and click **Continue**.
-4. Select the source text field, define the target field, and click **Add** then 
-**Continue**.
-5. Review the index mappings updates. Click **Back** if you want to change the 
-mappings. Click **Continue** if you are satisfied with the updated index 
-mappings.
-6. You can optionally test your pipeline. Click **Continue**.
-7. **Create pipeline**.
-
-Once your pipeline is created, you are ready to ingest documents and utilize 
-ELSER for text expansions in your search queries.
-
-
+.Using the traned models API in Dev Console
+[%collapsible%closed]
+=====
 [discrete]
 [[dev-console]]
-=== Using the Dev Console
+==== Using the trained models API in Dev Console
 
 1. In {kib}, navigate to the **Dev Console**.
 2. Create the ELSER model configuration by running the following API call:
@@ -251,9 +260,7 @@ POST _ml/trained_models/.elser_model_2/deployment/_start?deployment_id=for_searc
 
 You can deploy the model multiple times with different deployment IDs.
 --
-
-After the deployment is complete, ELSER is ready to use either in an ingest 
-pipeline or in a `text_expansion` query to perform semantic search.
+=====
 
 
 [discrete]
@@ -447,9 +454,11 @@ include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-allocations]
 * {ref}/semantic-search-elser.html[Perform semantic search with ELSER]
 * https://www.elastic.co/blog/may-2023-launch-information-retrieval-elasticsearch-ai-model[Improving information retrieval in the Elastic Stack: Introducing Elastic Learned Sparse Encoder, our new retrieval model]
 
-
+[discrete]
 [[elser-benchmarks]]
 == Benchmark information
+
+IMPORTANT: The recommended way to use ELSER is through the {ref}/infer-service-elser.html[{infer} API] as a service. 
 
 The following sections provide information about how ELSER performs on different 
 hardwares and compares the model performance to {es} BM25 and other strong 
@@ -466,6 +475,7 @@ any platform.
 
 
 [discrete]
+[[version-overview-v2]]
 ==== ELSER V2
 
 Besides the performance improvements, the biggest change in ELSER V2 is the 

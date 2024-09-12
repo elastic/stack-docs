@@ -17,6 +17,27 @@ And they cannot be scaled up to more than 32 allocations, unless you explicitly 
 Adaptive allocations must be set up independently for each deployment and {infer} endpoint.
 end::ml-nlp-adaptive-allocations[]
 
+tag::ml-nlp-adaptive-resources[]
+You can enable adaptive resources for your models when starting or updating the model deployment.
+Adaptive resources make it possible to for {es} to scale up or down the available resources based on the load on the process.
+This can help you to manage performance and cost more easily.
+When adaptive resources are enabled, the number of vCPUs that the model deployment uses is set automatically based on the current load.
+When the load is high, the number of vCPUs that the process can use is automatically increased.
+When the load is low, the number of vCPUs that the process can use is automatically decreased.
+
+Adaptive resources have three levels:
+* Low: This level limits resources to the minimum required for ELSER to run if supported by the Cloud console selection.
+If the resource limit of the Cloud console selection is more restrictive, this setting will respect the limit.
+It may not be sufficient for a production application.
+* Medium: The model will scale up to a maximum of 32 vCPUs.
+Even if the Cloud console provides more, the model will not exceed 32, leaving additional resources for other models.
+If the Cloud console provides less, the setting will respect the limit.
+* High: The model may scale up to the maximum number of vCPUs available for this deployment from the Cloud console if needed.
+If the maximum is 32 vCPUs or fewer, this level is equivalent to the medium level.
+
+[TO DO - screenshot]
+end::ml-nlp-adaptive-resources[]
+
 tag::nlp-eland-clone-docker-build[]
 You can use the {eland-docs}[Eland client] to install the {nlp} model. Use the prebuilt  
 Docker image to run the Eland install model commands. Pull the latest image with:

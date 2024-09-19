@@ -441,6 +441,27 @@ To learn more about ELSER performance, refer to the <<elser-benchmarks>>.
 
 
 [discrete]
+<<<<<<< HEAD
+=======
+[[pre-cleaning]]
+== Pre-cleaning input text
+
+The quality of the input text significantly affects the quality of the embeddings.
+To achieve the best results, it's recommended to clean the input text before generating embeddings.
+The exact preprocessing you may need to do heavily depends on your text.
+For example, if your text contains HTML tags, use the {ref}/htmlstrip-processor.html[HTML strip processor] in an ingest pipeline to remove unnecessary elements.
+Always review and clean your input text before ingestion to eliminate any irrelevant entities that might affect the results.
+ 
+
+[discrete]
+[[elser-adaptive-allocations]]
+== Adaptive allocations
+
+include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-allocations]
+
+
+[discrete]
+>>>>>>> 34a6c7b5 ([DOCS] Adds pre-cleaning recommendation to ELSER docs. (#2796))
 [[further-readings]]
 == Further reading
 

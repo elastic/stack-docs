@@ -469,6 +469,17 @@ include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-resources]
 
 
 [discrete]
+[[elser-recommendations]]
+== Recommendations for using ELSER
+
+To gain the biggest value out of ELSER trained models, consider to follow this list of recommendations.
+
+* Use two ELSER {infer} endpoints: one optimized for ingest and one optimized for search.
+* If quick response time is important for your use case, keep {ml} resources available at all times by setting `min_allocations` to `1`.
+* Setting `min_allocations` to `0` can save on costs for non critical use cases or testing environments.
+
+
+[discrete]
 [[further-readings]]
 == Further reading
 

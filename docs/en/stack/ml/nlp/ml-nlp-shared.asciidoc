@@ -1,4 +1,5 @@
 tag::ml-nlp-adaptive-allocations[]
+Model allocations are independent units of work for NLP tasks.
 The numbers of threads and allocations you can set manually for a model remain constant even when not all the available resources are fully used or when the load on the model requires more resources.
 Instead of setting the number of allocations manually, you can enable adaptive allocations to set the number of allocations based on the load on the process. This can help you to manage performance and cost more easily.
 When adaptive allocations are enabled, the number of allocations of the model is set automatically based on the current load.
@@ -19,13 +20,13 @@ end::ml-nlp-adaptive-allocations[]
 
 tag::ml-nlp-adaptive-resources[]
 You can enable adaptive resources for your models when starting or updating the model deployment.
-Adaptive resources make it possible to for {es} to scale up or down the available resources based on the load on the process.
+Adaptive resources make it possible for {es} to scale up or down the available resources based on the load on the process.
 This can help you to manage performance and cost more easily.
 When adaptive resources are enabled, the number of vCPUs that the model deployment uses is set automatically based on the current load.
 When the load is high, the number of vCPUs that the process can use is automatically increased.
 When the load is low, the number of vCPUs that the process can use is automatically decreased.
 
-Adaptive resources have three levels:
+The three levels of resource usage in Cloud deployments function as follows when adaptive resources are enabled:
 
 * Low: This level limits resources to the minimum required for ELSER to run if supported by the Cloud console selection.
 If the resource limit of the Cloud console selection is more restrictive, this setting will respect the limit.

@@ -12,8 +12,9 @@ There are two ways to enable autoscaling:
 
 IMPORTANT: You must enable {cloud}/ec-autoscaling.html[deployment autoscaling] to use model autoscaling.
 
+
 [discrete]
-[[elser-adaptive-allocations]]
+[[nlp-model-adaptive-allocations]]
 == Enabling autoscaling through APIs - adaptive allocations
 
 Model allocations are independent units of work for NLP tasks.
@@ -35,7 +36,7 @@ And they cannot be scaled up to more than 32 allocations, unless you explicitly 
 Adaptive allocations must be set up independently for each deployment and {infer} endpoint.
 
 [discrete]
-[[elser-adaptive-resources]]
+[[nlp-model-adaptive-resources]]
 == Enabling autoscaling in {kib} - adaptive resources
 
 You can enable adaptive resources for your models when starting or updating the model deployment.

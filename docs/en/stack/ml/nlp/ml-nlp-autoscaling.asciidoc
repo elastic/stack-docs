@@ -1,0 +1,60 @@
+[discrete]
+[[ml-nlp-auto-scale]]
+= Trained model autoscaling
+
+You can enable autoscaling for each of your trained model deployments.
+Autoscaling allows {es} to automatically adjust the resources the deployment can use based on the workload demand.
+
+There are two ways to enable autoscaling:
+
+* trough APIs by enabling adaptive allocations
+* in {kib} by enabling adaptive resources
+
+IMPORTANT: You must enable {cloud}/ec-autoscaling.html[deployment autoscaling] to use model autoscaling.
+
+[discrete]
+[[elser-adaptive-allocations]]
+== Enabling autoscaling through APIs - adaptive allocations
+
+Model allocations are independent units of work for NLP tasks.
+The numbers of threads and allocations you can set manually for a model remain constant even when not all the available resources are fully used or when the load on the model requires more resources.
+Instead of setting the number of allocations manually, you can enable adaptive allocations to set the number of allocations based on the load on the process. This can help you to manage performance and cost more easily.
+When adaptive allocations are enabled, the number of allocations of the model is set automatically based on the current load.
+When the load is high, a new model allocation is automatically created.
+When the load is low, a model allocation is automatically removed.
+
+You can enable adaptive allocations by using:
+
+* the Create inference endpoint API for {ref}/infer-service-elser.html[ELSER], {ref}/infer-service-elasticsearch.html[E5 and models uploaded through Eland] that are used as {infer} services.
+* the {ref}/start-trained-model-deployment.html[start trained model deployment] or {ref}/update-trained-model-deployment.html[update trained model deployment] APIs for trained models that are deployed on {ml} nodes.
+
+If the new allocations fit on the current {ml} nodes, they are immediately started.
+If more resource capacity is needed for creating new model allocations, then your {ml} node will be scaled up if {ml} autoscaling is enabled to provide enough resources for the new allocation.
+The number of model allocations cannot be scaled down to less than 1.
+And they cannot be scaled up to more than 32 allocations, unless you explicitly set the maximum number of allocations to more.
+Adaptive allocations must be set up independently for each deployment and {infer} endpoint.
+
+[discrete]
+[[elser-adaptive-resources]]
+== Enabling autoscaling in {kib} - adaptive resources
+
+You can enable adaptive resources for your models when starting or updating the model deployment.
+Adaptive resources make it possible for {es} to scale up or down the available resources based on the load on the process.
+This can help you to manage performance and cost more easily.
+When adaptive resources are enabled, the number of vCPUs that the model deployment uses is set automatically based on the current load.
+When the load is high, the number of vCPUs that the process can use is automatically increased.
+When the load is low, the number of vCPUs that the process can use is automatically decreased.
+
+The three levels of resource usage in Cloud deployments function as follows when adaptive resources are enabled:
+
+* Low: This level limits resources to the minimum required for ELSER to run if supported by the Cloud console selection.
+If the resource limit of the Cloud console selection is more restrictive, this setting will respect the limit.
+It may not be sufficient for a production application.
+* Medium: The model will scale up to a maximum of 32 vCPUs.
+Even if the Cloud console provides more, the model will not exceed 32, leaving additional resources for other models.
+If the Cloud console provides less, the setting will respect the limit.
+* High: The model may scale up to the maximum number of vCPUs available for this deployment from the Cloud console if needed.
+If the maximum is 32 vCPUs or fewer, this level is equivalent to the medium level.
+
+[role="screenshot"]
+image::images/ml-nlp-deployment-id-elser-v2.png["ELSER deployment with adaptive resources enabled."]

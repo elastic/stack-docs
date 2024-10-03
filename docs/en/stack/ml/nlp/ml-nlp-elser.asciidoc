@@ -66,6 +66,9 @@ more allocations or more threads per allocation, which requires bigger ML nodes.
 Autoscaling provides bigger nodes when required. If autoscaling is turned off, 
 you must provide suitably sized nodes yourself.
 
+Enabling trained model autoscaling for your ELSER deployment is recommended.
+Refer to <<ml-nlp-auto-scale>> to learn more.
+
 
 [discrete]
 [[elser-v2]]
@@ -449,34 +452,6 @@ To achieve the best results, it's recommended to clean the input text before gen
 The exact preprocessing you may need to do heavily depends on your text.
 For example, if your text contains HTML tags, use the {ref}/htmlstrip-processor.html[HTML strip processor] in an ingest pipeline to remove unnecessary elements.
 Always review and clean your input text before ingestion to eliminate any irrelevant entities that might affect the results.
-
-
-[discrete]
-[[elser-auto-scale]]
-== ELSER autoscaling
-
-You can enable autoscaling for each of your ELSER deployments.
-Autoscaling allows {es} to automatically adjust the resources the deployment can use based on the workload demand.
-
-There are two ways to enable autoscaling:
-
-* trough APIs by enabling adaptive allocations
-* in {kib} by enabling adaptive resources
-
-[discrete]
-[[elser-adaptive-allocations]]
-=== Enabling autoscaling through APIs - adaptive allocations
-
-include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-allocations]
-
-[discrete]
-[[elser-adaptive-resources]]
-=== Enabling autoscaling in {kib} - adaptive resources
-
-include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-resources]
-
-[role="screenshot"]
-image::images/ml-nlp-deployment-id-elser-v2.png["ELSER deployment with adaptive resources enabled."]
 
 
 [discrete]

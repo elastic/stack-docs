@@ -63,16 +63,9 @@ When adaptive resources are enabled, the number of vCPUs that the model deployme
 When the load is high, the number of vCPUs that the process can use is automatically increased.
 When the load is low, the number of vCPUs that the process can use is automatically decreased.
 
-The three levels of resource usage in Cloud deployments function as follows when adaptive resources are enabled:
+You can choose from three levels of resource usage for your trained model deployment.
+Refer to the tables in the <<auto-scaling-matrix>> section to find out the setings for the level you selected.
 
-* Low: This level limits resources to the minimum required for ELSER to run if supported by the Cloud console selection.
-If the resource limit of the Cloud console selection is more restrictive, this setting will respect the limit.
-It may not be sufficient for a production application.
-* Medium: The model will scale up to a maximum of 32 vCPUs.
-Even if the Cloud console provides more, the model will not exceed 32, leaving additional resources for other models.
-If the Cloud console provides less, the setting will respect the limit.
-* High: The model may scale up to the maximum number of vCPUs available for this deployment from the Cloud console if needed.
-If the maximum is 32 vCPUs or fewer, this level is equivalent to the medium level.
 
 [role="screenshot"]
 image::images/ml-nlp-deployment-id-elser-v2.png["ELSER deployment with adaptive resources enabled."]

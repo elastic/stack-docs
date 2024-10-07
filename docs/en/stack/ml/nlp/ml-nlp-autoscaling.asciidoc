@@ -76,3 +76,72 @@ If the maximum is 32 vCPUs or fewer, this level is equivalent to the medium leve
 
 [role="screenshot"]
 image::images/ml-nlp-deployment-id-elser-v2.png["ELSER deployment with adaptive resources enabled."]
+
+
+[discrete]
+[[auto-scaling-matrix]]
+== Model deployment resource matrix
+
+The used resources for trained model deployments depends on three factors:
+
+* your cluster environment (Serverless, Cloud, or on-prem)
+* the use case you optimize the model deployment (ingest or search)
+* whether adaptive resources are enabled or disabled (dynamic or static resources)
+
+The following tables show you the exact number of allocations, threads, and vCPUs available in the different scenarios.
+
+
+[discrete]
+=== Deployments in Cloud optimized for ingest
+
+
+[discrete]
+==== Adaptive resources enabled
+
+[cols="4*", options="header"]
+|==========
+| Level  | Allocations                                  | Threads | vCPUs
+| Low    | 0 to 2 dynamically                           | 1       | 0 to 2 dynamically 
+| Medium | 1 to 32 dynamically                          | 1       | 1 to the smallest between 32 or the limit set on the Cloud console, dynamically
+| High   | 1 to limit set by Cloud console, dynamically | 1       | 1 to limit set by Cloud console, dynamically
+|==========
+
+
+[discrete]
+==== Adaptive resources disabled
+
+[cols="4*", options="header"]
+|==========
+| Level  | Allocations                                              | Threads | vCPUs
+| Low    | 2 if available, otherwise 1, statically                  | 1       | 2 if available
+| Medium | 32 if available, otherwise maximum available, statically | 1       | 32 if available
+| High   | Maximum available set by Cloud console, statically       | 1       | Maximum available set by Cloud console, statically
+|==========
+
+
+[discrete]
+=== Deployments in Cloud optimized for search
+
+
+[discrete]
+==== Adaptive resources enabled
+
+[cols="4*", options="header"]
+|==========
+| Level  | Allocations                                  | Threads                                            | vCPUs
+| Low    |  1                                           | 2                                                  | 2
+| Medium |  1 to 2 (if threads=16) dynamically          | maximum that the hardware allows (for example, 16) | 1 to 32 dynamically
+| High   |  1 to limit set by Cloud console, dynamically| maximum that the hardware allows (for example, 16) | 1 to limit set by Cloud console, dynamically
+|==========
+
+
+[discrete]
+==== Adaptive resources disabled
+
+[cols="4*", options="header"]
+|==========
+| Level  | Allocations                                              | Threads | vCPUs
+| Low    | 1 if available, statically                               | 2                                                        | 2 if available
+| Medium | 2 (if threads=16) statically                             | maximum that the hardware allows (for example, 16)       | 32 if available
+| High   | Maximum available set by Cloud console, statically       | maximum that the hardware allows (for example, 16)       | Maximum available set by Cloud console, statically
+|==========

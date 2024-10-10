@@ -94,6 +94,7 @@ Analyzing large arrays results in long strings which may require more system
 resources. Consider using a query in the {dfeed} that filters on the relevant 
 items of the array.
 
+<<<<<<< HEAD
 
 [discrete]
 [[ml-frozen-limitations]]
@@ -105,6 +106,15 @@ items of the array.
 possible to specify the `ignore_throttled` query parameter for search requests
 in {dfeeds} or jobs. See
 {ref}/searching_a_frozen_index.html[Searching a frozen index].
+=======
+[discrete]
+[[ml-frozen-tier-limitations]]
+=== {anomaly-jobs-cap} on frozen tier data cannot be created in {kib}
+
+You cannot create {anomaly-jobs} on 
+{ref}/data-tiers.html#frozen-tier[frozen tier] data through the job wizards in 
+{kib}. If you want to create such jobs, use the APIs instead.
+>>>>>>> 04632d2f ([DOCS] Removes frozen indices limitation item from anomaly detection docs. (#2828))
 
 
 [discrete]

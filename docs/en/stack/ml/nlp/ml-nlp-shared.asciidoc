@@ -1,22 +1,3 @@
-tag::ml-nlp-adaptive-allocations[]
-The numbers of threads and allocations you can set manually for a model remain constant even when not all the available resources are fully used or when the load on the model requires more resources.
-Instead of setting the number of allocations manually, you can enable adaptive allocations to set the number of allocations based on the load on the process. This can help you to manage performance and cost more easily.
-When adaptive allocations are enabled, the number of allocations of the model is set automatically based on the current load.
-When the load is high, a new model allocation is automatically created.
-When the load is low, a model allocation is automatically removed.
-
-You can enable adaptive allocations by using:
-
-* the Create inference endpoint API for {ref}/infer-service-elser.html[ELSER], {ref}/infer-service-elasticsearch.html[E5 and models uploaded through Eland] that are used as {infer} services.
-* the {ref}/start-trained-model-deployment.html[start trained model deployment] or {ref}/update-trained-model-deployment.html[update trained model deployment] APIs for trained models that are deployed on {ml} nodes.
-
-If the new allocations fit on the current {ml} nodes, they are immediately started.
-If more resource capacity is needed for creating new model allocations, then your {ml} node will be scaled up if {ml} autoscaling is enabled to provide enough resources for the new allocation.
-The number of model allocations cannot be scaled down to less than 1.
-And they cannot be scaled up to more than 32 allocations, unless you explicitly set the maximum number of allocations to more.
-Adaptive allocations must be set up independently for each deployment and {infer} endpoint.
-end::ml-nlp-adaptive-allocations[]
-
 tag::nlp-eland-clone-docker-build[]
 You can use the {eland-docs}[Eland client] to install the {nlp} model. Use the prebuilt  
 Docker image to run the Eland install model commands. Pull the latest image with:

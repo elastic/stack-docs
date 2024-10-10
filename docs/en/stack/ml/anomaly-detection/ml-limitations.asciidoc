@@ -94,18 +94,6 @@ Analyzing large arrays results in long strings which may require more system
 resources. Consider using a query in the {dfeed} that filters on the relevant 
 items of the array.
 
-
-[discrete]
-[[ml-frozen-limitations]]
-=== Frozen indices are not supported
-
-{ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
-{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
-{kib} or by using APIs. This limitation exists because it's currently not
-possible to specify the `ignore_throttled` query parameter for search requests
-in {dfeeds} or jobs. See
-{ref}/searching_a_frozen_index.html[Searching a frozen index].
-
 [discrete]
 [[ml-frozen-tier-limitations]]
 === {anomaly-jobs-cap} on frozen tier data cannot be created in {kib}

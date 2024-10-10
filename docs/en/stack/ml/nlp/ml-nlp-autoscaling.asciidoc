@@ -76,15 +76,19 @@ image::images/ml-nlp-deployment-id-elser-v2.png["ELSER deployment with adaptive 
 
 The used resources for trained model deployments depends on three factors:
 
-* your cluster environment (Serverless, Cloud, or on-prem)
+* your cluster environment (Serverless, Cloud, or on-premises)
 * the use case you optimize the model deployment (ingest or search)
 * whether adaptive resources are enabled or disabled (dynamic or static resources)
 
-The following tables show you the exact number of allocations, threads, and vCPUs available in the different scenarios.
+If you use {es} on-premises, adaptive resources behavior is fully dynamic and highly dependent on the hardware configuration.
+The following tables show you the number of allocations, threads, and vCPUs available in Cloud when adaptive resources are enabled or disabled.
 
 
 [discrete]
 === Deployments in Cloud optimized for ingest
+
+In case of ingest-optimized deployments, we maximize the number of model allocations.
+
 
 
 [discrete]
@@ -114,6 +118,8 @@ The following tables show you the exact number of allocations, threads, and vCPU
 [discrete]
 === Deployments in Cloud optimized for search
 
+In case of search-optimized deployments, we maximize the number of threads.
+The maximum number of threads that can be claimed depends on the hardware your architecture has.
 
 [discrete]
 ==== Adaptive resources enabled
@@ -132,7 +138,7 @@ The following tables show you the exact number of allocations, threads, and vCPU
 
 [cols="4*", options="header"]
 |==========
-| Level  | Allocations                                              | Threads | vCPUs
+| Level  | Allocations                                              | Threads                                                  | vCPUs
 | Low    | 1 if available, statically                               | 2                                                        | 2 if available
 | Medium | 2 (if threads=16) statically                             | maximum that the hardware allows (for example, 16)       | 32 if available
 | High   | Maximum available set by Cloud console, statically       | maximum that the hardware allows (for example, 16)       | Maximum available set by Cloud console, statically

@@ -184,9 +184,9 @@ You can define the resource usage level of the NLP model during model deployment
 The resource usage levels behave differently depending on <<nlp-model-adaptive-resources, adaptive resources>> being enabled or disabled.
 When adaptive resources are disabled but {ml} autoscaling is enabled, vCPU usage of Cloud deployments derived from the Cloud console and functions as follows:
 
-* Low: This level limits resources to one vCPU, which may be suitable for development, testing, and demos depending on your parameters.
+* Low: This level limits resources to two vCPUs, which may be suitable for development, testing, and demos depending on your parameters.
 It is not recommended for production use
-* Medium: This level limits resources to two vCPUs, which may be suitable for development, testing, and demos depending on your parameters.
+* Medium: This level limits resources to 32 vCPUs, which may be suitable for development, testing, and demos depending on your parameters.
 It is not recommended for production use.
 * High: This level may use the maximum number of vCPUs available for this deployment from the Cloud console.
 If the maximum is 2 vCPUs or fewer, this level is equivalent to the medium or low level.

@@ -164,66 +164,34 @@ their deployment across your cluster under **{ml-app}** > *Model Management*.
 Alternatively, you can use the
 {ref}/start-trained-model-deployment.html[start trained model deployment API].
 
-You can deploy a model multiple times by assigning a unique deployment ID when 
-starting the deployment. It enables you to have dedicated deployments for 
-different purposes, such as search and ingest. By doing so, you ensure that the 
-search speed remains unaffected by ingest workloads, and vice versa. Having 
-separate deployments for search and ingest mitigates performance issues 
-resulting from interactions between the two, which can be hard to diagnose.
+You can deploy a model multiple times by assigning a unique deployment ID when starting the deployment.
+
+You can optimize your deplyoment for typical use cases, such as search and ingest.
+When you optimize for ingest, the throughput will be higher, which increases the number of {infer} requests that can be performed in parallel.
+When you optimize for search, the latency will be lower during search processes.
+When you have dedicated deployments for different purposes, you ensure that the search speed remains unaffected by ingest workloads, and vice versa.
+Having separate deployments for search and ingest mitigates performance issues resulting from interactions between the two, which can be hard to diagnose.
 
 [role="screenshot"]
 image::images/ml-nlp-deployment-id-elser-v2.png["Model deployment on the Trained Models UI."]
 
-It is recommended to fine-tune each deployment based on its specific purpose. To 
-improve ingest performance, increase throughput by adding more allocations to 
-the deployment. For improved search speed, increase the number of threads per 
-allocation.
+Each deployment will be fine-tuned automatically based on its specific purpose you choose.
 
-NOTE: Since eland uses APIs to deploy the models, you cannot see the models in
-{kib} until the saved objects are synchronized. You can follow the prompts in
-{kib}, wait for automatic synchronization, or use the
-{kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
+NOTE: Since eland uses APIs to deploy the models, you cannot see the models in {kib} until the saved objects are synchronized.
+You can follow the prompts in {kib}, wait for automatic synchronization, or use the {kibana-ref}/machine-learning-api-sync.html[sync {ml} saved objects API].
 
-When you deploy the model, its allocations are distributed across available {ml} 
-nodes. Model allocations are independent units of work for NLP tasks. To 
-influence model performance, you can configure the number of allocations and the 
-number of threads used by each allocation of your deployment. Alternatively, you
-can enable <<nlp-model-adaptive-allocations>> to automatically create and remove
-model allocations based on the current workload of the model (you still need to 
-manually set the number of threads).
+You can define the resource usage level of the NLP model during model deployment.
+The resource usage levels behave differently depending on <<nlp-model-adaptive-resources, adaptive resources>> being enabled or disabled.
+When adaptive resources are disabled but {ml} autoscaling is enabled, vCPU usage of Cloud deployments derived from the Cloud console and functions as follows:
 
-IMPORTANT: If your deployed trained model has only one allocation, it's likely 
-that you will experience downtime in the service your trained model performs. 
-You can reduce or eliminate downtime by adding more allocations to your trained 
-models.
+* Low: This level limits resources to two vCPUs, which may be suitable for development, testing, and demos depending on your parameters.
+It is not recommended for production use
+* Medium: This level limits resources to 32 vCPUs, which may be suitable for development, testing, and demos depending on your parameters.
+It is not recommended for production use.
+* High: This level may use the maximum number of vCPUs available for this deployment from the Cloud console.
+If the maximum is 2 vCPUs or fewer, this level is equivalent to the medium or low level.
 
-Throughput can be scaled by adding more allocations to the deployment; it 
-increases the number of {infer} requests that can be performed in parallel. All 
-allocations assigned to a node share the same copy of the model in memory. The 
-model is loaded into memory in a native process that encapsulates `libtorch`, 
-which is the underlying {ml} library of PyTorch. The number of allocations 
-setting affects the amount of model allocations across all the {ml} nodes. Model 
-allocations are distributed in such a way that the total number of used threads 
-does not exceed the allocated processors of a node.
-
-The threads per allocation setting affects the number of threads used by each 
-model allocation during {infer}. Increasing the number of threads generally 
-increases the speed of {infer} requests. The value of this setting must not 
-exceed the number of available allocated processors per node.
-
-You can view the allocation status in {kib} or by using the
-{ref}/get-trained-models-stats.html[get trained model stats API]. If you want to
-change the number of allocations, you can use the
-{ref}/update-trained-model-deployment.html[update trained model stats API] after
-the allocation status is `started`. You can also enable
-<<nlp-model-adaptive-allocations>> to automatically create and remove model
-allocations based on the current workload of the model.
-
-[discrete]
-[[nlp-model-adaptive-allocations]]
-=== Adaptive allocations
-
-include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-allocations]
+For the resource levels when adaptive resources are enabled, refer to <<<ml-nlp-auto-scale>>.
 
 
 [discrete]

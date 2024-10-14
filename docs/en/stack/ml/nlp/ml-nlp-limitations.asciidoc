@@ -18,15 +18,3 @@ each field of the ingested documents that ELSER is applied to are taken into
 account for the search process. If your data set contains long documents, divide 
 them into smaller segments before ingestion if you need the full text to be 
 searchable.
-
-
-[discrete]
-[[ml-nlp-elser-autoscale]]
-== ELSER deployments don't autoscale
-
-Currently, ELSER deployments do not scale up and down automatically depending on
-the resource requirements of the ELSER processes. If you want to configure
-available resources for your ELSER deployments, you can manually set the number
-of allocations and threads per allocation by using the Trained Models UI in
-{kib} or the 
-{ref}/update-trained-model-deployment.html[Update trained model deployment API].

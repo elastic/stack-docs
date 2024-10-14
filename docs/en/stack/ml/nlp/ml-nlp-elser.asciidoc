@@ -66,6 +66,9 @@ more allocations or more threads per allocation, which requires bigger ML nodes.
 Autoscaling provides bigger nodes when required. If autoscaling is turned off, 
 you must provide suitably sized nodes yourself.
 
+Enabling trained model autoscaling for your ELSER deployment is recommended.
+Refer to <<ml-nlp-auto-scale>> to learn more.
+
 
 [discrete]
 [[elser-v2]]
@@ -449,13 +452,17 @@ To achieve the best results, it's recommended to clean the input text before gen
 The exact preprocessing you may need to do heavily depends on your text.
 For example, if your text contains HTML tags, use the {ref}/htmlstrip-processor.html[HTML strip processor] in an ingest pipeline to remove unnecessary elements.
 Always review and clean your input text before ingestion to eliminate any irrelevant entities that might affect the results.
- 
+
 
 [discrete]
-[[elser-adaptive-allocations]]
-== Adaptive allocations
+[[elser-recommendations]]
+== Recommendations for using ELSER
 
-include::ml-nlp-shared.asciidoc[tag=ml-nlp-adaptive-allocations]
+To gain the biggest value out of ELSER trained models, consider to follow this list of recommendations.
+
+* Use two ELSER {infer} endpoints: one optimized for ingest and one optimized for search.
+* If quick response time is important for your use case, keep {ml} resources available at all times by setting `min_allocations` to `1`.
+* Setting `min_allocations` to `0` can save on costs for non-critical use cases or testing environments.
 
 
 [discrete]

@@ -46,7 +46,7 @@ You can optimize your model deployment for typical use cases, such as search and
 When you optimize for ingest, the throughput will be higher, which increases the number of {infer} requests that can be performed in parallel.
 When you optimize for search, the latency will be lower during search processes.
 
-* If you want to optimize for ingest, set the number of threads to `1` (`"num_threads": 1`).
+* If you want to optimize for ingest, set the number of threads to `1` (`"threads_per_allocation": 1`).
 * If you want to optimize for search, set the number of threads to greater than `1`.
 Increasing the number of threads will make the search processes more performant.
 

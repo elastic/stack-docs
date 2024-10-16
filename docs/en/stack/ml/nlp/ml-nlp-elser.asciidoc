@@ -427,18 +427,13 @@ image::images/ml-nlp-elser-v2-test.png[alt="Testing ELSER",align="center"]
 [[performance]]
 == Performance considerations
 
-* ELSER works best on small-to-medium sized fields that contain natural 
-language. For connector or web crawler use cases, this aligns best with fields 
-like _title_, _description_, _summary_, or _abstract_. As ELSER encodes the 
-first 512 tokens of a field, it may not provide as relevant of results for large
-fields. For example, `body_content` on web crawler documents, or body fields 
-resulting from extracting text from office documents with connectors. For larger
-fields like these, consider "chunking" the content into multiple values, where
-each chunk can be under 512 tokens.
-* Larger documents take longer at ingestion time, and {infer} time per 
-document also increases the more fields in a document that need to be processed.
-* The more fields your pipeline has to perform inference on, the longer it takes 
-per document to ingest.
+* ELSER works best on small-to-medium sized fields that contain natural language.
+For connector or web crawler use cases, this aligns best with fields like _title_, _description_, _summary_, or _abstract_.
+As ELSER encodes the first 512 tokens of a field, it may not provide as relevant of results for large fields.
+For example, `body_content` on web crawler documents, or body fields resulting from extracting text from office documents with connectors.
+For larger fields like these, consider "chunking" the content into multiple values, where each chunk can be under 512 tokens.
+* Larger documents take longer at ingestion time, and {infer} time per document also increases the more fields in a document that need to be processed.
+* The more fields your pipeline has to perform inference on, the longer it takes per document to ingest.
 
 To learn more about ELSER performance, refer to the <<elser-benchmarks>>.
 
@@ -460,15 +455,21 @@ Always review and clean your input text before ingestion to eliminate any irrele
 
 To gain the biggest value out of ELSER trained models, consider to follow this list of recommendations.
 
-* Use two ELSER {infer} endpoints: one optimized for ingest and one optimized for search.
 * If quick response time is important for your use case, keep {ml} resources available at all times by setting `min_allocations` to `1`.
 * Setting `min_allocations` to `0` can save on costs for non-critical use cases or testing environments.
+* Enabling <<ml-nlp-auto-scale,autoscaling>> through adaptive allocations or adaptive resources makes it possible for {es} to scale up or down the available resources of your ELSER deployment based on the load on the process.
+
+* Use two ELSER {infer} endpoints: one optimized for ingest and one optimized for search.
+** In {kib}, you can select for which case you want to optimize your ELSER deployment.
+** If you use the {infer} API and want to optimize your ELSER endpoint for ingest, set the number of threads to `1` (`"num_threads": 1`).
+** If you use the {infer} API and want to optimize your ELSER endpoint for search, set the number of threads to greater than `1`.
 
 
 [discrete]
 [[further-readings]]
 == Further reading
 
+* {ref}/semantic-search-semantic-text.html[Perform semantic search with `semantic_text` using the ELSER endpoint]
 * {ref}/semantic-search-elser.html[Perform semantic search with ELSER]
 
 

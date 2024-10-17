@@ -459,10 +459,10 @@ To gain the biggest value out of ELSER trained models, consider to follow this l
 * Setting `min_allocations` to `0` can save on costs for non-critical use cases or testing environments.
 * Enabling <<ml-nlp-auto-scale,autoscaling>> through adaptive allocations or adaptive resources makes it possible for {es} to scale up or down the available resources of your ELSER deployment based on the load on the process.
 
-* Use two ELSER {infer} endpoints: one optimized for ingest and one optimized for search.
-** In {kib}, you can select for which case you want to optimize your ELSER deployment.
-** If you use the {infer} API and want to optimize your ELSER endpoint for ingest, set the number of threads to `1` (`"num_threads": 1`).
-** If you use the {infer} API and want to optimize your ELSER endpoint for search, set the number of threads to greater than `1`.
+* Use dedicated, optimized ELSER {infer} endpoints for ingest and search use cases.
+** When deploying a trained model in {kib}, you can select for which case you want to optimize your ELSER deployment.
+** If you use the trained model or {infer} APIs and want to optimize your ELSER trained model deployment or {infer} endpoint for ingest, set the number of threads to `1` (`"num_threads": 1`).
+** If you use the trained model or {infer} APIs and want to optimize your ELSER trained model deployment or {infer} endpoint for search, set the number of threads to greater than `1`.
 
 
 [discrete]

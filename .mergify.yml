@@ -15,6 +15,20 @@ pull_request_rules:
             git merge <remote-repo>/{{base}}
             git push <remote-repo> {{head}}
             ```
+  - name: backport patches to 8.17 branch
+    conditions:
+      - merged
+      - base=main
+      - label=backport-8.17
+    actions:
+      backport:
+        assignees:
+          - "{{ author }}"
+        branches:
+          - "8.x"
+        title: "[{{ destination_branch }}] {{ title }} (backport #{{ number }})"
+        labels:
+          - backport
   - name: backport patches to 8.16 branch
     conditions:
       - merged
@@ -25,7 +39,7 @@ pull_request_rules:
         assignees:
           - "{{ author }}"
         branches:
-          - "8.x"
+          - "8.16"
         title: "[{{ destination_branch }}] {{ title }} (backport #{{ number }})"
         labels:
           - backport

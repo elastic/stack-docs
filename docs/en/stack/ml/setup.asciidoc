@@ -11,17 +11,16 @@
 
 To use the {stack} {ml-features}, you must have:
 
-[%interactive]
-- [ ] the {subscriptions}[appropriate subscription] level or the free trial 
+- the {subscriptions}[appropriate subscription] level or the free trial 
   period activated
-- [ ] `xpack.ml.enabled` set to its default value of `true` on every node in the 
+- `xpack.ml.enabled` set to its default value of `true` on every node in the 
   cluster (refer to {ref}/ml-settings.html[{ml-cap} settings in {es}])
-- [ ] `ml` value defined in the list of `node.roles` on the 
+- `ml` value defined in the list of `node.roles` on the 
   {ref}/modules-node.html#ml-node[{ml} nodes]
-- [ ] {ml} features visible in the {kib} space
-- [ ] security privileges assigned to the user that:
-    * grant use of {ml-features}, and
-    * grant access to source and destination indices.
+- {ml} features visible in the {kib} space
+- security privileges assigned to the user that:
+  * grant use of {ml-features}, and
+  * grant access to source and destination indices.
 
 TIP: The fastest way to get started with {ml-features} is to
 {ess-trial}[start a free 14-day trial of {ess}] in the cloud.
@@ -39,12 +38,15 @@ the two main categories:
 * *<<kib-security-privileges>>*: uses the {ml-features} in {kib} and does not 
 use Dev Tools. It requires either {kib} feature privileges or {es} security 
 privileges and is granted the most permissive combination of both. {kib} feature 
-privileges are recommended if you control job level visibility via _Spaces_. 
+privileges are recommended if you control job level visibility via **Spaces**. 
 {ml-cap} features must be visible in the relevant space. Refer to 
 <<kib-visibility-spaces>> for configuration information.
 
-You can configure these privileges under **{stack-manage-app}** > _Security_ in 
-{kib} or via the respective {es} security APIs.
+You can configure these privileges
+
+- under **Security**. To open Security, find **{stack-manage-app}** in the main menu or
+use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search bar].
+- via the respective {es} security APIs.
 
 
 [discrete]
@@ -55,19 +57,17 @@ If you use {ml} APIs, you must have the following cluster and index privileges:
 
 For full access:
 
-[%interactive]
-* [ ] `machine_learning_admin` built-in role or the equivalent cluster 
+* `machine_learning_admin` built-in role or the equivalent cluster 
 privileges 
-* [ ] `read` and `view_index_metadata` on source indices
-* [ ] `read`, `manage`, and `index` on destination indices (for 
+* `read` and `view_index_metadata` on source indices
+* `read`, `manage`, and `index` on destination indices (for 
   {dfanalytics-jobs} only)
 
 For read-only access:
 
-[%interactive]
-* [ ] `machine_learning_user` built-in role or the equivalent cluster privileges
-* [ ] `read` index privileges on source indices
-* [ ] `read` index privileges on destination indices (for {dfanalytics-jobs}
+* `machine_learning_user` built-in role or the equivalent cluster privileges
+* `read` index privileges on source indices
+* `read` index privileges on destination indices (for {dfanalytics-jobs}
   only)
 
 IMPORTANT: The `machine_learning_admin` and `machine_learning_user` built-in
@@ -92,19 +92,21 @@ visualizations as well as {ml} job, trained model and module saved objects.
 
 In {kib}, the {ml-features} must be visible in your
 {kibana-ref}/xpack-spaces.html#spaces-control-feature-visibility[space]. To 
-control which features are visible in your space, use **{stack-manage-app}** > 
-_{kib}_ > _Spaces_.
+manage which features are visible in your space, go to **{stack-manage-app}** > 
+**{kib}** > **Spaces** or use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search bar]
+to locate **Spaces** directly.
 
 [role="screenshot"]
 image::spaces.jpg["Manage spaces in {kib}"]
 
 In addition to index privileges, source {data-sources} must also exist in the 
-same space as your {ml} jobs. These can be configured in **{stack-manage-app}** 
-> _{kib}_ > _{data-sources-caps}_.
+same space as your {ml} jobs. You can configure these under **{data-sources-caps}**. To open **{data-sources-caps}**,
+find **{stack-manage-app}** > **{kib}** in the main menu, or use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search bar].
 
 
 Each {ml} job and trained model can be assigned to all, one, or multiple spaces.
-This can be configured in **{stack-manage-app} > Alerts and Insights > Machine Learning**.
+This can be configured in **Machine Learning**. To open **Machine Learning**, find **{stack-manage-app} > Alerts and Insights**,
+or use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search bar].
 You can edit the spaces that a job or model is assigned to by clicking the
 icons in the **Spaces** column.
 
@@ -118,22 +120,20 @@ image::assign-job-spaces.jpg["Assign machine learning jobs to spaces"]
 
 Within a {kib} space, for full access to the {ml-features}, you must have:
 
-[%interactive]
-* [ ] `Machine Learning: All` {kib} privileges
-* [ ] `Data Views Management: All` {kib} feature privileges
-* [ ] `read`, and `view_index_metadata` index privileges on your source indices
-* [ ] {data-sources} for your source indices
-* [ ] {data-sources}, `read`, `manage`, and `index` index privileges on 
+* `Machine Learning: All` {kib} privileges
+* `Data Views Management: All` {kib} feature privileges
+* `read`, and `view_index_metadata` index privileges on your source indices
+* {data-sources} for your source indices
+* {data-sources}, `read`, `manage`, and `index` index privileges on 
   destination indices (for {dfanalytics-jobs} only)
 
 
 Within a {kib} space, for read-only access to the {ml-features}, you must have:
 
-[%interactive]
-* [ ] `Machine Learning: Read` {kib} privileges
-* [ ] {data-sources} for your source indices
-* [ ] `read` index privilege on your source indices
-* [ ] {data-sources} and `read` index privileges on destination indices (for 
+* `Machine Learning: Read` {kib} privileges
+* {data-sources} for your source indices
+* `read` index privilege on your source indices
+* {data-sources} and `read` index privileges on destination indices (for 
   {dfanalytics-jobs} only)
 
 IMPORTANT: A user who has full or read-only access to {ml-features} within
@@ -158,12 +158,11 @@ privileges and grant access to `machine_learning_admin` or
 Within a {kib} space, to upload and import files in the *{data-viz}*, you must 
 have:
 
-[%interactive]
-- [ ] `Machine Learning: Read` or `Discover: All` {kib} feature privileges
-- [ ] `Data Views Management: All` {kib} feature privileges
-- [ ] `ingest_admin` built-in role, or `manage_ingest_pipelines` cluster 
+- `Machine Learning: Read` or `Discover: All` {kib} feature privileges
+- `Data Views Management: All` {kib} feature privileges
+- `ingest_admin` built-in role, or `manage_ingest_pipelines` cluster 
   privilege
-- [ ] `create`, `create_index`, `manage` and `read` index privileges for
+- `create`, `create_index`, `manage` and `read` index privileges for
   destination indices
 
 For more information, see {ref}/security-privileges.html[Security privileges] 

@@ -6,7 +6,7 @@ The Hot / Frozen – High Availability architecture is cost optimized for large 
 This architecture is ideal for time-series use cases, such as Observability or Security, that does not require updating. All the necessary components of the Elastic Stack are included and this is not intended for sizing workloads, but rather as a basis to ensure your cluster is ready to handle any desired workload with resiliency. A very high level representation of data flow is included, and for more detail around ingest architecture see our https://www.elastic.co/guide/en/ingest/current/use-case-arch.html[ingest architectures] documentation. 
 
 [discrete]
-[[hot-frozen-architecture-use-case]]
+[[hot-frozen-use-case]]
 === Use case
 
 This Hot / Frozen – High Availability architecture is intended for organizations that:
@@ -37,7 +37,7 @@ The number of data nodes shown for each tier (hot and frozen) is illustrative an
 Machine learning nodes are optional but highly recommended for large scale time series use cases since the amount of data quickly becomes too difficult to analyze. Applying techniques such as machine learning based anomaly detection or Search AI with large language models helps to dramatically speed up problem identification and resolution. 
 
 [discrete]
-[[hot-frozen-architecture-hardware]]
+[[hot-frozen-hardware]]
 === Recommended Hardware Specifications
 
 Elastic Cloud allows you to deploy clusters in AWS, Azure and Google Cloud.  Available hardware types and configurations vary across all three cloud providers but each provides instance types that meet our recommendations for the node types used in this architecture. For more details on these instance types, see our documentation on Elastic Cloud hardware for https://www.elastic.co/guide/en/cloud/current/ec-default-aws-configurations.html[AWS], https://www.elastic.co/guide/en/cloud/current/ec-default-azure-configurations.html[Azure], and https://www.elastic.co/guide/en/cloud/current/ec-default-gcp-configurations.html[GCP]. The **Physical** column below is guidance, based on the cloud node types, when self-deploying Elasticsearch in your own data center.
@@ -103,7 +103,7 @@ N2|
 |===
 
 [discrete]
-[[hot-frozen-architecture-considerations]]
+[[hot-frozen-considerations]]
 === Important considerations
 
 * Updating Data:
@@ -113,13 +113,13 @@ N2|
 * Shard Management: 
 ** The most important foundational step to maintaining performance as you scale is proper shard management. This includes even shard distribution amongst nodes, shard size, and shard count. For a complete understanding of what shards are and how they should be used please review this documentation on https://www.elastic.co/guide/en/elasticsearch/reference/current/size-your-shards.html[sizing your shards].
 * Snapshots:
-** If auditable or business critical events are being logged a backup is necessary.  The choice to backup data will be up to each business's needs and requirements. Please see this documentation if you need to create a https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-register-repository.html[snapshot repository]https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-register-repository.html.
+** If auditable or business critical events are being logged a backup is necessary.  The choice to backup data will be up to each business's needs and requirements. Please see this documentation if you need to create a https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-register-repository.html[snapshot repository].
 ** To automate snapshots and attach to Index Lifecycle Management policies see https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-take-snapshot.html#automate-snapshots-slm[SLM (Snapshot Lifecycle Management)]
 * Kibana:
 ** If self-deploying outside of Elasticsearch Service ensure Kibana is configured for https://www.elastic.co/guide/en/kibana/current/production.html#high-availability[high availability].
 
 [discrete]
-[[hot-frozen-architecture-estimate]]
+[[hot-frozen-estimate]]
 === How many nodes of each do you need?
 It depends on:
 * The type of data being ingested (e.g., logs, metrics, traces)
@@ -129,7 +129,7 @@ It depends on:
 You can https://www.elastic.co/contact[contact us] for an estimate and recommended configuration based on your specific scenario.
 
 [discrete]
-[[hot-frozen-architecture-resources]]
+[[hot-frozen-resources]]
 === Resources and references
 
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/scalability.html[Elasticsearch - Get ready for production]

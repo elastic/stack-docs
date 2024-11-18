@@ -1,9 +1,6 @@
 # stack-docs
 Elastic Stack Documentation
 
-<<<<<<< HEAD
-This repository is the home for the cross-stack (Elastic Stack) documentation. Initially this is intended for installation and upgrade guides, but it will hopefully evolve into more cross-stack documentation over time.
-=======
 This repository is the home for the cross-stack (Elastic Stack) documentation, such as the Installation and Configuration Guide and the Machine Learning Guide.
 
 ## Directories
@@ -49,4 +46,3 @@ This work is licensed under a
 [cc-by-nc-nd]: http://creativecommons.org/licenses/by-nc-nd/4.0/
 [cc-by-nc-nd-image]: https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png
 [cc-by-nc-nd-shield]: https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg
->>>>>>> 9e8a8172 (Add license (#2732))

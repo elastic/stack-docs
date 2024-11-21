@@ -15,7 +15,6 @@ pull_request_rules:
             git merge <remote-repo>/{{base}}
             git push <remote-repo> {{head}}
             ```
-
   - name: backport patches to main branch
     conditions:
       - merged
@@ -57,7 +56,6 @@ pull_request_rules:
         title: "[{{ destination_branch }}] {{ title }} (backport #{{ number }})"
         labels:
           - backport
-
   - name: backport patches to 8.16 branch
     conditions:
       - merged

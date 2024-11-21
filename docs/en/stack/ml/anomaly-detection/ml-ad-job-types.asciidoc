@@ -82,7 +82,9 @@ event is anomalous if the request rate of an IP address is unusually high or low
 compared to the request rate of all IP addresses in the population. The 
 population job builds a model of the typical number of requests for the IP 
 addresses collectively and compares the behavior of each IP address against that 
-collective model to detect outliers. 
+collective model to detect outliers.
+
+Refer to <<ml-configuring-populations>> to learn more.
 
 
 [discrete]
@@ -113,6 +115,8 @@ The model learns the normal volume and pattern of a category over time so the
 job can detect anomalous behavior, such as an unusual number of events in a 
 category by using the `count` function or messages that rarely occur by using 
 the `rare` function.
+
+Refer to <<ml-configuring-categories>> to learn more.
 
 
 [discrete]

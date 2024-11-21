@@ -228,7 +228,7 @@ image::images/ml-nlp-start-elser-v2-es.png[alt="Start ELSER in Elasticsearch",al
 --
 =====
 
-.Using the traned models API in Dev Console
+.Using the trained models API in Dev Console
 [%collapsible%closed]
 =====
 [discrete]
@@ -351,7 +351,7 @@ master-eligible nodes can reach the server you specify.
 . Repeat step 5 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one.
-. Navigate to the **Trained Models** page in {kib}, ELSER can be found in the 
+. Navigate to the **Trained Models** page from the main menu, or use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search field] in {kib}. ELSER can be found in the 
 list of trained models.
 . Click the **Add trained model** button, select the ELSER model version you 
 downloaded in step 1 and want to deploy, and click **Download**. The selected 
@@ -391,7 +391,7 @@ xpack.ml.model_repository: file://${path.home}/config/models/`
 . Repeat step 2 and step 3 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one.
-. Navigate to the **Trained Models** page in {kib}, ELSER can be found in the 
+. Navigate to the **Trained Models** page from the main menu, or use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search field] in {kib}. ELSER can be found in the 
 list of trained models.
 . Click the **Add trained model** button, select the ELSER model version you 
 downloaded in step 1 and want to deploy and click **Download**. The selected 
@@ -407,7 +407,7 @@ allocations and threads per allocation values.
 == Testing ELSER
 
 You can test the deployed model in {kib}. Navigate to **Model Management** > 
-**Trained Models**, locate the deployed ELSER model in the list of trained 
+**Trained Models** from the main menu, or use the {kibana-ref}/kibana-concepts-analysts.html#_finding_your_apps_and_objects[global search field] in {kib}. Locate the deployed ELSER model in the list of trained 
 models, then select **Test model** from the Actions menu.
 
 You can use data from an existing index to test the model. Select the index, 

@@ -124,18 +124,12 @@ PUT _inference/sparse_embedding/my-elser-model
 {
   "service": "elser",
   "service_settings": {
-<<<<<<< HEAD
-    "num_allocations": 1,
-    "num_threads": 1
-=======
     "adaptive_allocations": {
       "enabled": true,
       "min_number_of_allocations": 1,
       "max_number_of_allocations": 10
     },
     "num_threads": 1,
-    "model_id": ".elser_model_2_linux-x86_64"
->>>>>>> 57401489 (Update "Download and deploy ELSER" snippet with adaptive allocations (#2878))
   }
 }
 ----------------------------------

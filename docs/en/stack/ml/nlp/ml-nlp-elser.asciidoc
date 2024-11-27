@@ -122,14 +122,15 @@ The easiest and recommended way to download and deploy ELSER is to use the {ref}
 ----------------------------------
 PUT _inference/sparse_embedding/my-elser-model
 {
-  "service": "elser",
+  "service": "elasticsearch",
   "service_settings": {
     "adaptive_allocations": {
       "enabled": true,
       "min_number_of_allocations": 3,
       "max_number_of_allocations": 10
     },
-    "num_threads": 1
+    "num_threads": 1,
+    "model_id": ".elser_model_2_linux-x86_64"
   }
 }
 ----------------------------------

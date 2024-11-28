@@ -55,7 +55,6 @@ To download and deploy Elastic Rerank, use the https://www.elastic.co/guide/en/e
 
 . Create an {infer} endpoint with the Elastic Rerank service by running:
 +
---
 [source,console]
 ----------------------------------
 PUT _inference/text_similarity/my-rerank-model
@@ -72,8 +71,7 @@ PUT _inference/text_similarity/my-rerank-model
   }
 }
 ----------------------------------
---
-
++
 NOTE: The API request automatically downloads and deploys the model. This example uses <<ml-nlp-auto-scale,autoscaling>> through adaptive allocation.
 
 After creating the Elastic Rerank {infer} endpoint, it's ready to use with a {ref}/retriever.html#text-similarity-reranker-retriever-example-elastic-rerank[`text_similarity_reranker`] retriever.

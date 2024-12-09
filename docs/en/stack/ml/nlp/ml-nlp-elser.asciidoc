@@ -124,13 +124,18 @@ PUT _inference/sparse_embedding/my-elser-model
 {
   "service": "elser",
   "service_settings": {
-    "num_allocations": 1,
-    "num_threads": 1
+    "adaptive_allocations": {
+      "enabled": true,
+      "min_number_of_allocations": 1,
+      "max_number_of_allocations": 10
+    },
+    "num_threads": 1,
   }
 }
 ----------------------------------
 --
 The API request automatically initiates the model download and then deploy the model.
+This example uses <<ml-nlp-auto-scale,autoscaling>> through adaptive allocation.
 
 Refer to the {ref}/infer-service-elser.html[ELSER {infer} service documentation] to learn more about the available settings.
 

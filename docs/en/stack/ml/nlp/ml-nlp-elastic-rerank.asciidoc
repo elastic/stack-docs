@@ -2,9 +2,7 @@
 = Elastic Rerank
 
 Elastic Rerank is a state-of-the-art cross-encoder reranking model trained by Elastic that helps you improve search relevance with a few simple API calls.
-Elastic Rerank is Elastic's first semantic reranking model and is available out-of-the-box in supporting Elastic deployments.
-
-This model is recommended for English language documents and queries.
+Elastic Rerank is Elastic's first semantic reranking model and is available out-of-the-box in supporting Elastic deployments using the {es} Inference API.
 
 Use Elastic Rerank to improve existing search applications including:
 
@@ -30,22 +28,23 @@ Elastic Rerank is available in Elasticsearch Serverless projects as of November 
 
 [discrete]
 [[ml-nlp-rerank-availability-elastic-stack]]
-=== Elastic stack (Cloud hosted and self-managed deployments)
+=== Elastic Cloud Hosted and self-managed deployments
 
-Elastic Rerank will be available in Elastic Stack version 8.17+:
+Elastic Rerank is available in Elastic Stack version 8.17+:
 
 * To use Elastic Rerank, you must have the appropriate subscription level or the trial period activated.
-* Requires ML nodes 
-** Subject to ML trial node limitations
-
-NOTE: BIG WIP TBD about trial deployments
-//TODO
+* A 4GB ML node
++
+[IMPORTANT]
+====
+Deploying the Elastic Rerank model in combination with ELSER (or other hosted models) requires at minimum an 8GB ML node. Please note that the current maximum size for trial ML nodes is 4GB (defaults to 1GB).
+====
 
 [discrete]
 [[ml-nlp-rerank-deploy]]
 == Download and deploy
 
-To download and deploy Elastic Rerank, use the https://www.elastic.co/guide/en/elasticsearch/reference/current/infer-service-elasticsearch.html[inference service API] to create an Elasticsearch service rerank endpoint.
+To download and deploy Elastic Rerank, use the {ref}/infer-service-elasticsearch.html[create inference API] to create an Elasticsearch service `rerank` endpoint.
 
 [discrete]
 [[ml-nlp-rerank-deploy-steps]]
@@ -76,10 +75,27 @@ NOTE: The API request automatically downloads and deploys the model. This exampl
 
 After creating the Elastic Rerank {infer} endpoint, it's ready to use with a {ref}/retriever.html#text-similarity-reranker-retriever-example-elastic-rerank[`text_similarity_reranker`] retriever.
 
-// Is air-gapped deployment supported?
 [discrete]
-[[ml-nlp-rerank-deploy-airgapped]]
-=== Air-gapped deployment
+[[ml-nlp-rerank-limitations]]
+== Limitations
+
+* English language only
+* Maximum context window of 512 tokens
++
+When using the {ref}/semantic-text.html[`semantic_text` field type], text is divided into chunks. By default, each chunk contains 250 words (approximately 400 tokens). Be cautious when increasing the chunk size - if the combined length of your query and chunk text exceeds 512 tokens, the model won't have access to the full content.
++
+When the combined inputs exceed the 512 token limit, a "balanced" truncation strategy is used. If both the query and input text are longer than 255 tokens each then both are truncated, otherwise the longest is truncated.
+
+[discrete]
+[[ml-nlp-rerank-perf-considerations]]
+== Performance considerations
+
+It's important to note that if you rerank to depth `n` then you will need to run `n` inferences per query. This will include the document text and will therefore be significantly more expensive than inference for query embeddings. Hardware can be scaled to run these inferences in parallel, but we would recommend shallow reranking for CPU inference: no more than top-30 results. You may find that the preview version is cost prohibitive for high query rates and low query latency requirements. We plan to address performance issues for GA.
+
+// // Is air-gapped deployment supported?
+// [discrete]
+// [[ml-nlp-rerank-deploy-airgapped]]
+// === Air-gapped deployment
 
 [discrete]
 [[ml-nlp-rerank-model-specs]]
@@ -179,14 +195,6 @@ Implemented parameter averaging along optimization trajectory:
 
 * Eliminates need for traditional learning rate scheduling and provides improvement in the final model quality
 
-[[ml-nlp-rerank-input-prep]]
-== Input preparation
-// Do we need guidance on preparing texts for reranking?
-
-[[ml-nlp-rerank-testing]]
-== Testing Elastic Rerank
-// How do we test the model? What tools/UI are available?
-
 [discrete]
 [[ml-nlp-rerank-performance]]
 == Performance
@@ -212,23 +220,23 @@ Elastic Rerank shows significant improvements in search quality across a wide ra
 
 For detailed benchmark information, including complete dataset results and methodology, refer to the https://www.elastic.co/search-labs/introducing-elastic-rerank[Introducing Elastic Rerank blog].
 
-[discrete]
-[[ml-nlp-rerank-perf-considerations]]
-=== Performance considerations
-// What hardware-specific performance characteristics should users know about?
-
-[discrete]
-[[ml-nlp-rerank-benchmarks-hw]]
-=== Hardware benchmarks
-// Are there hardware-specific benchmark numbers we should include?
-
-[discrete]
-[[ml-nlp-rerank-limitations]]
-== Limitations
-// What are current known limitations beyond tech preview status?
+// [discrete]
+// [[ml-nlp-rerank-benchmarks-hw]]
+// === Hardware benchmarks
+// Note: these are more for GA timeframe
 
 [discrete]
 [[ml-nlp-rerank-resources]]
 == Further resources
-// What additional resources should we link to?
+
+*Documentation*:
+
+* https://www.elastic.co/guide/en/elasticsearch/reference/8.17/semantic-reranking.html#semantic-reranking-in-es
+* https://www.elastic.co/guide/en/elasticsearch/reference/8.17/infer-service-elasticsearch.html#inference-example-elastic-reranker
+
+*Blogs*:
+
+* https://www.elastic.co/search-labs/blog/elastic-semantic-reranker-part-1
+* https://www.elastic.co/search-labs/blog/elastic-semantic-reranker-part-2
+* https://www.elastic.co/search-labs/blog/elastic-semantic-reranker-part-3
 

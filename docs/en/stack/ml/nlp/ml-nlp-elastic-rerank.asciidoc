@@ -2,7 +2,7 @@
 = Elastic Rerank
 
 Elastic Rerank is a state-of-the-art cross-encoder reranking model trained by Elastic that helps you improve search relevance with a few simple API calls.
-Elastic Rerank is Elastic's first semantic reranking model and is available out-of-the-box in supporting Elastic deployments using the {es} Inference API.
+Elastic Rerank is Elastic's first semantic reranking model and is available out-of-the-box in supporting Elastic deployments using the {es} {infer-cap} API.
 
 Use Elastic Rerank to improve existing search applications including:
 
@@ -18,10 +18,10 @@ When reranking BM25 results, it provides an average 40% improvement in ranking q
 [[ml-nlp-rerank-availability]]
 == Availability and requirements 
 
-IMPORTANT: This functionality is in technical preview and may be changed or removed in a future release. Elastic will work to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+experimental[]
 
 [discrete]
-[[ml-nlp-rerank-availability-serverless-]]
+[[ml-nlp-rerank-availability-serverless]]
 === Elastic Cloud Serverless
 
 Elastic Rerank is available in Elasticsearch Serverless projects as of November 25, 2024.
@@ -37,7 +37,7 @@ Elastic Rerank is available in Elastic Stack version 8.17+:
 +
 [IMPORTANT]
 ====
-Deploying the Elastic Rerank model in combination with ELSER (or other hosted models) requires at minimum an 8GB ML node. Please note that the current maximum size for trial ML nodes is 4GB (defaults to 1GB).
+Deploying the Elastic Rerank model in combination with ELSER (or other hosted models) requires at minimum an 8GB ML node. The maximum size for trial ML nodes is 4GB (defaults to 1GB).
 ====
 
 [discrete]
@@ -84,7 +84,7 @@ After creating the Elastic Rerank {infer} endpoint, it's ready to use with a {re
 +
 When using the {ref}/semantic-text.html[`semantic_text` field type], text is divided into chunks. By default, each chunk contains 250 words (approximately 400 tokens). Be cautious when increasing the chunk size - if the combined length of your query and chunk text exceeds 512 tokens, the model won't have access to the full content.
 +
-When the combined inputs exceed the 512 token limit, a "balanced" truncation strategy is used. If both the query and input text are longer than 255 tokens each then both are truncated, otherwise the longest is truncated.
+When the combined inputs exceed the 512 token limit, a balanced truncation strategy is used. If both the query and input text are longer than 255 tokens each then both are truncated, otherwise the longest is truncated.
 
 [discrete]
 [[ml-nlp-rerank-perf-considerations]]
@@ -107,7 +107,7 @@ It's important to note that if you rerank to depth `n` then you will need to run
 
 * Matches performance of billion-parameter reranking models
 
-* Built directly into Elasticsearch - no external services or dependencies needed
+* Built directly into {es} - no external services or dependencies needed
 
 [discrete]
 [[ml-nlp-rerank-arch-overview]]

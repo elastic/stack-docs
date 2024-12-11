@@ -24,7 +24,7 @@ experimental[]
 [[ml-nlp-rerank-availability-serverless]]
 === Elastic Cloud Serverless
 
-Elastic Rerank is available in Elasticsearch Serverless projects as of November 25, 2024.
+Elastic Rerank is available in {es} Serverless projects as of November 25, 2024.
 
 [discrete]
 [[ml-nlp-rerank-availability-elastic-stack]]
@@ -37,14 +37,14 @@ Elastic Rerank is available in Elastic Stack version 8.17+:
 +
 [IMPORTANT]
 ====
-Deploying the Elastic Rerank model in combination with ELSER (or other hosted models) requires at minimum an 8GB ML node. Please note that the current maximum size for trial ML nodes is 4GB (defaults to 1GB). 
+Deploying the Elastic Rerank model in combination with ELSER (or other hosted models) requires at minimum an 8GB ML node. The current maximum size for trial ML nodes is 4GB (defaults to 1GB). 
 ====
 
 [discrete]
 [[ml-nlp-rerank-deploy]]
 == Download and deploy
 
-To download and deploy Elastic Rerank, use the {ref}/infer-service-elasticsearch.html[create inference API] to create an Elasticsearch service `rerank` endpoint.
+To download and deploy Elastic Rerank, use the {ref}/infer-service-elasticsearch.html[create inference API] to create an {es} service `rerank` endpoint.
 
 [discrete]
 [[ml-nlp-rerank-deploy-steps]]
@@ -148,7 +148,7 @@ http://{IP_ADDRESS_OR_HOSTNAME}:8080/rerank-v1.metadata.json
 
 If Nginx runs properly, you see the content of the metdata file of the model.
 --
-. Point your Elasticsearch deployment to the model artifacts on the HTTP server
+. Point your {es} deployment to the model artifacts on the HTTP server
 by adding the following line to the `config/elasticsearch.yml` file: 
 +
 --
@@ -227,7 +227,7 @@ It's important to note that if you rerank to depth `n` then you will need to run
 
 * Matches performance of billion-parameter reranking models
 
-* Built directly into Elasticsearch - no external services or dependencies needed
+* Built directly into {es} - no external services or dependencies needed
 
 [discrete]
 [[ml-nlp-rerank-arch-overview]]

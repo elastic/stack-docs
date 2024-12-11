@@ -212,11 +212,6 @@ When the combined inputs exceed the 512 token limit, a balanced truncation strat
 
 It's important to note that if you rerank to depth `n` then you will need to run `n` inferences per query. This will include the document text and will therefore be significantly more expensive than inference for query embeddings. Hardware can be scaled to run these inferences in parallel, but we would recommend shallow reranking for CPU inference: no more than top-30 results. You may find that the preview version is cost prohibitive for high query rates and low query latency requirements. We plan to address performance issues for GA.
 
-// // Is air-gapped deployment supported?
-// [discrete]
-// [[ml-nlp-rerank-deploy-airgapped]]
-// === Air-gapped deployment
-
 [discrete]
 [[ml-nlp-rerank-model-specs]]
 == Model specifications

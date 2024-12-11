@@ -98,7 +98,7 @@ sudo /usr/share/elasticsearch/jdk/bin/keytool -importcert -trustcacerts -nopromp
 +
 ["source","shell"]
 ----
-keytool -keystore elastic-stack-ca.p12 -list
+sudo /usr/share/elasticsearch/jdk/bin/keytool -keystore /etc/elasticsearch/certs/elastic-stack-ca.p12 -list
 ----
 +
 NOTE: The keytool utility is provided as part of the {es} installation and is located at: `/usr/share/elasticsearch/jdk/bin/keytool` on RPM installations.

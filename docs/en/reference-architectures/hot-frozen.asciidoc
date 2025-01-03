@@ -41,7 +41,7 @@ image::images/hot-frozen.png["A Hot/Frozen Highly available architecture"]
 TIP: We use an Availability Zone (AZ) concept in the architecture above.  
 When running in your own Data Center (DC) you can equate AZs to failure zones within a datacenter, racks, or even separate physical machines depending on your constraints.
 
-The diagram illustrates an {es} cluster deployed across 3 availability zones (AZ). For production we recommend a minimum of 2 availability zones and 3 availability zones for mission critical applications. See https://www.elastic.co/guide/en/cloud/current/ec-planning.html[Plan for production] for more details. A cluster that is running in {ecloud} that has data nodes in only two AZs will create a third master-eligible node in a third AZ. True real-time high availability cannot be achieved without three zones for any distributed computing technology.
+The diagram illustrates an {es} cluster deployed across 3 availability zones (AZ). For production we recommend a minimum of 2 availability zones and 3 availability zones for mission critical applications. See https://www.elastic.co/guide/en/cloud/current/ec-planning.html[Plan for production] for more details. A cluster that is running in {ecloud} that has data nodes in only two AZs will create a third master-eligible node in a third AZ. High availability cannot be achieved without three zones for any distributed computing technology.
 
 The number of data nodes shown for each tier (hot and frozen) is illustrative and would be scaled up depending on ingest volume and retention period. Hot nodes contain both primary and replica shards. By default, primary and replica shards are always guaranteed to be in different availability zones in {ess}, but when self-deploying https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-cluster.html#shard-allocation-awareness[shard allocation awareness] would need to be configured. Frozen nodes act as a large high-speed cache and retrieve data from the snapshot store as needed.
 
@@ -53,7 +53,7 @@ Machine learning nodes are optional but highly recommended for large scale time 
 
 With {ecloud} you can deploy clusters in AWS, Azure, and Google Cloud.  Available hardware types and configurations vary across all three cloud providers but each provides instance types that meet our recommendations for the node types used in this architecture. For more details on these instance types, see our documentation on {ecloud} hardware for https://www.elastic.co/guide/en/cloud/current/ec-default-aws-configurations.html[AWS], https://www.elastic.co/guide/en/cloud/current/ec-default-azure-configurations.html[Azure], and https://www.elastic.co/guide/en/cloud/current/ec-default-gcp-configurations.html[GCP]. The **Physical** column below is guidance, based on the cloud node types, when self-deploying {es} in your own data center.
 
-In the links provided above, Elastic has performance tested hardware for each of the cloud providers to find the optimal hardware for each node type. We use ratios to represent the best mix of CPU, RAM, and disk for each type.   In some cases the CPU to RAM ratio is key, in others the disk to memory ratio and type of disk is critical.   Significantly deviating from these ratios may seem like a way to save on hardware costs, but may result in an {es} cluster that does not scale and perform well.
+In the links provided above, Elastic has performance tested hardware for each of the cloud providers to find the optimal hardware for each node type. We use ratios to represent the best mix of CPU, RAM, and disk for each type.   In some cases the CPU to RAM ratio is key, in others the disk to memory ratio and type of disk is critical. Significantly deviating from these ratios may seem like a way to save on hardware costs, but may result in an {es} cluster that does not scale and perform well.
 
 This table shows our specific recommendations for nodes in a Hot/Frozen architecture. 
 
@@ -146,6 +146,7 @@ It depends on:
 * The type of data being ingested (such as logs, metrics, traces)
 * The retention period of searchable data (such as 30 days, 90 days, 1 year)
 * The amount of data you need to ingest each day
+* The number of dashboards, queries, query types and how frequent they are run.
 
 You can https://www.elastic.co/contact[contact us] for an estimate and recommended configuration based on your specific scenario.
 
@@ -155,6 +156,6 @@ You can https://www.elastic.co/contact[contact us] for an estimate and recommend
 
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/scalability.html[{es} - Get ready for production]
 
-* https://www.elastic.co/guide/en/cloud/current/ec-prepare-production.html[{ecloud} - Preparing a deployment for production]
+* https://www.elastic.co/guide/en/cloud/current/ec-prepare-production.html[{ess} - Preparing a deployment for production]
 
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/size-your-shards.html[Size your shards]

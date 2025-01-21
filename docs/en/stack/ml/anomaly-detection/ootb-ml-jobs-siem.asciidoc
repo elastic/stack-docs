@@ -117,6 +117,37 @@ for data that matches the query.
 // end::security-cloudtrail-jobs[]
 
 [discrete]
+[[security-host-jobs]]
+== Security: Host
+
+Anomaly detection jobs for host-based threat hunting and detection.
+
+In the {ml-app} app, these configurations are available only when data exists
+that matches the query specified in the
+https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_host/manifest.json[manifest file].
+In the {security-app}, it looks in the {data-source} specified in the
+{kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
+for data that matches the query.
+
+// tag::security-host-jobs[]
+
+|===
+|Name |Description |Job |Datafeed
+
+|high_count_events_for_a_host_name
+|Looks for a sudden spike in host based traffic. This can be due to a range of security issues, such as a compromised system, DDoS attacks, malware infections, privilege escalation, or data exfiltration.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_host/ml/high_count_events_for_a_host_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_host/ml/datafeed_high_count_events_for_a_host_name.json[image:images/link.svg[A link icon]]
+
+|low_count_events_for_a_host_name
+|Looks for a sudden drop in host based traffic. This can be due to a range of security issues, such as a compromised system, a failed service, or a network misconfiguration.
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_host/ml/low_count_events_for_a_host_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_host/ml/datafeed_low_count_events_for_a_host_name.json[image:images/link.svg[A link icon]]
+
+|===
+// end::security-host-jobs[]
+
+[discrete]
 [[security-linux-jobs]]
 == Security: Linux
 

@@ -122,7 +122,7 @@ $ docker run -it --rm --network host elastic/eland
 The `eland_import_hub_model` script can be run directly in the docker command:
 
 ```bash
-docker run -it --rm elastic/eland \
+docker run -it --rm docker.elastic.co/eland/eland \
     eland_import_hub_model \
       --url $ELASTICSEARCH_URL \
       --hub-model-id elastic/distilbert-base-uncased-finetuned-conll03-english \
@@ -197,6 +197,11 @@ When you deploy the model, its allocations are distributed across available {ml}
 nodes. Model allocations are independent units of work for NLP tasks. To 
 influence model performance, you can configure the number of allocations and the 
 number of threads used by each allocation of your deployment.
+
+IMPORTANT: If your deployed trained model has only one allocation, it's likely 
+that you will experience downtime in the service your trained model performs. 
+You can reduce or eliminate downtime by adding more allocations to your trained 
+models.
 
 Throughput can be scaled by adding more allocations to the deployment; it 
 increases the number of {infer} requests that can be performed in parallel. All 

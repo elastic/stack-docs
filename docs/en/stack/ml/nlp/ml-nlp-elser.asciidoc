@@ -20,13 +20,28 @@ meaning and user intent, rather than exact keyword matches.
 ELSER is an out-of-domain model which means it does not require fine-tuning on 
 your own data, making it adaptable for various use cases out of the box.
 
+
+[discrete]
+[[elser-tokens]]
+== Tokens - not synonyms
+
 ELSER expands the indexed and searched passages into collections of terms that 
 are learned to co-occur frequently within a diverse set of training data. The 
 terms that the text is expanded into by the model _are not_ synonyms for the 
-search terms; they are learned associations. These expanded terms are weighted 
-as some of them are more significant than others. Then the {es} 
-{ref}/rank-feature.html[rank-feature field type] is used to store the terms and 
-weights at index time, and to search against later. 
+search terms; they are learned associations capturing relevance. These expanded 
+terms are weighted as some of them are more significant than others. Then the 
+{es} {ref}/rank-features.html[rank features] field type is used to store the 
+terms and weights at index time, and to search against later.
+
+This approach provides a more understandable search experience compared to 
+vector embeddings. However, attempting to directly interpret the tokens and 
+weights can be misleading, as the expansion essentially results in a vector in a 
+very high-dimensional space. Consequently, certain tokens, especially those with 
+low weight, contain information that is intertwined with other low-weight tokens 
+in the representation. In this regard, they function similarly to a dense vector 
+representation, making it challenging to separate their individual 
+contributions. This complexity can potentially lead to misinterpretations if not 
+carefully considered during analysis.
 
 
 [discrete]

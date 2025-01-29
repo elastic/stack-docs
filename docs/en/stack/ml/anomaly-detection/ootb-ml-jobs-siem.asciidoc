@@ -384,4 +384,168 @@ they are listed for each job.
 
 |===
 // end::security-windows-jobs[]
+
+[discrete]
+[[security-integrations-jobs]]
+== Security: Elastic Integrations
+
+https://docs.elastic.co/integrations[Elastic Integrations] are a streamlined way 
+to add Elastic assets to your environment, such as data ingestion, {transforms}, 
+and in this case, {ml} capabilities for Security.
+
+The following Integrations use {ml} to analyze patterns of user and entity 
+behavior, and help detect and alert when there is related suspicious activity in 
+your environment.
+
+* https://docs.elastic.co/integrations/ded[Data Exfiltration Detection]
+* https://docs.elastic.co/integrations/dga[Domain Generation Algorithm Detection]
+* https://docs.elastic.co/integrations/lmd[Lateral Movement Detection]
+* https://docs.elastic.co/integrations/problemchild[Living off the Land Attack Detection]
+
+// dga
+
+*Domain Generation Algorithm (DGA) Detection*
+
+{ml-cap} solution package to detect domain generation algorithm (DGA) activity 
+in your network data. Refer to the {subscriptions}[subscription page] to learn 
+more about the required subscription.
+
+To download, refer to the https://docs.elastic.co/integrations/dga[documentation].
+
+|===
+|Name |Description 
+
+|dga_high_sum_probability
+|Detect domain generation algorithm (DGA) activity in your network data.
+
+|===
+
+The job configurations and datafeeds can be found 
+https://github.com/elastic/integrations/blob/main/packages/dga/kibana/ml_module/dga-ml.json[here].
+
+// LotL
+
+*Living off the Land Attack (LotL) Detection*
+
+{ml-cap} solution package to detect Living off the Land (LotL) attacks in your 
+environment. Refer to the {subscriptions}[subscription page] to learn more about 
+the required subscription. (Also known as ProblemChild).
+
+To download, refer to the https://docs.elastic.co/integrations/problemchild[documentation].
+
+|===
+|Name |Description 
+
+|problem_child_rare_process_by_host
+|Looks for a process that has been classified as malicious on a host that does not commonly manifest malicious process activity.
+
+|problem_child_high_sum_by_host
+|Looks for a set of one or more malicious child processes on a single host.
+
+|problem_child_rare_process_by_user
+|Looks for a process that has been classified as malicious where the user context is unusual and does not commonly manifest malicious process activity.
+
+|problem_child_rare_process_by_parent
+|Looks for rare malicious child processes spawned by a parent process.
+
+|problem_child_high_sum_by_user
+|Looks for a set of one or more malicious processes, started by the same user.
+
+|problem_child_high_sum_by_parent
+|Looks for a set of one or more malicious child processes spawned by the same parent process.
+
+|===
+
+The job configurations and datafeeds can be found 
+https://github.com/elastic/integrations/blob/main/packages/problemchild/kibana/ml_module/problemchild-ml.json[here].
+
+// ded
+
+*Data Exfiltration Detection (DED)*
+
+{ml-cap} package to detect data exfiltration in your network and file data. Refer to the {subscriptions}[subscription page] to learn more about the required subscription.
+
+To download, refer to the https://docs.elastic.co/integrations/ded[documentation].
+
+|===
+|Name |Description 
+
+|ded_high_sent_bytes_destination_geo_country_iso_code
+|Detects data exfiltration to an unusual geo-location (by country iso code).
+
+|ded_high_sent_bytes_destination_ip
+|Detects data exfiltration to an unusual geo-location (by IP address).
+
+|ded_high_sent_bytes_destination_port
+|Detects data exfiltration to an unusual destination port.
+
+|ded_high_sent_bytes_destination_region_name
+|Detects data exfiltration to an unusual geo-location (by region name).
+
+|ded_high_bytes_written_to_external_device
+|Detects data exfiltration activity by identifying high bytes written to an external device.
+
+|ded_rare_process_writing_to_external_device
+|Detects data exfiltration activity by identifying a file write started by a rare process to an external device.
+
+|ded_high_bytes_written_to_external_device_airdrop
+|Detects data exfiltration activity by identifying high bytes written to an external device via Airdrop.
+
+|===
+
+The job configurations and datafeeds can be found 
+https://github.com/elastic/integrations/blob/main/packages/ded/kibana/ml_module/ded-ml.json[here].
+
+// lmd
+
+*Lateral Movement Detection (LMD)*
+
+{ml-cap} package to detect lateral movement based on file transfer activity and 
+Windows RDP events. Refer to the {subscriptions}[subscription page] to learn 
+more about the required subscription.
+
+To download, refer to the https://docs.elastic.co/integrations/lmd[documentation].
+
+|===
+|Name |Description 
+
+|lmd_high_count_remote_file_transfer
+|Detects unusually high file transfers to a remote host in the network.
+
+|lmd_high_file_size_remote_file_transfer
+|Detects unusually high size of files shared with a remote host in the network.
+
+|lmd_rare_file_extension_remote_transfer
+|Detects data exfiltration to an unusual destination port.
+
+|lmd_rare_file_path_remote_transfer
+|Detects unusual folders and directories on which a file is transferred.
+
+|lmd_high_mean_rdp_session_duration
+|Detects unusually high mean of RDP session duration.
+
+|lmd_high_var_rdp_session_duration
+|Detects unusually high variance in RDP session duration.
+
+|lmd_high_sum_rdp_number_of_processes
+|Detects unusually high number of processes started in a single RDP session.
+
+|lmd_unusual_time_weekday_rdp_session_start
+|Detects an RDP session started at an usual time or weekday.
+
+|lmd_high_rdp_distinct_count_source_ip_for_destination
+|Detects a high count of source IPs making an RDP connection with a single destination IP.
+
+|lmd_high_rdp_distinct_count_destination_ip_for_source
+|Detects a high count of destination IPs establishing an RDP connection with a single source IP.
+
+|lmd_high_mean_rdp_process_args
+|Detects unusually high number of process arguments in an RDP session.
+
+|===
+
+The job configurations and datafeeds can be found 
+https://github.com/elastic/integrations/blob/main/packages/lmd/kibana/ml_module/lmd-ml.json[here].
+
+// end::security-windows-jobs[]
 // end::siem-jobs[]

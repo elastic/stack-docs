@@ -96,18 +96,6 @@ items of the array.
 
 
 [discrete]
-[[ml-frozen-limitations]]
-=== Frozen indices are not supported
-
-{ref}/frozen-indices.html[Frozen indices] cannot be used in {anomaly-jobs} or 
-{dfeeds}. This limitation applies irrespective of whether you create the jobs in 
-{kib} or by using APIs. This limitation exists because it's currently not
-possible to specify the `ignore_throttled` query parameter for search requests
-in {dfeeds} or jobs. See
-{ref}/searching_a_frozen_index.html[Searching a frozen index].
-
-
-[discrete]
 [[ml-forecast-config-limitations]]
 === Unsupported forecast configurations
 
@@ -140,6 +128,17 @@ the performance impact of calculating field values at query time can
 significantly slow the job. Use an indexed field as a time field when running 
 {anomaly-jobs}.
 
+[discrete]
+[[ml-limitations-painless-script]]
+=== Deprecation warnings for Painless scripts in {dfeeds}
+
+If a {dfeed} contains Painless scripts that use deprecated syntax, deprecation 
+warnings are displayed when the {dfeed} is previewed or started. However, it is 
+not possible to check for deprecation warnings across all {dfeeds} as a bulk 
+action because running the required queries might be a resource intensive 
+process. Therefore any deprecation warnings due to deprecated Painless syntax are 
+not available in the Upgrade assistant.
+
 
 [discrete]
 [[ad-operational-limitations]]
@@ -159,16 +158,6 @@ Additionally, a dictionary used to influence the categorization process contains
 only English words. This means categorization might work better in English than
 in other languages. The ability to customize the dictionary will be added in a
 future release.
-
-
-[discrete]
-=== Post data API requires JSON format
-
-The post data API enables you to send data to a job for analysis. The data that
-you send to the job must use the JSON format.
-
-For more information about this API, see
-{ref}/ml-post-data.html[Post Data to Jobs].
 
 
 [discrete]

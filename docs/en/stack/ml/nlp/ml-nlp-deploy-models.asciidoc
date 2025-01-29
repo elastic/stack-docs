@@ -112,7 +112,7 @@ $ docker run -it --rm --network host docker.elastic.co/eland/eland
 The `eland_import_hub_model` script can be run directly in the docker command:
 
 ```bash
-docker run -it --rm elastic/eland \
+docker run -it --rm docker.elastic.co/eland/eland \
     eland_import_hub_model \
       --url $ELASTICSEARCH_URL \
       --hub-model-id elastic/distilbert-base-uncased-finetuned-conll03-english \
@@ -208,7 +208,7 @@ increases the speed of {infer} requests. The value of this setting must not
 exceed the number of available allocated processors per node.
 
 You can view the allocation status in {kib} or by using the
-{ref}/get-trained-models-stats.html[get trained model stats API]. If you to
+{ref}/get-trained-models-stats.html[get trained model stats API]. If you want to
 change the number of allocations, you can use the
 {ref}/update-trained-model-deployment.html[update trained model stats API] after
 the allocation status is `started`.

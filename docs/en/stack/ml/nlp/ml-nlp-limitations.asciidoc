@@ -21,8 +21,12 @@ searchable.
 
 
 [discrete]
-[[ml-nlp-e5-limit]]
-== The `multilingual-e5-small` model is supported
+[[ml-nlp-elser-autoscale]]
+== ELSER deployments don't autoscale
 
-From the list of E5 models, currently only the `multilingual-e5-small` is 
-supported.
+Currently, ELSER deployments do not scale up and down automatically depending on
+the resource requirements of the ELSER processes. If you want to configure
+available resources for your ELSER deployments, you can manually set the number
+of allocations and threads per allocation by using the Trained Models UI in
+{kib} or the 
+{ref}/update-trained-model-deployment.html[Update trained model deployment API].

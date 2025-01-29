@@ -23,9 +23,6 @@ and one version which is optimized for Intel® silicon. The
 **Model Management** > **Trained Models** page shows you which version of E5 is 
 recommended to deploy based on your cluster's hardware.
 
-The supported model version of E5 is `multilingual-e5-small`, refer to 
-<<ml-nlp-e5-limit, this page>> for more information.
-
 Refer to the model cards of the 
 https://huggingface.co/elastic/multilingual-e5-small[multilingual-e5-small] and 
 the 
@@ -150,21 +147,132 @@ POST _ml/trained_models/.multilingual-e5-small/deployment/_start?deployment_id=f
 ----------------------------------
 --
 
+
 [discrete]
 [[air-gapped-install-e5]]
 == Deploy the E5 model in an air-gapped environment
 
-If you want to deploy the E5 model in a restricted or closed network, follow the 
-instructions 
-https://www.elastic.co/guide/en/elasticsearch/client/eland/current/machine-learning.html#ml-nlp-pytorch-air-gapped[in the Eland client documentation].
+If you want to install E5 in an air-gapped environment, you have the following 
+options:
+* put the model artifacts into a directory inside the config directory on all 
+master-eligible nodes (for `multilingual-e5-small` and
+`multilingual-e5-small-linux-x86-64`)
+* install the model by using HuggingFace (for `multilingual-e5-small` model 
+only).
+
+
+[discrete]
+[[e5-model-artifacts]]
+=== Model artifact files
+
+For the `multilingual-e5-small` model, you need the following files in your
+system:
+```
+https://ml-models.elastic.co/multilingual-e5-small.metadata.json
+https://ml-models.elastic.co/multilingual-e5-small.pt
+https://ml-models.elastic.co/multilingual-e5-small.vocab.json
+```
+
+For the optimized version, you need the following files in your system:
+```
+https://ml-models.elastic.co/multilingual-e5-small_linux-x86_64.metadata.json
+https://ml-models.elastic.co/multilingual-e5-small_linux-x86_64.pt
+https://ml-models.elastic.co/multilingual-e5-small_linux-x86_64.vocab.json
+```
+
+
+[discrete]
+=== Using file-based access
+
+For a file-based access, follow these steps:
+
+. Download the <<e5-model-artifacts,model artifact files>>. 
+. Put the files into a `models` subdirectory inside the `config` directory of 
+your {es} deployment.
+. Point your {es} deployment to the model directory by adding the following line
+to the `config/elasticsearch.yml` file:
++
+--
+```
+xpack.ml.model_repository: file://${path.home}/config/models/`
+```
+--
+. Repeat step 2 and step 3 on all master-eligible nodes.
+. {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
+master-eligible nodes one by one.
+. Navigate to the **Trained Models** page in {kib}, E5 can be found in the 
+list of trained models.
+. Click the **Add trained model** button, select the E5 model version you 
+downloaded in step 1 and want to deploy and click **Download**. The selected 
+model will be downloaded from the model directory where you put in step 2.
+. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
+. Click **Start**.
+
+
+[discrete]
+=== Using the HuggingFace repository
+
+You can install the `multilingual-e5-small` model in a restricted or closed
+network by pointing the `eland_import_hub_model` script to the model's local
+files.
+
+For an offline install, the model first needs to be cloned locally, Git and 
+https://git-lfs.com/[Git Large File Storage] are required to be installed in 
+your system.
+
+1. Clone the E5 model from Hugging Face by using the model URL. 
++
+--
+[source,bash]
+----
+git clone https://huggingface.co/elastic/multilingual-e5-small
+----
+The command results in a local copy of the model in the `multilingual-e5-small`
+directory.
+--
+
+2. Use the `eland_import_hub_model` script with the `--hub-model-id` set to the 
+directory of the cloned model to install it:
++
+--
+[source,bash]
+----
+eland_import_hub_model \
+      --url 'XXXX' \
+      --hub-model-id /PATH/TO/MODEL \
+      --task-type text_embedding \
+      --es-username elastic --es-password XXX \
+      --es-model-id multilingual-e5-small
+----
+
+If you use the Docker image to run `eland_import_hub_model` you must bind mount 
+the model directory, so the container can read the files.
+[source,bash]
+----
+docker run --mount type=bind,source=/PATH/TO/MODELS,destination=/models,readonly -it --rm docker.elastic.co/eland/eland \
+    eland_import_hub_model \
+      --url 'XXXX' \
+      --hub-model-id /models/multilingual-e5-small \
+      --task-type text_embedding \
+      --es-username elastic --es-password XXX \
+      --es-model-id multilingual-e5-small
+----
+Once it's uploaded to {es}, the model will have the ID specified by 
+`--es-model-id`. If it is not set, the model ID is derived from 
+`--hub-model-id`; spaces and path delimiters are converted to double 
+underscores `__`.
+--
 
 
 [discrete]
 [[terms-of-use-e5]]
 == Disclaimer
 
-Customers may add third party trained models for management in Elastic. These 
-models are not owned by Elastic. Customers must contract separately with the 
-third party model owner for the use of the model, and such use will be governed 
-by the applicable terms and conditions. You understand and agree that Elastic 
-has no control over, or liability for, the third party models.
+Customers may add third party trained models for management in Elastic. These
+models are not owned by Elastic. While Elastic will support the integration with
+these models in the performance according to the documentation, you understand
+and agree that Elastic has no control over, or liability for, the third party
+models or the underlying training data they may utilize. 

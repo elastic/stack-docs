@@ -122,7 +122,7 @@ The result is the predicted dense vector transformed from the example text.
 In this step, you load the data that you later use in an ingest pipeline to get 
 the embeddings.
 
-The data set `msmarco-passagetest2019-top1000` is a subset of the MS MACRO 
+The data set `msmarco-passagetest2019-top1000` is a subset of the MS MARCO 
 Passage Ranking data set used in the testing stage of the 2019 TREC Deep 
 Learning Track. It contains 200 queries and for each query a list of relevant 
 text passages extracted by a simple information retrieval (IR) system. From that 
@@ -227,7 +227,8 @@ ingest processor inserts the embedding vector into each document.
 POST _reindex?wait_for_completion=false
 {
   "source": {
-    "index": "collection"
+    "index": "collection",
+    "size": 50 <1>
   },
   "dest": {
     "index": "collection-with-embeddings",
@@ -235,6 +236,9 @@ POST _reindex?wait_for_completion=false
   }
 }
 --------------------------------------------------
+<1> The default batch size for reindexing is 1000. Reducing `size` to a smaller 
+number makes the update of the reindexing process quicker which enables you to 
+follow the progress closely and detect errors early.
 
 The API call returns a task ID that can be used to monitor the progress:
 

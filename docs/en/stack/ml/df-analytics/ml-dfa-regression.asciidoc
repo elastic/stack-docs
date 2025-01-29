@@ -1,10 +1,10 @@
 [[ml-dfa-regression]]
 = Predicting numerical values with {regression}
 
-:keywords: {ml-init}, {stack}, {dfanalytics}, {regression}
-:description: An introduction to {ml} {regression}, which enables you to  \
-predict numerical values in a data set.
-
+:frontmatter-description: An introduction to {ml} {regression}, which enables you to predict numerical values in a data set.
+:frontmatter-tags-products: [ml] 
+:frontmatter-tags-content-type: [how-to] 
+:frontmatter-tags-user-goals: [analyze]
 
 {reganalysis-cap} is a supervised {ml} process for estimating the relationships 
 among different fields in your data, then making further predictions on 
@@ -22,9 +22,13 @@ the field you want to predict.
 == {regression-cap} algorithms
 
 //tag::regression-algorithms[]
-{regression-cap} uses an ensemble learning technique called extreme gradient 
-boost (XGboost) which combines decision trees with gradient boosting 
-methodologies.
+{regression-cap} uses an ensemble learning technique that is similar to extreme 
+gradient boosting (XGBoost) which combines decision trees with gradient boosting 
+methodologies. XGBoost trains a sequence of decision trees and every decision 
+tree learns from the mistakes of the forest so far. In each iteration, the trees 
+added to the forest improve the decision quality of the combined decision 
+forest. By default, the regression algorithm optimizes for a 
+<<dfa-regression-lossfunction,loss function>> called mean-squared error loss.
 
 There are three types of {feature-vars} that you can use with these algorithms: 
 numerical, categorical, or Boolean. Arrays are not supported.

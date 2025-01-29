@@ -3,8 +3,11 @@
 ++++
 <titleabbrev>Compatible third party models</titleabbrev>
 ++++
-:keywords: {ml-init}, {stack}, {nlp}
-:description: The list of compatible third party NLP models.
+
+:frontmatter-description: The list of compatible third party NLP models.
+:frontmatter-tags-products: [ml] 
+:frontmatter-tags-content-type: [reference] 
+:frontmatter-tags-user-goals: [analyze]
 
 The {stack-ml-features} support transformer models that conform to the standard
 BERT model interface and use the WordPiece tokenization algorithm.
@@ -103,7 +106,7 @@ Suitable similarity functions:	`cosine`
 Suitable similarity functions:	`dot_product`
 * https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5[msmarco MiniLM L12 v5]
 Suitable similarity functions:	`dot_product`, `cosine`, `l2_norm`
-* https://huggingface.co/sentence-transformers/paraphrase-multilingual-mpnet-base-v2[paraphrase mpnet base v2]
+* https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2[paraphrase mpnet base v2]
 Suitable similarity functions:	`cosine`
 
 Using `DPREncoderWrapper`:
@@ -189,9 +192,9 @@ The predicted value here for `[MASK]` is `"France"` with a score of 1.2.
 
 Named entity recognition is a specific token classification task. Each token in 
 the sequence is scored related to a specific set of classification labels. For 
-the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Additionally,
-only the following classification labels are supported: "O", "B_MISC", "I_MISC", 
-"B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC".
+the Elastic Stack, we use Inside-Outside-Beginning (IOB) tagging. Elastic supports any NER entities
+as long as they are IOB tagged. The default values are:
+"O", "B_MISC", "I_MISC", "B_PER", "I_PER", "B_ORG", "I_ORG", "B_LOC", "I_LOC".
 
 The `"O"` entity label indicates that the current token is outside any entity.
 `"I"` indicates that the token is inside an entity.

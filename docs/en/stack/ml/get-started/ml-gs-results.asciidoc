@@ -32,14 +32,17 @@ It has a single detector that uses the `low_count` function and limited job
 properties. You might use a job like this if you want to determine when the
 request rate on your web site drops significantly. 
 
-Let's start by looking at this simple job in the
-**Single Metric Viewer**:
+Let's start by looking at this simple job in the **Single Metric Viewer**:
 
 . Select the *Anomaly Detection* tab in *{ml-app}* to see the list of your
 {anomaly-jobs}.
 
 . Click the chart icon in the *Actions* column for your `low_request_rate` job
 to view its results in the **Single Metric Viewer**.
+
+. Use the relative mode of the date picker to select a start date one week in 
+the past and an end date one month in the future to cover the majority of the 
+analyzed data points.
 
 [role="screenshot"]
 image::images/ml-gs-job1-analysis.jpg["Single Metric Viewer for low_request_rate job"]

@@ -90,7 +90,7 @@ to download and deploy the model and you don't need to select from different
 versions. 
 
 If you want to learn more about the ELSER V2 improvements, refer to 
-https://www.elastic.co/search-labs/introducing-elser-v2-part-1[this blog post].
+https://www.elastic.co/search-labs/blog/introducing-elser-v2-part-1[this blog post].
 
 
 [discrete]
@@ -124,7 +124,11 @@ PUT _inference/sparse_embedding/my-elser-model
 {
   "service": "elasticsearch",
   "service_settings": {
-    "num_allocations": 1,
+    "adaptive_allocations": {
+      "enabled": true,
+      "min_number_of_allocations": 1,
+      "max_number_of_allocations": 10
+    },
     "num_threads": 1,
     "model_id": ".elser_model_2_linux-x86_64"
   }
@@ -132,6 +136,7 @@ PUT _inference/sparse_embedding/my-elser-model
 ----------------------------------
 --
 The API request automatically initiates the model download and then deploy the model.
+This example uses <<ml-nlp-auto-scale,autoscaling>> through adaptive allocation.
 
 Refer to the {ref}/infer-service-elser.html[ELSER {infer} service documentation] to learn more about the available settings.
 
@@ -555,7 +560,7 @@ IMPORTANT: The length of the documents in your particular dataset will have a
 significant impact on your throughput numbers.
 
 Refer to 
-https://www.elastic.co/search-labs/introducing-elser-v2-part-1[this blog post] 
+https://www.elastic.co/search-labs/blog/introducing-elser-v2-part-1[this blog post] 
 to learn more about ELSER V2 improved performance.
 
 image::images/ml-nlp-elser-bm-summary.png[alt="Summary of ELSER V1 and V2 benchmark reports",align="center"]

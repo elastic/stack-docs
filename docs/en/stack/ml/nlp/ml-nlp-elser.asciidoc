@@ -130,7 +130,7 @@ allocations and threads per allocation values.
 [role="screenshot"]
 image::images/ml-nlp-deployment-id-elser-v2.png[alt="Deploying ELSER",align="center"]
 --
-5. Click Start.
+5. Click **Start**.
 
 
 [discrete]
@@ -244,12 +244,23 @@ options:
 * put the model artifacts into a directory inside the config directory on all 
 {ref}/modules-node.html#master-node[master-eligible nodes].
 
-You need the following files in your system:
 
+[discrete]
+[[elser-model-artifacts]]
+=== Model artifact files
+
+For the cross-platform verison, you need the following files in your system:
 ```
 https://ml-models.elastic.co/elser_model_2.metadata.json
 https://ml-models.elastic.co/elser_model_2.pt
 https://ml-models.elastic.co/elser_model_2.vocab.json
+```
+
+For the optimized version, you need the following files in your system:
+```
+https://ml-models.elastic.co/elser_model_2_linux-x86_64.metadata.json
+https://ml-models.elastic.co/elser_model_2_linux-x86_64.pt
+https://ml-models.elastic.co/elser_model_2_linux-x86_64.vocab.json
 ```
 
 
@@ -262,7 +273,7 @@ supports passwordless HTTP servers.
 You can use any HTTP service to deploy ELSER. This example uses the official 
 Nginx Docker image to set a new HTTP download service up.
 
-. Download the model artifact files from https://ml-models.elastic.co/.
+. Download the <<elser-model-artifacts,model artifact files>>.
 . Put the files into a subdirectory of your choice.
 . Run the following commands:
 +
@@ -305,7 +316,17 @@ master-eligible nodes can reach the server you specify.
 --
 . Repeat step 5 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
-master-eligible nodes one by one. 
+master-eligible nodes one by one.
+. Navigate to the **Trained Models** page in {kib}, ELSER can be found in the 
+list of trained models.
+. Click the **Add trained model** button, select the ELSER model version you 
+downloaded in step 1 and want to deploy, and click **Download**. The selected 
+model will be downloaded from the HTTP/HTTPS server you configured.
+. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
+. Click **Start**. 
 
 The HTTP server is only required for downloading the model. After the download 
 has finished, you can stop and delete the service. You can stop the Docker image 
@@ -322,7 +343,7 @@ docker stop ml-models
 
 For a file-based access, follow these steps:
 
-. Download the model artifact files from https://ml-models.elastic.co/.
+. Download the <<elser-model-artifacts,model artifact files>>. 
 . Put the files into a `models` subdirectory inside the `config` directory of 
 your Elasticsearch deployment.
 . Point your Elasticsearch deployment to the model directory by adding the 
@@ -336,6 +357,16 @@ xpack.ml.model_repository: file://${path.home}/config/models/`
 . Repeat step 2 and step 3 on all master-eligible nodes.
 . {ref}/restart-cluster.html#restart-cluster-rolling[Restart] the 
 master-eligible nodes one by one.
+. Navigate to the **Trained Models** page in {kib}, ELSER can be found in the 
+list of trained models.
+. Click the **Add trained model** button, select the ELSER model version you 
+downloaded in step 1 and want to deploy and click **Download**. The selected 
+model will be downloaded from the model directory where you put in step 2.
+. After the download is finished, start the deployment by clicking the 
+**Start deployment** button.
+. Provide a deployment ID, select the priority, and set the number of 
+allocations and threads per allocation values.
+. Click **Start**.
 
 
 [discrete]
@@ -366,9 +397,11 @@ image::images/ml-nlp-elser-v2-test.png[alt="Testing ELSER",align="center"]
 * ELSER works best on small-to-medium sized fields that contain natural 
 language. For connector or web crawler use cases, this aligns best with fields 
 like _title_, _description_, _summary_, or _abstract_. As ELSER encodes the 
-first 512 tokens of a field, it may not be as good a match for `body_content` on 
-web crawler documents, or body fields resulting from extracting text from office 
-documents with connectors.
+first 512 tokens of a field, it may not provide as relevant of results for large
+fields. For example, `body_content` on web crawler documents, or body fields 
+resulting from extracting text from office documents with connectors. For larger
+fields like these, consider "chunking" the content into multiple values, where
+each chunk can be under 512 tokens.
 * Larger documents take longer at ingestion time, and {infer} time per 
 document also increases the more fields in a document that need to be processed.
 * The more fields your pipeline has to perform inference on, the longer it takes 

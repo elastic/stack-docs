@@ -1,0 +1,723 @@
+//for testing on currently available builds:
+//:version: 8.11.1
+
+[[installing-stack-demo-self]]
+=== Tutorial 1: Installing a self-managed {stack}
+
+This tutorial demonstrates how to install and configure the {stack} in a self-managed environment. Following these steps, you'll set up a three node {es} cluster, with {kib}, {fleet-server}, and {agent}, each on separate hosts. The {agent} will be configured with the System integration, enabling it to gather local system logs and metrics and deliver them into the {es} cluster. Finally, you'll learn how to view the system data in {kib}.
+
+It should take between one and two hours to complete these steps.
+
+* <<install-stack-self-prereqs>>
+* <<install-stack-self-overview>>
+* <<install-stack-self-elasticsearch-first>>
+* <<install-stack-self-elasticsearch-config>>
+* <<install-stack-self-elasticsearch-start>>
+* <<install-stack-self-elasticsearch-second>>
+* <<install-stack-self-elasticsearch-third>>
+* <<install-stack-self-kibana>>
+* <<install-stack-self-fleet-server>>
+* <<install-stack-self-elastic-agent>>
+* <<install-stack-self-view-data>>
+* <<install-stack-self-next-steps>>
+
+[IMPORTANT] 
+==== 
+If you're using these steps to configure a production cluster that uses trusted CA-signed certificates for secure communications, after completing Step 6 to install {kib} we recommend jumping directly to <<install-stack-demo-secure>>.
+
+The second tutorial includes steps to configure security across the {stack}, and then to set up {fleet-server} and {agent} with SSL certificates enabled.
+====
+
+[discrete]
+[[install-stack-self-prereqs]]
+== Prerequisites and assumptions
+
+To get started, you'll need the following:
+
+* A set of virtual or physical hosts on which to install each stack component. 
+* On each host, a super user account with `sudo` privileges.
+
+The examples in this guide use RPM packages to install the {stack} components on hosts running Red Hat Enterprise Linux 8. The steps for other install methods and operating systems are similar, and can be found in the documentation linked from each section. The packages that you'll install are:
+
+* https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm
+
+* https://artifacts.elastic.co/downloads/kibana/kibana-{version}-x86_64.rpm
+
+* https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{version}-linux-x86_64.tar.gz
+
+NOTE: For {agent} and {fleet-server} (both of which use the elastic-agent-{version}-linux-x86_64.tar.gz package) we recommend using TAR/ZIP packages over RPM/DEB system packages, since only the former support upgrading using {fleet}.
+
+Special considerations such as firewalls and proxy servers are not covered here.
+
+For the basic ports and protocols required for the installation to work, refer to the following overview section.
+
+[discrete]
+[[install-stack-self-overview]]
+== {stack} overview
+
+Before starting, take a moment to familiarize yourself with the {stack} components.
+
+image::images/stack-install-final-state.png[Image showing the relationships between stack components]
+
+To learn more about the {stack} and how each of these components are related, refer to {estc-welcome-current}/stack-components.html[An overview of the {stack}].
+
+[discrete]
+[[install-stack-self-elasticsearch-first]]
+== Step 1: Set up the first {es} node
+
+To begin, use RPM to install {es} on the first host. This initial {es} instance will serve as the master node.
+
+. Log in to the host where you'd like to set up your first {es} node.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Download the {es} RPM and checksum file from the {artifact-registry}. You can find details about these steps in the section {ref}/rpm.html#install-rpm[Download and install the RPM manually].
++
+["source","sh",subs="attributes"]
+----
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm.sha512
+----
+
+. Confirm the validity of the downloaded package by checking the SHA of the downloaded RPM against the published checksum:
++
+["source","sh",subs="attributes"]
+----
+shasum -a 512 -c elasticsearch-{version}-x86_64.rpm.sha512
+----
++	
+The command should return: `elasticsearch-{version}-x86_64.rpm: OK`.
+
+. Run the {es} install command:
++
+["source","sh",subs="attributes"]
+----
+sudo rpm --install elasticsearch-{version}-x86_64.rpm
+----
++
+The {es} install process enables certain security features by default, including the following:
+
+* Authentication and authorization are enabled, including a built-in `elastic` superuser account.
+* Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
+
+. Copy the terminal output from the install command to a local file. In particular, you'll need the password for the built-in `elastic` superuser account. The output also contains the commands to enable {es} to run as a service, which you'll use in the next step.
+
+. Run the following two commands to enable {es} to run as a service using `systemd`. This enables {es} to start automatically when the host system reboots. You can find details about this and the following steps in {ref}/starting-elasticsearch.html#start-es-deb-systemd[Running {es} with `systemd`].
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+----
+
+[discrete]
+[[install-stack-self-elasticsearch-config]]
+== Step 2: Configure the first {es} node for connectivity
+
+Before moving ahead to configure additional {es} nodes, you'll need to update the {es} configuration on this first node so that other hosts are able to connect to it. This is done by updating the settings in the `elasticsearch.yml` file. For details about all available settings refer to {ref}/settings.html[Configuring {es}].
+
+. In a terminal, run the `ifconfig` command and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
+
+. Open the {es} configuration file in a text editor, such as `vim`:
++
+["source","sh",subs="attributes"]
+----
+sudo vim /etc/elasticsearch/elasticsearch.yml
+----
+
+. In a multi-node {es} cluster, all of the {es} instances need to have the same name.
++
+In the configuration file, uncomment the line `#cluster.name: my-application` and give the {es} instance any name that you'd like:
++
+[source,"yaml"]
+----
+cluster.name: elasticsearch-demo
+----
+
+. By default, {es} runs on `localhost`. In order for {es} instances on other nodes to be able to join the cluster, you'll need to set up {es} to run on a routable, external IP address.
++
+Uncomment the line `#network.host: 192.168.0.1` and replace the default address with the value that you copied from the `ifconfig` command output. For example:
++
+[source,"yaml"]
+----
+network.host: 10.128.0.84
+----
+
+. {es} needs to be enabled to listen for connections from other, external hosts.
++
+Uncomment the line `#transport.host: 0.0.0.0`. The `0.0.0.0` setting enables {es} to listen for connections on all available network interfaces. Note that in a production environment you might want to restrict this by setting this value to match the value set for `network.host`.
++
+[source,"yaml"]
+----
+transport.host: 0.0.0.0
+----
++
+TIP: You can find details about the `network.host` and `transport.host` settings in the {es} {ref}/modules-network.html[Networking] documentation.
+
+. Save your changes and close the editor.
+
+[discrete]
+[[install-stack-self-elasticsearch-start]]
+== Step 3: Start {es}
+
+. Now, it's time to start the {es} service:
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl start elasticsearch.service
+----
++
+If you need to, you can stop the service by running `sudo systemctl stop elasticsearch.service`.
+
+. Make sure that {es} is running properly.
++
+["source","sh",subs="attributes"]
+----
+sudo curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200
+----
++
+In the command, replace `$ELASTIC_PASSWORD` with the `elastic` superuser password that you copied from the install command output.
++
+If all is well, the command returns a response like this:
++
+["source","js",subs="attributes,callouts"]
+----
+{
+  "name" : "Cp9oae6",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "AT69_C_DTp-1qgIJlatQqA",
+  "version" : {
+    "number" : "{version_qualified}",
+    "build_type" : "{build_type}",
+    "build_hash" : "f27399d",
+    "build_flavor" : "default",
+    "build_date" : "2016-03-30T09:51:41.449Z",
+    "build_snapshot" : false,
+    "lucene_version" : "{lucene_version}",
+    "minimum_wire_compatibility_version" : "1.2.3",
+    "minimum_index_compatibility_version" : "1.2.3"
+  },
+  "tagline" : "You Know, for Search"
+}
+----
+
+. Finally, check the status of {es}:
++
+[source,"shell"]
+----
+sudo systemctl status elasticsearch
+----
++
+As with the previous `curl` command, the output should confirm that {es} started successfully. Type `q` to exit from the `status` command results.
+
+[discrete]
+[[install-stack-self-elasticsearch-second]]
+== Step 4: Set up a second {es} node
+
+To set up a second {es} node, the initial steps are similar to those that you followed for <<install-stack-self-elasticsearch-first>>.
+
+. Log in to the host where you'd like to set up your second {es} instance.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir elastic-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd elastic-install-files
+----
+
+. Download the {es} RPM and checksum file:
++
+["source","sh",subs="attributes"]
+----
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{version}-x86_64.rpm.sha512
+----
+
+. Check the SHA of the downloaded RPM:
++
+["source","sh",subs="attributes"]
+----
+shasum -a 512 -c elasticsearch-{version}-x86_64.rpm.sha512
+----
+
+. Run the {es} install command:
++
+["source","sh",subs="attributes"]
+----
+sudo rpm --install elasticsearch-{version}-x86_64.rpm
+----
++
+Unlike the setup for the first {es} node, in this case you don't need to copy the output of the install command, since these settings will be updated in a later step.
+
+. Enable {es} to run as a service:
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+----
+
+IMPORTANT: Don't start the {es} service yet! There are a few more configuration steps to do before restarting.
+
+. To enable this second {es} node to connect to the first, you need to configure an enrollment token.
++
+[IMPORTANT]
+====
+Be sure to run all of these configuration steps before starting the {es} service.
+
+You can find additional details about these steps in {ref}/rpm.html#_reconfigure_a_node_to_join_an_existing_cluster_2[Reconfigure a node to join an existing cluster] and also in {ref}/add-elasticsearch-nodes.html#_enroll_nodes_in_an_existing_cluster_5[Enroll nodes in an existing cluster].
+====
++
+Return to your terminal shell on the first {es} node and generate a node enrollment token:
++
+[source,"shell"]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node
+----
+
+. Copy the generated enrollment token from the command output.
++
+[TIP] 
+==== 
+Note the following tips about enrollment tokens:
+
+. An enrollment token has a lifespan of 30 minutes. In case the `elasticsearch-reconfigure-node` command returns an `Invalid enrollment token` error, try generating a new token.
+. Be sure not to confuse an {ref}/starting-elasticsearch.html#_enroll_nodes_in_an_existing_cluster_3[{es} enrollment token] (for enrolling {es} nodes in an existing cluster) with a {kibana-ref}/start-stop.html#_run_kibana_from_the_command_line[{kib} enrollment token] (to enroll your {kib} instance with {es}, as described in the next section). These two tokens are not interchangeable.
+====
+
+. In the terminal shell for your second {es} node, pass the enrollment token as a parameter to the `elasticsearch-reconfigure-node` tool:
++
+[source,"shell"]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token <enrollment-token>
+----
++
+In the command, replace `<enrollment-token` with the `elastic` generated token that you copied.
+
+. Answer the `Do you want to continue` prompt with `yes` (`y`). The new {es} node will be reconfigured.
+
+. In a terminal, run `ifconfig` and copy the value for the host inet IP address. You'll need this value later.
+
+. Open the second {es} instance configuration file in a text editor:
++
+["source","sh"]
+----
+sudo vim /etc/elasticsearch/elasticsearch.yml
+----
++
+Notice that, as a result of having run the `elasticsearch-reconfigure-node` tool, certain settings have been updated. For example:
++
+* The `transport.host: 0.0.0.0` setting is already uncommented.
+* The `discovery_seed.hosts` setting has the value that you added for `network_host` on the first {es} node. As you add each new {es} node to the cluster, the `discovery_seed.hosts` setting will contain an array of the IP addresses and port numbers to connect to each {es} node that was previously added to the cluster.
+
+. In the configuration file, uncomment the line `#cluster.name: my-application` and set it to match the name you specified for the first {es} node:
++
+[source,"yaml"]
+----
+cluster.name: elasticsearch-demo
+----
+
+. As with the first {es} node, you'll need to set up {es} to run on a routable, external IP address. Uncomment the line `#network.host: 92.168.0.1` and replace the default address with the value that you copied. For example:
++
+[source,"yaml"]
+----
+network.host: 10.128.0.132
+----
+
+. Save your changes and close the editor.
+
+. Start {es} on the second node:
++
+[source,"shell"]
+----
+sudo systemctl start elasticsearch.service
+----
+
+. **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and `tail` the {es} log file:
++
+[source,"shell"]
+----
+sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
+----
++
+Notice in the log file some helpful diagnostics, such as:
++
+* `Security is enabled`
+* `Profiling is enabled`
+* `using discovery type [multi-node]`
+* `intialized`
+* `starting...`
++
+After a minute or so, the log should show a message like:
++
+[source,"shell"]
+----
+[<hostname2>] master node changed {previous [], current [<hostname1>...]}
+----
++
+Here, `hostname1` is your first {es} instance node, and `hostname2` is your second {es} instance node.
++
+The message indicates that the second {es} node has successfully contacted the initial {es} node and joined the cluster.
+
+. As a final check, run the following `curl` request on the new node to confirm that {es} is still running properly and viewable at the new node's `localhost` IP address. Note that you need to replace `$ELASTIC_PASSWORD` with the same `elastic` superuser password that you used on the first {es} node.
++
+["source","sh",subs="attributes"]
+----
+sudo curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200
+----
++
+["source","js",subs="attributes,callouts"]
+----
+{
+  "name" : "Cp9oae6",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "AT69_C_DTp-1qgIJlatQqA",
+  "version" : {
+    "number" : "{version_qualified}",
+    "build_type" : "{build_type}",
+    "build_hash" : "f27399d",
+    "build_flavor" : "default",
+    "build_date" : "2016-03-30T09:51:41.449Z",
+    "build_snapshot" : false,
+    "lucene_version" : "{lucene_version}",
+    "minimum_wire_compatibility_version" : "1.2.3",
+    "minimum_index_compatibility_version" : "1.2.3"
+  },
+  "tagline" : "You Know, for Search"
+}
+----
+
+[discrete]
+[[install-stack-self-elasticsearch-third]]
+== Step 5: Set up additional {es} nodes
+
+To set up your next {es} node, follow exactly the same steps as you did previously in <<install-stack-self-elasticsearch-second>>. The process is identical for each additional {es} node that you would like to add to the cluster. As a recommended best practice, create a new enrollment token for each new node that you add.
+
+[discrete]
+[[install-stack-self-kibana]]
+== Step 6: Install {kib}
+
+As with {es}, you can use RPM to install {kib} on another host. You can find details about all of the following steps in the section {kibana-ref}/rpm.html#install-rpm[Install {kib} with RPM].
+
+. Log in to the host where you'd like to install {kib} and create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir kibana-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd kibana-install-files
+----
+
+. Download the {kib} RPM and checksum file from the Elastic website.
++
+["source","sh",subs="attributes"]
+----
+wget https://artifacts.elastic.co/downloads/kibana/kibana-{version}-x86_64.rpm
+wget https://artifacts.elastic.co/downloads/kibana/kibana-{version}-x86_64.rpm.sha512
+----
+
+. Confirm the validity of the downloaded package by checking the SHA of the downloaded RPM against the published checksum:
++
+["source","sh",subs="attributes"]
+----
+shasum -a 512 -c kibana-{version}-x86_64.rpm.sha512
+----
++	
+The command should return: `kibana-{version}-x86_64.rpm: OK`.
+
+. Run the {kib} install command:
++
+["source","sh",subs="attributes"]
+----
+sudo rpm --install kibana-{version}-x86_64.rpm
+----
+
+. As with each additional {es} node that you added, to enable this {kib} instance to connect to the first {es} node, you need to configure an enrollment token.
++
+Return to your terminal shell into the first {es} node.
+
+. Run the `elasticsearch-create-enrollment-token` command with the `-s kibana` option to generate a {kibana} enrollment token:
++
+[source,"shell"]
+----
+sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+----
+
+. Copy the generated enrollment token from the command output.
+
+. Run the following two commands to enable {kib} to run as a service using `systemd`, enabling {kib} to start automatically when the host system reboots.
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl daemon-reload
+sudo systemctl enable kibana.service
+----
+
+. Before starting the {kib} service there's one configuration change to make, to set {kib} to run on the {es} host IP address. This is done by updating the settings in the `kibana.yml` file. For details about all available settings refer to {kibana-ref}/settings.html[Configure {kib}].
+
+. In a terminal, run the `ifconfig` command and copy the value for the host inet IP address.
+
+. Open the {kib} configuration file for editing:
++
+["source","sh",subs="attributes"]
+----
+sudo vim /etc/kibana/kibana.yml
+----
+
+. Uncomment the line `#server.host: localhost` and replace the default address with the inet value that you copied from the `ifconfig` command. For example:
++
+[source,"yaml"]
+----
+server.host: 10.128.0.28
+----
+
+. Save your changes and close the editor.
+
+. Start the {kib} service:
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl start kibana.service
+----
++
+If you need to, you can stop the service by running `sudo systemctl stop kibana.service`.
+
+. Run the `status` command to get details about the {kib} service.
++
+["source","sh",subs="attributes"]
+----
+sudo systemctl status kibana
+----
+
+. In the `status` command output, a URL is shown with:
+** A host address to access {kib}
+** A six digit verification code
++
+For example:
++
+["source","sh",subs="attributes"]
+----
+Kibana has not been configured.
+Go to http://10.128.0.28:5601/?code=<code> to get started.
+----
++
+Make a note of the verification code.
+
+. Open a web browser to the external IP address of the {kib} host machine, for example: `http://<kibana-host-address>:5601`.
++
+It can take a minute or two for {kib} to start up, so refresh the page if you don't see a prompt right away.
+
+. When {kib} starts you're prompted to provide an enrollment token. Paste in the {kib} enrollment token that you generated earlier.
+
+. Click **Configure Elastic**.
+
+. If you're prompted to provide a verification code, copy and paste in the six digit code that was returned by the `status` command. Then, wait for the setup to complete.
+
+. When you see the **Welcome to Elastic** page, provide the `elastic` as the username and provide the password that you copied in Step 1, from the `install` command output when you set up your first {es} node.
+
+. Click **Log in**.
+
+{kib} is now fully set up and communicating with your {es} cluster!
+
+**IMPORTANT: Stop here if you intend to configure SSL certificates.**
+
+[IMPORTANT]
+====
+For simplicity, in this tutorial we're setting up all of the {stack} components without configuring security certificates. You can proceed to configure {fleet}, {agent}, and then confirm that your system data appears in {kib}.
+
+However, in a production environment, before going further to install {fleet-server} and {agent} it's recommended to update your security settings to use trusted CA-signed certificates as described in <<install-stack-demo-secure>>.
+
+After new security certificates are configured any {agent}s would need to be reinstalled. If you're currently setting up a production environment, we recommend that you jump directly to Tutorial 2, which includes steps to secure the {stack} using certificates and then to set up {fleet} and {agent} with those certificates already in place.
+====
+
+[discrete]
+[[install-stack-self-fleet-server]]
+== Step 7: Install {fleet-server}
+
+Now that {kib} is up and running, you can install {fleet-server}, which will manage the {agent} that you'll set up in a later step. If you need more detail about these steps, refer to {fleet-guide}/add-fleet-server-on-prem.html[Deploy on-premises and self-managed] in the {fleet} and {agent} Guide.
+
+. Log in to the host where you'd like to set up {fleet-server}.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir fleet-install-files  
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd fleet-install-files
+----
+
+. In the terminal, run `ifconfig` and copy the value for the host inet IP address (for example, `10.128.0.84`). You'll need this value later.
+
+. Back to your web browser, open the {kib} menu and go to **Management -> Fleet**. {fleet} opens with a message that you need to add a {fleet-server}.
+
+. Click **Add Fleet Server**. The **Add a Fleet Server** flyout opens.
+
+. In the flyout, select the **Quick Start** tab.
+
+. Specify a name for your {fleet-server} host, for example `Fleet Server`.
+
+. Specify the host URL where {agents} will reach {fleet-server}, for example: `http://10.128.0.203:8220`. This is the inet value that you copied from the `ifconfig` output.
++
+Be sure to include the port number. Port `8220` is the default used by {fleet-server} in an on-premises environment. Refer to {fleet-guide}/add-fleet-server-on-prem.html#default-port-assignments-on-prem[Default port assignments] in the on-premises {fleet-server} install documentation for a list of port assignments.
+
+. Click **Generate Fleet Server policy**. A policy is created that contains all of the configuration settings for the {fleet-server} instance.
+
+. On the **Install Fleet Server to a centralized host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
++
+Note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {fleet-server} using {fleet}.
+
+. Copy the generated commands and then run them one-by-one in the terminal on your {fleet-server} host.
++
+These commands will, respectively:
+
+.. Download the {fleet-server} package from the {artifact-registry}.
+.. Unpack the package archive.
+.. Change into the directory containing the install binaries.
+.. Install {fleet-server}.
++
+If you'd like to learn about the install command options, refer to {fleet-guide}/elastic-agent-cmd-options.html#elastic-agent-install-command[`elastic-agent install`] in the {agent} command reference.
+
+. At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete.
+
+. In the {kib} **Add a Fleet Server** flyout, wait for confirmation that {fleet-server} has connected.
+
+. For now, ignore the *Continue enrolling Elastic Agent* option and close the flyout.
+
+{fleet-server} is now fully set up!
+
+[discrete]
+[[install-stack-self-elastic-agent]]
+== Step 8: Install {agent}
+
+Next, you'll install {agent} on another host and use the System integration to monitor system logs and metrics.
+
+. Log in to the host where you'd like to set up {agent}.
+
+. Create a working directory for the installation package:
++
+["source","shell"]
+----
+mkdir agent-install-files
+----
+
+. Change into the new directory:
++
+["source","shell"]
+----
+cd agent-install-files
+----
+
+. Open {kib} and go to **Management -> Fleet**.
+
+. On the **Agents** tab, you should see your new {fleet-server} policy running with a healthy status.
+
+. Open the **Settings** tab.
+
+. Reopen the **Agents** tab and select **Add agent**. The **Add agent** flyout opens.
+
+. In the flyout, choose a policy name, for example `Demo Agent Policy`.
+
+. Leave **Collect system logs and metrics** enabled. This will add the link:https://docs.elastic.co/integrations/system[System integration] to the {agent} policy.
+
+. Click **Create policy**.
+
+. For the **Enroll in Fleet?** step, leave **Enroll in Fleet** selected.
+
+. On the **Install Elastic Agent on your host** step, for this example we select the **Linux Tar** tab, but you can instead select the tab appropriate to the host operating system where you're setting up {fleet-server}.
++
+As with {fleet-server}, note that TAR/ZIP packages are recommended over RPM/DEB system packages, since only the former support upgrading {agent} using {fleet}.
+
+. Copy the generated commands. 
+
+. In the `sudo ./elastic-agent install` command, make two changes:
+.. For the `--url` parameter, check that the port number is set to `8220` (used for on-premises {fleet-server}).
+.. Append an `--insecure` flag at the end.
++
+TIP: If you want to set up secure communications using SSL certificates, refer to <<install-stack-demo-secure>>.
++
+The result should be like the following:
++
+["source","shell"]
+----
+sudo ./elastic-agent install --url=https://10.128.0.203:8220 --enrollment-token=VWCobFhKd0JuUnppVYQxX0VKV5E6UmU3BGk0ck9RM2HzbWEmcS4Bc1YUUM==
+----
+
+. Run the commands one-by-one in the terminal on your {agent} host. The commands will, respectively:
+
+.. Download the {agent} package from the {artifact-registry}.
+.. Unpack the package archive.
+.. Change into the directory containing the install binaries.
+.. Install {agent}.
+
+. At the prompt, enter `Y` to install {agent} and run it as a service. Wait for the installation to complete.
++
+If everything goes well, the install will complete successfully:
++
+["source","shell"]
+----
+Elastic Agent has been successfully installed.
+----
+
+. In the {kib} **Add agent** flyout, wait for confirmation that {agent} has connected.
+
+. Close the flyout.
+
+Your new {agent} is now installed an enrolled with {fleet-server}.
+
+[discrete]
+[[install-stack-self-view-data]]
+== Step 9: View your system data
+
+Now that all of the components have been installed, it's time to view your system data.
+
+View your system log data:
+
+. Open the {kib} menu and go to **Analytics -> Dashboard**.
+. In the query field, search for `Logs System`.
+. Select the `[Logs System] Syslog dashboard` link. The {kib} Dashboard opens with visualizations of Syslog events, hostnames and processes, and more.
+
+View your system metrics data:
+
+. Open the {kib} menu and return to **Analytics -> Dashboard**.
+. In the query field, search for `Metrics System`.
+. Select the `[Metrics System] Host overview` link. The {kib} Dashboard opens with visualizations of host metrics including CPU usage, memory usage, running processes, and others.
++
+image::images/install-stack-metrics-dashboard.png["The System metrics host overview showing CPU usage, memory usage, and other visualizations"]
+
+Congratulations! You've successfully set up a three node {es} cluster, with {kib}, {fleet-server}, and {agent}.
+
+[discrete]
+[[install-stack-self-next-steps]]
+== Next steps
+
+Now that you've successfully configured an on-premises {stack}, you can learn how to configure the {stack} in a production environment using trusted CA-signed certificates. Refer to <<install-stack-demo-secure>> to learn more.

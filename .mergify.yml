@@ -31,7 +31,7 @@ pull_request_rules:
   - name: backport patches to 8.x branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.x
     actions:
       backport:
@@ -42,10 +42,24 @@ pull_request_rules:
         title: "[{{ destination_branch }}] {{ title }} (backport #{{ number }})"
         labels:
           - backport
+  - name: backport patches to 8.18 branch
+    conditions:
+      - merged
+      - base=9.0
+      - label=backport-8.18
+    actions:
+      backport:
+        assignees:
+          - "{{ author }}"
+        branches:
+          - "8.18"
+        title: "[{{ destination_branch }}] {{ title }} (backport #{{ number }})"
+        labels:
+          - backport
   - name: backport patches to 8.17 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.17
     actions:
       backport:
@@ -59,7 +73,7 @@ pull_request_rules:
   - name: backport patches to 8.16 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.16
     actions:
       backport:
@@ -73,7 +87,7 @@ pull_request_rules:
   - name: backport patches to 8.15 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.15
     actions:
       backport:
@@ -87,7 +101,7 @@ pull_request_rules:
   - name: backport patches to 8.14 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.14
     actions:
       backport:
@@ -101,7 +115,7 @@ pull_request_rules:
   - name: backport patches to 8.13 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.13
     actions:
       backport:
@@ -115,7 +129,7 @@ pull_request_rules:
   - name: backport patches to 8.12 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.12
     actions:
       backport:
@@ -129,7 +143,7 @@ pull_request_rules:
   - name: backport patches to 8.11 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.11
     actions:
       backport:
@@ -143,7 +157,7 @@ pull_request_rules:
   - name: backport patches to 8.10 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.10
     actions:
       backport:
@@ -157,7 +171,7 @@ pull_request_rules:
   - name: backport patches to 8.9 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.9
     actions:
       backport:
@@ -171,7 +185,7 @@ pull_request_rules:
   - name: backport patches to 8.8 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.8
     actions:
       backport:
@@ -185,7 +199,7 @@ pull_request_rules:
   - name: backport patches to 8.7 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.7
     actions:
       backport:
@@ -199,7 +213,7 @@ pull_request_rules:
   - name: backport patches to 8.6 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.6
     actions:
       backport:
@@ -213,7 +227,7 @@ pull_request_rules:
   - name: backport patches to 8.5 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.5
     actions:
       backport:
@@ -227,7 +241,7 @@ pull_request_rules:
   - name: backport patches to 8.4 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.4
     actions:
       backport:
@@ -241,7 +255,7 @@ pull_request_rules:
   - name: backport patches to 8.3 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.3
     actions:
       backport:
@@ -255,7 +269,7 @@ pull_request_rules:
   - name: backport patches to 8.2 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.2
     actions:
       backport:
@@ -269,7 +283,7 @@ pull_request_rules:
   - name: backport patches to 8.1 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.1
     actions:
       backport:
@@ -283,7 +297,7 @@ pull_request_rules:
   - name: backport patches to 8.0 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-8.0
     actions:
       backport:
@@ -297,7 +311,7 @@ pull_request_rules:
   - name: backport patches to 7.17 branch
     conditions:
       - merged
-      - base=main
+      - base=9.0
       - label=backport-7.17
     actions:
       backport:
@@ -311,7 +325,7 @@ pull_request_rules:
   - name: notify the backport policy
     conditions:
       - -label~=^backport
-      - base=main
+      - base=9.0
     actions:
       comment:
         message: |

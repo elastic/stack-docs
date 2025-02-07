@@ -9,6 +9,21 @@ These steps vary based on your current version:
 * <<prepare-to-upgrade,Upgrade from 7.x>>
 endif::[]
 
+[IMPORTANT]
+.Out-of-order releases
+====
+Elastic maintains several minor versions of the Elastic Stack at once. This
+means releases do not always happen in order of their version numbers. You can
+only upgrade to {version} if the version you are currently running meets both
+of these conditions:
+
+* Has an older version number than {version}.
+* Has an earlier release date than {version}.
+
+If you are currently running a version with an older version number but a later
+release date than {version}, wait for a newer release before upgrading.
+====
+
 IMPORTANT: Upgrading from a release candidate build, such as 8.0.0-rc1 or
 8.0.0-rc2, is not supported. Pre-releases should only be used for testing in a
 temporary environment.
@@ -48,7 +63,6 @@ you will need to restore from the snapshot.
 . If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
 // end::generic-upgrade-steps[]
 ////
-
 
 [discrete]
 [[prepare-to-upgrade]]

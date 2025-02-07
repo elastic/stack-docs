@@ -9,6 +9,17 @@ These steps vary based on your current version:
 * <<prepare-to-upgrade,Upgrade from 7.x>>
 endif::[]
 
+[NOTE]
+====
+Elastic maintains several minor versions of the Elastic Stack at once, so
+releases do not always happen in order of their version numbers. You can only
+upgrade to {version} if the version you are currently running has an older
+version number than {version} _and_ has an earlier release date than {version}.
+
+If you are currently running a version with an older version number but a later
+release date than {version}, wait for a newer release before upgrading.
+====
+
 IMPORTANT: Upgrading from a release candidate build, such as 8.0.0-rc1 or
 8.0.0-rc2, is not supported. Pre-releases should only be used for testing in a
 temporary environment.

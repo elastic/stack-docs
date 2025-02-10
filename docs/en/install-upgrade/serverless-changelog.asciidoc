@@ -19,10 +19,6 @@ For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/e
 ==== Features and enhancements
 * Rule connector - handle multiple prompt ({kibana-pull}209221[#209221]).
 * Added max_file_size_bytes advanced option to malware for all operating systems ({kibana-pull}209541[#209541]).
-+
---
-An `[os].advanced.malware.max_file_size_bytes`` key was added to control the maximum file size the endpoint will scan for malware.
---
 * Introduce GroupStreams ({kibana-pull}208126[#208126]).
 * Service example added to entity store upload ({kibana-pull}209023[#209023]).
 * Update the `bucket_span` for ML jobs in the security_host module ({kibana-pull}209663[#209663]).
@@ -44,11 +40,7 @@ An `[os].advanced.malware.max_file_size_bytes`` key was added to control the max
 * Fixes missing exception stack trace ({kibana-pull}208577[#208577]).
 * Fixes the preview chart in the Custom Threshold rule creation form when the field name has slashes ({kibana-pull}209263[#209263]).
 * Display No Data in Threshold breached component ({kibana-pull}209561[#209561]).
-* Do not display apm chart without transaction type or svc name ({kibana-pull}209552[#209552]).
-+
---
-Fixes an issue where APM charts were rendered without required transaction type or service name, causing excessive alerts to appear.
---
+* Fixes an issue where APM charts were rendered without required transaction type or service name, causing excessive alerts to appear ({kibana-pull}209552[#209552]).
 * Fixed bug that caused issues with loading SLOs by status, SLI type, or instance id ({kibana-pull}209910[#209910]).
 * Update colors in the AI Assistant icon ({kibana-pull}210233[#210233]).
 * Update the simulate function calling setting to support "auto" ({kibana-pull}209628[#209628]).

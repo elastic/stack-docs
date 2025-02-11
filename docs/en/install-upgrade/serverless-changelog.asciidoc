@@ -11,6 +11,48 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-02102025]]
+=== February 10, 2025
+
+[discrete]
+[[enhancements-02102025]]
+==== Features and enhancements
+* Rule connector - handle multiple prompt ({kibana-pull}209221[#209221]).
+* Added max_file_size_bytes advanced option to malware for all operating systems ({kibana-pull}209541[#209541]).
+* Introduce GroupStreams ({kibana-pull}208126[#208126]).
+* Service example added to entity store upload ({kibana-pull}209023[#209023]).
+* Update the `bucket_span` for ML jobs in the security_host module ({kibana-pull}209663[#209663]).
+* Improved handling for operator-defined role mappings ({kibana-pull}208710[#208710]).
+* Added `object_src` directive to `Content-Security-Policy-Report-Only` header ({kibana-pull}209306[#209306]).
+
+[discrete]
+[[fixes-02102025]]
+==== Fixes
+* Fixes highlight for HJSON ({kibana-pull}208858[#208858]).
+* Disable pointer events on drag + resize ({kibana-pull}208647[#208647]).
+* Restore show missing dataView error message in case of missing datasource ({kibana-pull}208363[#208363]).
+* Fixes issue with `Amsterdam` theme where charts render with the incorrect background color ({kibana-pull}209595[#209595]).
+* Fixes an issue in Lens Table where a split-by metric on a terms rendered incorrect colors in table cells ({kibana-pull}208623[#208623]).
+* Force return 0 on empty buckets on count if null flag is disabled ({kibana-pull}207308[#207308]).
+* Fixes all embeddables rebuilt on refresh ({kibana-pull}209677[#209677]).
+* Fixes using data view runtime fields during rule execution for the custom threshold rule ({kibana-pull}209133[#209133]).
+* Running processes missing from processes table ({kibana-pull}209076[#209076]).
+* Fixes missing exception stack trace ({kibana-pull}208577[#208577]).
+* Fixes the preview chart in the Custom Threshold rule creation form when the field name has slashes ({kibana-pull}209263[#209263]).
+* Display No Data in Threshold breached component ({kibana-pull}209561[#209561]).
+* Fixes an issue where APM charts were rendered without required transaction type or service name, causing excessive alerts to appear ({kibana-pull}209552[#209552]).
+* Fixed bug that caused issues with loading SLOs by status, SLI type, or instance id ({kibana-pull}209910[#209910]).
+* Update colors in the AI Assistant icon ({kibana-pull}210233[#210233]).
+* Update the simulate function calling setting to support "auto" ({kibana-pull}209628[#209628]).
+* Fixes structured log template to use single quotes ({kibana-pull}209736[#209736]).
+* Fixes ES|QL alert on alert ({kibana-pull}208894[#208894]).
+* Fixes issue with multiple ip addresses in strings ({kibana-pull}209475[#209475]).
+* Keeps the histogram config on time change ({kibana-pull}208053[#208053]).
+* WHERE replacement ranges correctly generated for every case ({kibana-pull}209684[#209684]).
+* Updates removed params of the Fleet -> Logstash output configurations ({kibana-pull}210115[#210115]).
+* Fixes log rate analysis, change point detection, and pattern analysis embeddables not respecting filters from Dashboard's controls ({kibana-pull}210039[#210039]).
+
+[discrete]
 [[serverless-changelog-02032025]]
 === February 3, 2025
 

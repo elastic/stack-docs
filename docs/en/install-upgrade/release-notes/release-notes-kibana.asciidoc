@@ -335,85 +335,54 @@ For more information, refer to ({kibana-pull}197421[#197421]).
 {kib} 9.0.0 adds the following new and notable features.
 
 Data ingestion and Fleet::
-* Delete unenrolled agents task ({kibana-pull}195544[#195544]).
+* New setting allowing automatic deletion of unenrolled agents in Fleet settings ({kibana-pull}195544[#195544]).
 Elastic Security solution::
-For the Elastic Security 9.0.0 release information, refer to {security-guide}/release-notes.html[_Elastic Security Solution Release Notes_].
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
 Kibana security::
-* Update CEL flow to UX design ({kibana-pull}206491[#206491]).
+* New interface for Automatic Import CEL generation flow ({kibana-pull}206491[#206491]).
 
-For more information about the features introduced in 9.0.0, refer to <<whats-new,What's new in 9.0>>.
+//For more information about the features introduced in 9.0.0, refer to <<whats-new,What's new in 9.0>>.
 
 [[enhancements-and-bug-fixes-v9.0.0]]
 == Enhancements and bug fixes
 
-For detailed information about the 9.0.0 release, review the enhancements and bug fixes.    
+//For detailed information about the 9.0.0 release, review the enhancements and bug fixes.    
 
 [float]
 [[enhancement-v9.0.0]]
 === Enhancements
-Dashboards & Visualizations::
-* [Vega] Update default basemaps to adapt to the Borealis theme refresh ({kibana-pull}208114[#208114]).
-////
-!!TODO!! The above PR had a lengthy release note description:
-Elastic Maps Service basemaps shown in the Custom Visualization component (Vega) and in the Maps application and components alighn with the new dark and light theme.
-////
+//Dashboards & Visualizations::
 Data ingestion and Fleet::
-* Show reason for agent/endpoint uninstall ({kibana-pull}205815[#205815]).
-////
-!!TODO!! The above PR had a lengthy release note description:
-Improves filtering & visibility of `Uninstalled` and `Orphaned` Agents in Fleet, by differentiating them from `Offline` agents. Status filters have been added for both `Uninstalled` and `Orphaned` agents. Agent `status` runtime field has been updated to return accordingly when an agent is `uninstalled` or `orphaned`. Additionally, improved UI by hiding agent labels with `0` agent matches.
-////
-* Update max supported package version ({kibana-pull}196675[#196675]).
-* Remove old bundled.yaml from oas, fixed tags ({kibana-pull}194788[#194788]).
+* Improves filtering and visibility of `Uninstalled` and `Orphaned` agents in Fleet, by differentiating them from `Offline` agents.
+* Introduces air-gapped configuration for bundled packages ({kibana-pull}202435[#202435]).
+* Updates removed parameters of the Fleet -> Logstash output configurations ({kibana-pull}210115[#210115]).
+* Updates max supported package version  ({kibana-pull}196675[#196675]).
+//* Remove old bundled.yaml from oas, fixed tags ({kibana-pull}194788[#194788]).
 Elastic Security solution::
-For the Elastic Security 9.0.0 release information, refer to {security-guide}/release-notes.html[_Elastic Security Solution Release Notes_].
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
 Kibana security::
-* Use setup and troubleshooting templates in readme ({kibana-pull}206477[#206477]).
-* Update Kibana Security components to use new EUI Borealis theme ({kibana-pull}201795[#201795]).
-* Updated `js-yaml` to `4.1.0` ({kibana-pull}190678[#190678]).
+* Updates `js-yaml` to `4.1.0` ({kibana-pull}190678[#190678]).
 Machine Learning::
-* Removing use of ignore_throttled ({kibana-pull}199107[#199107]).
-Management::
-* Change bytes field title to Bytes and Bits ({kibana-pull}204346[#204346]).
+* Removes use of `ignore_throttled` ({kibana-pull}199107[#199107]).
 Platform::
-* Adds warning header to deprecated endpoints ({kibana-pull}205926[#205926]).
-* Set HTTP2 as default if SSL is enabled and add deprecation log if SSL is not enabled or protocol is set to HTTP1 ({kibana-pull}204384[#204384]).
-Other::
-* Switch to 19Hz sampling frequency ({kibana-pull}202278[#202278]).
-* Adds keyword builder pipeline ({kibana-pull}201616[#201616]).
+* Adds warning header to deprecated API endpoints ({kibana-pull}205926[#205926]).
+* Sets HTTP2 as default if SSL is enabled and adds deprecation log if SSL is not enabled or protocol is set to HTTP1 ({kibana-pull}204384[#204384]).
 
 [float]
 [[fixes-v9.0.0]]
 === Bug fixes
 Dashboards & Visualizations::
-* [Partition] Fix behind text coloring for `syncColors` in *Lens* ({kibana-pull}209632[#209632]).
-////
-!!TODO!! The above PR had a lengthy release note description:
-This fixes and issues where behind text colors were not correctly assigned, such as in `Pie`, `Treemap` and `Mosaic` charts.
-////
-* Fixes issue with `Amsterdam` theme where charts render with the incorrect background color ({kibana-pull}209595[#209595]).
-* Persist `runPastTimeout` setting ({kibana-pull}208611[#208611]).
-* Force return 0 on empty buckets on count if null flag is disabled ({kibana-pull}207308[#207308]).
-* Fixes eslint error ({kibana-pull}204972[#204972]).
-* Avoid rerendering loop due to search context reload ({kibana-pull}203150[#203150]).
-* Assign test files to presentation team ({kibana-pull}200209[#200209]).
+* Fixes an issue in Lens where colors behind text were not correctly assigned, such as in `Pie`, `Treemap` and `Mosaic` charts.
+//* Fixes an issue with `Amsterdam` theme where charts render with the incorrect background color ({kibana-pull}209595[#209595]).
+* Fixes an issue where changing the *Ignore timeout results* control setting wasn't taken into account ({kibana-pull}208611[#208611]).
+* Force returns 0 on empty buckets on count if `null` flag is disabled ({kibana-pull}207308[#207308]).
+* Fixes infinite loading time for some charts due to search context reload ({kibana-pull}203150[#203150]).
 Data ingestion and Fleet::
-* Updates removed params of the Fleet -> Logstash output configurations ({kibana-pull}210115[#210115]).
-* Fixes required validation for multi text input field ({kibana-pull}205768[#205768]).
-* Introduce airgapped config for bundled packages ({kibana-pull}202435[#202435]).
-* Added `eventIngestedEnabled` flag ({kibana-pull}199733[#199733]).
+* Fixes a validation error happening on multi-text input fields ({kibana-pull}205768[#205768]).
 Elastic Observability solution::
 * Fixes chat on the Alerts page ({kibana-pull}197126[#197126]).
-Elastic Search solution::
-* Removing errors ({kibana-pull}202437[#202437]).
+* Fixes an error that could prevent the Observability Infrastructure Inventory view from loading after an upgrade due to missing versioning on inventory_view_saved_object ({kibana-pull}207007[#207007]).
 Elastic Security solution::
-For the Elastic Security 9.0.0 release information, refer to {security-guide}/release-notes.html[_Elastic Security Solution Release Notes_].
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
 Platform::
-* Added versioning to inventory_view_saved_object ({kibana-pull}207007[#207007]).
-Other::
-* Update java.ts - removing serverless link ({kibana-pull}204571[#204571]).
-* Disable O11y features in Security Serverless project ({kibana-pull}203990[#203990]).
-* Trim down PR template ({kibana-pull}198617[#198617]).
-* Small UI fixes for new Space creation/settings page ({kibana-pull}197303[#197303]).
-* Fixes code scanning alert no. 456: Incomplete string escaping or encoding ({kibana-pull}193909[#193909]).
-* Fixes code scanning alert : Incomplete string escaping or encoding ({kibana-pull}193365[#193365]).
+* Fixes several interface inconsistencies on the Space creation and settings pages ({kibana-pull}197303[#197303]).

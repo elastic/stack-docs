@@ -60,7 +60,7 @@ Elastic-managed infrastructure includes Elastic Cloud – the umbrella term for 
 
 {ecloud} Hosted is Elastic’s cloud offering for managing {stack} deployments, built on top of [es]. A single click in the {ecloud} console can upgrade a deployment to a newer version.
 
-Self-managed infrastructure – either on-prem or on public cloud, includes: 
+Self-managed infrastructure — either on-prem or on public cloud, includes: 
 
 * {stack}
 * {ece} (ECE)
@@ -69,6 +69,61 @@ Self-managed infrastructure – either on-prem or on public cloud, includes:
 For ECE and ECK, you need to ensure the operator is running a compatible version with the {stack} version you’re upgrading to. If not, you need to upgrade that before you can upgrade your cluster. 
 
 If you’re running the {stack} on your own self-managed infrastructure, you’ll need to upgrade each component individually. 
+
+
+[discrete]
+[[prepare-upgrade-9.0-beta]]
+== Prepare to upgrade
+
+Before you upgrade to {version}, it's important to take some preparation steps.
+
+To upgrade to {version} from 8.17 or earlier, you must first upgrade to the latest patch version of 8.18. This enables you to use the Upgrade Assistant to identify and resolve issues, reindex indices created before 8.0, and then perform a rolling upgrade. Upgrading to 8.18 before upgrading to {version} is required even if you opt to do a full-cluster restart of your {es} cluster. Alternatively, you can create a new 9.0 deployment and reindex from remote. For more information, refer to **insert remote index link.** 
+
+IMPORTANT: Upgrading from a release candidate build, such as 9.0.0-rc1 or 9.0.0-rc2, is not supported. Pre-releases should only be used for testing in a temporary environment.
+
+
+NOTE: These following recommendations are best practices regardless of deployment method. 
+
+To upgrade to {version} from 8.17 or earlier, **you must first upgrade to the latest patch version 8.18**. This enables you to use the **Upgrade Assistant** to identify and resolve issues,
+reindex indices created before 8.0, and then perform a rolling upgrade.
+
+**Upgrading to 8.18 before upgrading to {version} is required 
+even if you opt to do a full-cluster restart of your {es} cluster.**
+
+Alternatively, you can create a new {version} deployment and reindex from remote.
+For more information, refer to <<upgrading-reindex, Reindex to upgrade>>.
+
+{beats} and {ls} {prev-major-last} are compatible with {es} {version} 
+to give you flexibility in scheduling the upgrade.
+
+.Remote cluster compatibility
+[NOTE]
+====
+If you use {ccs}, note that {version} can only search remote clusters running the previous minor version or later. 
+For more information, see {ref}/modules-cross-cluster-search.html[Searching across clusters].
+
+If you use {ccr}, a cluster that contains follower indices must run the same or newer version as the remote cluster. 
+For more information, see {ref}/xpack-ccr.html[Cross cluster replication] for version compatibility matrix.
+
+You can view your remote clusters from **Stack Management > Remote Clusters**. 
+====
+
+. Once you've upgraded to 8.18, use the {kibana-ref}/upgrade-assistant.html[*Upgrade Assistant*] to prepare for your upgrade from 8.18 to {version}. The Upgrade Assistant identifies deprecated settings and guides you through resolving issues and reindexing indices created before 8.0. {es} fully supports indices created in the current or previous major version. Older indices are partly supported as read-only archives with limited capabilities.
+//For example, {es} {version} fully supports indices, data streams, and searchable snapshots created in {es}8.x, but those created in {es} 7.x would be read-only and indices Elasticsearch 6.x or older would not be compatible with Elasticsearch 9.x.//
+
+. Ensure you have a current {ref}/snapshots-take-snapshot.html[snapshot] before making configuration changes or reindexing.
+*You must resolve all critical issues before proceeding with the upgrade.* If you make any additional changes, take a new snapshot to back up your data. 
++
+NOTE: If you’re upgrading on {ecloud} Hosted, to keep your data safe during the upgrade process, a snapshot is taken automatically before any changes are made to your cluster. If you’re upgrading on {ece}, you need to {ece-ref}/ece-manage-repositories.html[configure a snapshot repository] to enable snapshots.
+
+. Ensure you carefully review the deprecation logs from the Upgrade Assistant to determine if your applications are using features that are not supported or behave differently in {version}. 
+
+. Major version upgrades can include breaking changes that require you to take additional steps to ensure that your applications behave as expected after the upgrade. Review all {version} <<elastic-stack-breaking-changes,breaking changes>> for each product you use to review more information about changes that could affect your application. Ensure you test against the new version before upgrading existing deployments.
+
+. Make the recommended changes to ensure that your clients continue to operate as expected after the upgrade. 
++
+IMPORTANT: Ensure you check the breaking changes for each minor 8.x release up to {version}.
+
 
 
 

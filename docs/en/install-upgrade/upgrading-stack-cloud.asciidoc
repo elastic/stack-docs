@@ -1,22 +1,19 @@
 [[upgrade-elastic-stack-for-elastic-cloud]]
-=== Upgrade on Elastic Cloud
+=== Upgrade on {ecloud} Hosted
 
-Once you are <<upgrading-elastic-stack, prepared to upgrade>>,
-a single click in the Elastic Cloud console can upgrade a deployment to a newer
-version, add more processing capacity, change plugins, and enable or disable
-high availability, all at the same time. During the upgrade process,
-{es}, {kib}, and all of your deployment components are upgraded simultaneously.
+Once you are <<prepare-upgrade-9.0,prepared to upgrade>>,
+a single click in the {ecloud} console can upgrade a deployment to a newer version, add more processing capacity, change plugins, and enable or disable high availability, all at the same time. During the upgrade process, {es}, {kib}, and all of your deployment components are upgraded simultaneously.
 
-Minor version upgrades, upgrades from {prev-major-last} to {version}, 
+Minor version upgrades, upgrades from 8.18 to {version}, 
 and cluster configuration changes can be performed with no downtime. 
-Elastic Cloud only supports upgrades to released versions. 
+{ecloud} only supports upgrades to released versions. 
 Preview releases and master snapshots are not supported.
 
-{ess} and {ece} do not support the ability to upgrade to or from release candidate builds, such as 8.0.0-rc1.
+{ecloud} Hosted and {ece} do not support the ability to upgrade to or from release candidate builds, such as 9.0.0-rc1.
 
-If you use a separate {cloud}/ec-enable-logging-and-monitoring.html[monitoring deployment], you should upgrade the monitoring deployment before the production deployment. In general, the monitoring deployment and the deployments being monitored should be running the same version of the Elastic Stack. A monitoring deployment cannot monitor production deployments running newer versions of the stack. If necessary, the monitoring deployment can monitor production deployments running the latest release of the previous major version.
+If you use a separate {cloud}/ec-enable-logging-and-monitoring.html[monitoring deployment], you should upgrade the monitoring deployment before the production deployment. In general, the monitoring deployment and the deployments being monitored should be running the same version of the {stack}. A monitoring deployment cannot monitor production deployments running newer versions of the stack. If necessary, the monitoring deployment can monitor production deployments running the latest release of the previous major version.
 
-IMPORTANT: Although it's simple to upgrade an Elastic Cloud deployment, 
+IMPORTANT: Although it's simple to upgrade an {ecloud} deployment, 
 the new version might include breaking changes that affect your application. 
 Make sure you review the deprecation logs, make any necessary changes, 
 and test against the new version before upgrading your production deployment.
@@ -24,7 +21,7 @@ and test against the new version before upgrading your production deployment.
 //To learn more about the upgrade process on Elastic Cloud, see {cloud}/ec-upgrade-deployment.html[Upgrade versions].
 
 Upgrade Assistant::
-Prior to upgrading, Elastic Cloud checks the deprecation API to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any issues that would prevent a successful upgrade, the upgrade is blocked. Use the {kibana-ref-all}/{prev-major-last}/upgrade-assistant.html[Upgrade Assistant] in {prev-major-last} to identify and resolve issues and reindex any indices created before 7.0. 
+Prior to upgrading, {ecloud} checks the deprecation API to retrieve information about the cluster, node, and index-level settings that need to be removed or changed. If there are any issues that would prevent a successful upgrade, the upgrade is blocked. Use the {kibana-ref}/upgrade-assistant.html[Upgrade Assistant] in 8.18 to identify and resolve issues and reindex any indices created before 8.0. 
 
 Snapshots::
 To keep your data safe during the upgrade process, a snapshot is taken automatically 
@@ -56,45 +53,37 @@ If the security realms are configured in `user_settings`, you'll be prompted to 
 . On the *Update security realm settings* window, edit the settings.
 +
 . Click *Update settings*.
-If the security realm settings are located in `user_settings_override`, contact support to help you upgrade.
+If the security realm settings are located in `user_settings_override`, contact Support to help you upgrade.
 
 [discrete]
 [[perform-cloud-upgrade]]
-=== Perform the upgrade
+==== Perform the upgrade
 
-Log in to your Elastic Cloud environment:
+Log in to your {ecloud} environment:
+
+. Log in to the {ecloud} Hosted https://cloud.elastic.co/login[console]. 
+. Select your deployment on the home page in the {ecloud} Hosted card or go to the Deployments page.
++
+Narrow your deployments by name, ID, or choose from several other filters. To customize your view, use a combination of filters, or change the format from a grid to a list.
 
 //include::tab-widgets/code.asciidoc[]
 //include::tab-widgets/cloud-login-widget.asciidoc[]
-include::{docs-root}/shared/cloud/tab-widgets/code.asciidoc[]
-include::{docs-root}/shared/cloud/tab-widgets/cloud-login-widget.asciidoc[]
+//include::{docs-root}/shared/cloud/tab-widgets/code.asciidoc[]
+//include::{docs-root}/shared/cloud/tab-widgets/cloud-login-widget.asciidoc[]
 
 To upgrade a deployment:
 
 . In the *Deployment version* section, click *Upgrade*.
 . Select version {version}.
-. Click *Upgrade* and then *Confirm upgrade*. The new configuration takes a few minutes to create.
+. Click *Upgrade*, then *Confirm upgrade*. The new configuration takes a few minutes to create.
 +
 NOTE: If any incompatibilities are detected when you attempt to upgrade to {version}, the UI provides a link to the Upgrade Assistant, which checks for deprecated settings in your cluster and indices and helps you resolve them. After resolving the issues, return to the deployments page and restart the upgrade. 
 
 [discrete]
-[[upgrading-clients-ingest]]
-=== Upgrading {es} clients and ingest components
-
-Once you have upgraded from {prev-major-last}, you need to update your {es} clients and ingest components
-in the following order:
-
-. Java API Client: {java-api-client}/installation.html#maven[dependency configuration]
-. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
-. Beats: {beats-ref}/upgrading.html[upgrade instructions]
-. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
-
-[discrete]
 [[upgrading-reindex]]
-=== Reindex to upgrade
+==== Reindex to upgrade
 
-If you are running a pre-{prev-major-version} version, you might need to perform multiple upgrades 
-or a full-cluster restart to get to {prev-major-last} to prepare to upgrade to {version}. 
+If you are running a pre-{prev-major-version} version, you might need to perform multiple upgrades or a full-cluster restart to get to 8.18 to then prepare to upgrade to {version}. 
 
 Alternatively, you can create a new {version} deployment and reindex from remote:
 
@@ -107,6 +96,19 @@ and temporarily send new index requests to both clusters.
 permanently swap in the new cluster.
 
 . Delete the old deployment. 
-On Elastic Cloud, you are billed only for the time that the new deployment 
+On {ecloud}, you are billed only for the time that the new deployment 
 runs in parallel with your old deployment.
 Usage is billed on an hourly basis.
+
+
+[discrete]
+[[upgrading-clients-ingest]]
+==== Upgrading {es} clients and ingest components
+
+Once you have upgraded from 8.18, you need to update your ingest components in the following order:
+
+//. Java API Client: {java-api-client}/installation.html#maven[dependency configuration]
+. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
+. {beats}: {beats-ref}/upgrading.html[upgrade instructions]
+. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
+. {apm-agent}s: {observability-guide}/apm-upgrade.html[upgrade instructions]

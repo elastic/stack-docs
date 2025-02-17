@@ -1,0 +1,143 @@
+[[upgrade-on-eck]]
+=== Upgrade on {eck} (ECK)
+
+The ECK orchestrator can safely perform upgrades to newer versions of the various {stack} resources. 
+
+To upgrade on ECK, first do the following: 
+
+. Ensure you're <<prepare-upgrade-9.0, prepared to upgrade>>. 
+. Ensure the ECK version is {eck-ref}/k8s-supported.html[compatible] with the {stack} version you’re targeting. If necessary, <<upgrade-orchestrator, upgrade your orchestrator>>. 
+
+[discrete]
+[[perform-upgrade-eck]]
+==== Perform the upgrade
+
+When you are ready, modify the `version` field in the resource spec to the desired stack version and the orchestrator will start the upgrade process automatically. Do this for each resource, including {es} and {kib}. In the following example, we’re modifying the version to `9.0.0`. 
+
+[source,yaml,subs="attributes,+macros"]
+----
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch-sample
+  namespace: production
+spec:
+  version: 9.0.0
+  monitoring:
+    metrics:
+      elasticsearchRefs:
+        - name: monitoring-cluster
+          namespace: observability
+    logs:
+      elasticsearchRefs:
+        - name: monitoring-cluster
+          namespace: observability
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+  nodeSets:
+  - name: master
+    count: 3
+    config:
+      node.roles: ["master"]
+      xpack.ml.enabled: true
+      node.store.allow_mmap: false
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: standard
+    podTemplate:
+      metadata:
+        labels:
+          key: sample
+      spec:
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+        containers:
+        - name: elasticsearch
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: 0.5
+            limits:
+              memory: 2Gi
+              cpu: 1
+  - name: data
+    count: 3
+    config:
+      node.roles: ["data", "ingest", "ml", "transform"]
+      node.store.allow_mmap: false
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: standard
+    podTemplate:
+      metadata:
+        labels:
+          key: sample
+      spec:
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+        containers:
+        - name: elasticsearch
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: 0.5
+            limits:
+              memory: 2Gi
+              cpu: 1
+---
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-sample
+  namespace: production
+spec:
+  version: 9.0.0
+  monitoring:
+    metrics:
+      elasticsearchRefs:
+        - name: monitoring-cluster
+          namespace: observability
+    logs:
+      elasticsearchRefs:
+        - name: monitoring-cluster
+          namespace: observability
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch-sample
+
+----
+
+ECK will ensure that {stack} resources are upgraded in the correct order. For more information on how the orchestrator performs upgrades and how to tune its behavior, check out {eck-ref}/k8s-orchestration.html[Nodes orchestration]. 
+
+Next, upgrade your ingest components in the following order: 
+
+. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
+. {beats}: {beats-ref}/upgrading.html[upgrade instructions]
+. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
+. {apm-agent}s: {observability-guide}/apm-upgrade.html[upgrade instructions]

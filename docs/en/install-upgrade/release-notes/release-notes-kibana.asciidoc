@@ -23,41 +23,73 @@ For information about the {kib} 9.0.0 release, review the following information.
 Breaking changes can prevent your application from optimal operation and performance.
 Before you upgrade to 9.0.0, review the breaking changes, then mitigate the impact to your application.
 
-
-//Already added to upgrade notes
+//Needs to be added to upgrade notes and detailed               
 [discrete]
-[[breaking-207906]]
-.Removed legacy security rules bulk endpoints
+[[breaking-193792]]
+.Usage restrictions on Kibana's internal APIs.
 [%collapsible]
 ====
 *Details* +
+Starting with this release, requests to internal Kibana APIs are globally restricted by default. This change is designed to provide more flexibility in making breaking changes to internal APIs while protecting external consumers from unexpected disruptions.
 
-* `POST /api/detection_engine/rules/_bulk_create` has been replaced by `POST /api/detection_engine/rules/_import`
-* `PUT /api/detection_engine/rules/_bulk_update` has been replaced by `POST /api/detection_engine/rules/_bulk_action`
-* `PATCH /api/detection_engine/rules/_bulk_update has been replaced by `POST /api/detection_engine/rules/_bulk_action`
-* `DELETE /api/detection_engine/rules/_bulk_delete` has been replaced by `POST /api/detection_engine/rules/_bulk_action`
-* `POST api/detection_engine/rules/_bulk_delete` has been replaced by `POST /api/detection_engine/rules/_bulk_action`
+Key Changes:
 
-These changes were introduced in {kibana-pull}197422[#197422].
+* Internal API Access: External consumers no longer have access to Kibana’s internal APIs, which are now strictly reserved for internal development and subject to frequent changes. This helps ensure that external integrations only interact with stable, public APIs.
+* Error Handling: When a request is made to an internal API without the proper internal identifier (header or query parameter), Kibana will respond with a 400 Bad Request error, indicating that the route exists but is not allowed under the current Kibana configuration.
 
-*Impact* +
-Deprecated endpoints will fail with a 404 status code starting from version 9.0.0
-
-*Action* +
-
-Update your implementations to use the new endpoints:
-
-* **For bulk creation of rules:**
-   - Use `POST /api/detection_engine/rules/_import` (link:{api-kibana}/operation/operation-importrules[API documentation]) to create multiple rules along with their associated entities (for example, exceptions and action connectors).
-   - Alternatively, create rules individually using `POST /api/detection_engine/rules` (link:{api-kibana}/operation/operation-createrule[API documentation]).
-* **For bulk updates of rules:**
-   - Use `POST /api/detection_engine/rules/_bulk_action` (link:{api-kibana}/operation/operation-performrulesbulkaction[API documentation]) to update fields in multiple rules simultaneously.
-   - Alternatively, update rules individually using `PUT /api/detection_engine/rules` (link:{api-kibana}/operation/operation-updaterule[API documentation]).
-* **For bulk deletion of rules:**
-   - Use `POST /api/detection_engine/rules/_bulk_action` (link:{api-kibana}/operation/operation-performrulesbulkaction[API documentation]) to delete multiple rules by IDs or query.
-   - Alternatively, delete rules individually using `DELETE /api/detection_engine/rules` (link:{api-kibana}/operation/operation-deleterule[API documentation]).
-
+For more information, refer to ({kibana-pull}193792[#193792]).
 ====
+
+**Alerts and cases**
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-198435]]
+.Removed 7.x deprecated kibana.yml settings.
+[%collapsible]
+====
+*Details* +
+The following deprecated configuration settings were removed:
+
+- `xpack.actions.customHostSettings.ssl.rejectUnauthorized`
+- `xpack.actions.whitelistedHosts`
+- `xpack.actions.rejectUnauthorized`
+- `xpack.actions.proxyRejectUnauthorizedCertificates`
+- `xpack.alerts.healthCheck`
+- `xpack.alerts.invalidateApiKeysTask.interval`
+- `xpack.alerts.invalidateApiKeysTask.removalDelay`
+- `xpack.alerting.defaultRuleTaskTimeout`
+
+For more information, refer to ({kibana-pull}198435[#198435]).
+====
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[deprecation-208208]]
+.Removed deprecated Cases APIs.
+[%collapsible]
+====
+*Details* +
+The following Cases APIs were removed:
+
+- Get case status
+- Get user actions
+- Get all comments
+
+For more information, refer to ({kibana-pull}208208[#208208]), ({kibana-pull}208086[#208086]), and ({kibana-pull}207926[#207926]).
+====
+
+//Needs to be added to upgrade notes and detailed
+[discrete]
+[[deprecation-203148]]
+.Deleted deprecated alerts routes.
+[%collapsible]
+====
+*Details* +
+The deprecated legacy alerts routes `api/alerts/alert` were removed. For more information, refer to ({kibana-pull}203148[#203148]).
+====
+
+**Discover and dashboards**
 
 //Needs to be added to upgrade notes and detailed      
 [discrete]
@@ -72,7 +104,7 @@ Search sessions are now disabled by default. For more information, refer to ({ki
 //Already added to upgrade notes   
 [discrete]
 [[breaking-202863]]
-.Saved query privileges have been reworked
+.Saved query privileges have been reworked.
 [%collapsible]
 ====
 *Details* +
@@ -100,21 +132,20 @@ Existing user roles that were previously implicitly granted access to saved quer
 For more information, refer to ({kibana-pull}202679[#202679]).
 ====
 
-//Needs to be added to upgrade notes and detailed        
+//Needs to be added to upgrade notes and detailed           
 [discrete]
-[[breaking-202278]]
-.Profiling now defaults to 19Hz sampling frequency.
+[[breaking-201254]]
+.Removed the legacy table in Discover.
 [%collapsible]
 ====
 *Details* +
-For more information, refer to ({kibana-pull}202278[#202278]).
+It's no longer possible to use the legacy documents table in Discover. To that effect, the `doc_table:legacy` and `truncate:maxHeight` deprecated advanced settings have been removed. For more information, refer to ({kibana-pull}201254[#201254]).
 ====
-
 
 //Already added to upgrade notes   
 [discrete]
 [[breaking-202250]]
-.Scripted field creation has been disabled in the Data Views management page
+.Scripted field creation has been disabled in the Data Views management page.
 [%collapsible]
 ====
 *Details* +
@@ -128,74 +159,47 @@ It will no longer be possible to create new scripted fields directly from the *D
 Migrate to runtime fields or ES|QL instead of creating new scripted fields. Existing scripted fields can still be edited or deleted.
 ====
 
-//Needs to be added to upgrade notes and detailed           
+
+
+**Elastic Observability solution**
+
+//Needs to be added to upgrade notes and detailed        
 [discrete]
-[[breaking-201254]]
-.Removed the legacy table in Discover.
+[[breaking-202278]]
+.Profiling now defaults to 19Hz sampling frequency.
 [%collapsible]
 ====
 *Details* +
-It's no longer possible to use the legacy documents table in Discover. To that effect, the `doc_table:legacy` and `truncate:maxHeight` deprecated advanced settings have been removed. For more information, refer to ({kibana-pull}201254[#201254]).
+For more information, refer to ({kibana-pull}202278[#202278]).
 ====
 
-//Needs to be added to upgrade notes and detailed           
+//Needs to be added to upgrade notes and detailed
 [discrete]
-[[breaking-200834]]
-.Now using Kibana feature privileges only to control access to reporting features.
+[[deprecation-203996]]
+.Disabled log stream and settings pages.
 [%collapsible]
 ====
 *Details* +
-The default system of granting users the privilege to generate reports has changed. Rather than assigning users the `reporting_user` role, administrators should create a custom role that grants report-creation privileges using Kibana application privileges. For more information, refer to ({kibana-pull}200834[#200834]).
+Logs Stream and the logs settings page in Observability are removed. Use the Discover application, which now offers a contextual experience for logs, to explore your logs. The logs stream panel in dashboards is removed, use Discover sessions instead.
+
+For more information, refer to ({kibana-pull}203996[#203996]).
 ====
 
-//Needs to be added to upgrade notes and detailed           
+//Needs to be added to upgrade notes and detailed
 [discrete]
-[[breaking-200633]]
-.Refactored timeline HTTP API.
+[[deprecation-203685]]
+.Removed Logs Explorer.
 [%collapsible]
 ====
 *Details* +
-The timeline API endpoints were updated to conform to HTTP best practices. This includes returning better formatted response statuses and messages as well as top-level JSON object instead of nested bodies. For more information, refer to ({kibana-pull}200633[#200633]).
-====
-    
-//Needs to be added to upgrade notes and detailed               
-[discrete]
-[[breaking-199598]]
-.Removed deprecated APIs for the Security solution.
-[%collapsible]
-====
-*Details* +
-The removed APIs are:
-
-- `/api/endpoint/isolate`
-- `/api/endpoint/unisolate`
-- `/api/endpoint/policy/summaries`
-- `/api/endpoint/suggestions/{suggestion_type}`
-- `/api/endpoint/action_log/{agent_id}`
-
-For more information, refer to ({kibana-pull}199598[#199598]).
+Logs Explorer has been removed. Instead, you can use Discover, that was improved to provide an optimal logs exploration experience. For more information, refer to ({kibana-pull}203685[#203685]).
 ====
 
-//Needs to be added to upgrade notes and detailed               
-[discrete]
-[[breaking-199226]]
-.Removed deprecated `topics` property for kafka output in favor of the `topic` property.
-[%collapsible]
-====
-*Details* +
-Removed deprecated property `topics` from output APIs in response and requests (`(GET|POST|PUT) /api/fleet/outputs`) in favor of the `topic` property. For more information, refer to ({kibana-pull}199226[#199226]).
-====
-      
-//Needs to be added to upgrade notes and detailed               
-[discrete]
-[[breaking-199033]]
-.Removed the "Download CSV" export type functionality.
-[%collapsible]
-====
-*Details* +
-The functionality that allowed to download a CSV export from a dashboard's saved search panel without creating a report has been removed. To export CSV data from a dashboard panel, you may use the action menu of a saved search panel in a dashboard to generate a CSV report, and download the report from a toast popup when the report has finished generating. For more information, refer to ({kibana-pull}199033[#199033]).
-====
-      
+**Elastic Security solution**
+
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
+
+**Data ingestion and Fleet**
 
 //Needs to be added to upgrade notes and detailed               
 [discrete]
@@ -211,44 +215,7 @@ The functionality that allowed to download a CSV export from a dashboard's saved
 
 For more information, refer to ({kibana-pull}198799[#198799]).
 ====
-      
-//Needs to be added to upgrade notes and detailed               
-[discrete]
-[[breaking-198435]]
-.Removed 7.x deprecated kibana.yml settings.
-[%collapsible]
-====
-*Details* +
-The following deprecated configuration settings were removed:
 
-- `xpack.actions.customHostSettings.ssl.rejectUnauthorized`
-- `xpack.actions.whitelistedHosts`
-- `xpack.actions.rejectUnauthorized`
-- `xpack.actions.proxyRejectUnauthorizedCertificates`
-- `xpack.alerts.healthCheck`
-- `xpack.alerts.invalidateApiKeysTask.interval`
-- `xpack.alerts.invalidateApiKeysTask.removalDelay`
-- `xpack.alerting.defaultRuleTaskTimeout`
-
-For more information, refer to ({kibana-pull}198435[#198435]).
-====
-      
-//Needs to be added to upgrade notes and detailed               
-[discrete]
-[[breaking-198434]]
-.Removed deprecated `epm` Fleet APIs.
-[%collapsible]
-====
-*Details* +
-
-* Removed `GET/POST/DELETE /epm/packages/:pkgkey` APIs in favor of `GET/POST/DELETE /epm/packages/:pkgName/:pkgVersion` 
-* Removed `experimental` query parameter in `GET /epm/packages` and `GET /epm/categories`
-* Removed `response` in response in `* /epm/packages*` and `GET /epm/categories`
-* Removed `savedObject` in `/epm/packages` response in favor of `installationInfo`
-
-For more information, refer to ({kibana-pull}198434[#198434]).
-====
-      
 //Needs to be added to upgrade notes and detailed               
 [discrete]
 [[breaking-198313]]
@@ -273,25 +240,30 @@ For more information, refer to ({kibana-pull}198313[#198313]).
 
 //Needs to be added to upgrade notes and detailed               
 [discrete]
-[[breaking-197422]]
-.Disabled deprecated rules `bulk` CRUD API endpoints.
+[[breaking-198434]]
+.Removed deprecated `epm` Fleet APIs.
 [%collapsible]
 ====
 *Details* +
 
-The following deprecated `bulk` API endpoints for creating, updating and deleting detection rules were disabled:
+* Removed `GET/POST/DELETE /epm/packages/:pkgkey` APIs in favor of `GET/POST/DELETE /epm/packages/:pkgName/:pkgVersion` 
+* Removed `experimental` query parameter in `GET /epm/packages` and `GET /epm/categories`
+* Removed `response` in response in `* /epm/packages*` and `GET /epm/categories`
+* Removed `savedObject` in `/epm/packages` response in favor of `installationInfo`
 
-| Method | Endpoint |
-| ------ | ------------------------------------------------------- |
-| POST   | /api/detection_engine/rules/\_bulk_create               |
-| PUT    | /api/detection_engine/rules/\_bulk_update               |
-| PATCH  | /api/detection_engine/rules/\_bulk_update               |
-| DELETE | /api/detection_engine/rules/\_bulk_delete               |
-| POST   | /api/detection_engine/rules/\_bulk_delete               |
-
-For more information, refer to ({kibana-pull}197422[#197422]).
+For more information, refer to ({kibana-pull}198434[#198434]).
 ====
-      
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-199226]]
+.Removed deprecated `topics` property for kafka output in favor of the `topic` property.
+[%collapsible]
+====
+*Details* +
+Removed deprecated property `topics` from output APIs in response and requests (`(GET|POST|PUT) /api/fleet/outputs`) in favor of the `topic` property. For more information, refer to ({kibana-pull}199226[#199226]).
+====
+
 //Needs to be added to upgrade notes and detailed               
 [discrete]
 [[breaking-196887]]
@@ -303,38 +275,41 @@ In addition to the new pagination limit size of 100, retrieving agent policies w
 
 For more information, refer to ({kibana-pull}196887[#196887]).
 ====
+
+**Reporting**
+
+//Needs to be added to upgrade notes and detailed           
+[discrete]
+[[breaking-200834]]
+.Now using Kibana feature privileges only to control access to reporting features.
+[%collapsible]
+====
+*Details* +
+The default system of granting users the privilege to generate reports has changed. Rather than assigning users the `reporting_user` role, administrators should create a custom role that grants report-creation privileges using Kibana application privileges. For more information, refer to ({kibana-pull}200834[#200834]).
+====
+
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-199033]]
+.Removed the "Download CSV" export type functionality.
+[%collapsible]
+====
+*Details* +
+The functionality that allowed to download a CSV export from a dashboard's saved search panel without creating a report has been removed. To export CSV data from a dashboard panel, you may use the action menu of a saved search panel in a dashboard to generate a CSV report, and download the report from a toast popup when the report has finished generating. For more information, refer to ({kibana-pull}199033[#199033]).
+====
+
       
-//Needs to be added to upgrade notes and detailed               
+**Kibana security**
+
+//Needs to be added to upgrade notes and detailed
 [discrete]
-[[breaking-193792]]
-.Usage restrictions on Kibana's internal APIs.
+[[deprecation-203856]]
+.Removed `TLSv1.1` from the default set of supported protocols.
 [%collapsible]
 ====
 *Details* +
-Starting with this release, requests to internal Kibana APIs are globally restricted by default. This change is designed to provide more flexibility in making breaking changes to internal APIs while protecting external consumers from unexpected disruptions.
-
-Key Changes:
-
-* Internal API Access: External consumers no longer have access to Kibana’s internal APIs, which are now strictly reserved for internal development and subject to frequent changes. This helps ensure that external integrations only interact with stable, public APIs.
-* Error Handling: When a request is made to an internal API without the proper internal identifier (header or query parameter), Kibana will respond with a 400 Bad Request error, indicating that the route exists but is not allowed under the current Kibana configuration.
-
-For more information, refer to ({kibana-pull}193792[#193792]).
-====
-
-//Needs to be added to upgrade notes and detailed               
-[discrete]
-[[deprecation-208208]]
-.Removed deprecated Cases APIs.
-[%collapsible]
-====
-*Details* +
-The following Cases APIs were removed:
-
-- Get case status
-- Get user actions
-- Get all comments
-
-For more information, refer to ({kibana-pull}208208[#208208]), ({kibana-pull}208086[#208086]), and ({kibana-pull}207926[#207926]).
+For more information, refer to ({kibana-pull}203856[#203856]).
 ====
 
 //Needs to be added to upgrade notes and detailed  
@@ -347,77 +322,7 @@ For more information, refer to ({kibana-pull}208208[#208208]), ({kibana-pull}208
 For more information, refer to ({kibana-pull}207325[#207325]).
 ====
 
-//Needs to be added to upgrade notes and detailed
-[discrete]
-[[deprecation-203996]]
-.Disabled log stream and settings pages.
-[%collapsible]
-====
-*Details* +
-Logs Stream and the logs settings page in Observability are removed. Use the Discover application, which now offers a contextual experience for logs, to explore your logs. The logs stream panel in dashboards is removed, use Discover sessions instead.
 
-For more information, refer to ({kibana-pull}203996[#203996]).
-====
-
-//Needs to be added to upgrade notes and detailed
-[discrete]
-[[deprecation-203856]]
-.Removed `TLSv1.1` from the default set of supported protocols.
-[%collapsible]
-====
-*Details* +
-For more information, refer to ({kibana-pull}203856[#203856]).
-====
-
-
-//Needs to be added to upgrade notes and detailed
-[discrete]
-[[deprecation-203685]]
-.Removed Logs Explorer.
-[%collapsible]
-====
-*Details* +
-Logs Explorer has been removed. Instead, you can use Discover, that was improved to provide an optimal logs exploration experience. For more information, refer to ({kibana-pull}203685[#203685]).
-====
-
-//Needs to be added to upgrade notes and detailed
-[discrete]
-[[deprecation-203148]]
-.Deleted deprecated alerts routes.
-[%collapsible]
-====
-*Details* +
-The deprecated legacy alerts routes `api/alerts/alert` were removed. For more information, refer to ({kibana-pull}203148[#203148]).
-====
-
-//Needs to be added to upgrade notes and detailed    
-[discrete]
-[[deprecation-201810]]
-.Removed legacy risk engine features.
-[%collapsible]
-====
-*Details* +
-For more information, refer to ({kibana-pull}201810[#201810]).
-====
-
-//Needs to be added to upgrade notes and detailed    
-[discrete]
-[[deprecation-199598]]
-.Removed EDR Workflows deprecated APIs.
-[%collapsible]
-====
-*Details* +
-
-APIs removed:
-
-- `/api/endpoint/isolate`
-- `/api/endpoint/unisolate`
-- `/api/endpoint/policy/summaries`
-- `/api/endpoint/suggestions/{suggestion_type}`
-- `/api/endpoint/action_log/{agent_id}`
-
-For more information, refer to ({kibana-pull}199598[#199598]).
-====
       
 [float]
 [[deprecations-9.0.0]]

@@ -1,5 +1,5 @@
 [[upgrade-on-eck]]
-=== Upgrade on Elastic Cloud on Kubernetes (ECK)
+=== Upgrade on {eck} (ECK)
 
 The ECK orchestrator can safely perform upgrades to newer versions of the various {stack} resources. 
 
@@ -12,7 +12,7 @@ To upgrade on ECK, first do the following:
 [[perform-upgrade-eck]]
 ==== Perform the upgrade
 
-When you are ready, modify the `version` field in the resource spec to the desired stack version and the operator will start the upgrade process automatically. Do this for each resource, including {es} and {kib}. In the following example, we’re modifying the version to `9.0.0`. 
+When you are ready, modify the `version` field in the resource spec to the desired stack version and the orchestrator will start the upgrade process automatically. Do this for each resource, including {es} and {kib}. In the following example, we’re modifying the version to `9.0.0`. 
 
 [source,yaml,subs="attributes,+macros"]
 ----
@@ -133,11 +133,11 @@ spec:
 
 ----
 
-ECK will ensure that {stack} resources are upgraded in the correct order. For more information on how the operator performs upgrades and how to tune its behavior, check out {eck-ref}/k8s-orchestration.html[Nodes orchestration]. 
+ECK will ensure that {stack} resources are upgraded in the correct order. For more information on how the orchestrator performs upgrades and how to tune its behavior, check out {eck-ref}/k8s-orchestration.html[Nodes orchestration]. 
 
 Next, upgrade your ingest components in the following order: 
 
-. Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
-. Beats: {beats-ref}/upgrading.html[upgrade instructions]
+. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
+. {beats}: {beats-ref}/upgrading.html[upgrade instructions]
 . {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
-. APM agents: {observability-guide}/apm-upgrade.html[upgrade instructions]
+. {apm-agent}s: {observability-guide}/apm-upgrade.html[upgrade instructions]

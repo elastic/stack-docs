@@ -12,7 +12,6 @@ Before you upgrade, there are a number of things that you need to plan for befor
 * Plan for an appropriate amount of time to complete the upgrade. Depending on your configuration and the size of your cluster, the process can take up a few weeks or or more to complete.
 
 * Consider opening a https://support.elastic.co/case[support case] with Elastic to alert our Elastic Support team of your system change. If you need additional assistance, https://www.elastic.co/consulting[Elastic Consulting Services] provides the technical expertise and step-by-step approach for upgrading your Elastic deployment.
-* Consider opening a  support case with Elastic to alert our Elastic Support team of your system change. If you need additional assistance, Elastic Consulting Services provides the technical expertise and step-by-step approach for upgrading your Elastic deployment.
 
 * Schedule a system maintenance window within your organization.
 
@@ -22,13 +21,13 @@ Ensure the version you’re upgrading to for Elasticsearch, Kibana, and any inge
 
 **JVM and FIPS compliance**
 
-By default, {es} includes a bundled Java Virtual Machine (JVM) supported by Elastic. While we strongly recommend using the bundled JVM in all installations of Elasticsearch, if you choose to use your own JVM, ensure it’s compatible by reviewing the Product and JVM support matrix. {es} 9.0+ requires Java 21 or later. 
+By default, {es} includes a bundled Java Virtual Machine (JVM) supported by Elastic. While we strongly recommend using the bundled JVM in all installations of Elasticsearch, if you choose to use your own JVM, ensure it’s compatible by reviewing the Product and JVM https://www.elastic.co/support/matrix#matrix_jvm[support matrix]. {es} 9.0+ requires Java 21 or later. 
 
 If you’re running {es} in FIPS 140-2 mode, {es} 9.0+ has been tested with https://www.bouncycastle.org/java.html[Bouncy Castle]'s FIPS implementation and is the recommended Java security provider when running Elasticsearch. 
 
 *Conduct a component inventory*
 
-It is very important to map all the components that are being used on the Elastic Stack. When you upgrade your deployment, you also may need to upgrade all the other components. For example,  You should record if each component is used, and if it is, you should record the current version. While this is not a comprehensive list, here are some components you should check:  
+It is very important to map all the components that are being used on the {stack}. When you upgrade your deployment, you may also need to upgrade all the other components. You should record if each component is used, and if it is, you should record its current version. While this is not a comprehensive list, here are some components you should check:  
 
 * {es}
 * {es} Hadoop
@@ -66,7 +65,7 @@ Self-managed infrastructure — either on-prem or on public cloud, includes:
 * {ece} (ECE)
 * {eck} (ECK)
 
-For ECE and ECK, you need to ensure the operator is running a compatible version with the {stack} version you’re upgrading to. If not, you need to <<upgrade-orchestrator,upgrade>> your orchestrator before you can upgrade your cluster. 
+For ECE and ECK, you need to ensure the orchestrator is running a compatible version with the {stack} version you’re upgrading to. If not, you need to <<upgrade-orchestrator,upgrade>> your orchestrator before you can upgrade your cluster. 
 
 If you’re running the {stack} on your own self-managed infrastructure, you’ll need to upgrade each component individually. 
 
@@ -113,7 +112,7 @@ NOTE: If you’re upgrading on {ecloud} Hosted, to keep your data safe during th
 
 . Ensure you carefully review the deprecation logs from the Upgrade Assistant to determine if your applications are using features that are not supported or behave differently in {version}. 
 
-. Major version upgrades can include breaking changes that require you to take additional steps to ensure that your applications behave as expected after the upgrade. Review all {version} <<elastic-stack-breaking-changes,breaking changes>> for each product you use to review more information about changes that could affect your application. Ensure you test against the new version before upgrading existing deployments.
+. Major version upgrades can include breaking changes that require you to take additional steps to ensure that your applications behave as expected after the upgrade. Review all {version} <<elastic-stack-breaking-changes,breaking changes>> for each product you use to view more information about changes that could affect your application. Ensure you test against the new version before upgrading existing deployments.
 +
 IMPORTANT: Ensure you check the breaking changes for each minor 8.x release up to {version}.
 . Make the recommended changes to ensure that your clients continue to operate as expected after the upgrade. 

@@ -8,8 +8,9 @@ To upgrade on ECK, first do the following:
 . Ensure you're <<prepare-upgrade-9.0, prepared to upgrade>>. 
 . Ensure the ECK version is {eck-ref}/current/k8s-supported.html[compatible] with the {stack} version you’re targeting. If necessary, <<upgrade-orchestrator, upgrade your orchestrator>>. 
 
+[discrete]
 [[perform-upgrade-eck]]
-=== Perform the upgrade
+==== Perform the upgrade
 
 When you are ready, modify the `version` field in the resource spec to the desired stack version and the operator will start the upgrade process automatically. Do this for each resource, including {es} and {kib}. In the following example, we’re modifying the version to `9.0.0`. 
 
@@ -139,4 +140,4 @@ Next, upgrade your ingest components in the following order:
 . Logstash: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
 . Beats: {beats-ref}/upgrading.html[upgrade instructions]
 . {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
-. APM agents {observability-guide}/apm-upgrade.html[upgrade instructions]
+. APM agents: {observability-guide}/apm-upgrade.html[upgrade instructions]

@@ -58,7 +58,7 @@ The procedures you follow to upgrade depend on your infrastructure and deploymen
 
 Elastic-managed infrastructure includes {ecloud} – the umbrella term for {ecloud} Hosted (ECH) and {serverless-full}. {serverless-full} (“Serverless”) is the fully managed cloud offering and has three products: {es-serverless}, {obs-serverless}, and {sec-serverless}. All serverless products are built on top of the Search AI Lake. Customers receive the latest features automatically when updates are published.  
 
-{ecloud} Hosted is Elastic’s cloud offering for managing {stack} deployments, built on top of [es]. A single click in the {ecloud} console can upgrade a deployment to a newer version.
+{ecloud} Hosted is Elastic’s cloud offering for managing {stack} deployments, built on top of {es}. A single click in the {ecloud} console can upgrade a deployment to a newer version.
 
 Self-managed infrastructure — either on-prem or on public cloud, includes: 
 
@@ -66,7 +66,7 @@ Self-managed infrastructure — either on-prem or on public cloud, includes:
 * {ece} (ECE)
 * {eck} (ECK)
 
-For ECE and ECK, you need to ensure the operator is running a compatible version with the {stack} version you’re upgrading to. If not, you need to upgrade that before you can upgrade your cluster. 
+For ECE and ECK, you need to ensure the operator is running a compatible version with the {stack} version you’re upgrading to. If not, you need to <<upgrade-orchestrator,upgrade>> your orchestrator before you can upgrade your cluster. 
 
 If you’re running the {stack} on your own self-managed infrastructure, you’ll need to upgrade each component individually. 
 
@@ -75,24 +75,20 @@ If you’re running the {stack} on your own self-managed infrastructure, you’l
 [[prepare-upgrade-9.0]]
 == Prepare to upgrade
 
-Before you upgrade to {version}, it's important to take some preparation steps.
-
-To upgrade to {version} from 8.17 or earlier, you must first upgrade to the latest patch version of 8.18. This enables you to use the Upgrade Assistant to identify and resolve issues, reindex indices created before 8.0, and then perform a rolling upgrade. Upgrading to 8.18 before upgrading to {version} is required even if you opt to do a full-cluster restart of your {es} cluster. Alternatively, you can create a new 9.0 deployment and reindex from remote. For more information, refer to **insert remote index link.** 
+Before you upgrade to {version}, it's important to take some preparation steps. Unless noted, these following recommendations are best practices regardless of deployment method. 
 
 IMPORTANT: Upgrading from a release candidate build, such as 9.0.0-rc1 or 9.0.0-rc2, is not supported. Pre-releases should only be used for testing in a temporary environment.
 
-NOTE: Unless noted, these following recommendations are best practices regardless of deployment method. 
-
-To upgrade to {version} from 8.17 or earlier, **you must first upgrade to the latest patch version 8.18**. This enables you to use the **Upgrade Assistant** to identify and resolve issues,
+To upgrade to {version} from 8.17 or earlier, **you must first upgrade to the latest patch version of 8.18**. This enables you to use the **Upgrade Assistant** to identify and resolve issues,
 reindex indices created before 8.0, and then perform a rolling upgrade.
 
 *Upgrading to 8.18 before upgrading to {version} is required 
 even if you opt to do a full-cluster restart of your {es} cluster.*
 
 Alternatively, you can create a new {version} deployment and reindex from remote.
-For more information, refer to <<upgrading-reindex, Reindex to upgrade>>.
+For more information, refer to <<upgrading-reindex,Reindex to upgrade>>.
 
-{beats} and {ls} {prev-major-last} are compatible with {es} {version} 
+{beats} and {ls} 8.17 are compatible with {es} {version} 
 to give you flexibility in scheduling the upgrade.
 
 .Remote cluster compatibility
@@ -185,6 +181,4 @@ endif::[]
 //. If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
 // 
 // end::generic-upgrade-steps[]
-////
-
 

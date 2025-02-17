@@ -22,9 +22,9 @@ Ensure the version you’re upgrading to for Elasticsearch, Kibana, and any inge
 
 **JVM and FIPS compliance**
 
-By default, Elasticsearch includes a bundled Java Virtual Machine (JVM) supported by Elastic. While we strongly recommend using the bundled JVM in all installations of Elasticsearch, if you choose to use your own JVM, ensure it’s compatible by reviewing the Product and JVM support matrix.  Elasticsearch 9.0+ requires Java 21 or later. 
+By default, {es} includes a bundled Java Virtual Machine (JVM) supported by Elastic. While we strongly recommend using the bundled JVM in all installations of Elasticsearch, if you choose to use your own JVM, ensure it’s compatible by reviewing the Product and JVM support matrix. {es} 9.0+ requires Java 21 or later. 
 
-If you’re running Elasticsearch in FIPS 140-2 mode, Elasticsearch 9.0+ has been tested with https://www.bouncycastle.org/java.html[Bouncy Castle]'s FIPS implementation and is the recommended Java security provider when running Elasticsearch. 
+If you’re running {es} in FIPS 140-2 mode, {es} 9.0+ has been tested with https://www.bouncycastle.org/java.html[Bouncy Castle]'s FIPS implementation and is the recommended Java security provider when running Elasticsearch. 
 
 *Conduct a component inventory*
 
@@ -48,7 +48,7 @@ It is very important to map all the components that are being used on the Elasti
 * Browsers
 * External services (Kafka, etc.)
 
-TIP: When you do your inventory, you can enable audit logging to evaluate resources that are accessing your deployment.
+TIP: When you do your inventory, you can {ref}/enable-audit-logging.html[enable audit logging] to evaluate resources that are accessing your deployment.
 
 [discrete]
 [[choose-upgrade-path]]
@@ -56,7 +56,7 @@ TIP: When you do your inventory, you can enable audit logging to evaluate resour
 
 The procedures you follow to upgrade depend on your infrastructure and deployment method. You’ve installed Elastic components using either Elastic-managed infrastructure or self-managed infrastructure. 
 
-Elastic-managed infrastructure includes Elastic Cloud – the umbrella term for {ecloud} Hosted (ECH) and {serverless-full}. {serverless-full} (“Serverless”) is the fully managed cloud offering and has three products: {es-serverless}, {obs-serverless}, and {sec-serverless}. All serverless products are built on top of the Search AI Lake. Customers receive the latest features automatically when updates are published.  
+Elastic-managed infrastructure includes {ecloud} – the umbrella term for {ecloud} Hosted (ECH) and {serverless-full}. {serverless-full} (“Serverless”) is the fully managed cloud offering and has three products: {es-serverless}, {obs-serverless}, and {sec-serverless}. All serverless products are built on top of the Search AI Lake. Customers receive the latest features automatically when updates are published.  
 
 {ecloud} Hosted is Elastic’s cloud offering for managing {stack} deployments, built on top of [es]. A single click in the {ecloud} console can upgrade a deployment to a newer version.
 
@@ -72,7 +72,7 @@ If you’re running the {stack} on your own self-managed infrastructure, you’l
 
 
 [discrete]
-[[prepare-upgrade-9.0-beta]]
+[[prepare-upgrade-9.0]]
 == Prepare to upgrade
 
 Before you upgrade to {version}, it's important to take some preparation steps.
@@ -81,14 +81,13 @@ To upgrade to {version} from 8.17 or earlier, you must first upgrade to the late
 
 IMPORTANT: Upgrading from a release candidate build, such as 9.0.0-rc1 or 9.0.0-rc2, is not supported. Pre-releases should only be used for testing in a temporary environment.
 
-
-NOTE: These following recommendations are best practices regardless of deployment method. 
+NOTE: Unless noted, these following recommendations are best practices regardless of deployment method. 
 
 To upgrade to {version} from 8.17 or earlier, **you must first upgrade to the latest patch version 8.18**. This enables you to use the **Upgrade Assistant** to identify and resolve issues,
 reindex indices created before 8.0, and then perform a rolling upgrade.
 
-**Upgrading to 8.18 before upgrading to {version} is required 
-even if you opt to do a full-cluster restart of your {es} cluster.**
+*Upgrading to 8.18 before upgrading to {version} is required 
+even if you opt to do a full-cluster restart of your {es} cluster.*
 
 Alternatively, you can create a new {version} deployment and reindex from remote.
 For more information, refer to <<upgrading-reindex, Reindex to upgrade>>.
@@ -119,16 +118,29 @@ NOTE: If you’re upgrading on {ecloud} Hosted, to keep your data safe during th
 . Ensure you carefully review the deprecation logs from the Upgrade Assistant to determine if your applications are using features that are not supported or behave differently in {version}. 
 
 . Major version upgrades can include breaking changes that require you to take additional steps to ensure that your applications behave as expected after the upgrade. Review all {version} <<elastic-stack-breaking-changes,breaking changes>> for each product you use to review more information about changes that could affect your application. Ensure you test against the new version before upgrading existing deployments.
-
-. Make the recommended changes to ensure that your clients continue to operate as expected after the upgrade. 
 +
 IMPORTANT: Ensure you check the breaking changes for each minor 8.x release up to {version}.
+. Make the recommended changes to ensure that your clients continue to operate as expected after the upgrade. 
++
+NOTE: As a temporary solution, you can submit requests to {major-version}
+using the {prev-major-version} syntax with the REST API compatibility mode.
+While this enables you to submit requests that use the old syntax, 
+it does not guarantee the same behavior. 
+REST API compatibility should be a bridge to smooth out the upgrade process,
+not a long term strategy. 
+For more information, see {ref}/rest-api-compatibility.html[REST API compatibility].
+. If you use any {es} plugins, ensure there is a version of each plugin that is compatible with {version}. 
+. We recommend creating a 9.0 test deployment and testing the upgrade in an isolated environment before upgrading your production deployment. Ensure that both your test and production environments have the same settings.
++
+IMPORTANT: You cannot downgrade {es} nodes after upgrading. If you cannot complete the upgrade process, you will need to {ref}/snapshots-restore-snapshot.html[restore from the snapshot].
++
+. If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
 
 
 
 
 
-
+////
 Before you upgrade to {version}, it's important to take some preparation steps.
 ifeval::["{version}"!="8.0.0"]
 These steps vary based on your current version:
@@ -161,78 +173,18 @@ endif::[]
 ////
 // List of upgrade steps used in both 8.x and 7.x
 // tag::generic-upgrade-steps[]
-. If you use any {es} plugins, make sure there is a version of each plugin that is
-compatible with {es} version {version}.
+//. If you use any {es} plugins, make sure there is a version of each plugin that is compatible with {es} version {version}.
 
-. Test the upgrade in an isolated environment before upgrading your production
-cluster.
+//. Test the upgrade in an isolated environment before upgrading your production cluster.
 
-. Make sure you have a current snapshot before you start the upgrade.
-+
-IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
-If you cannot complete the upgrade process, 
-you will need to restore from the snapshot.
+//. Make sure you have a current snapshot before you start the upgrade.
+//+
+//IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
+//If you cannot complete the upgrade process, you will need to restore from the snapshot.
 
-. If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
+//. If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
+// 
 // end::generic-upgrade-steps[]
 ////
 
 
-[discrete]
-[[prepare-to-upgrade]]
-=== Prepare to upgrade from 7.x
-
-To upgrade to {version} from 7.16 or earlier, **you must first upgrade to {prev-major-last}**.
-This enables you to use the **Upgrade Assistant** to identify and resolve issues,
-reindex indices created before 7.0, and then perform a rolling upgrade.
-
-**Upgrading to {prev-major-last} before upgrading to {version} is required 
-even if you opt to do a full-cluster restart of your {es} cluster.**
-Alternatively, you can create a new {version} deployment and reindex from remote.
-For more information, see <<upgrading-reindex, Reindex to upgrade>>.
-
-{beats} and {ls} {prev-major-last} are compatible with {es} {version} 
-to give you flexibility in scheduling the upgrade.
-
-.Remote cluster compatibility
-[NOTE]
-====
-If you use {ccs}, note that {version} can only search remote clusters running the previous minor version or later. 
-For more information, see {ref}/modules-cross-cluster-search.html[Searching across clusters].
-
-If you use {ccr}, a cluster that contains follower indices must run the same or newer version as the remote cluster. 
-For more information, see {ref}/xpack-ccr.html[Cross cluster replication] for version compatibility matrix.
-
-You can view your remote clusters from **Stack Management > Remote Clusters**. 
-====
-
-. Use the {kibana-ref-all}/{prev-major-last}/upgrade-assistant.html[Upgrade Assistant] 
-to prepare for your upgrade from {prev-major-last} to {version}.
-The **Upgrade Assistant** identifies deprecated settings and guides
-you through resolving issues and reindexing indices created before 7.0.
-Make sure you have a current snapshot before making configuration changes
-or reindexing.
-+
-**You must resolve all critical issues before proceeding with the upgrade.**
-
-. Review the deprecation logs from the **Upgrade Assistant** to 
-determine if your applications are using features that are not supported 
-or behave differently in 8.x.
-See the <<elastic-stack-breaking-changes,breaking changes>> for more information 
-about changes in {version} that could affect your application.
-+
-IMPORTANT: Make sure you check the breaking changes for each minor 8.x release
-up to {version}.
-
-. Make the recommended changes to ensure that your applications 
-continue to operate as expected after the upgrade.
-+
-NOTE: As a temporary solution, you can submit requests to {major-version}
-using the {prev-major-version} syntax with the REST API compatibility mode.
-While this enables you to submit requests that use the old syntax, 
-it does not guarantee the same behavior. 
-REST API compatibility should be a bridge to smooth out the upgrade process,
-not a long term strategy. 
-For more information, see {ref}/rest-api-compatibility.html[REST API compatibility].
-
-include::upgrading-stack.asciidoc[tag=generic-upgrade-steps]

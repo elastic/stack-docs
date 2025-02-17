@@ -31,19 +31,22 @@ Before you upgrade to 9.0.0, review the breaking changes, then mitigate the impa
 [%collapsible]
 ====
 *Details* +
---
+
 * `POST /api/detection_engine/rules/_bulk_create` has been replaced by `POST /api/detection_engine/rules/_import`
 * `PUT /api/detection_engine/rules/_bulk_update` has been replaced by `POST /api/detection_engine/rules/_bulk_action`
 * `PATCH /api/detection_engine/rules/_bulk_update has been replaced by `POST /api/detection_engine/rules/_bulk_action`
 * `DELETE /api/detection_engine/rules/_bulk_delete` has been replaced by `POST /api/detection_engine/rules/_bulk_action`
 * `POST api/detection_engine/rules/_bulk_delete` has been replaced by `POST /api/detection_engine/rules/_bulk_action`
---
+
 These changes were introduced in {kibana-pull}197422[#197422].
+
 *Impact* +
 Deprecated endpoints will fail with a 404 status code starting from version 9.0.0
+
 *Action* +
---
+
 Update your implementations to use the new endpoints:
+
 * **For bulk creation of rules:**
    - Use `POST /api/detection_engine/rules/_import` (link:{api-kibana}/operation/operation-importrules[API documentation]) to create multiple rules along with their associated entities (for example, exceptions and action connectors).
    - Alternatively, create rules individually using `POST /api/detection_engine/rules` (link:{api-kibana}/operation/operation-createrule[API documentation]).
@@ -53,7 +56,7 @@ Update your implementations to use the new endpoints:
 * **For bulk deletion of rules:**
    - Use `POST /api/detection_engine/rules/_bulk_action` (link:{api-kibana}/operation/operation-performrulesbulkaction[API documentation]) to delete multiple rules by IDs or query.
    - Alternatively, delete rules individually using `DELETE /api/detection_engine/rules` (link:{api-kibana}/operation/operation-deleterule[API documentation]).
---
+
 ====
 
 //Needs to be added to upgrade notes and detailed      
@@ -75,11 +78,14 @@ Search sessions are now disabled by default. For more information, refer to ({ki
 *Details* +
 Saved query privileges have been reworked to rely solely on a single global `savedQueryManagement` privilege, and eliminate app-specific overrides (e.g. implicit access with `all` privilege for Discover, Dashboard, Maps, and Visualize apps). This change simplifies the security model and ensures consistency in the saved query management UI across Kibana, but results in different handling of saved query privileges for new user roles, and minor breaking changes to the existing management UX.
 For more information, refer to {kibana-pull}202863[#202863].
+
 *Impact* +
 The `savedQueryManagement` feature privilege now globally controls access to saved query management for all new user roles. Regardless of privileges for Discover, Dashboard, Maps, or Visualize, new user roles follow this behaviour:
-. If `savedQueryManagement` is `none`, the user cannot see or access the saved query management UI or APIs.
-. If `savedQueryManagement` is `read`, the user can load queries from the UI and access read APIs, but cannot save queries from the UI or make changes to queries through APIs.
-. If `savedQueryManagement` is `all`, the user can both load and save queries from the UI and through APIs.
+
+* If `savedQueryManagement` is `none`, the user cannot see or access the saved query management UI or APIs.
+* If `savedQueryManagement` is `read`, the user can load queries from the UI and access read APIs, but cannot save queries from the UI or make changes to queries through APIs.
+* If `savedQueryManagement` is `all`, the user can both load and save queries from the UI and through APIs.
+
 *Action* +
 Existing user roles that were previously implicitly granted access to saved queries through the dashboard, discover, visualize, or maps feature privileges will retain that access to prevent breaking changes. While no action is required for existing roles, it’s still advisable to audit relevant roles and re-save them to migrate to the latest privileges model. For new roles, ensure that the savedQueryManagement privilege is set as needed.
 ====
@@ -114,8 +120,10 @@ For more information, refer to ({kibana-pull}202278[#202278]).
 *Details* +
 The ability to create new scripted fields has been removed from the *Data Views* management page in 9.0. Existing scripted fields can still be edited or deleted, and the creation UI can be accessed by navigating directly to `/app/management/kibana/dataViews/dataView/{dataViewId}/create-field`, but we recommend migrating to runtime fields or ES|QL queries instead to prepare for removal.
 For more information, refer to {kibana-pull}202250[#202250].
+
 *Impact* +
 It will no longer be possible to create new scripted fields directly from the *Data Views* management page.
+
 *Action* +
 Migrate to runtime fields or ES|QL instead of creating new scripted fields. Existing scripted fields can still be edited or deleted.
 ====

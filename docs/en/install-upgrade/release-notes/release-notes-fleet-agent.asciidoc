@@ -54,10 +54,12 @@ impact to your application.
 [%collapsible]
 ====
 *Details* +
-* Removed `GET/POST/DELETE /epm/packages/:pkgkey` APIs in favor of the `GET/POST/DELETE /epm/packages/:pkgName/:pkgVersion`:
-* Removed `experimental` query parameter in `GET /epm/packages` and `GET /epm/categories`
-* Removed `response` in response in `* /epm/packages*` and `GET /epm/categories`
-* Removed `savedObject` in `/epm/packages` response in favor of `installationInfo`
+Removed `GET/POST/DELETE /epm/packages/:pkgkey` APIs in favor of the `GET/POST/DELETE /epm/packages/:pkgName/:pkgVersion`:
+
+** Removed `experimental` query parameter in `GET /epm/packages` and `GET /epm/categories`
+** Removed `response` in response in `* /epm/packages*` and `GET /epm/categories`
+** Removed `savedObject` in `/epm/packages` response in favor of `installationInfo`
+
 For more information, refer to ({kibana-pull}198434[#198434]).
 ====
 
@@ -68,12 +70,16 @@ For more information, refer to ({kibana-pull}198434[#198434]).
 ====
 *Details* +
 Removed the following API endpoints:
+
 * `POST /service-tokens` in favor of `POST /service_tokens`
 * `GET /agent-status` in favor `GET /agent_status`
 * `PUT /agents/:agentid/reassign` in favor of `POST /agents/:agentid/reassign`
+
 Removed deprecated parameters or responses:
+
 * Removed `total` from `GET /agent_status` response
 * Removed `list` from `GET /agents` response
+
 For more information, refer to ({kibana-pull}198313[#198313]).
 ====
 

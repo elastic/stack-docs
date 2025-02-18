@@ -59,7 +59,7 @@ Replace usages of "german2" with "german" in analysis configuration. Old indices
 [%collapsible]
 ====
 *Details* +
-Lucene 10 has added a final stemming step to its PersianAnalyzer that Elasticsearch exposes as 'persian' analyzer. Existing indices will keep the old non-stemming behaviour while new indices will see the updated behaviour with added stemming. Users that wish to maintain the non-stemming behaviour need to define their own analyzer as outlined in {ref}analysis-lang-analyzer.html#persian-analyzer[Persion analyzer]. Users that wish to use the new stemming behaviour for existing indices will have to reindex their data.
+Lucene 10 has added a final stemming step to its PersianAnalyzer that Elasticsearch exposes as 'persian' analyzer. Existing indices will keep the old non-stemming behaviour while new indices will see the updated behaviour with added stemming. Users that wish to maintain the non-stemming behaviour need to define their own analyzer as outlined in {ref}/analysis-lang-analyzer.html#persian-analyzer[Persion analyzer]. Users that wish to use the new stemming behaviour for existing indices will have to reindex their data.
 
 *Impact* +
 Indexing with the 'persian' analyzer will produce slightly different tokens. Users should check if this impacts their search results. If they wish to maintain the legacy non-stemming behaviour they can define their own analyzer equivalent as explained in {ref}/analysis-lang-analyzer.html#persian-analyzer[Persian analyzer].

@@ -6,3 +6,416 @@
 
 coming::[9.0.0-beta1]
 
+For information about the {kib} 9.0.0 release, review the following information.
+
+[float]
+[[highlights-9.0.0]]
+== Highlights
+
+[[highlight-borealis]]
+*New UI theme*. {Kib} 9.0 introduces a more modern and refined look and feel. This new theme brings improvements at multiple levels of the interface that will make navigating Kibana and visualizing dashboards easier than ever before.
+
+
+[float]
+[[breaking-changes-9.0.0]]
+== Breaking changes
+
+Breaking changes can prevent your application from optimal operation and performance.
+Before you upgrade to 9.0.0, review the breaking changes, then mitigate the impact to your application.
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-193792]]
+.Usage restrictions on Kibana's internal APIs.
+[%collapsible]
+====
+*Details* +
+Starting with this release, requests to internal Kibana APIs are globally restricted by default. This change is designed to provide more flexibility in making breaking changes to internal APIs while protecting external consumers from unexpected disruptions.
+
+Key Changes:
+
+* Internal API Access: External consumers no longer have access to Kibana’s internal APIs, which are now strictly reserved for internal development and subject to frequent changes. This helps ensure that external integrations only interact with stable, public APIs.
+* Error Handling: When a request is made to an internal API without the proper internal identifier (header or query parameter), Kibana will respond with a 400 Bad Request error, indicating that the route exists but is not allowed under the current Kibana configuration.
+
+For more information, refer to ({kibana-pull}193792[#193792]).
+====
+
+**Alerts and cases**
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-198435]]
+.Removed 7.x deprecated kibana.yml settings.
+[%collapsible]
+====
+*Details* +
+The following deprecated configuration settings were removed:
+
+- `xpack.actions.customHostSettings.ssl.rejectUnauthorized`
+- `xpack.actions.whitelistedHosts`
+- `xpack.actions.rejectUnauthorized`
+- `xpack.actions.proxyRejectUnauthorizedCertificates`
+- `xpack.alerts.healthCheck`
+- `xpack.alerts.invalidateApiKeysTask.interval`
+- `xpack.alerts.invalidateApiKeysTask.removalDelay`
+- `xpack.alerting.defaultRuleTaskTimeout`
+
+For more information, refer to ({kibana-pull}198435[#198435]).
+====
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[deprecation-208208]]
+.Removed deprecated Cases APIs.
+[%collapsible]
+====
+*Details* +
+The following Cases APIs were removed:
+
+- Get case status
+- Get user actions
+- Get all comments
+
+For more information, refer to ({kibana-pull}208208[#208208]), ({kibana-pull}208086[#208086]), and ({kibana-pull}207926[#207926]).
+====
+
+//Needs to be added to upgrade notes and detailed
+[discrete]
+[[deprecation-203148]]
+.Deleted deprecated alerts routes.
+[%collapsible]
+====
+*Details* +
+The deprecated legacy alerts routes `api/alerts/alert` were removed. For more information, refer to ({kibana-pull}203148[#203148]).
+====
+
+**Discover and dashboards**
+
+//Needs to be added to upgrade notes and detailed      
+[discrete]
+[[breaking-203927]]
+.Disabled search sessions by default.
+[%collapsible]
+====
+*Details* +
+Search sessions are now disabled by default. For more information, refer to ({kibana-pull}203927[#203927]).
+====
+
+//Already added to upgrade notes   
+[discrete]
+[[breaking-202863]]
+.Saved query privileges have been reworked.
+[%collapsible]
+====
+*Details* +
+Saved query privileges have been reworked to rely solely on a single global `savedQueryManagement` privilege, and eliminate app-specific overrides (e.g. implicit access with `all` privilege for Discover, Dashboard, Maps, and Visualize apps). This change simplifies the security model and ensures consistency in the saved query management UI across Kibana, but results in different handling of saved query privileges for new user roles, and minor breaking changes to the existing management UX.
+For more information, refer to {kibana-pull}202863[#202863].
+
+*Impact* +
+The `savedQueryManagement` feature privilege now globally controls access to saved query management for all new user roles. Regardless of privileges for Discover, Dashboard, Maps, or Visualize, new user roles follow this behaviour:
+
+* If `savedQueryManagement` is `none`, the user cannot see or access the saved query management UI or APIs.
+* If `savedQueryManagement` is `read`, the user can load queries from the UI and access read APIs, but cannot save queries from the UI or make changes to queries through APIs.
+* If `savedQueryManagement` is `all`, the user can both load and save queries from the UI and through APIs.
+
+*Action* +
+Existing user roles that were previously implicitly granted access to saved queries through the dashboard, discover, visualize, or maps feature privileges will retain that access to prevent breaking changes. While no action is required for existing roles, it’s still advisable to audit relevant roles and re-save them to migrate to the latest privileges model. For new roles, ensure that the savedQueryManagement privilege is set as needed.
+====
+
+//Needs to be added to upgrade notes and detailed         
+[discrete]
+[[breaking-202679]]
+.Removed `discover:searchFieldsFromSource` setting.
+[%collapsible]
+====
+*Details* +
+For more information, refer to ({kibana-pull}202679[#202679]).
+====
+
+//Needs to be added to upgrade notes and detailed           
+[discrete]
+[[breaking-201254]]
+.Removed the legacy table in Discover.
+[%collapsible]
+====
+*Details* +
+It's no longer possible to use the legacy documents table in Discover. To that effect, the `doc_table:legacy` and `truncate:maxHeight` deprecated advanced settings have been removed. For more information, refer to ({kibana-pull}201254[#201254]).
+====
+
+//Already added to upgrade notes   
+[discrete]
+[[breaking-202250]]
+.Scripted field creation has been disabled in the Data Views management page.
+[%collapsible]
+====
+*Details* +
+The ability to create new scripted fields has been removed from the *Data Views* management page in 9.0. Existing scripted fields can still be edited or deleted, and the creation UI can be accessed by navigating directly to `/app/management/kibana/dataViews/dataView/{dataViewId}/create-field`, but we recommend migrating to runtime fields or ES|QL queries instead to prepare for removal.
+For more information, refer to {kibana-pull}202250[#202250].
+
+*Impact* +
+It will no longer be possible to create new scripted fields directly from the *Data Views* management page.
+
+*Action* +
+Migrate to runtime fields or ES|QL instead of creating new scripted fields. Existing scripted fields can still be edited or deleted.
+====
+
+
+
+**Elastic Observability solution**
+
+//Needs to be added to upgrade notes and detailed        
+[discrete]
+[[breaking-202278]]
+.Profiling now defaults to 19Hz sampling frequency.
+[%collapsible]
+====
+*Details* +
+For more information, refer to ({kibana-pull}202278[#202278]).
+====
+
+//Needs to be added to upgrade notes and detailed
+[discrete]
+[[deprecation-203996]]
+.Disabled log stream and settings pages.
+[%collapsible]
+====
+*Details* +
+Logs Stream and the logs settings page in Observability are removed. Use the Discover application, which now offers a contextual experience for logs, to explore your logs. The logs stream panel in dashboards is removed, use Discover sessions instead.
+
+For more information, refer to ({kibana-pull}203996[#203996]).
+====
+
+//Needs to be added to upgrade notes and detailed
+[discrete]
+[[deprecation-203685]]
+.Removed Logs Explorer.
+[%collapsible]
+====
+*Details* +
+Logs Explorer has been removed. Instead, you can use Discover, that was improved to provide an optimal logs exploration experience. For more information, refer to ({kibana-pull}203685[#203685]).
+====
+
+**Elastic Security solution**
+
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
+
+**Data ingestion and Fleet**
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-198799]]
+.Removed deprecated settings API endpoints in Fleet.
+[%collapsible]
+====
+*Details* +
+
+* `GET/DELETE/POST enrollment-api-keys`: removed in favor of `GET/DELETE/POST enrollment_api_keys`
+* Removed `list` property from `GET enrollment_api_keys` response in favor of `items`
+* `GET/POST /settings`: `fleet_server_hosts` was removed from the response and body
+
+For more information, refer to ({kibana-pull}198799[#198799]).
+====
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-198313]]
+.Removed deprecated Fleet APIs for agents endpoints.
+[%collapsible]
+====
+*Details* +
+
+Removed API endpoints:
+
+* `POST /service-tokens` in favor of `POST /service_tokens`
+* `GET /agent-status` in favor `GET /agent_status`
+* `PUT /agents/:agentid/reassign` in favor of `POST /agents/:agentid/reassign`
+
+Removed deprecated parameters or responses:
+
+* Removed `total` from `GET /agent_status` response
+* Removed `list` from `GET /agents` response
+
+For more information, refer to ({kibana-pull}198313[#198313]).
+====
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-198434]]
+.Removed deprecated `epm` Fleet APIs.
+[%collapsible]
+====
+*Details* +
+
+* Removed `GET/POST/DELETE /epm/packages/:pkgkey` APIs in favor of `GET/POST/DELETE /epm/packages/:pkgName/:pkgVersion` 
+* Removed `experimental` query parameter in `GET /epm/packages` and `GET /epm/categories`
+* Removed `response` in response in `* /epm/packages*` and `GET /epm/categories`
+* Removed `savedObject` in `/epm/packages` response in favor of `installationInfo`
+
+For more information, refer to ({kibana-pull}198434[#198434]).
+====
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-199226]]
+.Removed deprecated `topics` property for kafka output in favor of the `topic` property.
+[%collapsible]
+====
+*Details* +
+Removed deprecated property `topics` from output APIs in response and requests (`(GET|POST|PUT) /api/fleet/outputs`) in favor of the `topic` property. For more information, refer to ({kibana-pull}199226[#199226]).
+====
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-196887]]
+.Limit pagination size to 100 when retrieving full policy or `withAgentCount` in Fleet.
+[%collapsible]
+====
+*Details* +
+In addition to the new pagination limit size of 100, retrieving agent policies without agent count is now the new default behavior, and a new query parameter `withAgentCount` was added to retrieve the agent count.
+
+For more information, refer to ({kibana-pull}196887[#196887]).
+====
+
+**Reporting**
+
+//Needs to be added to upgrade notes and detailed           
+[discrete]
+[[breaking-200834]]
+.Now using Kibana feature privileges only to control access to reporting features.
+[%collapsible]
+====
+*Details* +
+The default system of granting users the privilege to generate reports has changed. Rather than assigning users the `reporting_user` role, administrators should create a custom role that grants report-creation privileges using Kibana application privileges. For more information, refer to ({kibana-pull}200834[#200834]).
+====
+
+
+//Needs to be added to upgrade notes and detailed               
+[discrete]
+[[breaking-199033]]
+.Removed the "Download CSV" export type functionality.
+[%collapsible]
+====
+*Details* +
+The functionality that allowed to download a CSV export from a dashboard's saved search panel without creating a report has been removed. To export CSV data from a dashboard panel, you may use the action menu of a saved search panel in a dashboard to generate a CSV report, and download the report from a toast popup when the report has finished generating. For more information, refer to ({kibana-pull}199033[#199033]).
+====
+
+      
+**Kibana security**
+
+//Needs to be added to upgrade notes and detailed
+[discrete]
+[[deprecation-203856]]
+.Removed `TLSv1.1` from the default set of supported protocols.
+[%collapsible]
+====
+*Details* +
+For more information, refer to ({kibana-pull}203856[#203856]).
+====
+
+//Needs to be added to upgrade notes and detailed  
+[discrete]
+[[deprecation-207325]]
+.Renamed `integration-assistant` plugin to `automatic-import`.
+[%collapsible]
+====
+*Details* +
+For more information, refer to ({kibana-pull}207325[#207325]).
+====
+
+
+      
+[float]
+[[deprecations-9.0.0]]
+== Deprecations
+
+The following functionality is deprecated in 9.0.0, and will be removed in 10.0.0.
+Deprecated functionality does not have an immediate impact on your application, but we strongly recommend
+you make the necessary updates after you upgrade to 9.0.0.
+
+      
+[discrete]
+[[deprecation-201313]]
+.Removed ephemeral tasks from task manager, action, and alerting plugins.
+[%collapsible]
+====
+*Details* +
+
+Deprecates the following configuration settings:
+
+* `xpack.task_manager.ephemeral_tasks.enabled`
+* `xpack.task_manager.ephemeral_tasks.request_capacity`
+* `xpack.alerting.maxEphemeralActionsPerAlert`
+
+No action is required on the user's end. These settings will no longer have any effect as ephemeral tasks are now removed.
+
+For more information, refer to ({kibana-pull}201313[#201313]).
+====
+      
+   
+[discrete]
+[[deprecation-197802]]
+.Removed `visualization:colorMapping` advanced setting.
+[%collapsible]
+====
+*Details* +
+The `visualization:colorMapping` advanced setting for TSVB and Visualize charts has been removed. You can switch to Lens charts, which offer a more advanced, per-chart color mapping feature with enhanced configuration options. For more details, refer to link:https://github.com/elastic/kibana/pull/162389[#162389].
+====
+      
+
+[float]
+[[features-9.0.0]]
+== Features
+{kib} 9.0.0 adds the following new and notable features.
+
+Data ingestion and Fleet::
+* New setting allowing automatic deletion of unenrolled agents in Fleet settings ({kibana-pull}195544[#195544]).
+Elastic Security solution::
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
+Kibana security::
+* New interface for Automatic Import CEL generation flow ({kibana-pull}206491[#206491]).
+
+//For more information about the features introduced in 9.0.0, refer to <<whats-new,What's new in 9.0>>.
+
+[[enhancements-and-bug-fixes-v9.0.0]]
+== Enhancements and bug fixes
+
+//For detailed information about the 9.0.0 release, review the enhancements and bug fixes.    
+
+[float]
+[[enhancement-v9.0.0]]
+=== Enhancements
+//Dashboards & Visualizations::
+Data ingestion and Fleet::
+* Improves filtering and visibility of `Uninstalled` and `Orphaned` agents in Fleet, by differentiating them from `Offline` agents ({kibana-pull}205815[#205815]).
+* Introduces air-gapped configuration for bundled packages ({kibana-pull}202435[#202435]).
+* Updates removed parameters of the Fleet -> Logstash output configurations ({kibana-pull}210115[#210115]).
+* Updates max supported package version  ({kibana-pull}196675[#196675]).
+//* Remove old bundled.yaml from oas, fixed tags ({kibana-pull}194788[#194788]).
+Elastic Security solution::
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
+Kibana security::
+* Updates `js-yaml` to `4.1.0` ({kibana-pull}190678[#190678]).
+Machine Learning::
+* Removes use of `ignore_throttled` ({kibana-pull}199107[#199107]).
+Platform::
+* Adds warning header to deprecated API endpoints ({kibana-pull}205926[#205926]).
+* Sets HTTP2 as default if SSL is enabled and adds deprecation log if SSL is not enabled or protocol is set to HTTP1 ({kibana-pull}204384[#204384]).
+
+[float]
+[[fixes-v9.0.0]]
+=== Bug fixes
+Dashboards & Visualizations::
+* Fixes an issue in Lens where colors behind text were not correctly assigned, such as in `Pie`, `Treemap` and `Mosaic` charts.
+//* Fixes an issue with `Amsterdam` theme where charts render with the incorrect background color ({kibana-pull}209595[#209595]).
+* Fixes an issue where changing the *Ignore timeout results* control setting wasn't taken into account ({kibana-pull}208611[#208611]).
+* Force returns 0 on empty buckets on count if `null` flag is disabled ({kibana-pull}207308[#207308]).
+* Fixes infinite loading time for some charts due to search context reload ({kibana-pull}203150[#203150]).
+Data ingestion and Fleet::
+* Fixes a validation error happening on multi-text input fields ({kibana-pull}205768[#205768]).
+Elastic Observability solution::
+* Fixes chat on the Alerts page ({kibana-pull}197126[#197126]).
+* Fixes an error that could prevent the Observability Infrastructure Inventory view from loading after an upgrade due to missing versioning on inventory_view_saved_object ({kibana-pull}207007[#207007]).
+Elastic Security solution::
+For the Elastic Security 9.0.0 release information, refer to <<release-notes-security-9.0.0-beta1,_Elastic Security Solution Release Notes_>>.
+Platform::
+* Fixes several interface inconsistencies on the Space creation and settings pages ({kibana-pull}197303[#197303]).

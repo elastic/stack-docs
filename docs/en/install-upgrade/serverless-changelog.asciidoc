@@ -11,6 +11,65 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-02172025]]
+=== February 17, 2025
+
+[discrete]
+[[features-02172025]]
+==== Features and enhancements
+* Adds alert status management to the AI Assistant connector ({kibana-pull}203729[#203729]).
+* Enables the new Borealis theme ({kibana-pull}210468[#210468]).
+* Applies compact Display options Popover layout ({kibana-pull}210180[#210180]).
+* Increases search timeout toast lifetime to 1 week ({kibana-pull}210576[#210576]).
+* Improves performance in `dependencies` endpoints to prevent high CPU usage ({kibana-pull}209999[#209999]).
+* Adds "Logs" tab to mobile services ({kibana-pull}209944[#209944]).
+* Adds "All logs" data view to the Classic navigation ({kibana-pull}209042[#209042]).
+* Changes default to "native" function calling if the connector configuration is not exposed ({kibana-pull}210455[#210455]).
+* Updates entity insight badge to open entity flyouts ({kibana-pull}208287[#208287]).
+* Standardizes actions in Alerts KPI visualizations ({kibana-pull}206340[#206340]).
+* Allows the creation of dynamic aggregations controls for ES|QL charts ({kibana-pull}210170[#210170]).
+* Fixes the values control FT ({kibana-pull}211159[#211159]).
+* Trained models: Replaces the download button by extending the deploy action ({kibana-pull}205699[#205699]).
+* Adds the `useCustomDragHandle` property ({kibana-pull}210463[#210463]).
+
+[discrete]
+[[fixes-02172025]]
+==== Fixes
+* Fixes an issue where clicking on the name badge for a synthetics monitor on an SLO details page would lead to a page that failed to load monitor details ({kibana-pull}210695[#210695]).
+* Fixes an issue where the popover in the rules page may get stuck when being clicked more than once ({kibana-pull}208996[#208996]).
+* Fixes an error in the cases list when the case assignee is an empty string ({kibana-pull}209973[#209973]).
+* Fixes an issue with assigning color mappings when multiple layers are defined ({kibana-pull}208571[#208571]).
+* Fixes an issue where behind text colors were not correctly assigned, such as in `Pie`, `Treemap` and `Mosaic` charts. ({kibana-pull}209632[#209632]).
+* Fixes an issue where dynamic coloring has been disabled from Last value aggregation types ({kibana-pull}209110[#209110]).
+* Fixes panel styles ({kibana-pull}210113[#210113]).
+* Fixes incorrectly serialized `searchSessionId` attribute ({kibana-pull}210765[#210765]).
+* Fixes the "Save to library" action that could break the chart panel ({kibana-pull}210125[#210125]).
+* Fixes link settings not persisting ({kibana-pull}211041[#211041]).
+* Fixes "Untitled" export title when exporting CSV from a dashboard ({kibana-pull}210143[#210143]).
+* Missing items in the trace waterfall shouldn't break it entirely ({kibana-pull}210210[#210210]).
+* Removes unused `error.id` in `getErrorGroupMainStatistics` queries ({kibana-pull}210613[#210613]).
+* Fixes connector test in MKI ({kibana-pull}211235[#211235]).
+* Clicking a link in the host/user flyout does not refresh details panel ({kibana-pull}209863[#209863]).
+* Makes 7.x signals/alerts compatible with 8.18 alerts UI ({kibana-pull}209936[#209936]).
+* Handle empty categorization results from LLM ({kibana-pull}210420[#210420]).
+* Remember page index in Rule Updates table ({kibana-pull}209537[#209537]).
+* Adds concurrency limits and request throttling to prebuilt rule routes ({kibana-pull}209551[#209551]).
+* Fixes package name validation on the Datastream page ({kibana-pull}210770[#210770]).
+* Makes entity store description more generic ({kibana-pull}209130[#209130]).
+* Deletes 'critical services' count from the Entity Analytics Dashboard header ({kibana-pull}210827[#210827]).
+* Disables sorting IP ranges in value list modal ({kibana-pull}210922[#210922]).
+* Updates entity store copies ({kibana-pull}210991[#210991]).
+* Fixes generated name for integration title ({kibana-pull}210916[#210916]).
+* Fixes formatting and sorting for custom ES|QL vars ({kibana-pull}209360[#209360]).
+* Fixes WHERE autocomplete with MATCH before LIMIT ({kibana-pull}210607[#210607]).
+* Updates install snippets to include all platforms ({kibana-pull}210249[#210249]).
+* Updates component templates with deprecated setting ({kibana-pull}210200[#210200]).
+* Hides saved query controls in AIOps ({kibana-pull}210556[#210556]).
+* Fixes unattended Transforms in integration packages not automatically restarting after reauthorizing ({kibana-pull}210217[#210217]).
+* Reinstates switch to support generating public URLs for embed when supported ({kibana-pull}207383[#207383]).
+* Provides a fallback view to recover from Stack Alerts page filters bar errors ({kibana-pull}209559[#209559]).
+
+[discrete]
 [[serverless-changelog-02102025]]
 === February 10, 2025
 

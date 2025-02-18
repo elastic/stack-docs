@@ -1,0 +1,141 @@
+// Use these for links to issue and pulls.
+:kibana-issue: https://github.com/elastic/kibana/issues/
+:kibana-pull: https://github.com/elastic/kibana/pull/
+:beats-issue: https://github.com/elastic/beats/issues/
+:beats-pull: https://github.com/elastic/beats/pull/
+:agent-libs-pull: https://github.com/elastic/elastic-agent-libs/pull/
+:agent-issue: https://github.com/elastic/elastic-agent/issues/
+:agent-pull: https://github.com/elastic/elastic-agent/pull/
+:fleet-server-issue: https://github.com/elastic/fleet-server/issues/
+:fleet-server-pull: https://github.com/elastic/fleet-server/pull/
+
+[[release-notes-fleet-agent-9.0.0-beta1]]
+= {fleet} and {agent} version 9.0.0-beta1
+++++
+<titleabbrev>{{fleet} and {agent}</titleabbrev>
+++++
+
+This section summarizes the changes in each release.
+
+* <<release-notes-9.0.0-beta1>>
+
+Also see:
+
+* {kibana-ref}/release-notes.html[{kib} release notes]
+* {beats-ref}/release-notes.html[{beats} release notes]
+
+// begin 9.0.0-beta1 relnotes
+
+[[release-notes-9.0.0-beta1]]
+== {fleet} and {agent} 9.0.0-beta1
+
+Review important information about the {fleet} and {agent} 9.0.0-beta1 release.
+
+[discrete]
+[[security-updates-9.0.0-beta1]]
+=== Security updates
+
+{agent}::
+* Update Go version to 1.22.10. {agent-pull}6236[#6236]
+
+[discrete]
+[[breaking-changes-9.0.0-beta1]]
+=== Breaking changes
+
+Breaking changes can prevent your application from optimal operation and
+performance. Before you upgrade, review the breaking changes, then mitigate the
+impact to your application.
+
+{fleet}::
+
+[discrete]
+[[breaking-198434]]
+.Removed deprecated `epm` Fleet APIs.
+[%collapsible]
+====
+*Details* +
+* Removed `GET/POST/DELETE /epm/packages/:pkgkey` APIs in favor of the `GET/POST/DELETE /epm/packages/:pkgName/:pkgVersion`:
+* Removed `experimental` query parameter in `GET /epm/packages` and `GET /epm/categories`
+* Removed `response` in response in `* /epm/packages*` and `GET /epm/categories`
+* Removed `savedObject` in `/epm/packages` response in favor of `installationInfo`
+For more information, refer to ({kibana-pull}198434[#198434]).
+====
+
+[discrete]
+[[breaking-198313]]
+.Removed deprecated Fleet APIs for agents endpoints.
+[%collapsible]
+====
+*Details* +
+Removed the following API endpoints:
+* `POST /service-tokens` in favor of `POST /service_tokens`
+* `GET /agent-status` in favor `GET /agent_status`
+* `PUT /agents/:agentid/reassign` in favor of `POST /agents/:agentid/reassign`
+Removed deprecated parameters or responses:
+* Removed `total` from `GET /agent_status` response
+* Removed `list` from `GET /agents` response
+For more information, refer to ({kibana-pull}198313[#198313]).
+====
+
+{agent}::
+* Support for `cloud-defend` (Defend for Containers) has been removed in this release. The package has been removed from the {agent} packaging scripts and template Kubernetes files. {agent-pull}5481[#5481]
+* The default values for `username` and `password` have been removed for when {agent} is running in container mode. The {es} `api_key` can now be set in that mode using the `ELASTICSEARCH_API_KEY` environment variable. {agent-pull}5536[#5536]
+* The default Ubuntu-based Docker images used for {agent} have been changed to UBI-minimal-based images, to reduce the overall footprint of the agent Docker images and to improve compliance with enterprise standards. {agent-pull}6427[#6427]
+* The deprecated `--path.install` flag declaration has been removed from the {agent} `paths` command and its use removed from the `container` and `enroll` commands. {agent-pull}6461[#6461] {agent-issue}2489[#2489]
+* The default {agent} installation and ugprade have been changed to include only the `agentbeat`, `endpoint-security` and `pf-host-agent` components. Additional components can be included using flags. {agent-pull}6542[#6542]
+
+[discrete]
+[[new-features-9.0.0-beta1]]
+=== New features
+
+The 9.0.0-beta1 release Added the following new and notable features.
+
+{fleet}::
+* Add new setting allowing automatic deletion of unenrolled agents in {fleet} settings. ({kibana-pull}195544[#195544])
+
+{agent}::
+* Add the Azure Asset Inventory definition to Cloudbeat. {agent-pull}5323[#5323]
+* Add a new Kubernetes deployment of the Elastic Distribution of OTel Collector named "gateway" to the Helm kube-stack deployment. {agent-pull}6444[#6444]
+* Add the filesource providert to composable inputs. The provider watches for changes of the files and updates the values of the variables when the content of the file changes. {agent-pull}6587[#6587] {agent-issue}6362[#6362]
+* Add the jmxreceiver to the Elastic Distribution of OTel Collector. {agent-pull}6601[#6601]
+* Add support for context variables in outputs as well as a default provider prefix. {agent-pull}6602[#6602] {agent-issue}6376[#6376]
+* Add the Nginx receiver and Redis receiver OTel components. {agent-pull}6627[#6627]
+* Add new `--id` (`ELASTIC_AGENT_ID` environment variable for container) and `--replace-token` (`FLEET_REPLACE_TOKEN` environment variable for container) enrollment options. {agent-pull}6498[#6498]
+
+[discrete]
+[[enhancements-9.0.0-beta1]]
+=== Enhancements
+
+{fleet}::
+* Improve filtering and visibility of `Uninstalled` and `Orphaned` agents in {fleet}, by differentiating them from `Offline` agents. ({kibana-pull}205815[#205815])
+* Introduce air-gapped configuration for bundled packages. ({kibana-pull}202435[#202435])
+* Update removed parameters of the {fleet} -> {ls} output configurations. ({kibana-pull}210115[#210115])
+* Update the maximum supported package version. ({kibana-pull}196675[#196675])
+
+{fleet-server}::
+* Replace the use of `context.TODO` and `context.Background` in logger function calls for most use cases. {fleet-server-pull}4168[#4168] {fleet-server-issue}3087[#3087]
+* Refactor the API constructor to use functional opts instead of a long list of pointers. {fleet-server-pull}4169[#4169] {fleet-server-issue}3823[#3823]
+* Remove the deprecated `policy_throttle` configuration setting in favour of the newer `policy-limit`. {fleet-server-pull}4288[#4288]
+* Add the ability for {agent} to enroll using a specific ID. {fleet-server-pull}4290[#4290] {fleet-server-issue}4226[#4226]
+
+{agent}::
+* Add the Filebeat receiver into {agent}. {agent-pull}5833[#5833]
+* Update OTel components to v0.119.0. {agent-pull}6713[#6713]
+
+[discrete]
+[[bug-fixes-9.0.0-beta1]]
+=== Bug fixes
+
+{fleet}::
+* Fix a validation error that occurs on multi-text input fields. ({kibana-pull}205768[#205768])
+
+{fleet-server}::
+* Adding a context timeout to the bulker flush so it times out if it takes more time than the deadline. {fleet-server-pull}3986[#3986]
+* Remove a race condition that may occur when remote {es} outputs are used. {fleet-server-pull}4171[#4171]
+* Use the `chi/middleware.Throttle` package to track in-flight requests and return a 429 response when the limit is reached. {fleet-server-pull}4402[#4402] {fleet-server-issue}4400[#4400]
+
+{agent}::
+* Fix logical race conditions in the `kubernetes_secrets` provider. {agent-pull}6623[#6623]
+* Resolve the proxy to inject into agent component configurations using the Go `http` package. {agent-pull}6675[#6675] {agent-issue}6209[#6209]
+
+// end 9.0.0-beta1 relnotes

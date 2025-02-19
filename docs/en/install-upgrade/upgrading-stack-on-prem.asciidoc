@@ -1,21 +1,28 @@
 [[upgrading-elastic-stack-on-prem]]
 == Upgrade Elastic on self-managed infrastructure 
 
-Once you are <<upgrading-elastic-stack, prepared to upgrade>>,
+When you are <<upgrading-elastic-stack, prepared to upgrade>>,
 you will need to upgrade each of your Elastic components individually.
 
 . Consider closing {ml} jobs before you start the upgrade process. While {ml}
 jobs can continue to run during a rolling upgrade, it increases the overhead
 on the cluster during the upgrade process.
 
-. Upgrade the components of your {stack} in the following order:
+. Upgrade the components of your {stack} in this order:
 +
 
 //.. {es} Hadoop: {hadoop-ref}/install.html[install instructions]
 .. {es}: <<upgrading-elasticsearch, upgrade instructions>>
 .. {kib}: <<upgrading-kibana, upgrade instructions>>
 //.. Java API Client: {java-api-client}/installation.html#maven[dependency configuration]
-.. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions]
+.. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions] (See note below)
 .. {beats}: {beats-ref}/upgrading.html[upgrade instructions]
 .. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
 .. {apm-agent}s {observability-guide}/apm-upgrade.html[upgrade instructions]
+
+.Additional guidance for `logstash-filter-elastic` plugin users
+===
+If you are using {ls} to extend Elastic integrations with the `logstash-filter-elastic_integration` plugin, upgrade {ls} (or the `logstash-filter-elastic_integration` plugin specifically) _before_ you upgrade {kib}.
+ 
+The {es}-{ls}-{kib} installation order for this specific plugin and use case ensures the best experience with {agent}-managed pipelines, and embeds functionality from a version of {es} Ingest Node that is compatible with the plugin version (`major`.`minor`).  
+===

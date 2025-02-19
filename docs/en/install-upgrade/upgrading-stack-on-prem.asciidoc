@@ -22,7 +22,7 @@ on the cluster during the upgrade process.
 
 [NOTE]
 --
-If you are using {ls} to extend Elastic integrations with the {logstash-ref}/plugins-filters-elastic_integration.html[`logstash-filter-elastic_integration`] plugin, upgrade {ls} (or the `logstash-filter-elastic_integration` plugin specifically) _before_ you upgrade {kib}.
+If you are using {ls} and the {logstash-ref}/plugins-filters-elastic_integration.html[`logstash-filter-elastic_integration`] plugin to extend Elastic integrations, upgrade {ls} (or the `logstash-filter-elastic_integration` plugin specifically) _before_ you upgrade {kib}.
  
 The {es}-{ls}-{kib} installation order for this specific plugin ensures the best experience with {agent}-managed pipelines, and embeds functionality from a version of {es} Ingest Node that is compatible with the plugin version (`major`.`minor`).  
 --

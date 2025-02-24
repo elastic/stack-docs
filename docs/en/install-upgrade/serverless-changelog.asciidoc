@@ -11,6 +11,42 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-02242025]]
+=== February 24, 2025
+
+[discrete]
+[[features-02242025]]
+==== Features and enhancements
+* Exposes SSL options for {es} and remote {es} outputs in the UI ({kibana-pull}208745[#208745]).
+* Displays a warning and a tooltip for the `_score` column in the Discover grid ({kibana-pull}211013[#211013]).
+* Allows command/ctrl click for the "New" action in the top navigation ({kibana-pull}210982[#210982]).
+* Adds the ability for a user to create an API Key in synthetics settings that applies only to specified space(s) ({kibana-pull}211816[#211816]).
+* Adds "unassigned" as an asset criticality level for `bulk_upload` ({kibana-pull}208884[#208884]).
+* Sets the Enable visualizations in flyout advanced setting to "On" by default ({kibana-pull}211319[#211319]).
+* Preserves user-made chart configurations when changing the query if the actions are compatible with the current chart, such as adding a "where" filter or switching compatible chart types. ({kibana-pull}210780[#210780]).
+* Adds effects when clicking the favorite button in the list of dashboards and ES|QL queries, and adds favorite button to breadcrumb trails ({kibana-pull}201596[#201596]).
+* Enable `/api/streams/{id}/_group` endpoints for GroupStreams ({kibana-pull}210114[#210114]).
+
+[discrete]
+[[fixes-02242025]]
+==== Fixes
+* Fixes Discover session embeddable drilldown ({kibana-pull}211678[#211678]).
+* Passes system message to inferenceCliente.chatComplete ({kibana-pull}211263[#211263]).
+* Ensures system message is passed to the inference plugin ({kibana-pull}209773[#209773]).
+* Adds automatic re-indexing when encountering `semantic_text` bug ({kibana-pull}210386[#210386]).
+* Removes unnecessary breadcrumbs in profiling ({kibana-pull}211081[#211081]).
+* Adds minHeight to profiler flamegraphs ({kibana-pull}210443[#210443]).
+* Adds system message in copy conversation JSON payload ({kibana-pull}212009[#212009]).
+* Changes the confirmation message after RiskScore Saved Object configuration is updated ({kibana-pull}211372[#211372]).
+* Adds a no data message in the flyout when an analyzer is not enabled ({kibana-pull}211981[#211981]).
+* Fixes the Fleet Save and continue button ({kibana-pull}211563[#211563]).
+* Suggest triple quotes when the user selects the `KQL` / `QSTR` ({kibana-pull}211457[#211457]).
+* Adds remote cluster instructions for syncing integrations ({kibana-pull}211997[#211997]).
+* Allows deploying a model after a failed deployment in Machine Learning ({kibana-pull}211459[#211459]).
+* Ensures the members array is unique for GroupStreamDefinitions ({kibana-pull}210089[#210089]).
+* Improves function search for easier navigation and discovery ({kibana-pull}210437[#210437]).
+
+[discrete]
 [[serverless-changelog-02172025]]
 === February 17, 2025
 

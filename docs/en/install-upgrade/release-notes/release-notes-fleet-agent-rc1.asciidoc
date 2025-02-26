@@ -15,3 +15,21 @@
 == {fleet} and {agent} 9.0.0-rc1
 
 coming::[9.0.0-rc1]
+
+[discrete]
+[[security-updates-9.0.0-rc1]]
+=== Security updates
+
+{agent}::
+* Update Go version to 1.22.12. {agent-pull}6700[#6700]
+
+// end 9.0.0-rc1 relnotes
+
+[discrete]
+[[bug-fixes-9.0.0-rc1]]
+=== Bug fixes
+
+{agent}::
+* Change how Windows process handles are obtained when assigning sub-processes to Job objects. {agent-pull}6825[#6825]
+* Fix a potential deadlock case in OTelManager error handling. {agent-pull}6927[#6927] {agent-issue}6119[#6119]
+* Fix the TSDB `version_conflict_engine_exception` error caused by incorrect `kube-stack` Helm values. {agent-pull}6928[#6928]

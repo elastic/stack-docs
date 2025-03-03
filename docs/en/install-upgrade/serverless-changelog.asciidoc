@@ -11,6 +11,36 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-03032025]]
+=== March 3, 2025
+
+[discrete]
+[[features-enhancements-03032025]]
+==== New features
+* Introduces a background task that streamlines the upgrade process for agentless deployments in Elastic Security Serverless ({kibana-pull}207143[#207143]).
+* Improves asset inventory onboarding with better context integration in Elastic Security Serverless ({kibana-pull}212315[#212315]).
+* Adds syntax highlighting for working with ES|QL queries in Elastic Observability Serverless ({kibana-pull}212669[#212669]).
+* Updates the delete confirmation modal in Elastic Observability Serverless ({kibana-pull}212695[#212695]).
+* Removes the enablement check in `PUT /api/streams/{id}` for classic streams ({kibana-pull}212289[#212289]).
+
+[discrete]
+[[fixes-03032025]]
+==== Fixes
+* Fixes issues affecting popularity scores in Discover ({kibana-pull}211201[#211201]).
+* Corrects sorting behavior in the profiler storage explorer for Elastic Observability Serverless ({kibana-pull}212583[#212583]).
+* Adds a loader to prevent flickering in the KB settings tab in Elastic Observability Serverless ({kibana-pull}212678[#212678]).
+* Resolves incorrect enable button behavior in the Entity Store modal in Elastic Security Serverless ({kibana-pull}212078[#212078]).
+* Converts the isolate host action into a standalone flyout in Elastic Security Serverless ({kibana-pull}211853[#211853]).
+* Ensures model responses are correctly persisted to the chosen conversation ID in Elastic Security Serverless ({kibana-pull}212122[#212122]).
+* Corrects image resizing issues for `xpack.security.loginAssistanceMessage` in Elastic Security Serverless ({kibana-pull}212035[#212035]).
+* Fixes automatic import to correctly generate pipelines for parsing CSV files with special characters in Elastic Security Serverless column names ({kibana-pull}212513[#212513]).
+* Fixes validation issues for empty EQL queries in Elastic Security Serverless ({kibana-pull}212117[#212117]).
+* Resolves dual hover actions in the table tab in Elastic Security Serverless ({kibana-pull}212316[#212316]).
+* Updates structured log processing to support multiple log types in Elastic Security Serverless ({kibana-pull}212611[#212611]).
+* Ensures the delete model dialog prevents accidental multiple clicks in Machine Learning ({kibana-pull}211580[#211580]).
+
+
+[discrete]
 [[serverless-changelog-02242025]]
 === February 24, 2025
 

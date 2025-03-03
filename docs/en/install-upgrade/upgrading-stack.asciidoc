@@ -139,7 +139,7 @@ The {anomaly-detect} result indices `.ml-anomalies-*` created in {es} 7.x must b
 
 **Reindexing**: While {anomaly-detect} results are being reindexed, jobs continue to run and process new data. However, you cannot completely delete an {anomaly-job} that stores results in this index until the reindexing is complete.
 
-**Marking indices as read-only**: This is useful for large indexes that contain the results of only one or a few {anomaly-jobs}. If you delete these jobs later, you will not be able to create a new job with the same name.
+**Marking indices as read-only**: This is useful for large indexes that contain the results of only one or a few {anomaly-jobs}. You need to update or delete all obsolete model snapshots before using this option. If you delete these jobs later, you will not be able to create a new job with the same name.
 
 **Deleting**: Delete jobs that are no longer needed in the {ml-app} app in {kib}. The result index is deleted when all jobs that store results in it have been deleted.
 
@@ -371,6 +371,8 @@ POST _aliases
 [%collapsible]
 ====
 Legacy indices created in {es} 7.x can be made read-only and supported in {es} 9.x. Making an index with a large amount of historical results read-only allows for a quick migration to the next major release, since you don't have to wait for the data to be reindexed into the new format. However, it has the limitation that even after deleting an {anomaly-job}, the historical results associated with this job are not completely deleted. Therefore, the system will prevent you from creating a new job with the same name.
+
+Be sure to resolve any obsolete model snapshot warnings before marking the index read-only.
 
 To set the index as read-only, add the write block to the index:
 

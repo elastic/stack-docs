@@ -510,7 +510,7 @@ POST _transform/my-transform/_reset
 .Reindexing the transform’s destination index while the Transform is paused
 [%collapsible]
 ====
-When Kibana’s Upgrade Assistant reindexes the documents, Kibana will put a write block on the old destination index, copy the results to a new index, delete the old index, and create an alias to the new index. During the time, the Transform will pause and wait for the destination to become writable again.  If you do not want the Transform to pause, continue to <<breaking_90_transform_reindex_running, reindexing while running>>.
+When Kibana’s Upgrade Assistant reindexes the documents, Kibana will put a write block on the old destination index, copy the results to a new index, delete the old index, and create an alias to the new index. During the time, the Transform will pause and wait for the destination to become writable again.  If you do not want the Transform to pause, continue to <<reindexing-transform-running>>.
 
 If an index is less than 10GB of size, we recommend using Kibana’s Upgrade Assistant to automatically migrate the index.
 

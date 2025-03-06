@@ -464,7 +464,7 @@ The {transform} destination indices created in {es} 7.x must be either reset, re
 
 **Reindexing**: You can reindex the destination index and then update the {transform} to write to the new destination index. This is useful if there are results that you want to retain that may not exist in the source index. To prevent the {transform} and reindex tasks from conflicting with one another, you can either pause the {transform} while the reindex runs, or you can write to the new destination index while the reindex backfills old results.
 
-**Deleting**: You can delete any Transforms that are no longer being used. Once the Transform is deleted, you can either delete the destination index or move it into readonly.
+**Deleting**: You can delete any {transform} that are no longer being used. Once the {transform} is deleted, you can either delete the destination index or make it read-only.
 
 .Which indices require attention?
 [%collapsible]

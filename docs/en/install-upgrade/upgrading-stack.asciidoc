@@ -458,7 +458,7 @@ endif::[]
 [[breaking_90_transform_destination_index]]
 === {transform-cap} destination indices migration
 
-The transform destination indices created in Elasticsearch 7.x must be either reset, reindexed, or deleted before upgrading to 9.x.
+The {transform} destination indices created in {es} 7.x must be either reset, reindexed, or deleted before upgrading to 9.x.
 
 **Resetting**: You can reset the Transform to delete all state, checkpoints, and the destination index (if it was created by the Transform). The next time you start the Transform, it will reprocess all data from the source index, creating a new destination index in Elasticsearch 8.x compatible with 9.x. However, if data had been deleted from the source index, you will lose all previously computed results that had been stored in the destination index.
 

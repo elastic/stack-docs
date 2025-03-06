@@ -460,7 +460,7 @@ endif::[]
 
 The {transform} destination indices created in {es} 7.x must be either reset, reindexed, or deleted before upgrading to 9.x.
 
-**Resetting**: You can reset the Transform to delete all state, checkpoints, and the destination index (if it was created by the Transform). The next time you start the Transform, it will reprocess all data from the source index, creating a new destination index in Elasticsearch 8.x compatible with 9.x. However, if data had been deleted from the source index, you will lose all previously computed results that had been stored in the destination index.
+**Resetting**: You can reset the {transform} to delete all state, checkpoints, and the destination index (if it was created by the {transform}). The next time you start the {transform}, it will reprocess all data from the source index, creating a new destination index in {es} 8.x compatible with 9.x. However, if data had been deleted from the source index, you will lose all previously computed results that had been stored in the destination index.
 
 **Reindexing**: You can reindex the destination index and then update the Transform to write to the new destination index. This is useful if there are results that you want to retain that may not exist in the source index. In order to prevent the Transform and Reindex tasks from conflicting with one another, you can either pause the Transform while the Reindex runs, or you can write to the new destination index while the Reindex backfills old results.
 

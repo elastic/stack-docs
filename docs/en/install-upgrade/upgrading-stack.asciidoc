@@ -469,7 +469,6 @@ The transform destination indices created in Elasticsearch 7.x must be either re
 .Which indices require attention?
 [%collapsible]
 ====
-
 To identify indices that require action, use the https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-migration-deprecations-1[Deprecation info API]:
 
 [source,console]
@@ -493,11 +492,11 @@ The response contains the list of critical deprecation warnings in the `index_se
     ]
   }
 ----
+====
 
 .Resetting the transform
 [%collapsible]
 ====
-
 If the index was created by the Transform, you can use the https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-reset-transform[Transform Reset API] to delete the destination index and recreate it the next time the Transform runs.
 
 If the index was not created by the Transform, and you still want to reset it, you can manually delete and recreate the index, then call the Reset API.
@@ -506,11 +505,12 @@ If the index was not created by the Transform, and you still want to reset it, y
 ----
 POST _transform/my-transform/_reset
 ----
+====
 
 .Reindexing the transform’s destination index while the Transform is paused
 [%collapsible]
 ====
-When Kibana’s Upgrade Assistant reindexes the documents, Kibana will put a write block on the old destination index, copy the results to a new index, delete the old index, and create an alias to the new index. During the time, the Transform will pause and wait for the destination to become writable again.  If you do not want the Transform to pause, continue to [insert link to next section TODO].
+When Kibana’s Upgrade Assistant reindexes the documents, Kibana will put a write block on the old destination index, copy the results to a new index, delete the old index, and create an alias to the new index. During the time, the Transform will pause and wait for the destination to become writable again.  If you do not want the Transform to pause, continue to <<breaking_90_transform_reindex_running, reindexing while running>>.
 
 If an index is less than 10GB of size, we recommend using Kibana’s Upgrade Assistant to automatically migrate the index.
 
@@ -709,6 +709,7 @@ POST _aliases
 ----
 ====
 
+[[reindexing-transform-running]]
 .Reindexing the transform’s destination index while the Transform is running
 [%collapsible]
 ====

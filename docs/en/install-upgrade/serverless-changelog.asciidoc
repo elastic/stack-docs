@@ -11,6 +11,52 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-03102025]]
+=== March 10, 2025
+
+[discrete]
+[[features-enhancements-03102025]]
+==== New features and enhancements
+* The Create Rule flyout, used by solutions, now features the improved rule form in Elastic Observability Serverless  ({kibana-pull}206685[#206685]).
+* Resolves duplicate conversations in Elastic Observability Serverless ({kibana-pull}208044[#208044]).
+* Split the SLO Details view from the Overview page in Elastic Observability Serverless ({kibana-pull}212826[#212826]).
+* Adds the reason message to the rules recovery context in Elastic Observability Serverless ({kibana-pull}211411[#211411]).
+* Runtime metrics dashboards now support different ingest paths in Elastic Observability Serverless ({kibana-pull}211822[#211822]).
+* Adds SSL options for Fleet Server hosts settings in Fleet ({kibana-pull}208091[#208091]).
+* Introduces globe projection for Dashboards and visualizations ({kibana-pull}212437[#212437]).
+* Registered a custom integrations search provider in Fleet ({kibana-pull}213013[#213013]).
+* Adds support for searchAfter and PIT (point-in-time) parameters in the Get Agents List API in Fleet ({kibana-pull}213486[#213486]).
+
+[discrete]
+[[fixes-03102025]]
+==== Fixes
+* Fixes an issue where Korean characters were split into two characters with a space in between when typing in the options list search input in Dashboards and visualizations ({kibana-pull}213164[#213164]).
+* Prevented crashes when editing a Lens chart with a by-reference annotation layer in Dashboards and visualizations ({kibana-pull}213090[#213090]).
+* Improves instructions for the summarize function in Elastic Observability Serverless ({kibana-pull}212936[#212936]).
+* Fixes a "Product Documentation function not available" error in Elastic Observability Serverless ({kibana-pull}212676[#212676]).
+* Fixes conversation tests in Elastic Observability Serverless ({kibana-pull}213338[#213338]).
+* Allowed wildcard filters in SLO queries in Elastic Observability Serverless ({kibana-pull}213119[#213119]).
+* Fixes missing summary data in error samples in Elastic Observability Serverless ({kibana-pull}213430[#213430]).
+* Fixes a failing test: Stateful Observability - Deployment-agnostic A… in Elastic Observability Serverless ({kibana-pull}213530[#213530]).
+* Reduced the review rule upgrade endpoint response size in Elastic Security Serverless ({kibana-pull}211045[#211045]).
+* Refactors conversation pagination in Elastic Security Serverless ({kibana-pull}211831[#211831]).
+* Fixes alert insights color order in Elastic Security Serverless ({kibana-pull}212980[#212980]).
+* Prevented empty conversation IDs in the chat/complete route in Elastic Security Serverless ({kibana-pull}213049[#213049]).
+* Fixes issues with unstructured syslog flow in Elastic Security Serverless ({kibana-pull}213042[#213042]).
+* Adds bulkGetUserProfiles privilege to Security Feature in Elastic Security Serverless ({kibana-pull}211824[#211824]).
+* Fixes a Risk Score Insufficient Privileges warning due to missing cluster privileges in Elastic Security Serverless ({kibana-pull}212405[#212405]).
+* Updates Bedrock prompts in Elastic Security Serverless ({kibana-pull}213160[#213160]).
+* Adds organizationId and projectId OpenAI headers, along with support for arbitrary headers in Elastic Security Serverless ({kibana-pull}213117[#213117]).
+* Ensures dataview selections persist reliably in timeline for Elastic Security Serverless ({kibana-pull}211343[#211343]).
+* Fixes incorrect validation when a named parameter was used as a function in ES|QL ({kibana-pull}213355[#213355]).
+* Fixes incorrect overall swim lane height in Machine Learning ({kibana-pull}213245[#213245]).
+* Prevented a crash when applying a filter in the Machine Learning anomaly table ({kibana-pull}213075[#213075]).
+* Fixes suppressed alerts alignment in the alert flyout in Elastic Security Serverless ({kibana-pull}213029[#213029]).
+* Fixes an issue in solution project navigation where panels sometimes failed to toggle closed ({kibana-pull}211852[#211852]).
+* Updates wording for options in the sortBy dropdown component ({kibana-pull}206464[#206464]).
+* Allowed EU hooks hostname in the Torq connector for Elastic Security Serverless ({kibana-pull}212563[#212563]).
+
+[discrete]
 [[serverless-changelog-03032025]]
 === March 3, 2025
 

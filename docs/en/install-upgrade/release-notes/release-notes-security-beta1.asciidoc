@@ -1,0 +1,60 @@
+= {elastic-sec} version 9.0.0-beta1
+
+[discrete]
+[[breaking-changes-9.0.0-beta]]
+== Breaking changes
+* Refactors the Timeline HTTP API endpoints ({kibana-pull}200633[#200633]).
+* Removes deprecated API endpoints for {elastic-defend} ({kibana-pull}199598[#199598]).
+* Removes deprecated API endpoints for bulk CRUD actions on detection rules ({kibana-pull}197422[#197422], {kibana-pull}207906[#207906]).
+
+[discrete]
+[[deprecations-9.0.0-beta]]
+== Deprecations
+* Renames the `integration-assistant` plugin to `automatic-import` to match the associated feature ({kibana-pull}207325[#207325]).
+* Removes all legacy risk engine code and features ({kibana-pull}201810[#201810]).
+* Removes deprecated API endpoints for {elastic-defend} ({kibana-pull}199598[#199598]).
+* Deprecates the SIEM signals migration APIs ({kibana-pull}202662[#202662]). 
+
+[discrete]
+[[known-issue-9.0.0-beta]]
+== Known issues
+
+// tag::known-issue[]
+[discrete]
+.Duplicate alerts can be produced from manually running threshold rules 
+[%collapsible]
+====
+*Details* +
+On November 12, 2024, it was discovered that manually running threshold rules could produce duplicate alerts if the date range was already covered by a scheduled rule execution.
+====
+// end::known-issue[]
+
+// tag::known-issue[]
+[discrete]
+.Manually running custom query rules with suppression could suppress more alerts than expected
+[%collapsible]
+====
+*Details* +
+On November 12, 2024, it was discovered that manually running a custom query rule with suppression could incorrectly inflate the number of suppressed alerts. 
+====
+// end::known-issue[]
+
+[discrete]
+[[features-9.0.0-beta]]
+== New features
+* Enables Automatic Import to accept CEL log samples ({kibana-pull}206491[#206491]).
+* Applies the latest Elastic UI framework (EUI) to {elastic-sec} features ({kibana-pull}204007[#204007], {kibana-pull}204908[#204908]).
+* Adds the option to view {es} queries that run during rule execution for threshold, custom query, and {ml} rules ({kibana-pull}203320[#203320]). 
+
+[discrete]
+[[enhancements-9.0.0-beta]]
+== Enhancements
+* Enhances Automatic Import by including setup and troubleshooting documentation for each input type that's selected in the readme ({kibana-pull}206477[#206477]).
+* Allows users to include `closed` alerts in risk score calculations ({kibana-pull}201909[#201909]).
+* Adds the ability to continue to the Entity Analytics dashboard when there is no data ({kibana-pull}201363[#201363]).
+* Modifies the privilege-checking behavior during rule execution. Now, only read privileges of extant indices are checked during rule execution ({kibana-pull}177658[#177658]).
+
+[discrete]
+[[bug-fixes-9.0.0-beta]]
+== Bug fixes
+* Ensures that table actions use standard colors ({kibana-pull}207743[#207743]).

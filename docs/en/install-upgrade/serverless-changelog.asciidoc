@@ -11,6 +11,58 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-03102025]]
+=== March 10, 2025
+
+[discrete]
+[[features-03102025]]
+==== New features
+* Uses the new and improved rule form for the create rule flyout in {obs-serverless} ({kibana-pull}206685[#206685]).
+* Adds the ability for the AI Assistant to duplicate conversations in {obs-serverless} ({kibana-pull}208044[#208044]).
+* Refines the *Overview* tab on the SLOs page in {obs-serverless} to show only key metrics and static data, making charts more accessible. ({kibana-pull}212826[#212826]).
+* Adds the ability for users to manage detection rules externally by utilizing the https://dac-reference.readthedocs.io/en/latest/dac_concept_and_workflows.html[Detection-as-Code principles]. To get started, refer to the https://github.com/elastic/detection-rules/blob/main/README.md#detections-as-code-dac[Elastic detection-rules repository DaC documentation].
+* Adds SSL options to {fleet-server} hosts settings in {fleet} ({kibana-pull}208091[#208091]).
+
+[discrete]
+[[enhancements-03102025]]
+==== Enhancements
+* Adds globe projection to newly created maps in Dashboards and Visualizations ({kibana-pull}212437[#212437]).
+* Adds a reason message to all rules for recovered action groups and enables recovery context for APM rules in {obs-serverless} ({kibana-pull}211411[#211411]).
+* Adds dashboards that show runtime metrics based on the agent ({kibana-pull}211822[#211822]).
+Fleet
+* Adds custom integrations to global search in {fleet} ({kibana-pull}213013[#213013]).
+* Adds support for `searchAfter` and PIT (point-in-time) parameters for the "get agents list" API in {fleet} ({kibana-pull}213486[#213486]).
+
+[discrete]
+[[fixes-03102025]]
+==== Fixes
+* Fixes an issue where Korean characters split into two characters with a space in between in Dashboards and Visualizations ({kibana-pull}213164[#213164]).
+* Fixes an issue where the Lens inline editor broke when trying to edit a visualization with a static value in Dashboards and Visualizations ({kibana-pull}213090[#213090]).
+* Fixes an issue in solution project navigation where panels would sometimes not properly toggle closed ({kibana-pull}211852[#211852]).
+* Changes the wording in the *Sort by* dropdown component in Design ({kibana-pull}206464[#206464]).
+* Improves instructions for the AI Assistant's summarize function in {obs-serverless} ({kibana-pull}212936[#212936]).
+* Fixes an error in the AI Assistant that previously failed to retrieve product documentation when a user asked about the {stack} in {obs-serverless} ({kibana-pull}212676[#212676]).
+* Updates an AI Assistant API that allows users to duplicate their private conversations in {obs-serverless} ({kibana-pull}213338[#213338]).
+* Fixes an AI Assistant API that previously caused a failure in an exact string match in {obs-serverless} ({kibana-pull}213530[#213530]).
+* Allows SLO query wild card filters when both KQL and DSL filters are used in {obs-serverless}. ({kibana-pull}213119[#213119]).
+* Fixes missing summary data in the service inventory error sample in {obs-serverless} ({kibana-pull}213430[#213430]).
+* Makes significant memory consumption improvements to prebuilt rule endpoints to address Out of memory (OOM) errors in {sec-serverless} ({kibana-pull}211045[#211045]).
+* Makes several improvements and optimizations to the AI Assistant UI and backend logic to address performance issues, particularly Out of memory (OOM) errors in {sec-serverless} ({kibana-pull}211831[#211831]).
+* Fixes the alert insights color order in {sec-serverless} ({kibana-pull}212980[#212980]).
+* Do not allow empty conversation ID in chat/complete route ({kibana-pull}213049[#213049]).
+* Fixes the unstructured syslog flow by breaking it into a JSON for ECS mapping, categorization, and related graphs in {sec-serverless} ({kibana-pull}213042[#213042]).
+* Fixes an error that occurred when assigning an alert to a user in {sec-serverless} ({kibana-pull}211824[#211824]).
+* Fixes a bug that prevents a user with missing cluster privileges from enabling the risk score in {sec-serverless} ({kibana-pull}212405[#212405]).
+* Fixes an issue with AI Assistant that gave partial responses when using the AWS Bedrock connector in {sec-serverless} ({kibana-pull}213160[#213160]).
+* Adds `organizationId` and `projectId` OpenAI headers, and an arbitrary header in {sec-serverless} ({kibana-pull}213117[#213117]).
+* Fixes the alignment that shows suppressed alerts in the alert details flyout in {sec-serverless} ({kibana-pull}213029[#213029]).
+* Allows the Torq connector to support EU domains in {sec-serverless} ({kibana-pull}212563[#212563]).
+* Fixes a bug to retain Data view selections for Timeline in {sec-serverless} ({kibana-pull}211343[#211343]).
+* Fixes the wrong validation when function-named parameters were used in {esql} ({kibana-pull}213355[#213355]).
+* Fixes the incorrect overall swim lane height in Anomaly Explorer in {ml-cap} ({kibana-pull}213245[#213245]).
+* Fixes a bug to prevent the anomaly table filter from crashing in {ml-cap} ({kibana-pull}213075[#213075]).
+
+[discrete]
 [[serverless-changelog-03032025]]
 === March 3, 2025
 

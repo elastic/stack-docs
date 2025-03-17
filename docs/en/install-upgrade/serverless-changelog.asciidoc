@@ -11,6 +11,52 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-03172025]]
+=== March 17, 2025
+
+[discrete]
+[[features-03172025]]
+==== Features and enhancements
+* Enables read-only editor mode in Lens to explore panel configuration ({kibana-pull}208554[#208554]).
+* Allows sharing of Observability AI Assistant conversations ({kibana-pull}211854[#211854]).
+* Adds context-aware logic to Logs view in Discover ({kibana-pull}211176[#211176]).
+* Replaces the Alerts status filter with filter controls ({kibana-pull}198495[#198495]).
+* Adds SSL fields to agent binary source settings ({kibana-pull}213211[#213211]).
+* Allows users to create a snooze schedule for rules via API ({kibana-pull}210584[#210584]).
+* Splits up the top dependencies API for improved speed and response size ({kibana-pull}211441[#211441]).
+* Adds working default metrics dashboard for Python OTel ({kibana-pull}213599[#213599]).
+* Includes spaceID in SLI documents ({kibana-pull}214278[#214278]).
+* Adds support for the MV_EXPAND command with the ES|QL rule type ({kibana-pull}212675[#212675]).
+* Enables endpoint actions for events ({kibana-pull}206857[#206857]).
+
+[discrete]
+[[fixes-03172025]]
+==== Fixes
+* Fixes a bug with ServiceNow where users could not create the connector from the UI form using OAuth ({kibana-pull}213658[#213658]).
+* Prevents unnecessary re-render when switching between View and Edit modes ({kibana-pull}213902[#213902]).
+* Adds `event-annotation-group` to saved object privileges for dashboards ({kibana-pull}212926[#212926]).
+* Makes the Inspect configuration button permanently visible ({kibana-pull}213619[#213619]).
+* Fixes service maps not building paths when the trace's root transaction has a `parent.id` ({kibana-pull}212998[#212998]).
+* Fixes span links with OTel data ({kibana-pull}212806[#212806]).
+* Makes {kib} retrieval namespace-specific ({kibana-pull}213505[#213505]).
+* Ensures semantic queries contribute to scoring when retrieving knowledge from search connectors ({kibana-pull}213870[#213870]).
+* Passes telemetry.sdk* data when loading a dashboard ({kibana-pull}214356[#214356]).
+* Fixes `checkPrivilege` to query with indices ({kibana-pull}214002[#214002]).
+* Adds support for rollup data views that reference aliases ({kibana-pull}212592[#212592]).
+* Fixes an issue with the Save button not working when editing event filters ({kibana-pull}213805[#213805]).
+* Fixes dragged elements becoming invisible when dragging-and-dropping in Lens ({kibana-pull}213928[#213928]).
+* Fixes alignment of the Alerts table in the Rule Preview panel ({kibana-pull}214028[#214028]).
+* Fixes Bedrock defaulting region to `us-east-1` ({kibana-pull}214251[#214251]).
+* Fixes an issue with the Agent binary download field being blank when a policy uses the default download source ({kibana-pull}214360[#214360]).
+* Fixes navigation issues with alert previews ({kibana-pull}213455[#213455]).
+* Fixes an issue with changing the width of a Timeline column width bug ({kibana-pull}214178[#214178]).
+* Reworks the `enforce_registry_filters` advanced option in Elastic Defend to align with Endpoint ({kibana-pull}214106[#214106]).
+* Ensures cell actions are initialized in Event Rendered view and fixes cell action handling for nested event renderers ({kibana-pull}212721[#212721]).
+* Supports `date_nanos` in `BUCKET` in the ES|QL editor ({kibana-pull}213319[#213319]).
+* Fixes appearance of warnings in the ES|QL editor ({kibana-pull}213685[#213685]).
+* Makes the Apply time range switch visible in the Job selection flyout when opened from the Anomaly Explorer ({kibana-pull}213382[#213382]).
+
+[discrete]
 [[serverless-changelog-03102025]]
 === March 10, 2025
 

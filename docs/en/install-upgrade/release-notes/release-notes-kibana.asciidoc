@@ -96,8 +96,18 @@ The deprecated legacy alerts routes `api/alerts/alert` were removed. For more in
 .Disabled search sessions by default.
 [%collapsible]
 ====
+
+Search sessions are now disabled by default. For more information, refer to (#203927).
+
 *Details* +
-Search sessions are now disabled by default. For more information, refer to ({kibana-pull}203927[#203927]).
+The button in Discover and Dashboards to create a new search session will no longer appear.
+
+*Impact* +
+This impacts all users.
+
+*Action* +
+To enable search sessions for all users, please set `data.search.sessions.enabled: true` in `kibana.yml`.
+
 ====
 
 //Already added to upgrade notes   

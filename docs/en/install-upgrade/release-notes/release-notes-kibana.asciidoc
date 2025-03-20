@@ -137,8 +137,10 @@ Existing user roles that were previously implicitly granted access to saved quer
 .Removed `discover:searchFieldsFromSource` setting.
 [%collapsible]
 ====
+The `discover:searchFieldsFromSource` advanced setting has been removed.
+
 *Details* +
-For more information, refer to ({kibana-pull}202679[#202679]).
+Users can no longer configure Discover to load fields from `_source`. This is an internal optimization and should have little impact on users. https://github.com/elastic/kibana/pull/202679
 ====
 
 //Needs to be added to upgrade notes and detailed           

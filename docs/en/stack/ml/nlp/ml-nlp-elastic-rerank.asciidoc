@@ -51,6 +51,8 @@ To download and deploy Elastic Rerank, use the {ref}/infer-service-elasticsearch
 Refer to this https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/search/12-semantic-reranking-elastic-rerank.ipynb[Python notebook] for an end-to-end example using Elastic Rerank.
 ====
 
+NOTE: The relevance scores produced during reranking depend on the text similarity model used and can include negative values.
+
 [discrete]
 [[ml-nlp-rerank-deploy-steps]]
 === Create an inference endpoint

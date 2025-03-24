@@ -16,7 +16,7 @@ Detect anomalous activity in your ECS-compatible authentication logs.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -24,7 +24,7 @@ for data that matches the query.
 By default, when you create these job in the {security-app}, it uses a
 {data-source} that applies to multiple indices. To get the same results if you
 use the {ml-app} app, create a similar 
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}]
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}]
 then select it in the job wizard.
 
 // tag::security-authentication-jobs[]
@@ -34,38 +34,38 @@ then select it in the job wizard.
 
 |auth_high_count_logon_events
 |Looks for an unusually large spike in successful authentication events. This can be due to password spraying, user enumeration, or brute force activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_events.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_events.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_events.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_events.json[image:images/link.svg[A link icon]]
 
 |auth_high_count_logon_events_for_a_source_ip
 |Looks for an unusually large spike in successful authentication events from a particular source IP address. This can be due to password spraying, user enumeration or brute force activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_events_for_a_source_ip.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_events_for_a_source_ip.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_events_for_a_source_ip.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_events_for_a_source_ip.json[image:images/link.svg[A link icon]]
 
 |auth_high_count_logon_fails
 |Looks for an unusually large spike in authentication failure events. This can be due to password spraying, user enumeration, or brute force activity and may be a precursor to account takeover or credentialed access.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_fails.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_fails.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/auth_high_count_logon_fails.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_high_count_logon_fails.json[image:images/link.svg[A link icon]]
 
 |auth_rare_hour_for_a_user
 |Looks for a user logging in at a time of day that is unusual for the user. This can be due to credentialed access via a compromised account when the user and the threat actor are in different time zones. In addition, unauthorized user activity often takes place during non-business hours.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_hour_for_a_user.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_hour_for_a_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_hour_for_a_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_hour_for_a_user.json[image:images/link.svg[A link icon]]
 
 |auth_rare_source_ip_for_a_user
 |Looks for a user logging in from an IP address that is unusual for the user. This can be due to credentialed access via a compromised account when the user and the threat actor are in different locations. An unusual source IP address for a username could also be due to lateral movement when a compromised account is used to pivot between hosts.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_source_ip_for_a_user.json[image:images/link.svg[A link icon]]
-| https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_source_ip_for_a_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_source_ip_for_a_user.json[image:images/link.svg[A link icon]]
+| https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_source_ip_for_a_user.json[image:images/link.svg[A link icon]]
 
 |auth_rare_user
 |Looks for an unusual user name in the authentication logs. An unusual user name is one way of detecting credentialed access by means of a new or dormant user account. A user account that is normally inactive, because the user has left the organization, which becomes active, may be due to credentialed access using a compromised account password. Threat actors will sometimes also create new users as a means of persisting in a compromised web application.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_user.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/auth_rare_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_auth_rare_user.json[image:images/link.svg[A link icon]]
 
 |suspicious_login_activity
 |Detect unusually high number of authentication attempts.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_suspicious_login_activity.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/ml/suspicious_login_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/datafeed_suspicious_login_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/ml/suspicious_login_activity.json[image:images/link.svg[A link icon]]
 
 |===
 
@@ -79,7 +79,7 @@ Detect suspicious activity recorded in your CloudTrail logs.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_cloudtrail/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -90,28 +90,28 @@ for data that matches the query.
 
 |high_distinct_count_error_message
 |Looks for a spike in the rate of an error message which may simply indicate an impending service failure but these can also be byproducts of attempted or successful persistence, privilege escalation, defense evasion, discovery, lateral movement, or collection activity by a threat actor.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/high_distinct_count_error_message.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/datafeed_high_distinct_count_error_message.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/high_distinct_count_error_message.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/datafeed_high_distinct_count_error_message.json[image:images/link.svg[A link icon]]
 
 |rare_error_code
 |Looks for unusual errors. Rare and unusual errors may simply indicate an impending service failure but they can also be byproducts of attempted or successful persistence, privilege escalation, defense evasion, discovery, lateral movement, or collection activity by a threat actor.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/rare_error_code.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/datafeed_rare_error_code.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/rare_error_code.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/datafeed_rare_error_code.json[image:images/link.svg[A link icon]]
 
 |rare_method_for_a_city
 |Looks for AWS API calls that, while not inherently suspicious or abnormal, are sourcing from a geolocation (city) that is unusual. This can be the result of compromised credentials or keys.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/rare_method_for_a_city.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/datafeed_rare_method_for_a_city.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/rare_method_for_a_city.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/datafeed_rare_method_for_a_city.json[image:images/link.svg[A link icon]]
 
 |rare_method_for_a_country
 |Looks for AWS API calls that, while not inherently suspicious or abnormal, are sourcing from a geolocation (country) that is unusual. This can be the result of compromised credentials or keys.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/rare_method_for_a_country.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/datafeed_rare_method_for_a_country.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/rare_method_for_a_country.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/datafeed_rare_method_for_a_country.json[image:images/link.svg[A link icon]]
 
 |rare_method_for_a_username
 |Looks for AWS API calls that, while not inherently suspicious or abnormal, are sourcing from a user context that does not normally call the method. This can be the result of compromised credentials or keys as someone uses a valid account to persist, move laterally, or exfil data.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/rare_method_for_a_username.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_cloudtrail/ml/datafeed_rare_method_for_a_username.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/rare_method_for_a_username.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/ml/datafeed_rare_method_for_a_username.json[image:images/link.svg[A link icon]]
 
 |===
 // end::security-cloudtrail-jobs[]
@@ -124,7 +124,7 @@ Anomaly detection jobs for Linux host-based threat hunting and detection.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -136,74 +136,74 @@ for data that matches the query.
 
 |v3_linux_anomalous_network_activity
 |Looks for unusual processes using the network which could indicate command-and-control, lateral movement, persistence, or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_network_activity.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_network_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_network_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_network_activity.json[image:images/link.svg[A link icon]]
 
 
 |v3_linux_anomalous_network_port_activity
 |Looks for unusual destination port activity that could indicate command-and-control, persistence mechanism, or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_network_port_activity.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_network_port_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_network_port_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_network_port_activity.json[image:images/link.svg[A link icon]]
 
 |v3_linux_anomalous_process_all_hosts
 |Looks for processes that are unusual to all Linux hosts. Such unusual processes may indicate unauthorized software, malware, or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
 
 |v3_linux_anomalous_user_name
 |Rare and unusual users that are not normally active may indicate unauthorized changes or activity by an unauthorized user which may be credentialed access or lateral movement.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_user_name.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_user_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_anomalous_user_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_anomalous_user_name.json[image:images/link.svg[A link icon]]
 
 |v3_linux_network_configuration_discovery
 |Looks for commands related to system network configuration discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network configuration discovery to increase their understanding of connected networks and hosts. This information may be used to shape follow-up behaviors such as lateral movement or additional discovery.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_network_configuration_discovery.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_datafeed_linux_network_configuration_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_network_configuration_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_network_configuration_discovery.json[image:images/link.svg[A link icon]]
 
 |v3_linux_network_connection_discovery
 |Looks for commands related to system network connection discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used by a threat actor to engage in system network connection discovery to increase their understanding of connected services and systems. This information may be used to shape follow-up behaviors such as lateral movement or additional discovery.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_network_connection_discovery.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_datafeed_linux_network_connection_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_network_connection_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_network_connection_discovery.json[image:images/link.svg[A link icon]]
 
 |v3_linux_rare_metadata_process
 |Looks for anomalous access to the metadata service by an unusual process. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_metadata_process.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_metadata_process.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_metadata_process.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_metadata_process.json[image:images/link.svg[A link icon]]
 
 |v3_linux_rare_metadata_user
 |Looks for anomalous access to the metadata service by an unusual user. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_metadata_user.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_metadata_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_metadata_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_metadata_user.json[image:images/link.svg[A link icon]]
 
 |v3_linux_rare_sudo_user
 |Looks for sudo activity from an unusual user context. Unusual user context changes can be due to privilege escalation.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_sudo_user.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/securiity_linux/ml/datafeed_v3_linux_rare_sudo_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_sudo_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_sudo_user.json[image:images/link.svg[A link icon]]
 
 |v3_linux_rare_user_compiler
 |Looks for compiler activity by a user context which does not normally run compilers. This can be ad-hoc software changes or unauthorized software deployment. This can also be due to local privilege elevation via locally run exploits or malware activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_user_compiler.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_user_compiler.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_rare_user_compiler.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_rare_user_compiler.json[image:images/link.svg[A link icon]]
 
 |v3_linux_system_information_discovery
 |Looks for commands related to system information discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used to engage in system information discovery to gather detailed information about system configuration and software versions. This may be a precursor to the selection of a persistence mechanism or a method of privilege elevation.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_system_information_discovery.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_system_information_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_system_information_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_system_information_discovery.json[image:images/link.svg[A link icon]]
 
 |v3_linux_system_process_discovery
 |Looks for commands related to system process discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used to engage in system process discovery to increase their understanding of software applications running on a target host or network. This may be a precursor to the selection of a persistence mechanism or a method of privilege elevation.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_system_process_discovery.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_system_process_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_system_process_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_system_process_discovery.json[image:images/link.svg[A link icon]]
 
 |v3_linux_system_user_discovery
 |Looks for commands related to system user or owner discovery from an unusual user context. This can be due to uncommon troubleshooting activity or due to a compromised account. A compromised account may be used to engage in system owner or user discovery to identify currently active or primary users of a system. This may be a precursor to additional discovery, credential dumping, or privilege elevation activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_system_user_discovery.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_system_user_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_linux_system_user_discovery.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_linux_system_user_discovery.json[image:images/link.svg[A link icon]]
 
 |v3_rare_process_by_host_linux
 |Looks for processes that are unusual to a particular Linux host. Such unusual processes may indicate unauthorized software, malware, or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/v3_rare_process_by_host_linux.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_rare_process_by_host_linux.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/v3_rare_process_by_host_linux.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/ml/datafeed_v3_rare_process_by_host_linux.json[image:images/link.svg[A link icon]]
 
 |===
 // end::security-linux-jobs[]
@@ -216,7 +216,7 @@ Detect anomalous network activity in your ECS-compatible network logs.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -224,7 +224,7 @@ for data that matches the query.
 By default, when you create these jobs in the {security-app}, it uses a
 {data-source} that applies to multiple indices. To get the same results if you
 use the {ml-app} app, create a similar 
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[{data-source}]
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/manifest.json#L7[{data-source}]
 then select it in the job wizard.
 
 // tag::security-network-jobs[]
@@ -234,23 +234,23 @@ then select it in the job wizard.
 
 |high_count_by_destination_country
 |Looks for an unusually large spike in network activity to one destination country in the network logs. This could be due to unusually large amounts of reconnaissance or enumeration traffic. Data exfiltration activity may also produce such a surge in traffic to a destination country which does not normally appear in network traffic or business work-flows. Malware instances and persistence mechanisms may communicate with command-and-control (C2) infrastructure in their country of origin, which may be an unusual destination country for the source network.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/high_count_by_destination_country.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_high_count_by_destination_country.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/high_count_by_destination_country.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_high_count_by_destination_country.json[image:images/link.svg[A link icon]]
 
 |high_count_network_denies
 |Looks for an unusually large spike in network traffic that was denied by network ACLs or firewall rules. Such a burst of denied traffic is usually either 1) a misconfigured application or firewall or 2) suspicious or malicious activity. Unsuccessful attempts at network transit, in order to connect to command-and-control (C2), or engage in data exfiltration, may produce a burst of failed connections. This could also be due to unusually large amounts of reconnaissance or enumeration traffic.  Denial-of-service attacks or traffic floods may also produce such a surge in traffic.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/high_count_network_denies.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_high_count_network_denies.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/high_count_network_denies.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_high_count_network_denies.json[image:images/link.svg[A link icon]]
 
 |high_count_network_events
 |Looks for an unusually large spike in network traffic. Such a burst of traffic, if not caused by a surge in business activity, can be due to suspicious or malicious activity. Large-scale data exfiltration may produce a burst of network traffic; this could also be due to unusually large amounts of reconnaissance or enumeration traffic.  Denial-of-service attacks or traffic floods may also produce such a surge in traffic.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/high_count_network_events.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_high_count_network_events.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/high_count_network_events.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_high_count_network_events.json[image:images/link.svg[A link icon]]
 
 |rare_destination_country
 |Looks for an unusual destination country name in the network logs. This can be due to initial access, persistence, command-and-control, or exfiltration activity. For example, when a user clicks on a link in a phishing email or opens a malicious document, a request may be sent to download and run a payload from a server in a country which does not normally appear in network traffic or business work-flows. Malware instances and persistence mechanisms may communicate with command-and-control (C2) infrastructure in their country of origin, which may be an unusual destination country for the source network.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/rare_destination_country.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_rare_destination_country.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/rare_destination_country.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/ml/datafeed_rare_destination_country.json[image:images/link.svg[A link icon]]
 
 |===
 // end::security-network-jobs[]
@@ -263,7 +263,7 @@ Detect suspicious network activity in {packetbeat} data.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_packetbeat/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -274,28 +274,28 @@ for data that matches the query.
 
 |packetbeat_dns_tunneling
 |Looks for unusual DNS activity that could indicate command-and-control or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/packetbeat_dns_tunneling.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/datafeed_packetbeat_dns_tunneling.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/packetbeat_dns_tunneling.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/datafeed_packetbeat_dns_tunneling.json[image:images/link.svg[A link icon]]
 
 |packetbeat_rare_dns_question
 |Looks for unusual DNS activity that could indicate command-and-control activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/packetbeat_rare_dns_question.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/datafeed_packetbeat_rare_dns_question.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/packetbeat_rare_dns_question.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/datafeed_packetbeat_rare_dns_question.json[image:images/link.svg[A link icon]]
 
 |packetbeat_rare_server_domain
 |Looks for unusual HTTP or TLS destination domain activity that could indicate execution, persistence, command-and-control or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/packetbeat_rare_server_domain.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/datafeed_packetbeat_rare_server_domain.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/packetbeat_rare_server_domain.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/datafeed_packetbeat_rare_server_domain.json[image:images/link.svg[A link icon]]
 
 |packetbeat_rare_urls
 |Looks for unusual web browsing URL activity that could indicate execution, persistence, command-and-control or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/packetbeat_rare_urls.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/datafeed_packetbeat_rare_urls.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/packetbeat_rare_urls.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/datafeed_packetbeat_rare_urls.json[image:images/link.svg[A link icon]]
 
 |packetbeat_rare_user_agent
 |Looks for unusual HTTP user agent activity that could indicate execution, persistence, command-and-control or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/packetbeat_rare_user_agent.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/siem_packetbeat/ml/datafeed_packetbeat_rare_user_agent.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/packetbeat_rare_user_agent.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/ml/datafeed_packetbeat_rare_user_agent.json[image:images/link.svg[A link icon]]
 
 |===
 // end::siem-packetbeat-jobs[]
@@ -308,7 +308,7 @@ Anomaly detection jobs for Windows host-based threat hunting and detection.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -324,63 +324,63 @@ they are listed for each job.
 
 |v3_rare_process_by_host_windows
 |Looks for processes that are unusual to a particular Windows host. Such unusual processes may indicate unauthorized software, malware, or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_rare_process_by_host_windows.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_rare_process_by_host_windows.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_rare_process_by_host_windows.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_rare_process_by_host_windows.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_network_activity
 |Looks for unusual processes using the network which could indicate command-and-control, lateral movement, persistence, or data exfiltration activity.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_network_activity.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_network_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_network_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_network_activity.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_path_activity
 |Looks for activity in unusual paths that may indicate execution of malware or persistence mechanisms. Windows payloads often execute from user profile paths.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_path_activity.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_path_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_path_activity.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_path_activity.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_process_all_hosts
 |Looks for processes that are unusual to all Windows hosts. Such unusual processes may indicate execution of unauthorized software, malware, or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_process_all_hosts.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_process_creation
 |Looks for unusual process relationships which may indicate execution of malware or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_process_creation.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_process_creation.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_process_creation.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_process_creation.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_script
 |Looks for unusual powershell scripts that may indicate execution of malware, or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_script.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_script.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_script.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_script.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_service
 |Looks for rare and unusual Windows service names which may indicate execution of unauthorized services, malware, or persistence mechanisms.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_service.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_service.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_service.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_service.json[image:images/link.svg[A link icon]]
 
 |v3_windows_anomalous_user_name
 |Rare and unusual users that are not normally active may indicate unauthorized changes or activity by an unauthorized user which may be credentialed access or lateral movement.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_anomalous_user_name.json[image:images/link.svg[A link icon]]
 
 |v3_windows_rare_metadata_process
 |Looks for anomalous access to the metadata service by an unusual process. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_process.json[image:images/link.svg[A link icon]]
 
 |v3_windows_rare_metadata_user
 |Looks for anomalous access to the metadata service by an unusual user. The metadata service may be targeted in order to harvest credentials or user data scripts containing secrets.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_metadata_user.json[image:images/link.svg[A link icon]]
 
 |v3_windows_rare_user_runas_event
 |Unusual user context switches can be due to privilege escalation.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_runas_event.json[image:images/link.svg[A link icon]]
 
 |v3_windows_rare_user_type10_remote_login
 |Unusual RDP (remote desktop protocol) user logins can indicate account takeover or credentialed access.
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
-|https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
+|https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/ml/datafeed_v3_windows_rare_user_type10_remote_login.json[image:images/link.svg[A link icon]]
 
 |===
 // end::security-windows-jobs[]

@@ -1,28 +1,24 @@
 [[upgrading-elastic-stack-on-prem]]
 == Upgrade Elastic on self-managed infrastructure 
 
-When you are <<upgrading-elastic-stack, prepared to upgrade>>,
+Once you're <<upgrading-elastic-stack, prepared to upgrade>>,
 you will need to upgrade each of your Elastic components individually.
 
-. Consider closing {ml} jobs before you start the upgrade process. While {ml}
-jobs can continue to run during a rolling upgrade, it increases the overhead
-on the cluster during the upgrade process.
-
-. Upgrade the components of your {stack} in this order:
-+
+Upgrade the components of your {stack} in this order:
 
 //.. {es} Hadoop: {hadoop-ref}/install.html[install instructions]
-.. {es}: <<upgrading-elasticsearch, upgrade instructions>>
-.. {kib}: <<upgrading-kibana, upgrade instructions>>
+. {es}: <<upgrading-elasticsearch, upgrade instructions>>
+. {kib}: <<upgrading-kibana, upgrade instructions>>
 //.. Java API Client: {java-api-client}/installation.html#maven[dependency configuration]
-.. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions] (See note below)
-.. {beats}: {beats-ref}/upgrading.html[upgrade instructions]
-.. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
-.. {apm-agent}s {observability-guide}/apm-upgrade.html[upgrade instructions]
+. {ls}: {logstash-ref}/upgrading-logstash.html[upgrade instructions] (See note below)
+. {beats}: {beats-ref}/upgrading.html[upgrade instructions]
+. {agent}: {fleet-guide}/upgrade-elastic-agent.html[upgrade instructions]
+. {apm-agents-ref}/index.html[{apm-agent}s]
+. Custom clients
 
 [NOTE]
 --
 If you are using {ls} and the {logstash-ref}/plugins-filters-elastic_integration.html[`logstash-filter-elastic_integration`] plugin to extend Elastic integrations, upgrade {ls} (or the `logstash-filter-elastic_integration` plugin specifically) _before_ you upgrade {kib}.
  
-The {es}-{ls}-{kib} installation order for this specific plugin ensures the best experience with {agent}-managed pipelines, and embeds functionality from a version of {es} Ingest Node that is compatible with the plugin version (`major`.`minor`).  
+The {es} -> {ls} -> {kib} installation order for this specific plugin ensures the best experience with {agent}-managed pipelines, and embeds functionality from a version of {es} Ingest Node that is compatible with the plugin version (`major`.`minor`).  
 --

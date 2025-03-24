@@ -76,10 +76,10 @@ If you’re running the {stack} on your own self-managed infrastructure, you’l
 
 Before you upgrade to {version}, it's important to take some preparation steps. Unless noted, these following recommendations are best practices regardless of deployment method. 
 
-IMPORTANT: Upgrading from a release candidate build, such as 9.0.0-rc1 or 9.0.0-rc2, is not supported. Pre-releases should only be used for testing in a temporary environment.
+IMPORTANT: Upgrading from a release candidate build, such as 9.0.0-rc1, is not supported. Pre-releases should only be used for testing in a temporary environment.
 
 To upgrade to {version} from 8.17 or earlier, **you must first upgrade to the latest patch version of 8.18**. This enables you to use the **Upgrade Assistant** to identify and resolve issues,
-reindex indices created before 8.0, and then perform a rolling upgrade.
+reindex indices created before 8.0 or mark them as read-only, and perform a rolling upgrade.
 
 *Upgrading to 8.18 before upgrading to {version} is required 
 even if you opt to do a full-cluster restart of your {es} cluster.*
@@ -87,7 +87,7 @@ even if you opt to do a full-cluster restart of your {es} cluster.*
 Alternatively, you can create a new {version} deployment and reindex from remote.
 For more information, refer to <<upgrading-reindex,Reindex to upgrade>>.
 
-{beats} and {ls} 8.17 are compatible with {es} {version} 
+{beats} and {ls} 8.18 are compatible with {es} {version} 
 to give you flexibility in scheduling the upgrade.
 
 .Remote cluster compatibility
@@ -130,10 +130,13 @@ For more information, see {ref}/rest-api-compatibility.html[REST API compatibili
 IMPORTANT: You cannot downgrade {es} nodes after upgrading. If you cannot complete the upgrade process, you will need to {ref}/snapshots-restore-snapshot.html[restore from the snapshot].
 +
 . If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
+. To reduce overhead on the cluster during the upgrade, close {ml} jobs. Although {ml} jobs can run during a rolling upgrade, doing so increases the cluster workload.
+. If you have `.ml-anomalies-*` anomaly detection result indices created in Elasticsearch 7.x, reindex, mark as read-only, or delete them before you upgrade to {version}. For more information, refer to <<anomaly-detection-results-migration, Migrate anomaly detection results>>.
+. If you have transform destination indices created in Elasticsearch 7.x, reset, reindex, or delete them before you upgrade to {version}. For more information, refer to <<breaking_90_transform_destination_index, Migrate transform destination indices>>.
 
 [discrete]
 [[anomaly-detection-results-migration]]
-=== Anomaly detection results migration
+=== Migrate anomaly detection results
 
 The {anomaly-detect} result indices `.ml-anomalies-*` created in {es} 7.x must be either reindexed, marked read-only, or deleted before upgrading to 9.x.
 
@@ -464,7 +467,7 @@ The {transform} destination indices created in {es} 7.x must be either reset, re
 
 **Reindexing**: You can reindex the destination index and then update the {transform} to write to the new destination index. This is useful if there are results that you want to retain that may not exist in the source index. To prevent the {transform} and reindex tasks from conflicting with one another, you can either pause the {transform} while the reindex runs, or you can write to the new destination index while the reindex backfills old results.
 
-**Deleting**: You can delete any {transform} that are no longer being used. Once the {transform} is deleted, you can either delete the destination index or make it read-only.
+**Deleting**: You can delete any {transforms} that are no longer being used. Once the {transform} is deleted, you can either delete the destination index or make it read-only.
 
 .Which indices require attention?
 [%collapsible]

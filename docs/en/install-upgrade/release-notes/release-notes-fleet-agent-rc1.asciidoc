@@ -15,3 +15,71 @@
 == {fleet} and {agent} 9.0.0-rc1
 
 coming::[9.0.0-rc1]
+
+[discrete]
+[[security-updates-fleet-agent-9.0.0-rc1]]
+=== Security updates
+
+{fleet-server}::
+* Update Go version to 1.24.0. {fleet-server-pull}4543[#4543]
+
+{agent}::
+* Update Go version to 1.24.0.  {agent-pull}7248[#7248]
+
+[discrete]
+[[breaking-changes-fleet-agent-9.0.0-rc1]]
+=== Breaking changes
+
+Breaking changes can prevent your application from optimal operation and
+performance. Before you upgrade, review the breaking changes, then mitigate the
+impact to your application.
+
+[discrete]
+//[[breaking-7145]]
+.The {agent} Docker container location has changed
+[%collapsible]
+====
+The {agent} Docker container is no longer availble from `docker.elastic.co/beats/elastic-agent`. Use `docker.elastic.co/elastic-agent/elastic-agent` instead.
+====
+
+
+[discrete]
+[[enhancements-fleet-agent-9.0.0-rc1]]
+=== Enhancements
+
+{agent}::
+* Include all metadata that is sent to {fleet} in the `agent-info.yaml` file in diagnostics by default. {agent-pull}7029[#7029]
+* Update OTel components to v0.120.x. {agent-pull}7050[#7050]
+* Adds the ApiKey prefix to the the OTLP managed header configurations. {agent-pull}7063[#7063]
+* Add MOtel sample configurations.  {agent-pull}6841[#6841]
+* Improve `kubernetes_secrets` provider secret logging. {agent-pull}6713[#6713]
+* Update `elastic-agent-libs` to v0.18.8. {agent-pull}7234[#7234]
+* Add an `elastic.agent.fips` attribute to the `local_metadata` sent to {fleet}. {agent-pull}7112[#7112]
+
+{fleet-server}::
+* Validate pbkdf2 settings for FIPS compliance. {fleet-server-pull}4542[#4542]
+* Update the {agent} upgrade process to prevent FIPS to non-FIPS upgrades. {fleet-server-pull}7312[#7312]
+
+[discrete]
+[[bug-fixes-fleet-agent-9.0.0-rc1]]
+=== Bug fixes
+
+{agent}::
+* Change how Windows process handles are obtained when assigning sub-processes to Job objects. {agent-pull}6825[#6825]
+* Fix a potential deadlock case in OTelManager error handling. {agent-pull}6927[#6927] {agent-issue}6119[#6119]
+* Fix the TSDB `version_conflict_engine_exception` error caused by incorrect `kube-stack` Helm values. {agent-pull}6928[#6928]
+* Make enroll command backoff more conservative. {agent-pull}6983[#6983]
+* Add conditions to the `copy_fields` processor. {agent-pull}6730[#6730] {agent-issue}5299[#5299]
+* Fix deadlock handling in OTelManager. {agent-pull}6927[#6927] {agent-issue}6119[#6119]
+* Fix TSDB version_conflict_engine_exception caused by incorrect kube-stack Helm values. {agent-pull}6928[#6928]
+* Add missing null checks to AST methods. {agent-pull}7009[#7009]
+* Set the `spec.replicas` field to fix the deployment of the Kubernetes Otel operator. {agent-pull}7011[#7011]
+* Fix an issue where `FixPermissions` on Windows incorrectly returned an error message due to improper handling of Windows API return values. {agent-pull}7370[#7370]
+* Support IPv6 hosts in the {agent} GRPC configuration. {agent-pull}7035[#7035]
+* Support IPv6 hosts in the {agent} monitoring http configuration. {agent-pull}7073[#7073]
+* Support IPv6 hosts in the {agent} enroll URL. {agent-pull}7036[#7036]
+* Fix permissions for Windows on not found paths and files errors. {agent-pull}7305[#7305] {agent-issue}7301[#7301]
+* Make `otelcol` executable in the Docker image. {agent-pull}7345[#7345] {agent-issue}6763[#6763]
+* Fixes the {es} exporter configuration in `opentelemetry-kube-stack` values. {agent-pull}7380[#7380]
+
+// end 9.0.0-rc1 relnotes

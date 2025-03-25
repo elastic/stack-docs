@@ -11,6 +11,55 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-03242025]]
+=== March 24, 2025
+
+[discrete]
+[[features-03242025]]
+==== Features and enhancements
+* Enables smoother scrolling in Kibana ({kibana-pull}214512[#214512]).
+* Adds `context.grouping` action variable in Custom threshold and APM rules ({kibana-pull}212895[#212895]).
+* Adds the ability to create an APM availability or latency SLO for all services ({kibana-pull}214653[#214653]).
+* Enables editing central config for EDOT Agents / SDKs ({kibana-pull}211468[#211468]).
+* Uses Data View name for Rule Data View display ({kibana-pull}214495[#214495]).
+* Highlights the code examples in our inline docs ({kibana-pull}214915[#214915]).
+* Updates data feeds for anomaly detection jobs to exclude Elastic Agent and Beats processes ({kibana-pull}213927[#213927]).
+* Adds Mustache lambdas for alerting action ({kibana-pull}213859[#213859]).
+* Adds 'page reload' screen reader warning ({kibana-pull}214822[#214822]). 
+
+[discrete]
+[[fixes-03242025]]
+==== Fixes
+* Fixes color by value for Last value array mode ({kibana-pull}213917[#213917]).
+* Fixes can edit check ({kibana-pull}213887[#213887]).
+* Fixes opening a rollup data view in Discover ({kibana-pull}214656[#214656]).
+* Fixes entry item in waterfall shouldn't be orphan ({kibana-pull}214700[#214700]).
+* Filters out upstream orphans in waterfall ({kibana-pull}214704[#214704]).
+* Fixes KB bulk import UI example ({kibana-pull}214970[#214970]).
+* Ensures that when an SLO is created, its ID is verified across all spaces ({kibana-pull}214496[#214496]).
+* Fixes contextual insights scoring ({kibana-pull}214259[#214259]).
+* Prevents `getChildrenGroupedByParentId` from including the parent in the children list ({kibana-pull}214957[#214957]).
+* Fixes ID overflow bug ({kibana-pull}215199[#215199]).
+* Removes unnecessary `field service.environment` from top dependency spans endpoint ({kibana-pull}215321[#215321]).
+* Fixes missing `user_agent` version field and shows it on the trace summary ({kibana-pull}215403[#215403]).
+* Fixes rule preview works for form's invalid state ({kibana-pull}213801[#213801]).
+* Fixes session view error on the alerts tab ({kibana-pull}214887[#214887]).
+* Adds index privileges check to `applyDataViewIndices` ({kibana-pull}214803[#214803]).
+* Changes the default Risk score lookback period from `30m` to `30d` ({kibana-pull}215093[#215093]).
+* Fixes issue with alert grouping re-render ({kibana-pull}215086[#215086]).
+* Limits the `transformID` length to 36 characters ({kibana-pull}213405[#213405]).
+* Fixes Data view refresh not supporting the `indexPattern` parameter ({kibana-pull}215151[#215151]).
+* Uses Risk Engine `SavedObject` intead of `localStorage` on the Risk Score web page ({kibana-pull}215304[#215304]).
+* Fixes autocomplete for comments when there is a space ({kibana-pull}214696[#214696]).
+* Makes sure that the variables in the editor are always up to date ({kibana-pull}214833[#214833]).
+* Calculates the query for retrieving the values correctly ({kibana-pull}214905[#214905]).
+* Fixes overlay in integrations on mobile ({kibana-pull}215312[#215312]).
+* Fixes chart in single metric anomaly detection wizard ({kibana-pull}214837[#214837]).
+* Fixes regression that caused the cases actions to disappear from the detections engine alerts table bulk actions menu ({kibana-pull}215111[#215111]).
+* Changes "Close project" to "Log out" in nav menu in serverless mode ({kibana-pull}211463[#211463]).
+* Fixes search profiler index reset field when query is changed ({kibana-pull}215420[#215420]).
+
+[discrete]
 [[serverless-changelog-03172025]]
 === March 17, 2025
 

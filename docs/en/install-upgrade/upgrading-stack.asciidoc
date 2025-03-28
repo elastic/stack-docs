@@ -37,15 +37,42 @@ endif::[]
 compatible with {es} version {version}.
 
 . Test the upgrade in an isolated environment before upgrading your production
-cluster.
+  cluster.
++
+[IMPORTANT]
+====
+The upgraded version of {es} may interact with its environment in different
+ways from the version you are currently running. It is possible that your
+environment behaves incorrectly in a way that does not matter to the version of
+{es} that you are currently running, but which does matter to the upgraded
+version. In this case, the upgraded version will not work correctly until you
+address the incorrect behaviour in your environment.
+
+During your upgrade tests, pay particular attention to the following aspects:
+
+Cluster stability:: Does the new version of {es} form a stable healthy cluster?
+
+Indexing and search performance:: Does the new version of {es} perform the same
+(or better) than the current one on your specific workload and data?
+
+Snapshots:: Do all of your snapshot repositories work correctly and pass
+{ref}/repo-analysis-api.html[repository analysis]?
+====
 
 . Make sure you have a current snapshot before you start the upgrade.
 +
-IMPORTANT: You cannot downgrade {es} nodes after upgrading. 
-If you cannot complete the upgrade process, 
-you will need to restore from the snapshot.
+IMPORTANT: You cannot downgrade {es} nodes after starting to upgrade your
+cluster. If you cannot complete the upgrade process, build a new cluster and
+restore a snapshot taken before starting the upgrade.
 
-. If you use a separate {ref}/monitoring-production.html[monitoring cluster], you should upgrade the monitoring cluster before the production cluster. In general, the monitoring cluster and the clusters being monitored should be running the same version of the stack. A monitoring cluster cannot monitor production clusters running newer versions of the stack. If necessary, the monitoring cluster can monitor production clusters running the latest release of the previous major version.
+. If you use a separate {ref}/monitoring-production.html[monitoring cluster],
+  upgrade the monitoring cluster before the production cluster.
++
+In general, the monitoring cluster and the clusters being monitored should be
+running the same version of the stack. A monitoring cluster cannot monitor
+production clusters running newer versions of the stack. If necessary, the
+monitoring cluster can monitor production clusters running the latest release
+of the previous major version.
 // end::generic-upgrade-steps[]
 ////
 

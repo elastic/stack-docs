@@ -11,6 +11,51 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-03312025]]
+=== March 31, 2025
+
+[discrete]
+[[features-enhancements-03312025]]
+==== Features and enhancements
+* Introduced an embeddable trace waterfall visualization in Elastic Observability Serverless ({kibana-pull}216098[#216098]).
+* Adds support for span links in Elastic Observability Serverless service maps ({kibana-pull}215645[#215645]).
+* Enables KQL filting for TLS alerting rules in Elastic Observability Serverless ({kibana-pull}215110[#215110]).
+* Ensures a 404 response is returned only when `screenshot_ref` is truly missing in Elastic Observability Serverless ({kibana-pull}215241[#215241]).
+* Adds a rule gaps histogram to the Elastic Security Serverless rules dashboard ({kibana-pull}214694[#214694]).
+* Adds support for multiple CVEs and improves the vulnerability data grid, flyout, and contextual flyout UI in Elastic Security Serverless ({kibana-pull}213039[#213039]).
+* Updates API key permissions for refreshing data view API for Elastic Security Serverless ({kibana-pull}215738[#215738]).
+* Adds the ability to limit notes per document instead of globally in Elastic Security Serverless ({kibana-pull}214922[#214922]).
+* Adds the ability to add badges to subitems in the side navigation ({kibana-pull}214854[#214854]).
+
+[discrete]
+[[fixes-03312025]]
+==== Fixes
+* Fixes color palette assignment issues in partition charts ({kibana-pull}215426[#215426]).
+* Adjusted page height for the AI Assistant app in solution views ({kibana-pull}215646[#215646]).
+* Adds `aria-label` to latency selector in Elastic Observabiity Serverless service overview ({kibana-pull}215644[#215644]).
+* Adds `aria-label` to popover service in Elastic Observabiity Serverless service overview ({kibana-pull}215640[#215640]).
+* Adds `aria-label` to "Try our new inventory" button in Elastic Observabiity Serverless ({kibana-pull}215633[#215633]).
+* Adds `aria-label` to Transaction type select in Elastic Observabiity Serverless service overview ({kibana-pull}216014[#216014]).
+* Fixes an issue when selecting monitor frequency ({kibana-pull}215823[#215823]).
+* Implements the `nameTooltip` API for Elastic Observabiity Serverless dependency tables ({kibana-pull}215940[#215940]).
+* Fixes a location filter issue in the Elastic Observabiity Serverless status rule executor ({kibana-pull}215514[#215514]).
+* Generalized and consolidated custom Fleet onboarding logic in Elastic Observabiity Serverless ({kibana-pull}215561[#215561]).
+* Fixes left margin positioning in Elastic Observabiity Serverless waterfall visualizations ({kibana-pull}216229[#216229]).
+* Corrects risk score table refresh issues in the Elastic Security Serverless Entity Analytics Dashboard ({kibana-pull}215472[#215472]).
+* Fixes the Elastic Security Serverless host details flyout left panel tabs ({kibana-pull}215672[#215672]).
+* Fixes an issue where the Entity Store init API did not check for index privileges in Elastic Security Serverless ({kibana-pull}215329[#215329]).
+* Adds `manage_ingest_pipeline` privilege check for Risk Engine enablement in Elastic Security Serverless ({kibana-pull}215544[#215544]).
+* Updates API to dynamically retrieve `spaceID` for Elastic Security Serverless ({kibana-pull}216063[#216063]).
+* Fixes the visibility of the ES|QL date picker ({kibana-pull}214728[#214728]).
+* Enables the ES|QL time picker when time parameters are used with `cast` ({kibana-pull}215820[#215820]).
+* Updates the Fleet minimum package spec version to 2.3 ({kibana-pull}214600[#214600]).
+* Fixes text overflow and alignment in agent details integration input status in Fleet ({kibana-pull}215807[#215807]).
+* Fixes pagination in the Anomaly Explorer Anomalies Table for Machine Learning ({kibana-pull}214714[#214714]).
+* Ensure proper permissions for viewing Machine Learning nodes ({kibana-pull}215503[#215503]).
+* Adds a custom link color option for the top banner ({kibana-pull}214241[#214241]).
+* Updates the task state version after execution ({kibana-pull}215559[#215559]).
+
+[discrete]
 [[serverless-changelog-03242025]]
 === March 24, 2025
 

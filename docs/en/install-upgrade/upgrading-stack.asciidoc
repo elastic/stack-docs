@@ -517,7 +517,7 @@ POST _transform/my-transform/_reset
 ====
 When {kib} Upgrade Assistant reindexes the documents, {kib} will put a write block on the old destination index, copy the results to a new index, delete the old index, and create an alias to the new index. During this time, the {transform} will pause and wait for the destination to become writable again.  If you do not want the {transform} to pause, continue to <<reindexing-transform-running, reindexing the {transform}'s destination index while the {transform} is running>>.
 
-If an index is less than 10GB of size, we recommend using {kib}'s Upgrade Assistant to automatically migrate the index.
+If an index size is less than 10 GB, we recommend using {kib}'s Upgrade Assistant to automatically migrate the index.
 
 You can use the https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-indices-1[Get index information API] to obtain the size of an index:
 

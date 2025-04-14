@@ -11,6 +11,44 @@ For serverless API changes, refer to https://www.elastic.co/docs/api/changes[API
 For serverless changes in Cloud Console, refer to https://www.elastic.co/guide/en/cloud/current/ec-release-notes.html[Elasticsearch Service Documentation: Release notes].
 
 [discrete]
+[[serverless-changelog-04142025]]
+=== April 14, 2025
+
+[discrete]
+[[features-enhancements-04142025]]
+==== Features and enhancements
+* Enables archiving of conversations in the Elastic Observability Serverless AI Assistant ({kibana-pull}216012[#216012]).
+* Moves job and trained model management features into *Stack Management* ({kibana-pull}204290[#204290]).
+* Adds Engine initialization API to Elastic Security Serverless ({kibana-pull}215663[#215663]).
+* Allows creating an ES|QL control by entering a question mark (`?`) in the query ({kibana-pull}216839[#216839]).
+* Improves UI handling of multiple CVEs and package fields ({kibana-pull}216411[#216411]).
+* Adds support for Windows MSI commands for Fleet and Elastic Agent installations ({kibana-pull}217217[#217217]).
+* Reuses shared integration policies when duplicating agent policies in Fleet ({kibana-pull}217872[#217872]).
+* Enables adding badges to all list items in the side navigation except the section header ({kibana-pull}217301[#217301]).
+
+[discrete]
+[[fixes-04142025]]
+==== Fixes
+* Fixes error message when previewing index templates used by data streams ({kibana-pull}217604[#217604]).
+* Wraps text in search bars ({kibana-pull}217556[#217556]).
+* Adds support for `textBased` layers in ES|QL visualizations ({kibana-pull}216358[#216358]).
+* Corrects the alert count displayed in *Monitor* details ({kibana-pull}216761[#216761]).
+* Fixes the *Save visualization* action on the Monitors *Overview* tab ({kibana-pull}216695[#216695]).
+* Removes direct function calling from the chat input Elastic Observability Serverless AI Assistant ({kibana-pull}217359[#217359]).
+* Adds missing `aria-label` attributes to some buttons under the Services and Services Groups pages ({kibana-pull}217325[#217325]).
+* Improves knowledge base installation flow and inference endpoint management ({kibana-pull}214133[#214133]).
+* Improves `aria-label` for `EuiCodeBlock` on the APM onboarding page ({kibana-pull}217292[#217292]).
+* Adds `source` and `target` fields to the `Dataset Quality Navigated` event ({kibana-pull}217575[#217575]).
+* Improves `aria-label` attributes for latency correlations ({kibana-pull}217512[#217512]).
+* Fixes navigation to the *Search Connectors* page ({kibana-pull}217749[#217749]).
+* Sorts the *Environment* dropdown alphabetically in the APM UI ({kibana-pull}217710[#217710]).
+* Ensures the Request Inspector shows accurate request and response data for successful scenarios ({kibana-pull}216519[#216519]).
+* Fixes the `Change Point Detection` embeddable in dashboards ({kibana-pull}217178[#217178]).
+* Fixes page crashes caused by the *Use full data* button ({kibana-pull}217291[#217291]).
+* Filters inference connectors that lack existing endpoints in *Connectors* ({kibana-pull}217641[#217641]).
+* Fixes focusability and keyboard access issues with the *Export* tab in the *Share this dashboard* modal ({kibana-pull}217313[#217313]).
+
+[discrete]
 [[serverless-changelog-04072025]]
 === April 7, 2025
 

@@ -305,6 +305,12 @@ Note the following tips about enrollment tokens:
 ====
 
 . In the terminal shell for your second {es} node, pass the enrollment token as a parameter to the `elasticsearch-reconfigure-node` tool:
+[IMPORTANT]
+====
+Be sure the second node is able to access the first node before running the following command. You can test this by running a curl command to the first node at port 9200.
+
+If you are unable to access the first node, modify your network configuration before proceeding.
+====
 +
 [source,"shell"]
 ----
@@ -352,11 +358,11 @@ network.host: 10.128.0.132
 sudo systemctl start elasticsearch.service
 ----
 
-. **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and `tail` the {es} log file:
+. **Optionally**, to view the progress as the second {es} node starts up and connects to the first {es} node, open a new terminal into the second node and `tail` the {es} log file. Be sure to replace <CLUSTER.NAME> with the cluster.name you set earlier in the first node's elasticsearch.yml:
 +
 [source,"shell"]
 ----
-sudo tail -f /var/log/elasticsearch/elasticsearch-demo.log
+sudo tail -f /var/log/elasticsearch/<CLUSTER.NAME>.log
 ----
 +
 Notice in the log file some helpful diagnostics, such as:

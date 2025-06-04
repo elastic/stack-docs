@@ -245,9 +245,10 @@ this value, you will need to update your filters to use `elasticsearch.deprecati
 ====
 *Details* +
 Logsdb index mode will be enabled by default for data streams matching with `logs-*-*` pattern.
-If upgrading from 8.18.2 and beyond to 9.x and data streams matching with `log-*-*` do exist,
-then Logsdb will not be enabled by default. Note that upgrading from 8.18.0 or 8.18.1 to 9.0.x
-will result in Logsdb being enabled by default.
+When upgrading from 8.18.2 or later to 9.x, if data streams matching with `log-*-*` exist,
+then logsdb will not be enabled by default. 
+
+For versions prior to 8.18.2, it is strongly advised to first upgrade to 8.18.2 prior to upgrading to 9.0.x. Otherwise, logsdb will be enabled by default regardless of whether matching data streams exist.
 
 *Impact* +
 Logsdb reduce storage footprint in Elasticsearch for logs, but there are side effects

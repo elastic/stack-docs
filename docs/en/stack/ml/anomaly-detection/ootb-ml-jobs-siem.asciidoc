@@ -16,15 +16,14 @@ Detect anomalous activity in your ECS-compatible authentication logs.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
 
 By default, when you create these job in the {security-app}, it uses a
 {data-source} that applies to multiple indices. To get the same results if you
-use the {ml-app} app, create a similar 
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}]
+use the {ml-app} app, create a similar https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_auth/manifest.json#L7[{data-source}]
 then select it in the job wizard.
 
 // tag::security-authentication-jobs[]
@@ -78,8 +77,7 @@ then select it in the job wizard.
 Detect suspicious activity recorded in your CloudTrail logs.
 
 In the {ml-app} app, these configurations are available only when data exists
-that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_cloudtrail/manifest.json[manifest file].
+that matches the query specified in the https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_cloudtrail/manifest.json[manifest file].
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -158,7 +156,8 @@ Anomaly detection jobs for Linux host-based threat hunting and detection.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_linux/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_linux/manifest.json[manifest file].
+
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -250,7 +249,8 @@ Detect anomalous network activity in your ECS-compatible network logs.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_network/manifest.json[manifest file].
+
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -297,7 +297,8 @@ Detect suspicious network activity in {packetbeat} data.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_packetbeat/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_packetbeat/manifest.json[manifest file].
+
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
@@ -342,7 +343,8 @@ Anomaly detection jobs for Windows host-based threat hunting and detection.
 
 In the {ml-app} app, these configurations are available only when data exists
 that matches the query specified in the
-https://github.com/elastic/kibana/blob/{branch}/x-pack/plugins/ml/server/models/data_recognizer/modules/security_windows/manifest.json[manifest file].
+https://github.com/elastic/kibana/blob/{branch}/x-pack/platform/plugins/shared/ml/server/models/data_recognizer/modules/security_windows/manifest.json[manifest file].
+
 In the {security-app}, it looks in the {data-source} specified in the
 {kibana-ref}/advanced-options.html#securitysolution-defaultindex[`securitySolution:defaultIndex` advanced setting]
 for data that matches the query.
